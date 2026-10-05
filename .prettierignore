@@ -1,0 +1,12 @@
+.next/
+out/
+build/
+coverage/
+node_modules/
+pnpm-lock.yaml
+next-env.d.ts
+# Generated artifacts: byte-for-byte output of their generators. Never format by hand.
+openapi/simplefit.api.json
+src/shared/api/generated/
+src/shared/api/.generated-check/
+AGENTS.md

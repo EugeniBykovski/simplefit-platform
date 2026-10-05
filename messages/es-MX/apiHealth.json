@@ -1,0 +1,7 @@
+{
+  "status": {
+    "checking": "Verificando"
+  },
+  "lastChecked": "Última verificación: {time}",
+  "notChecked": "Aún no verificado"
+}

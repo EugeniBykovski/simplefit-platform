@@ -1,0 +1,10 @@
+{
+  "badge": "Fundament platformy webowej",
+  "audiencesLabel": "Dla kogo",
+  "audiences": {
+    "fighters": "Zawodnicy",
+    "coaches": "Trenerzy",
+    "gyms": "Kluby",
+    "sponsors": "Sponsorzy"
+  }
+}

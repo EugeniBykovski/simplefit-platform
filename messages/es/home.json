@@ -1,0 +1,10 @@
+{
+  "badge": "Base de la plataforma web",
+  "audiencesLabel": "Para",
+  "audiences": {
+    "fighters": "Boxeadores",
+    "coaches": "Entrenadores",
+    "gyms": "Gimnasios",
+    "sponsors": "Patrocinadores"
+  }
+}

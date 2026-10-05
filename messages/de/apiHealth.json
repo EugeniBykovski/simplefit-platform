@@ -1,0 +1,17 @@
+{
+  "title": "API-Verbindung",
+  "status": {
+    "checking": "Wird geprüft",
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "checking": "Verbindung zur API wird hergestellt…",
+  "online": "Die API ist erreichbar und verarbeitet Anfragen.",
+  "offline": "Die API ist nicht erreichbar.",
+  "errorCode": "Fehler <code>{errorCode}</code>.",
+  "requestId": "Anfrage-ID: {requestId}",
+  "lastChecked": "Zuletzt geprüft um {time}",
+  "notChecked": "Noch nicht geprüft",
+  "toastOnline": "Die SimpleFit-API ist online.",
+  "toastOffline": "Die SimpleFit-API ist nicht erreichbar."
+}

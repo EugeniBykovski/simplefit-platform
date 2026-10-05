@@ -1,0 +1,14 @@
+# pnpm settings for this single-package repository (no workspace packages yet).
+
+# Dependency install scripts are denied unless explicitly reviewed here.
+# All packages below ship prebuilt platform binaries through optionalDependencies,
+# so their postinstall fallbacks are not needed:
+# - esbuild: used by Orval to load its config
+# - unrs-resolver: used by eslint-import-resolver-typescript
+# - @swc/core, @parcel/watcher: used only by next-intl's optional message
+#   extractor, which this project does not enable
+allowBuilds:
+  esbuild: false
+  unrs-resolver: false
+  "@swc/core": false
+  "@parcel/watcher": false

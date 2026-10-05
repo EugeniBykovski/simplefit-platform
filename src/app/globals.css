@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+/* Custom variants (data-open:, data-checked:, ...) used by shadcn/ui primitives. */
+@import "shadcn/tailwind.css";
+@import "../shared/styles/tokens.css";
+@import "../shared/styles/theme.css";
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+}

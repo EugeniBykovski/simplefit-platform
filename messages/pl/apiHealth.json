@@ -1,0 +1,17 @@
+{
+  "title": "Połączenie z API",
+  "status": {
+    "checking": "Sprawdzanie",
+    "online": "Dostępne",
+    "offline": "Niedostępne"
+  },
+  "checking": "Łączenie z API…",
+  "online": "API jest dostępne i obsługuje żądania.",
+  "offline": "Nie udało się połączyć z API.",
+  "errorCode": "Błąd <code>{errorCode}</code>.",
+  "requestId": "ID żądania: {requestId}",
+  "lastChecked": "Ostatnie sprawdzenie: {time}",
+  "notChecked": "Jeszcze nie sprawdzono",
+  "toastOnline": "API SimpleFit jest dostępne.",
+  "toastOffline": "API SimpleFit jest niedostępne."
+}

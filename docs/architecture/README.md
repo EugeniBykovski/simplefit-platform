@@ -1,0 +1,468 @@
+# SimpleFit Platform architecture
+
+`simplefit-platform` is the canonical web client of SimpleFit Boxing. It will
+host the public website, Fighter/Coach/Gym web, the desktop-class application
+experience, the Sponsor portal, Admin, Marketplace, Booking, Payments, Social
+and the Live Boxing Board. SF-11 built only the **foundation** these will use.
+
+- [System context](#system-context)
+- [Stack](#stack)
+- [Directory layout](#directory-layout)
+- [FSD-lite](#fsd-lite)
+- [Server and Client Components](#server-and-client-components)
+- [Styling: Tailwind and tokens](#styling-tailwind-and-design-tokens)
+- [UI primitives: shadcn/ui](#ui-primitives-shadcnui)
+- [API contract and Orval](#api-contract-and-orval)
+- [Server state: TanStack Query](#server-state-tanstack-query)
+- [Forms and validation](#forms-and-validation)
+- [Internationalization](#internationalization)
+- [Environment](#environment)
+- [Testing](#testing)
+- [Quality commands](#quality-commands)
+- [Git and Jira conventions](#git-and-jira-conventions)
+- [CI](#ci)
+- [Dependencies](#dependencies)
+- [Known limitations](#known-limitations)
+
+## System context
+
+```
+ browser ──HTTP──► simplefit-platform (Next.js) ──REST/JSON──► simplefit-api (Phoenix)
+                         │                                         │
+                         └── generated client ◄── OpenAPI artifact ┘
+```
+
+The **Phoenix backend owns** business logic, authorization, validation,
+persistence and the API contract (`simplefit-api/openapi/simplefit.api.json`).
+This repository renders UI and calls the API. It never re-implements business
+rules, never talks to a database and never hand-writes backend DTOs.
+
+## Stack
+
+| Concern      | Choice                                                                                            |
+| ------------ | ------------------------------------------------------------------------------------------------- |
+| Runtime      | Node.js 24 LTS (`.nvmrc`), pnpm 12 (`packageManager`)                                             |
+| Framework    | Next.js 16 App Router, React 19, React Server Components by default                               |
+| Language     | TypeScript 6, strict (+ `noUncheckedIndexedAccess`, `noImplicitOverride`, `verbatimModuleSyntax`) |
+| Styling      | Tailwind CSS 4, semantic CSS-variable tokens                                                      |
+| Primitives   | shadcn/ui (radix-nova style) on Radix, Lucide icons                                               |
+| API client   | Orval 8 (fetch + TanStack Query), generated from the backend OpenAPI                              |
+| Server state | TanStack Query 5 (Client Components only)                                                         |
+| Forms        | React Hook Form + Zod                                                                             |
+| i18n         | next-intl 4                                                                                       |
+| Tests        | Vitest 5, React Testing Library, jest-dom, user-event                                             |
+| Quality      | ESLint 9 (next core-web-vitals + jsx-a11y), Prettier 3, Husky, lint-staged, commitlint            |
+
+## Directory layout
+
+```
+simplefit-platform/
+├── .github/workflows/ci.yml   CI
+├── .husky/                    git hooks (pre-commit, commit-msg)
+├── docs/architecture/         this document
+├── messages/<locale>/*.json   translations, one file per namespace
+├── openapi/simplefit.api.json verbatim snapshot of the backend contract
+├── scripts/                   api-sync, api-check, ui-add, commit convention
+└── src/
+    ├── app/                   routing, layouts, providers (Next.js App Router)
+    │   ├── [locale]/          every page lives under a locale segment
+    │   └── global-not-found.tsx
+    ├── proxy.ts               locale negotiation (Next.js 16 "proxy", formerly middleware)
+    ├── widgets/               large composed UI blocks (app-shell, site-header, home-hero)
+    ├── features/              user actions (switch-locale, check-api-health)
+    ├── entities/              client representations of domain concepts (system-health)
+    ├── shared/
+    │   ├── api/               generated client, HTTP transport, ApiError, QueryClient
+    │   ├── config/            env (validated), site identity
+    │   ├── i18n/              locale registry, routing, messages, formats, navigation
+    │   ├── lib/               cn(), form helpers
+    │   ├── styles/            design tokens and Tailwind theme mapping
+    │   └── ui/                shadcn/ui primitives (locally owned)
+    └── test/                  test helpers
+```
+
+`shared/hooks/` and `shared/types/` are configured as aliases but are created
+only when the first real hook or shared type exists (no empty folders).
+
+## FSD-lite
+
+A pragmatic subset of [Feature-Sliced Design](https://feature-sliced.design).
+There is **no FSD `pages` layer**: Next.js `app/` already composes routes.
+
+| Layer      | Holds                                               | Example                     |
+| ---------- | --------------------------------------------------- | --------------------------- |
+| `app`      | routes, layouts, providers, metadata                | `app/[locale]/app/page.tsx` |
+| `widgets`  | large compositional blocks used by routes           | `widgets/app-shell`         |
+| `features` | one user action / use case                          | `features/switch-locale`    |
+| `entities` | domain-oriented client representations and their UI | `entities/system-health`    |
+| `shared`   | domain-independent infrastructure and primitives    | `shared/ui/button`          |
+
+**Dependency direction** (enforced by ESLint `no-restricted-imports`):
+
+```
+app ─► widgets ─► features ─► entities ─► shared
+```
+
+A layer imports only from layers to its right. Slices on the same layer do not
+import each other (compose them one layer up). No circular dependencies.
+
+**Public API.** Each slice in `widgets`/`features`/`entities` exposes one
+`index.ts`; import slices through it (`@/features/switch-locale`). Inside
+`shared`, import files directly (`@/shared/ui/button`). No other barrels.
+
+**Create slices only for real code.** Product domains (fighter, coach, gym,
+booking…) get slices when a ticket implements them, not before.
+
+## Server and Client Components
+
+- **Server Components are the default.** Pages, layouts and widgets render on
+  the server, read translations with `getTranslations` / `useTranslations` and
+  can call the generated API functions directly.
+- **Add `"use client"` only for browser needs:** state, effects, event
+  handlers, browser APIs, TanStack Query hooks, `usePathname`. Keep client
+  islands small and push them to the leaves (`AppNav`, `LocaleSwitcher`,
+  `ApiHealthCard`).
+- `app/[locale]/providers.tsx` is the single client provider boundary
+  (QueryClient, TooltipProvider), wrapped by `NextIntlClientProvider`.
+- All localized pages are statically prerendered (SSG) per locale;
+  `resolveLocaleParam()` calls next-intl's `setRequestLocale` to enable it.
+
+## Styling: Tailwind and design tokens
+
+- Tailwind CSS 4, configured in CSS (no `tailwind.config`):
+  `src/app/globals.css` imports Tailwind, `tw-animate-css`,
+  `shadcn/tailwind.css` (variants used by the primitives), then the tokens.
+- `src/shared/styles/tokens.css` defines **semantic tokens**: `background`,
+  `foreground`, `surface`, `muted`, `primary`, `secondary`, `accent`,
+  `success`, `warning`, `danger`, `border`, `input`, `ring`, `radius`, each
+  colour with a `-foreground` pair. Values are **neutral placeholders**:
+  SF-13 replaces them with tokens extracted from Claude Design. Names are the
+  contract.
+- `src/shared/styles/theme.css` maps tokens to Tailwind (`bg-surface`,
+  `text-danger-foreground`) and aliases shadcn names (`card`, `popover`,
+  `destructive`) to SimpleFit tokens, so each concept has one value.
+- Dark mode follows `prefers-color-scheme`. A user-facing theme switch (and
+  `next-themes`) is deferred to SF-13.
+- Use semantic utilities, never raw colours or hex values. Mobile-first
+  responsive classes (`sm:`, `md:`, `lg:`).
+
+## UI primitives: shadcn/ui
+
+- `components.json` points shadcn at FSD-lite paths: primitives land in
+  `src/shared/ui`, `cn` comes from `src/shared/lib/utils.ts`.
+- Installed: Button, Input, Textarea, Label, Select, Checkbox, RadioGroup,
+  Switch, Dialog, Sheet, DropdownMenu, Popover, Tooltip, Tabs, Avatar, Badge,
+  Card, Separator, Skeleton, Sonner, Field.
+- Add more with **`pnpm ui:add <name>`**, not `shadcn add` directly. The
+  wrapper rewrites the registry's `import { cn } from "cn"` to our canonical
+  helper (clsx + tailwind-merge) and removes the `cn` package shadcn installs,
+  so there is one class utility.
+- Primitives are **locally owned**: edit them freely (SF-13 will restyle them).
+  Local changes so far: Sonner follows the OS colour scheme without
+  `next-themes`, and Dialog/Sheet require a `closeLabel` whenever they render
+  a close button (no hardcoded English in primitives).
+
+## API contract and Orval
+
+**The backend OpenAPI artifact is canonical.** Contract changes originate in
+`simplefit-api` (controller `operation` + schemas → `mix openapi.gen`).
+
+```
+simplefit-api/openapi/simplefit.api.json
+        │  pnpm api:sync   (verbatim copy; part of api:generate)
+        ▼
+openapi/simplefit.api.json          (committed snapshot)
+        │  orval            (orval.config.ts)
+        ▼
+src/shared/api/generated/           (committed, DO NOT EDIT MANUALLY)
+  model/      DTO types for every schema
+  endpoints/  per OpenAPI tag: request functions + TanStack Query hooks
+```
+
+| Command             | What it does                                                                                                                                        |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm api:sync`     | Copies the backend artifact (sibling checkout, or `SIMPLEFIT_API_OPENAPI=<path>`) into `openapi/`                                                   |
+| `pnpm api:generate` | `api:sync --if-present`, then Orval                                                                                                                 |
+| `pnpm api:check`    | Fails if the snapshot differs from the backend artifact (when available locally) or if the committed generated code differs from a fresh generation |
+
+**Propagating a backend change:** merge the backend change → `pnpm
+api:generate` here → review the diff of `openapi/` and `generated/` → adapt
+callers → commit both in one PR. CI cannot see the backend repository, so it
+verifies the generated client against the committed snapshot.
+
+**Rules:**
+
+- Never edit `generated/` or the snapshot by hand; never hand-write DTOs. Use
+  the generated types, compose or narrow them locally if needed.
+- Every file carries a `DO NOT EDIT MANUALLY` header; ESLint and Prettier
+  ignore generated code; `.gitattributes` marks it `linguist-generated`.
+- Transport: `shared/api/http/api-fetch.ts` (Orval mutator) resolves paths
+  against `NEXT_PUBLIC_API_URL`, sends JSON, returns the body and throws
+  `ApiError` for every non-2xx response. `ApiError` mirrors the backend error
+  envelope: branch on `code`, never on `message`; `requestId` is for support.
+- **Server Components** call generated request functions directly
+  (`await getHealth({ next: { revalidate: 60 } })`): Next.js `fetch` caching
+  options pass through. **Client Components** use the generated hooks
+  (`useGetHealth()`).
+- The generator is configured to also emit Zod schemas or other clients later
+  (add an Orval output project); not enabled until a real need exists.
+- No direct database access, ever.
+
+## Server state: TanStack Query
+
+- Standard for **client-side** server state: data that must refresh, be
+  refetched on interaction, or be mutated from the browser.
+- **Do not** use it for data a Server Component can load at render time.
+- `shared/api/query-client.ts`: one QueryClient per request on the server, one
+  per browser session; 60 s `staleTime`; 4xx are never retried, other errors at
+  most twice.
+- No Redux, no Zustand, no other global client state. Introduce a client store
+  only when a ticket demonstrates a need TanStack Query and URL state cannot
+  meet.
+
+## Forms and validation
+
+- React Hook Form + Zod (`@hookform/resolvers/zod`), rendered with the shadcn
+  `Field` primitives.
+- **Zod improves UX; the backend is the canonical validator.** Client schemas
+  check shape and obvious input errors only. Never duplicate business rules
+  (eligibility, pricing, permissions, uniqueness).
+- After submit, map backend `validation_error` responses onto the form with
+  `applyApiFieldErrors(error, form.setError, fields)` (`shared/lib/forms.ts`);
+  unknown fields go to `root.server`.
+- Validation messages shown to users go through i18n like any other copy.
+
+## Internationalization
+
+next-intl 4 with locale-prefixed routing, server-side message loading and
+static rendering per locale.
+
+### Locales
+
+| Code    | Language          | Selector label   | Fallback chain  |
+| ------- | ----------------- | ---------------- | --------------- |
+| `en`    | English (default) | English          | en              |
+| `ru`    | Russian           | Русский          | ru → en         |
+| `pl`    | Polish            | Polski           | pl → en         |
+| `de`    | German            | Deutsch          | de → en         |
+| `uk`    | Ukrainian         | Українська       | uk → en         |
+| `es`    | Spanish           | Español          | es → en         |
+| `es-MX` | Spanish (Mexico)  | Español (México) | es-MX → es → en |
+| `fr`    | French            | Français         | fr → en         |
+
+The **single source of truth** is `localeRegistry` in
+`src/shared/i18n/routing.ts` (code, native name, optional fallback). Routing,
+the proxy, the selector, hreflang, message loading and the tests all read it.
+Codes are canonical BCP 47 tags used verbatim in URLs, `<html lang>` and Intl.
+
+`es` and `es-MX` are **distinct locales** (Mexican Spanish has its own
+terminology and formatting: `1.234.567,89` vs `1,234,567.89`, 24 h vs 12 h
+clock). `es-MX` stores only regional overrides and inherits the rest from `es`.
+
+### Routing
+
+- Every URL carries its locale: `/en`, `/es-MX/app` (`localePrefix: "always"`).
+- `src/proxy.ts` (next-intl middleware):
+  - non-canonical casing redirects permanently: `/es-mx/app` → `/es-MX/app`;
+  - URLs without a locale are negotiated: `NEXT_LOCALE` cookie (last explicit
+    choice) → `Accept-Language` best match (CLDR; `es-AR`/`es-419` → `es-MX`,
+    `es-ES` → `es`) → `en`. **No geolocation**;
+  - an explicit supported URL locale is **never** overridden by cookie or
+    browser language.
+- Unsupported locales are never treated as supported: `/pt` → `/en/pt` →
+  localized 404; `app/[locale]/layout.tsx` calls `notFound()` for any
+  non-registered segment.
+- Use `Link`, `redirect`, `useRouter`, `usePathname`, `getPathname` from
+  `@/shared/i18n/navigation`. ESLint forbids `next/link` and the
+  non-localized `next/navigation` APIs (`notFound` stays allowed).
+
+### Messages
+
+```
+messages/<locale>/<namespace>.json
+  common      app-wide copy (tagline, skip link, "Language")
+  navigation  navigation labels
+  actions     verbs on buttons and links
+  errors      error pages and messages
+  home        public home screen
+  app         application shell screen
+  apiHealth   API status feature
+```
+
+- English is the **source**: its files define the schema and the TypeScript
+  types (`AppConfig` augmentation in `shared/i18n/next-intl.d.ts`), so unknown
+  keys are compile errors.
+- Messages resolve through the fallback chain (`loadMessages`): any missing key
+  shows the parent locale's text, finally English, never a raw key.
+- Generic namespaces (`common`, `navigation`, `actions`, `errors`) hold reusable
+  copy; screen/slice namespaces are named after their owner. Add a namespace by
+  creating `messages/en/<ns>.json`, adding it to `namespaces` and the
+  `Messages` type in `shared/i18n/messages.ts`, then translating it.
+- Only translate UI that exists. No copy for future screens.
+
+**Adding a key:** add it to `messages/en/<ns>.json`, translate it in every
+full-catalog locale (not in `es-MX` unless Mexican Spanish differs), run
+`pnpm test`. The tests fail on missing keys, unknown keys, empty strings and
+ICU placeholder/tag mismatches.
+
+**Adding a locale:** add it to `localeRegistry` (with `fallback` for a
+regional variant), add `messages/<locale>/` files, run `pnpm test`.
+
+### Server vs Client usage
+
+```tsx
+// Server Component (default): no client JS for translations.
+const t = await getTranslations({ locale, namespace: "app" }); // async
+const t = useTranslations("home"); // sync
+
+// Client Component: same hooks, messages come from NextIntlClientProvider.
+("use client");
+const t = useTranslations("apiHealth");
+const format = useFormatter();
+```
+
+### Locale-aware formatting
+
+Use next-intl / Intl, never hand-rolled formatting.
+
+- Named presets in `src/shared/i18n/formats.ts`: `dateTime.date`,
+  `dateTime.dateTime`, `dateTime.time`, `number.integer`, `number.decimal`,
+  `number.percent`. Usage: `format.number(0.25, "percent")`,
+  `format.dateTime(date, "date")`.
+- **Currency is never global.** It belongs to the business context (gym,
+  payment, user), not the language: `es` does not imply EUR, `es-MX` does not
+  imply MXN. Always pass the code from the data:
+  `format.number(price.amount, { style: "currency", currency: price.currency })`.
+- **Time zone is never inferred from locale.** The foundation renders in UTC
+  (explicit, identical on server and client) until users have a stored zone.
+
+### Accessibility and SEO
+
+- `<html lang>` is the active locale; the selector items carry `lang`.
+- The selector is a keyboard-accessible Radix menu with native language names
+  (no flags), preserving the current route on switch.
+- Each page declares `alternates` via `localeAlternates(pathname, locale)`:
+  canonical URL plus `hreflang` for every locale and `x-default` → English.
+  Absolute URLs follow once `metadataBase` (production domain) is known.
+
+### No hardcoded user-facing copy
+
+User-facing text in reusable or product UI comes from `messages/`. Exceptions:
+the brand name `siteConfig.name` (a proper noun), technical identifiers, logs,
+and developer-only content. Primitives take labels as props (`closeLabel`).
+
+## Environment
+
+| Variable              | Scope  | Purpose                                          |
+| --------------------- | ------ | ------------------------------------------------ |
+| `NEXT_PUBLIC_API_URL` | public | Base URL of the SimpleFit API, no trailing slash |
+
+- `NEXT_PUBLIC_*` values are **inlined into the browser bundle at build
+  time** and readable by anyone. Never put secrets there.
+- Public variables are validated with Zod in `shared/config/env.ts`; read them
+  as literal `process.env.NEXT_PUBLIC_X` so Next.js can inline them.
+- Server-only variables (none yet) belong in a module that starts with
+  `import "server-only"` (add the `server-only` package with the first one),
+  are read only by server code, and are set in the deployment environment.
+- `.env.example` documents every variable with a safe placeholder;
+  `.env.local` and all other `.env*` files are git-ignored.
+
+## Testing
+
+- **Vitest + React Testing Library + jest-dom + user-event**, jsdom by default
+  (`// @vitest-environment node` for server/proxy tests). Tests live next to
+  the code as `*.test.ts(x)`.
+- `src/test/render.tsx`: `renderWithProviders(ui, { locale })` renders with the
+  real messages (fallbacks included), formats and a fresh QueryClient.
+- Test behaviour through roles and accessible names. Mock the network at
+  `fetch`, not the generated client.
+- Async Server Components are covered by testing the synchronous components
+  they compose, the functions they call, or (for layouts) the returned element.
+- Covered today: env validation, ApiError/transport, generated client wiring,
+  retry policy, form error mapping, locale registry and fallback chains,
+  message catalog completeness for all locales, Intl formatting for all
+  locales, proxy negotiation and canonicalization, `<html lang>` per locale,
+  translated widgets and features, locale switching (pointer and keyboard),
+  navigation state, commit message convention.
+- No Playwright yet: E2E arrives with the first meaningful user flow.
+
+## Quality commands
+
+| Command                             | Purpose                                               |
+| ----------------------------------- | ----------------------------------------------------- |
+| `pnpm lint`                         | ESLint, zero warnings allowed                         |
+| `pnpm format` / `pnpm format:check` | Prettier write / verify                               |
+| `pnpm typecheck`                    | `next typegen` + `tsc --noEmit`                       |
+| `pnpm test`                         | Vitest                                                |
+| `pnpm build`                        | Production build (needs `NEXT_PUBLIC_API_URL`)        |
+| `pnpm api:check`                    | Generated client drift                                |
+| `pnpm quality`                      | lint, format:check, typecheck, test, api:check, build |
+
+## Git and Jira conventions
+
+**Commit messages** (enforced by commitlint in the `commit-msg` hook and in CI
+for every PR commit):
+
+```
+<type>: <JIRA-ID> - <description>
+
+feat: SF-14 - add fighter onboarding
+fix: SF-22 - prevent duplicate booking
+chore: SF-11 - configure web platform foundation
+```
+
+- Types: `feat`, `fix`, `refactor`, `perf`, `test`, `docs`, `build`, `ci`,
+  `chore`, `revert`.
+- Jira key pattern `SF-[0-9]+` is mandatory; commits without it are rejected.
+- No scopes (`feat(web):`), header ≤ 100 characters, blank line before body.
+- The rule lives in `scripts/commit-convention.mjs` (shared by commitlint and
+  its tests); commitlint's conventional preset cannot require a Jira key.
+- Merge commits and git's default `Revert "…"` messages are ignored.
+
+**Branches:** `feature/SF-<id>-description`, `fix/SF-<id>-description`,
+`chore/SF-<id>-description` (e.g. `feature/SF-14-fighter-onboarding`).
+
+**Pull requests:** title `SF-14 — Fighter Onboarding`. Every change after the
+SF-11 bootstrap goes through a ticket branch and a PR to `main`.
+
+**Hooks** (Husky, installed by `pnpm install`):
+
+- `pre-commit`: lint-staged runs ESLint (`--fix`) and Prettier on staged files
+  only. No typecheck, tests or build (those run in `pnpm quality` and CI).
+- `commit-msg`: commitlint.
+
+## CI
+
+`.github/workflows/ci.yml` runs on pull requests and pushes to `main`:
+checkout → pnpm (version from `packageManager`) → Node (from `.nvmrc`) →
+`pnpm install --frozen-lockfile` → commitlint over PR commits → lint → format
+check → typecheck → test → `api:check` → build. No deployment.
+
+## Dependencies
+
+Every dependency needs a current problem, a reason existing tools fall short,
+and an active maintenance status. Versions are pinned exactly; pnpm enforces a
+minimum release age (supply-chain protection) and dependency install scripts
+are denied unless reviewed in `pnpm-workspace.yaml`.
+
+**Deferred until a ticket needs them:** authentication libraries, Stripe,
+Sentry, PostHog/analytics, XYFlow, maps, rich text, uploads, WebSocket
+clients, animation libraries beyond `tw-animate-css`, `next-themes`,
+`server-only`, TanStack Query Devtools, Zustand/Redux, Playwright, date-fns
+(Intl/next-intl cover formatting; add only for date arithmetic).
+
+## Known limitations
+
+- **ESLint 9** is used although npm marks it deprecated: `eslint-config-next`
+  bundles `eslint-plugin-react` 7.37, which crashes on ESLint 10
+  (`getFilename` removed). Upgrade when Next ships a compatible config.
+- **404 pages** return the correct status, but Next.js 16.3 renders the
+  not-found UI on the client (`__next_error__` shell plus the RSC payload),
+  also in a bare Next app. `app/global-not-found.tsx` uses the experimental
+  `globalNotFound` flag Next documents for dynamic root layouts.
+- **CORS:** the backend denies cross-origin requests by default, so the
+  browser-side API health check from `localhost:3000` reports "offline" until
+  a backend ticket allows the web origin.
+- Translations other than English were written during SF-11 and need review
+  by native speakers before public launch.
+- Time zone is UTC everywhere until user time zones exist.

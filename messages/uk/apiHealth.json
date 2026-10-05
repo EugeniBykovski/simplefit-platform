@@ -1,0 +1,17 @@
+{
+  "title": "Підключення до API",
+  "status": {
+    "checking": "Перевірка",
+    "online": "Доступний",
+    "offline": "Недоступний"
+  },
+  "checking": "Підключення до API…",
+  "online": "API доступний і обробляє запити.",
+  "offline": "Не вдалося підключитися до API.",
+  "errorCode": "Помилка <code>{errorCode}</code>.",
+  "requestId": "ID запиту: {requestId}",
+  "lastChecked": "Остання перевірка: {time}",
+  "notChecked": "Ще не перевірено",
+  "toastOnline": "API SimpleFit доступний.",
+  "toastOffline": "API SimpleFit недоступний."
+}

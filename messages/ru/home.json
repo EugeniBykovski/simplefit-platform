@@ -1,0 +1,10 @@
+{
+  "badge": "Основа веб-платформы",
+  "audiencesLabel": "Для кого",
+  "audiences": {
+    "fighters": "Боксёры",
+    "coaches": "Тренеры",
+    "gyms": "Клубы",
+    "sponsors": "Спонсоры"
+  }
+}

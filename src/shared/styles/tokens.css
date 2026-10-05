@@ -1,0 +1,87 @@
+/*
+ * SimpleFit semantic design tokens: FOUNDATION PLACEHOLDERS.
+ *
+ * These are neutral, brand-free values whose only job is to make the
+ * foundation render accessibly in light and dark mode. They are NOT the
+ * SimpleFit design system. SF-13 replaces the VALUES with tokens extracted
+ * from Claude Design; the token NAMES below are the contract components use.
+ *
+ * Rules
+ * - Components reference semantic tokens (bg-surface, text-muted-foreground),
+ *   never raw palette colours or hex values.
+ * - Each colour token that can carry content has a matching -foreground token
+ *   with sufficient contrast (WCAG 2.2 AA).
+ * - Dark mode follows the OS preference (prefers-color-scheme). A user-facing
+ *   theme switch is deferred to SF-13.
+ */
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+
+  /* Raised containers: cards, popovers, sheets, dialogs. */
+  --surface: oklch(1 0 0);
+  --surface-foreground: oklch(0.145 0 0);
+
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.48 0 0);
+
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+
+  --success: oklch(0.52 0.13 150);
+  --success-foreground: oklch(0.985 0 0);
+
+  --warning: oklch(0.75 0.15 75);
+  --warning-foreground: oklch(0.2 0 0);
+
+  --danger: oklch(0.577 0.245 27.325);
+  --danger-foreground: oklch(0.985 0 0);
+
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
+  --radius: 0.625rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+
+    --surface: oklch(0.205 0 0);
+    --surface-foreground: oklch(0.985 0 0);
+
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.72 0 0);
+
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+
+    --success: oklch(0.7 0.15 150);
+    --success-foreground: oklch(0.145 0 0);
+
+    --warning: oklch(0.8 0.15 80);
+    --warning-foreground: oklch(0.145 0 0);
+
+    --danger: oklch(0.704 0.191 22.216);
+    --danger-foreground: oklch(0.145 0 0);
+
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+  }
+}

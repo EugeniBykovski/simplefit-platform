@@ -1,0 +1,4 @@
+# Generated code: collapsed in GitHub diffs, excluded from language stats.
+src/shared/api/generated/** linguist-generated=true
+openapi/simplefit.api.json linguist-generated=true
+pnpm-lock.yaml linguist-generated=true
