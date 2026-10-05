@@ -9,7 +9,10 @@ permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
+  # The event name keeps pull_request runs out of the push group. For a PR that
+  # is already merged, github.ref falls back to the base branch (refs/heads/main),
+  # so a late PR run used to share the main group and cancel the main push run.
+  group: ci-${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
