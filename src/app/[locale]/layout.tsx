@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { siteConfig } from "@/shared/config/site";
 import { resolveLocaleParam } from "@/shared/i18n/params";
 import { routing } from "@/shared/i18n/routing";
+import { fontVariables } from "@/shared/styles/fonts";
 import { Toaster } from "@/shared/ui/sonner";
 
 import { Providers } from "./providers";
@@ -34,7 +35,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const t = await getTranslations({ locale, namespace: "common" });
 
   return (
-    <html lang={locale}>
+    // suppressHydrationWarning: next-themes sets the theme class before hydration.
+    <html lang={locale} className={fontVariables} suppressHydrationWarning>
       <body>
         <a
           href="#main"

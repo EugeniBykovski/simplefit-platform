@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import { LocaleSwitcher } from "@/features/switch-locale";
+import { ThemeSwitcher } from "@/features/switch-theme";
 import { siteConfig } from "@/shared/config/site";
 import { Link } from "@/shared/i18n/navigation";
 import { Button } from "@/shared/ui/button";
@@ -33,8 +34,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         <Brand />
         <Separator />
         <AppNav />
-        <div className="mt-auto">
+        <div className="mt-auto flex items-center gap-1">
           <LocaleSwitcher />
+          <ThemeSwitcher />
         </div>
       </aside>
 
@@ -57,8 +59,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             </SheetContent>
           </Sheet>
           <Brand />
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-1">
             <LocaleSwitcher />
+            <ThemeSwitcher />
           </div>
         </header>
 
@@ -76,7 +79,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
 function Brand() {
   return (
-    <Link href="/" className="rounded-md text-base font-semibold tracking-tight">
+    <Link href="/" className="rounded-md font-display text-base font-bold tracking-tight">
       {siteConfig.name}
     </Link>
   );

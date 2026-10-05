@@ -18,7 +18,7 @@ export default async function AppHomePage({ params }: PageProps<"/[locale]/app">
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-8">
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{t("title")}</h1>
+        <h1 className="type-h2 sm:type-h1">{t("title")}</h1>
         <p className="max-w-2xl text-pretty text-muted-foreground">{t("description")}</p>
       </div>
       <ApiHealthCard />

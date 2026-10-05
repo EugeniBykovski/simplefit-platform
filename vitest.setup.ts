@@ -12,6 +12,18 @@ if (typeof window !== "undefined") {
   Element.prototype.scrollIntoView ??= function scrollIntoView() {};
   Element.prototype.hasPointerCapture ??= () => false;
   Element.prototype.releasePointerCapture ??= () => {};
+  // next-themes reads the system preference.
+  window.matchMedia ??= (query: string) =>
+    ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    }) as MediaQueryList;
 }
 
 afterEach(() => {

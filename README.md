@@ -84,4 +84,7 @@ into Git; only `.env.example` is committed.
 - [Architecture](docs/architecture/README.md): FSD-lite, Server/Client
   components, Tailwind tokens, shadcn/ui, Orval, TanStack Query, forms, i18n,
   testing, CI, dependencies and known limitations.
+- [Design system](docs/design-system.md): Graphite × Olive tokens, theme,
+  primitives, accessibility, the dev-only gallery
+  (`/en/dev/design-system` in `pnpm dev`).
 - [CLAUDE.md](CLAUDE.md): non-negotiable engineering rules.

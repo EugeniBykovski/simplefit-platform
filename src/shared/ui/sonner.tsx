@@ -7,15 +7,17 @@ import {
   OctagonXIcon,
   TriangleAlertIcon,
 } from "lucide-react";
+import { useTheme } from "next-themes";
 import type { CSSProperties } from "react";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
-// Follows the OS colour scheme, matching tokens.css. Switch to a theme provider
-// only when a user-facing theme toggle exists (SF-13).
+// Follows the active SimpleFit theme (next-themes; dark by default).
 const Toaster = ({ ...props }: ToasterProps) => {
+  const { resolvedTheme } = useTheme();
+
   return (
     <Sonner
-      theme="system"
+      theme={resolvedTheme === "light" ? "light" : "dark"}
       className="toaster group"
       icons={{
         success: <CircleCheckIcon className="size-4" />,

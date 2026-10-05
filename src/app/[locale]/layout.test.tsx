@@ -5,6 +5,9 @@ import { locales } from "@/shared/i18n/routing";
 
 import LocaleLayout from "./layout";
 
+// next/font only runs inside the Next.js compiler.
+vi.mock("@/shared/styles/fonts", () => ({ fontVariables: "font-variables" }));
+
 vi.mock("next-intl/server", () => ({
   getTranslations: async () => (key: string) => key,
   setRequestLocale: vi.fn(),

@@ -5,6 +5,7 @@ import type common from "../../../messages/en/common.json";
 import type errors from "../../../messages/en/errors.json";
 import type home from "../../../messages/en/home.json";
 import type navigation from "../../../messages/en/navigation.json";
+import type theme from "../../../messages/en/theme.json";
 
 import { defaultLocale, fallbackChain, type Locale } from "./routing";
 
@@ -21,6 +22,7 @@ export const namespaces = [
   "home",
   "app",
   "apiHealth",
+  "theme",
 ] as const;
 
 export type Namespace = (typeof namespaces)[number];
@@ -34,6 +36,7 @@ export type Messages = {
   home: typeof home;
   app: typeof app;
   apiHealth: typeof apiHealth;
+  theme: typeof theme;
 };
 
 export type MessageTree = { [key: string]: string | MessageTree };
