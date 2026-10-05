@@ -10,7 +10,7 @@ import { cn } from "@/shared/lib/utils";
  * Amber = attention, coral = failure, olive = positive/progress.
  */
 const badgeVariants = cva(
-  "inline-flex w-fit shrink-0 items-center gap-1 rounded-full border border-transparent px-2.5 py-0.5 text-xs font-bold tracking-wide whitespace-nowrap uppercase [&>svg]:pointer-events-none [&>svg]:size-3",
+  "inline-flex w-fit shrink-0 items-center gap-1 rounded-sm border border-transparent px-2.25 py-1 type-badge whitespace-nowrap [&>svg]:pointer-events-none [&>svg]:size-3",
   {
     variants: {
       variant: {
@@ -21,7 +21,7 @@ const badgeVariants = cva(
         warning: "bg-warning-subtle text-warning-subtle-foreground",
         destructive: "bg-destructive-subtle text-destructive-subtle-foreground",
         info: "bg-info-subtle text-info-subtle-foreground",
-        outline: "border-border text-foreground",
+        outline: "border-border text-muted-foreground",
       },
     },
     defaultVariants: { variant: "neutral" },

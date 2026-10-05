@@ -19,7 +19,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <SiteHeader />
       <HomeHero />
       <footer className="border-t">
-        <p className="mx-auto w-full max-w-6xl px-4 py-6 text-sm text-muted-foreground sm:px-6">
+        <p className="mx-auto w-full max-w-6xl px-4 py-6 type-body-sm text-muted-foreground sm:px-6">
           {siteConfig.name}
         </p>
       </footer>

@@ -79,7 +79,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
 function Brand() {
   return (
-    <Link href="/" className="rounded-md font-display text-base font-bold tracking-tight">
+    <Link href="/" className="rounded-md type-title">
       {siteConfig.name}
     </Link>
   );

@@ -12,7 +12,7 @@ export function SiteHeader() {
   return (
     <header className="border-b">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href="/" className="rounded-md font-display text-base font-bold tracking-tight">
+        <Link href="/" className="rounded-md type-title">
           {siteConfig.name}
         </Link>
         <div className="flex items-center gap-2">

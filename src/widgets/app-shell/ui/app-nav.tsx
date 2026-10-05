@@ -26,7 +26,7 @@ export function AppNav({ inSheet = false }: { inSheet?: boolean }) {
               href={href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-2 rounded-md px-3 py-2 type-body-sm font-bold transition-colors",
                 "hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
                 active ? "bg-muted text-foreground" : "text-muted-foreground",
               )}

@@ -16,12 +16,12 @@ export function HomeHero() {
     <main
       id="main"
       tabIndex={-1}
-      className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center gap-8 px-4 py-16 outline-none sm:px-6 sm:py-24"
+      className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center gap-8 px-4 py-16 outline-none sm:px-6 sm:py-20"
     >
       <div className="flex max-w-3xl flex-col gap-6">
-        <p className="type-label text-primary">{t("badge")}</p>
+        <p className="type-label text-highlight">{t("badge")}</p>
         <h1 className="type-h1 text-balance sm:type-display">{siteConfig.name}</h1>
-        <p className="max-w-2xl type-body text-pretty text-muted-foreground sm:text-lg">
+        <p className="max-w-2xl type-body text-pretty text-muted-foreground sm:type-body-lg">
           {common("tagline")}
         </p>
         <ul aria-label={t("audiencesLabel")} className="flex flex-wrap gap-2">
