@@ -3,12 +3,19 @@
 The contract for turning the canonical SimpleFit product design into
 production UI (SF-16). **This file is shared and kept identical** in
 `simplefit-platform` and `simplefit-mobile`, together with
-`docs/design-source.json` (machine-readable metadata) and
-`docs/design-reconciliation.md` (the SF-16 audit snapshot). Change them only
-through an SF ticket that updates both repositories.
+these related files:
+
+- `docs/design-source.json`: machine-readable artifact metadata.
+- `docs/design-tokens.json`: the production design-system contract, i.e. the
+  tokens, type roles, scales and control sizes every value is translated
+  into (SF-17).
+- `docs/design-reconciliation.md`: the evidence and status of every
+  design-versus-production finding.
+
+Change them only through an SF ticket that updates both repositories.
 
 Platform-specific implementation rules stay in each repository's
-`docs/design-system.md` (SF-13).
+`docs/design-system.md`.
 
 ## 1. Canonical design source
 
@@ -201,34 +208,30 @@ front.
 The design is matched exactly. Translation is about **how** each value is
 expressed, never about changing it:
 
-| Design value                                              | Production expression                                                                                                                                                                           |
-| --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Colour (hex)                                              | The semantic token with the same role (mapping in `docs/design-reconciliation.md` §2.1). Never a hex value, arbitrary colour or palette class (ESLint).                                         |
-| Font family / role                                        | Unbounded = display and numbers, Manrope = interface and body, JetBrains Mono = labels, metadata, data values. Fonts come only from SF-13 loading; never from the artboard's Google Fonts link. |
-| Font size / weight / tracking                             | The SF-13 type style (web `type-*`, mobile `<Text variant>`) with the same role and nearest size.                                                                                               |
-| Spacing (padding, gap, margin)                            | SF-13 spacing steps (Tailwind scale).                                                                                                                                                           |
-| Radius                                                    | SF-13 radius scale (`xs` 6 … `2xl` 28, `full`).                                                                                                                                                 |
-| Layout dimensions (frame, column, control and tile sizes) | Tailwind size utilities. Arbitrary `w-[…]`/`h-[…]`/`size-[…]` are allowed only for one-off layout dimensions the scale cannot express.                                                          |
-| Borders                                                   | 1 px hairlines with `border-border` / `border-input`; signal borders via signal tokens.                                                                                                         |
-| Shadow / elevation                                        | Surfaces and borders first; SF-13 shadows only for floating layers.                                                                                                                             |
-| Icons (inline SVG paths)                                  | The Lucide icon with the same meaning (`lucide-react` / `lucide-react-native`). Never export or copy artboard SVG paths for interface icons.                                                    |
-| Text glyphs used as icons (✓, ✕, →)                       | Lucide `Check`, `X`, `ArrowRight` etc., decorative next to text.                                                                                                                                |
-| Brand marks (Corner S, wordmark)                          | Production brand assets only (§8.3). Never rebuilt from CSS or text.                                                                                                                            |
-| Copy                                                      | The artboard text, as English i18n messages, translated for every locale. Sample data (names, amounts, dates) is not copy; it comes from the API.                                               |
-| Links between artboards                                   | Real navigation (Expo Router / localized Next.js routes) to the referenced screen, or a disabled/absent action if that screen is not built yet.                                                 |
-| Animations                                                | SF-13 motion (short colour/opacity transitions; reduced motion respected) unless the artboard specifies a distinct interaction such as the timer.                                               |
+| Design value                                              | Production expression                                                                                                                                                                                     |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Colour (hex)                                              | The semantic token with the same role (`docs/design-tokens.json` `semantic`; evidence in `docs/design-reconciliation.md` §2–3). Never a hex value, arbitrary colour or palette class (ESLint).            |
+| Font family / role                                        | Unbounded = display and numbers, Manrope = interface and body, JetBrains Mono = labels, metadata, data values. Fonts come only from production font loading; never from the artboard's Google Fonts link. |
+| Font size / weight / tracking                             | The type role with the same size (`typography.roles`; web `type-<role>`, mobile `<Text variant>`). Raise the weight only to a contract weight (Manrope 600/700/800). No other text size exists.           |
+| Spacing (padding, gap, margin)                            | The spacing step with the same px value (`spacing.steps`: 2 px steps to 24, then 32, 40, 48, 56, 64, 80). ESLint rejects other steps.                                                                     |
+| Radius                                                    | The radius step with the same px value (`radius`: `xs` 6, `sm` 9, `md` 12, `lg` 16, `xl` 18, `2xl` 20, `3xl` 22, `4xl` 28) or `full` when radius = height / 2.                                            |
+| Buttons, fields, badges, cards                            | The primitive and size whose canonical dimensions match (`controls`), never a restyled copy.                                                                                                              |
+| Layout dimensions (frame, column, control and tile sizes) | Tailwind size utilities. Arbitrary `w-[…]`/`h-[…]`/`size-[…]` are allowed only for one-off layout dimensions the scale cannot express.                                                                    |
+| Borders                                                   | 1 px hairlines with `border-border` / `border-input`; signal borders via signal tokens.                                                                                                                   |
+| Shadow / elevation                                        | Surfaces and borders first; SF-13 shadows only for floating layers.                                                                                                                                       |
+| Icons (inline SVG paths)                                  | The Lucide icon with the same meaning (`lucide-react` / `lucide-react-native`). Never export or copy artboard SVG paths for interface icons.                                                              |
+| Text glyphs used as icons (✓, ✕, →)                       | Lucide `Check`, `X`, `ArrowRight` etc., decorative next to text.                                                                                                                                          |
+| Brand marks (Corner S, wordmark)                          | Production brand assets only (§8.3). Never rebuilt from CSS or text.                                                                                                                                      |
+| Copy                                                      | The artboard text, as English i18n messages, translated for every locale. Sample data (names, amounts, dates) is not copy; it comes from the API.                                                         |
+| Links between artboards                                   | Real navigation (Expo Router / localized Next.js routes) to the referenced screen, or a disabled/absent action if that screen is not built yet.                                                           |
+| Animations                                                | SF-13 motion (short colour/opacity transitions; reduced motion respected) unless the artboard specifies a distinct interaction such as the timer.                                                         |
 
-### 8.1 Values that are not on an SF-13 scale
+### 8.1 Values that are not on a production scale
 
-Artboards contain values that SF-13 does not define. Examples:
-
-- spacing 10 and 14
-- radius 9 and 12
-- text 13 and 15
-- the olive 500 `#8D9840`
-- tertiary grey `#848B80`
-
-For each one:
+Since SF-17 the scales cover the systematic values of the canonical design.
+Ordinary UI therefore translates exactly. Occasional artboard values still
+fall between steps: odd 3, 5 or 7 px gaps, 24 px panel radii, `#23272A`
+dividers. For each one:
 
 1. **Exact token or step exists**: use it.
 2. **Within tolerance** of an existing step (type ±1 px; spacing and radius
@@ -346,6 +349,11 @@ Every UI ticket's PR includes a **Design QA** section:
 - Both **themes**: dark matches the design. Light is a production extension
   the design does not draw, so it must stay legible and use the same tokens.
 
+Storybook (web, `pnpm storybook`) and the in-app galleries show the
+production primitives in every state and theme. They help with QA, but they
+are **not** evidence of fidelity to a product artboard: only the side-by-side
+check above is.
+
 Material divergences are fixed before merge or explicitly accepted in the PR.
 Do not create screenshot baselines or snapshot tests of artboards.
 
@@ -369,10 +377,18 @@ Do not create screenshot baselines or snapshot tests of artboards.
   - `CLAUDE.md` points here.
   - No design source copies (`*.dc.html`, `canvas.json`) are committed.
 - `.gitignore` ignores `*.dc.html` and `canvas.json`.
-- ESLint (SF-16 addition to the SF-13 token guard): outside `src/shared/ui`,
-  arbitrary values are rejected for spacing, radius and typography
-  (`p-[…]`, `gap-[…]`, `rounded-[…]`, `text-[…]`, `leading-[…]`,
-  `tracking-[…]`, `font-[…]`). Design values must go through the SF-13
-  scales (§8.1).
+- Each repository's token tests assert its implementation matches
+  `docs/design-tokens.json`: palette, semantic tokens, contrast, type roles,
+  radius, spacing and control sizes. Web and mobile cannot drift apart
+  silently.
+- ESLint (SF-16 and SF-17):
+  - Everywhere: Tailwind's default text sizes, leading and tracking presets,
+    non-contract weights and bare `rounded` are rejected.
+  - Outside `src/shared/ui`:
+    - arbitrary spacing, radius and type values are rejected (`p-[…]`,
+      `gap-[…]`, `rounded-[…]`, `text-[…]`, `leading-[…]`, `tracking-[…]`,
+      `font-[…]`);
+    - spacing steps outside the scale are rejected.
+  - Design values must go through the contract (§8.1).
 - SF-13 guards still apply: no raw colours, palette classes, static inline
   styles, CSS-in-JS or (mobile) `StyleSheet.create`, plus the contrast tests.
