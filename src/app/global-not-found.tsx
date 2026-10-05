@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { Link } from "@/shared/i18n/navigation";
 import { routing } from "@/shared/i18n/routing";
+import { fontVariables } from "@/shared/styles/fonts";
 import { Button } from "@/shared/ui/button";
 
 import "./globals.css";
@@ -24,7 +25,7 @@ export default async function GlobalNotFound() {
   const actions = await getTranslations({ locale, namespace: "actions" });
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={`dark ${fontVariables}`}>
       <body>
         <main className="mx-auto flex min-h-dvh w-full max-w-xl flex-col items-start justify-center gap-4 px-4">
           <p className="text-sm font-medium text-muted-foreground">404</p>

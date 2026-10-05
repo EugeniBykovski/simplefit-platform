@@ -5,16 +5,15 @@
 @import "../shared/styles/tokens.css";
 @import "../shared/styles/theme.css";
 
+/* `dark:` targets the dark theme (default, or the `dark` class from next-themes). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
 
-  html {
-    color-scheme: light dark;
-  }
-
   body {
-    @apply bg-background font-sans text-foreground antialiased;
+    @apply bg-background type-body text-foreground antialiased;
   }
 }

@@ -16,6 +16,23 @@ const localizedNavigation = [
   },
 ];
 
+/**
+ * Design-token guard (docs/design-system.md): colours come from semantic
+ * tokens, never hex values, arbitrary colour values or Tailwind's default
+ * palette (which is also removed from the theme).
+ */
+const rawColor =
+  "#[0-9a-fA-F]{3,8}\\b|-\\[(#|rgb|hsl|oklch)|\\b(bg|text|border|ring|fill|stroke|outline|divide|from|via|to|shadow|caret|accent|decoration|placeholder)-(black|white|slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)(-[0-9]{2,3})?\\b";
+const rawColorMessage =
+  "Use semantic colour tokens (bg-surface, text-muted-foreground, ...), not hex values, arbitrary colours or the default Tailwind palette.";
+const tokenGuards = [
+  "JSXAttribute[name.name='className']",
+  "CallExpression[callee.name=/^(cn|cva)$/]",
+].flatMap((scope) => [
+  { selector: `${scope} Literal[value=/${rawColor}/]`, message: rawColorMessage },
+  { selector: `${scope} TemplateElement[value.raw=/${rawColor}/]`, message: rawColorMessage },
+]);
+
 /** Higher layers each FSD-lite layer must not import from. */
 const forbiddenLayers = {
   "src/shared/**": ["app", "widgets", "features", "entities"],
@@ -134,6 +151,7 @@ export default defineConfig([
             "ImportDeclaration[source.value=/^(styled-components|@emotion\\/(react|styled|css))$/]",
           message: "CSS-in-JS is not used: style with Tailwind classes.",
         },
+        ...tokenGuards,
       ],
     },
   },

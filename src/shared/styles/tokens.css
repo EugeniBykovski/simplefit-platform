@@ -1,87 +1,153 @@
 /*
- * SimpleFit semantic design tokens: FOUNDATION PLACEHOLDERS.
+ * SimpleFit design tokens: "Graphite × Olive" (Visual System 2026,
+ * docs/design/design system.pdf). See docs/design-system.md.
  *
- * These are neutral, brand-free values whose only job is to make the
- * foundation render accessibly in light and dark mode. They are NOT the
- * SimpleFit design system. SF-13 replaces the VALUES with tokens extracted
- * from Claude Design; the token NAMES below are the contract components use.
+ * Two layers:
+ *   1. Raw palette (brand primitives). Referenced ONLY in this file.
+ *   2. Semantic tokens (what components use, via Tailwind classes such as
+ *      bg-surface, text-muted-foreground). Each theme maps semantic tokens to
+ *      raw values. Names are identical on web and mobile.
  *
- * Rules
- * - Components reference semantic tokens (bg-surface, text-muted-foreground),
- *   never raw palette colours or hex values.
- * - Each colour token that can carry content has a matching -foreground token
- *   with sufficient contrast (WCAG 2.2 AA).
- * - Dark mode follows the OS preference (prefers-color-scheme). A user-facing
- *   theme switch is deferred to SF-13.
+ * Dark is the default theme (the brand is dark-first). The light theme is
+ * applied with the `light` class on <html> (next-themes); `dark` or no class
+ * means dark. Values marked "derived" extend the documented ramps for
+ * surfaces and accessible contrast; they are not new brand colours.
  */
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  /* Graphite: foundation (documented 950, 900, 850, 700; 925/800 derived) */
+  --graphite-950: #111312;
+  --graphite-925: #151816;
+  --graphite-900: #181b19;
+  --graphite-850: #1f2320;
+  --graphite-800: #272b28;
+  --graphite-700: #2e332f;
 
-  /* Raised containers: cards, popovers, sheets, dialogs. */
-  --surface: oklch(1 0 0);
-  --surface-foreground: oklch(0.145 0 0);
+  /* Bone: text on graphite and light surfaces (documented #EDEFE7; others derived) */
+  --bone: #edefe7;
+  --bone-50: #f8f9f4;
+  --bone-200: #e3e6db;
+  --bone-300: #d2d6c8;
+  --bone-400: #c2c7b7;
+  --stone-500: #a1a69a;
+  --stone-600: #575d52;
+  --stone-700: #3f453d;
 
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.48 0 0);
+  /* Olive: action and progress (documented) */
+  --olive-200: #e4eab8;
+  --olive-300: #c9d17e;
+  --olive-400: #aeb95a;
+  --olive-600: #4e5626;
+  --olive-700: #3b411c; /* derived: olive text on light olive tint */
+  --olive-900: #262815;
 
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-
-  --success: oklch(0.52 0.13 150);
-  --success-foreground: oklch(0.985 0 0);
-
-  --warning: oklch(0.75 0.15 75);
-  --warning-foreground: oklch(0.2 0 0);
-
-  --danger: oklch(0.577 0.245 27.325);
-  --danger-foreground: oklch(0.985 0 0);
-
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-
-  --radius: 0.625rem;
+  /* Signals: attention only (documented amber/coral; tints derived) */
+  --amber: #e2a250;
+  --amber-700: #7a5216;
+  --amber-tint-dark: #33281a;
+  --amber-tint-light: #f6e7cf;
+  --coral: #df7a5e;
+  --coral-700: #8f3a24;
+  --coral-600: #b4492e;
+  --coral-tint-dark: #33201b;
+  --coral-tint-light: #f6e0d8;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
+:root,
+.dark {
+  color-scheme: dark;
 
-    --surface: oklch(0.205 0 0);
-    --surface-foreground: oklch(0.985 0 0);
+  --background: var(--graphite-950);
+  --foreground: var(--bone);
 
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.72 0 0);
+  --surface: var(--graphite-900);
+  --surface-foreground: var(--bone);
+  --surface-subtle: var(--graphite-925);
+  --surface-elevated: var(--graphite-850);
 
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
+  --muted: var(--graphite-850);
+  --muted-foreground: var(--stone-500);
 
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
+  --border: var(--graphite-800);
+  --input: var(--graphite-700);
+  --ring: var(--olive-300);
+  --overlay: rgb(5 6 5 / 0.72);
 
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
+  /* One olive call to action per screen (design principle "Olive = action"). */
+  --primary: var(--olive-400);
+  --primary-foreground: var(--graphite-950);
+  /* High-contrast neutral action ("Finish round"). */
+  --secondary: var(--bone);
+  --secondary-foreground: var(--graphite-950);
+  /* Quiet selection / chips ("✓ Defense", active navigation). */
+  --accent: var(--olive-900);
+  --accent-foreground: var(--olive-200);
 
-    --success: oklch(0.7 0.15 150);
-    --success-foreground: oklch(0.145 0 0);
+  --destructive: var(--coral);
+  --destructive-foreground: var(--graphite-950);
+  --destructive-subtle: var(--coral-tint-dark);
+  --destructive-subtle-foreground: var(--coral);
 
-    --warning: oklch(0.8 0.15 80);
-    --warning-foreground: oklch(0.145 0 0);
+  --success: var(--olive-400);
+  --success-foreground: var(--graphite-950);
+  --success-subtle: var(--olive-900);
+  --success-subtle-foreground: var(--olive-300);
 
-    --danger: oklch(0.704 0.191 22.216);
-    --danger-foreground: oklch(0.145 0 0);
+  --warning: var(--amber);
+  --warning-foreground: var(--graphite-950);
+  --warning-subtle: var(--amber-tint-dark);
+  --warning-subtle-foreground: var(--amber);
 
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-  }
+  /* The brand has no blue: information is neutral. */
+  --info: var(--bone-300);
+  --info-foreground: var(--graphite-950);
+  --info-subtle: var(--graphite-850);
+  --info-subtle-foreground: var(--bone-200);
+}
+
+.light {
+  color-scheme: light;
+
+  --background: var(--bone);
+  --foreground: var(--graphite-950);
+
+  --surface: var(--bone-50);
+  --surface-foreground: var(--graphite-950);
+  --surface-subtle: var(--bone-200);
+  --surface-elevated: #ffffff;
+
+  --muted: var(--bone-200);
+  --muted-foreground: var(--stone-600);
+
+  --border: var(--bone-300);
+  --input: var(--bone-400);
+  --ring: var(--olive-600);
+  --overlay: rgb(17 19 18 / 0.45);
+
+  --primary: var(--olive-600);
+  --primary-foreground: var(--bone);
+  --secondary: var(--graphite-900);
+  --secondary-foreground: var(--bone);
+  --accent: var(--olive-200);
+  --accent-foreground: var(--olive-700);
+
+  --destructive: var(--coral-600);
+  --destructive-foreground: #ffffff;
+  --destructive-subtle: var(--coral-tint-light);
+  --destructive-subtle-foreground: var(--coral-700);
+
+  --success: var(--olive-600);
+  --success-foreground: var(--bone);
+  --success-subtle: var(--olive-200);
+  --success-subtle-foreground: var(--olive-700);
+
+  --warning: var(--amber);
+  --warning-foreground: var(--graphite-950);
+  --warning-subtle: var(--amber-tint-light);
+  --warning-subtle-foreground: var(--amber-700);
+
+  --info: var(--stone-700);
+  --info-foreground: var(--bone);
+  --info-subtle: var(--bone-200);
+  --info-subtle-foreground: var(--graphite-700);
 }

@@ -19,15 +19,15 @@ export function HomeHero() {
       className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center gap-8 px-4 py-16 outline-none sm:px-6 sm:py-24"
     >
       <div className="flex max-w-3xl flex-col gap-6">
-        <Badge variant="outline">{t("badge")}</Badge>
-        <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-          {siteConfig.name}
-        </h1>
-        <p className="text-lg text-pretty text-muted-foreground sm:text-xl">{common("tagline")}</p>
+        <p className="type-label text-primary">{t("badge")}</p>
+        <h1 className="type-h1 text-balance sm:type-display">{siteConfig.name}</h1>
+        <p className="max-w-2xl type-body text-pretty text-muted-foreground sm:text-lg">
+          {common("tagline")}
+        </p>
         <ul aria-label={t("audiencesLabel")} className="flex flex-wrap gap-2">
           {audiences.map((audience) => (
             <li key={audience}>
-              <Badge variant="secondary">{t(`audiences.${audience}`)}</Badge>
+              <Badge variant="accent">{t(`audiences.${audience}`)}</Badge>
             </li>
           ))}
         </ul>
