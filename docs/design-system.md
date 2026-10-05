@@ -1,6 +1,6 @@
 # Design system (web)
 
-The SimpleFit web design system foundation (SF-13). Mobile follows the same
+The SimpleFit web design system foundation (SF-13, reconciled with the canonical design in SF-17). Mobile follows the same
 language in `simplefit-mobile/docs/design-system.md`.
 
 **Design source.** Product screens are designed in the canonical Claude Design
@@ -15,79 +15,138 @@ design and these tokens are tracked in `docs/design-reconciliation.md`.
 ## Design language
 
 SimpleFit uses one visual language on web and mobile, **Graphite × Olive**
-(Visual System 2026). The two clients share the language (token names,
-values, type scale, spacing, radius, component behaviour), not code: web uses
-Tailwind CSS 4 + shadcn/Radix, mobile uses NativeWind + React Native
+(Visual System 2026). Its values were reconciled with the canonical Claude
+Design artifact in SF-17 and are fixed in **`docs/design-tokens.json`**. That
+file is the cross-platform contract: it is kept identical in both
+repositories, and each repository's tests assert that its implementation
+matches it. The two clients share the language (token names, values, type
+roles, spacing, radius, control sizes, component behaviour), not code: web
+uses Tailwind CSS 4 + shadcn/Radix, mobile uses NativeWind + React Native
 primitives.
 
 Principles that shape every component:
 
-- **Dark first.** Dark is the default theme; light is available and switchable.
+- **Dark first.** Dark is the default theme and the **canonical,
+  pixel-faithful reference**: Claude Design draws only the dark product. The
+  light theme is a supported production extension; its values are derived
+  for legibility and AA contrast, not designed. Do not invent light-only
+  designs. Until a canonical light design exists, light screens follow the
+  dark composition with the light tokens.
 - **Olive = action and progress.** One olive (primary) call to action per
-  screen. Secondary actions are bone/graphite, outline or ghost.
-- **Amber = attention, coral = failure.** Signals are used only for status;
+  screen. Secondary actions are `quiet` (graphite), `secondary` (bone),
+  `outline` or `ghost`.
+- **Amber = attention, coral = failure.** Signals are used only for status,
   never decoration. Status is never colour alone (text and/or icon too).
 - **Calm surfaces.** Graphite layers (`background` → `surface` →
   `surface-elevated`) separated by hairline `border`s rather than shadows.
-- **Cards 22 pt/px radius**, controls 14, pills full.
+- **Bento tiles:** one metric per tile, the number set big (`metric-*` roles).
 - **Skeletons for waits longer than ~300 ms**; spinners for short or
   indeterminate actions (button loading).
-- **Gym mode:** primary in-workout controls use 60 pt targets (`gym` button
-  size on mobile).
+- **Gym mode:** primary in-workout controls use 60 pt targets.
 
 ## Token architecture
 
 Two layers, with **identical names and values on both platforms**:
 
-1. **Raw palette** (brand primitives): graphite 950/925/900/850/800/700, bone
-   (and 50/200/300/400), stone 500/600/700, olive 200/300/400/600/700/900,
-   amber (+700, tints), coral (+600/700, tints). Documented brand values:
-   graphite 950 `#111312`, 900 `#181B19`, 850 `#1F2320`, 700 `#2E332F`; bone
-   `#EDEFE7`; olive 200 `#E4EAB8`, 300 `#C9D17E`, 400 `#AEB95A`, 600 `#4E5626`,
-   900 `#262815`; amber `#E2A250`; coral `#DF7A5E`. Other steps are derived for
-   surfaces and contrast; they are not new brand colours. **Raw values are
-   referenced only in the token file.**
+1. **Raw palette** (`palette` in the contract), referenced only in the token
+   file:
+   - graphite 950–600, bone (+50/200/300/400), stone 500/550/600/650/700
+   - olive 200–900 (incl. 350, 500, 800)
+   - amber and coral, each with 200, tints and borders
+
+   Canonical Styleguide values: graphite 950 `#111312`, 900 `#181B19`, 850
+   `#1F2320`, 700 `#2E332F`; bone `#EDEFE7`; olive 200 `#E4EAB8`, 300
+   `#C9D17E`, 400 `#AEB95A`, 600 `#4E5626`, 900 `#262B15`; amber `#E3A24F`;
+   coral `#E07A5F`. Steps the Styleguide does not list come from the
+   artboards (e.g. secondary text `#A7AD9F`, tertiary text `#848B80`) or are
+   derived for the light theme.
+
 2. **Semantic tokens** (what components use):
 
-| Token                                                                                         | Purpose                                     |
-| --------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| `background` / `foreground`                                                                   | page and default text                       |
-| `surface` (+`-foreground`), `surface-subtle`, `surface-elevated`                              | cards, wells/inputs, dialogs and popovers   |
-| `muted` / `muted-foreground`                                                                  | quiet fills, secondary text                 |
-| `border`, `input`, `ring`                                                                     | hairlines, control borders, focus indicator |
-| `overlay`                                                                                     | modal scrim                                 |
-| `primary` / `primary-foreground`                                                              | the one olive call to action                |
-| `secondary` / `secondary-foreground`                                                          | high-contrast neutral action                |
-| `accent` / `accent-foreground`                                                                | quiet selection, chips                      |
-| `destructive`, `success`, `warning`, `info` (+`-foreground`, `-subtle`, `-subtle-foreground`) | status: solid and tinted                    |
+| Token                                                                                                    | Purpose                                                                             |
+| -------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `background` / `foreground`                                                                              | Page and default text                                                               |
+| `surface` (+`-foreground`), `surface-subtle`, `surface-elevated`                                         | Cards and fields, wells, quiet controls / dialogs / popovers                        |
+| `muted` / `muted-foreground`                                                                             | Quiet fills; **secondary** text                                                     |
+| `faint-foreground`                                                                                       | **Tertiary** text: metadata, helper copy, inactive icons                            |
+| `border`, `border-strong`, `input`, `ring`                                                               | Hairlines, stronger dividers / handles, control borders, focus indicator            |
+| `overlay`                                                                                                | Modal scrim                                                                         |
+| `primary` / `primary-foreground`, `primary-muted`                                                        | The one olive call to action; olive mid-tone for outline borders and progress steps |
+| `secondary` / `secondary-foreground`                                                                     | High-contrast neutral (bone) action, selected segment                               |
+| `highlight` / `highlight-foreground`                                                                     | Olive text, links, kickers, active icons; olive emphasis fills (avatars, progress)  |
+| `accent` / `accent-foreground`, `accent-muted-foreground`, `accent-strong`, `accent-border`              | Selection and olive-tinted surfaces, their secondary text, chips, their border      |
+| `destructive`, `success`, `warning`, `info` (+`-foreground`, `-subtle`, `-subtle-foreground`, `-border`) | Status: solid, tinted, and the tinted surface's border                              |
 
-Light values are derived from the same ramps. Every text/background pair
-components render meets **WCAG AA (4.5:1)** in both themes and `ring` meets
-3:1; a unit test computes the ratios from the token values, so a token change
-that breaks contrast fails CI.
+Every text/background pair in `contrast.text` meets **WCAG AA (4.5:1)** in
+both themes, and `ring` meets 3:1. The tests compute the ratios from the
+token values, so a token change that breaks contrast fails CI. Where an
+artboard uses a lower-contrast value (e.g. `#5B615C` meta text, 2.9:1),
+production keeps the accessible token: an accessibility override.
 
-**Type scale** (families: Unbounded for display and numbers, Manrope for UI,
-JetBrains Mono for uppercase labels):
+**Type roles** are the only way to size text: no other font sizes exist. The
+same roles exist on both platforms: web `type-<role>` utilities, mobile
+`<Text variant>` in camelCase.
 
-| Style     | Size / line | Family                         |
-| --------- | ----------- | ------------------------------ |
-| `display` | 44 / 48     | Unbounded Bold, tight tracking |
-| `h1`      | 32 / 36     | Unbounded Bold                 |
-| `h2`      | 24 / 29     | Unbounded SemiBold             |
-| `h3`      | 20 / 26     | Manrope Bold                   |
-| `title`   | 17 / 24     | Manrope Bold                   |
-| `body`    | 16 / 23     | Manrope Regular                |
-| `body-sm` | 14 / 20     | Manrope Regular                |
-| `label`   | 11 / 14     | JetBrains Mono, uppercase      |
-| `caption` | 12 / 16     | Manrope Medium                 |
+| Role                                               | Size / line                           | Family, weight                        | Use                                      |
+| -------------------------------------------------- | ------------------------------------- | ------------------------------------- | ---------------------------------------- |
+| `display`                                          | 44 / 48                               | Unbounded 600, −0.02em                | Hero                                     |
+| `h1`                                               | 26 / 30                               | Unbounded 600, −0.02em                | Mobile screen title, email title         |
+| `h2`                                               | 22 / 26                               | Unbounded 600, −0.02em                | Web page title, section title            |
+| `h3`                                               | 19 / 24                               | Unbounded 600, −0.01em                | Sheet / modal / mobile section title     |
+| `title`                                            | 15 / 20                               | Unbounded 600                         | Card and panel title                     |
+| `metric-xl` · `metric-lg` · `metric` · `metric-sm` | 30 / 34 · 26 / 30 · 22 / 26 · 18 / 22 | Unbounded 700, −0.03em, tabular       | Bento numbers, prices, timers            |
+| `body-lg`                                          | 15 / 22                               | Manrope 400                           | Primary mobile copy, mobile field values |
+| `body`                                             | 14 / 21                               | Manrope 400                           | Mobile body copy                         |
+| `body-sm`                                          | 13 / 20                               | Manrope 400                           | Web body copy, table rows, web controls  |
+| `caption`                                          | 12 / 18                               | Manrope 400                           | Meta and helper text, field labels (700) |
+| `micro`                                            | 11 / 16                               | Manrope 400                           | Small meta                               |
+| `badge`                                            | 10 / 14                               | Manrope 800, uppercase                | Status pills                             |
+| `label-lg`                                         | 11 / 16                               | JetBrains Mono 400, 0.16em, uppercase | Large kickers (web, email)               |
+| `label`                                            | 10 / 14                               | JetBrains Mono 400, 0.14em, uppercase | Kickers, section labels, metadata        |
 
-**Spacing** is Tailwind's 4-based scale; use the steps 1, 1.5, 2, 3, 4, 5, 6,
-8, 10, 12, 16 (no arbitrary values). **Radius:** `xs` 6, `sm` 10, `md` 14
-(controls), `lg` 18, `xl` 22 (cards), `2xl` 28 (dialogs/sheets), `full`
-(pills, avatars). **Elevation** is semantic: surfaces and borders first;
-shadows (web: `shadow-raised`, `shadow-overlay`, `shadow-modal`) only for
-floating layers. **Motion:** short (150 ms) colour/opacity transitions; no
-decorative animation; reduced motion respected.
+**Weights:** Unbounded 600 (headings) and 700 (metrics). Manrope 400 (role
+default), 600 (field values), 700 (labels, names), 800 (emphasis and every
+button label). JetBrains Mono 400. No other weights are loaded or allowed.
+
+**Spacing** uses only these steps (Tailwind keys, 1 step = 4 px):
+
+| Key | 0.5 | 1   | 1.5 | 2   | 2.5 | 3   | 3.5 | 4   | 4.5 | 5   | 5.5 | 6   | 8   | 10  | 12  | 14  | 16  | 20  |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| px  | 2   | 4   | 6   | 8   | 10  | 12  | 14  | 16  | 18  | 20  | 22  | 24  | 32  | 40  | 48  | 56  | 64  | 80  |
+
+The canonical design spaces in 2 px steps up to 24, then 32–64. 80 is the
+public-website section rhythm. ESLint rejects other steps and arbitrary
+values in product code.
+
+**Radius** (`rounded-*`): `xs` 6 (marks), `sm` 9 (badges, small tiles),
+`md` 12 (compact controls ≤ 48 px: web buttons and fields, chips), `lg` 16
+(mobile fields, banners), `xl` 18 (primary CTAs 50–56 px), `2xl` 20 (compact
+cards), `3xl` 22 (cards), `4xl` 28 (sheets, dialogs), `full` (pills, circles,
+segmented controls, toggles).
+
+**Controls** (`controls` in the contract):
+
+|                     | Web                                                                      | Mobile                                             |
+| ------------------- | ------------------------------------------------------------------------ | -------------------------------------------------- |
+| Button `sm`         | 32, `md`, body-sm 800                                                    | 36 pill, body-sm 800, touch target extended to 44  |
+| Button `md`         | 40, `md`, body-sm 800 (default)                                          | 50, `xl`, body 800 (default)                       |
+| Button `lg`         | 48, `md`, body-sm 800                                                    | 56, `xl`, body-lg 800 (main action)                |
+| Button `xl` / `gym` | `xl` 54, `xl`, body-lg 800 (hero, checkout)                              | `gym` 60, `2xl`, body-lg 800                       |
+| Field               | 40, `md`, body-sm, `surface` well, hairline `border`, olive focus border | 54, `lg`, body-lg 600, same colours                |
+| Field label         | caption 700, `muted-foreground`                                          | same                                               |
+| Badge               | badge role, `sm`, padding 4 × 9                                          | same                                               |
+| Card                | `3xl`, padding 18 × 20; compact `2xl`, 14 × 16                           | same                                               |
+| Switch              | 44 × 26                                                                  | native switch (platform convention), token colours |
+
+Button variants on both platforms: `primary`, `secondary`, `quiet`,
+`outline`, `ghost`, `destructive`, `destructive-subtle` (mobile
+`destructiveSubtle`); web adds `link`. Web and mobile heights differ on
+purpose: pointer versus touch.
+
+**Elevation** is semantic: surfaces and borders first; shadows (web:
+`shadow-raised`, `shadow-overlay`, `shadow-modal`) only for floating layers.
+**Motion:** short (150 ms) colour/opacity transitions; no decorative
+animation; reduced motion respected.
 
 ## Accessibility
 
@@ -121,33 +180,53 @@ and an entry in the gallery.
 
 - `src/shared/styles/tokens.css`: raw palette and the semantic tokens for
   dark (`:root, .dark`) and light (`.light`).
-- `src/shared/styles/theme.css`: `@theme { --color-*: initial; }` removes
-  Tailwind's default palette, then `@theme inline` maps each semantic token to
-  a colour utility (`bg-surface`, `text-muted-foreground`, `border-border`,
-  `bg-warning-subtle`), plus fonts, radius, shadows, easing and the
-  `type-*` typography utilities (`type-display` … `type-caption`).
-  shadcn names are aliases (`card` → surface, `popover` → surface-elevated),
-  so each concept has one value.
+- `src/shared/styles/theme.css`:
+  - `@theme` resets Tailwind's default colour palette, radius scale and
+    font-size scale (`--color-*`, `--radius-*`, `--text-*: initial`).
+  - `@theme inline` maps each semantic token to a colour utility
+    (`bg-surface`, `text-faint-foreground`, `border-accent-border`).
+  - It also defines the fonts, the radius scale, shadows and easing, and the
+    `type-*` role utilities, generated from the contract.
+  - shadcn names are aliases (`card` → surface, `popover` →
+    surface-elevated), so each concept has one value.
 - `src/shared/styles/fonts.ts`: Unbounded, Manrope and JetBrains Mono via
-  `next/font/google` (self-hosted at build time, Latin + Cyrillic, `swap`),
-  exposed as CSS variables on `<html>`.
+  `next/font/google`: variable fonts, self-hosted at build time, Latin +
+  Cyrillic, `swap`. Exposed as CSS variables on `<html>`.
 - `src/app/globals.css`: `@custom-variant dark` (class-based) and base
   styles (`type-body bg-background text-foreground`).
 
-**Theme.** `next-themes` in `app/[locale]/providers.tsx`: `attribute="class"`,
-`defaultTheme="dark"`, themes `light`/`dark` + system, stored under
-`simplefit-theme`. Its inline script sets the class before paint, so static
-pages do not flash. `ThemeSwitcher` (`features/switch-theme`, translated in
-all locales) lives in the site header and app shell. Use the `dark:` variant
-only for genuine exceptions; tokens already switch.
+**Theme.** `next-themes` in `app/[locale]/providers.tsx`:
+
+- **Configuration:** `attribute="class"`, `defaultTheme="dark"`, themes
+  `light`/`dark` + system, stored under `simplefit-theme`.
+- **No flash:** its initialisation script runs from the server HTML and sets
+  the class before paint.
+- **Client mounts:** when the provider mounts on the client (a locale
+  navigation remounts the `[locale]` layout), the script is rendered as an
+  inert data block (`scriptProps.type`), because a client-created script never
+  runs and React 19 reports it. The provider applies the theme itself.
+  `providers.test.tsx` / `providers.server.test.tsx` guard both halves.
+- **Switcher:** `ThemeSwitcher` (`features/switch-theme`, translated in all
+  locales) lives in the site header and app shell.
+- Use the `dark:` variant only for genuine exceptions; tokens already switch.
 
 **Rules**
 
 - Tailwind classes on the component, semantic tokens only. ESLint rejects hex
   values, arbitrary colours (`bg-[#…]`, `text-[rgb(…)]`) and default palette
   classes (`bg-red-500`) in `className`, `cn()` and `cva()`.
-- Typography via `type-*` utilities (or `font-display`/`font-mono` for a
-  brand accent), not ad-hoc `text-[…]` sizes.
+- Text is sized only by `type-*` roles. A role's weight may be raised with
+  `font-semibold`, `font-bold` or `font-extrabold`, which override it.
+  - ESLint rejects:
+    - Tailwind's default sizes (`text-sm`), leading/tracking presets
+    - weights the contract does not use (`font-medium`)
+    - bare `rounded`
+    - arbitrary spacing, radius and type values
+    - spacing steps outside the scale
+  - Primitives in `src/shared/ui` are exempt only from the last two: they
+    own their internal geometry.
+- Platform exception: inputs and textareas render 16 px text below `md` so iOS
+  Safari does not zoom on focus.
 - Variants with `cva`, merged with `cn` (clsx + tailwind-merge).
 - No CSS modules, styled-components/emotion or static inline styles.
   **Dynamic `style` is allowed** only for runtime values (computed sizes,
@@ -156,14 +235,18 @@ only for genuine exceptions; tokens already switch.
 
 **Primitives** (`src/shared/ui`, shadcn/Radix, locally owned):
 
-| Primitive                                                                           | Notes                                                                                                                                                                                  |
-| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Button`                                                                            | variants `primary` (default), `secondary`, `outline`, `ghost`, `destructive`, `link`; sizes `sm`, `md`, `lg`, `icon`, `icon-sm`; `loading` (spinner, disabled, `aria-busy`); `asChild` |
-| `Badge`                                                                             | `neutral`, `primary`, `accent`, `success`, `warning`, `destructive`, `info`, `outline`                                                                                                 |
-| `Spinner`                                                                           | labelled = `role="status"`; unlabelled = decorative; stops with reduced motion                                                                                                         |
-| `Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroup`, `Switch`, `Label`, `Field` | 40 px controls, `input` border, `ring` focus, `aria-invalid` styling                                                                                                                   |
-| `Card`, `Separator`, `Skeleton`, `Avatar`, `Tabs`                                   | cards on `surface`, radius `xl`                                                                                                                                                        |
-| `Dialog`, `Sheet`, `DropdownMenu`, `Popover`, `Tooltip`, `Sonner`                   | `surface-elevated`, `overlay` scrim, `shadow-overlay`/`shadow-modal`; Dialog/Sheet require `closeLabel`                                                                                |
+| Primitive                                                         | Notes                                                                                                                                                                                                                                                       |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button`                                                          | Variants `primary` (default), `secondary`, `quiet`, `outline`, `ghost`, `destructive`, `destructive-subtle`, `link`. Sizes `sm` 32, `md` 40, `lg` 48, `xl` 54, `icon`, `icon-sm`. Labels Manrope 800. `loading` (spinner, disabled, `aria-busy`); `asChild` |
+| `Badge`                                                           | `neutral`, `primary`, `accent`, `success`, `warning`, `destructive`, `info`, `outline`; `type-badge`, radius `sm`                                                                                                                                           |
+| `Spinner`                                                         | Labelled = `role="status"`; unlabelled = decorative; stops with reduced motion                                                                                                                                                                              |
+| `Input`, `Textarea`, `Select`                                     | 40 px, radius `md`, `type-body-sm`, `surface` well, hairline `border`, olive focus border + `ring`, `aria-invalid` styling                                                                                                                                  |
+| `Label`, `Field`                                                  | Field label above a control: caption 700 muted; inline label (checkbox, switch): body-sm 700                                                                                                                                                                |
+| `Checkbox`, `RadioGroup`, `Switch`                                | Switch 44 × 26 (sm 34 × 20)                                                                                                                                                                                                                                 |
+| `Card`                                                            | `surface`, radius `3xl`, padding 18 × 20; `size="sm"`: `2xl`, 14 × 16; `CardTitle` = `type-title`                                                                                                                                                           |
+| `Tabs`                                                            | Segmented pill track on `surface`; selected segment `secondary` (bone) 800; `line` variant                                                                                                                                                                  |
+| `Separator`, `Skeleton`, `Avatar`                                 | Avatar initials on `highlight` in Unbounded 700                                                                                                                                                                                                             |
+| `Dialog`, `Sheet`, `DropdownMenu`, `Popover`, `Tooltip`, `Sonner` | `surface-elevated`, `overlay` scrim, `shadow-overlay`/`shadow-modal`. Dialog radius `4xl`; titles `type-h3`; menu section labels `type-label`. Dialog/Sheet require `closeLabel`                                                                            |
 
 **Icons:** `lucide-react` only, decorative (`aria-hidden`) next to text or
 inside a labelled control.
@@ -171,18 +254,98 @@ inside a labelled control.
 ## Gallery
 
 `pnpm dev`, then open **http://localhost:3000/en/dev/design-system** (any
-locale prefix works). It shows typography, semantic and raw colours, every
-button/badge variant and state, form controls, cards, skeleton/spinner,
-dialog, menu, tooltip, toasts, tabs and avatars, with the theme switcher. The
+locale prefix works). It shows every type role and weight, the semantic
+surfaces, text and border colours, the raw palette, the spacing and radius
+scales, every button variant, size and state, form controls, badges, default
+and compact cards, skeleton/spinner, dialog, menu, tooltip, toasts, tabs and
+avatars, with the theme switcher. The
 route calls `notFound()` when `NODE_ENV === "production"` and is `noindex`,
 so production builds return 404. The gallery is developer-facing and not
 translated by design.
 
+## Storybook
+
+Storybook is the **component workshop** for the production primitives:
+development, every state, theme and viewport inspection, and supplemental
+accessibility checks. It is web-only; mobile keeps its in-app gallery.
+
+```bash
+pnpm storybook        # http://localhost:6006
+pnpm storybook:build  # static build in storybook-static/ (CI builds it on every run)
+```
+
+**Architecture.**
+
+- **Framework:** Storybook 10 with `@storybook/nextjs-vite`, the official
+  Next.js (App Router, Next 16) integration on Vite.
+- **Addons:** `addon-docs` (autodocs), `addon-a11y` (axe), `addon-themes`.
+- **Same styles as the app:** `.storybook/preview.tsx` imports the app's
+  `globals.css` (Tailwind, `tokens.css`, `theme.css`) and puts the same
+  `next/font` variables on `<html>`.
+- **Theme toolbar:** toggles the same `dark` / `light` class next-themes
+  uses. Dark is the default and the canonical reference.
+- **No duplication:** there is no Storybook-only style, token value or
+  component. Stories import the real primitives from `src/shared/ui`.
+- **Viewports** (toolbar): phone web 390, narrow 320, tablet 768, desktop 1440. They are QA tools, not canonical responsive designs.
+- **Accessibility:** axe runs in the a11y panel. The `region` (landmark) rule
+  is off because an isolated story is not a page. The repository's
+  role-based tests and the contract's contrast tests stay authoritative.
+  Radix's outside-hiding while a menu or select is open shows as
+  `aria-hidden-focus` in the axe panel: expected Radix behaviour.
+- **Production isolation:** stories and `.storybook/` are never imported by
+  application code. Stories are not routes, and Storybook packages are
+  devDependencies only, so the Next.js build is unaffected.
+
+**Organisation.**
+
+- **Foundations** (`src/shared/styles/*.stories.tsx`): Colors, Typography,
+  Spacing, Radius, Icons. They read names and values from
+  `docs/design-tokens.json` and render the live CSS variables and real
+  utilities. Class maps use `satisfies` against the contract, so a new role
+  or step without a story fails the typecheck.
+- **Components** (`src/shared/ui/<primitive>.stories.tsx`, title
+  `Components/<Name>`): meaningful production states (variants, sizes,
+  disabled, loading, invalid, focus, open). Behaviour stories use play
+  functions (`storybook/test`).
+
+**When stories are required.**
+
+- Every new or changed reusable primitive in `src/shared/ui` adds or updates
+  its stories in the same ticket.
+- Composed patterns and domain components get stories once they are reused or
+  have meaningful state complexity.
+- One-off screen compositions do not.
+
+**Relationship to the other surfaces.**
+
+- **Claude Design:** the visual source of truth.
+- **Storybook:** component development, states, visual and accessibility
+  inspection.
+- **In-app gallery** (`/[locale]/dev/design-system`): kept. It is the
+  integration smoke test inside the real application. It runs:
+  - the real root layout, next-intl messages and locale routing;
+  - the next-themes provider and the translated `ThemeSwitcher`;
+  - the global Toaster and the production `notFound()` guard.
+
+  Storybook does not cover these.
+
+- **Pixel fidelity:** neither surface proves fidelity to a product artboard.
+  That is checked against the exact Claude Design artboard in each feature
+  ticket (`docs/design-handoff.md` §11).
+
 ## Testing
 
-- `shared/styles/tokens.test.ts`: every semantic token in both themes, WCAG
-  contrast, the Tailwind mapping and palette reset, documented brand values.
-- `shared/ui/button.test.tsx`: variants, loading/disabled, `asChild`, Badge,
-  Spinner semantics. `features/switch-theme`: switching and persistence.
-  `widgets/design-system-gallery`: renders every family.
+- `shared/styles/tokens.test.ts`:
+  - `tokens.css` and `theme.css` match `docs/design-tokens.json` (palette,
+    every semantic token in both themes, radius scale, every `type-*` role,
+    allowed weights).
+  - The contract's WCAG contrast pairs.
+  - The palette, radius and font-size resets.
+- `shared/ui/button.test.tsx`: Button variants and canonical sizes,
+  loading/disabled, `asChild`; Badge roles; Spinner semantics.
+- `app/[locale]/providers*.test.tsx`: the theme script is executable in the
+  server HTML and inert on client mounts.
+- `features/switch-theme`: switching and persistence.
+- `widgets/design-system-gallery`: renders every family, role and size.
+- `scripts/design-handoff.test.mjs`: handoff metadata (SF-16).
 - Tests query by role and name; no snapshots.

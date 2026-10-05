@@ -12,8 +12,8 @@ export default function NotFound() {
       id="main"
       className="mx-auto flex min-h-dvh w-full max-w-xl flex-col items-start justify-center gap-4 px-4"
     >
-      <p className="text-sm font-medium text-muted-foreground">404</p>
-      <h1 className="text-3xl font-semibold tracking-tight">{t("title")}</h1>
+      <p className="type-label text-faint-foreground">404</p>
+      <h1 className="type-h1">{t("title")}</h1>
       <p className="text-muted-foreground">{t("description")}</p>
       <Button asChild variant="outline">
         <Link href="/">{actions("backToHome")}</Link>

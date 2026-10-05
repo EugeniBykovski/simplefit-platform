@@ -52,49 +52,139 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
  */
 
 const typography = [
-  ["type-display", "02:14"],
-  ["type-h1", "Heading 1 · Fight camp"],
-  ["type-h2", "Heading 2 · Sparring planner"],
-  ["type-h3", "Heading 3 · Next session"],
-  ["type-title", "Title · Technical · Warsaw BC"],
-  ["type-body", "Body · Interface and body copy, calm and legible between rounds."],
-  ["type-body-sm", "Body small · Metadata and secondary copy."],
-  ["type-label", "Label · Graphite · Foundation"],
+  ["type-display", "Display · 18:00"],
+  ["type-h1", "H1 · Create your account"],
+  ["type-h2", "H2 · Gym dashboard"],
+  ["type-h3", "H3 · Upgrade to Coach Pro"],
+  ["type-title", "Title · Next session"],
+  ["type-metric-xl", "€29.99"],
+  ["type-metric-lg", "142"],
+  ["type-metric", "1h 34m"],
+  ["type-metric-sm", "22 rounds"],
+  ["type-body-lg", "Body large · Primary mobile copy and field values."],
+  ["type-body", "Body · Mobile body copy, calm and legible between rounds."],
+  ["type-body-sm", "Body small · Web body copy, table rows and button labels."],
   ["type-caption", "Caption · Arrive 17:50 · Ring 2"],
+  ["type-micro", "Micro · Updated 2 min ago"],
+  ["type-badge", "Badge · Past due"],
+  ["type-label-lg", "Label large · Week 1"],
+  ["type-label", "Label · Or email"],
 ] as const;
 
 // Literal class names so Tailwind generates them.
-const semanticSwatches = [
-  ["background", "bg-background text-foreground"],
-  ["surface", "bg-surface text-surface-foreground"],
-  ["surface-subtle", "bg-surface-subtle text-foreground"],
-  ["surface-elevated", "bg-surface-elevated text-foreground"],
-  ["muted", "bg-muted text-muted-foreground"],
-  ["primary", "bg-primary text-primary-foreground"],
-  ["secondary", "bg-secondary text-secondary-foreground"],
-  ["accent", "bg-accent text-accent-foreground"],
-  ["success", "bg-success text-success-foreground"],
-  ["warning", "bg-warning text-warning-foreground"],
-  ["destructive", "bg-destructive text-destructive-foreground"],
-  ["info", "bg-info text-info-foreground"],
+const surfaceSwatches = [
+  ["background", "bg-background text-foreground border-border"],
+  ["surface", "bg-surface text-surface-foreground border-border"],
+  ["surface-subtle", "bg-surface-subtle text-foreground border-border"],
+  ["surface-elevated", "bg-surface-elevated text-foreground border-border"],
+  ["muted", "bg-muted text-muted-foreground border-border"],
+  ["primary", "bg-primary text-primary-foreground border-border"],
+  ["secondary", "bg-secondary text-secondary-foreground border-border"],
+  ["highlight", "bg-highlight text-highlight-foreground border-border"],
+  ["accent", "bg-accent text-accent-foreground border-border"],
+  ["accent-strong", "bg-accent-strong text-accent-foreground border-border"],
+  ["success-subtle", "bg-success-subtle text-success-subtle-foreground border-success-border"],
+  ["warning-subtle", "bg-warning-subtle text-warning-subtle-foreground border-warning-border"],
+  [
+    "destructive-subtle",
+    "bg-destructive-subtle text-destructive-subtle-foreground border-destructive-border",
+  ],
+  ["info-subtle", "bg-info-subtle text-info-subtle-foreground border-info-border"],
+  ["warning", "bg-warning text-warning-foreground border-border"],
+  ["destructive", "bg-destructive text-destructive-foreground border-border"],
+] as const;
+
+const textSwatches = [
+  ["foreground", "text-foreground"],
+  ["muted-foreground", "text-muted-foreground"],
+  ["faint-foreground", "text-faint-foreground"],
+  ["highlight", "text-highlight"],
+  ["accent-muted-foreground", "text-accent-muted-foreground"],
+] as const;
+
+const borderSwatches = [
+  ["border", "border-border"],
+  ["border-strong", "border-border-strong"],
+  ["input", "border-input"],
+  ["accent-border", "border-accent-border"],
+  ["primary-muted", "border-primary-muted"],
+  ["ring", "border-ring"],
 ] as const;
 
 const rawPalette = [
   "--graphite-950",
   "--graphite-900",
   "--graphite-850",
+  "--graphite-800",
   "--graphite-700",
+  "--graphite-600",
   "--bone",
+  "--stone-500",
+  "--stone-550",
   "--olive-200",
   "--olive-300",
+  "--olive-350",
   "--olive-400",
+  "--olive-500",
   "--olive-600",
+  "--olive-800",
   "--olive-900",
   "--amber",
+  "--amber-200",
   "--coral",
+  "--coral-200",
 ] as const;
 
-const buttonVariants = ["primary", "secondary", "outline", "ghost", "destructive", "link"] as const;
+// Spacing steps (docs/design-tokens.json) as literal width classes.
+const spacing = [
+  ["0.5", "w-0.5", 2],
+  ["1", "w-1", 4],
+  ["1.5", "w-1.5", 6],
+  ["2", "w-2", 8],
+  ["2.5", "w-2.5", 10],
+  ["3", "w-3", 12],
+  ["3.5", "w-3.5", 14],
+  ["4", "w-4", 16],
+  ["4.5", "w-4.5", 18],
+  ["5", "w-5", 20],
+  ["5.5", "w-5.5", 22],
+  ["6", "w-6", 24],
+  ["8", "w-8", 32],
+  ["10", "w-10", 40],
+  ["12", "w-12", 48],
+  ["14", "w-14", 56],
+  ["16", "w-16", 64],
+  ["20", "w-20", 80],
+] as const;
+
+const radii = [
+  ["xs", "rounded-xs", 6, "marks"],
+  ["sm", "rounded-sm", 9, "badges"],
+  ["md", "rounded-md", 12, "controls"],
+  ["lg", "rounded-lg", 16, "fields"],
+  ["xl", "rounded-xl", 18, "CTAs"],
+  ["2xl", "rounded-2xl", 20, "compact cards"],
+  ["3xl", "rounded-3xl", 22, "cards"],
+  ["4xl", "rounded-4xl", 28, "sheets"],
+  ["full", "rounded-full", null, "pills"],
+] as const;
+
+const buttonVariants = [
+  "primary",
+  "secondary",
+  "quiet",
+  "outline",
+  "ghost",
+  "destructive",
+  "destructive-subtle",
+  "link",
+] as const;
+const buttonSizes = [
+  ["sm", "32"],
+  ["md", "40"],
+  ["lg", "48"],
+  ["xl", "54"],
+] as const;
 const badgeVariants = [
   "neutral",
   "primary",
@@ -109,7 +199,7 @@ const badgeVariants = [
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section aria-labelledby={`ds-${title}`} className="flex flex-col gap-4">
-      <h2 id={`ds-${title}`} className="type-label text-muted-foreground">
+      <h2 id={`ds-${title}`} className="type-label text-faint-foreground">
         {title}
       </h2>
       {children}
@@ -125,9 +215,9 @@ export function DesignSystemGallery() {
     >
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <p className="type-label text-primary">SimpleFit · Visual system 2026</p>
+          <p className="type-label text-highlight">SimpleFit · Visual system 2026</p>
           <h1 className="type-h1">Design system</h1>
-          <p className="max-w-2xl text-muted-foreground">
+          <p className="max-w-2xl type-body text-muted-foreground">
             Graphite × Olive primitives and tokens. Development builds only.
           </p>
         </div>
@@ -138,19 +228,41 @@ export function DesignSystemGallery() {
         <div className="flex flex-col gap-3">
           {typography.map(([className, sample]) => (
             <div key={className} className="flex flex-wrap items-baseline gap-4">
-              <code className="w-28 shrink-0 type-caption text-muted-foreground">{className}</code>
+              <code className="w-32 shrink-0 type-caption text-faint-foreground">{className}</code>
               <p className={className}>{sample}</p>
             </div>
           ))}
+          <p className="type-body-sm text-muted-foreground">
+            Manrope weights: <span className="font-semibold">600 field values</span> ·{" "}
+            <span className="font-bold">700 labels</span> ·{" "}
+            <span className="font-extrabold">800 emphasis and buttons</span>
+          </p>
         </div>
       </Section>
 
       <Section title="Semantic colours">
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {semanticSwatches.map(([name, className]) => (
+          {surfaceSwatches.map(([name, className]) => (
             <li
               key={name}
-              className={`flex h-20 items-end rounded-lg border border-border p-3 type-body-sm font-semibold ${className}`}
+              className={`flex h-20 items-end rounded-lg border p-3 type-body-sm font-bold ${className}`}
+            >
+              {name}
+            </li>
+          ))}
+        </ul>
+        <ul className="flex flex-wrap gap-x-6 gap-y-2">
+          {textSwatches.map(([name, className]) => (
+            <li key={name} className={`type-body-sm font-bold ${className}`}>
+              {name}
+            </li>
+          ))}
+        </ul>
+        <ul className="flex flex-wrap gap-3">
+          {borderSwatches.map(([name, className]) => (
+            <li
+              key={name}
+              className={`rounded-md border-2 bg-surface px-3 py-2 type-caption text-muted-foreground ${className}`}
             >
               {name}
             </li>
@@ -173,6 +285,36 @@ export function DesignSystemGallery() {
         </ul>
       </Section>
 
+      <Section title="Spacing">
+        <ul className="flex flex-col gap-1.5">
+          {spacing.map(([step, className, px]) => (
+            <li key={step} className="flex items-center gap-3">
+              <code className="w-20 shrink-0 type-caption text-faint-foreground">
+                {step} · {px}px
+              </code>
+              <span className={`block h-3 rounded-xs bg-primary ${className}`} />
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section title="Radius">
+        <ul className="flex flex-wrap gap-4">
+          {radii.map(([name, className, px, use]) => (
+            <li key={name} className="flex flex-col items-center gap-1.5">
+              <span
+                className={`block size-16 border border-border-strong bg-surface ${className}`}
+              />
+              <code className="type-caption text-muted-foreground">
+                {name}
+                {px === null ? "" : ` · ${px}`}
+              </code>
+              <span className="type-micro text-faint-foreground">{use}</span>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
       <Section title="Buttons">
         <div className="flex flex-wrap items-center gap-3">
           {buttonVariants.map((variant) => (
@@ -182,19 +324,28 @@ export function DesignSystemGallery() {
           ))}
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <Button size="sm">Small</Button>
-          <Button size="md">Medium</Button>
-          <Button size="lg">
+          {buttonSizes.map(([size, height]) => (
+            <Button key={size} size={size}>
+              {size} · {height}
+            </Button>
+          ))}
+          <Button size="xl">
             Start round <ArrowRightIcon aria-hidden />
           </Button>
-          <Button size="icon" variant="secondary" aria-label="Add">
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button size="icon" variant="quiet" aria-label="Add">
             <PlusIcon aria-hidden />
+          </Button>
+          <Button size="icon-sm" variant="ghost" aria-label="Notifications">
+            <BellIcon aria-hidden />
           </Button>
           <Button disabled>Disabled</Button>
           <Button loading>Saving</Button>
-          <Button variant="secondary" loading>
-            Finish round
+          <Button variant="quiet" loading>
+            Syncing
           </Button>
+          <Button variant="secondary">Finish round</Button>
         </div>
       </Section>
 
@@ -274,16 +425,16 @@ export function DesignSystemGallery() {
               </CardAction>
             </CardHeader>
             <CardContent>
-              <p className="type-display">18:00</p>
+              <p className="type-metric-xl">18:00</p>
             </CardContent>
             <CardFooter className="justify-between">
               <span className="type-caption text-muted-foreground">Arrive 17:50 · Ring 2</span>
               <Button size="sm">Check in</Button>
             </CardFooter>
           </Card>
-          <Card>
+          <Card size="sm">
             <CardHeader>
-              <CardTitle>Loading</CardTitle>
+              <CardTitle>Loading · compact card</CardTitle>
               <CardDescription>Skeletons keep the card geometry.</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
@@ -322,7 +473,7 @@ export function DesignSystemGallery() {
           </Dialog>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">Menu</Button>
+              <Button variant="quiet">Menu</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem>Edit session</DropdownMenuItem>

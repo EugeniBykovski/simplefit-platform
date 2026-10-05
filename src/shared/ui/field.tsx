@@ -30,7 +30,7 @@ function FieldLegend({
       data-slot="field-legend"
       data-variant={variant}
       className={cn(
-        "mb-1.5 font-medium data-[variant=label]:text-sm data-[variant=legend]:text-base",
+        "mb-1.5 data-[variant=label]:type-caption data-[variant=label]:font-bold data-[variant=label]:text-muted-foreground data-[variant=legend]:type-title",
         className,
       )}
       {...props}
@@ -86,7 +86,7 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="field-content"
-      className={cn("group/field-content flex flex-1 flex-col gap-0.5 leading-snug", className)}
+      className={cn("group/field-content flex flex-1 flex-col gap-0.5", className)}
       {...props}
     />
   );
@@ -97,8 +97,10 @@ function FieldLabel({ className, ...props }: React.ComponentProps<typeof Label>)
     <Label
       data-slot="field-label"
       className={cn(
-        "group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-data-checked:border-primary/30 has-data-checked:bg-primary/5 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 *:data-[slot=field]:p-2.5 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10",
+        "group/field-label peer/field-label flex w-fit gap-2 group-data-[disabled=true]/field:opacity-50 has-data-checked:border-primary/30 has-data-checked:bg-primary/5 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 *:data-[slot=field]:p-2.5 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10",
         "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col",
+        // Canonical field label above a control: caption, 700, muted.
+        "group-data-[orientation=vertical]/field:type-caption group-data-[orientation=vertical]/field:font-bold group-data-[orientation=vertical]/field:text-muted-foreground",
         className,
       )}
       {...props}
@@ -111,7 +113,7 @@ function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="field-label"
       className={cn(
-        "flex w-fit items-center gap-2 text-sm font-medium group-data-[disabled=true]/field:opacity-50",
+        "flex w-fit items-center gap-2 type-body-sm font-bold group-data-[disabled=true]/field:opacity-50",
         className,
       )}
       {...props}
@@ -124,7 +126,7 @@ function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
     <p
       data-slot="field-description"
       className={cn(
-        "text-left text-sm leading-normal font-normal text-muted-foreground group-has-data-horizontal/field:text-balance [[data-variant=legend]+&]:-mt-1.5",
+        "text-left type-caption text-muted-foreground group-has-data-horizontal/field:text-balance [[data-variant=legend]+&]:-mt-1.5",
         "last:mt-0 nth-last-2:-mt-1",
         "[&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
         className,
@@ -146,7 +148,7 @@ function FieldSeparator({
       data-slot="field-separator"
       data-content={!!children}
       className={cn(
-        "relative -my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2",
+        "relative -my-2 h-5 type-caption group-data-[variant=outline]/field-group:-mb-2",
         className,
       )}
       {...props}
@@ -202,7 +204,7 @@ function FieldError({
     <div
       role="alert"
       data-slot="field-error"
-      className={cn("text-sm font-normal text-destructive", className)}
+      className={cn("type-caption font-bold text-destructive", className)}
       {...props}
     >
       {content}

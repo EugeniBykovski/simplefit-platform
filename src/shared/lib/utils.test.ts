@@ -8,6 +8,6 @@ describe("cn", () => {
   });
 
   it("lets later Tailwind classes override conflicting earlier ones", () => {
-    expect(cn("px-2 py-1 text-sm", "px-4", "text-lg")).toBe("py-1 px-4 text-lg");
+    expect(cn("rounded-md px-2 py-1", "px-4", "rounded-lg")).toBe("py-1 px-4 rounded-lg");
   });
 });

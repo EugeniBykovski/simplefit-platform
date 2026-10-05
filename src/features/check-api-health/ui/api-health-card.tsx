@@ -50,7 +50,10 @@ export function ApiHealthCard() {
           <HealthStatusBadge status={status} />
         </CardAction>
       </CardHeader>
-      <CardContent aria-live="polite" className="flex flex-col gap-1 text-sm text-muted-foreground">
+      <CardContent
+        aria-live="polite"
+        className="flex flex-col gap-1 type-body-sm text-muted-foreground"
+      >
         <p>{t(status)}</p>
         {status === "offline" && isApiError(health.error) && (
           <>
@@ -67,7 +70,7 @@ export function ApiHealthCard() {
         )}
       </CardContent>
       <CardFooter className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-xs text-muted-foreground">
+        <p className="type-caption text-faint-foreground">
           {checkedAt > 0
             ? t("lastChecked", { time: format.dateTime(checkedAt, "time") })
             : t("notChecked")}

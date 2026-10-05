@@ -23,6 +23,8 @@ describe("DesignSystemGallery", () => {
     for (const section of [
       "Typography",
       "Semantic colours",
+      "Spacing",
+      "Radius",
       "Buttons",
       "Form controls",
       "Badges",
@@ -33,5 +35,12 @@ describe("DesignSystemGallery", () => {
     expect(screen.getByRole("button", { name: "Disabled" })).toBeDisabled();
     expect(screen.getByText("destructive", { selector: "[data-slot=badge]" })).toBeInTheDocument();
     expect(screen.getByRole("status", { name: "Loading sessions" })).toBeInTheDocument();
+    // Every typography role and button size of the contract is on show.
+    for (const role of ["type-metric-xl", "type-label-lg", "type-badge"]) {
+      expect(screen.getByText(role)).toBeInTheDocument();
+    }
+    for (const size of ["sm · 32", "md · 40", "lg · 48", "xl · 54"]) {
+      expect(screen.getByRole("button", { name: size })).toBeInTheDocument();
+    }
   });
 });

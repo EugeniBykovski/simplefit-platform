@@ -437,7 +437,7 @@ through a ticket branch and a PR to `main`; PRs are merged by a human.
 `.github/workflows/ci.yml` runs on pull requests and pushes to `main`:
 checkout → pnpm (version from `packageManager`) → Node (from `.nvmrc`) →
 `pnpm install --frozen-lockfile` → commitlint over PR commits → lint → format
-check → typecheck → test → `api:check` → build. No deployment.
+check → typecheck → test → `api:check` → build → Storybook build. No deployment.
 
 ## Dependencies
 
@@ -450,6 +450,19 @@ are denied unless reviewed in `pnpm-workspace.yaml`.
 theme switching with a pre-paint script so statically rendered pages do not
 flash; a hand-written provider would have to re-implement that script, storage
 sync and system preference tracking.
+
+**Added in SF-17:** Storybook 10.6.1 (`storybook`, `@storybook/nextjs-vite`,
+`@storybook/addon-docs`, `@storybook/addon-a11y`, `@storybook/addon-themes`;
+MIT, actively maintained, devDependencies only).
+
+- **Problem:** the design system needs a workshop to develop and inspect
+  every primitive state in both themes and at several widths, with axe checks.
+- **Why existing tools fall short:** the in-app gallery is one integration
+  page, not a state catalogue.
+- **Integration:** `nextjs-vite` is the official integration for Next 16 App
+  Router and reuses the app's CSS, fonts and path aliases.
+- **Known warning:** pnpm reports an optional peer warning (`tsconfck` wants
+  TypeScript ^5; the repository uses 6). It is harmless for the Vite build.
 
 **Deferred until a ticket needs them:** authentication libraries, Stripe,
 Sentry, PostHog/analytics, XYFlow, maps, rich text, uploads, WebSocket

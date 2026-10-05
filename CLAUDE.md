@@ -79,12 +79,17 @@ React Hook Form + Zod, next-intl, Orval-generated API client. Backend:
     jsx-a11y rules must pass.
 17. **Responsive behaviour is required**: mobile-first, works from 320 px up.
 18. **Utility-first styling**: Tailwind classes directly on components with
-    semantic tokens (`bg-surface`, `text-muted-foreground`) and `type-*`
-    typography, never raw colours, hex values or default palette classes
-    (ESLint enforces it). Lucide is the only icon set. No CSS modules, styled-components/emotion or static inline style
-    objects (ESLint enforces it); inline `style` only for runtime-computed
-    values or libraries that require it. Add shadcn primitives with
-    `pnpm ui:add <name>`.
+    semantic tokens (`bg-surface`, `text-faint-foreground`) and the contract
+    in `docs/design-tokens.json`:
+    - `type-*` roles are the only text sizes;
+    - spacing uses only the canonical steps;
+    - radius uses `xs`…`4xl`/`full`;
+    - never raw colours, hex values, default palette classes, Tailwind's
+      default text sizes or arbitrary spacing/radius/type values
+      (ESLint enforces all of it). Lucide is the only icon set. No CSS modules, styled-components/emotion or static inline style
+      objects (ESLint enforces it); inline `style` only for runtime-computed
+      values or libraries that require it. Add shadcn primitives with
+      `pnpm ui:add <name>`.
 19. **Design handoff** (`docs/design-handoff.md`). The canonical product
     design is the Claude Design artifact
     https://claude.ai/artifact/JEsBg51MjX8KiHWEro8omY. It is the visual source
@@ -97,7 +102,10 @@ React Hook Form + Zod, next-intl, Orval-generated API client. Backend:
     nearest step within tolerance, otherwise stop and ask. Build domain
     components and shells only when a ticket first needs them. Never change
     tokens to follow an artboard without an explicit decision. Every UI PR
-    carries a Design QA section (§11). This repo owns `desktop-web`,
+    carries a Design QA section (§11). Every new or changed reusable
+    primitive in `src/shared/ui` adds or updates its Storybook stories in the
+    same ticket; stories render only the real primitives, never
+    Storybook-only copies or styles (`docs/design-system.md#storybook`). This repo owns `desktop-web`,
     `sponsor-portal`, `admin`, `public-website` and the 1440 px `onboarding`
     artboards. Never modify the design artifact, and never run `/design-sync`
     unless a ticket asks.
@@ -147,6 +155,8 @@ pnpm test             # Vitest
 pnpm api:generate     # sync backend OpenAPI snapshot + regenerate client
 pnpm api:check        # fail on contract or generated-code drift
 pnpm ui:add <name>    # add a shadcn/ui primitive the repo's way
+pnpm storybook        # component workshop (http://localhost:6006)
+pnpm storybook:build  # static Storybook build (CI runs it)
 ```
 
 **Definition of done:** `pnpm quality` passes, behaviour is tested, all

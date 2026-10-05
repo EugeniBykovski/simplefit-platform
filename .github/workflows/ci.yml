@@ -72,3 +72,7 @@ jobs:
         run: pnpm build
         env:
           NEXT_PUBLIC_API_URL: http://localhost:4000
+
+      - name: Storybook build
+        # The component workshop must keep compiling with the real primitives.
+        run: pnpm storybook:build

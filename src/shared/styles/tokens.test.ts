@@ -3,6 +3,14 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
+import spec from "../../../docs/design-tokens.json";
+
+/*
+ * The web implementation of the shared design-system contract
+ * (docs/design-tokens.json, kept identical in simplefit-mobile). These tests
+ * keep tokens.css and theme.css in lockstep with it, so web and mobile share
+ * one design language.
+ */
 const tokensCss = readFileSync(join(__dirname, "tokens.css"), "utf8");
 const themeCss = readFileSync(join(__dirname, "theme.css"), "utf8");
 
@@ -16,8 +24,11 @@ function block(selectorPattern: RegExp): Record<string, string> {
 }
 
 const palette = block(/:root/);
-const dark = block(/:root,\s*\.dark/);
-const light = block(/\.light/);
+const themes = { dark: block(/:root,\s*\.dark/), light: block(/\.light/) } as const;
+type ThemeName = keyof typeof themes;
+type Palette = Record<string, string>;
+
+const specPalette: Palette = spec.palette;
 
 function resolve(value: string, scope: Record<string, string>): string {
   const ref = value.match(/^var\(--([\w-]+)\)$/);
@@ -25,6 +36,12 @@ function resolve(value: string, scope: Record<string, string>): string {
   const next = scope[ref[1]!] ?? palette[ref[1]!];
   if (!next) throw new Error(`unknown token ${ref[1]}`);
   return resolve(next, scope);
+}
+
+/** The hex value the spec assigns to a semantic token in a theme. */
+function specValue(theme: ThemeName, token: string): string {
+  const name = (spec.semantic[theme] as Record<string, string>)[token]!;
+  return specPalette[name]!;
 }
 
 function luminance(hex: string): number {
@@ -38,71 +55,51 @@ function contrast(a: string, b: string): number {
   return (hi! + 0.05) / (lo! + 0.05);
 }
 
-const semanticTokens = [
-  "background",
-  "foreground",
-  "surface",
-  "surface-foreground",
-  "surface-subtle",
-  "surface-elevated",
-  "muted",
-  "muted-foreground",
-  "border",
-  "input",
-  "ring",
-  "primary",
-  "primary-foreground",
-  "secondary",
-  "secondary-foreground",
-  "accent",
-  "accent-foreground",
-  "destructive",
-  "destructive-foreground",
-  "success",
-  "success-foreground",
-  "warning",
-  "warning-foreground",
-  "info",
-  "info-foreground",
-];
+const semanticTokens = Object.keys(spec.semantic.dark);
 
-// [foreground, background] pairs that carry text and must meet WCAG AA (4.5:1).
-const textPairs = [
-  ["foreground", "background"],
-  ["surface-foreground", "surface"],
-  ["foreground", "surface-elevated"],
-  ["muted-foreground", "background"],
-  ["muted-foreground", "surface"],
-  ["primary-foreground", "primary"],
-  ["secondary-foreground", "secondary"],
-  ["accent-foreground", "accent"],
-  ["destructive-foreground", "destructive"],
-  ["success-foreground", "success"],
-  ["warning-foreground", "warning"],
-  ["info-foreground", "info"],
-  ["destructive-subtle-foreground", "destructive-subtle"],
-  ["success-subtle-foreground", "success-subtle"],
-  ["warning-subtle-foreground", "warning-subtle"],
-  ["info-subtle-foreground", "info-subtle"],
-];
-
-describe.each([
-  ["dark", dark],
-  ["light", light],
-])("%s theme", (_name, theme) => {
-  it("defines every semantic token", () => {
-    for (const token of semanticTokens) expect(theme, token).toHaveProperty(token);
+describe("palette", () => {
+  it("matches the shared contract for every raw value it declares", () => {
+    for (const [name, value] of Object.entries(palette)) {
+      if (name in specPalette) expect(value, name).toBe(specPalette[name]);
+    }
   });
 
-  it.each(textPairs)("%s on %s meets WCAG AA contrast", (fg, bg) => {
+  it("keeps the canonical Styleguide values (Claude Design, SF-17)", () => {
+    expect(palette).toMatchObject({
+      "graphite-950": "#111312",
+      "graphite-900": "#181b19",
+      "graphite-850": "#1f2320",
+      "graphite-700": "#2e332f",
+      bone: "#edefe7",
+      "olive-200": "#e4eab8",
+      "olive-300": "#c9d17e",
+      "olive-400": "#aeb95a",
+      "olive-600": "#4e5626",
+      "olive-900": "#262b15",
+      amber: "#e3a24f",
+      coral: "#e07a5f",
+    });
+  });
+});
+
+describe.each(["dark", "light"] as const)("%s theme", (name) => {
+  const theme = themes[name];
+
+  it("defines every semantic token with the contract's value", () => {
+    for (const token of semanticTokens) {
+      expect(theme, token).toHaveProperty(token);
+      expect(resolve(`var(--${token})`, theme), token).toBe(specValue(name, token));
+    }
+  });
+
+  it.each(spec.contrast.text)("%s on %s meets WCAG AA contrast", (fg, bg) => {
     const ratio = contrast(resolve(`var(--${fg})`, theme), resolve(`var(--${bg})`, theme));
     expect(ratio).toBeGreaterThanOrEqual(4.5);
   });
 
-  it("focus ring is visible against the background (WCAG 1.4.11, 3:1)", () => {
-    expect(
-      contrast(resolve("var(--ring)", theme), resolve("var(--background)", theme)),
-    ).toBeGreaterThanOrEqual(3);
+  it.each(spec.contrast.nonText)("%s is visible on %s (WCAG 1.4.11, 3:1)", (fg, bg) => {
+    const ratio = contrast(resolve(`var(--${fg})`, theme), resolve(`var(--${bg})`, theme));
+    expect(ratio).toBeGreaterThanOrEqual(3);
   });
 });
 
@@ -113,18 +110,34 @@ describe("Tailwind theme", () => {
     }
   });
 
-  it("removes the default Tailwind palette", () => {
+  it("removes Tailwind's default palette, radius and font-size scales", () => {
     expect(themeCss).toMatch(/--color-\*:\s*initial;/);
+    expect(themeCss).toMatch(/--radius-\*:\s*initial;/);
+    expect(themeCss).toMatch(/--text-\*:\s*initial;/);
   });
 
-  it("keeps the documented brand palette", () => {
-    expect(palette).toMatchObject({
-      "graphite-950": "#111312",
-      "graphite-900": "#181b19",
-      bone: "#edefe7",
-      "olive-400": "#aeb95a",
-      amber: "#e2a250",
-      coral: "#df7a5e",
-    });
+  it("defines the radius scale", () => {
+    for (const [name, px] of Object.entries(spec.radius)) {
+      expect(themeCss).toContain(`--radius-${name}: ${px}px;`);
+    }
+  });
+
+  it.each(Object.entries(spec.typography.roles))("type-%s matches its role", (role, def) => {
+    const body = themeCss.match(new RegExp(`@utility type-${role} \\{([^}]*)\\}`))?.[1];
+    expect(body, role).toBeDefined();
+    const rem = (px: number) => `${px / 16}rem`;
+    expect(body).toContain(`font-family: var(--font-${def.family});`);
+    expect(body).toContain(`font-size: ${rem(def.size)};`);
+    expect(body).toContain(`line-height: ${rem(def.lineHeight)};`);
+    expect(body).toContain(`font-weight: ${def.weight};`);
+    if (def.tracking) expect(body).toContain(`letter-spacing: ${def.tracking}em;`);
+    expect(body?.includes("text-transform: uppercase")).toBe(Boolean("uppercase" in def));
+  });
+
+  it("only uses font weights the contract allows for each family", () => {
+    for (const def of Object.values(spec.typography.roles)) {
+      const family = def.family as keyof typeof spec.typography.weights;
+      expect(spec.typography.weights[family]).toContain(def.weight);
+    }
   });
 });

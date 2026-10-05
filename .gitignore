@@ -11,6 +11,9 @@ next-env.d.ts
 # testing
 /coverage
 
+# Storybook static build (pnpm storybook:build)
+/storybook-static
+
 # Orval drift-check scratch output (pnpm api:check)
 /src/shared/api/.generated-check/
 
