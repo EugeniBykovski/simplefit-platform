@@ -1,0 +1,45 @@
+{
+  "$comment": "Canonical Claude Design source for SimpleFit (SF-16). Kept identical in simplefit-platform and simplefit-mobile. Contract: docs/design-handoff.md. Metadata only: never add artboard content here.",
+  "artifact": {
+    "id": "JEsBg51MjX8KiHWEro8omY",
+    "url": "https://claude.ai/artifact/JEsBg51MjX8KiHWEro8omY",
+    "uuid": "8b9af407-4197-4905-87b7-0ebf86bf35e7",
+    "name": "SimpleFit Boxing — Product design",
+    "type": "Claude Design canvas",
+    "index": "project/canvas.json",
+    "artboardPathPattern": "project/<Name>.dc.html"
+  },
+  "audit": {
+    "ticket": "SF-16",
+    "date": "2026-10-05",
+    "version": "1791206633-31de",
+    "pages": 11,
+    "artboards": 456,
+    "notes": 71
+  },
+  "owners": {
+    "simplefit-mobile": "iOS/Android app (Expo)",
+    "simplefit-platform": "web (Next.js)",
+    "split-by-frame": "390 px-wide artboards -> simplefit-mobile; 1440 px-wide artboards -> simplefit-platform",
+    "shared-intent": "cross-platform design intent; each client implements what it needs",
+    "reference-only": "never implemented"
+  },
+  "pages": [
+    { "id": "onboarding", "name": "Onboarding", "owner": "split-by-frame" },
+    { "id": "fighter-mobile", "name": "Fighter Mobile", "owner": "simplefit-mobile" },
+    { "id": "coach-mobile", "name": "Coach Mobile", "owner": "simplefit-mobile" },
+    { "id": "gym-mobile", "name": "Gym Mobile", "owner": "simplefit-mobile" },
+    { "id": "desktop-web", "name": "Desktop/Web", "owner": "simplefit-platform" },
+    { "id": "sponsor-portal", "name": "Sponsor Portal", "owner": "simplefit-platform" },
+    { "id": "admin", "name": "Admin", "owner": "simplefit-platform" },
+    {
+      "id": "public-website",
+      "name": "Public Website",
+      "owner": "simplefit-platform",
+      "note": "Email*.dc.html templates (E01-E16): production owner not decided"
+    },
+    { "id": "design-system", "name": "Design System", "owner": "shared-intent" },
+    { "id": "brand-assets", "name": "Brand Assets", "owner": "shared-intent" },
+    { "id": "pitch-business", "name": "Pitch/Business", "owner": "reference-only" }
+  ]
+}

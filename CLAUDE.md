@@ -8,7 +8,8 @@ otherwise. If a ticket seems to require breaking one, stop and ask.
 
 Read `docs/engineering-standards.md` (shared SimpleFit workflow, commits,
 ownership, quality gates, Definition of Done) and `docs/architecture/README.md`
-before structural changes, and `docs/design-system.md` before any UI work. For Next.js 16
+before structural changes, `docs/design-system.md` before any UI work, and
+`docs/design-handoff.md` before implementing any designed screen. For Next.js 16
 APIs, read the version-matched docs in `node_modules/next/dist/docs/` (see
 AGENTS.md, which `next dev` maintains; keep it committed).
 
@@ -84,35 +85,51 @@ React Hook Form + Zod, next-intl, Orval-generated API client. Backend:
     objects (ESLint enforces it); inline `style` only for runtime-computed
     values or libraries that require it. Add shadcn primitives with
     `pnpm ui:add <name>`.
+19. **Design handoff** (`docs/design-handoff.md`). The canonical product
+    design is the Claude Design artifact
+    https://claude.ai/artifact/JEsBg51MjX8KiHWEro8omY. It is the visual source
+    of truth; SF-13 tokens and primitives are the implementation source of
+    truth. Before implementing a screen, read its referenced artboard source
+    (`project/<Name>.dc.html` + `project/canvas.json`) with the Artifact tool.
+    Never work from screenshots or memory. Translate every value through
+    SF-13 tokens, primitives, Lucide and i18n. Never copy `.dc.html` markup,
+    hex values or design files into the repo. Off-scale values follow §8.1:
+    nearest step within tolerance, otherwise stop and ask. Build domain
+    components and shells only when a ticket first needs them. Never change
+    tokens to follow an artboard without an explicit decision. Every UI PR
+    carries a Design QA section (§11). This repo owns `desktop-web`,
+    `sponsor-portal`, `admin`, `public-website` and the 1440 px `onboarding`
+    artboards. Never modify the design artifact, and never run `/design-sync`
+    unless a ticket asks.
 
 ### Code quality
 
-19. **Strict TypeScript.** No `any`, no `@ts-ignore`, no non-null assertions
+20. **Strict TypeScript.** No `any`, no `@ts-ignore`, no non-null assertions
     to silence real nullability. Fix lint/type errors; never suppress them.
-20. **Tests accompany meaningful behaviour** (Vitest + Testing Library).
+21. **Tests accompany meaningful behaviour** (Vitest + Testing Library).
     Query by role and accessible name; mock the network at `fetch`.
-21. **No speculative dependencies.** A new dependency needs: the current
+22. **No speculative dependencies.** A new dependency needs: the current
     problem, why existing tools fall short, maintenance status, license. Pin
     exact versions, respect the pnpm release-age gate, review install scripts
     in `pnpm-workspace.yaml`, and update the dependency list in
     `docs/architecture/README.md`.
-22. Avoid speculative abstractions and empty "future" modules. No TODO code
+23. Avoid speculative abstractions and empty "future" modules. No TODO code
     disguised as finished work.
 
 ### Security
 
-23. **Secrets never enter Git.** No keys, tokens or real `.env` files. Only
+24. **Secrets never enter Git.** No keys, tokens or real `.env` files. Only
     `.env.example` is committed; document every variable there.
-24. **Never expose secrets through `NEXT_PUBLIC_*`**: those values ship to
+25. **Never expose secrets through `NEXT_PUBLIC_*`**: those values ship to
     every browser. Server-only values are read only in server-only modules.
 
 ### Git and Jira
 
-25. **A Jira key is required in every commit:**
+26. **A Jira key is required in every commit:**
     `<type>: SF-<ticket> - <description>`, e.g. `feat: SF-16 - add identity domain`.
     Types: feat, fix, refactor, test, docs, chore, build, ci, perf.
     Never bypass hooks (`--no-verify`).
-26. **Branch per ticket from `main`**: `SF-<ticket>-<kebab-description>`
+27. **Branch per ticket from `main`**: `SF-<ticket>-<kebab-description>`
     (e.g. `SF-16-identity-authentication`). Never commit or push to `main`,
     never force-push it, never rewrite pushed history. Run
     `pnpm install --frozen-lockfile` and `pnpm quality` before pushing; PR title
