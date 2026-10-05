@@ -33,6 +33,42 @@ const tokenGuards = [
   { selector: `${scope} TemplateElement[value.raw=/${rawColor}/]`, message: rawColorMessage },
 ]);
 
+/**
+ * Design-scale guard (docs/design-handoff.md §8.1, SF-16): design values are
+ * translated through the SF-13 spacing, radius and type scales, never copied
+ * as arbitrary values. Primitives in src/shared/ui own their internal geometry
+ * and are exempt; layout dimensions (w/h/size/inset) may stay arbitrary.
+ */
+const offScale =
+  "\\b(-?[pm][xytrblse]?|gap(-[xy])?|space-[xy]|rounded(-[a-z]{1,2})?|text|leading|tracking|font)-\\[";
+const offScaleMessage =
+  "Off-scale value: use the SF-13 spacing, radius and type scales (docs/design-handoff.md §8.1), not arbitrary values.";
+const scaleGuards = [
+  "JSXAttribute[name.name='className']",
+  "CallExpression[callee.name=/^(cn|cva)$/]",
+].flatMap((scope) => [
+  { selector: `${scope} Literal[value=/${offScale}/]`, message: offScaleMessage },
+  { selector: `${scope} TemplateElement[value.raw=/${offScale}/]`, message: offScaleMessage },
+]);
+
+/** Utility-first styling selectors (shared by the styling blocks below). */
+const stylingSyntax = [
+  {
+    selector:
+      "JSXAttribute[name.name='style'] > JSXExpressionContainer > ObjectExpression:not(:has(SpreadElement)):not(:has(Property[value.type!='Literal']))",
+    message: "Static inline style: use Tailwind classes. Keep `style` for runtime-computed values.",
+  },
+  {
+    selector: "ImportDeclaration[source.value=/\\.module\\.(css|scss|sass)$/]",
+    message: "CSS modules are not used: style with Tailwind classes.",
+  },
+  {
+    selector:
+      "ImportDeclaration[source.value=/^(styled-components|@emotion\\/(react|styled|css))$/]",
+    message: "CSS-in-JS is not used: style with Tailwind classes.",
+  },
+];
+
 /** Higher layers each FSD-lite layer must not import from. */
 const forbiddenLayers = {
   "src/shared/**": ["app", "widgets", "features", "entities"],
@@ -134,25 +170,16 @@ export default defineConfig([
     // libraries that need style objects (e.g. CSS variables for Sonner).
     files: ["src/**/*.tsx", "src/**/*.ts"],
     rules: {
-      "no-restricted-syntax": [
-        "error",
-        {
-          selector:
-            "JSXAttribute[name.name='style'] > JSXExpressionContainer > ObjectExpression:not(:has(SpreadElement)):not(:has(Property[value.type!='Literal']))",
-          message:
-            "Static inline style: use Tailwind classes. Keep `style` for runtime-computed values.",
-        },
-        {
-          selector: "ImportDeclaration[source.value=/\\.module\\.(css|scss|sass)$/]",
-          message: "CSS modules are not used: style with Tailwind classes.",
-        },
-        {
-          selector:
-            "ImportDeclaration[source.value=/^(styled-components|@emotion\\/(react|styled|css))$/]",
-          message: "CSS-in-JS is not used: style with Tailwind classes.",
-        },
-        ...tokenGuards,
-      ],
+      "no-restricted-syntax": ["error", ...stylingSyntax, ...tokenGuards],
+    },
+  },
+  {
+    // Product code (everything but the primitives) also keeps to the design
+    // scales. Flat config replaces rule options, so the selectors repeat.
+    files: ["src/**/*.tsx", "src/**/*.ts"],
+    ignores: ["src/shared/ui/**"],
+    rules: {
+      "no-restricted-syntax": ["error", ...stylingSyntax, ...tokenGuards, ...scaleGuards],
     },
   },
   {

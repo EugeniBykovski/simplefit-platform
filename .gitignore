@@ -32,3 +32,8 @@ pnpm-debug.log*
 
 # deployment
 .vercel
+
+# Claude Design source is read from the canonical artifact, never committed
+# (docs/design-handoff.md).
+*.dc.html
+canvas.json
