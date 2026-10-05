@@ -10,7 +10,6 @@ describe("validateCommitHeader", () => {
     "test: SF-18 - cover sparring validation",
     "docs: SF-5 - document OpenAPI workflow",
     "chore: SF-11 - configure web platform foundation",
-    "revert: SF-40 - revert booking reminder",
   ])("accepts %s", (header) => {
     expect(validateCommitHeader(header)).toEqual([true, ""]);
   });
@@ -23,6 +22,7 @@ describe("validateCommitHeader", () => {
     ["feat: sf-14 - add fighter onboarding", /Jira issue key/],
     ["feat: SF-14 - ", /does not match/],
     ["SF-14 - add fighter onboarding", /does not match/],
+    ["revert: SF-40 - revert booking reminder", /does not match/],
   ])("rejects %s", (header, message) => {
     const [valid, reason] = validateCommitHeader(header);
     expect(valid).toBe(false);
