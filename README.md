@@ -71,11 +71,12 @@ into Git; only `.env.example` is committed.
 
 ## Conventions
 
-- Commits: `<type>: SF-<n> - <description>`, e.g. `feat: SF-14 - add fighter onboarding`
+- Shared SimpleFit standards (workflow, ownership, quality gates, Definition of
+  Done): [docs/engineering-standards.md](docs/engineering-standards.md).
+- Branches: `SF-<ticket>-<kebab-description>`, e.g. `SF-16-identity-authentication`.
+- Commits: `<type>: SF-<ticket> - <description>`, e.g. `feat: SF-16 - add identity domain`
   (enforced by commitlint locally and in CI).
-- Branches: `feature/SF-14-fighter-onboarding`, `fix/SF-22-booking-duplicate`,
-  `chore/SF-11-web-foundation`.
-- PR titles: `SF-14 — Fighter Onboarding`.
+- PR titles: `SF-16 — Identity Authentication`; PRs are merged by a human.
 - All user-facing copy goes through `messages/` (next-intl).
 
 ## Documentation
