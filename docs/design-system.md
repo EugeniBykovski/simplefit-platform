@@ -3,6 +3,15 @@
 The SimpleFit web design system foundation (SF-13). Mobile follows the same
 language in `simplefit-mobile/docs/design-system.md`.
 
+**Design source.** Product screens are designed in the canonical Claude Design
+artifact (https://claude.ai/artifact/JEsBg51MjX8KiHWEro8omY). How to
+reference, read, translate and visually QA an artboard is in
+`docs/design-handoff.md`. That document is the visual source of truth; this
+one is the implementation source of truth. On web, design values become
+semantic token classes, `type-*` utilities, Tailwind spacing/radius steps,
+`src/shared/ui` primitives and `lucide-react` icons. Known gaps between the
+design and these tokens are tracked in `docs/design-reconciliation.md`.
+
 ## Design language
 
 SimpleFit uses one visual language on web and mobile, **Graphite × Olive**
