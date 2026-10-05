@@ -19,7 +19,9 @@ export interface Error {
   code: string;
   /**
      * Code-specific structured data; an empty object when there is nothing to add.
-     * For `validation_error`, `fields` maps each invalid field to a list of messages.
+     * For `validation_error` it is a `ValidationErrorDetails`: `fields` maps each invalid
+     * field to human-readable messages and `field_codes` to the matching machine-readable
+     * reason codes (same order).
      */
   details: ErrorDetails;
   /** Human-readable English summary. Not localised; may change without notice. */
