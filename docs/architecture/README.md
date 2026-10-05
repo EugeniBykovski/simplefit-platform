@@ -403,27 +403,29 @@ and developer-only content. Primitives take labels as props (`closeLabel`).
 **Commit messages** (enforced by commitlint in the `commit-msg` hook and in CI
 for every PR commit):
 
-```
-<type>: <JIRA-ID> - <description>
+Shared SimpleFit rules: [engineering-standards.md](../engineering-standards.md).
 
-feat: SF-14 - add fighter onboarding
-fix: SF-22 - prevent duplicate booking
-chore: SF-11 - configure web platform foundation
+```
+<type>: SF-<ticket> - <description>
+
+feat: SF-16 - add identity domain
+test: SF-16 - cover session rotation
+docs: SF-16 - document authentication architecture
 ```
 
-- Types: `feat`, `fix`, `refactor`, `perf`, `test`, `docs`, `build`, `ci`,
-  `chore`, `revert`.
+- Types: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `build`, `ci`,
+  `perf`.
 - Jira key pattern `SF-[0-9]+` is mandatory; commits without it are rejected.
 - No scopes (`feat(web):`), header ≤ 100 characters, blank line before body.
 - The rule lives in `scripts/commit-convention.mjs` (shared by commitlint and
   its tests); commitlint's conventional preset cannot require a Jira key.
 - Merge commits and git's default `Revert "…"` messages are ignored.
 
-**Branches:** `feature/SF-<id>-description`, `fix/SF-<id>-description`,
-`chore/SF-<id>-description` (e.g. `feature/SF-14-fighter-onboarding`).
+**Branches:** `SF-<ticket>-<kebab-description>` (e.g.
+`SF-16-identity-authentication`), one per ticket and repository.
 
-**Pull requests:** title `SF-14 — Fighter Onboarding`. Every change after the
-SF-11 bootstrap goes through a ticket branch and a PR to `main`.
+**Pull requests:** title `SF-16 — Identity Authentication`. Every change goes
+through a ticket branch and a PR to `main`; PRs are merged by a human.
 
 **Hooks** (Husky, installed by `pnpm install`):
 

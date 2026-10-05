@@ -6,7 +6,9 @@ Rules for every Claude Code session in this repository. They are
 non-negotiable unless the Jira ticket you are working on explicitly says
 otherwise. If a ticket seems to require breaking one, stop and ask.
 
-Read `docs/architecture/README.md` before structural changes. For Next.js 16
+Read `docs/engineering-standards.md` (shared SimpleFit workflow, commits,
+ownership, quality gates, Definition of Done) and `docs/architecture/README.md`
+before structural changes. For Next.js 16
 APIs, read the version-matched docs in `node_modules/next/dist/docs/` (see
 AGENTS.md, which `next dev` maintains; keep it committed).
 
@@ -75,8 +77,12 @@ React Hook Form + Zod, next-intl, Orval-generated API client. Backend:
     operability, visible focus, sufficient contrast, correct `lang`. ESLint
     jsx-a11y rules must pass.
 17. **Responsive behaviour is required**: mobile-first, works from 320 px up.
-18. Style with semantic tokens (`bg-surface`, `text-muted-foreground`), never
-    raw colours. Add shadcn primitives with `pnpm ui:add <name>`.
+18. **Utility-first styling**: Tailwind classes directly on components with
+    semantic tokens (`bg-surface`, `text-muted-foreground`), never raw
+    colours. No CSS modules, styled-components/emotion or static inline style
+    objects (ESLint enforces it); inline `style` only for runtime-computed
+    values or libraries that require it. Add shadcn primitives with
+    `pnpm ui:add <name>`.
 
 ### Code quality
 
@@ -102,12 +108,16 @@ React Hook Form + Zod, next-intl, Orval-generated API client. Backend:
 ### Git and Jira
 
 25. **A Jira key is required in every commit:**
-    `<type>: SF-<n> - <description>`, e.g. `feat: SF-14 - add fighter onboarding`.
-    Types: feat, fix, refactor, perf, test, docs, build, ci, chore, revert.
+    `<type>: SF-<ticket> - <description>`, e.g. `feat: SF-16 - add identity domain`.
+    Types: feat, fix, refactor, test, docs, chore, build, ci, perf.
     Never bypass hooks (`--no-verify`).
-26. Branches: `feature|fix|chore/SF-<id>-description`. PR titles:
-    `SF-14 — Fighter Onboarding`. Never push to `main` directly; never rewrite
-    published history; never merge without passing checks.
+26. **Branch per ticket from `main`**: `SF-<ticket>-<kebab-description>`
+    (e.g. `SF-16-identity-authentication`). Never commit or push to `main`,
+    never force-push it, never rewrite pushed history. Run
+    `pnpm install --frozen-lockfile` and `pnpm quality` before pushing; PR title
+    `SF-<ticket> — <Title>`. **Never merge a PR** unless the user explicitly
+    asks. Keep changes to the ticket's scope and finish with the final report
+    described in `docs/engineering-standards.md` §12.
 
 ## Commands
 

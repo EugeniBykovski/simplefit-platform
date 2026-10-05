@@ -112,6 +112,32 @@ export default defineConfig([
   // FSD-lite dependency direction per layer (see docs/architecture/README.md).
   ...importBoundaries(),
   {
+    // Utility-first styling (docs/engineering-standards.md §7): Tailwind classes
+    // on components. Inline `style` stays available for runtime values and
+    // libraries that need style objects (e.g. CSS variables for Sonner).
+    files: ["src/**/*.tsx", "src/**/*.ts"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector:
+            "JSXAttribute[name.name='style'] > JSXExpressionContainer > ObjectExpression:not(:has(SpreadElement)):not(:has(Property[value.type!='Literal']))",
+          message:
+            "Static inline style: use Tailwind classes. Keep `style` for runtime-computed values.",
+        },
+        {
+          selector: "ImportDeclaration[source.value=/\\.module\\.(css|scss|sass)$/]",
+          message: "CSS modules are not used: style with Tailwind classes.",
+        },
+        {
+          selector:
+            "ImportDeclaration[source.value=/^(styled-components|@emotion\\/(react|styled|css))$/]",
+          message: "CSS-in-JS is not used: style with Tailwind classes.",
+        },
+      ],
+    },
+  },
+  {
     // Node maintenance scripts may log progress.
     files: ["scripts/**"],
     rules: { "no-console": "off" },

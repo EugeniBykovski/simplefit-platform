@@ -1,4 +1,6 @@
-// SimpleFit commit message convention (enforced by commitlint and CI):
+// SimpleFit commit message convention (enforced by commitlint and CI; see
+// docs/engineering-standards.md §3). GitHub's `Revert "…"` commits and merge
+// commits are skipped by commitlint's default ignores.
 //
 //   <type>: <JIRA-ID> - <description>
 //   feat: SF-14 - add fighter onboarding
@@ -15,7 +17,6 @@ export const COMMIT_TYPES = [
   "build",
   "ci",
   "chore",
-  "revert",
 ];
 
 export const JIRA_KEY_PATTERN = /SF-[0-9]+/;
