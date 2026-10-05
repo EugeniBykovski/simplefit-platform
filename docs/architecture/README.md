@@ -129,22 +129,20 @@ booking…) get slices when a ticket implements them, not before.
 
 ## Styling: Tailwind and design tokens
 
+See **[design-system.md](../design-system.md)** (SF-13): Graphite × Olive
+tokens shared with mobile, dark-default theme via `next-themes`, brand fonts
+via `next/font`, typography utilities, the raw-colour lint guard, primitive
+variants and the dev-only gallery. In short:
+
 - Tailwind CSS 4, configured in CSS (no `tailwind.config`):
   `src/app/globals.css` imports Tailwind, `tw-animate-css`,
-  `shadcn/tailwind.css` (variants used by the primitives), then the tokens.
-- `src/shared/styles/tokens.css` defines **semantic tokens**: `background`,
-  `foreground`, `surface`, `muted`, `primary`, `secondary`, `accent`,
-  `success`, `warning`, `danger`, `border`, `input`, `ring`, `radius`, each
-  colour with a `-foreground` pair. Values are **neutral placeholders**:
-  SF-13 replaces them with tokens extracted from Claude Design. Names are the
-  contract.
-- `src/shared/styles/theme.css` maps tokens to Tailwind (`bg-surface`,
-  `text-danger-foreground`) and aliases shadcn names (`card`, `popover`,
-  `destructive`) to SimpleFit tokens, so each concept has one value.
-- Dark mode follows `prefers-color-scheme`. A user-facing theme switch (and
-  `next-themes`) is deferred to SF-13.
-- Use semantic utilities, never raw colours or hex values. Mobile-first
-  responsive classes (`sm:`, `md:`, `lg:`).
+  `shadcn/tailwind.css`, then the tokens.
+- `src/shared/styles/tokens.css` holds the raw palette and the semantic tokens
+  per theme; `src/shared/styles/theme.css` resets Tailwind's default palette
+  and maps the semantic tokens to utilities (`bg-surface`,
+  `text-muted-foreground`), aliasing shadcn names (`card`, `popover`).
+- Use semantic utilities and `type-*` typography, never raw colours (ESLint
+  enforces it). Mobile-first responsive classes (`sm:`, `md:`, `lg:`).
 
 ## UI primitives: shadcn/ui
 
@@ -157,10 +155,11 @@ booking…) get slices when a ticket implements them, not before.
   wrapper rewrites the registry's `import { cn } from "cn"` to our canonical
   helper (clsx + tailwind-merge) and removes the `cn` package shadcn installs,
   so there is one class utility.
-- Primitives are **locally owned**: edit them freely (SF-13 will restyle them).
-  Local changes so far: Sonner follows the OS colour scheme without
-  `next-themes`, and Dialog/Sheet require a `closeLabel` whenever they render
-  a close button (no hardcoded English in primitives).
+- Primitives are **locally owned** and restyled to the design system (SF-13):
+  Button and Badge variants, `Spinner`, borders instead of rings, `overlay`
+  scrim, semantic shadows. Sonner follows the `next-themes` theme, and
+  Dialog/Sheet require a `closeLabel` whenever they render a close button (no
+  hardcoded English in primitives).
 
 ## API contract and Orval
 
@@ -447,10 +446,14 @@ and an active maintenance status. Versions are pinned exactly; pnpm enforces a
 minimum release age (supply-chain protection) and dependency install scripts
 are denied unless reviewed in `pnpm-workspace.yaml`.
 
+**Added in SF-13:** `next-themes` 0.4.6 (MIT, actively maintained): class
+theme switching with a pre-paint script so statically rendered pages do not
+flash; a hand-written provider would have to re-implement that script, storage
+sync and system preference tracking.
+
 **Deferred until a ticket needs them:** authentication libraries, Stripe,
 Sentry, PostHog/analytics, XYFlow, maps, rich text, uploads, WebSocket
-clients, animation libraries beyond `tw-animate-css`, `next-themes`,
-`server-only`, TanStack Query Devtools, Zustand/Redux, Playwright, date-fns
+clients, animation libraries beyond `tw-animate-css`, `server-only`, TanStack Query Devtools, Zustand/Redux, Playwright, date-fns
 (Intl/next-intl cover formatting; add only for date arithmetic).
 
 ## Known limitations

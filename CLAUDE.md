@@ -8,7 +8,7 @@ otherwise. If a ticket seems to require breaking one, stop and ask.
 
 Read `docs/engineering-standards.md` (shared SimpleFit workflow, commits,
 ownership, quality gates, Definition of Done) and `docs/architecture/README.md`
-before structural changes. For Next.js 16
+before structural changes, and `docs/design-system.md` before any UI work. For Next.js 16
 APIs, read the version-matched docs in `node_modules/next/dist/docs/` (see
 AGENTS.md, which `next dev` maintains; keep it committed).
 
@@ -78,8 +78,9 @@ React Hook Form + Zod, next-intl, Orval-generated API client. Backend:
     jsx-a11y rules must pass.
 17. **Responsive behaviour is required**: mobile-first, works from 320 px up.
 18. **Utility-first styling**: Tailwind classes directly on components with
-    semantic tokens (`bg-surface`, `text-muted-foreground`), never raw
-    colours. No CSS modules, styled-components/emotion or static inline style
+    semantic tokens (`bg-surface`, `text-muted-foreground`) and `type-*`
+    typography, never raw colours, hex values or default palette classes
+    (ESLint enforces it). Lucide is the only icon set. No CSS modules, styled-components/emotion or static inline style
     objects (ESLint enforces it); inline `style` only for runtime-computed
     values or libraries that require it. Add shadcn primitives with
     `pnpm ui:add <name>`.
