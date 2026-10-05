@@ -22,4 +22,8 @@ export * from './rateLimitedResponse';
 export * from './serviceUnavailableResponse';
 export * from './unauthorizedResponse';
 export * from './unsupportedMediaTypeResponse';
+export * from './validationErrorDetails';
+export * from './validationErrorDetailsFieldCodes';
+export * from './validationErrorDetailsFieldCodesItem';
+export * from './validationErrorDetailsFields';
 export * from './validationErrorResponse';
