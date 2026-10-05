@@ -26,8 +26,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          # Full history for PRs so commitlint can read every commit in the range.
-          fetch-depth: ${{ github.event_name == 'pull_request' && 0 || 1 }}
+          # Full history so the PR base and head commits exist locally and
+          # commitlint can validate every commit in base..head. (A conditional
+          # `cond && 0 || 1` always yields 1: 0 is falsy in Actions expressions.)
+          fetch-depth: 0
 
       - name: Set up pnpm (version from package.json "packageManager")
         uses: pnpm/action-setup@v6
