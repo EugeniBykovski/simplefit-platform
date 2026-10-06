@@ -20,6 +20,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AppleAuthRequest,
+  AppleAuthResponse,
   BadRequestResponse,
   CodeExpiredResponse,
   CodeInvalidResponse,
@@ -68,6 +70,130 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   }
   return result;
 };
+
+export const getAuthenticateWithAppleUrl = () => {
+
+
+
+
+  return `/api/auth/apple`
+}
+
+/**
+ * Verifies the Apple identity token (RS256 signature with Apple's keys, issuer, audience, expiry, subject, and
+ * the nonce: the token's `nonce` must be the lowercase hex SHA-256 of the raw `nonce` sent here) and starts a
+ * SimpleFit session. Apple credentials are never SimpleFit credentials and are not stored.
+ *
+ * The Apple account is identified only by its subject (`sub`): an unknown one creates a new account
+ * (`account: created`), a known one signs in (`account: existing`). Email (including private relay
+ * addresses) and name are never read; accounts are never linked by email.
+ *
+ * * `unauthorized` - the token is not a valid Apple identity token for SimpleFit (no detail is given).
+ * * `service_unavailable` - Apple's signing keys cannot be obtained or Sign in with Apple is not configured.
+ * @summary Sign in (or sign up) with an Apple identity token
+ */
+export const authenticateWithApple = async (appleAuthRequest: AppleAuthRequest, options?: Parameters<typeof apiFetch>[1]): Promise<AppleAuthResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<AppleAuthResponse>(getAuthenticateWithAppleUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(appleAuthRequest)
+  }
+);}
+
+
+
+
+
+export const getAuthenticateWithAppleQueryKey = (appleAuthRequest?: BodyType<AppleAuthRequest>,) => {
+    return [
+    'POST', `/api/auth/apple`, appleAuthRequest
+    ] as const;
+    }
+
+
+export const getAuthenticateWithAppleQueryOptions = <TData = Awaited<ReturnType<typeof authenticateWithApple>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(appleAuthRequest: BodyType<AppleAuthRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authenticateWithApple>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAuthenticateWithAppleQueryKey(appleAuthRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof authenticateWithApple>>> = ({ signal }) => authenticateWithApple(appleAuthRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof authenticateWithApple>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type AuthenticateWithAppleQueryResult = NonNullable<Awaited<ReturnType<typeof authenticateWithApple>>>
+export type AuthenticateWithAppleQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+export function useAuthenticateWithApple<TData = Awaited<ReturnType<typeof authenticateWithApple>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ appleAuthRequest: BodyType<AppleAuthRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof authenticateWithApple>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof authenticateWithApple>>,
+          TError,
+          Awaited<ReturnType<typeof authenticateWithApple>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAuthenticateWithApple<TData = Awaited<ReturnType<typeof authenticateWithApple>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ appleAuthRequest: BodyType<AppleAuthRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authenticateWithApple>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof authenticateWithApple>>,
+          TError,
+          Awaited<ReturnType<typeof authenticateWithApple>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAuthenticateWithApple<TData = Awaited<ReturnType<typeof authenticateWithApple>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ appleAuthRequest: BodyType<AppleAuthRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authenticateWithApple>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Sign in (or sign up) with an Apple identity token
+ */
+
+export function useAuthenticateWithApple<TData = Awaited<ReturnType<typeof authenticateWithApple>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ appleAuthRequest: BodyType<AppleAuthRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authenticateWithApple>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getAuthenticateWithAppleQueryOptions(appleAuthRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
 
 export const getRequestEmailRegistrationUrl = () => {
 

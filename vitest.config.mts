@@ -13,6 +13,8 @@ export default defineConfig({
     env: {
       NEXT_PUBLIC_API_URL: "http://api.test",
       NEXT_PUBLIC_GOOGLE_CLIENT_ID: "111111111111-webclienttest.apps.googleusercontent.com",
+      NEXT_PUBLIC_APPLE_SERVICES_ID: "com.simplefit.test.web",
+      NEXT_PUBLIC_APPLE_REDIRECT_URI: "https://app.simplefit.test/login",
     },
     server: {
       deps: {

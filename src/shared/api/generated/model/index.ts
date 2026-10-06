@@ -5,6 +5,12 @@
  * SimpleFit API 0.1.0
  */
 
+export * from './appleAuthRequest';
+export * from './appleAuthRequestRefreshTokenTransport';
+export * from './appleAuthResponse';
+export * from './appleAuthResponseAccount';
+export * from './appleAuthResponseRefreshTokenTransport';
+export * from './appleAuthResponseTokenType';
 export * from './badRequestResponse';
 export * from './codeExpiredResponse';
 export * from './codeInvalidResponse';
