@@ -172,7 +172,7 @@ with its own SF-13 primitives.
 | `onboarding`                                               | **Split by frame**: 390 px-wide artboards → `simplefit-mobile`; 1440 px-wide artboards (`Web*`, `FirstRunWeb*`, sponsor and admin onboarding, partners landing) → `simplefit-platform` |
 | `desktop-web`, `sponsor-portal`, `admin`, `public-website` | `simplefit-platform`                                                                                                                                                                   |
 | `design-system`, `brand-assets`                            | Cross-platform design intent; each client implements what it needs                                                                                                                     |
-| `pitch-business`                                           | Reference only; never implemented                                                                                                                                                      |
+| `pitch-business`                                           | Reference only; never implemented. Exception: the three Route Gallery artboards are the IA source for routes (`docs/route-architecture.md`)                                            |
 
 Notes:
 
@@ -184,6 +184,11 @@ Notes:
   web ticket adapts them and records the adaptation as a design gap.
 - `Flow*` and `Route*` artboards can span roles and platforms. Each screen
   they show is owned by the platform of its own artboard.
+- **Routes come from the Route Gallery** (`GalleryIndex.dc.html`,
+  `GalleryIndex2.dc.html`, `GalleryIndex4.dc.html` on `pitch-business`) through
+  the canonical route registry, `docs/route-registry.json`, and its contract
+  `docs/route-architecture.md` (SF-31). A route's screen is still implemented
+  from its own artboard.
 
 ## 7. Component classification
 
@@ -276,7 +281,7 @@ These artboards are **specifications, not scope**:
 | Artboards                                                        | Use                                                                                                                                                                                                                      |
 | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `Flow*` (e.g. `FlowOnboarding`, `FlowFighter`, `FlowCommercial`) | Order of screens, entry points, branches per role. Check that a ticket's navigation matches.                                                                                                                             |
-| `Route*` (e.g. `RouteSite`, `RouteGym`)                          | Web route maps per role. Route paths and grouping intent for `simplefit-platform`.                                                                                                                                       |
+| `Route*` (e.g. `RouteSite`, `RouteGym`)                          | Web route maps per role: flow and grouping intent. Route paths come from `docs/route-registry.json`; where a map disagrees, the Route Gallery wins.                                                                      |
 | `StatesSheet`                                                    | Empty, loading (skeleton), error, offline, permission-denied, private profile, blocked user, deleted content, unavailable gym and cancelled training. Each state has a tag, an example route (`?state=…`), copy and CTA. |
 | `PaymentStates`                                                  | `PaymentStatus`: processing, success, failed, declined, authentication required, expired card, insufficient funds, network error, duplicate prevented.                                                                   |
 | `TrialStates`                                                    | `TrialBanner` (trial active, 7/3 days, ends tomorrow, expired, converted, payment failed) and the `SubscriptionStatus` pill (free … expired).                                                                            |
