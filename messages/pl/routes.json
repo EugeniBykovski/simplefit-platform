@@ -117,6 +117,7 @@
     "web/coaches": "Dla trenerów",
     "web/fighters": "Dla zawodników",
     "web/gyms": "Dla klubów",
+    "web/login/code": "Kod logowania",
     "web/marketplace": "Marketplace",
     "web/partners": "Partnerzy",
     "web/partners/apply": "Zgłoszenie sponsora",
@@ -133,6 +134,7 @@
     "web/sponsor/invoices": "Faktury",
     "web/sponsor/login": "Logowanie sponsora",
     "web/sponsor/settings": "Ustawienia",
+    "web/verify-email": "E-mail potwierdzony",
     "web/white-label": "White label"
   }
 }
