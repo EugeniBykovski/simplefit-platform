@@ -12,6 +12,7 @@ export default defineConfig({
     setupFiles: ["./vitest.setup.ts"],
     env: {
       NEXT_PUBLIC_API_URL: "http://api.test",
+      NEXT_PUBLIC_GOOGLE_CLIENT_ID: "111111111111-webclienttest.apps.googleusercontent.com",
     },
     server: {
       deps: {

@@ -13,7 +13,7 @@ export interface Error {
   /**
      * Stable snake_case error code. Clients branch on this value, never on `message`.
      * New codes may be added over time; treat unknown codes according to the HTTP status.
-     * Known codes: `bad_request`, `unauthorized`, `forbidden`, `not_found`, `not_acceptable`, `conflict`, `payload_too_large`, `unsupported_media_type`, `validation_error`, `rate_limited`, `internal_error`, `service_unavailable`.
+     * Known codes: `bad_request`, `unauthorized`, `forbidden`, `not_found`, `not_acceptable`, `conflict`, `verified_elsewhere`, `payload_too_large`, `unsupported_media_type`, `validation_error`, `code_invalid`, `code_expired`, `rate_limited`, `internal_error`, `service_unavailable`.
      * @pattern ^[a-z][a-z0-9_]*$
      */
   code: string;

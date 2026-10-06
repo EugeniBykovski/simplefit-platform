@@ -2,6 +2,7 @@ import { MenuIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
+import { SessionControl } from "@/features/sign-out";
 import { LocaleSwitcher } from "@/features/switch-locale";
 import { ThemeSwitcher } from "@/features/switch-theme";
 import { siteConfig } from "@/shared/config/site";
@@ -22,7 +23,7 @@ import { AppNav } from "./app-nav";
 /**
  * Layout frame for the authenticated application: sidebar navigation from the
  * md breakpoint, a sheet menu below it. Server Component; only AppNav, the
- * locale switcher and the sheet primitives hydrate.
+ * session control, the locale switcher and the sheet primitives hydrate.
  */
 export function AppShell({ children }: { children: ReactNode }) {
   const t = useTranslations("navigation");
@@ -34,9 +35,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         <Brand />
         <Separator />
         <AppNav />
-        <div className="mt-auto flex items-center gap-1">
-          <LocaleSwitcher />
-          <ThemeSwitcher />
+        <div className="mt-auto flex flex-col items-start gap-2">
+          <SessionControl />
+          <div className="flex items-center gap-1">
+            <LocaleSwitcher />
+            <ThemeSwitcher />
+          </div>
         </div>
       </aside>
 
@@ -53,8 +57,11 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <SheetTitle>{siteConfig.name}</SheetTitle>
                 <SheetDescription>{t("applicationNavigation")}</SheetDescription>
               </SheetHeader>
-              <div className="px-4">
+              <div className="flex flex-col gap-4 px-4">
                 <AppNav inSheet />
+                <div>
+                  <SessionControl />
+                </div>
               </div>
             </SheetContent>
           </Sheet>
