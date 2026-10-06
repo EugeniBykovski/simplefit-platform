@@ -22,6 +22,7 @@
     "api:sync": "node scripts/api-sync.mjs",
     "api:generate": "node scripts/api-sync.mjs --if-present && orval --config orval.config.ts",
     "api:check": "node scripts/api-check.mjs",
+    "routes:generate": "node scripts/generate-web-routes.mjs",
     "quality": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm test && pnpm api:check && pnpm build",
     "ui:add": "node scripts/ui-add.mjs",
     "storybook": "storybook dev -p 6006",

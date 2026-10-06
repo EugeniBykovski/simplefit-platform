@@ -1,0 +1,153 @@
+{
+  "fighter": {
+    "name": "Zawodnik",
+    "sections": {
+      "training": "Mój trening",
+      "social": "Społeczność",
+      "account": "Konto"
+    },
+    "nav": {
+      "home": "Strona główna",
+      "board": "Tablica na żywo",
+      "training": "Obóz przygotowawczy",
+      "progress": "Postępy",
+      "community": "Społeczność",
+      "discover": "Odkrywaj",
+      "profile": "Mój profil",
+      "market": "Marketplace",
+      "calendar": "Kalendarz",
+      "messages": "Wiadomości",
+      "settings": "Prywatność i ustawienia"
+    }
+  },
+  "coach": {
+    "name": "Trener",
+    "sections": {
+      "team": "Zespół",
+      "plan": "Planowanie",
+      "business": "Biznes",
+      "comms": "Komunikacja"
+    },
+    "nav": {
+      "dashboard": "Panel",
+      "activity": "Aktywność zespołu",
+      "fighters": "Zawodnicy",
+      "board": "Tablica zespołu",
+      "programs": "Programy i sesje",
+      "sparring": "Planer sparingów",
+      "calendar": "Kalendarz",
+      "services": "Usługi i pakiety",
+      "earnings": "Zarobki i wypłaty",
+      "billing": "Plan i rozliczenia",
+      "messages": "Wiadomości",
+      "settings": "Ustawienia trenera"
+    }
+  },
+  "gym": {
+    "name": "Konsola klubu",
+    "sections": {
+      "overview": "Przegląd",
+      "people": "Ludzie",
+      "schedule": "Grafik",
+      "community": "Społeczność",
+      "money": "Finanse",
+      "setup": "Konfiguracja"
+    },
+    "nav": {
+      "dashboard": "Panel",
+      "board": "Tablica klubu na żywo",
+      "reports": "Raporty",
+      "members": "Członkowie",
+      "leads": "Leady i treningi próbne",
+      "staff": "Trenerzy i personel",
+      "timetable": "Grafik zajęć",
+      "bookings": "Rezerwacje",
+      "attendance": "Obecność",
+      "shared": "Wspólne sesje",
+      "community": "Społeczność",
+      "challenges": "Wyzwania",
+      "sparring": "Otwarte sparingi",
+      "announcements": "Ogłoszenia",
+      "memberships": "Karnety i pakiety",
+      "revenue": "Przychody i wypłaty",
+      "store": "Sklep",
+      "promote": "Promocja klubu",
+      "branding": "Profil publiczny",
+      "settings": "Ustawienia i plan klubu"
+    }
+  },
+  "sponsor": {
+    "name": "Portal partnera",
+    "sections": {
+      "partner": "Partner",
+      "campaigns": "Kampanie",
+      "results": "Wyniki",
+      "account": "Konto"
+    },
+    "nav": {
+      "overview": "Przegląd",
+      "applications": "Zgłoszenia",
+      "campaigns": "Kampanie",
+      "challenges": "Wyzwania",
+      "events": "Wydarzenia",
+      "invoices": "Faktury",
+      "settings": "Ustawienia"
+    }
+  },
+  "admin": {
+    "name": "Panel sterowania",
+    "internal": "Wewnętrzny",
+    "sections": {
+      "platform": "Platforma",
+      "revenue": "Przychody",
+      "partners": "Partnerzy",
+      "trust": "Zaufanie",
+      "system": "System"
+    },
+    "nav": {
+      "overview": "Przegląd globalny",
+      "tenants": "Przegląd najemców",
+      "users": "Przegląd użytkowników",
+      "revenue": "Przychody",
+      "subscriptions": "Subskrypcje",
+      "transactions": "Transakcje i zwroty",
+      "payments": "Wypłaty",
+      "pricing": "Cennik i kody promocyjne",
+      "sponsors": "Sponsorzy",
+      "campaigns": "Weryfikacja kampanii",
+      "enterprise": "Enterprise i white label",
+      "moderation": "Moderacja",
+      "enforcement": "Blokady i odwołania",
+      "support": "Konsola wsparcia",
+      "privacy": "Dane i prywatność",
+      "audit": "Dziennik audytu",
+      "flags": "Flagi funkcji",
+      "notifications": "E-maile i powiadomienia push",
+      "integrations": "Integracje",
+      "markets": "Rynki",
+      "staff": "Dostęp wewnętrzny"
+    }
+  },
+  "site": {
+    "navigation": "Witryna",
+    "nav": {
+      "fighters": "Zawodnicy",
+      "coaches": "Trenerzy",
+      "gyms": "Kluby",
+      "pricing": "Cennik",
+      "marketplace": "Marketplace",
+      "partners": "Partnerzy",
+      "enterprise": "Enterprise"
+    },
+    "signIn": "Zaloguj się",
+    "getStarted": "Zacznij"
+  },
+  "frame": {
+    "home": "Strona główna SimpleFit"
+  },
+  "placeholder": {
+    "badge": "Planowane",
+    "description": "Ta strona jest częścią produktu SimpleFit i pojawi się razem ze swoją funkcją. Na razie nic tu nie działa.",
+    "route": "Ścieżka"
+  }
+}

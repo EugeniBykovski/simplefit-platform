@@ -1,0 +1,153 @@
+{
+  "fighter": {
+    "name": "Боєць",
+    "sections": {
+      "training": "Мої тренування",
+      "social": "Спільнота",
+      "account": "Акаунт"
+    },
+    "nav": {
+      "home": "Головна",
+      "board": "Live-дошка",
+      "training": "Файт-кемп",
+      "progress": "Прогрес",
+      "community": "Спільнота",
+      "discover": "Огляд",
+      "profile": "Мій профіль",
+      "market": "Маркетплейс",
+      "calendar": "Календар",
+      "messages": "Повідомлення",
+      "settings": "Приватність і налаштування"
+    }
+  },
+  "coach": {
+    "name": "Тренер",
+    "sections": {
+      "team": "Команда",
+      "plan": "Планування",
+      "business": "Бізнес",
+      "comms": "Спілкування"
+    },
+    "nav": {
+      "dashboard": "Панель",
+      "activity": "Активність команди",
+      "fighters": "Бійці",
+      "board": "Дошка команди",
+      "programs": "Програми та тренування",
+      "sparring": "Планувальник спарингів",
+      "calendar": "Календар",
+      "services": "Послуги та пакети",
+      "earnings": "Заробіток і виплати",
+      "billing": "Тариф і оплата",
+      "messages": "Повідомлення",
+      "settings": "Налаштування тренера"
+    }
+  },
+  "gym": {
+    "name": "Консоль залу",
+    "sections": {
+      "overview": "Огляд",
+      "people": "Люди",
+      "schedule": "Розклад",
+      "community": "Спільнота",
+      "money": "Фінанси",
+      "setup": "Налаштування"
+    },
+    "nav": {
+      "dashboard": "Панель",
+      "board": "Live-дошка залу",
+      "reports": "Звіти",
+      "members": "Учасники",
+      "leads": "Ліди та пробні заняття",
+      "staff": "Тренери та персонал",
+      "timetable": "Розклад",
+      "bookings": "Бронювання",
+      "attendance": "Відвідуваність",
+      "shared": "Спільні тренування",
+      "community": "Спільнота",
+      "challenges": "Челенджі",
+      "sparring": "Відкриті спаринги",
+      "announcements": "Оголошення",
+      "memberships": "Абонементи та пакети",
+      "revenue": "Дохід і виплати",
+      "store": "Магазин",
+      "promote": "Просування залу",
+      "branding": "Публічний профіль",
+      "settings": "Налаштування та тариф залу"
+    }
+  },
+  "sponsor": {
+    "name": "Партнерський портал",
+    "sections": {
+      "partner": "Партнер",
+      "campaigns": "Кампанії",
+      "results": "Результати",
+      "account": "Акаунт"
+    },
+    "nav": {
+      "overview": "Огляд",
+      "applications": "Заявки",
+      "campaigns": "Кампанії",
+      "challenges": "Челенджі",
+      "events": "Події",
+      "invoices": "Рахунки",
+      "settings": "Налаштування"
+    }
+  },
+  "admin": {
+    "name": "Панель керування",
+    "internal": "Внутрішній",
+    "sections": {
+      "platform": "Платформа",
+      "revenue": "Дохід",
+      "partners": "Партнери",
+      "trust": "Довіра",
+      "system": "Система"
+    },
+    "nav": {
+      "overview": "Загальний огляд",
+      "tenants": "Огляд орендарів",
+      "users": "Огляд користувачів",
+      "revenue": "Дохід",
+      "subscriptions": "Підписки",
+      "transactions": "Транзакції та повернення",
+      "payments": "Виплати",
+      "pricing": "Ціни та промокоди",
+      "sponsors": "Спонсори",
+      "campaigns": "Перевірка кампаній",
+      "enterprise": "Enterprise і white label",
+      "moderation": "Модерація",
+      "enforcement": "Блокування та апеляції",
+      "support": "Консоль підтримки",
+      "privacy": "Дані та конфіденційність",
+      "audit": "Журнал аудиту",
+      "flags": "Прапорці функцій",
+      "notifications": "Листи та push",
+      "integrations": "Інтеграції",
+      "markets": "Ринки",
+      "staff": "Внутрішній доступ"
+    }
+  },
+  "site": {
+    "navigation": "Сайт",
+    "nav": {
+      "fighters": "Бійцям",
+      "coaches": "Тренерам",
+      "gyms": "Залам",
+      "pricing": "Ціни",
+      "marketplace": "Маркетплейс",
+      "partners": "Партнерам",
+      "enterprise": "Для бізнесу"
+    },
+    "signIn": "Увійти",
+    "getStarted": "Почати"
+  },
+  "frame": {
+    "home": "Головна SimpleFit"
+  },
+  "placeholder": {
+    "badge": "Заплановано",
+    "description": "Ця сторінка — частина продукту SimpleFit і з’явиться разом зі своєю функцією. Поки що тут нічого не працює.",
+    "route": "Маршрут"
+  }
+}
