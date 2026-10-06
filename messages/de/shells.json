@@ -1,0 +1,153 @@
+{
+  "fighter": {
+    "name": "Kämpfer",
+    "sections": {
+      "training": "Mein Training",
+      "social": "Social",
+      "account": "Konto"
+    },
+    "nav": {
+      "home": "Start",
+      "board": "Live-Board",
+      "training": "Fight Camp",
+      "progress": "Fortschritt",
+      "community": "Community",
+      "discover": "Entdecken",
+      "profile": "Mein Profil",
+      "market": "Marktplatz",
+      "calendar": "Kalender",
+      "messages": "Nachrichten",
+      "settings": "Datenschutz & Einstellungen"
+    }
+  },
+  "coach": {
+    "name": "Coach",
+    "sections": {
+      "team": "Team",
+      "plan": "Planung",
+      "business": "Business",
+      "comms": "Kommunikation"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "activity": "Team-Aktivität",
+      "fighters": "Kämpfer",
+      "board": "Team-Board",
+      "programs": "Programme & Einheiten",
+      "sparring": "Sparring-Planer",
+      "calendar": "Kalender",
+      "services": "Leistungen & Pakete",
+      "earnings": "Einnahmen & Auszahlungen",
+      "billing": "Tarif & Abrechnung",
+      "messages": "Nachrichten",
+      "settings": "Coach-Einstellungen"
+    }
+  },
+  "gym": {
+    "name": "Gym-Konsole",
+    "sections": {
+      "overview": "Überblick",
+      "people": "Personen",
+      "schedule": "Zeitplan",
+      "community": "Community",
+      "money": "Finanzen",
+      "setup": "Einrichtung"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "board": "Live-Gym-Board",
+      "reports": "Berichte",
+      "members": "Mitglieder",
+      "leads": "Leads & Probetrainings",
+      "staff": "Coaches & Team",
+      "timetable": "Stundenplan",
+      "bookings": "Buchungen",
+      "attendance": "Anwesenheit",
+      "shared": "Gemeinsame Einheiten",
+      "community": "Community",
+      "challenges": "Challenges",
+      "sparring": "Offenes Sparring",
+      "announcements": "Ankündigungen",
+      "memberships": "Mitgliedschaften & Pakete",
+      "revenue": "Umsatz & Auszahlungen",
+      "store": "Shop",
+      "promote": "Gym bewerben",
+      "branding": "Öffentliches Profil",
+      "settings": "Gym-Einstellungen & Tarif"
+    }
+  },
+  "sponsor": {
+    "name": "Partnerportal",
+    "sections": {
+      "partner": "Partner",
+      "campaigns": "Kampagnen",
+      "results": "Ergebnisse",
+      "account": "Konto"
+    },
+    "nav": {
+      "overview": "Übersicht",
+      "applications": "Anträge",
+      "campaigns": "Kampagnen",
+      "challenges": "Challenges",
+      "events": "Events",
+      "invoices": "Rechnungen",
+      "settings": "Einstellungen"
+    }
+  },
+  "admin": {
+    "name": "Steuerzentrale",
+    "internal": "Intern",
+    "sections": {
+      "platform": "Plattform",
+      "revenue": "Umsatz",
+      "partners": "Partner",
+      "trust": "Vertrauen",
+      "system": "System"
+    },
+    "nav": {
+      "overview": "Globale Übersicht",
+      "tenants": "Mandanten-Explorer",
+      "users": "Nutzer-Explorer",
+      "revenue": "Umsatz",
+      "subscriptions": "Abonnements",
+      "transactions": "Transaktionen & Erstattungen",
+      "payments": "Auszahlungen",
+      "pricing": "Preise & Promocodes",
+      "sponsors": "Sponsoren",
+      "campaigns": "Kampagnenprüfung",
+      "enterprise": "Enterprise & White Label",
+      "moderation": "Moderation",
+      "enforcement": "Sperren & Einsprüche",
+      "support": "Support-Konsole",
+      "privacy": "Daten & Datenschutz",
+      "audit": "Audit-Log",
+      "flags": "Feature-Flags",
+      "notifications": "E-Mails & Push",
+      "integrations": "Integrationen",
+      "markets": "Märkte",
+      "staff": "Interner Zugriff"
+    }
+  },
+  "site": {
+    "navigation": "Website",
+    "nav": {
+      "fighters": "Kämpfer",
+      "coaches": "Coaches",
+      "gyms": "Gyms",
+      "pricing": "Preise",
+      "marketplace": "Marktplatz",
+      "partners": "Partner",
+      "enterprise": "Enterprise"
+    },
+    "signIn": "Anmelden",
+    "getStarted": "Loslegen"
+  },
+  "frame": {
+    "home": "SimpleFit-Startseite"
+  },
+  "placeholder": {
+    "badge": "Geplant",
+    "description": "Diese Seite gehört zum SimpleFit-Produkt und kommt mit ihrer Funktion. Hier funktioniert noch nichts.",
+    "route": "Route"
+  }
+}

@@ -68,13 +68,16 @@ simplefit-platform/
     │   ├── [locale]/          every page lives under a locale segment
     │   └── global-not-found.tsx
     ├── proxy.ts               locale negotiation (Next.js 16 "proxy", formerly middleware)
-    ├── widgets/               large composed UI blocks (app-shell, auth-frame, site-header, home-hero)
-    ├── features/              user actions (sign-in-with-google, sign-in-with-apple, sign-out, switch-locale, check-api-health)
+    ├── widgets/               large composed UI blocks (workspace-shell, app-frame, auth-frame, site-header,
+    │                          feature-placeholder, home-hero)
+    ├── features/              user actions (session-gate, sign-in-with-google, sign-in-with-apple, sign-out,
+    │                          switch-locale, check-api-health)
     ├── entities/              client representations of domain concepts (session, system-health)
     ├── shared/
     │   ├── api/               generated client, HTTP transport, ApiError, QueryClient
     │   ├── config/            env (validated), site identity
     │   ├── i18n/              locale registry, routing, messages, formats, navigation
+    │   ├── routes/            canonical web routes generated from the SF-31 registry, route helpers
     │   ├── lib/               cn(), form helpers, Google Identity Services and Apple JS boundaries
     │   ├── styles/            design tokens and Tailwind theme mapping
     │   └── ui/                shadcn/ui primitives (locally owned)
@@ -219,6 +222,16 @@ verifies the generated client against the committed snapshot.
   only when a ticket demonstrates a need TanStack Query and URL state cannot
   meet. The one exception is the session below (SF-22).
 
+## Routes and shells (SF-32)
+
+Every web route of the SF-31 registry resolves: the app tree, shells,
+generated route module, placeholders and guards are described in
+`docs/route-architecture.md` §11. In short: link by route id
+(`routeHref("web.app.coach.fighters")` from `@/shared/routes/routes`), never
+by a handwritten path; a new or changed route starts in the registry
+(`pnpm routes:generate`); a feature ticket replaces its route's
+`placeholderRoute(...)` page with the real screen.
+
 ## Session (SF-22)
 
 `entities/session` is the browser's SimpleFit session (simplefit-api ADR 0010,
@@ -237,8 +250,10 @@ web cookie transport):
   request (refresh tokens are single use).
 - `signOut()` revokes the session on the API and clears it locally even when
   the request fails.
-- Route guards (route-architecture §9) are not implemented yet; the identity
-  tickets add them on top of this module.
+- The session gates (`features/session-gate`, SF-32) build on this module:
+  `RequireSession` for AUTHENTICATED shells, `GuestOnly` for the auth shell.
+  Capability, phase and restricted-account guards are added by the identity
+  tickets (route-architecture §11).
 
 **Google sign-in** (`features/sign-in-with-google`) uses Google Identity
 Services: Google's own rendered button returns a Google ID token, which is
@@ -435,8 +450,10 @@ domains, so local testing needs an HTTPS host (see `.env.example`).
   locales, proxy negotiation and canonicalization, `<html lang>` per locale,
   translated widgets and features, locale switching (pointer and keyboard),
   navigation state, commit message convention, the session (cookie refresh,
-  single retry, sign-out, no token storage) and Google sign-in with GIS
-  stubbed on `window.google` (real Google is verified manually only).
+  single retry, sign-out, no token storage), Google sign-in with GIS
+  stubbed on `window.google` (real Google is verified manually only), and
+  the SF-32 route skeleton (registry → files, shells, named parameters,
+  session gates, active navigation, the canonical placeholder).
 - No Playwright yet: E2E arrives with the first meaningful user flow.
 
 ## Quality commands

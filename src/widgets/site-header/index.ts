@@ -1,1 +1,1 @@
-export { SiteHeader } from "./ui/site-header";
+export { SiteFooter, SiteHeader } from "./ui/site-header";

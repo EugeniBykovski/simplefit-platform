@@ -147,7 +147,10 @@
       "parent": "web.root",
       "description": "Public website chrome (site header + footer): landing, audience pages, pricing, partners.",
       "design": null,
-      "status": "PLACEHOLDER_REQUIRED"
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(site)/layout.tsx"
+      }
     },
     {
       "id": "web.auth",
@@ -155,7 +158,10 @@
       "parent": "web.root",
       "description": "Minimal sign-in / sign-up chrome without product navigation (also /sponsor/login and /admin/login).",
       "design": null,
-      "status": "PLACEHOLDER_REQUIRED"
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(auth)/layout.tsx"
+      }
     },
     {
       "id": "web.account",
@@ -163,7 +169,10 @@
       "parent": "web.root",
       "description": "Account-level pages under /account (WEB · ACCOUNT): restricted-account and recovery states, outside /app and every workspace, with no product navigation.",
       "design": null,
-      "status": "PLACEHOLDER_REQUIRED"
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/account/layout.tsx"
+      }
     },
     {
       "id": "web.app",
@@ -182,7 +191,10 @@
       "parent": "web.app",
       "description": "Registration wizard chrome (stepper, no product navigation).",
       "design": "GymSetupSteps.dc.html",
-      "status": "PLACEHOLDER_REQUIRED"
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/onboarding/layout.tsx"
+      }
     },
     {
       "id": "web.app.fighter",
@@ -190,7 +202,10 @@
       "parent": "web.app",
       "description": "Fighter web sidebar.",
       "design": "FighterWebNav.dc.html",
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(fighter)/layout.tsx"
+      },
       "navItems": [
         {
           "key": "home",
@@ -255,7 +270,10 @@
       "parent": "web.app",
       "description": "Coach web sidebar.",
       "design": "CoachWebNav.dc.html",
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/coach/layout.tsx"
+      },
       "navItems": [
         {
           "key": "dashboard",
@@ -325,7 +343,10 @@
       "parent": "web.app",
       "description": "Gym console sidebar.",
       "design": "GymWebNav.dc.html",
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/layout.tsx"
+      },
       "navItems": [
         {
           "key": "dashboard",
@@ -435,7 +456,10 @@
       "parent": "web.app",
       "description": "Account-level /app pages (billing, checkout, payments, settings, marketplace, calendar, messages) rendered inside the sidebar of the active workspace.",
       "design": null,
-      "status": "PLACEHOLDER_REQUIRED"
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/layout.tsx"
+      }
     },
     {
       "id": "web.sponsor",
@@ -443,7 +467,10 @@
       "parent": "web.root",
       "description": "Partner portal sidebar (/sponsor).",
       "design": "SponsorNav.dc.html",
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/layout.tsx"
+      },
       "navItems": [
         {
           "key": "overview",
@@ -510,7 +537,10 @@
       "parent": "web.root",
       "description": "Internal admin sidebar (/admin).",
       "design": "AdminNav.dc.html",
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/layout.tsx"
+      },
       "navItems": [
         {
           "key": "overview",
@@ -878,8 +908,12 @@
         "capability": "FIGHTER",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-WEB-DEFAULT-WORKSPACE"],
+      "production": {
+        "file": "src/app/[locale]/app/(fighter)/home/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["LD4", "FRW1", "FRW2", "W01"]
     },
     {
@@ -1255,7 +1289,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(auth)/signup/account/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WA3", "x-web-create-account"]
     },
     {
@@ -1276,8 +1314,12 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-SIGNUP-SESSION-BOUNDARY"],
+      "production": {
+        "file": "src/app/[locale]/(auth)/signup/verify/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WA4"]
     },
     {
@@ -1388,7 +1430,11 @@
         "capability": "FIGHTER",
         "phase": "ONBOARDING"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/onboarding/fighter/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WF1", "WF2", "WF3", "WF4", "WF5", "WF6"]
     },
     {
@@ -1451,7 +1497,11 @@
         "capability": "COACH",
         "phase": "ONBOARDING"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/onboarding/coach/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WCR1", "WCR2", "WCR3", "WCR4", "WCR5", "WCR6", "WCR7"]
     },
     {
@@ -1472,7 +1522,11 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/coach/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["CRW1", "WC1"]
     },
     {
@@ -1620,7 +1674,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ONBOARDING"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/onboarding/gym/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": [
         "OG1",
         "OG2",
@@ -1657,8 +1715,12 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-WORKSPACE-NOT-IN-URL"],
+      "production": {
+        "file": "src/app/[locale]/app/gym/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["GRW1", "WG1"]
     },
     {
@@ -1679,7 +1741,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/timetable/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["GRW2", "WG5"]
     },
     {
@@ -1700,7 +1766,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(site)/partners/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["SPX1"]
     },
     {
@@ -1721,7 +1791,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(site)/partners/apply/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": [
         "SPX2",
         "SP1",
@@ -1754,7 +1828,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(auth)/sponsor/login/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["SPX3"]
     },
     {
@@ -1775,8 +1853,12 @@
         "capability": "SPONSOR_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-WORKSPACE-NOT-IN-URL"],
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/dashboard/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["SRW1", "SPX4", "x-web-application-approved"]
     },
     {
@@ -1797,7 +1879,11 @@
         "capability": "SPONSOR_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/campaigns/new/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["SRW2", "SPC1", "SPC2", "SPC3", "SPC4", "SPC5", "SPC6"]
     },
     {
@@ -1818,7 +1904,11 @@
         "capability": "ADMIN",
         "phase": "ONBOARDING"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/welcome/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["ARW1"]
     },
     {
@@ -4135,7 +4225,11 @@
         "capability": "FIGHTER",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(fighter)/board/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["W02"]
     },
     {
@@ -4156,7 +4250,11 @@
         "capability": "FIGHTER",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(fighter)/community/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["W03"]
     },
     {
@@ -4177,7 +4275,11 @@
         "capability": "FIGHTER",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(fighter)/discover/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["W04"]
     },
     {
@@ -4198,8 +4300,12 @@
         "capability": "FIGHTER",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-PROFILE-NO-ID"],
+      "production": {
+        "file": "src/app/[locale]/app/(fighter)/profile/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["W05"]
     },
     {
@@ -4220,8 +4326,12 @@
         "capability": "FIGHTER",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-CAMP-DUPLICATE"],
+      "production": {
+        "file": "src/app/[locale]/app/(fighter)/camp/board/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["W06"]
     },
     {
@@ -4246,8 +4356,12 @@
         "capability": "FIGHTER",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-ALIAS-ROWS", "D-CAMP-DUPLICATE"],
+      "production": {
+        "file": "src/app/[locale]/app/(fighter)/camp/page.tsx",
+        "note": "SF-32: redirects to /app/camp/board (REDIRECT); renders nothing."
+      },
       "screens": []
     },
     {
@@ -4268,7 +4382,11 @@
         "capability": "FIGHTER",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(fighter)/progress/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["W07"]
     },
     {
@@ -4289,8 +4407,12 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-SHARED-ROUTES-ON-PERSONA-PAGES"],
+      "production": {
+        "file": "src/app/[locale]/app/(active)/settings/security/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WS1"]
     },
     {
@@ -4311,8 +4433,12 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-WEB-ACCOUNT-STATES"],
+      "production": {
+        "file": "src/app/[locale]/app/(active)/settings/data/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WS2"]
     },
     {
@@ -4333,7 +4459,11 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/coach/activity/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WC2"]
     },
     {
@@ -4354,8 +4484,12 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-NAV-DETAIL-TARGETS", "D-PROGRAM-BUILDER-PATHS"],
+      "production": {
+        "file": "src/app/[locale]/app/coach/sessions/new/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WC3", "CRW2"]
     },
     {
@@ -4376,8 +4510,12 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "production": {
+        "file": "src/app/[locale]/app/coach/fighters/[fighterId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WC4"]
     },
     {
@@ -4398,7 +4536,11 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/coach/sparring/plan/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WC5"]
     },
     {
@@ -4419,7 +4561,11 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/coach/settings/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WC6"]
     },
     {
@@ -4440,7 +4586,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/board/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG2"]
     },
     {
@@ -4461,7 +4611,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/reports/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG20"]
     },
     {
@@ -4482,7 +4636,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/members/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG3"]
     },
     {
@@ -4503,7 +4661,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/members/[memberId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG14", "WG15"]
     },
     {
@@ -4524,7 +4686,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/leads/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG4"]
     },
     {
@@ -4545,7 +4711,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/staff/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG16"]
     },
     {
@@ -4566,7 +4736,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/bookings/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG18"]
     },
     {
@@ -4587,7 +4761,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/attendance/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG19"]
     },
     {
@@ -4608,7 +4786,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/shared/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG13"]
     },
     {
@@ -4629,7 +4811,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/memberships/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG6"]
     },
     {
@@ -4650,7 +4836,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/revenue/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG7"]
     },
     {
@@ -4671,7 +4861,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/profile/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG8"]
     },
     {
@@ -4692,7 +4886,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/community/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG9", "x-web-gym-community-desktop"]
     },
     {
@@ -4713,7 +4911,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/settings/community/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG10", "x-web-member-discoverability"]
     },
     {
@@ -4734,8 +4936,12 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "production": {
+        "file": "src/app/[locale]/app/gym/challenges/new/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG11"]
     },
     {
@@ -4756,8 +4962,12 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "production": {
+        "file": "src/app/[locale]/app/gym/open-sparring/[openSparringId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG12"]
     },
     {
@@ -4778,7 +4988,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/announcements/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG21"]
     },
     {
@@ -4799,7 +5013,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/settings/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG22"]
     },
     {
@@ -4820,7 +5038,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/settings/locations/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG23"]
     },
     {
@@ -4841,7 +5063,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/settings/roles/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG17"]
     },
     {
@@ -4862,7 +5088,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/settings/integrations/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG24"]
     },
     {
@@ -4883,7 +5113,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/settings/plan/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG25"]
     },
     {
@@ -4904,7 +5138,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/settings/danger/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG26"]
     },
     {
@@ -4925,7 +5163,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/billing/upgrade/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["BL2"]
     },
     {
@@ -4946,7 +5188,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/billing/downgrade/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["BL3"]
     },
     {
@@ -4967,7 +5213,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/checkout/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["CO1", "CO5"]
     },
     {
@@ -4988,7 +5238,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/billing/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["BL1", "BL1b"]
     },
     {
@@ -5009,7 +5263,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/billing/invoices/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["BL9"]
     },
     {
@@ -5030,7 +5288,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/billing/invoices/[invoiceId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["BL10"]
     },
     {
@@ -5051,7 +5313,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/payments/[paymentId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["TX1", "RF1", "RF2", "RF3"]
     },
     {
@@ -5072,8 +5338,12 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "production": {
+        "file": "src/app/[locale]/app/coach/services/new/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["CC2"]
     },
     {
@@ -5094,7 +5364,11 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/coach/earnings/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["CC6"]
     },
     {
@@ -5115,7 +5389,11 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/coach/earnings/transactions/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["CC7"]
     },
     {
@@ -5136,7 +5414,11 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/coach/payouts/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["CC8"]
     },
     {
@@ -5157,7 +5439,11 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/coach/payouts/setup/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["CC9"]
     },
     {
@@ -5178,7 +5464,11 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/coach/payouts/verify/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["CC10"]
     },
     {
@@ -5199,7 +5489,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/memberships/new/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["GC2"]
     },
     {
@@ -5220,7 +5514,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/packages/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["GC6"]
     },
     {
@@ -5241,7 +5539,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/revenue/failed/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["GC9"]
     },
     {
@@ -5262,7 +5564,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/revenue/transactions/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["GC10"]
     },
     {
@@ -5283,7 +5589,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/payouts/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["GC11"]
     },
     {
@@ -5304,7 +5614,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/marketplace/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["MK1d"]
     },
     {
@@ -5325,7 +5639,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/store/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["SH0"]
     },
     {
@@ -5346,7 +5664,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/promote/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AV6"]
     },
     {
@@ -5367,7 +5689,11 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gym/promote/results/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AV7"]
     },
     {
@@ -5388,7 +5714,11 @@
         "capability": "SPONSOR_WORKSPACE",
         "phase": "ONBOARDING"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/application/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["SPX5"]
     },
     {
@@ -5409,8 +5739,12 @@
         "capability": "SPONSOR_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-SPONSOR-NAV"],
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/campaigns/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["SPX6"]
     },
     {
@@ -5431,7 +5765,11 @@
         "capability": "SPONSOR_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/campaigns/[campaignId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["SPC7"]
     },
     {
@@ -5452,8 +5790,12 @@
         "capability": "SPONSOR_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-SPONSOR-NAV"],
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/analytics/[campaignId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["SPX7"]
     },
     {
@@ -5474,7 +5816,11 @@
         "capability": "SPONSOR_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/invoices/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["SPX8"]
     },
     {
@@ -5495,7 +5841,11 @@
         "capability": "SPONSOR_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/settings/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["SPX9"]
     },
     {
@@ -5516,8 +5866,12 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-ADMIN-IDENTITY"],
+      "production": {
+        "file": "src/app/[locale]/(auth)/admin/login/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD0"]
     },
     {
@@ -5538,8 +5892,12 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-ADMIN-IDENTITY"],
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/access/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD0b"]
     },
     {
@@ -5560,7 +5918,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD1"]
     },
     {
@@ -5581,7 +5943,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/tenants/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD2"]
     },
     {
@@ -5602,7 +5968,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/tenants/[tenantId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD12"]
     },
     {
@@ -5623,7 +5993,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/users/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD7", "AD10"]
     },
     {
@@ -5644,7 +6018,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/users/[userId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD8", "AD9"]
     },
     {
@@ -5665,7 +6043,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/moderation/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD4"]
     },
     {
@@ -5686,7 +6068,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/enforcement/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD11"]
     },
     {
@@ -5707,7 +6093,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/privacy/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD18"]
     },
     {
@@ -5728,8 +6118,12 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/support/[sessionId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD5"]
     },
     {
@@ -5750,7 +6144,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/audit/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD14"]
     },
     {
@@ -5771,7 +6169,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/subscriptions/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD13"]
     },
     {
@@ -5792,7 +6194,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/payouts/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD3"]
     },
     {
@@ -5813,7 +6219,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/notifications/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD15"]
     },
     {
@@ -5834,7 +6244,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/notifications/[templateId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD16"]
     },
     {
@@ -5855,7 +6269,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/integrations/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD17"]
     },
     {
@@ -5876,7 +6294,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/markets/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD19"]
     },
     {
@@ -5897,7 +6319,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/flags/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD6"]
     },
     {
@@ -5918,7 +6344,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/staff/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD20"]
     },
     {
@@ -5939,7 +6369,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/revenue/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AR1"]
     },
     {
@@ -5960,7 +6394,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/transactions/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AR2"]
     },
     {
@@ -5981,7 +6419,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/refunds/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AR3"]
     },
     {
@@ -6002,7 +6444,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/pricing/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AR4"]
     },
     {
@@ -6023,7 +6469,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/pricing/[planId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AR5"]
     },
     {
@@ -6044,7 +6494,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/promos/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AR6"]
     },
     {
@@ -6065,7 +6519,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/sponsors/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AS1"]
     },
     {
@@ -6086,8 +6544,12 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-ADMIN-SPONSOR-CAMPAIGN-PATHS"],
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/sponsors/[sponsorId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AS2", "AS4"]
     },
     {
@@ -6108,8 +6570,12 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-ADMIN-SPONSOR-CAMPAIGN-PATHS"],
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/sponsors/[sponsorId]/edit/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AS3"]
     },
     {
@@ -6130,8 +6596,12 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-ADMIN-SPONSOR-CAMPAIGN-PATHS"],
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/sponsors/[sponsorId]/timeline/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AS5"]
     },
     {
@@ -6152,7 +6622,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/sponsors/revenue/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AS6"]
     },
     {
@@ -6173,7 +6647,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/campaigns/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AC1"]
     },
     {
@@ -6194,8 +6672,12 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-ADMIN-SPONSOR-CAMPAIGN-PATHS"],
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/campaigns/[campaignId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AC2", "AC2b"]
     },
     {
@@ -6216,8 +6698,12 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-ADMIN-SPONSOR-CAMPAIGN-PATHS"],
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/campaigns/[campaignId]/edit/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AC3"]
     },
     {
@@ -6238,7 +6724,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/challenges/new/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AC4"]
     },
     {
@@ -6259,7 +6749,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/events/[eventId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AC5"]
     },
     {
@@ -6280,7 +6774,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/enterprise/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AE1", "AE3"]
     },
     {
@@ -6301,7 +6799,11 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/enterprise/[leadId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AE2"]
     },
     {
@@ -6325,7 +6827,7 @@
       "status": "IMPLEMENTED",
       "discrepancies": ["D-PRODUCTION-FOUNDATION"],
       "production": {
-        "file": "src/app/[locale]/page.tsx",
+        "file": "src/app/[locale]/(site)/page.tsx",
         "note": "SF-11 foundation landing (site header + hero), not yet the L1 artboard."
       },
       "screens": ["L1"]
@@ -6348,7 +6850,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(site)/fighters/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["L2"]
     },
     {
@@ -6369,7 +6875,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(site)/coaches/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["L3"]
     },
     {
@@ -6390,7 +6900,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(site)/gyms/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["L4"]
     },
     {
@@ -6411,7 +6925,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(site)/marketplace/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["L5"]
     },
     {
@@ -6432,7 +6950,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(site)/pricing/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["PR1", "PR2", "PR3", "PR4"]
     },
     {
@@ -6453,7 +6975,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(site)/white-label/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["PR5"]
     },
     {
@@ -6474,7 +7000,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(site)/pricing/compare/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["PR6"]
     },
     {
@@ -6617,8 +7147,12 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-NAV-DETAIL-TARGETS", "D-WEB-COACH-FIGHTER-INVITE"],
+      "production": {
+        "file": "src/app/[locale]/app/coach/fighters/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WC7"]
     },
     {
@@ -6639,8 +7173,12 @@
         "capability": "COACH",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-WEB-NAV-MOBILE-TARGETS"],
+      "production": {
+        "file": "src/app/[locale]/app/coach/board/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WC8"]
     },
     {
@@ -6661,8 +7199,12 @@
         "capability": "GYM_WORKSPACE",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "production": {
+        "file": "src/app/[locale]/app/gym/open-sparring/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WG27"]
     },
     {
@@ -6683,8 +7225,12 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-WEB-NAV-MOBILE-TARGETS"],
+      "production": {
+        "file": "src/app/[locale]/app/(active)/calendar/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["W08"]
     },
     {
@@ -6705,8 +7251,12 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-WEB-NAV-MOBILE-TARGETS"],
+      "production": {
+        "file": "src/app/[locale]/app/(active)/messages/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["W09"]
     },
     {
@@ -6728,8 +7278,12 @@
         "phase": null,
         "restrictedAccount": true
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-WEB-ACCOUNT-STATES"],
+      "production": {
+        "file": "src/app/[locale]/account/pending-deletion/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WS3"]
     },
     {
@@ -6751,8 +7305,12 @@
         "phase": null,
         "restrictedAccount": true
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-WEB-ACCOUNT-STATES"],
+      "production": {
+        "file": "src/app/[locale]/account/suspended/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WS4"]
     },
     {
@@ -6774,8 +7332,12 @@
         "phase": null,
         "restrictedAccount": true
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-WEB-ACCOUNT-STATES"],
+      "production": {
+        "file": "src/app/[locale]/account/appeal/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["WS5"]
     },
     {
@@ -6796,8 +7358,12 @@
         "capability": "ADMIN",
         "phase": "ACTIVE"
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "production": {
+        "file": "src/app/[locale]/(admin)/admin/support/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+      },
       "screens": ["AD21"]
     }
   ],

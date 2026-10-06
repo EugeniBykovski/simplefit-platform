@@ -86,7 +86,7 @@ describe("loadMessages", () => {
     ["es-MX", "Resumen"],
     ["fr", "Vue d’ensemble"],
   ] as const)("loads %s messages", async (locale, overview) => {
-    expect((await loadMessages(locale)).navigation.overview).toBe(overview);
+    expect((await loadMessages(locale)).shells.sponsor.nav.overview).toBe(overview);
   });
 
   it("resolves es-MX through es before English, keeping es-MX overrides distinct", async () => {

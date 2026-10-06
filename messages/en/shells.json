@@ -1,0 +1,153 @@
+{
+  "fighter": {
+    "name": "Fighter",
+    "sections": {
+      "training": "My training",
+      "social": "Social",
+      "account": "Account"
+    },
+    "nav": {
+      "home": "Home",
+      "board": "Live Board",
+      "training": "Fight camp",
+      "progress": "Progress",
+      "community": "Community",
+      "discover": "Discover",
+      "profile": "My profile",
+      "market": "Marketplace",
+      "calendar": "Calendar",
+      "messages": "Messages",
+      "settings": "Privacy & settings"
+    }
+  },
+  "coach": {
+    "name": "Coach",
+    "sections": {
+      "team": "Team",
+      "plan": "Plan",
+      "business": "Business",
+      "comms": "Comms"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "activity": "Team activity",
+      "fighters": "Fighters",
+      "board": "Team board",
+      "programs": "Programs & sessions",
+      "sparring": "Sparring planner",
+      "calendar": "Calendar",
+      "services": "Services & packages",
+      "earnings": "Earnings & payouts",
+      "billing": "Plan & billing",
+      "messages": "Messages",
+      "settings": "Coach settings"
+    }
+  },
+  "gym": {
+    "name": "Gym console",
+    "sections": {
+      "overview": "Overview",
+      "people": "People",
+      "schedule": "Schedule",
+      "community": "Community",
+      "money": "Money",
+      "setup": "Setup"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "board": "Live Gym Board",
+      "reports": "Reports",
+      "members": "Members",
+      "leads": "Leads & trials",
+      "staff": "Coaches & staff",
+      "timetable": "Timetable",
+      "bookings": "Bookings",
+      "attendance": "Attendance",
+      "shared": "Shared sessions",
+      "community": "Community",
+      "challenges": "Challenges",
+      "sparring": "Open sparring",
+      "announcements": "Announcements",
+      "memberships": "Memberships & packages",
+      "revenue": "Revenue & payouts",
+      "store": "Store",
+      "promote": "Promote gym",
+      "branding": "Public profile",
+      "settings": "Gym settings & plan"
+    }
+  },
+  "sponsor": {
+    "name": "Partner portal",
+    "sections": {
+      "partner": "Partner",
+      "campaigns": "Campaigns",
+      "results": "Results",
+      "account": "Account"
+    },
+    "nav": {
+      "overview": "Overview",
+      "applications": "Applications",
+      "campaigns": "Campaigns",
+      "challenges": "Challenges",
+      "events": "Events",
+      "invoices": "Invoices",
+      "settings": "Settings"
+    }
+  },
+  "admin": {
+    "name": "Control plane",
+    "internal": "Internal",
+    "sections": {
+      "platform": "Platform",
+      "revenue": "Revenue",
+      "partners": "Partners",
+      "trust": "Trust",
+      "system": "System"
+    },
+    "nav": {
+      "overview": "Global overview",
+      "tenants": "Tenant explorer",
+      "users": "User explorer",
+      "revenue": "Revenue",
+      "subscriptions": "Subscriptions",
+      "transactions": "Transactions & refunds",
+      "payments": "Payouts",
+      "pricing": "Pricing & promo codes",
+      "sponsors": "Sponsors",
+      "campaigns": "Campaign review",
+      "enterprise": "Enterprise & white label",
+      "moderation": "Moderation",
+      "enforcement": "Bans & appeals",
+      "support": "Support console",
+      "privacy": "Data & privacy",
+      "audit": "Audit log",
+      "flags": "Feature flags",
+      "notifications": "Emails & push",
+      "integrations": "Integrations",
+      "markets": "Markets",
+      "staff": "Internal access"
+    }
+  },
+  "site": {
+    "navigation": "Site",
+    "nav": {
+      "fighters": "Fighters",
+      "coaches": "Coaches",
+      "gyms": "Gyms",
+      "pricing": "Pricing",
+      "marketplace": "Marketplace",
+      "partners": "Partners",
+      "enterprise": "Enterprise"
+    },
+    "signIn": "Sign in",
+    "getStarted": "Get started"
+  },
+  "frame": {
+    "home": "SimpleFit home"
+  },
+  "placeholder": {
+    "badge": "Planned",
+    "description": "This page is part of the SimpleFit product and arrives with its feature. Nothing here works yet.",
+    "route": "Route"
+  }
+}

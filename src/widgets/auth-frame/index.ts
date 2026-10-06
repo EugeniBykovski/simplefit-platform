@@ -1,1 +1,1 @@
-export { AuthFrame } from "./ui/auth-frame";
+export { AuthFrame, AuthShell } from "./ui/auth-frame";

@@ -1,0 +1,153 @@
+{
+  "fighter": {
+    "name": "Boxeador",
+    "sections": {
+      "training": "Mi entrenamiento",
+      "social": "Social",
+      "account": "Cuenta"
+    },
+    "nav": {
+      "home": "Inicio",
+      "board": "Tablero en vivo",
+      "training": "Campamento de pelea",
+      "progress": "Progreso",
+      "community": "Comunidad",
+      "discover": "Descubrir",
+      "profile": "Mi perfil",
+      "market": "Marketplace",
+      "calendar": "Calendario",
+      "messages": "Mensajes",
+      "settings": "Privacidad y ajustes"
+    }
+  },
+  "coach": {
+    "name": "Entrenador",
+    "sections": {
+      "team": "Equipo",
+      "plan": "Planificación",
+      "business": "Negocio",
+      "comms": "Comunicación"
+    },
+    "nav": {
+      "dashboard": "Panel",
+      "activity": "Actividad del equipo",
+      "fighters": "Boxeadores",
+      "board": "Tablero del equipo",
+      "programs": "Programas y sesiones",
+      "sparring": "Planificador de sparring",
+      "calendar": "Calendario",
+      "services": "Servicios y paquetes",
+      "earnings": "Ganancias y pagos",
+      "billing": "Plan y facturación",
+      "messages": "Mensajes",
+      "settings": "Ajustes del entrenador"
+    }
+  },
+  "gym": {
+    "name": "Consola del gimnasio",
+    "sections": {
+      "overview": "Resumen",
+      "people": "Personas",
+      "schedule": "Horario",
+      "community": "Comunidad",
+      "money": "Dinero",
+      "setup": "Configuración"
+    },
+    "nav": {
+      "dashboard": "Panel",
+      "board": "Tablero del gimnasio en vivo",
+      "reports": "Informes",
+      "members": "Miembros",
+      "leads": "Leads y pruebas",
+      "staff": "Entrenadores y personal",
+      "timetable": "Horario",
+      "bookings": "Reservas",
+      "attendance": "Asistencia",
+      "shared": "Sesiones compartidas",
+      "community": "Comunidad",
+      "challenges": "Retos",
+      "sparring": "Sparring abierto",
+      "announcements": "Anuncios",
+      "memberships": "Membresías y paquetes",
+      "revenue": "Ingresos y pagos",
+      "store": "Tienda",
+      "promote": "Promocionar gimnasio",
+      "branding": "Perfil público",
+      "settings": "Ajustes y plan del gimnasio"
+    }
+  },
+  "sponsor": {
+    "name": "Portal de socios",
+    "sections": {
+      "partner": "Socio",
+      "campaigns": "Campañas",
+      "results": "Resultados",
+      "account": "Cuenta"
+    },
+    "nav": {
+      "overview": "Resumen",
+      "applications": "Solicitudes",
+      "campaigns": "Campañas",
+      "challenges": "Retos",
+      "events": "Eventos",
+      "invoices": "Facturas",
+      "settings": "Ajustes"
+    }
+  },
+  "admin": {
+    "name": "Panel de control",
+    "internal": "Interno",
+    "sections": {
+      "platform": "Plataforma",
+      "revenue": "Ingresos",
+      "partners": "Socios",
+      "trust": "Confianza",
+      "system": "Sistema"
+    },
+    "nav": {
+      "overview": "Vista general",
+      "tenants": "Explorador de inquilinos",
+      "users": "Explorador de usuarios",
+      "revenue": "Ingresos",
+      "subscriptions": "Suscripciones",
+      "transactions": "Transacciones y reembolsos",
+      "payments": "Pagos",
+      "pricing": "Precios y códigos promocionales",
+      "sponsors": "Patrocinadores",
+      "campaigns": "Revisión de campañas",
+      "enterprise": "Empresas y marca blanca",
+      "moderation": "Moderación",
+      "enforcement": "Bloqueos y apelaciones",
+      "support": "Consola de soporte",
+      "privacy": "Datos y privacidad",
+      "audit": "Registro de auditoría",
+      "flags": "Flags de funciones",
+      "notifications": "Correos y push",
+      "integrations": "Integraciones",
+      "markets": "Mercados",
+      "staff": "Acceso interno"
+    }
+  },
+  "site": {
+    "navigation": "Sitio",
+    "nav": {
+      "fighters": "Boxeadores",
+      "coaches": "Entrenadores",
+      "gyms": "Gimnasios",
+      "pricing": "Precios",
+      "marketplace": "Marketplace",
+      "partners": "Socios",
+      "enterprise": "Empresas"
+    },
+    "signIn": "Iniciar sesión",
+    "getStarted": "Empezar"
+  },
+  "frame": {
+    "home": "Inicio de SimpleFit"
+  },
+  "placeholder": {
+    "badge": "Previsto",
+    "description": "Esta página forma parte del producto SimpleFit y llegará con su función. Aquí todavía no funciona nada.",
+    "route": "Ruta"
+  }
+}

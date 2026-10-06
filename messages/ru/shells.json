@@ -1,0 +1,153 @@
+{
+  "fighter": {
+    "name": "Боец",
+    "sections": {
+      "training": "Мои тренировки",
+      "social": "Сообщество",
+      "account": "Аккаунт"
+    },
+    "nav": {
+      "home": "Главная",
+      "board": "Live-доска",
+      "training": "Файт-кэмп",
+      "progress": "Прогресс",
+      "community": "Сообщество",
+      "discover": "Обзор",
+      "profile": "Мой профиль",
+      "market": "Маркетплейс",
+      "calendar": "Календарь",
+      "messages": "Сообщения",
+      "settings": "Приватность и настройки"
+    }
+  },
+  "coach": {
+    "name": "Тренер",
+    "sections": {
+      "team": "Команда",
+      "plan": "Планирование",
+      "business": "Бизнес",
+      "comms": "Общение"
+    },
+    "nav": {
+      "dashboard": "Панель",
+      "activity": "Активность команды",
+      "fighters": "Бойцы",
+      "board": "Доска команды",
+      "programs": "Программы и тренировки",
+      "sparring": "Планировщик спаррингов",
+      "calendar": "Календарь",
+      "services": "Услуги и пакеты",
+      "earnings": "Заработок и выплаты",
+      "billing": "Тариф и оплата",
+      "messages": "Сообщения",
+      "settings": "Настройки тренера"
+    }
+  },
+  "gym": {
+    "name": "Консоль зала",
+    "sections": {
+      "overview": "Обзор",
+      "people": "Люди",
+      "schedule": "Расписание",
+      "community": "Сообщество",
+      "money": "Финансы",
+      "setup": "Настройка"
+    },
+    "nav": {
+      "dashboard": "Панель",
+      "board": "Live-доска зала",
+      "reports": "Отчёты",
+      "members": "Участники",
+      "leads": "Лиды и пробные занятия",
+      "staff": "Тренеры и персонал",
+      "timetable": "Расписание",
+      "bookings": "Бронирования",
+      "attendance": "Посещаемость",
+      "shared": "Совместные тренировки",
+      "community": "Сообщество",
+      "challenges": "Челленджи",
+      "sparring": "Открытые спарринги",
+      "announcements": "Объявления",
+      "memberships": "Абонементы и пакеты",
+      "revenue": "Выручка и выплаты",
+      "store": "Магазин",
+      "promote": "Продвижение зала",
+      "branding": "Публичный профиль",
+      "settings": "Настройки и тариф зала"
+    }
+  },
+  "sponsor": {
+    "name": "Партнёрский портал",
+    "sections": {
+      "partner": "Партнёр",
+      "campaigns": "Кампании",
+      "results": "Результаты",
+      "account": "Аккаунт"
+    },
+    "nav": {
+      "overview": "Обзор",
+      "applications": "Заявки",
+      "campaigns": "Кампании",
+      "challenges": "Челленджи",
+      "events": "События",
+      "invoices": "Счета",
+      "settings": "Настройки"
+    }
+  },
+  "admin": {
+    "name": "Панель управления",
+    "internal": "Внутренний",
+    "sections": {
+      "platform": "Платформа",
+      "revenue": "Выручка",
+      "partners": "Партнёры",
+      "trust": "Доверие",
+      "system": "Система"
+    },
+    "nav": {
+      "overview": "Общий обзор",
+      "tenants": "Обзор арендаторов",
+      "users": "Обзор пользователей",
+      "revenue": "Выручка",
+      "subscriptions": "Подписки",
+      "transactions": "Транзакции и возвраты",
+      "payments": "Выплаты",
+      "pricing": "Цены и промокоды",
+      "sponsors": "Спонсоры",
+      "campaigns": "Проверка кампаний",
+      "enterprise": "Enterprise и white label",
+      "moderation": "Модерация",
+      "enforcement": "Блокировки и апелляции",
+      "support": "Консоль поддержки",
+      "privacy": "Данные и конфиденциальность",
+      "audit": "Журнал аудита",
+      "flags": "Флаги функций",
+      "notifications": "Письма и push",
+      "integrations": "Интеграции",
+      "markets": "Рынки",
+      "staff": "Внутренний доступ"
+    }
+  },
+  "site": {
+    "navigation": "Сайт",
+    "nav": {
+      "fighters": "Бойцам",
+      "coaches": "Тренерам",
+      "gyms": "Залам",
+      "pricing": "Цены",
+      "marketplace": "Маркетплейс",
+      "partners": "Партнёрам",
+      "enterprise": "Для бизнеса"
+    },
+    "signIn": "Войти",
+    "getStarted": "Начать"
+  },
+  "frame": {
+    "home": "Главная SimpleFit"
+  },
+  "placeholder": {
+    "badge": "Запланировано",
+    "description": "Эта страница — часть продукта SimpleFit и появится вместе со своей функцией. Пока здесь ничего не работает.",
+    "route": "Маршрут"
+  }
+}

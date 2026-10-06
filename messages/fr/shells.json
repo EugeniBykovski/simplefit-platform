@@ -1,0 +1,153 @@
+{
+  "fighter": {
+    "name": "Boxeur",
+    "sections": {
+      "training": "Mon entraînement",
+      "social": "Social",
+      "account": "Compte"
+    },
+    "nav": {
+      "home": "Accueil",
+      "board": "Tableau en direct",
+      "training": "Camp de combat",
+      "progress": "Progrès",
+      "community": "Communauté",
+      "discover": "Découvrir",
+      "profile": "Mon profil",
+      "market": "Marketplace",
+      "calendar": "Calendrier",
+      "messages": "Messages",
+      "settings": "Confidentialité et paramètres"
+    }
+  },
+  "coach": {
+    "name": "Coach",
+    "sections": {
+      "team": "Équipe",
+      "plan": "Planification",
+      "business": "Activité",
+      "comms": "Communication"
+    },
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "activity": "Activité de l’équipe",
+      "fighters": "Boxeurs",
+      "board": "Tableau de l’équipe",
+      "programs": "Programmes et séances",
+      "sparring": "Planificateur de sparring",
+      "calendar": "Calendrier",
+      "services": "Services et forfaits",
+      "earnings": "Revenus et versements",
+      "billing": "Forfait et facturation",
+      "messages": "Messages",
+      "settings": "Paramètres du coach"
+    }
+  },
+  "gym": {
+    "name": "Console de la salle",
+    "sections": {
+      "overview": "Aperçu",
+      "people": "Personnes",
+      "schedule": "Planning",
+      "community": "Communauté",
+      "money": "Finances",
+      "setup": "Configuration"
+    },
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "board": "Tableau de la salle en direct",
+      "reports": "Rapports",
+      "members": "Membres",
+      "leads": "Prospects et essais",
+      "staff": "Coachs et équipe",
+      "timetable": "Planning",
+      "bookings": "Réservations",
+      "attendance": "Présences",
+      "shared": "Séances partagées",
+      "community": "Communauté",
+      "challenges": "Défis",
+      "sparring": "Sparring ouvert",
+      "announcements": "Annonces",
+      "memberships": "Abonnements et forfaits",
+      "revenue": "Revenus et versements",
+      "store": "Boutique",
+      "promote": "Promouvoir la salle",
+      "branding": "Profil public",
+      "settings": "Paramètres et forfait de la salle"
+    }
+  },
+  "sponsor": {
+    "name": "Portail partenaire",
+    "sections": {
+      "partner": "Partenaire",
+      "campaigns": "Campagnes",
+      "results": "Résultats",
+      "account": "Compte"
+    },
+    "nav": {
+      "overview": "Vue d’ensemble",
+      "applications": "Candidatures",
+      "campaigns": "Campagnes",
+      "challenges": "Défis",
+      "events": "Événements",
+      "invoices": "Factures",
+      "settings": "Paramètres"
+    }
+  },
+  "admin": {
+    "name": "Plan de contrôle",
+    "internal": "Interne",
+    "sections": {
+      "platform": "Plateforme",
+      "revenue": "Revenus",
+      "partners": "Partenaires",
+      "trust": "Confiance",
+      "system": "Système"
+    },
+    "nav": {
+      "overview": "Vue d’ensemble",
+      "tenants": "Explorateur de locataires",
+      "users": "Explorateur d’utilisateurs",
+      "revenue": "Revenus",
+      "subscriptions": "Abonnements",
+      "transactions": "Transactions et remboursements",
+      "payments": "Versements",
+      "pricing": "Tarifs et codes promo",
+      "sponsors": "Sponsors",
+      "campaigns": "Revue des campagnes",
+      "enterprise": "Entreprise et marque blanche",
+      "moderation": "Modération",
+      "enforcement": "Bannissements et recours",
+      "support": "Console de support",
+      "privacy": "Données et confidentialité",
+      "audit": "Journal d’audit",
+      "flags": "Feature flags",
+      "notifications": "E-mails et push",
+      "integrations": "Intégrations",
+      "markets": "Marchés",
+      "staff": "Accès interne"
+    }
+  },
+  "site": {
+    "navigation": "Site",
+    "nav": {
+      "fighters": "Boxeurs",
+      "coaches": "Coachs",
+      "gyms": "Salles",
+      "pricing": "Tarifs",
+      "marketplace": "Marketplace",
+      "partners": "Partenaires",
+      "enterprise": "Entreprise"
+    },
+    "signIn": "Se connecter",
+    "getStarted": "Commencer"
+  },
+  "frame": {
+    "home": "Accueil SimpleFit"
+  },
+  "placeholder": {
+    "badge": "Prévu",
+    "description": "Cette page fait partie du produit SimpleFit et arrivera avec sa fonctionnalité. Rien n’y fonctionne encore.",
+    "route": "Route"
+  }
+}
