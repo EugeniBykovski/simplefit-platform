@@ -926,7 +926,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/welcome.tsx",
+        "note": "SF-22: Google sign-in only, without the auth shell; the A01 design (Apple, email, invites) is SF-24."
+      },
       "screens": ["A01"]
     },
     {
@@ -947,7 +951,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/login.tsx",
+        "note": "SF-22: Google sign-in only, without the auth shell; the O01b design (passkey, Apple, email code) is SF-24."
+      },
       "screens": ["O01b"]
     },
     {
