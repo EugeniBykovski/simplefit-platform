@@ -68,14 +68,14 @@ simplefit-platform/
     │   ├── [locale]/          every page lives under a locale segment
     │   └── global-not-found.tsx
     ├── proxy.ts               locale negotiation (Next.js 16 "proxy", formerly middleware)
-    ├── widgets/               large composed UI blocks (app-shell, site-header, home-hero)
-    ├── features/              user actions (switch-locale, check-api-health)
-    ├── entities/              client representations of domain concepts (system-health)
+    ├── widgets/               large composed UI blocks (app-shell, auth-frame, site-header, home-hero)
+    ├── features/              user actions (sign-in-with-google, sign-out, switch-locale, check-api-health)
+    ├── entities/              client representations of domain concepts (session, system-health)
     ├── shared/
     │   ├── api/               generated client, HTTP transport, ApiError, QueryClient
     │   ├── config/            env (validated), site identity
     │   ├── i18n/              locale registry, routing, messages, formats, navigation
-    │   ├── lib/               cn(), form helpers
+    │   ├── lib/               cn(), form helpers, Google Identity Services loader
     │   ├── styles/            design tokens and Tailwind theme mapping
     │   └── ui/                shadcn/ui primitives (locally owned)
     └── test/                  test helpers
@@ -217,7 +217,37 @@ verifies the generated client against the committed snapshot.
   most twice.
 - No Redux, no Zustand, no other global client state. Introduce a client store
   only when a ticket demonstrates a need TanStack Query and URL state cannot
-  meet.
+  meet. The one exception is the session below (SF-22).
+
+## Session (SF-22)
+
+`entities/session` is the browser's SimpleFit session (simplefit-api ADR 0010,
+web cookie transport):
+
+- The **access token** lives only in module memory (`useSyncExternalStore`, no
+  library). Never in `localStorage`, `sessionStorage`, readable cookies or
+  URLs. A reload loses it and `restoreSession()` gets a new one.
+- The **refresh token** is the API's `HttpOnly; Secure; SameSite=Strict`
+  cookie on `/api/auth`; scripts never see it. Requests that use it
+  (`refreshSession`, `authenticateWithGoogle`, `logout`) pass
+  `cookieTransport`: `credentials: "include"` plus `x-simplefit-csrf: 1`. The
+  web origin must be in the API's `CORS_ALLOWED_ORIGINS`.
+- `callWithSession(call)` adds `Authorization: Bearer`, refreshes once and
+  retries once on `401`, then ends the session. Concurrent refreshes share one
+  request (refresh tokens are single use).
+- `signOut()` revokes the session on the API and clears it locally even when
+  the request fails.
+- Route guards (route-architecture §9) are not implemented yet; the identity
+  tickets add them on top of this module.
+
+**Google sign-in** (`features/sign-in-with-google`) uses Google Identity
+Services: Google's own rendered button returns a Google ID token, which is
+exchanged once at `POST /api/auth/google` and dropped (never stored, logged
+or put in a URL). No client secret, no authorization-code flow. The GIS script
+is loaded from `https://accounts.google.com/gsi/client`; a future Content
+Security Policy must allow `accounts.google.com` for scripts, frames and
+styles. Both `account: created` and `existing` continue to `/app`, the `ENTRY`
+route that resolves the destination; the client never infers roles.
 
 ## Forms and validation
 
@@ -357,9 +387,10 @@ and developer-only content. Primitives take labels as props (`closeLabel`).
 
 ## Environment
 
-| Variable              | Scope  | Purpose                                          |
-| --------------------- | ------ | ------------------------------------------------ |
-| `NEXT_PUBLIC_API_URL` | public | Base URL of the SimpleFit API, no trailing slash |
+| Variable                       | Scope  | Purpose                                                                                   |
+| ------------------------------ | ------ | ----------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_API_URL`          | public | Base URL of the SimpleFit API, no trailing slash                                          |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | public | Google OAuth **Web** client ID (optional; without it Google sign-in shows as unavailable) |
 
 - `NEXT_PUBLIC_*` values are **inlined into the browser bundle at build
   time** and readable by anyone. Never put secrets there.
@@ -387,7 +418,9 @@ and developer-only content. Primitives take labels as props (`closeLabel`).
   message catalog completeness for all locales, Intl formatting for all
   locales, proxy negotiation and canonicalization, `<html lang>` per locale,
   translated widgets and features, locale switching (pointer and keyboard),
-  navigation state, commit message convention.
+  navigation state, commit message convention, the session (cookie refresh,
+  single retry, sign-out, no token storage) and Google sign-in with GIS
+  stubbed on `window.google` (real Google is verified manually only).
 - No Playwright yet: E2E arrives with the first meaningful user flow.
 
 ## Quality commands

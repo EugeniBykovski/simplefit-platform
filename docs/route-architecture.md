@@ -448,8 +448,10 @@ src/app/[locale]/
 ## 13. Backend and API relationship
 
 - `api` holds the 32 endpoints the gallery shows as "Backend · API surface
-  (proposed)", all `DEFERRED`, plus the existing operational routes
-  (`/api/health`, `/api/openapi`, `/api/docs`).
+  (proposed)", `DEFERRED` until a feature ticket implements one, plus the
+  existing operational routes (`/api/health`, `/api/openapi`, `/api/docs`).
+  SF-22 implemented the Google half of "Google / Apple" as
+  `POST /api/auth/google` (`authenticateWithGoogle`).
 - **OpenAPI stays canonical.** An endpoint enters
   `simplefit-api/openapi/simplefit.api.json` only through the feature ticket
   that implements it, following ADR 0003 (versioning, errors) and the API
