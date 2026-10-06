@@ -69,13 +69,13 @@ simplefit-platform/
     │   └── global-not-found.tsx
     ├── proxy.ts               locale negotiation (Next.js 16 "proxy", formerly middleware)
     ├── widgets/               large composed UI blocks (app-shell, auth-frame, site-header, home-hero)
-    ├── features/              user actions (sign-in-with-google, sign-out, switch-locale, check-api-health)
+    ├── features/              user actions (sign-in-with-google, sign-in-with-apple, sign-out, switch-locale, check-api-health)
     ├── entities/              client representations of domain concepts (session, system-health)
     ├── shared/
     │   ├── api/               generated client, HTTP transport, ApiError, QueryClient
     │   ├── config/            env (validated), site identity
     │   ├── i18n/              locale registry, routing, messages, formats, navigation
-    │   ├── lib/               cn(), form helpers, Google Identity Services loader
+    │   ├── lib/               cn(), form helpers, Google Identity Services and Apple JS boundaries
     │   ├── styles/            design tokens and Tailwind theme mapping
     │   └── ui/                shadcn/ui primitives (locally owned)
     └── test/                  test helpers
@@ -385,12 +385,28 @@ User-facing text in reusable or product UI comes from `messages/`. Exceptions:
 the brand name `siteConfig.name` (a proper noun), technical identifiers, logs,
 and developer-only content. Primitives take labels as props (`closeLabel`).
 
+**Sign in with Apple** (`features/sign-in-with-apple`, SF-23, ADR 0014 in
+simplefit-api) uses Apple JS in popup mode: per attempt the button makes a
+raw nonce (32 random bytes) and a `state`, sends Apple the nonce's lowercase
+hex SHA-256, checks `state` on the answer and sends the identity token with
+the raw nonce to `POST /api/auth/apple` (cookie transport). No Apple scopes
+are requested; there is no callback route, no code exchange and no client
+secret. Cancelling the popup is silent; a second click is ignored while an
+attempt runs. The button uses the design-system `secondary` (bone) Button
+where WA1 and O02w place it. Apple JS
+(`https://appleid.cdn-apple.com/…/appleid.auth.js`) loads only on those pages;
+a future Content Security Policy must allow `appleid.cdn-apple.com` (script)
+and `appleid.apple.com` (popup). Apple only accepts registered HTTPS
+domains, so local testing needs an HTTPS host (see `.env.example`).
+
 ## Environment
 
-| Variable                       | Scope  | Purpose                                                                                   |
-| ------------------------------ | ------ | ----------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_API_URL`          | public | Base URL of the SimpleFit API, no trailing slash                                          |
-| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | public | Google OAuth **Web** client ID (optional; without it Google sign-in shows as unavailable) |
+| Variable                         | Scope  | Purpose                                                                                                         |
+| -------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_API_URL`            | public | Base URL of the SimpleFit API, no trailing slash                                                                |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID`   | public | Google OAuth **Web** client ID (optional; without it Google sign-in shows as unavailable)                       |
+| `NEXT_PUBLIC_APPLE_SERVICES_ID`  | public | Sign in with Apple web Services ID (optional, with the next)                                                    |
+| `NEXT_PUBLIC_APPLE_REDIRECT_URI` | public | The HTTPS Return URL registered on that Services ID (optional; without both Apple sign-in shows as unavailable) |
 
 - `NEXT_PUBLIC_*` values are **inlined into the browser bundle at build
   time** and readable by anyone. Never put secrets there.

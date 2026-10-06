@@ -40,3 +40,6 @@ pnpm-debug.log*
 # (docs/design-handoff.md).
 *.dc.html
 canvas.json
+
+# Apple Sign in with Apple private keys (never commit; SF-23)
+*.p8
