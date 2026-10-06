@@ -22,7 +22,8 @@ registry is malformed or when a repository's router drifts from it.
 - [13. Backend and API relationship](#13-backend-and-api-relationship)
 - [14. How tickets consume the registry](#14-how-tickets-consume-the-registry)
 - [15. Reconciling Claude Design route changes](#15-reconciling-claude-design-route-changes)
-- [16. Discrepancies and open decisions](#16-discrepancies-and-open-decisions)
+- [16. Discrepancies and decisions](#16-discrepancies-and-decisions)
+- [17. Design gaps](#17-design-gaps)
 
 ## 1. Source-of-truth hierarchy
 
@@ -65,13 +66,15 @@ its own entries; the backend list is inventory.
 route-registry.json
 ├── source          artifact, version and the three gallery artboards
 ├── capabilities    FIGHTER, COACH, GYM_WORKSPACE, SPONSOR_WORKSPACE, ADMIN: what grants them, home and onboarding route per platform
-├── guards          sign-in, workspace chooser, restricted-account, not-found and entry routes; the returnTo parameter
-├── shells          layouts (web + mobile) and their nav component artboards
+├── guards          sign-in, workspace chooser/switcher, restricted-account, not-found and entry routes; the returnTo parameter
+├── shells          layouts (web + mobile), their nav component artboards and every nav item's target
 ├── routes          one entry per (platform, canonical path): what a router needs
 ├── screens         one entry per Route Gallery screen row: a state of a route
+├── excludedRows    gallery rows deliberately not used, each with the decision that dropped it
 ├── api             backend endpoints: proposed design inventory + existing operational routes
 ├── outputs         server-rendered outputs: email previews (E01–E16), share images
-└── discrepancies   every gallery/design/production mismatch, with status
+├── designGaps      designed intent with no Route Gallery row yet (never a route)
+└── discrepancies   every gallery/design/production mismatch, with its decision
 ```
 
 **Routes vs screens.** The gallery lists 463 rows, but many are states of one
@@ -79,7 +82,8 @@ route: `/onboarding/fighter?step=goals`, `/checkout?state=failed`,
 `/home?state=first-run`. A **route** is what a router matches: a platform plus
 a path without query. A **screen** is one gallery row: a route plus its query,
 hash and states, linked to its artboard. Routers are built from routes;
-screens are built from artboards.
+screens are built from artboards. Every row is either a screen, an API entry,
+an output or an `excludedRows` entry; the tests check the total.
 
 ### Route fields
 
@@ -94,6 +98,7 @@ screens are built from artboards.
 | `shell`         | Layout the route renders in (§8)                                                                                                                                            |
 | `parent`        | Nearest ancestor route by path, same platform, or `null`                                                                                                                    |
 | `nav`           | `type` (§8) and `from`: the nav component items (`<shell>#<item>`) that link to it                                                                                          |
+| `redirect`      | Only on `REDIRECT` routes: `to` (route id of the same platform) and `permanent`                                                                                             |
 | `access`        | `session`, `capability`, `phase`, optional `restrictedAccount` (§6)                                                                                                         |
 | `status`        | `IMPLEMENTED`, `PLACEHOLDER_REQUIRED` or `DEFERRED` (§10)                                                                                                                   |
 | `discrepancies` | Ids of the §16 entries that affect the route                                                                                                                                |
@@ -108,6 +113,7 @@ screens are built from artboards.
 | `code`                    | Screen code or `null`                                                                                                          |
 | `route`                   | Route id                                                                                                                       |
 | `query`, `hash`, `states` | The row's query (`step`, `state`, `modal`, `tab`, …), fragment and listed states                                               |
+| `condition`               | Session condition that selects the screen instead of a query (`NO_SESSION` for QA1)                                            |
 | `design`                  | `gallery`, canvas `page`, `section`, `step`, platform `tag`, `artboard`; `galleryPath`/`pathNote` when the path was normalized |
 
 ## 3. Route ownership
@@ -123,15 +129,15 @@ One web frontend monolith (`simplefit-platform`) serves the public site,
 | web      | `AUTH`       | Sign in / sign up, sponsor and admin sign-in                                                |      6 |
 | web      | `ONBOARDING` | Fighter, coach, gym registration (`/app/onboarding/*`), sponsor application (`/partners*`)  |      5 |
 | web      | `FIGHTER`    | Fighter web (`/app/home`, `/app/board`, …)                                                  |      8 |
-| web      | `COACH`      | Coach web (`/app/coach/*`)                                                                  |     13 |
+| web      | `COACH`      | Coach web (`/app/coach/*`)                                                                  |     12 |
 | web      | `GYM`        | Gym web console (`/app/gym/*`)                                                              |     33 |
 | web      | `SHARED`     | Account-level `/app` pages: billing, checkout, payments, settings, marketplace              |     10 |
 | web      | `SPONSOR`    | Partner portal (`/sponsor/*`)                                                               |      8 |
 | web      | `ADMIN`      | Internal admin (`/admin/*`)                                                                 |     38 |
 | web      | `SYSTEM`     | `/app` entry, catch-all not found                                                           |      2 |
-| mobile   | `AUTH`       | Welcome, sign in / up, consent, role choice, invites                                        |     12 |
+| mobile   | `AUTH`       | Welcome, sign in / up, consent, role choice, invites                                        |     11 |
 | mobile   | `ONBOARDING` | Registration wizards, staff onboarding, first-run intros                                    |      8 |
-| mobile   | `FIGHTER`    | Fighter app                                                                                 |     57 |
+| mobile   | `FIGHTER`    | Fighter app                                                                                 |     56 |
 | mobile   | `COACH`      | Coach app                                                                                   |     20 |
 | mobile   | `GYM`        | Gym cockpit                                                                                 |      7 |
 | mobile   | `SHARED`     | Settings, account lifecycle, billing, checkout, messages, notifications, search, workspaces |     31 |
@@ -156,6 +162,12 @@ The backend (`api`, `outputs`) is a separate inventory with its own model
   `?device=` (context). They are recorded on the screen.
 - `?device=mobile|desktop` in the gallery only names the artboard variant; it
   is never implemented as a query parameter.
+- **Resource state is never in the URL.** Where the gallery used `?state=` for
+  a resource's lifecycle or relationship (shared session invited/joined/
+  completed, a profile's friend/private/blocked view, admin review/approved),
+  the backend decides the state and the screen renders it; the gallery form is
+  kept in `design.galleryPath`. Screen-level UI states (`?state=loading`,
+  `?state=first-run`, wizard `?step=`) stay query state.
 - Special gallery forms: `(cold start) → /home` is the mobile root route
   (`mobile.root`), `/app (first load)` is the web entry (`web.app`), and both
   `/* → …` rows are the catch-all routes.
@@ -217,7 +229,7 @@ User
 └── WorkspaceMembership
     ├── Gym                → GYM_WORKSPACE (owner, staff, front desk: backend-authorized roles)
     └── Sponsor            → SPONSOR_WORKSPACE
-Internal staff authorization → ADMIN (not part of the user identity tree, D-ADMIN-IDENTITY)
+Backend-granted internal staff capability on the same User → ADMIN (D-ADMIN-IDENTITY)
 ```
 
 - No `User.type` or `User.role`. A user holds any combination of capabilities;
@@ -225,10 +237,25 @@ Internal staff authorization → ADMIN (not part of the user identity tree, D-AD
   onboarding routes.
 - **Active workspace.** Workspace paths carry no workspace id
   (`/app/gym/members`, `/gym/pulse`), so the active workspace is session
-  context. It is chosen at sign-in (`/login?step=workspace` on web) or in the
-  switcher (`/workspaces` on mobile), and remembered per device. A resource
-  that belongs to another workspace resolves as not found
-  (`D-WORKSPACE-NOT-IN-URL`).
+  context held by the backend session. It is chosen at sign-in
+  (`/login?step=workspace` on web), then switched with the in-shell switcher
+  of the web sidebars (an action, no route) or `/workspaces` on mobile. A
+  resource that belongs to another workspace resolves as not found. Workspace
+  ids may enter deep links later, only when an email or push feature needs
+  cross-workspace links (`D-WORKSPACE-NOT-IN-URL`,
+  `D-WEB-WORKSPACE-SWITCHER`).
+- **Admin** is a backend-granted internal-staff capability on the same global
+  User; there is no separate admin user (`D-ADMIN-IDENTITY`). `/admin/login`
+  stays `GUEST_ONLY`: it is an authentication entry surface. The future admin
+  flow serves both an unauthenticated user (admin sign-in → capability check →
+  step-up when required → admin) and an already authenticated user (admin
+  entry → capability check → step-up when required → admin). Those step-up and
+  re-entry semantics, hardware-key (WebAuthn) step-up and scoped admin sessions
+  are owned by the authentication/security implementation; no access class is
+  added for them.
+- **Sponsor and admin on mobile**: no mobile surfaces. Sponsor workspaces may
+  appear in `/workspaces` with a "continue on the web" action
+  (`D-MOBILE-SPONSOR-ADMIN`).
 - Finer gym roles (owner-only pages such as plan or danger zone) are enforced
   by the backend. The route-level requirement is the membership; the UI may
   hide what the backend denies.
@@ -261,14 +288,25 @@ mobile.root  root Stack (IMPLEMENTED)
 
 `nav.type`:
 
-| Type         | Meaning                                                                             |
-| ------------ | ----------------------------------------------------------------------------------- |
-| `NAV_ITEM`   | Linked from a tab bar or sidebar item (`nav.from`)                                  |
-| `STACK`      | Child page reached from its `parent`                                                |
-| `WIZARD`     | One route whose screens are `?step=` steps                                          |
-| `STANDALONE` | Top-level page with no parent route (auth pages, site pages, deep-linkable details) |
-| `ENTRY`      | Resolves and redirects (`web.app`, `mobile.root`)                                   |
-| `CATCH_ALL`  | Not found                                                                           |
+| Type         | Meaning                                                                                                          |
+| ------------ | ---------------------------------------------------------------------------------------------------------------- |
+| `NAV_ITEM`   | Linked from a tab bar or sidebar item (`nav.from`)                                                               |
+| `STACK`      | Child page reached from its `parent`                                                                             |
+| `WIZARD`     | One route whose screens are `?step=` steps                                                                       |
+| `STANDALONE` | Top-level page with no parent route (auth pages, site pages, deep-linkable details)                              |
+| `ENTRY`      | Resolves and redirects (`web.app`, `mobile.root`)                                                                |
+| `REDIRECT`   | Section entry that always redirects to `redirect.to` and renders nothing (`web.app.camp` → `web.app.camp.board`) |
+| `CATCH_ALL`  | Not found                                                                                                        |
+
+Every shell with a nav component lists all of its items in `navItems`: `key`,
+`label`, and either a `route` (plus an optional `query`, for example the
+sponsor Challenges and Events items open `/sponsor/campaigns?type=challenge`
+and `?type=event`), a `designGap`, or no target with a `note` (sponsor
+Creative is a wizard step with no standalone surface). An item never points at
+a route that needs a parameter it does not have, and a shell never invents a
+default resource: such items wait for their design gap (§17). The web
+sidebars' identity card is the workspace switcher: an in-shell action, not a
+route.
 
 Overlay states (`?modal=`, `?sheet=`, `?panel=`) render over their route and
 are not separate routes. The public site has no nav component artboard; its
@@ -287,11 +325,16 @@ decides; all targets are registry routes (`guards`, `capabilities`).
    `returnTo` accepts only a relative path of the same platform that matches a
    registry route; anything else is dropped.
 3. **Authenticated → `GUEST_ONLY` route** → the default destination (below),
-   except the sign-in flow's own workspace step.
+   except the sign-in flow's own workspace step. For email authentication the
+   session begins after successful email verification; consent and role
+   onboarding run on an authenticated, onboarding-incomplete account. Social
+   providers with provider-verified identities may transition differently
+   (SF-22/SF-23) (`D-SIGNUP-SESSION-BOUNDARY`).
 4. **Restricted account** (suspended, pending deletion) → only
    `restrictedAccount` routes; everything else redirects to
-   `guards.restrictedAccount` (mobile). Web has no designed screens yet
-   (`D-WEB-ACCOUNT-STATES`).
+   `guards.restrictedAccount` (mobile). Web has no designed screens yet; its
+   behaviour is owned by the auth/session tickets until the design adds them
+   (`GAP-WEB-ACCOUNT-STATES`).
 5. **Incomplete account onboarding** (consent or first role missing) → the
    account onboarding routes (`guards.accountOnboarding`). Account-level
    `phase: ONBOARDING` routes are offered only until it completes.
@@ -299,8 +342,9 @@ decides; all targets are registry routes (`guards`, `capabilities`).
    route) → the default destination. `ADMIN` routes answer **not found**
    instead, so their existence is not revealed.
 7. **Workspace capability without the right active workspace**: one
-   membership of the required kind activates it; several open
-   `guards.workspaceChooser` with `returnTo`. No membership counts as a missing
+   membership of the required kind activates it; several open the switcher
+   (`guards.workspaceChooser`: `/workspaces` on mobile, the in-shell switcher on
+   web) and then continue to `returnTo`. No membership counts as a missing
    capability (rule 6).
 8. **Phase**: capability set up but onboarding incomplete, on an `ACTIVE`
    route → the capability's onboarding route (resume the saved step). Onboarding
@@ -315,8 +359,16 @@ decides; all targets are registry routes (`guards`, `capabilities`).
 Without one, the first held capability in the order FIGHTER, COACH,
 GYM_WORKSPACE, SPONSOR_WORKSPACE (web). Without any, account onboarding.
 `web.app` and `mobile.root` are `ENTRY` routes that apply exactly this
-resolution. A sponsor-only user on mobile goes to `/workspaces`
-(`D-MOBILE-SPONSOR-ADMIN`).
+resolution. Without any mobile destination (a sponsor-only user), mobile
+falls back to `guards.defaultDestinationFallback` (`/workspaces`,
+`D-MOBILE-SPONSOR-ADMIN`).
+
+**Checkout** (`/checkout`, mobile) is `PUBLIC`. Without a session it renders
+the designed quick-account state (QA1, `condition: NO_SESSION`); every payment
+operation requires a normal SimpleFit identity and session, enforced by the
+backend. There is no anonymous purchase and no separate quick-account route
+(`D-GUEST-CHECKOUT`). Trial and pricing routes stay shared signed-in routes;
+the backend decides commercial eligibility (`D-TRIAL-AUDIENCE`).
 
 The full authentication and authorization system is out of scope here; it is
 delivered by the SF-18 child tickets against this contract. Until then, no
@@ -328,11 +380,12 @@ client may fake a guard with hard-coded roles or local flags.
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `IMPLEMENTED`          | The route resolves in the production router today. It does **not** mean the screen matches its artboard: `production.note` says what renders |
 | `PLACEHOLDER_REQUIRED` | Approved by the gallery, not yet routable. SF-32 (web) / SF-33 (mobile) create it                                                            |
-| `DEFERRED`             | Approved but not to be built now: an open product decision blocks it, or the design marks it future (`discrepancies` says why)               |
+| `DEFERRED`             | Approved but not to be built now: the design marks it future (`discrepancies` says why)                                                      |
 
-Counts at SF-31: web 4 `IMPLEMENTED` (2 are product routes plus not-found and
-an internal route) and 128 `PLACEHOLDER_REQUIRED`; mobile 4 `IMPLEMENTED`
-(`/`, not found, 2 internal), 133 `PLACEHOLDER_REQUIRED`, 2 `DEFERRED`. All
+Counts at SF-31: web 131 routes, 4 `IMPLEMENTED` (2 are product routes plus
+not-found and an internal route) and 127 `PLACEHOLDER_REQUIRED` (one of them
+the `/app/camp` redirect); mobile 137 routes, 4 `IMPLEMENTED` (`/`, not found,
+2 internal), 132 `PLACEHOLDER_REQUIRED`, 1 `DEFERRED` (`/sparring/find`). All
 32 proposed backend endpoints and 17 server outputs are `DEFERRED`; the 3
 existing operational API routes are `IMPLEMENTED`. Shells carry the same
 statuses.
@@ -367,6 +420,8 @@ src/app/[locale]/
 
 - Query-state screens read `searchParams`; overlays use the query as their
   open state so they stay linkable.
+- `REDIRECT` routes are a page that only redirects with the localized
+  `redirect` (`/app/camp` → `/app/camp/board`); they never render content.
 - Developer routes (`/dev/*`) are `INTERNAL` and answer 404 in production.
 
 ## 12. Mobile mapping (Expo Router)
@@ -419,8 +474,8 @@ production route architecture
   their platform with `PLACEHOLDER_REQUIRED`, using `path`, `shell`, `parent`,
   `nav` and `access`. Then flip each route to `IMPLEMENTED` with its
   `production.file`. A placeholder renders the route name and nothing that
-  pretends to be product. Do not build `DEFERRED` routes or invent routes for
-  open discrepancies.
+  pretends to be product. Do not build `DEFERRED` routes, and never invent a
+  route or screen for a design gap (§17).
 - **Feature tickets (visual implementation):**
 
 ```
@@ -432,8 +487,12 @@ production screen
 ```
 
 - **Identity tickets (SF-18 children):** implement §9 with `guards` and
-  `capabilities`, and resolve `D-SIGNUP-SESSION-BOUNDARY` and
-  `D-ADMIN-IDENTITY`.
+  `capabilities`, following the approved decisions `D-SIGNUP-SESSION-BOUNDARY`,
+  `D-ADMIN-IDENTITY`, `D-WORKSPACE-NOT-IN-URL`, `D-GUEST-CHECKOUT` and
+  `D-MOBILE-SPONSOR-ADMIN`. Restricted-account behaviour on web stays theirs
+  until `GAP-WEB-ACCOUNT-STATES` is designed.
+- **Design gaps (§17):** a nav item that waits for a gap is hidden or shown
+  as unavailable (SF-32/SF-33 choose); it never gets an invented target.
 - Any code that links to a route uses its canonical path. A path not in the
   registry is a review failure.
 
@@ -455,44 +514,77 @@ screenshots:
    identical) and run the tests.
 6. Record new ambiguities in `discrepancies`; never resolve them silently.
 
-## 16. Discrepancies and open decisions
+## 16. Discrepancies and decisions
 
 Every entry has a source A, a source B, the exact mismatch, its impact, a
-proposed resolution and a status; the full text is in `discrepancies` of the
-registry. Summary:
+resolution and a status; the full text is in `discrepancies` of the registry.
+The 18 product decisions approved on 2026-10-06 carry `decision` and
+`decidedOn`. No discrepancy is open; four are `DEFERRED` by design.
 
-| Id                                 | Status                 | Summary                                                                 |
-| ---------------------------------- | ---------------------- | ----------------------------------------------------------------------- |
-| `D-ROUTE-MAP-BOARDS`               | RESOLVED               | Route-map boards use 47 older paths; the gallery wins                   |
-| `D-PATH-EXAMPLES`                  | RESOLVED               | 20 gallery paths with sample data normalized to parameters              |
-| `D-PATH-PARAM-NAMES`               | RESOLVED               | Generic `:id` renamed after its resource                                |
-| `D-ROLE-SELECTION-PATH`            | NEEDS_PRODUCT_DECISION | `/onboarding/role` vs `/auth?state=role-selection`                      |
-| `D-PROFILE-NO-ID`                  | NEEDS_PRODUCT_DECISION | Other fighters' profiles have no id in the path                         |
-| `D-SHARED-SESSION-NO-ID`           | NEEDS_PRODUCT_DECISION | Shared session invited/joined states have no id                         |
-| `D-ADMIN-SPONSOR-CAMPAIGN-PATHS`   | NEEDS_PRODUCT_DECISION | Admin sponsor/campaign review paths lack ids, singular vs plural        |
-| `D-NAMING-INCONSISTENCIES`         | RESOLVED               | Singular/plural and cross-platform naming kept as designed              |
-| `D-ALIAS-ROWS`                     | RESOLVED               | 16 uncoded rows registered as screens                                   |
-| `D-CAMP-DUPLICATE`                 | NEEDS_PRODUCT_DECISION | `/app/camp` and `/app/camp/board` show the same artboard                |
-| `D-WEB-NAV-MOBILE-TARGETS`         | NEEDS_PRODUCT_DECISION | Web sidebars link calendar, messages, coach board: mobile-only          |
-| `D-WEB-WORKSPACE-SWITCHER`         | NEEDS_PRODUCT_DECISION | No web workspace switcher route                                         |
-| `D-SPONSOR-NAV`                    | NEEDS_PRODUCT_DECISION | Partner portal items without sponsor routes                             |
-| `D-NAV-DETAIL-TARGETS`             | NEEDS_PRODUCT_DECISION | Tabs/sidebar items that point at detail or create screens               |
-| `D-WORKSPACE-NOT-IN-URL`           | NEEDS_PRODUCT_DECISION | Workspace paths carry no workspace id                                   |
-| `D-WEB-DEFAULT-WORKSPACE`          | RESOLVED               | `/app` resolves the active workspace; `/app/home` is fighter-only       |
-| `D-SHARED-ROUTES-ON-PERSONA-PAGES` | RESOLVED               | Account-level routes need no capability                                 |
-| `D-TRIAL-AUDIENCE`                 | NEEDS_PRODUCT_DECISION | Is `/trial` coach-only?                                                 |
-| `D-GUEST-CHECKOUT`                 | NEEDS_PRODUCT_DECISION | Lightweight account at checkout (QA1)                                   |
-| `D-SIGNUP-SESSION-BOUNDARY`        | NEEDS_PRODUCT_DECISION | Which sign-up step creates the session                                  |
-| `D-ADMIN-IDENTITY`                 | NEEDS_PRODUCT_DECISION | Admin staff identity and scopes                                         |
-| `D-MOBILE-SPONSOR-ADMIN`           | NEEDS_PRODUCT_DECISION | Sponsor-only users on mobile                                            |
-| `D-WEB-ACCOUNT-STATES`             | NEEDS_PRODUCT_DECISION | No web suspended / pending-deletion / appeal screens                    |
-| `D-PRODUCTION-FOUNDATION`          | DEFERRED               | Existing foundation routes differ from the design (SF-32/SF-33)         |
-| `D-MOBILE-NAMESPACE-SHARING`       | RESOLVED               | Mobile `/gym`, `/coach` serve fighters and workspaces; guards per group |
-| `D-REUSED-ARTBOARDS`               | NEEDS_PRODUCT_DECISION | Rows whose name and artboard disagree                                   |
-| `D-PROGRAM-BUILDER-PATHS`          | NEEDS_PRODUCT_DECISION | `/app/coach/programs/new` vs `/app/coach/sessions/new`                  |
-| `D-FUTURE-SPARRING`                | DEFERRED               | `/sparring/find` is marked future                                       |
-| `D-BACKEND-PROPOSED`               | DEFERRED               | 32 proposed endpoints; OpenAPI stays canonical                          |
-| `D-SERVER-OUTPUTS`                 | DEFERRED               | Email previews and share images: owner undecided                        |
-| `D-PITCH-PAGE-AUTHORITY`           | RESOLVED               | The Route Gallery is the IA source despite its reference-only page      |
-| `D-404-SCOPE`                      | RESOLVED               | One web catch-all for every area                                        |
-| `D-CANVAS-GROWTH`                  | RESOLVED               | Canvas grew from 456 to 462 artboards since SF-16                       |
+| Id                                 | Status   | Decision / summary                                                                         |
+| ---------------------------------- | -------- | ------------------------------------------------------------------------------------------ |
+| `D-ROUTE-MAP-BOARDS`               | RESOLVED | Route-map boards use 47 older paths; the gallery wins                                      |
+| `D-PATH-EXAMPLES`                  | RESOLVED | 20 gallery paths with sample data normalized to parameters                                 |
+| `D-PATH-PARAM-NAMES`               | RESOLVED | Generic `:id` renamed after its resource                                                   |
+| `D-ROLE-SELECTION-PATH`            | RESOLVED | `/onboarding/role` canonical; `/auth` alias dropped                                        |
+| `D-PROFILE-NO-ID`                  | RESOLVED | Mobile `/profile/fighter/:fighterId`; web `/app/profile` is the own profile / view-as      |
+| `D-SHARED-SESSION-NO-ID`           | RESOLVED | `/shared-session/:sharedSessionId`; lifecycle state not in the URL                         |
+| `D-ADMIN-SPONSOR-CAMPAIGN-PATHS`   | RESOLVED | `/admin/sponsors/:sponsorId`, `/admin/campaigns/:campaignId` (+ edit, timeline)            |
+| `D-NAMING-INCONSISTENCIES`         | RESOLVED | Singular/plural and cross-platform naming kept as designed                                 |
+| `D-ALIAS-ROWS`                     | RESOLVED | Uncoded rows registered as screens or excluded by a decision                               |
+| `D-CAMP-DUPLICATE`                 | RESOLVED | `/app/camp/board` canonical; `/app/camp` redirects                                         |
+| `D-WEB-NAV-MOBILE-TARGETS`         | RESOLVED | No web calendar, messages, coach board routes: design gaps                                 |
+| `D-WEB-WORKSPACE-SWITCHER`         | RESOLVED | In-shell switcher action, no route                                                         |
+| `D-SPONSOR-NAV`                    | RESOLVED | Challenges/Events filter `/sponsor/campaigns`; no Creative route; analytics index is a gap |
+| `D-NAV-DETAIL-TARGETS`             | RESOLVED | Creator targets kept; missing list roots are design gaps                                   |
+| `D-WORKSPACE-NOT-IN-URL`           | RESOLVED | Active workspace is session context; no workspace ids in URLs                              |
+| `D-WEB-DEFAULT-WORKSPACE`          | RESOLVED | `/app` resolves the active workspace; `/app/home` is fighter-only                          |
+| `D-SHARED-ROUTES-ON-PERSONA-PAGES` | RESOLVED | Account-level routes need no capability                                                    |
+| `D-TRIAL-AUDIENCE`                 | RESOLVED | Shared signed-in trial/pricing; backend decides eligibility                                |
+| `D-GUEST-CHECKOUT`                 | RESOLVED | `/checkout` public; guests see QA1; payment requires a session                             |
+| `D-SIGNUP-SESSION-BOUNDARY`        | RESOLVED | Email sign-up: session after email verification                                            |
+| `D-ADMIN-IDENTITY`                 | RESOLVED | Same global User + backend-granted staff capability                                        |
+| `D-MOBILE-SPONSOR-ADMIN`           | RESOLVED | Sponsor in mobile `/workspaces` with continue-on-web; no mobile surfaces                   |
+| `D-WEB-ACCOUNT-STATES`             | RESOLVED | No web account-state routes until designed: design gap                                     |
+| `D-PRODUCTION-FOUNDATION`          | DEFERRED | Existing foundation routes differ from the design (SF-32/SF-33)                            |
+| `D-MOBILE-NAMESPACE-SHARING`       | RESOLVED | Mobile `/gym`, `/coach` serve fighters and workspaces; guards per group                    |
+| `D-REUSED-ARTBOARDS`               | RESOLVED | Coded wizard keys; no coach account step; Friends are S04/S05                              |
+| `D-PROGRAM-BUILDER-PATHS`          | RESOLVED | `/app/coach/sessions/new` canonical; tour is `?tour=2`                                     |
+| `D-FUTURE-SPARRING`                | DEFERRED | `/sparring/find` is marked future                                                          |
+| `D-BACKEND-PROPOSED`               | DEFERRED | 32 proposed endpoints; OpenAPI stays canonical                                             |
+| `D-SERVER-OUTPUTS`                 | DEFERRED | Email previews and share images: owner undecided                                           |
+| `D-PITCH-PAGE-AUTHORITY`           | RESOLVED | The Route Gallery is the IA source despite its reference-only page                         |
+| `D-404-SCOPE`                      | RESOLVED | One web catch-all for every area                                                           |
+| `D-CANVAS-GROWTH`                  | RESOLVED | Canvas grew from 456 to 462 artboards since SF-16                                          |
+
+Gallery rows dropped by a decision are listed in `excludedRows`, so every
+row stays accounted for:
+
+| Gallery row                                                | Gallery path                       | Decision                |
+| ---------------------------------------------------------- | ---------------------------------- | ----------------------- |
+| `x-mobile-role-selection` Role selection                   | `/auth?state=role-selection`       | `D-ROLE-SELECTION-PATH` |
+| `x-mobile-fighter-boxing-profile` Fighter · Boxing profile | `/onboarding/fighter?step=profile` | `D-REUSED-ARTBOARDS`    |
+| `x-mobile-coach-account` Coach · Account                   | `/onboarding/coach?step=account`   | `D-REUSED-ARTBOARDS`    |
+| `x-web-fight-camp-board-desktop` Fight Camp Board Desktop  | `/app/camp`                        | `D-CAMP-DUPLICATE`      |
+
+## 17. Design gaps
+
+A design gap is designed intent (usually a navigation item) with **no Route
+Gallery row**. It is never a route or a screen: no placeholder, no invented
+path, no default resource. `candidatePath` only names the likely path for the
+design discussion. A gap leaves the list only when Claude Design adds the
+Route Gallery rows; the registry then gains the route through §15. Status:
+`UNRESOLVED_DESIGN`.
+
+| Id                            | Platform | Missing designed surface                                                                          | Nav items waiting for it                             |
+| ----------------------------- | -------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `GAP-MOBILE-GYM-CLASSES`      | mobile   | Classes tab list root (the tab links G03, a roster of one class)                                  | `mobile.gym#classes`                                 |
+| `GAP-MOBILE-GYM-MEMBERS`      | mobile   | Members tab list root (the tab links G04, one member card)                                        | `mobile.gym#members`                                 |
+| `GAP-WEB-COACH-FIGHTERS`      | web      | Coach web fighters list (the nav links WC4 Fighter 360 of one fighter)                            | `web.app.coach#fighters`                             |
+| `GAP-WEB-GYM-OPEN-SPARRING`   | web      | Gym web open sparring list (the nav links WG12, one event)                                        | `web.app.gym#sparring`                               |
+| `GAP-WEB-ADMIN-SUPPORT`       | web      | Admin support console index (the nav links AD5, one scoped session)                               | `web.admin#support`                                  |
+| `GAP-WEB-CALENDAR`            | web      | Web calendar (the navs link the mobile Calendar.dc.html, F12)                                     | `web.app.fighter#calendar`, `web.app.coach#calendar` |
+| `GAP-WEB-MESSAGES`            | web      | Web messages (the navs link the mobile Inbox.dc.html, F14)                                        | `web.app.fighter#messages`, `web.app.coach#messages` |
+| `GAP-WEB-COACH-BOARD`         | web      | Web coach team board (the nav links the mobile CoachBoard.dc.html, C11)                           | `web.app.coach#board`                                |
+| `GAP-WEB-ACCOUNT-STATES`      | web      | Web account suspended, recovery, pending-deletion and appeal surfaces (WS2 links the mobile ST12) | —                                                    |
+| `GAP-SPONSOR-ANALYTICS-INDEX` | web      | Sponsor analytics index, only if the product needs one (the nav links SPX7, one campaign)         | `web.sponsor#analytics`                              |

@@ -39,7 +39,7 @@ const SESSIONS = ["PUBLIC", "GUEST_ONLY", "AUTHENTICATED"];
 const CAPABILITIES = ["FIGHTER", "COACH", "GYM_WORKSPACE", "SPONSOR_WORKSPACE", "ADMIN"];
 const PHASES = ["ONBOARDING", "ACTIVE"];
 const STATUSES = ["IMPLEMENTED", "PLACEHOLDER_REQUIRED", "DEFERRED"];
-const NAV_TYPES = ["NAV_ITEM", "STACK", "WIZARD", "STANDALONE", "ENTRY", "CATCH_ALL"];
+const NAV_TYPES = ["NAV_ITEM", "STACK", "WIZARD", "STANDALONE", "ENTRY", "CATCH_ALL", "REDIRECT"];
 const DISCREPANCY_STATUSES = ["RESOLVED", "NEEDS_PRODUCT_DECISION", "DEFERRED"];
 const HTTP_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE"];
 const GALLERY_ARTBOARDS = [
@@ -52,10 +52,11 @@ const ROUTE_ID = /^(web|mobile)\.[a-z0-9_-]+(\.[a-z0-9_-]+)*$/;
 const SEGMENT = /^([a-z0-9]+(-[a-z0-9]+)*|:[a-z][a-zA-Z0-9]*)$/;
 const ARTBOARD = /^[A-Za-z0-9_][A-Za-z0-9_.-]*\.dc\.html$/;
 
-const { routes, screens, shells, api, outputs, discrepancies } = registry;
+const { routes, screens, shells, api, outputs, discrepancies, excludedRows, designGaps } = registry;
 const routeById = new Map(routes.map((route) => [route.id, route]));
 const shellById = new Map(shells.map((shell) => [shell.id, shell]));
 const discrepancyIds = new Set(discrepancies.map((entry) => entry.id));
+const gapIds = new Set(designGaps.map((gap) => gap.id));
 
 const duplicates = (values) => values.filter((value, index) => values.indexOf(value) !== index);
 const segments = (path) => (path === "/" ? [] : path.slice(1).split("/"));
@@ -85,7 +86,7 @@ describe("route registry source", () => {
     const apiRows = new Set(
       api.filter((entry) => entry.design).map((entry) => `${entry.design.section}|${entry.name}`),
     );
-    expect(screens.length + outputs.length + apiRows.size).toBe(rows);
+    expect(screens.length + excludedRows.length + outputs.length + apiRows.size).toBe(rows);
   });
 });
 
@@ -184,6 +185,20 @@ describe("routes", () => {
     expect(found).toEqual([]);
   });
 
+  it("redirect only to a route of the same platform", () => {
+    const found = problems(routes, (route, report) => {
+      const isRedirect = route.nav.type === "REDIRECT";
+      if (isRedirect !== (route.redirect !== undefined))
+        report("REDIRECT type and redirect field disagree");
+      if (!isRedirect) return;
+      const target = routeById.get(route.redirect.to);
+      if (target?.platform !== route.platform)
+        report(`redirect target ${route.redirect.to} missing`);
+      else if (target.nav.type === "REDIRECT") report("redirect chain");
+    });
+    expect(found).toEqual([]);
+  });
+
   it("record their implementation status", () => {
     const found = problems(routes, (route, report) => {
       if (route.status === "IMPLEMENTED" && !/^src\//.test(route.production?.file ?? "")) {
@@ -196,6 +211,19 @@ describe("routes", () => {
       for (const id of route.discrepancies ?? []) {
         if (!discrepancyIds.has(id)) report(`unknown discrepancy ${id}`);
       }
+    });
+    expect(found).toEqual([]);
+  });
+});
+
+describe("excluded gallery rows", () => {
+  it("are dropped only by a recorded decision and never reused as screens", () => {
+    const screenIds = new Set(screens.map((screen) => screen.id));
+    const found = problems(excludedRows, (row, report) => {
+      if (screenIds.has(row.id)) report("also listed as a screen");
+      if (!discrepancyIds.has(row.decision)) report(`unknown decision ${row.decision}`);
+      if (!filled(row.reason) || !filled(row.galleryPath)) report("missing reason or galleryPath");
+      if (!ARTBOARD.test(row.design?.artboard ?? "")) report("missing artboard");
     });
     expect(found).toEqual([]);
   });
@@ -226,12 +254,21 @@ describe("screens", () => {
     expect(found).toEqual([]);
   });
 
-  it("exist for every product route and never for internal ones", () => {
+  it("exist for every product route and never for internal or redirect ones", () => {
     const found = problems(routes, (route, report) => {
-      const internal = route.surface === "INTERNAL";
-      if (internal && route.screens.length > 0) report("INTERNAL route with design screens");
-      if (!internal && route.screens.length === 0)
-        report("product route without a design screen (orphan)");
+      const screenless = route.surface === "INTERNAL" || route.nav.type === "REDIRECT";
+      if (screenless && route.screens.length > 0) report("INTERNAL or REDIRECT route with screens");
+      if (!screenless && route.screens.length === 0)
+        report("product route without a screen (orphan)");
+    });
+    expect(found).toEqual([]);
+  });
+
+  it("select their state by query or a known session condition", () => {
+    const found = problems(screens, (screen, report) => {
+      if ("condition" in screen && screen.condition !== "NO_SESSION") {
+        report(`unknown condition ${screen.condition}`);
+      }
     });
     expect(found).toEqual([]);
   });
@@ -248,6 +285,42 @@ describe("shells, capabilities and guards", () => {
         report(`parent ${shell.parent} missing or on another platform`);
       }
     });
+    expect(found).toEqual([]);
+  });
+
+  it("list every nav item with a route, a design gap or an explicit note", () => {
+    const found = [];
+    for (const shell of shells.filter((candidate) => candidate.navItems)) {
+      for (const item of shell.navItems) {
+        const where = `${shell.id}#${item.key}`;
+        if (!filled(item.label)) found.push(`${where}: missing label`);
+        if (item.route) {
+          const route = routeById.get(item.route);
+          if (route?.platform !== shell.platform)
+            found.push(`${where}: unknown route ${item.route}`);
+          else if (!route.nav.from.includes(where))
+            found.push(`${where}: ${route.id} lacks it in nav.from`);
+          else if (route.params.length > 0) found.push(`${where}: ${route.id} needs parameters`);
+        } else if (item.designGap) {
+          if (!gapIds.has(item.designGap))
+            found.push(`${where}: unknown design gap ${item.designGap}`);
+        } else if (!filled(item.note)) {
+          found.push(`${where}: no route, design gap or note`);
+        }
+      }
+    }
+    const listed = new Set(
+      shells.flatMap((shell) =>
+        (shell.navItems ?? [])
+          .filter((item) => item.route)
+          .map((item) => `${shell.id}#${item.key}`),
+      ),
+    );
+    for (const route of routes) {
+      for (const item of route.nav.from) {
+        if (!listed.has(item)) found.push(`${route.id}: nav.from ${item} is not a shell nav item`);
+      }
+    }
     expect(found).toEqual([]);
   });
 
@@ -271,6 +344,11 @@ describe("shells, capabilities and guards", () => {
     for (const [area, id] of Object.entries(guards.signIn))
       check(`signIn.${area}`, id, area.split(".")[0]);
     for (const platform of PLATFORMS) {
+      check(
+        `defaultDestinationFallback.${platform}`,
+        guards.defaultDestinationFallback[platform],
+        platform,
+      );
       check(`workspaceChooser.${platform}`, guards.workspaceChooser[platform], platform);
       check(`notFound.${platform}`, guards.notFound[platform], platform);
       check(`entry.${platform}`, guards.entry[platform], platform);
@@ -313,6 +391,27 @@ describe("backend inventory", () => {
   });
 });
 
+describe("design gaps", () => {
+  it("are recorded without becoming routes", () => {
+    expect(duplicates(designGaps.map((gap) => gap.id))).toEqual([]);
+    const ownPaths = new Set(routes.map((route) => `${route.platform} ${route.path}`));
+    const found = problems(designGaps, (gap, report) => {
+      if (gap.status !== "UNRESOLVED_DESIGN") report(`unexpected status ${gap.status}`);
+      if (!PLATFORMS.includes(gap.platform)) report(`unknown platform ${gap.platform}`);
+      if (!filled(gap.description)) report("missing description");
+      if (!discrepancyIds.has(gap.discrepancy)) report(`unknown discrepancy ${gap.discrepancy}`);
+      if (gap.candidatePath && ownPaths.has(`${gap.platform} ${gap.candidatePath}`)) {
+        report(`candidate path ${gap.candidatePath} is already a route`);
+      }
+    });
+    expect(found).toEqual([]);
+  });
+
+  it("are all listed in the architecture document", () => {
+    expect([...gapIds].filter((id) => !architecture.includes(`\`${id}\``))).toEqual([]);
+  });
+});
+
 describe("discrepancies", () => {
   it("are complete and referenced consistently", () => {
     expect(duplicates(discrepancies.map((entry) => entry.id))).toEqual([]);
@@ -322,6 +421,8 @@ describe("discrepancies", () => {
       }
       if (!DISCREPANCY_STATUSES.includes(entry.status)) report(`unknown status ${entry.status}`);
       for (const id of entry.routes) if (!routeById.has(id)) report(`unknown route ${id}`);
+      for (const id of entry.designGaps ?? [])
+        if (!gapIds.has(id)) report(`unknown design gap ${id}`);
     });
     expect(found).toEqual([]);
   });

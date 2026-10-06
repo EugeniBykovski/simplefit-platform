@@ -70,10 +70,11 @@
       "onboarding": {
         "mobile": null,
         "web": "web.sponsor.application"
-      }
+      },
+      "mobile": "Listed in /workspaces with a continue-on-the-web action; no mobile sponsor surface (D-MOBILE-SPONSOR-ADMIN)"
     },
     "ADMIN": {
-      "grantedBy": "Internal staff authorization (D-ADMIN-IDENTITY)",
+      "grantedBy": "Backend-granted internal staff capability on the same global User (D-ADMIN-IDENTITY)",
       "home": {
         "mobile": null,
         "web": "web.admin"
@@ -81,7 +82,8 @@
       "onboarding": {
         "mobile": null,
         "web": "web.admin.welcome"
-      }
+      },
+      "mobile": "None: admin is web-only and never listed on mobile (D-MOBILE-SPONSOR-ADMIN)"
     }
   },
   "guards": {
@@ -97,7 +99,7 @@
     },
     "workspaceChooser": {
       "mobile": "mobile.workspaces",
-      "web": "web.login"
+      "web": null
     },
     "restrictedAccount": {
       "suspended": {
@@ -117,7 +119,15 @@
       "mobile": "mobile.root",
       "web": "web.app"
     },
-    "returnToParam": "returnTo"
+    "returnToParam": "returnTo",
+    "workspaceSwitcher": {
+      "mobile": "Route mobile.workspaces (A04).",
+      "web": "In-shell action in the web.app.fighter / web.app.coach / web.app.gym sidebars; no route. During sign-in, the workspace step of web.login (WA2) chooses the first workspace (D-WEB-WORKSPACE-SWITCHER)."
+    },
+    "defaultDestinationFallback": {
+      "mobile": "mobile.workspaces",
+      "web": null
+    }
   },
   "shells": [
     {
@@ -172,7 +182,66 @@
       "parent": "web.app",
       "description": "Fighter web sidebar.",
       "design": "FighterWebNav.dc.html",
-      "status": "PLACEHOLDER_REQUIRED"
+      "status": "PLACEHOLDER_REQUIRED",
+      "navItems": [
+        {
+          "key": "home",
+          "label": "Home",
+          "route": "web.app.home"
+        },
+        {
+          "key": "board",
+          "label": "Live Board",
+          "route": "web.app.board"
+        },
+        {
+          "key": "training",
+          "label": "Fight camp",
+          "route": "web.app.camp.board"
+        },
+        {
+          "key": "progress",
+          "label": "Progress",
+          "route": "web.app.progress"
+        },
+        {
+          "key": "community",
+          "label": "Community",
+          "route": "web.app.community"
+        },
+        {
+          "key": "discover",
+          "label": "Discover",
+          "route": "web.app.discover"
+        },
+        {
+          "key": "profile",
+          "label": "My profile",
+          "route": "web.app.profile"
+        },
+        {
+          "key": "market",
+          "label": "Marketplace",
+          "route": "web.app.marketplace"
+        },
+        {
+          "key": "calendar",
+          "label": "Calendar",
+          "route": null,
+          "designGap": "GAP-WEB-CALENDAR"
+        },
+        {
+          "key": "messages",
+          "label": "Messages",
+          "route": null,
+          "designGap": "GAP-WEB-MESSAGES"
+        },
+        {
+          "key": "settings",
+          "label": "Privacy & settings",
+          "route": "web.app.settings.security"
+        }
+      ]
     },
     {
       "id": "web.app.coach",
@@ -180,7 +249,73 @@
       "parent": "web.app",
       "description": "Coach web sidebar.",
       "design": "CoachWebNav.dc.html",
-      "status": "PLACEHOLDER_REQUIRED"
+      "status": "PLACEHOLDER_REQUIRED",
+      "navItems": [
+        {
+          "key": "dashboard",
+          "label": "Dashboard",
+          "route": "web.app.coach"
+        },
+        {
+          "key": "activity",
+          "label": "Team activity",
+          "route": "web.app.coach.activity"
+        },
+        {
+          "key": "fighters",
+          "label": "Fighters",
+          "route": null,
+          "designGap": "GAP-WEB-COACH-FIGHTERS"
+        },
+        {
+          "key": "board",
+          "label": "Team board",
+          "route": null,
+          "designGap": "GAP-WEB-COACH-BOARD"
+        },
+        {
+          "key": "programs",
+          "label": "Programs & sessions",
+          "route": "web.app.coach.sessions.new"
+        },
+        {
+          "key": "sparring",
+          "label": "Sparring planner",
+          "route": "web.app.coach.sparring.plan"
+        },
+        {
+          "key": "calendar",
+          "label": "Calendar",
+          "route": null,
+          "designGap": "GAP-WEB-CALENDAR"
+        },
+        {
+          "key": "services",
+          "label": "Services & packages",
+          "route": "web.app.coach.services.new"
+        },
+        {
+          "key": "earnings",
+          "label": "Earnings & payouts",
+          "route": "web.app.coach.earnings"
+        },
+        {
+          "key": "billing",
+          "label": "Plan & billing",
+          "route": "web.app.billing"
+        },
+        {
+          "key": "messages",
+          "label": "Messages",
+          "route": null,
+          "designGap": "GAP-WEB-MESSAGES"
+        },
+        {
+          "key": "settings",
+          "label": "Coach settings",
+          "route": "web.app.coach.settings"
+        }
+      ]
     },
     {
       "id": "web.app.gym",
@@ -188,7 +323,110 @@
       "parent": "web.app",
       "description": "Gym console sidebar.",
       "design": "GymWebNav.dc.html",
-      "status": "PLACEHOLDER_REQUIRED"
+      "status": "PLACEHOLDER_REQUIRED",
+      "navItems": [
+        {
+          "key": "dashboard",
+          "label": "Dashboard",
+          "route": "web.app.gym"
+        },
+        {
+          "key": "board",
+          "label": "Live Gym Board",
+          "route": "web.app.gym.board"
+        },
+        {
+          "key": "reports",
+          "label": "Reports",
+          "route": "web.app.gym.reports"
+        },
+        {
+          "key": "members",
+          "label": "Members",
+          "route": "web.app.gym.members"
+        },
+        {
+          "key": "leads",
+          "label": "Leads & trials",
+          "route": "web.app.gym.leads"
+        },
+        {
+          "key": "staff",
+          "label": "Coaches & staff",
+          "route": "web.app.gym.staff"
+        },
+        {
+          "key": "timetable",
+          "label": "Timetable",
+          "route": "web.app.gym.timetable"
+        },
+        {
+          "key": "bookings",
+          "label": "Bookings",
+          "route": "web.app.gym.bookings"
+        },
+        {
+          "key": "attendance",
+          "label": "Attendance",
+          "route": "web.app.gym.attendance"
+        },
+        {
+          "key": "shared",
+          "label": "Shared sessions",
+          "route": "web.app.gym.shared"
+        },
+        {
+          "key": "community",
+          "label": "Community",
+          "route": "web.app.gym.community"
+        },
+        {
+          "key": "challenges",
+          "label": "Challenges",
+          "route": "web.app.gym.challenges.new"
+        },
+        {
+          "key": "sparring",
+          "label": "Open sparring",
+          "route": null,
+          "designGap": "GAP-WEB-GYM-OPEN-SPARRING"
+        },
+        {
+          "key": "announcements",
+          "label": "Announcements",
+          "route": "web.app.gym.announcements"
+        },
+        {
+          "key": "memberships",
+          "label": "Memberships & packages",
+          "route": "web.app.gym.memberships"
+        },
+        {
+          "key": "revenue",
+          "label": "Revenue & payouts",
+          "route": "web.app.gym.revenue"
+        },
+        {
+          "key": "store",
+          "label": "Store",
+          "route": "web.app.gym.store"
+        },
+        {
+          "key": "promote",
+          "label": "Promote gym",
+          "route": "web.app.gym.promote"
+        },
+        {
+          "key": "branding",
+          "label": "Public profile",
+          "route": "web.app.gym.profile"
+        },
+        {
+          "key": "settings",
+          "label": "Gym settings & plan",
+          "route": "web.app.gym.settings"
+        }
+      ]
     },
     {
       "id": "web.app.active",
@@ -204,7 +442,62 @@
       "parent": "web.root",
       "description": "Partner portal sidebar (/sponsor).",
       "design": "SponsorNav.dc.html",
-      "status": "PLACEHOLDER_REQUIRED"
+      "status": "PLACEHOLDER_REQUIRED",
+      "navItems": [
+        {
+          "key": "overview",
+          "label": "Overview",
+          "route": "web.sponsor.dashboard"
+        },
+        {
+          "key": "applications",
+          "label": "Applications",
+          "route": "web.sponsor.application"
+        },
+        {
+          "key": "campaigns",
+          "label": "Campaigns",
+          "route": "web.sponsor.campaigns"
+        },
+        {
+          "key": "challenges",
+          "label": "Challenges",
+          "route": "web.sponsor.campaigns",
+          "query": {
+            "type": "challenge"
+          }
+        },
+        {
+          "key": "events",
+          "label": "Events",
+          "route": "web.sponsor.campaigns",
+          "query": {
+            "type": "event"
+          }
+        },
+        {
+          "key": "creative",
+          "label": "Creative",
+          "route": null,
+          "note": "Step 5 of the campaign wizard; no standalone surface (D-SPONSOR-NAV)."
+        },
+        {
+          "key": "analytics",
+          "label": "Analytics",
+          "route": null,
+          "designGap": "GAP-SPONSOR-ANALYTICS-INDEX"
+        },
+        {
+          "key": "invoices",
+          "label": "Invoices",
+          "route": "web.sponsor.invoices"
+        },
+        {
+          "key": "settings",
+          "label": "Settings",
+          "route": "web.sponsor.settings"
+        }
+      ]
     },
     {
       "id": "web.admin",
@@ -212,7 +505,115 @@
       "parent": "web.root",
       "description": "Internal admin sidebar (/admin).",
       "design": "AdminNav.dc.html",
-      "status": "PLACEHOLDER_REQUIRED"
+      "status": "PLACEHOLDER_REQUIRED",
+      "navItems": [
+        {
+          "key": "overview",
+          "label": "Global overview",
+          "route": "web.admin"
+        },
+        {
+          "key": "tenants",
+          "label": "Tenant explorer",
+          "route": "web.admin.tenants"
+        },
+        {
+          "key": "users",
+          "label": "User explorer",
+          "route": "web.admin.users"
+        },
+        {
+          "key": "revenue",
+          "label": "Revenue",
+          "route": "web.admin.revenue"
+        },
+        {
+          "key": "subscriptions",
+          "label": "Subscriptions",
+          "route": "web.admin.subscriptions"
+        },
+        {
+          "key": "transactions",
+          "label": "Transactions & refunds",
+          "route": "web.admin.transactions"
+        },
+        {
+          "key": "payments",
+          "label": "Payouts",
+          "route": "web.admin.payouts"
+        },
+        {
+          "key": "pricing",
+          "label": "Pricing & promo codes",
+          "route": "web.admin.pricing"
+        },
+        {
+          "key": "sponsors",
+          "label": "Sponsors",
+          "route": "web.admin.sponsors"
+        },
+        {
+          "key": "campaigns",
+          "label": "Campaign review",
+          "route": "web.admin.campaigns"
+        },
+        {
+          "key": "enterprise",
+          "label": "Enterprise & white label",
+          "route": "web.admin.enterprise"
+        },
+        {
+          "key": "moderation",
+          "label": "Moderation",
+          "route": "web.admin.moderation"
+        },
+        {
+          "key": "enforcement",
+          "label": "Bans & appeals",
+          "route": "web.admin.enforcement"
+        },
+        {
+          "key": "support",
+          "label": "Support console",
+          "route": null,
+          "designGap": "GAP-WEB-ADMIN-SUPPORT"
+        },
+        {
+          "key": "privacy",
+          "label": "Data & privacy",
+          "route": "web.admin.privacy"
+        },
+        {
+          "key": "audit",
+          "label": "Audit log",
+          "route": "web.admin.audit"
+        },
+        {
+          "key": "flags",
+          "label": "Feature flags",
+          "route": "web.admin.flags"
+        },
+        {
+          "key": "notifications",
+          "label": "Emails & push",
+          "route": "web.admin.notifications"
+        },
+        {
+          "key": "integrations",
+          "label": "Integrations",
+          "route": "web.admin.integrations"
+        },
+        {
+          "key": "markets",
+          "label": "Markets",
+          "route": "web.admin.markets"
+        },
+        {
+          "key": "staff",
+          "label": "Internal access",
+          "route": "web.admin.staff"
+        }
+      ]
     },
     {
       "id": "mobile.root",
@@ -247,7 +648,34 @@
       "parent": "mobile.root",
       "description": "Fighter tab bar (Home, Training, Live Board, Community, Profile).",
       "design": "FighterTabs.dc.html",
-      "status": "PLACEHOLDER_REQUIRED"
+      "status": "PLACEHOLDER_REQUIRED",
+      "navItems": [
+        {
+          "key": "home",
+          "label": "Home",
+          "route": "mobile.home"
+        },
+        {
+          "key": "training",
+          "label": "Training",
+          "route": "mobile.training"
+        },
+        {
+          "key": "board",
+          "label": "Live Board",
+          "route": "mobile.board"
+        },
+        {
+          "key": "community",
+          "label": "Community",
+          "route": "mobile.community"
+        },
+        {
+          "key": "profile",
+          "label": "Profile",
+          "route": "mobile.profile"
+        }
+      ]
     },
     {
       "id": "mobile.coach",
@@ -255,7 +683,34 @@
       "parent": "mobile.root",
       "description": "Coach tab bar (Today, Fighters, Board, Requests, Inbox).",
       "design": "CoachTabs.dc.html",
-      "status": "PLACEHOLDER_REQUIRED"
+      "status": "PLACEHOLDER_REQUIRED",
+      "navItems": [
+        {
+          "key": "today",
+          "label": "Today",
+          "route": "mobile.coach.today"
+        },
+        {
+          "key": "fighters",
+          "label": "Fighters",
+          "route": "mobile.coach.fighters"
+        },
+        {
+          "key": "board",
+          "label": "Board",
+          "route": "mobile.coach.board"
+        },
+        {
+          "key": "requests",
+          "label": "Requests",
+          "route": "mobile.coach.requests"
+        },
+        {
+          "key": "inbox",
+          "label": "Inbox",
+          "route": "mobile.messages"
+        }
+      ]
     },
     {
       "id": "mobile.gym",
@@ -263,7 +718,36 @@
       "parent": "mobile.root",
       "description": "Gym tab bar (Pulse, Classes, QR check-in, Members, Staff).",
       "design": "GymTabs.dc.html",
-      "status": "PLACEHOLDER_REQUIRED"
+      "status": "PLACEHOLDER_REQUIRED",
+      "navItems": [
+        {
+          "key": "pulse",
+          "label": "Pulse",
+          "route": "mobile.gym.pulse"
+        },
+        {
+          "key": "classes",
+          "label": "Classes",
+          "route": null,
+          "designGap": "GAP-MOBILE-GYM-CLASSES"
+        },
+        {
+          "key": "checkin",
+          "label": "QR check-in",
+          "route": "mobile.gym.check-in"
+        },
+        {
+          "key": "members",
+          "label": "Members",
+          "route": null,
+          "designGap": "GAP-MOBILE-GYM-MEMBERS"
+        },
+        {
+          "key": "staff",
+          "label": "Staff",
+          "route": "mobile.gym.staff.on-shift"
+        }
+      ]
     },
     {
       "id": "mobile.shared",
@@ -505,20 +989,7 @@
       },
       "status": "PLACEHOLDER_REQUIRED",
       "discrepancies": ["D-REUSED-ARTBOARDS"],
-      "screens": [
-        "x-mobile-coach-account",
-        "OC1",
-        "OC2",
-        "OC3",
-        "OC4",
-        "OC5",
-        "OC6",
-        "OC7",
-        "OC8",
-        "OC9",
-        "OC10",
-        "OC11"
-      ]
+      "screens": ["OC1", "OC2", "OC3", "OC4", "OC5", "OC6", "OC7", "OC8", "OC9", "OC10", "OC11"]
     },
     {
       "id": "mobile.signup.verify",
@@ -585,28 +1056,6 @@
       "status": "PLACEHOLDER_REQUIRED",
       "discrepancies": ["D-ROLE-SELECTION-PATH", "D-SIGNUP-SESSION-BOUNDARY"],
       "screens": ["O05"]
-    },
-    {
-      "id": "mobile.auth",
-      "platform": "mobile",
-      "path": "/auth",
-      "params": [],
-      "name": "Role selection (alternative path)",
-      "surface": "AUTH",
-      "shell": "mobile.auth",
-      "parent": null,
-      "nav": {
-        "type": "STANDALONE",
-        "from": []
-      },
-      "access": {
-        "session": "GUEST_ONLY",
-        "capability": null,
-        "phase": null
-      },
-      "status": "DEFERRED",
-      "discrepancies": ["D-ROLE-SELECTION-PATH"],
-      "screens": ["x-mobile-role-selection"]
     },
     {
       "id": "mobile.join._code",
@@ -728,7 +1177,7 @@
         "from": []
       },
       "access": {
-        "session": "AUTHENTICATED",
+        "session": "PUBLIC",
         "capability": null,
         "phase": null
       },
@@ -859,20 +1308,7 @@
       },
       "status": "PLACEHOLDER_REQUIRED",
       "discrepancies": ["D-REUSED-ARTBOARDS"],
-      "screens": [
-        "OF1",
-        "OF2",
-        "x-mobile-fighter-boxing-profile",
-        "OF3",
-        "OF4",
-        "OF5",
-        "OF6",
-        "OF7",
-        "OF8",
-        "OF9",
-        "OF10",
-        "OF11"
-      ]
+      "screens": ["OF1", "OF2", "OF3", "OF4", "OF5", "OF6", "OF7", "OF8", "OF9", "OF10", "OF11"]
     },
     {
       "id": "mobile.welcome.tour",
@@ -1020,28 +1456,6 @@
       },
       "status": "PLACEHOLDER_REQUIRED",
       "screens": ["CRW1", "WC1"]
-    },
-    {
-      "id": "web.app.coach.programs.new",
-      "platform": "web",
-      "path": "/app/coach/programs/new",
-      "params": [],
-      "name": "Program builder",
-      "surface": "COACH",
-      "shell": "web.app.coach",
-      "parent": "web.app.coach",
-      "nav": {
-        "type": "STACK",
-        "from": []
-      },
-      "access": {
-        "session": "AUTHENTICATED",
-        "capability": "COACH",
-        "phase": "ACTIVE"
-      },
-      "status": "PLACEHOLDER_REQUIRED",
-      "discrepancies": ["D-PROGRAM-BUILDER-PATHS"],
-      "screens": ["CRW2"]
     },
     {
       "id": "mobile.invite.staff._token",
@@ -1357,8 +1771,8 @@
       "shell": "web.sponsor",
       "parent": "web.sponsor.campaigns",
       "nav": {
-        "type": "NAV_ITEM",
-        "from": ["web.sponsor#creative"]
+        "type": "STACK",
+        "from": []
       },
       "access": {
         "session": "AUTHENTICATED",
@@ -2216,11 +2630,11 @@
       "screens": ["S02"]
     },
     {
-      "id": "mobile.profile.fighter",
+      "id": "mobile.profile.fighter._fighter-id",
       "platform": "mobile",
-      "path": "/profile/fighter",
-      "params": [],
-      "name": "Fighter Public Profile",
+      "path": "/profile/fighter/:fighterId",
+      "params": ["fighterId"],
+      "name": "Fighter public profile",
       "surface": "FIGHTER",
       "shell": "mobile.fighter",
       "parent": "mobile.profile",
@@ -2257,7 +2671,7 @@
       },
       "status": "PLACEHOLDER_REQUIRED",
       "discrepancies": ["D-ALIAS-ROWS", "D-REUSED-ARTBOARDS"],
-      "screens": ["x-mobile-friend-requests", "x-mobile-friends"]
+      "screens": ["S05", "S04"]
     },
     {
       "id": "mobile.following",
@@ -2309,9 +2723,9 @@
       "name": "Create shared training",
       "surface": "FIGHTER",
       "shell": "mobile.fighter",
-      "parent": "mobile.shared-session",
+      "parent": null,
       "nav": {
-        "type": "STACK",
+        "type": "STANDALONE",
         "from": []
       },
       "access": {
@@ -2324,10 +2738,10 @@
       "screens": ["S10"]
     },
     {
-      "id": "mobile.shared-session",
+      "id": "mobile.shared-session._shared-session-id",
       "platform": "mobile",
-      "path": "/shared-session",
-      "params": [],
+      "path": "/shared-session/:sharedSessionId",
+      "params": ["sharedSessionId"],
       "name": "Shared session",
       "surface": "FIGHTER",
       "shell": "mobile.fighter",
@@ -2343,29 +2757,7 @@
       },
       "status": "PLACEHOLDER_REQUIRED",
       "discrepancies": ["D-SHARED-SESSION-NO-ID"],
-      "screens": ["S16", "S08"]
-    },
-    {
-      "id": "mobile.shared-session._shared-session-id",
-      "platform": "mobile",
-      "path": "/shared-session/:sharedSessionId",
-      "params": ["sharedSessionId"],
-      "name": "Shared session · completed",
-      "surface": "FIGHTER",
-      "shell": "mobile.fighter",
-      "parent": "mobile.shared-session",
-      "nav": {
-        "type": "STACK",
-        "from": []
-      },
-      "access": {
-        "session": "AUTHENTICATED",
-        "capability": "FIGHTER",
-        "phase": "ACTIVE"
-      },
-      "status": "PLACEHOLDER_REQUIRED",
-      "discrepancies": ["D-SHARED-SESSION-NO-ID"],
-      "screens": ["S08b"]
+      "screens": ["S16", "S08", "S08b"]
     },
     {
       "id": "mobile.achievements",
@@ -3588,8 +3980,8 @@
       "shell": "mobile.gym",
       "parent": null,
       "nav": {
-        "type": "NAV_ITEM",
-        "from": ["mobile.gym#classes"]
+        "type": "STANDALONE",
+        "from": []
       },
       "access": {
         "session": "AUTHENTICATED",
@@ -3610,8 +4002,8 @@
       "shell": "mobile.gym",
       "parent": null,
       "nav": {
-        "type": "NAV_ITEM",
-        "from": ["mobile.gym#members"]
+        "type": "STANDALONE",
+        "from": []
       },
       "access": {
         "session": "AUTHENTICATED",
@@ -3819,13 +4211,17 @@
       "platform": "web",
       "path": "/app/camp",
       "params": [],
-      "name": "Fight camp",
+      "name": "Fight camp (section entry)",
       "surface": "FIGHTER",
       "shell": "web.app.fighter",
       "parent": "web.app",
       "nav": {
-        "type": "STACK",
+        "type": "REDIRECT",
         "from": []
+      },
+      "redirect": {
+        "to": "web.app.camp.board",
+        "permanent": false
       },
       "access": {
         "session": "AUTHENTICATED",
@@ -3834,7 +4230,7 @@
       },
       "status": "PLACEHOLDER_REQUIRED",
       "discrepancies": ["D-ALIAS-ROWS", "D-CAMP-DUPLICATE"],
-      "screens": ["x-web-fight-camp-board-desktop"]
+      "screens": []
     },
     {
       "id": "web.app.progress",
@@ -3942,7 +4338,7 @@
       },
       "status": "PLACEHOLDER_REQUIRED",
       "discrepancies": ["D-NAV-DETAIL-TARGETS", "D-PROGRAM-BUILDER-PATHS"],
-      "screens": ["WC3"]
+      "screens": ["WC3", "CRW2"]
     },
     {
       "id": "web.app.coach.fighters._fighter-id",
@@ -3954,8 +4350,8 @@
       "shell": "web.app.coach",
       "parent": "web.app.coach",
       "nav": {
-        "type": "NAV_ITEM",
-        "from": ["web.app.coach#fighters"]
+        "type": "STACK",
+        "from": []
       },
       "access": {
         "session": "AUTHENTICATED",
@@ -4334,8 +4730,8 @@
       "shell": "web.app.gym",
       "parent": "web.app.gym",
       "nav": {
-        "type": "NAV_ITEM",
-        "from": ["web.app.gym#sparring"]
+        "type": "STACK",
+        "from": []
       },
       "access": {
         "session": "AUTHENTICATED",
@@ -4988,7 +5384,7 @@
       "parent": null,
       "nav": {
         "type": "NAV_ITEM",
-        "from": ["web.sponsor#campaigns"]
+        "from": ["web.sponsor#campaigns", "web.sponsor#challenges", "web.sponsor#events"]
       },
       "access": {
         "session": "AUTHENTICATED",
@@ -4996,6 +5392,7 @@
         "phase": "ACTIVE"
       },
       "status": "PLACEHOLDER_REQUIRED",
+      "discrepancies": ["D-SPONSOR-NAV"],
       "screens": ["SPX6"]
     },
     {
@@ -5029,8 +5426,8 @@
       "shell": "web.sponsor",
       "parent": null,
       "nav": {
-        "type": "NAV_ITEM",
-        "from": ["web.sponsor#analytics"]
+        "type": "STANDALONE",
+        "from": []
       },
       "access": {
         "session": "AUTHENTICATED",
@@ -5305,8 +5702,8 @@
       "shell": "web.admin",
       "parent": "web.admin",
       "nav": {
-        "type": "NAV_ITEM",
-        "from": ["web.admin#support"]
+        "type": "STACK",
+        "from": []
       },
       "access": {
         "session": "AUTHENTICATED",
@@ -5654,14 +6051,14 @@
       "screens": ["AS1"]
     },
     {
-      "id": "web.admin.sponsor",
+      "id": "web.admin.sponsors._sponsor-id",
       "platform": "web",
-      "path": "/admin/sponsor",
-      "params": [],
-      "name": "Sponsor application review",
+      "path": "/admin/sponsors/:sponsorId",
+      "params": ["sponsorId"],
+      "name": "Sponsor detail",
       "surface": "ADMIN",
       "shell": "web.admin",
-      "parent": "web.admin",
+      "parent": "web.admin.sponsors",
       "nav": {
         "type": "STACK",
         "from": []
@@ -5676,14 +6073,14 @@
       "screens": ["AS2", "AS4"]
     },
     {
-      "id": "web.admin.sponsor._sponsor-id.edit",
+      "id": "web.admin.sponsors._sponsor-id.edit",
       "platform": "web",
-      "path": "/admin/sponsor/:sponsorId/edit",
+      "path": "/admin/sponsors/:sponsorId/edit",
       "params": ["sponsorId"],
       "name": "Sponsor edit",
       "surface": "ADMIN",
       "shell": "web.admin",
-      "parent": "web.admin.sponsor",
+      "parent": "web.admin.sponsors._sponsor-id",
       "nav": {
         "type": "STACK",
         "from": []
@@ -5698,14 +6095,14 @@
       "screens": ["AS3"]
     },
     {
-      "id": "web.admin.sponsor._sponsor-id.timeline",
+      "id": "web.admin.sponsors._sponsor-id.timeline",
       "platform": "web",
-      "path": "/admin/sponsor/:sponsorId/timeline",
+      "path": "/admin/sponsors/:sponsorId/timeline",
       "params": ["sponsorId"],
       "name": "Sponsor timeline",
       "surface": "ADMIN",
       "shell": "web.admin",
-      "parent": "web.admin.sponsor",
+      "parent": "web.admin.sponsors._sponsor-id",
       "nav": {
         "type": "STACK",
         "from": []
@@ -5762,14 +6159,14 @@
       "screens": ["AC1"]
     },
     {
-      "id": "web.admin.campaign",
+      "id": "web.admin.campaigns._campaign-id",
       "platform": "web",
-      "path": "/admin/campaign",
-      "params": [],
+      "path": "/admin/campaigns/:campaignId",
+      "params": ["campaignId"],
       "name": "Campaign review",
       "surface": "ADMIN",
       "shell": "web.admin",
-      "parent": "web.admin",
+      "parent": "web.admin.campaigns",
       "nav": {
         "type": "STACK",
         "from": []
@@ -5784,14 +6181,14 @@
       "screens": ["AC2", "AC2b"]
     },
     {
-      "id": "web.admin.campaign._campaign-id.edit",
+      "id": "web.admin.campaigns._campaign-id.edit",
       "platform": "web",
-      "path": "/admin/campaign/:campaignId/edit",
+      "path": "/admin/campaigns/:campaignId/edit",
       "params": ["campaignId"],
       "name": "Campaign edit",
       "surface": "ADMIN",
       "shell": "web.admin",
-      "parent": "web.admin.campaign",
+      "parent": "web.admin.campaigns._campaign-id",
       "nav": {
         "type": "STACK",
         "from": []
@@ -6288,22 +6685,6 @@
       }
     },
     {
-      "id": "x-mobile-coach-account",
-      "code": null,
-      "name": "Coach · Account",
-      "route": "mobile.onboarding.coach",
-      "query": {
-        "step": "account"
-      },
-      "design": {
-        "gallery": "gallery-1",
-        "page": "onboarding",
-        "section": "1a · Registration · start — mobile app (all roles)",
-        "tag": "MOBILE",
-        "artboard": "SignUp.dc.html"
-      }
-    },
-    {
       "id": "O03",
       "code": "O03",
       "name": "Verify email",
@@ -6344,22 +6725,6 @@
         "page": "onboarding",
         "section": "1a · Registration · start — mobile app (all roles)",
         "step": "1.6",
-        "tag": "MOBILE",
-        "artboard": "Onboarding.dc.html"
-      }
-    },
-    {
-      "id": "x-mobile-role-selection",
-      "code": null,
-      "name": "Role selection",
-      "route": "mobile.auth",
-      "query": {
-        "state": "role-selection"
-      },
-      "design": {
-        "gallery": "gallery-1",
-        "page": "onboarding",
-        "section": "1a · Registration · start — mobile app (all roles)",
         "tag": "MOBILE",
         "artboard": "Onboarding.dc.html"
       }
@@ -6446,16 +6811,15 @@
       "code": "QA1",
       "name": "Lightweight account",
       "route": "mobile.checkout",
-      "query": {
-        "account": "quick"
-      },
+      "condition": "NO_SESSION",
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
         "section": "1b · Invites & lightweight accounts",
         "step": "1.12",
         "tag": "MOBILE",
-        "artboard": "QuickAccount.dc.html"
+        "artboard": "QuickAccount.dc.html",
+        "galleryPath": "/checkout?account=quick"
       }
     },
     {
@@ -6580,22 +6944,6 @@
         "page": "onboarding",
         "section": "FIGHTER · 2 · Registration · mobile · 11 steps",
         "step": "2.2",
-        "tag": "MOBILE",
-        "artboard": "OnbFExperience.dc.html"
-      }
-    },
-    {
-      "id": "x-mobile-fighter-boxing-profile",
-      "code": null,
-      "name": "Fighter · Boxing profile",
-      "route": "mobile.onboarding.fighter",
-      "query": {
-        "step": "profile"
-      },
-      "design": {
-        "gallery": "gallery-1",
-        "page": "onboarding",
-        "section": "FIGHTER · 2 · Registration · mobile · 11 steps",
         "tag": "MOBILE",
         "artboard": "OnbFExperience.dc.html"
       }
@@ -7469,7 +7817,7 @@
       "id": "CRW2",
       "code": "CRW2",
       "name": "Product tour · Program builder",
-      "route": "web.app.coach.programs.new",
+      "route": "web.app.coach.sessions.new",
       "query": {
         "tour": "2"
       },
@@ -7480,7 +7828,8 @@
         "section": "COACH · 34d · Onboarding · web first run",
         "step": "34.17",
         "tag": "WEB_APP",
-        "artboard": "FirstRunWebCTour.dc.html"
+        "artboard": "FirstRunWebCTour.dc.html",
+        "galleryPath": "/app/coach/programs/new?tour=2"
       }
     },
     {
@@ -8809,10 +9158,7 @@
       "id": "S03",
       "code": "S03",
       "name": "Fighter Public Profile",
-      "route": "mobile.profile.fighter",
-      "query": {
-        "state": "friend"
-      },
+      "route": "mobile.profile.fighter._fighter-id",
       "states": ["friend", "public", "private", "blocked"],
       "design": {
         "gallery": "gallery-1",
@@ -8820,13 +9166,14 @@
         "section": "9 · Social & network layer",
         "step": "9.3",
         "tag": "MOBILE",
-        "artboard": "AthleteProfile.dc.html"
+        "artboard": "AthleteProfile.dc.html",
+        "galleryPath": "/profile/fighter?state=friend"
       }
     },
     {
-      "id": "x-mobile-friend-requests",
-      "code": null,
-      "name": "Friend Requests",
+      "id": "S05",
+      "code": "S05",
+      "name": "Friend requests",
       "route": "mobile.friends",
       "query": {
         "tab": "requests"
@@ -8841,8 +9188,8 @@
       }
     },
     {
-      "id": "x-mobile-friends",
-      "code": null,
+      "id": "S04",
+      "code": "S04",
       "name": "Friends",
       "route": "mobile.friends",
       "states": ["default", "empty"],
@@ -8922,10 +9269,7 @@
       "id": "S16",
       "code": "S16",
       "name": "Shared Session Invitation",
-      "route": "mobile.shared-session",
-      "query": {
-        "state": "invited"
-      },
+      "route": "mobile.shared-session._shared-session-id",
       "states": ["invited", "cancelled"],
       "design": {
         "gallery": "gallery-1",
@@ -8933,17 +9277,15 @@
         "section": "9 · Social & network layer",
         "step": "9.8",
         "tag": "MOBILE",
-        "artboard": "TrainingInvite.dc.html"
+        "artboard": "TrainingInvite.dc.html",
+        "galleryPath": "/shared-session?state=invited"
       }
     },
     {
       "id": "S08",
       "code": "S08",
       "name": "Shared Training Detail",
-      "route": "mobile.shared-session",
-      "query": {
-        "state": "joined"
-      },
+      "route": "mobile.shared-session._shared-session-id",
       "states": ["joined", "completed"],
       "design": {
         "gallery": "gallery-1",
@@ -8951,7 +9293,8 @@
         "section": "9 · Social & network layer",
         "step": "9.9",
         "tag": "MOBILE",
-        "artboard": "SharedSession.dc.html"
+        "artboard": "SharedSession.dc.html",
+        "galleryPath": "/shared-session?state=joined"
       }
     },
     {
@@ -8959,9 +9302,6 @@
       "code": "S08b",
       "name": "Shared session · completed",
       "route": "mobile.shared-session._shared-session-id",
-      "query": {
-        "state": "completed"
-      },
       "states": ["completed"],
       "design": {
         "gallery": "gallery-1",
@@ -10778,20 +11118,6 @@
       }
     },
     {
-      "id": "x-web-fight-camp-board-desktop",
-      "code": null,
-      "name": "Fight Camp Board Desktop",
-      "route": "web.app.camp",
-      "states": ["week 6"],
-      "design": {
-        "gallery": "gallery-2",
-        "page": "desktop-web",
-        "section": "16 · Fighter web · desktop",
-        "tag": "WEB_APP",
-        "artboard": "WebCampBoard.dc.html"
-      }
-    },
-    {
       "id": "W07",
       "code": "W07",
       "name": "Progress",
@@ -12451,24 +12777,22 @@
       "id": "AS2",
       "code": "AS2",
       "name": "Application detail",
-      "route": "web.admin.sponsor",
-      "query": {
-        "state": "review"
-      },
+      "route": "web.admin.sponsors._sponsor-id",
       "design": {
         "gallery": "gallery-3",
         "page": "admin",
         "section": "32a · Admin · sponsor applications & CRM",
         "step": "32.2",
         "tag": "WEB_ADMIN",
-        "artboard": "AdminSponsorDetail.dc.html"
+        "artboard": "AdminSponsorDetail.dc.html",
+        "galleryPath": "/admin/sponsor?state=review"
       }
     },
     {
       "id": "AS3",
       "code": "AS3",
       "name": "Sponsor edit",
-      "route": "web.admin.sponsor._sponsor-id.edit",
+      "route": "web.admin.sponsors._sponsor-id.edit",
       "design": {
         "gallery": "gallery-3",
         "page": "admin",
@@ -12483,24 +12807,22 @@
       "id": "AS4",
       "code": "AS4",
       "name": "Sponsor CRM",
-      "route": "web.admin.sponsor",
-      "query": {
-        "state": "approved"
-      },
+      "route": "web.admin.sponsors._sponsor-id",
       "design": {
         "gallery": "gallery-3",
         "page": "admin",
         "section": "32a · Admin · sponsor applications & CRM",
         "step": "32.4",
         "tag": "WEB_ADMIN",
-        "artboard": "AdminSponsorCRM.dc.html"
+        "artboard": "AdminSponsorCRM.dc.html",
+        "galleryPath": "/admin/sponsor?state=approved"
       }
     },
     {
       "id": "AS5",
       "code": "AS5",
       "name": "Sponsor timeline",
-      "route": "web.admin.sponsor._sponsor-id.timeline",
+      "route": "web.admin.sponsors._sponsor-id.timeline",
       "design": {
         "gallery": "gallery-3",
         "page": "admin",
@@ -12543,41 +12865,37 @@
       "id": "AC2",
       "code": "AC2",
       "name": "Campaign review",
-      "route": "web.admin.campaign",
-      "query": {
-        "state": "pending"
-      },
+      "route": "web.admin.campaigns._campaign-id",
       "design": {
         "gallery": "gallery-3",
         "page": "admin",
         "section": "32b · Admin · campaign review & editors",
         "step": "32.8",
         "tag": "WEB_ADMIN",
-        "artboard": "AdminCampaignReview.dc.html"
+        "artboard": "AdminCampaignReview.dc.html",
+        "galleryPath": "/admin/campaign?state=pending"
       }
     },
     {
       "id": "AC2b",
       "code": "AC2b",
       "name": "Campaign · approved",
-      "route": "web.admin.campaign",
-      "query": {
-        "state": "approved"
-      },
+      "route": "web.admin.campaigns._campaign-id",
       "design": {
         "gallery": "gallery-3",
         "page": "admin",
         "section": "32b · Admin · campaign review & editors",
         "step": "32.9",
         "tag": "WEB_ADMIN",
-        "artboard": "AdminCampaignApproved.dc.html"
+        "artboard": "AdminCampaignApproved.dc.html",
+        "galleryPath": "/admin/campaign?state=approved"
       }
     },
     {
       "id": "AC3",
       "code": "AC3",
       "name": "Campaign edit",
-      "route": "web.admin.campaign._campaign-id.edit",
+      "route": "web.admin.campaigns._campaign-id.edit",
       "design": {
         "gallery": "gallery-3",
         "page": "admin",
@@ -12831,6 +13149,64 @@
         "tag": "WEB_SITE",
         "artboard": "PlanCompare.dc.html"
       }
+    }
+  ],
+  "excludedRows": [
+    {
+      "id": "x-mobile-role-selection",
+      "name": "Role selection",
+      "galleryPath": "/auth?state=role-selection",
+      "design": {
+        "gallery": "gallery-1",
+        "page": "onboarding",
+        "section": "1a · Registration · start — mobile app (all roles)",
+        "tag": "MOBILE",
+        "artboard": "Onboarding.dc.html"
+      },
+      "decision": "D-ROLE-SELECTION-PATH",
+      "reason": "Alias of O05; /onboarding/role is canonical."
+    },
+    {
+      "id": "x-mobile-fighter-boxing-profile",
+      "name": "Fighter · Boxing profile",
+      "galleryPath": "/onboarding/fighter?step=profile",
+      "design": {
+        "gallery": "gallery-1",
+        "page": "onboarding",
+        "section": "FIGHTER · 2 · Registration · mobile · 11 steps",
+        "tag": "MOBILE",
+        "artboard": "OnbFExperience.dc.html"
+      },
+      "decision": "D-REUSED-ARTBOARDS",
+      "reason": "Duplicate step key for OF2 (OnbFExperience.dc.html); the coded key ?step=experience is canonical."
+    },
+    {
+      "id": "x-mobile-coach-account",
+      "name": "Coach · Account",
+      "galleryPath": "/onboarding/coach?step=account",
+      "design": {
+        "gallery": "gallery-1",
+        "page": "onboarding",
+        "section": "1a · Registration · start — mobile app (all roles)",
+        "tag": "MOBILE",
+        "artboard": "SignUp.dc.html"
+      },
+      "decision": "D-REUSED-ARTBOARDS",
+      "reason": "Global account creation (O02, SignUp.dc.html) happens before role onboarding; not a coach wizard step."
+    },
+    {
+      "id": "x-web-fight-camp-board-desktop",
+      "name": "Fight Camp Board Desktop",
+      "galleryPath": "/app/camp",
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "16 · Fighter web · desktop",
+        "tag": "WEB_APP",
+        "artboard": "WebCampBoard.dc.html"
+      },
+      "decision": "D-CAMP-DUPLICATE",
+      "reason": "Same artboard as W06; the board renders only at /app/camp/board."
     }
   ],
   "api": [
@@ -13676,6 +14052,108 @@
       "status": "DEFERRED"
     }
   ],
+  "designGaps": [
+    {
+      "id": "GAP-MOBILE-GYM-CLASSES",
+      "platform": "mobile",
+      "status": "UNRESOLVED_DESIGN",
+      "description": "Classes tab list root (the tab links G03, a roster of one class)",
+      "candidatePath": "/gym/classes",
+      "navItems": ["mobile.gym#classes"],
+      "discrepancy": "D-NAV-DETAIL-TARGETS",
+      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
+    },
+    {
+      "id": "GAP-MOBILE-GYM-MEMBERS",
+      "platform": "mobile",
+      "status": "UNRESOLVED_DESIGN",
+      "description": "Members tab list root (the tab links G04, one member card)",
+      "candidatePath": "/gym/members",
+      "navItems": ["mobile.gym#members"],
+      "discrepancy": "D-NAV-DETAIL-TARGETS",
+      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
+    },
+    {
+      "id": "GAP-WEB-COACH-FIGHTERS",
+      "platform": "web",
+      "status": "UNRESOLVED_DESIGN",
+      "description": "Coach web fighters list (the nav links WC4 Fighter 360 of one fighter)",
+      "candidatePath": "/app/coach/fighters",
+      "navItems": ["web.app.coach#fighters"],
+      "discrepancy": "D-NAV-DETAIL-TARGETS",
+      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
+    },
+    {
+      "id": "GAP-WEB-GYM-OPEN-SPARRING",
+      "platform": "web",
+      "status": "UNRESOLVED_DESIGN",
+      "description": "Gym web open sparring list (the nav links WG12, one event)",
+      "candidatePath": "/app/gym/open-sparring",
+      "navItems": ["web.app.gym#sparring"],
+      "discrepancy": "D-NAV-DETAIL-TARGETS",
+      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
+    },
+    {
+      "id": "GAP-WEB-ADMIN-SUPPORT",
+      "platform": "web",
+      "status": "UNRESOLVED_DESIGN",
+      "description": "Admin support console index (the nav links AD5, one scoped session)",
+      "candidatePath": "/admin/support",
+      "navItems": ["web.admin#support"],
+      "discrepancy": "D-NAV-DETAIL-TARGETS",
+      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
+    },
+    {
+      "id": "GAP-WEB-CALENDAR",
+      "platform": "web",
+      "status": "UNRESOLVED_DESIGN",
+      "description": "Web calendar (the navs link the mobile Calendar.dc.html, F12)",
+      "candidatePath": null,
+      "navItems": ["web.app.fighter#calendar", "web.app.coach#calendar"],
+      "discrepancy": "D-WEB-NAV-MOBILE-TARGETS",
+      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
+    },
+    {
+      "id": "GAP-WEB-MESSAGES",
+      "platform": "web",
+      "status": "UNRESOLVED_DESIGN",
+      "description": "Web messages (the navs link the mobile Inbox.dc.html, F14)",
+      "candidatePath": null,
+      "navItems": ["web.app.fighter#messages", "web.app.coach#messages"],
+      "discrepancy": "D-WEB-NAV-MOBILE-TARGETS",
+      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
+    },
+    {
+      "id": "GAP-WEB-COACH-BOARD",
+      "platform": "web",
+      "status": "UNRESOLVED_DESIGN",
+      "description": "Web coach team board (the nav links the mobile CoachBoard.dc.html, C11)",
+      "candidatePath": null,
+      "navItems": ["web.app.coach#board"],
+      "discrepancy": "D-WEB-NAV-MOBILE-TARGETS",
+      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
+    },
+    {
+      "id": "GAP-WEB-ACCOUNT-STATES",
+      "platform": "web",
+      "status": "UNRESOLVED_DESIGN",
+      "description": "Web account suspended, recovery, pending-deletion and appeal surfaces (WS2 links the mobile ST12)",
+      "candidatePath": null,
+      "navItems": [],
+      "discrepancy": "D-WEB-ACCOUNT-STATES",
+      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
+    },
+    {
+      "id": "GAP-SPONSOR-ANALYTICS-INDEX",
+      "platform": "web",
+      "status": "UNRESOLVED_DESIGN",
+      "description": "Sponsor analytics index, only if the product needs one (the nav links SPX7, one campaign)",
+      "candidatePath": "/sponsor/analytics",
+      "navItems": ["web.sponsor#analytics"],
+      "discrepancy": "D-SPONSOR-NAV",
+      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
+    }
+  ],
   "discrepancies": [
     {
       "id": "D-ROUTE-MAP-BOARDS",
@@ -13717,9 +14195,11 @@
       "sourceB": "Route Gallery 1/3 uncoded row 'Role selection' · /auth?state=role-selection (same artboard); spec gallery 01–157 item 3 uses the /auth form for step 1.6",
       "mismatch": "One screen, two canonical paths; /auth exists nowhere else.",
       "impact": "Two entry points for the same step; deep links and guards would differ.",
-      "resolution": "Proposed: /onboarding/role is canonical and /auth is not built. Until decided, mobile.auth stays DEFERRED (not a placeholder).",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": ["mobile.auth", "mobile.onboarding.role"]
+      "resolution": "Route mobile.auth removed; the alias row is listed in excludedRows.",
+      "status": "RESOLVED",
+      "routes": ["mobile.onboarding.role"],
+      "decision": "/onboarding/role is canonical. The /auth?state=role-selection alias is dropped.",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-PROFILE-NO-ID",
@@ -13728,9 +14208,11 @@
       "sourceB": "Route Gallery 2/3 · W05 Fighter Profile Desktop · /app/profile?view=friend",
       "mismatch": "Viewing another fighter's profile carries no fighter id; the own profile (/profile, /app/profile) uses the same paths.",
       "impact": "Another fighter's profile cannot be deep-linked or shared.",
-      "resolution": "Proposed: a :fighterId segment (for example /profile/fighter/:fighterId and /app/profile/:fighterId). The registry keeps the gallery paths unchanged until decided.",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": ["mobile.profile.fighter", "web.app.profile"]
+      "resolution": "mobile.profile.fighter became mobile.profile.fighter._fighter-id; S03 no longer carries ?state=. Web unchanged.",
+      "status": "RESOLVED",
+      "routes": ["mobile.profile.fighter._fighter-id", "web.app.profile"],
+      "decision": "Mobile: /profile/fighter/:fighterId; relationship and privacy state are backend truth. Web /app/profile stays the current user's profile and view-as surface (W05 is 'Fighter profile · view as').",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-SHARED-SESSION-NO-ID",
@@ -13739,13 +14221,11 @@
       "sourceB": "Route Gallery 1/3 · S08b /shared-session/:id?state=completed, S10 /shared-session/new",
       "mismatch": "The same resource is addressed with and without :id.",
       "impact": "Invitation links cannot identify the session.",
-      "resolution": "Proposed: all states on /shared-session/:sharedSessionId. Kept as designed until decided.",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": [
-        "mobile.shared-session",
-        "mobile.shared-session._shared-session-id",
-        "mobile.shared-session.new"
-      ]
+      "resolution": "Base route /shared-session removed; S16, S08 and S08b render on /shared-session/:sharedSessionId without ?state=.",
+      "status": "RESOLVED",
+      "routes": ["mobile.shared-session._shared-session-id", "mobile.shared-session.new"],
+      "decision": "/shared-session/:sharedSessionId is canonical; /shared-session/new remains creation. Lifecycle state is not encoded in the URL.",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-ADMIN-SPONSOR-CAMPAIGN-PATHS",
@@ -13754,15 +14234,17 @@
       "sourceB": "Route Gallery 3/3 · AS1 /admin/sponsors, AS3 /admin/sponsor/SP-1048/edit, AS5 …/timeline, AS6 /admin/sponsors/revenue, AC1 /admin/campaigns, AC3 /admin/campaign/:id/edit",
       "mismatch": "Detail screens have no id; collections use the plural, details the singular.",
       "impact": "Review screens cannot be linked from queues or audit entries.",
-      "resolution": "Proposed: /admin/sponsors/:sponsorId and /admin/campaigns/:campaignId with edit/timeline below them. Kept as designed until decided.",
-      "status": "NEEDS_PRODUCT_DECISION",
+      "resolution": "Five admin routes re-keyed; review/approval state removed from AS2, AS4, AC2, AC2b queries (backend truth).",
+      "status": "RESOLVED",
       "routes": [
-        "web.admin.sponsor",
-        "web.admin.sponsor._sponsor-id.edit",
-        "web.admin.sponsor._sponsor-id.timeline",
-        "web.admin.campaign",
-        "web.admin.campaign._campaign-id.edit"
-      ]
+        "web.admin.sponsors._sponsor-id",
+        "web.admin.sponsors._sponsor-id.edit",
+        "web.admin.sponsors._sponsor-id.timeline",
+        "web.admin.campaigns._campaign-id",
+        "web.admin.campaigns._campaign-id.edit"
+      ],
+      "decision": "Plural collections with stable ids: /admin/sponsors/:sponsorId (+ /edit, /timeline), /admin/campaigns/:campaignId (+ /edit). /admin/sponsors/revenue stays a static collection route. No separate SponsorApplication route unless a backend domain ticket establishes it as an addressable resource.",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-NAMING-INCONSISTENCIES",
@@ -13793,9 +14275,11 @@
       "sourceB": "Route Gallery 2/3 uncoded 'Fight Camp Board Desktop' · /app/camp (same artboard WebCampBoard.dc.html)",
       "mismatch": "Two paths render the same screen.",
       "impact": "Duplicate content; unclear which one the sidebar 'Fight camp' item highlights.",
-      "resolution": "Both are kept as approved routes. Proposed: /app/camp is the section root that shows (or redirects to) the board.",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": ["web.app.camp", "web.app.camp.board"]
+      "resolution": "web.app.camp is a REDIRECT route to web.app.camp.board; its alias row is listed in excludedRows.",
+      "status": "RESOLVED",
+      "routes": ["web.app.camp", "web.app.camp.board"],
+      "decision": "/app/camp/board is canonical. /app/camp is a section entry redirect; the board is never rendered at both paths.",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-WEB-NAV-MOBILE-TARGETS",
@@ -13804,9 +14288,12 @@
       "sourceB": "Route Gallery: Calendar (/calendar), Messages (/messages) and Coach Board (/coach/board) are MOBILE-only",
       "mismatch": "Five web navigation items have no web route.",
       "impact": "SF-32 cannot build these items without inventing /app paths.",
-      "resolution": "Not invented. SF-32 renders them as unavailable (or omits them) until the design adds web routes. Known SF-16 design gap.",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": []
+      "resolution": "The nav items have no route and point at design gaps.",
+      "status": "RESOLVED",
+      "routes": [],
+      "decision": "The Route Gallery stays authoritative. No web Calendar, Messages or Coach Board routes are invented; they are design gaps.",
+      "decidedOn": "2026-10-06",
+      "designGaps": ["GAP-WEB-CALENDAR", "GAP-WEB-MESSAGES", "GAP-WEB-COACH-BOARD"]
     },
     {
       "id": "D-WEB-WORKSPACE-SWITCHER",
@@ -13815,9 +14302,11 @@
       "sourceB": "Route Gallery: A04 Workspace switcher /workspaces is MOBILE; web only has WA2 /login?step=workspace",
       "mismatch": "No authenticated web route to switch workspace.",
       "impact": "Multi-role web users cannot switch workspace after sign-in.",
-      "resolution": "Proposed: a web switcher (route or sidebar menu). Until decided, SF-32 uses the sign-in workspace step only.",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": ["web.login"]
+      "resolution": "guards.workspaceChooser.web is null; guards.workspaceSwitcher documents the in-shell action. WA2 stays the sign-in workspace step.",
+      "status": "RESOLVED",
+      "routes": ["web.login"],
+      "decision": "Workspace switching is an in-shell action with no route. The active workspace is backend/session context.",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-SPONSOR-NAV",
@@ -13826,9 +14315,12 @@
       "sourceB": "Route Gallery 3/3 (sponsor portal)",
       "mismatch": "Challenges → SponsoredChallenge.dc.html (fighter mobile), Events → MarketEvents.dc.html (fighter mobile), Creative → CampCreative.dc.html (a step of /sponsor/campaigns/new), Analytics → the per-campaign route /sponsor/analytics/:id (no index).",
       "impact": "Four portal sections have no route of their own.",
-      "resolution": "Not invented. SF-32 links Analytics to the campaigns list and leaves Challenges, Events and Creative unavailable until decided.",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": ["web.sponsor.analytics._campaign-id"]
+      "resolution": "SponsorNav items mapped in shells[web.sponsor].navItems: challenges/events -> web.sponsor.campaigns with ?type=; creative -> no route; analytics -> design gap.",
+      "status": "RESOLVED",
+      "routes": ["web.sponsor.campaigns", "web.sponsor.analytics._campaign-id"],
+      "decision": "Challenges and Events are filtered states of /sponsor/campaigns (campaign types). Creative has no standalone route. No dedicated challenge/event/creative routes. A sponsor analytics index stays a design gap unless designed.",
+      "decidedOn": "2026-10-06",
+      "designGaps": ["GAP-SPONSOR-ANALYTICS-INDEX"]
     },
     {
       "id": "D-NAV-DETAIL-TARGETS",
@@ -13837,8 +14329,8 @@
       "sourceB": "Route Gallery: the targets need a parameter or open a creator; no list route exists",
       "mismatch": "Tabs/sidebar items point at /gym/classes/:classId/roster, /gym/members/:memberId, /app/coach/fighters/:fighterId, /app/coach/sessions/new, /app/coach/services/new, /app/gym/challenges/new, /app/gym/open-sparring/:openSparringId, /admin/support/:sessionId.",
       "impact": "A tab or sidebar item cannot open a route that needs an id it does not have.",
-      "resolution": "Not invented. Proposed: list routes for these sections, to be confirmed in the design. SF-32/SF-33 point the item at the closest approved route and record the gap.",
-      "status": "NEEDS_PRODUCT_DECISION",
+      "resolution": "Nav items for classes, members, coach fighters, open sparring and admin support point at design gaps; their detail routes are no longer NAV_ITEM.",
+      "status": "RESOLVED",
       "routes": [
         "mobile.gym.classes._class-id.roster",
         "mobile.gym.members._member-id",
@@ -13848,6 +14340,15 @@
         "web.app.gym.challenges.new",
         "web.app.gym.open-sparring._open-sparring-id",
         "web.admin.support._session-id"
+      ],
+      "decision": "Creator routes stay valid nav targets. No default-resource navigation for routes that need an id. Missing list roots are design gaps.",
+      "decidedOn": "2026-10-06",
+      "designGaps": [
+        "GAP-MOBILE-GYM-CLASSES",
+        "GAP-MOBILE-GYM-MEMBERS",
+        "GAP-WEB-COACH-FIGHTERS",
+        "GAP-WEB-GYM-OPEN-SPARRING",
+        "GAP-WEB-ADMIN-SUPPORT"
       ]
     },
     {
@@ -13857,9 +14358,11 @@
       "sourceB": "Identity model (User → WorkspaceMembership → Gym | Sponsor; a user may hold several)",
       "mismatch": "Paths do not say which gym or sponsor workspace they belong to (the gym console shows 'OWNER · 3 LOCATIONS').",
       "impact": "Links are only meaningful inside the active workspace; a user with two gym memberships cannot deep-link into a specific one.",
-      "resolution": "Architecture: the active workspace is session context chosen at sign-in or in the switcher (docs/route-architecture.md §7). A resource outside the active workspace resolves as not found. Whether to add a workspace segment is a product decision.",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": ["web.app.gym", "web.sponsor.dashboard", "mobile.gym.pulse"]
+      "resolution": "No path change.",
+      "status": "RESOLVED",
+      "routes": ["web.app.gym", "web.sponsor.dashboard", "mobile.gym.pulse"],
+      "decision": "The active workspace is session context. Workspace ids are not added to URLs globally; cross-workspace deep links may be added later when email/push features need them.",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-WEB-DEFAULT-WORKSPACE",
@@ -13890,9 +14393,11 @@
       "sourceB": "Fighter Pro (/pro) and gym plan comparison (/pricing/compare?device=mobile on Gym Mobile)",
       "mismatch": "Trials are drawn for coaches only while pricing is shown to coaches and gyms.",
       "impact": "Unclear whether /trial is coach-only.",
-      "resolution": "Registered as SHARED (authenticated) until decided; the backend decides eligibility.",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": ["mobile.trial", "mobile.pricing", "mobile.pricing.compare"]
+      "resolution": "No change.",
+      "status": "RESOLVED",
+      "routes": ["mobile.trial", "mobile.pricing", "mobile.pricing.compare"],
+      "decision": "Trial and pricing stay shared signed-in routes. The backend determines commercial eligibility.",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-GUEST-CHECKOUT",
@@ -13901,9 +14406,11 @@
       "sourceB": "Registry: /checkout is AUTHENTICATED",
       "mismatch": "QA1 implies checkout can start without a full account.",
       "impact": "Determines whether /checkout is reachable by guests.",
-      "resolution": "/checkout stays AUTHENTICATED; QA1 is a state of it. Product and SF-18 decide whether a lightweight session is created first.",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": ["mobile.checkout"]
+      "resolution": "mobile.checkout session PUBLIC; QA1 has condition NO_SESSION instead of ?account=quick.",
+      "status": "RESOLVED",
+      "routes": ["mobile.checkout"],
+      "decision": "/checkout is publicly reachable. Without a session it renders the designed quick-account state (QA1). A normal SimpleFit identity and session must exist before any authenticated payment operation. No anonymous purchase model, no quick-account route.",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-SIGNUP-SESSION-BOUNDARY",
@@ -13912,15 +14419,17 @@
       "sourceB": "Guard model (GUEST_ONLY vs AUTHENTICATED)",
       "mismatch": "The design does not say at which step the user becomes authenticated; the workspace step of /login happens after authentication.",
       "impact": "Determines which sign-up steps redirect a signed-in user.",
-      "resolution": "Registry: /welcome, /login, /signup, /signup/verify, /signup/account are GUEST_ONLY; /signup/consent and /onboarding/role are AUTHENTICATED in the ONBOARDING phase; the /login workspace step is a state of the sign-in flow. To be confirmed by the SF-18 identity tickets.",
-      "status": "NEEDS_PRODUCT_DECISION",
+      "resolution": "Access unchanged: sign-up and verify are GUEST_ONLY; consent and role are AUTHENTICATED/ONBOARDING.",
+      "status": "RESOLVED",
       "routes": [
         "mobile.signup.verify",
         "mobile.signup.consent",
         "mobile.onboarding.role",
         "web.signup.verify",
         "web.login"
-      ]
+      ],
+      "decision": "For email authentication the session begins after successful email verification. Consent and role onboarding run on an authenticated, onboarding-incomplete account. Social providers with provider-verified identities may transition differently; SF-22/SF-23 own those flows.",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-ADMIN-IDENTITY",
@@ -13929,9 +14438,11 @@
       "sourceB": "Canonical identity model: User → Identities, FighterProfile, CoachProfile, WorkspaceMembership (Gym, Sponsor)",
       "mismatch": "Admin staff, their sign-in and access scopes are not part of the identity tree.",
       "impact": "The ADMIN capability has no defined source.",
-      "resolution": "ADMIN is a capability the backend grants to internal staff, never a WorkspaceMembership. Admin routes answer not-found to non-admins. Staff identity and scopes are decided by an SF-18 child ticket.",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": ["web.admin.login", "web.admin.access"]
+      "resolution": "capabilities.ADMIN.grantedBy updated. /admin/login stays GUEST_ONLY: it is an authentication entry surface. Authenticated admin entry, capability check, step-up and re-entry semantics are owned by the authentication/security implementation; no access class is added for them.",
+      "status": "RESOLVED",
+      "routes": ["web.admin.login", "web.admin.access"],
+      "decision": "Admin uses the same global User. Internal staff access is a backend-granted capability; no separate admin User model. Hardware-key/WebAuthn step-up and scoped admin sessions belong to later admin/auth implementation.",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-MOBILE-SPONSOR-ADMIN",
@@ -13940,9 +14451,11 @@
       "sourceB": "A04 Workspace switcher /workspaces shows '4 roles' on mobile",
       "mismatch": "No mobile destination for a user whose only workspace is a sponsor.",
       "impact": "The default-destination resolver has no mobile target.",
-      "resolution": "Proposed: mobile shows the workspace switcher with a 'continue on the web' state. Until decided, SF-33 sends such users to /workspaces.",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": ["mobile.workspaces"]
+      "resolution": "capabilities.SPONSOR_WORKSPACE.mobile and ADMIN.mobile notes; guards.defaultDestinationFallback.mobile = mobile.workspaces.",
+      "status": "RESOLVED",
+      "routes": ["mobile.workspaces"],
+      "decision": "Sponsor workspaces may appear in mobile /workspaces with a 'continue on the web' action. No mobile Sponsor or Admin product surfaces.",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-WEB-ACCOUNT-STATES",
@@ -13951,14 +14464,17 @@
       "sourceB": "Route Gallery 2/3 · WS2 /app/settings/data?modal=delete (web)",
       "mismatch": "The web has no suspended, pending-deletion or appeal route.",
       "impact": "Web behaviour for restricted accounts is undefined.",
-      "resolution": "Proposed: web shows the restriction on sign-in until the design adds web screens. Not invented.",
-      "status": "NEEDS_PRODUCT_DECISION",
+      "resolution": "Recorded as a design gap.",
+      "status": "RESOLVED",
       "routes": [
         "mobile.account.suspended",
         "mobile.account.pending-deletion",
         "mobile.account.appeal",
         "web.app.settings.data"
-      ]
+      ],
+      "decision": "Web account-state and recovery surfaces must eventually be designed. Until the Route Gallery contains them, no web routes are invented; restricted-account behaviour is owned by auth/session handling.",
+      "decidedOn": "2026-10-06",
+      "designGaps": ["GAP-WEB-ACCOUNT-STATES"]
     },
     {
       "id": "D-PRODUCTION-FOUNDATION",
@@ -14002,9 +14518,11 @@
       "sourceB": "The artboards' own titles",
       "mismatch": "The screen name and the artboard it opens disagree.",
       "impact": "A visual ticket may build the wrong screen for a wizard step.",
-      "resolution": "Screens keep the exact artboard the gallery links. The visual ticket confirms the intended content before building the step.",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": ["mobile.onboarding.fighter", "mobile.onboarding.coach", "mobile.friends"]
+      "resolution": "Two alias rows moved to excludedRows; x-mobile-friends / x-mobile-friend-requests renamed S04 / S05. OF1 'Account' (OnbFProfile.dc.html, 'Your fighter profile') was not a mismatch.",
+      "status": "RESOLVED",
+      "routes": ["mobile.onboarding.fighter", "mobile.onboarding.coach", "mobile.friends"],
+      "decision": "Mobile wizards use the coded keys (fighter OF2 = ?step=experience); the duplicate ?step=profile alias is dropped. Web keeps its own presentation keys. Coach 'account' is not a role onboarding step: global account creation happens first. The Friends screens are S04/S05. Backend onboarding step ids are a separate API contract.",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-PROGRAM-BUILDER-PATHS",
@@ -14013,9 +14531,11 @@
       "sourceB": "Route Gallery 2/3 · WC3 Shared Session Creator · /app/coach/sessions/new?assign=shared (WebProgramBuilder.dc.html); CoachWebNav 'Programs & sessions' → WebProgramBuilder",
       "mismatch": "/app/coach/programs/new exists only as a first-run tour state.",
       "impact": "Possibly one builder with two paths.",
-      "resolution": "Both kept as approved routes. Product confirms whether programs/new and sessions/new are the same builder.",
-      "status": "NEEDS_PRODUCT_DECISION",
-      "routes": ["web.app.coach.programs.new", "web.app.coach.sessions.new"]
+      "resolution": "Route web.app.coach.programs.new removed; CRW2 moved to web.app.coach.sessions.new.",
+      "status": "RESOLVED",
+      "routes": ["web.app.coach.sessions.new"],
+      "decision": "/app/coach/sessions/new is canonical; the first-run tour is ?tour=2 on it. /app/coach/programs/new is dropped. Frontend route names need not mirror backend resource names.",
+      "decidedOn": "2026-10-06"
     },
     {
       "id": "D-FUTURE-SPARRING",
