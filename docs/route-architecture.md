@@ -524,7 +524,7 @@ screenshots:
 Every entry has a source A, a source B, the exact mismatch, its impact, a
 resolution and a status; the full text is in `discrepancies` of the registry.
 The 18 product decisions approved on 2026-10-06 carry `decision` and
-`decidedOn`. No discrepancy is open; four are `DEFERRED` by design.
+`decidedOn`. No discrepancy awaits a product decision; five are `DEFERRED`.
 
 | Id                                 | Status   | Decision / summary                                                                         |
 | ---------------------------------- | -------- | ------------------------------------------------------------------------------------------ |
@@ -561,6 +561,7 @@ The 18 product decisions approved on 2026-10-06 carry `decision` and
 | `D-PITCH-PAGE-AUTHORITY`           | RESOLVED | The Route Gallery is the IA source despite its reference-only page                         |
 | `D-404-SCOPE`                      | RESOLVED | One web catch-all for every area                                                           |
 | `D-CANVAS-GROWTH`                  | RESOLVED | Canvas grew from 456 (SF-16) to 473 artboards (`1791276973-ad1d`)                          |
+| `D-WEB-COACH-FIGHTER-INVITE`       | DEFERRED | Coach web "Invite fighters" links the mobile INV1 artboard: design gap, no web route       |
 
 Gallery rows dropped by a decision are listed in `excludedRows`, so every
 row stays accounted for:
@@ -581,9 +582,10 @@ design discussion. A gap leaves the list only when Claude Design adds the
 Route Gallery rows; the registry then gains the route through §15. Status:
 `UNRESOLVED_DESIGN`.
 
-| Id                            | Platform | Missing designed surface                                                                  | Nav items waiting for it |
-| ----------------------------- | -------- | ----------------------------------------------------------------------------------------- | ------------------------ |
-| `GAP-SPONSOR-ANALYTICS-INDEX` | web      | Sponsor analytics index, only if the product needs one (the nav links SPX7, one campaign) | `web.sponsor#analytics`  |
+| Id                             | Platform | Missing designed surface                                                                                                                                                  | Nav items waiting for it                |
+| ------------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| `GAP-SPONSOR-ANALYTICS-INDEX`  | web      | Sponsor analytics index, only if the product needs one (the nav links SPX7, one campaign)                                                                                 | `web.sponsor#analytics`                 |
+| `GAP-WEB-COACH-FIGHTER-INVITE` | web      | Coach web "Invite fighters" (WC7 action) links the mobile `InviteCoach.dc.html` (INV1, `/invite/:code`); Coach → Fighter invitation semantics for web are not established | none: an in-page action, not a nav item |
 
 Design version `1791276973-ad1d` resolved the other nine gaps
 (`GAP-MOBILE-GYM-CLASSES`, `GAP-MOBILE-GYM-MEMBERS`, `GAP-WEB-COACH-FIGHTERS`,
@@ -592,6 +594,15 @@ Design version `1791276973-ad1d` resolved the other nine gaps
 Route Gallery rows; they are routes now, and each affected discrepancy records
 it in `resolvedByDesign`. The sponsor analytics index was intentionally not
 designed: `/sponsor/analytics/:campaignId` stays the canonical analytics route.
+
+`GAP-WEB-COACH-FIGHTER-INVITE` records an in-page action, not a nav item: the
+"Invite fighters" action of `WebCoachFighters.dc.html` (WC7) links the mobile
+INV1 artboard. INV1 is where a recipient uses a coach, gym or friend invite;
+whether the coach's own web invitation of fighters is the same flow is not
+established, so no web invite route or screen exists and the action must not
+be treated as one (`source` records the artboard, the action and its canvas
+target). Owner: future Coach ↔ Fighter relationship/invitation product work.
+It does not block SF-19.
 The sponsor Challenges and Events items link `SponsorCampaigns.dc.html` on the
 canvas and open the query states `/sponsor/campaigns?type=challenge` and
 `?type=event` in production; they are not routes.

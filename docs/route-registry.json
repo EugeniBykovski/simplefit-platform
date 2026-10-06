@@ -6602,7 +6602,7 @@
         "phase": "ACTIVE"
       },
       "status": "PLACEHOLDER_REQUIRED",
-      "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "discrepancies": ["D-NAV-DETAIL-TARGETS", "D-WEB-COACH-FIGHTER-INVITE"],
       "screens": ["WC7"]
     },
     {
@@ -14485,6 +14485,30 @@
       "navItems": ["web.sponsor#analytics"],
       "discrepancy": "D-SPONSOR-NAV",
       "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
+    },
+    {
+      "id": "GAP-WEB-COACH-FIGHTER-INVITE",
+      "platform": "web",
+      "status": "UNRESOLVED_DESIGN",
+      "description": "Coach web invitation of fighters: the 'Invite fighters' action on WebCoachFighters links the mobile INV1 artboard, and its Coach → Fighter semantics are not established for web",
+      "candidatePath": null,
+      "navItems": [],
+      "source": {
+        "artboard": "WebCoachFighters.dc.html",
+        "screen": "WC7",
+        "route": "web.app.coach.fighters",
+        "action": "Invite fighters",
+        "canvasTarget": {
+          "artboard": "InviteCoach.dc.html",
+          "screen": "INV1",
+          "platform": "mobile",
+          "path": "/invite/:code"
+        }
+      },
+      "owner": "Future Coach ↔ Fighter relationship/invitation product work",
+      "blocking": [],
+      "discrepancy": "D-WEB-COACH-FIGHTER-INVITE",
+      "note": "Not a route. No canonical web invite route exists; the action is not a valid web route until Claude Design adds a Route Gallery row. Not blocking SF-19."
     }
   ],
   "discrepancies": [
@@ -14961,6 +14985,18 @@
       "resolution": "The registry records the version it was reconciled against (source.version). The SF-16 audit block in design-source.json is not rewritten.",
       "status": "RESOLVED",
       "routes": []
+    },
+    {
+      "id": "D-WEB-COACH-FIGHTER-INVITE",
+      "title": "Coach web 'Invite fighters' links a mobile invite screen",
+      "sourceA": "WebCoachFighters.dc.html (WC7, /app/coach/fighters): action 'Invite fighters'",
+      "sourceB": "Canvas target InviteCoach.dc.html: mobile INV1 'Invites · coach / gym / friend' at /invite/:code",
+      "mismatch": "The web action targets a mobile artboard. It is not established that the Coach → Fighter invitation on web is the same flow as INV1, which a recipient uses to accept a coach, gym or friend invite.",
+      "impact": "Building it from INV1 could merge two relationship directions (coach invites fighter vs fighter receives/uses a coach invite) into one route and screen.",
+      "resolution": "Recorded as GAP-WEB-COACH-FIGHTER-INVITE. No web invite route or screen is registered or inferred. Owner: future Coach ↔ Fighter relationship/invitation product work. Not blocking SF-19.",
+      "status": "DEFERRED",
+      "routes": ["web.app.coach.fighters"],
+      "designGaps": ["GAP-WEB-COACH-FIGHTER-INVITE"]
     }
   ]
 }

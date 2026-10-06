@@ -464,6 +464,35 @@ describe("approved SF-31 decisions", () => {
     );
   });
 
+  it("keep exactly the two unresolved design gaps", () => {
+    expect([...gapIds].sort()).toEqual([
+      "GAP-SPONSOR-ANALYTICS-INDEX",
+      "GAP-WEB-COACH-FIGHTER-INVITE",
+    ]);
+  });
+
+  it("never treat the coach web invite action as a web route", () => {
+    const gap = designGaps.find(({ id }) => id === "GAP-WEB-COACH-FIGHTER-INVITE");
+    expect(gap).toMatchObject({
+      candidatePath: null,
+      source: {
+        artboard: "WebCoachFighters.dc.html",
+        route: "web.app.coach.fighters",
+        canvasTarget: { artboard: "InviteCoach.dc.html", screen: "INV1", platform: "mobile" },
+      },
+    });
+    const webRoutes = routes.filter((r) => r.platform === "web");
+    expect(webRoutes.filter((r) => /(^|\/)invite(s)?(\/|$)/.test(r.path)).map((r) => r.id)).toEqual(
+      [],
+    );
+    const webInviteScreens = screens.filter(
+      (screen) =>
+        screen.design.artboard === "InviteCoach.dc.html" &&
+        routeById.get(screen.route)?.platform === "web",
+    );
+    expect(webInviteScreens.map((screen) => screen.id)).toEqual([]);
+  });
+
   it("leave the sponsor analytics index as an unresolved design gap", () => {
     expect(gapIds.has("GAP-SPONSOR-ANALYTICS-INDEX")).toBe(true);
     expect(pathsOf("web")).not.toEqual(expect.arrayContaining(["/sponsor/analytics"]));
@@ -496,6 +525,9 @@ describe("design gaps", () => {
       if (!PLATFORMS.includes(gap.platform)) report(`unknown platform ${gap.platform}`);
       if (!filled(gap.description)) report("missing description");
       if (!discrepancyIds.has(gap.discrepancy)) report(`unknown discrepancy ${gap.discrepancy}`);
+      if (gap.navItems.length === 0 && !gap.source) report("needs nav items or a source action");
+      if (gap.source && !routeById.has(gap.source.route))
+        report(`unknown source route ${gap.source.route}`);
       if (gap.candidatePath && ownPaths.has(`${gap.platform} ${gap.candidatePath}`)) {
         report(`candidate path ${gap.candidatePath} is already a route`);
       }
