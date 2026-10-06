@@ -1222,7 +1222,11 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(auth)/signup/page.tsx",
+        "note": "SF-22: Google sign-up only, in a minimal frame; the O02w design (role picker, email, Apple) is SF-24."
+      },
       "screens": ["O02w"]
     },
     {
@@ -1286,8 +1290,12 @@
         "capability": null,
         "phase": null
       },
-      "status": "PLACEHOLDER_REQUIRED",
+      "status": "IMPLEMENTED",
       "discrepancies": ["D-WEB-WORKSPACE-SWITCHER", "D-SIGNUP-SESSION-BOUNDARY"],
+      "production": {
+        "file": "src/app/[locale]/(auth)/login/page.tsx",
+        "note": "SF-22: Google sign-in only, in a minimal frame; the WA1/WA2 design (email, passkey, Apple, workspace step) is SF-24."
+      },
       "screens": ["WA1", "WA2"]
     },
     {
@@ -13708,19 +13716,26 @@
       "openapi": null
     },
     {
-      "id": "api.get.auth-oauth-provider-callback",
-      "method": "GET",
-      "path": "/api/v1/auth/oauth/:provider/callback",
-      "params": ["provider"],
+      "id": "api.post.auth-google",
+      "method": "POST",
+      "path": "/api/auth/google",
+      "params": [],
       "name": "Google / Apple",
       "design": {
         "gallery": "gallery-3",
         "page": null,
         "section": "Backend · API surface (proposed) · Auth & identity",
-        "tag": "BACKEND"
+        "tag": "BACKEND",
+        "galleryPath": "GET /api/v1/auth/oauth/:provider/callback"
       },
-      "status": "DEFERRED",
-      "openapi": null
+      "status": "IMPLEMENTED",
+      "openapi": {
+        "operationId": "authenticateWithGoogle"
+      },
+      "production": {
+        "file": "lib/simple_fit_web/router.ex",
+        "note": "SF-22 (ADR 0013): Google only, as a Google ID-token exchange, not the proposed GET /api/v1/auth/oauth/:provider/callback redirect. Apple is not implemented."
+      }
     },
     {
       "id": "api.get.me-workspaces",

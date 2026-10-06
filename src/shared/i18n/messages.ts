@@ -1,6 +1,7 @@
 import type actions from "../../../messages/en/actions.json";
 import type apiHealth from "../../../messages/en/apiHealth.json";
 import type app from "../../../messages/en/app.json";
+import type auth from "../../../messages/en/auth.json";
 import type common from "../../../messages/en/common.json";
 import type errors from "../../../messages/en/errors.json";
 import type home from "../../../messages/en/home.json";
@@ -21,6 +22,7 @@ export const namespaces = [
   "errors",
   "home",
   "app",
+  "auth",
   "apiHealth",
   "theme",
 ] as const;
@@ -35,6 +37,7 @@ export type Messages = {
   errors: typeof errors;
   home: typeof home;
   app: typeof app;
+  auth: typeof auth;
   apiHealth: typeof apiHealth;
   theme: typeof theme;
 };
