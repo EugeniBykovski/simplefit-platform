@@ -40,6 +40,11 @@
     },
     { "id": "design-system", "name": "Design System", "owner": "shared-intent" },
     { "id": "brand-assets", "name": "Brand Assets", "owner": "shared-intent" },
-    { "id": "pitch-business", "name": "Pitch/Business", "owner": "reference-only" }
+    {
+      "id": "pitch-business",
+      "name": "Pitch/Business",
+      "owner": "reference-only",
+      "note": "Route Gallery artboards (GalleryIndex, GalleryIndex2, GalleryIndex4) are the IA source of docs/route-registry.json (SF-31)"
+    }
   ]
 }

@@ -274,6 +274,11 @@ clock). `es-MX` stores only regional overrides and inherits the rest from `es`.
 - Use `Link`, `redirect`, `useRouter`, `usePathname`, `getPathname` from
   `@/shared/i18n/navigation`. ESLint forbids `next/link` and the
   non-localized `next/navigation` APIs (`notFound` stays allowed).
+- **Every product route comes from the canonical route registry**
+  (`docs/route-registry.json`, contract `docs/route-architecture.md`, SF-31):
+  canonical path (without the locale), shell (layout / route group), access
+  and status. `scripts/route-registry.test.mjs` fails when a page is not in
+  the registry or an implemented route is missing.
 
 ### Messages
 
