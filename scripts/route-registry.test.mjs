@@ -391,6 +391,102 @@ describe("backend inventory", () => {
   });
 });
 
+describe("approved SF-31 decisions", () => {
+  const route = (id) => routeById.get(id);
+  const pathsOf = (platform) => routes.filter((r) => r.platform === platform).map((r) => r.path);
+
+  it("keep the canonical paths and drop the rejected aliases", () => {
+    expect(route("mobile.onboarding.role")?.path).toBe("/onboarding/role");
+    expect(route("mobile.profile.fighter._fighter-id")?.path).toBe("/profile/fighter/:fighterId");
+    expect(route("mobile.shared-session._shared-session-id")?.path).toBe(
+      "/shared-session/:sharedSessionId",
+    );
+    expect(route("web.app.coach.sessions.new")?.path).toBe("/app/coach/sessions/new");
+    expect(pathsOf("mobile")).not.toEqual(expect.arrayContaining(["/auth"]));
+    expect(pathsOf("mobile")).not.toEqual(
+      expect.arrayContaining(["/shared-session", "/profile/fighter"]),
+    );
+    expect(pathsOf("web")).not.toEqual(expect.arrayContaining(["/app/coach/programs/new"]));
+    const adminSingular = pathsOf("web").filter((path) =>
+      /^\/admin\/(sponsor|campaign)(\/|$)/.test(path),
+    );
+    expect(adminSingular).toEqual([]);
+    expect(route("web.app.camp")?.redirect?.to).toBe("web.app.camp.board");
+  });
+
+  it("keep the approved access model", () => {
+    expect(route("web.admin.login")?.access.session).toBe("GUEST_ONLY");
+    expect(route("mobile.checkout")?.access).toMatchObject({ session: "PUBLIC", capability: null });
+    expect(registry.guards.workspaceChooser.web).toBeNull();
+    const workspaceIdsInPaths = routes.filter(({ params }) =>
+      params.some((name) => ["workspaceId", "sponsorWorkspaceId"].includes(name)),
+    );
+    expect(workspaceIdsInPaths.map((r) => r.id)).toEqual([]);
+    const mobileSponsorOrAdmin = routes.filter(
+      (r) => r.platform === "mobile" && ["SPONSOR", "ADMIN"].includes(r.surface),
+    );
+    expect(mobileSponsorOrAdmin.map((r) => r.id)).toEqual([]);
+  });
+
+  it("keep web account pages account-level", () => {
+    const account = routes.filter((r) => r.platform === "web" && r.path.startsWith("/account/"));
+    expect(account.length).toBeGreaterThan(0);
+    const found = problems(account, (r, report) => {
+      if (r.shell !== "web.account") report(`shell ${r.shell}`);
+      if (r.surface !== "SHARED") report(`surface ${r.surface}`);
+      if (r.access.capability !== null || r.access.phase !== null)
+        report("capability or phase set");
+      if (r.access.session !== "AUTHENTICATED" || r.access.restrictedAccount !== true) {
+        report("must be an AUTHENTICATED restrictedAccount route");
+      }
+    });
+    expect(found).toEqual([]);
+    const misplaced = routes.filter(
+      (r) => r.shell === "web.account" && !r.path.startsWith("/account/"),
+    );
+    expect(misplaced.map((r) => r.id)).toEqual([]);
+    expect(pathsOf("web").filter((path) => path.startsWith("/app/account"))).toEqual([]);
+  });
+
+  it("represent sponsor Challenges and Events as query states, not routes", () => {
+    const sponsorNav = shells.find((shell) => shell.id === "web.sponsor").navItems;
+    for (const [key, type] of [
+      ["challenges", "challenge"],
+      ["events", "event"],
+    ]) {
+      expect(sponsorNav.find((item) => item.key === key)).toMatchObject({
+        route: "web.sponsor.campaigns",
+        query: { type },
+      });
+    }
+    expect(pathsOf("web")).not.toEqual(
+      expect.arrayContaining(["/sponsor/challenges", "/sponsor/events", "/sponsor/creative"]),
+    );
+  });
+
+  it("leave the sponsor analytics index as an unresolved design gap", () => {
+    expect(gapIds.has("GAP-SPONSOR-ANALYTICS-INDEX")).toBe(true);
+    expect(pathsOf("web")).not.toEqual(expect.arrayContaining(["/sponsor/analytics"]));
+    expect(route("web.sponsor.analytics._campaign-id")?.path).toBe(
+      "/sponsor/analytics/:campaignId",
+    );
+  });
+
+  it("link every design gap to the nav items that wait for it", () => {
+    const items = new Map(
+      shells.flatMap((shell) =>
+        (shell.navItems ?? []).map((item) => [`${shell.id}#${item.key}`, item]),
+      ),
+    );
+    const found = problems(designGaps, (gap, report) => {
+      for (const key of gap.navItems) {
+        if (items.get(key)?.designGap !== gap.id) report(`nav item ${key} does not wait for it`);
+      }
+    });
+    expect(found).toEqual([]);
+  });
+});
+
 describe("design gaps", () => {
   it("are recorded without becoming routes", () => {
     expect(duplicates(designGaps.map((gap) => gap.id))).toEqual([]);

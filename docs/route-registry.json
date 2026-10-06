@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "source": {
     "artifact": "https://claude.ai/artifact/JEsBg51MjX8KiHWEro8omY",
-    "version": "1791271288-f2e9",
+    "version": "1791276973-ad1d",
     "readOn": "2026-10-06",
     "ticket": "SF-31",
     "galleries": [
@@ -17,13 +17,13 @@
         "id": "gallery-2",
         "artboard": "GalleryIndex2.dc.html",
         "title": "route gallery 2 / 3 · coach & gym mobile, web app",
-        "rows": 112
+        "rows": 122
       },
       {
         "id": "gallery-3",
         "artboard": "GalleryIndex4.dc.html",
         "title": "route gallery 3 / 3 · partners, admin, site & backend",
-        "rows": 116
+        "rows": 117
       }
     ]
   },
@@ -104,11 +104,11 @@
     "restrictedAccount": {
       "suspended": {
         "mobile": "mobile.account.suspended",
-        "web": null
+        "web": "web.account.suspended"
       },
       "pendingDeletion": {
         "mobile": "mobile.account.pending-deletion",
-        "web": null
+        "web": "web.account.pending-deletion"
       }
     },
     "notFound": {
@@ -154,6 +154,14 @@
       "platform": "web",
       "parent": "web.root",
       "description": "Minimal sign-in / sign-up chrome without product navigation (also /sponsor/login and /admin/login).",
+      "design": null,
+      "status": "PLACEHOLDER_REQUIRED"
+    },
+    {
+      "id": "web.account",
+      "platform": "web",
+      "parent": "web.root",
+      "description": "Account-level pages under /account (WEB · ACCOUNT): restricted-account and recovery states, outside /app and every workspace, with no product navigation.",
       "design": null,
       "status": "PLACEHOLDER_REQUIRED"
     },
@@ -227,14 +235,12 @@
         {
           "key": "calendar",
           "label": "Calendar",
-          "route": null,
-          "designGap": "GAP-WEB-CALENDAR"
+          "route": "web.app.calendar"
         },
         {
           "key": "messages",
           "label": "Messages",
-          "route": null,
-          "designGap": "GAP-WEB-MESSAGES"
+          "route": "web.app.messages"
         },
         {
           "key": "settings",
@@ -264,14 +270,12 @@
         {
           "key": "fighters",
           "label": "Fighters",
-          "route": null,
-          "designGap": "GAP-WEB-COACH-FIGHTERS"
+          "route": "web.app.coach.fighters"
         },
         {
           "key": "board",
           "label": "Team board",
-          "route": null,
-          "designGap": "GAP-WEB-COACH-BOARD"
+          "route": "web.app.coach.board"
         },
         {
           "key": "programs",
@@ -286,8 +290,7 @@
         {
           "key": "calendar",
           "label": "Calendar",
-          "route": null,
-          "designGap": "GAP-WEB-CALENDAR"
+          "route": "web.app.calendar"
         },
         {
           "key": "services",
@@ -307,8 +310,7 @@
         {
           "key": "messages",
           "label": "Messages",
-          "route": null,
-          "designGap": "GAP-WEB-MESSAGES"
+          "route": "web.app.messages"
         },
         {
           "key": "settings",
@@ -388,8 +390,7 @@
         {
           "key": "sparring",
           "label": "Open sparring",
-          "route": null,
-          "designGap": "GAP-WEB-GYM-OPEN-SPARRING"
+          "route": "web.app.gym.open-sparring"
         },
         {
           "key": "announcements",
@@ -432,7 +433,7 @@
       "id": "web.app.active",
       "platform": "web",
       "parent": "web.app",
-      "description": "Account-level /app pages (billing, checkout, payments, settings, marketplace) rendered inside the sidebar of the active workspace.",
+      "description": "Account-level /app pages (billing, checkout, payments, settings, marketplace, calendar, messages) rendered inside the sidebar of the active workspace.",
       "design": null,
       "status": "PLACEHOLDER_REQUIRED"
     },
@@ -465,7 +466,9 @@
           "route": "web.sponsor.campaigns",
           "query": {
             "type": "challenge"
-          }
+          },
+          "design": "SponsorCampaigns.dc.html",
+          "note": "Query state of /sponsor/campaigns, not a route; the canvas links the artboard, production adds the campaign-type filter (D-SPONSOR-NAV)."
         },
         {
           "key": "events",
@@ -473,7 +476,9 @@
           "route": "web.sponsor.campaigns",
           "query": {
             "type": "event"
-          }
+          },
+          "design": "SponsorCampaigns.dc.html",
+          "note": "Query state of /sponsor/campaigns, not a route; the canvas links the artboard, production adds the campaign-type filter (D-SPONSOR-NAV)."
         },
         {
           "key": "creative",
@@ -575,8 +580,7 @@
         {
           "key": "support",
           "label": "Support console",
-          "route": null,
-          "designGap": "GAP-WEB-ADMIN-SUPPORT"
+          "route": "web.admin.support"
         },
         {
           "key": "privacy",
@@ -728,8 +732,7 @@
         {
           "key": "classes",
           "label": "Classes",
-          "route": null,
-          "designGap": "GAP-MOBILE-GYM-CLASSES"
+          "route": "mobile.gym.classes"
         },
         {
           "key": "checkin",
@@ -739,8 +742,7 @@
         {
           "key": "members",
           "label": "Members",
-          "route": null,
-          "designGap": "GAP-MOBILE-GYM-MEMBERS"
+          "route": "mobile.gym.members"
         },
         {
           "key": "staff",
@@ -3978,9 +3980,9 @@
       "name": "Class roster",
       "surface": "GYM",
       "shell": "mobile.gym",
-      "parent": null,
+      "parent": "mobile.gym.classes",
       "nav": {
-        "type": "STANDALONE",
+        "type": "STACK",
         "from": []
       },
       "access": {
@@ -4000,9 +4002,9 @@
       "name": "Member card",
       "surface": "GYM",
       "shell": "mobile.gym",
-      "parent": null,
+      "parent": "mobile.gym.members",
       "nav": {
-        "type": "STANDALONE",
+        "type": "STACK",
         "from": []
       },
       "access": {
@@ -4348,7 +4350,7 @@
       "name": "Fighter 360",
       "surface": "COACH",
       "shell": "web.app.coach",
-      "parent": "web.app.coach",
+      "parent": "web.app.coach.fighters",
       "nav": {
         "type": "STACK",
         "from": []
@@ -4728,7 +4730,7 @@
       "name": "Open Sparring",
       "surface": "GYM",
       "shell": "web.app.gym",
-      "parent": "web.app.gym",
+      "parent": "web.app.gym.open-sparring",
       "nav": {
         "type": "STACK",
         "from": []
@@ -5700,7 +5702,7 @@
       "name": "Scoped support session",
       "surface": "ADMIN",
       "shell": "web.admin",
-      "parent": "web.admin",
+      "parent": "web.admin.support",
       "nav": {
         "type": "STACK",
         "from": []
@@ -6536,6 +6538,251 @@
         "note": "SF-12 foundation placeholder, not in the Route Gallery (D-MOBILE-APP-PLACEHOLDER)."
       },
       "screens": []
+    },
+    {
+      "id": "mobile.gym.classes",
+      "platform": "mobile",
+      "path": "/gym/classes",
+      "params": [],
+      "name": "Classes",
+      "surface": "GYM",
+      "shell": "mobile.gym",
+      "parent": null,
+      "nav": {
+        "type": "NAV_ITEM",
+        "from": ["mobile.gym#classes"]
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "GYM_WORKSPACE",
+        "phase": "ACTIVE"
+      },
+      "status": "PLACEHOLDER_REQUIRED",
+      "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "screens": ["G08"]
+    },
+    {
+      "id": "mobile.gym.members",
+      "platform": "mobile",
+      "path": "/gym/members",
+      "params": [],
+      "name": "Members",
+      "surface": "GYM",
+      "shell": "mobile.gym",
+      "parent": null,
+      "nav": {
+        "type": "NAV_ITEM",
+        "from": ["mobile.gym#members"]
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "GYM_WORKSPACE",
+        "phase": "ACTIVE"
+      },
+      "status": "PLACEHOLDER_REQUIRED",
+      "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "screens": ["G09"]
+    },
+    {
+      "id": "web.app.coach.fighters",
+      "platform": "web",
+      "path": "/app/coach/fighters",
+      "params": [],
+      "name": "Fighters",
+      "surface": "COACH",
+      "shell": "web.app.coach",
+      "parent": "web.app.coach",
+      "nav": {
+        "type": "NAV_ITEM",
+        "from": ["web.app.coach#fighters"]
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "COACH",
+        "phase": "ACTIVE"
+      },
+      "status": "PLACEHOLDER_REQUIRED",
+      "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "screens": ["WC7"]
+    },
+    {
+      "id": "web.app.coach.board",
+      "platform": "web",
+      "path": "/app/coach/board",
+      "params": [],
+      "name": "Coach board",
+      "surface": "COACH",
+      "shell": "web.app.coach",
+      "parent": "web.app.coach",
+      "nav": {
+        "type": "NAV_ITEM",
+        "from": ["web.app.coach#board"]
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "COACH",
+        "phase": "ACTIVE"
+      },
+      "status": "PLACEHOLDER_REQUIRED",
+      "discrepancies": ["D-WEB-NAV-MOBILE-TARGETS"],
+      "screens": ["WC8"]
+    },
+    {
+      "id": "web.app.gym.open-sparring",
+      "platform": "web",
+      "path": "/app/gym/open-sparring",
+      "params": [],
+      "name": "Open sparring · all sessions",
+      "surface": "GYM",
+      "shell": "web.app.gym",
+      "parent": "web.app.gym",
+      "nav": {
+        "type": "NAV_ITEM",
+        "from": ["web.app.gym#sparring"]
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "GYM_WORKSPACE",
+        "phase": "ACTIVE"
+      },
+      "status": "PLACEHOLDER_REQUIRED",
+      "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "screens": ["WG27"]
+    },
+    {
+      "id": "web.app.calendar",
+      "platform": "web",
+      "path": "/app/calendar",
+      "params": [],
+      "name": "Calendar · shared",
+      "surface": "SHARED",
+      "shell": "web.app.active",
+      "parent": "web.app",
+      "nav": {
+        "type": "NAV_ITEM",
+        "from": ["web.app.fighter#calendar", "web.app.coach#calendar"]
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": null
+      },
+      "status": "PLACEHOLDER_REQUIRED",
+      "discrepancies": ["D-WEB-NAV-MOBILE-TARGETS"],
+      "screens": ["W08"]
+    },
+    {
+      "id": "web.app.messages",
+      "platform": "web",
+      "path": "/app/messages",
+      "params": [],
+      "name": "Messages · shared",
+      "surface": "SHARED",
+      "shell": "web.app.active",
+      "parent": "web.app",
+      "nav": {
+        "type": "NAV_ITEM",
+        "from": ["web.app.fighter#messages", "web.app.coach#messages"]
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": null
+      },
+      "status": "PLACEHOLDER_REQUIRED",
+      "discrepancies": ["D-WEB-NAV-MOBILE-TARGETS"],
+      "screens": ["W09"]
+    },
+    {
+      "id": "web.account.pending-deletion",
+      "platform": "web",
+      "path": "/account/pending-deletion",
+      "params": [],
+      "name": "Account · pending deletion",
+      "surface": "SHARED",
+      "shell": "web.account",
+      "parent": null,
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": null,
+        "restrictedAccount": true
+      },
+      "status": "PLACEHOLDER_REQUIRED",
+      "discrepancies": ["D-WEB-ACCOUNT-STATES"],
+      "screens": ["WS3"]
+    },
+    {
+      "id": "web.account.suspended",
+      "platform": "web",
+      "path": "/account/suspended",
+      "params": [],
+      "name": "Account · suspended",
+      "surface": "SHARED",
+      "shell": "web.account",
+      "parent": null,
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": null,
+        "restrictedAccount": true
+      },
+      "status": "PLACEHOLDER_REQUIRED",
+      "discrepancies": ["D-WEB-ACCOUNT-STATES"],
+      "screens": ["WS4"]
+    },
+    {
+      "id": "web.account.appeal",
+      "platform": "web",
+      "path": "/account/appeal",
+      "params": [],
+      "name": "Account · appeal",
+      "surface": "SHARED",
+      "shell": "web.account",
+      "parent": null,
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": null,
+        "restrictedAccount": true
+      },
+      "status": "PLACEHOLDER_REQUIRED",
+      "discrepancies": ["D-WEB-ACCOUNT-STATES"],
+      "screens": ["WS5"]
+    },
+    {
+      "id": "web.admin.support",
+      "platform": "web",
+      "path": "/admin/support",
+      "params": [],
+      "name": "Support console · sessions",
+      "surface": "ADMIN",
+      "shell": "web.admin",
+      "parent": "web.admin",
+      "nav": {
+        "type": "NAV_ITEM",
+        "from": ["web.admin#support"]
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "ADMIN",
+        "phase": "ACTIVE"
+      },
+      "status": "PLACEHOLDER_REQUIRED",
+      "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "screens": ["AD21"]
     }
   ],
   "screens": [
@@ -13149,6 +13396,182 @@
         "tag": "WEB_SITE",
         "artboard": "PlanCompare.dc.html"
       }
+    },
+    {
+      "id": "G08",
+      "code": "G08",
+      "name": "Classes",
+      "route": "mobile.gym.classes",
+      "states": ["today", "tomorrow", "this week", "location"],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "gym-mobile",
+        "section": "13 · Gym app · mobile cockpit",
+        "step": "13.8",
+        "tag": "MOBILE",
+        "artboard": "GymClasses.dc.html",
+        "addedIn": "1791276973-ad1d"
+      }
+    },
+    {
+      "id": "G09",
+      "code": "G09",
+      "name": "Members",
+      "route": "mobile.gym.members",
+      "states": ["all", "payment due", "trials", "at risk"],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "gym-mobile",
+        "section": "13 · Gym app · mobile cockpit",
+        "step": "13.9",
+        "tag": "MOBILE",
+        "artboard": "GymMembers.dc.html",
+        "addedIn": "1791276973-ad1d"
+      }
+    },
+    {
+      "id": "WC7",
+      "code": "WC7",
+      "name": "Fighters",
+      "route": "web.app.coach.fighters",
+      "states": ["all", "competition", "in camp", "alerts"],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "17 · Coach web · desktop",
+        "step": "17.7",
+        "tag": "WEB_APP",
+        "artboard": "WebCoachFighters.dc.html",
+        "addedIn": "1791276973-ad1d"
+      }
+    },
+    {
+      "id": "WC8",
+      "code": "WC8",
+      "name": "Coach board",
+      "route": "web.app.coach.board",
+      "states": ["this week", "camps", "only red"],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "17 · Coach web · desktop",
+        "step": "17.8",
+        "tag": "WEB_APP",
+        "artboard": "WebCoachBoard.dc.html",
+        "addedIn": "1791276973-ad1d"
+      }
+    },
+    {
+      "id": "WG27",
+      "code": "WG27",
+      "name": "Open sparring · all sessions",
+      "route": "web.app.gym.open-sparring",
+      "states": ["upcoming", "past"],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "18c · Gym web · community & brand",
+        "step": "18.27",
+        "tag": "WEB_APP",
+        "artboard": "WebOpenSparringList.dc.html",
+        "addedIn": "1791276973-ad1d"
+      }
+    },
+    {
+      "id": "W08",
+      "code": "W08",
+      "name": "Calendar · shared",
+      "route": "web.app.calendar",
+      "states": ["week", "month", "layers per workspace"],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "16b · Web · shared surfaces · calendar, messages & account states",
+        "step": "16.10",
+        "tag": "WEB_APP",
+        "artboard": "WebCalendar.dc.html",
+        "addedIn": "1791276973-ad1d"
+      }
+    },
+    {
+      "id": "W09",
+      "code": "W09",
+      "name": "Messages · shared",
+      "route": "web.app.messages",
+      "states": ["inbox + thread", "per workspace"],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "16b · Web · shared surfaces · calendar, messages & account states",
+        "step": "16.11",
+        "tag": "WEB_APP",
+        "artboard": "WebMessages.dc.html",
+        "addedIn": "1791276973-ad1d"
+      }
+    },
+    {
+      "id": "WS3",
+      "code": "WS3",
+      "name": "Account · pending deletion",
+      "route": "web.account.pending-deletion",
+      "states": ["restore", "sign out"],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "16b · Web · shared surfaces · calendar, messages & account states",
+        "step": "16.12",
+        "tag": "WEB_ACCOUNT",
+        "artboard": "WebAccountPendingDeletion.dc.html",
+        "addedIn": "1791276973-ad1d"
+      }
+    },
+    {
+      "id": "WS4",
+      "code": "WS4",
+      "name": "Account · suspended",
+      "route": "web.account.suspended",
+      "states": ["until Oct 18", "appeal"],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "16b · Web · shared surfaces · calendar, messages & account states",
+        "step": "16.13",
+        "tag": "WEB_ACCOUNT",
+        "artboard": "WebAccountSuspended.dc.html",
+        "addedIn": "1791276973-ad1d"
+      }
+    },
+    {
+      "id": "WS5",
+      "code": "WS5",
+      "name": "Account · appeal",
+      "route": "web.account.appeal",
+      "states": ["draft"],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "16b · Web · shared surfaces · calendar, messages & account states",
+        "step": "16.14",
+        "tag": "WEB_ACCOUNT",
+        "artboard": "WebAccountAppeal.dc.html",
+        "addedIn": "1791276973-ad1d"
+      }
+    },
+    {
+      "id": "AD21",
+      "code": "AD21",
+      "name": "Support console · sessions",
+      "route": "web.admin.support",
+      "states": ["active", "queued", "closed", "mine"],
+      "design": {
+        "gallery": "gallery-3",
+        "page": "admin",
+        "section": "19b · Admin · trust & safety · ban, delete, GDPR",
+        "step": "19.23",
+        "tag": "WEB_ADMIN",
+        "artboard": "AdminSupportList.dc.html",
+        "addedIn": "1791276973-ad1d"
+      }
     }
   ],
   "excludedRows": [
@@ -14054,96 +14477,6 @@
   ],
   "designGaps": [
     {
-      "id": "GAP-MOBILE-GYM-CLASSES",
-      "platform": "mobile",
-      "status": "UNRESOLVED_DESIGN",
-      "description": "Classes tab list root (the tab links G03, a roster of one class)",
-      "candidatePath": "/gym/classes",
-      "navItems": ["mobile.gym#classes"],
-      "discrepancy": "D-NAV-DETAIL-TARGETS",
-      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
-    },
-    {
-      "id": "GAP-MOBILE-GYM-MEMBERS",
-      "platform": "mobile",
-      "status": "UNRESOLVED_DESIGN",
-      "description": "Members tab list root (the tab links G04, one member card)",
-      "candidatePath": "/gym/members",
-      "navItems": ["mobile.gym#members"],
-      "discrepancy": "D-NAV-DETAIL-TARGETS",
-      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
-    },
-    {
-      "id": "GAP-WEB-COACH-FIGHTERS",
-      "platform": "web",
-      "status": "UNRESOLVED_DESIGN",
-      "description": "Coach web fighters list (the nav links WC4 Fighter 360 of one fighter)",
-      "candidatePath": "/app/coach/fighters",
-      "navItems": ["web.app.coach#fighters"],
-      "discrepancy": "D-NAV-DETAIL-TARGETS",
-      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
-    },
-    {
-      "id": "GAP-WEB-GYM-OPEN-SPARRING",
-      "platform": "web",
-      "status": "UNRESOLVED_DESIGN",
-      "description": "Gym web open sparring list (the nav links WG12, one event)",
-      "candidatePath": "/app/gym/open-sparring",
-      "navItems": ["web.app.gym#sparring"],
-      "discrepancy": "D-NAV-DETAIL-TARGETS",
-      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
-    },
-    {
-      "id": "GAP-WEB-ADMIN-SUPPORT",
-      "platform": "web",
-      "status": "UNRESOLVED_DESIGN",
-      "description": "Admin support console index (the nav links AD5, one scoped session)",
-      "candidatePath": "/admin/support",
-      "navItems": ["web.admin#support"],
-      "discrepancy": "D-NAV-DETAIL-TARGETS",
-      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
-    },
-    {
-      "id": "GAP-WEB-CALENDAR",
-      "platform": "web",
-      "status": "UNRESOLVED_DESIGN",
-      "description": "Web calendar (the navs link the mobile Calendar.dc.html, F12)",
-      "candidatePath": null,
-      "navItems": ["web.app.fighter#calendar", "web.app.coach#calendar"],
-      "discrepancy": "D-WEB-NAV-MOBILE-TARGETS",
-      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
-    },
-    {
-      "id": "GAP-WEB-MESSAGES",
-      "platform": "web",
-      "status": "UNRESOLVED_DESIGN",
-      "description": "Web messages (the navs link the mobile Inbox.dc.html, F14)",
-      "candidatePath": null,
-      "navItems": ["web.app.fighter#messages", "web.app.coach#messages"],
-      "discrepancy": "D-WEB-NAV-MOBILE-TARGETS",
-      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
-    },
-    {
-      "id": "GAP-WEB-COACH-BOARD",
-      "platform": "web",
-      "status": "UNRESOLVED_DESIGN",
-      "description": "Web coach team board (the nav links the mobile CoachBoard.dc.html, C11)",
-      "candidatePath": null,
-      "navItems": ["web.app.coach#board"],
-      "discrepancy": "D-WEB-NAV-MOBILE-TARGETS",
-      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
-    },
-    {
-      "id": "GAP-WEB-ACCOUNT-STATES",
-      "platform": "web",
-      "status": "UNRESOLVED_DESIGN",
-      "description": "Web account suspended, recovery, pending-deletion and appeal surfaces (WS2 links the mobile ST12)",
-      "candidatePath": null,
-      "navItems": [],
-      "discrepancy": "D-WEB-ACCOUNT-STATES",
-      "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
-    },
-    {
       "id": "GAP-SPONSOR-ANALYTICS-INDEX",
       "platform": "web",
       "status": "UNRESOLVED_DESIGN",
@@ -14290,10 +14623,14 @@
       "impact": "SF-32 cannot build these items without inventing /app paths.",
       "resolution": "The nav items have no route and point at design gaps.",
       "status": "RESOLVED",
-      "routes": [],
+      "routes": ["web.app.calendar", "web.app.messages", "web.app.coach.board"],
       "decision": "The Route Gallery stays authoritative. No web Calendar, Messages or Coach Board routes are invented; they are design gaps.",
       "decidedOn": "2026-10-06",
-      "designGaps": ["GAP-WEB-CALENDAR", "GAP-WEB-MESSAGES", "GAP-WEB-COACH-BOARD"]
+      "resolvedByDesign": {
+        "version": "1791276973-ad1d",
+        "gaps": ["GAP-WEB-CALENDAR", "GAP-WEB-MESSAGES", "GAP-WEB-COACH-BOARD"],
+        "routes": ["web.app.calendar", "web.app.messages", "web.app.coach.board"]
+      }
     },
     {
       "id": "D-WEB-WORKSPACE-SWITCHER",
@@ -14339,17 +14676,32 @@
         "web.app.coach.services.new",
         "web.app.gym.challenges.new",
         "web.app.gym.open-sparring._open-sparring-id",
-        "web.admin.support._session-id"
+        "web.admin.support._session-id",
+        "mobile.gym.classes",
+        "mobile.gym.members",
+        "web.app.coach.fighters",
+        "web.app.gym.open-sparring",
+        "web.admin.support"
       ],
       "decision": "Creator routes stay valid nav targets. No default-resource navigation for routes that need an id. Missing list roots are design gaps.",
       "decidedOn": "2026-10-06",
-      "designGaps": [
-        "GAP-MOBILE-GYM-CLASSES",
-        "GAP-MOBILE-GYM-MEMBERS",
-        "GAP-WEB-COACH-FIGHTERS",
-        "GAP-WEB-GYM-OPEN-SPARRING",
-        "GAP-WEB-ADMIN-SUPPORT"
-      ]
+      "resolvedByDesign": {
+        "version": "1791276973-ad1d",
+        "gaps": [
+          "GAP-MOBILE-GYM-CLASSES",
+          "GAP-MOBILE-GYM-MEMBERS",
+          "GAP-WEB-COACH-FIGHTERS",
+          "GAP-WEB-GYM-OPEN-SPARRING",
+          "GAP-WEB-ADMIN-SUPPORT"
+        ],
+        "routes": [
+          "mobile.gym.classes",
+          "mobile.gym.members",
+          "web.app.coach.fighters",
+          "web.app.gym.open-sparring",
+          "web.admin.support"
+        ]
+      }
     },
     {
       "id": "D-WORKSPACE-NOT-IN-URL",
@@ -14464,17 +14816,24 @@
       "sourceB": "Route Gallery 2/3 · WS2 /app/settings/data?modal=delete (web)",
       "mismatch": "The web has no suspended, pending-deletion or appeal route.",
       "impact": "Web behaviour for restricted accounts is undefined.",
-      "resolution": "Recorded as a design gap.",
+      "resolution": "Resolved by design version 1791276973-ad1d: WS3 /account/pending-deletion, WS4 /account/suspended and WS5 /account/appeal (WEB · ACCOUNT, shell web.account). The redirects that send restricted accounts there belong to the authentication/account lifecycle tickets.",
       "status": "RESOLVED",
       "routes": [
         "mobile.account.suspended",
         "mobile.account.pending-deletion",
         "mobile.account.appeal",
-        "web.app.settings.data"
+        "web.app.settings.data",
+        "web.account.pending-deletion",
+        "web.account.suspended",
+        "web.account.appeal"
       ],
       "decision": "Web account-state and recovery surfaces must eventually be designed. Until the Route Gallery contains them, no web routes are invented; restricted-account behaviour is owned by auth/session handling.",
       "decidedOn": "2026-10-06",
-      "designGaps": ["GAP-WEB-ACCOUNT-STATES"]
+      "resolvedByDesign": {
+        "version": "1791276973-ad1d",
+        "gaps": ["GAP-WEB-ACCOUNT-STATES"],
+        "routes": ["web.account.pending-deletion", "web.account.suspended", "web.account.appeal"]
+      }
     },
     {
       "id": "D-PRODUCTION-FOUNDATION",
@@ -14596,10 +14955,10 @@
       "id": "D-CANVAS-GROWTH",
       "title": "Canvas changed since the SF-16 audit",
       "sourceA": "docs/design-source.json audit: version 1791206633-31de, 456 artboards",
-      "sourceB": "SF-31 read: version 1791271288-f2e9, 462 artboards",
-      "mismatch": "Six artboards were added after SF-16.",
+      "sourceB": "SF-31 reads: 1791271288-f2e9 (462 artboards), then 1791276973-ad1d (473 artboards)",
+      "mismatch": "Six artboards were added after SF-16, and eleven more in the route-gap design pass (1791276973-ad1d, 11 new Route Gallery rows).",
       "impact": "None for SF-31: every product-page artboard is referenced by the Route Gallery except Flow, Route and sheet boards.",
-      "resolution": "The registry records the version it was derived from (source.version). The SF-16 audit block is not rewritten.",
+      "resolution": "The registry records the version it was reconciled against (source.version). The SF-16 audit block in design-source.json is not rewritten.",
       "status": "RESOLVED",
       "routes": []
     }

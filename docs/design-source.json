@@ -17,6 +17,13 @@
     "artboards": 456,
     "notes": 71
   },
+  "routeRegistry": {
+    "ticket": "SF-31",
+    "version": "1791276973-ad1d",
+    "artboards": 473,
+    "routeGalleryRows": 474,
+    "registry": "docs/route-registry.json"
+  },
   "owners": {
     "simplefit-mobile": "iOS/Android app (Expo)",
     "simplefit-platform": "web (Next.js)",
