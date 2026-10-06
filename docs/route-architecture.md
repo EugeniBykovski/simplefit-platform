@@ -395,38 +395,90 @@ routes, 4 `IMPLEMENTED` (`/`, not found, 2 internal), 134
 backend endpoints and 17 server outputs are `DEFERRED`; the 3 existing
 operational API routes are `IMPLEMENTED`. Shells carry the same statuses.
 
+Counts after SF-32 (web): all 140 web routes and all 12 web shells are
+`IMPLEMENTED`. 6 routes are real screens or system routes from earlier
+tickets (`/`, `/login`, `/signup`, the `/app` entry, not-found,
+`/dev/design-system`), 133 render the canonical feature placeholder and 1 is
+the `/app/camp` redirect. `production.note` says which. The mobile statuses
+are unchanged until SF-33; the mobile copy of this registry still shows the
+SF-31 web statuses until it is synced.
+
 A screen's visual fidelity is not tracked here. It is delivered by the feature
 ticket that implements the screen from its artboard.
 
 ## 11. Web mapping (Next.js)
 
 - Every page lives under `src/app/[locale]/`. The canonical path maps to
-  directories as in §5; links use `@/shared/i18n/navigation`, which adds the
-  locale.
-- Shells map to layouts and route groups. Proposed structure for SF-32
-  (route groups do not change URLs):
+  directories as in §5 (`:fighterId` → `[fighterId]`); links use
+  `@/shared/i18n/navigation`, which adds the locale.
+- **Registry → code.** `pnpm routes:generate` turns the registry's web
+  routes, shells' `navItems` and web guards into
+  `src/shared/routes/web-routes.ts`; `src/shared/routes/routes.ts` resolves
+  ids to paths (`routeHref`), paths to routes (`matchWebRoute`, static
+  segments first) and routes to their owning nav item (`navKeyForRoute`,
+  through `parent`). Code links by route id, never by handwritten path. A
+  test fails when the generated module drifts from the registry.
+- Shells map to layouts and route groups (SF-32; route groups do not change
+  URLs):
 
 ```
 src/app/[locale]/
-├── layout.tsx                       web.root
-├── (site)/…                         web.site     /, /fighters, /pricing, /partners…
-├── (auth)/login, signup/…           web.auth
-├── (auth)/sponsor/login, admin/login
-├── app/layout.tsx                   web.app      (/app entry page = redirect)
-│   ├── onboarding/…                 web.app.onboarding
-│   ├── (fighter)/home, board, …     web.app.fighter
-│   ├── coach/…                      web.app.coach
-│   ├── gym/…                        web.app.gym
-│   └── (active)/billing, checkout…  web.app.active
-├── (sponsor)/sponsor/…              web.sponsor
-├── (admin)/admin/…                  web.admin
-└── [...rest]/page.tsx               web.not-found
+├── layout.tsx                         web.root
+├── (site)/layout.tsx, page.tsx, …     web.site     PUBLIC: /, /fighters, /pricing, /partners…
+├── (auth)/layout.tsx                  web.auth     GUEST_ONLY: login, signup/*, sponsor/login, admin/login
+├── account/layout.tsx                 web.account  AUTHENTICATED: /account/*
+├── app/layout.tsx                     web.app      AUTHENTICATED session gate; page.tsx = /app entry
+│   ├── onboarding/layout.tsx          web.app.onboarding
+│   ├── (fighter)/layout.tsx           web.app.fighter   /app/home, /app/board, /app/camp/*…
+│   ├── coach/layout.tsx               web.app.coach
+│   ├── gym/layout.tsx                 web.app.gym
+│   └── (active)/layout.tsx            web.app.active    /app/billing/*, /app/calendar, /app/messages…
+├── (sponsor)/sponsor/layout.tsx       web.sponsor  AUTHENTICATED (sign-in: /sponsor/login)
+├── (admin)/admin/layout.tsx           web.admin    AUTHENTICATED (sign-in: /admin/login)
+├── dev/design-system/page.tsx         web.dev.design-system (INTERNAL)
+└── [...rest]/page.tsx                 web.not-found
 ```
+
+- **Shell widgets.** `WorkspaceShell` (sidebar from the md breakpoint, sheet
+  menu below) for fighter, coach, gym, sponsor and admin: items and targets
+  from the registry `navItems`, sections, order and icons from the nav
+  artboards. Items without a route (sponsor Creative, Analytics) are hidden
+  (§14). `AppFrame` (header only) for the /app entry, `web.app.active`,
+  `web.app.onboarding` and `web.account`; `SiteHeader`/`SiteFooter` for
+  `web.site`; `AuthShell` for `web.auth`. Workspace identity cards and
+  switchers, nav badges and "next session" cards wait for workspace data.
+- **Active navigation.** The current path resolves to its route; the route
+  or its nearest ancestor owns the active item, and items sharing a route
+  are told apart by query (sponsor Campaigns / Challenges / Events).
+- **Placeholders.** A route whose screen belongs to a later ticket renders
+  `FeaturePlaceholder` through `placeholderRoute(id)`: the localized route
+  title, a "Planned" badge and the canonical path inside its shell — no data,
+  no controls, no API calls, `noindex`. A feature ticket replaces the page
+  with its screen; the placeholder is never forked per route.
+- **Guards (UX only, §6).** `RequireSession` (AUTHENTICATED) waits for the
+  session restore, then sends signed-out visitors to the area's sign-in route
+  (`guards.signIn`: `/login`, `/sponsor/login`, `/admin/login`) with
+  `returnTo`; `GuestOnly` sends signed-in users to the `/app` entry.
+  Capability (FIGHTER, COACH, GYM_WORKSPACE, SPONSOR_WORKSPACE, ADMIN),
+  phase, active workspace and restricted-account rules are **not resolved**:
+  the API exposes no capability, workspace or account-state data yet, so no
+  state is invented. Their identity tickets add those checks on top of these
+  gates; until then every signed-in user can open every shell's placeholders,
+  and the backend authorizes all data. `web.app.active` pages render in the
+  header-only frame until the active workspace's sidebar can be resolved.
+- **Boundaries.** SF-24/SF-25 own the auth UI, consuming `returnTo` and the
+  `/app` entry's default-destination redirect; SF-34 owns the loading,
+  not-found and error states (the session gate's pending spinner is the only
+  loading UI here, and the existing not-found is unchanged).
 
 - Query-state screens read `searchParams`; overlays use the query as their
   open state so they stay linkable.
 - `REDIRECT` routes are a page that only redirects with the localized
   `redirect` (`/app/camp` → `/app/camp/board`); they never render content.
+- Tests: `scripts/route-registry.test.mjs` (every page is a registry route),
+  `scripts/web-route-skeleton.test.mjs` (resolution strategy, shell layout
+  chain, named parameters, session gates, titles) and
+  `scripts/web-routes.test.mjs` (generated module in sync).
 - Developer routes (`/dev/*`) are `INTERNAL` and answer 404 in production.
 
 ## 12. Mobile mapping (Expo Router)

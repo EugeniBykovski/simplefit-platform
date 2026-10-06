@@ -69,7 +69,9 @@ React Hook Form + Zod, next-intl, Orval-generated API client. Backend:
     that differ from `es`. Never write copy for screens that do not exist.
 14. Navigate with `@/shared/i18n/navigation` (`Link`, `useRouter`,
     `usePathname`, `redirect`), never `next/link` or non-localized
-    `next/navigation` APIs.
+    `next/navigation` APIs. Resolve product paths from their registry route
+    id (`routeHref` in `@/shared/routes/routes`, generated from
+    `docs/route-registry.json` by `pnpm routes:generate`), never by hand.
 15. Format with next-intl/Intl (`useFormatter`, `getFormatter`, presets in
     `shared/i18n/formats.ts`). Never hand-format numbers or dates. Never infer
     currency or time zone from locale: currency codes come from the data.
