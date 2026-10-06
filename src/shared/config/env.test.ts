@@ -46,4 +46,35 @@ describe("parsePublicEnv", () => {
       ).toThrow(/NEXT_PUBLIC_GOOGLE_CLIENT_ID/);
     },
   );
+
+  it("accepts the Apple Services ID and an https return URL", () => {
+    const env = parsePublicEnv({
+      NEXT_PUBLIC_API_URL: API_URL,
+      NEXT_PUBLIC_APPLE_SERVICES_ID: " com.simplefit.boxing.web ",
+      NEXT_PUBLIC_APPLE_REDIRECT_URI: "https://app.example.com/login",
+    });
+    expect(env.NEXT_PUBLIC_APPLE_SERVICES_ID).toBe("com.simplefit.boxing.web");
+    expect(env.NEXT_PUBLIC_APPLE_REDIRECT_URI).toBe("https://app.example.com/login");
+  });
+
+  it("treats blank Apple values as not configured", () => {
+    const env = parsePublicEnv({
+      NEXT_PUBLIC_API_URL: API_URL,
+      NEXT_PUBLIC_APPLE_SERVICES_ID: "",
+      NEXT_PUBLIC_APPLE_REDIRECT_URI: " ",
+    });
+    expect(env.NEXT_PUBLIC_APPLE_SERVICES_ID).toBeUndefined();
+    expect(env.NEXT_PUBLIC_APPLE_REDIRECT_URI).toBeUndefined();
+  });
+
+  it.each([
+    ["NEXT_PUBLIC_APPLE_SERVICES_ID", "simplefit"],
+    ["NEXT_PUBLIC_APPLE_SERVICES_ID", "com.simplefit web"],
+    ["NEXT_PUBLIC_APPLE_REDIRECT_URI", "http://localhost:3000/login"],
+    ["NEXT_PUBLIC_APPLE_REDIRECT_URI", "not a url"],
+  ])("rejects a malformed %s (%j)", (name, value) => {
+    expect(() => parsePublicEnv({ NEXT_PUBLIC_API_URL: API_URL, [name]: value })).toThrow(
+      new RegExp(name),
+    );
+  });
 });

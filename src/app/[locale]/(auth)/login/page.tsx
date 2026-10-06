@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
+import { AppleSignInButton } from "@/features/sign-in-with-apple";
 import { GoogleSignInButton } from "@/features/sign-in-with-google";
 import { Link } from "@/shared/i18n/navigation";
 import { localeAlternates } from "@/shared/i18n/metadata";
@@ -15,7 +16,7 @@ export async function generateMetadata({
   return { title: t("metaTitle"), alternates: localeAlternates("/login", locale) };
 }
 
-/** WA1 sign-in, Google only (SF-22); email, passkeys and Apple follow in SF-24. */
+/** WA1 sign-in with Google (SF-22) and Apple (SF-23); the email code step follows in SF-24. */
 export default async function LoginPage({ params }: PageProps<"/[locale]/login">) {
   const locale = await resolveLocaleParam(params);
   const t = await getTranslations({ locale, namespace: "auth.login" });
@@ -33,6 +34,7 @@ export default async function LoginPage({ params }: PageProps<"/[locale]/login">
       })}
     >
       <GoogleSignInButton />
+      <AppleSignInButton />
     </AuthFrame>
   );
 }
