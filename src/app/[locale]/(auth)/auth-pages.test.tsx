@@ -105,30 +105,48 @@ describe("O02w /signup", () => {
     ).toBeInTheDocument();
   });
 
-  it("describes the roles without letting one be chosen or stored", async () => {
-    await renderPage(SignupPage as Page);
+  it("links the role cards on without carrying or storing a role", async () => {
+    await renderPage(SignupPage as Page, { returnTo: "/app/messages" });
 
     const roles = screen.getByRole("region", { name: "How will you use SimpleFit?" });
-    expect(within(roles).getAllByRole("listitem")).toHaveLength(4);
-    expect(within(roles).queryAllByRole("link")).toEqual([]);
-    expect(within(roles).queryAllByRole("button")).toEqual([]);
+    const links = within(roles).getAllByRole("link");
+    expect(links.map((link) => link.getAttribute("href"))).toEqual([
+      "/signup/account?returnTo=%2Fapp%2Fmessages",
+      "/signup/account?returnTo=%2Fapp%2Fmessages",
+      "/signup/account?returnTo=%2Fapp%2Fmessages",
+      "/partners/apply",
+    ]);
+    expect(links.every((link) => !link.getAttribute("href")?.includes("role"))).toBe(true);
     expect(within(roles).queryAllByRole("radio")).toEqual([]);
   });
 });
 
 describe("WA3 /signup/account", () => {
-  it("asks for the email address only: no name, role, consent or birth date controls", async () => {
+  it("submits the email only: role, name and consents are rendered disabled and never checked", async () => {
     await renderPage(SignupAccountPage as Page);
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Create your SimpleFit account" }),
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("textbox")).toHaveLength(1);
-    expect(screen.getByLabelText("Email")).toBeInTheDocument();
-    expect(screen.queryAllByRole("checkbox")).toEqual([]);
-    expect(screen.queryAllByRole("radio")).toEqual([]);
-    expect(screen.queryAllByRole("tab")).toEqual([]);
-    expect(screen.getByRole("button", { name: "Create account" })).toBeInTheDocument();
+    expect(screen.getByLabelText("Email")).toBeEnabled();
+    expect(screen.getByLabelText("Full name")).toBeDisabled();
+    const checkboxes = screen.getAllByRole("checkbox");
+    expect(checkboxes).toHaveLength(3);
+    for (const checkbox of checkboxes) {
+      expect(checkbox).toBeDisabled();
+      expect(checkbox).not.toBeChecked();
+    }
+    const roles = screen.getByRole("radiogroup", { name: "Signing up as" });
+    expect(roles).toHaveAttribute("aria-disabled", "true");
+    expect(
+      within(roles)
+        .getAllByRole("radio")
+        .every((r) => r.getAttribute("aria-checked") === "false"),
+    ).toBe(true);
+    expect(
+      screen.getByText("Role, name and consents are set after you verify your email."),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Create account" })).toBeEnabled();
   });
 
   it.each(["ru", "de", "es-MX"] as const)("is translated in %s", async (locale) => {

@@ -140,7 +140,33 @@
       "enterprise": "Entreprise"
     },
     "signIn": "Se connecter",
-    "getStarted": "Commencer"
+    "getStarted": "Commencer",
+    "footer": {
+      "blurb": "Le système d’exploitation de la boxe. Conçu à Varsovie · EUR · USD · GBP · PLN",
+      "columns": {
+        "product": "Produit",
+        "business": "Entreprise",
+        "partners": "Partenaires",
+        "company": "Société"
+      },
+      "links": {
+        "fighters": "Boxeurs",
+        "coaches": "Coachs",
+        "gyms": "Salles",
+        "signIn": "Se connecter",
+        "pricing": "Tarifs",
+        "marketplace": "Marketplace",
+        "enterprise": "Entreprises",
+        "whiteLabel": "Marque blanche",
+        "becomeSponsor": "Devenir sponsor",
+        "partnership": "Programme partenaires",
+        "sponsorSignIn": "Connexion sponsor",
+        "about": "À propos",
+        "careers": "Carrières",
+        "privacy": "Confidentialité",
+        "terms": "Conditions"
+      }
+    }
   },
   "frame": {
     "home": "Accueil SimpleFit"

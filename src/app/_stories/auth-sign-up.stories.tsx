@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, userEvent } from "storybook/test";
 
-import { SignupAccountScreen } from "@/widgets/auth-screens";
+import { SignupAccountScreen, SignupScreen } from "@/widgets/auth-screens";
+import { SiteFrame } from "@/widgets/site-header";
 
 import { apiError, installApi } from "./auth-story-api";
 
@@ -31,4 +32,26 @@ export const CreateAccountError: StoryObj = {
     await userEvent.click(canvas.getByRole("button", { name: "Create account" }));
     await expect(await canvas.findByRole("alert")).toHaveTextContent("Something went wrong");
   },
+};
+
+/** O02w as the page renders it: the site chrome (SiteFrame) around SignupScreen. */
+export const FullPage: StoryObj = {
+  name: "Full Page",
+  render: () => (
+    <SiteFrame>
+      <SignupScreen />
+    </SiteFrame>
+  ),
+};
+
+export const FullPageWide: StoryObj = {
+  ...FullPage,
+  name: "Full Page · 1920",
+  globals: { viewport: { value: "wide", isRotated: false } },
+};
+
+export const CreateAccountWide: StoryObj = {
+  name: "Create account (WA3) · 1920",
+  render: () => <SignupAccountScreen />,
+  globals: { viewport: { value: "wide", isRotated: false } },
 };

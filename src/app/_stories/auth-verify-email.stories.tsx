@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import { VerifyEmailScreen } from "@/widgets/auth-screens";
+import { SiteFrame } from "@/widgets/site-header";
 
 import { apiError, installApi, ok } from "./auth-story-api";
 
@@ -18,7 +19,12 @@ export default {
 
 function linkStory(answer: Parameters<typeof installApi>[0][string], token = true): StoryObj {
   return {
-    render: () => <VerifyEmailScreen />,
+    // As the route renders it: the web.site chrome around the screen.
+    render: () => (
+      <SiteFrame>
+        <VerifyEmailScreen />
+      </SiteFrame>
+    ),
     beforeEach: () => {
       const { pathname, search } = window.location;
       if (token) window.history.replaceState(null, "", `${pathname}${search}#token=sfl_storybook`);

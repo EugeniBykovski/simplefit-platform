@@ -140,7 +140,33 @@
       "enterprise": "Для бізнесу"
     },
     "signIn": "Увійти",
-    "getStarted": "Почати"
+    "getStarted": "Почати",
+    "footer": {
+      "blurb": "Операційна система боксу. Зроблено у Варшаві · EUR · USD · GBP · PLN",
+      "columns": {
+        "product": "Продукт",
+        "business": "Бізнес",
+        "partners": "Партнерам",
+        "company": "Компанія"
+      },
+      "links": {
+        "fighters": "Бійцям",
+        "coaches": "Тренерам",
+        "gyms": "Залам",
+        "signIn": "Увійти",
+        "pricing": "Ціни",
+        "marketplace": "Маркетплейс",
+        "enterprise": "Для бізнесу",
+        "whiteLabel": "White label",
+        "becomeSponsor": "Стати спонсором",
+        "partnership": "Про партнерство",
+        "sponsorSignIn": "Вхід для спонсорів",
+        "about": "Про нас",
+        "careers": "Кар’єра",
+        "privacy": "Конфіденційність",
+        "terms": "Умови"
+      }
+    }
   },
   "frame": {
     "home": "Головна SimpleFit"

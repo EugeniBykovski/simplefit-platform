@@ -35,6 +35,8 @@ const viewports = {
   narrow: { name: "Narrow web · 320", styles: { width: "320px", height: "640px" } },
   tablet: { name: "Tablet · 768", styles: { width: "768px", height: "1024px" } },
   desktop: { name: "Desktop · 1440", styles: { width: "1440px", height: "900px" } },
+  // Wider than the designed frame: the 1440 px Container must stay centred (SF-24).
+  wide: { name: "Wide desktop · 1920", styles: { width: "1920px", height: "1080px" } },
 };
 
 const preview: Preview = {

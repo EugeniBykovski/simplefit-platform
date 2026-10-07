@@ -134,6 +134,7 @@ describe("Storybook", () => {
     expect(titles).toEqual([
       "Authentication/Application Entry",
       "Authentication/Email Code",
+      "Authentication/Login",
       "Authentication/Provider States",
       "Authentication/Sign In",
       "Authentication/Sign Up",

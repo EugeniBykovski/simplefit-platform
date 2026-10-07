@@ -140,7 +140,33 @@
       "enterprise": "Enterprise"
     },
     "signIn": "Anmelden",
-    "getStarted": "Loslegen"
+    "getStarted": "Loslegen",
+    "footer": {
+      "blurb": "Das Betriebssystem fürs Boxen. Made in Warsaw · EUR · USD · GBP · PLN",
+      "columns": {
+        "product": "Produkt",
+        "business": "Business",
+        "partners": "Partner",
+        "company": "Unternehmen"
+      },
+      "links": {
+        "fighters": "Boxer:innen",
+        "coaches": "Coaches",
+        "gyms": "Gyms",
+        "signIn": "Anmelden",
+        "pricing": "Preise",
+        "marketplace": "Marktplatz",
+        "enterprise": "Enterprise",
+        "whiteLabel": "White Label",
+        "becomeSponsor": "Sponsor werden",
+        "partnership": "Partnerschaften",
+        "sponsorSignIn": "Sponsor-Anmeldung",
+        "about": "Über uns",
+        "careers": "Karriere",
+        "privacy": "Datenschutz",
+        "terms": "Nutzungsbedingungen"
+      }
+    }
   },
   "frame": {
     "home": "SimpleFit-Startseite"

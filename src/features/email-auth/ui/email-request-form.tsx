@@ -28,6 +28,8 @@ type Props = {
   hintPlacement?: "field" | "button";
   /** Content between the field and the button (WA3 legal line). */
   children?: ReactNode;
+  /** A field shown before the email field, in a two-column row (WA3's disabled Full name). */
+  besideField?: ReactNode;
   /** WA1 stretches the button over the column; WA3 sizes it to its label. */
   fullWidth?: boolean;
   className?: string;
@@ -51,6 +53,7 @@ export function EmailRequestForm({
   icon = false,
   hintPlacement = "button",
   children,
+  besideField,
   fullWidth = true,
   className,
 }: Props) {
@@ -91,23 +94,26 @@ export function EmailRequestForm({
 
   return (
     <form onSubmit={(event) => void handleSubmit(event)} noValidate className={className}>
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor={`${id}-email`} className="type-caption font-bold text-muted-foreground">
-          {t("label")}
-        </label>
-        <Input
-          id={`${id}-email`}
-          type="email"
-          name="email"
-          autoComplete="email"
-          inputMode="email"
-          required
-          fieldSize="lg"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          aria-invalid={failure === "invalidEmail" || undefined}
-          aria-describedby={failure ? `${errorId} ${hintId}` : hintId}
-        />
+      <div className={besideField ? "grid gap-3.5 sm:grid-cols-2" : "contents"}>
+        {besideField}
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor={`${id}-email`} className="type-caption font-bold text-muted-foreground">
+            {t("label")}
+          </label>
+          <Input
+            id={`${id}-email`}
+            type="email"
+            name="email"
+            autoComplete="email"
+            inputMode="email"
+            required
+            fieldSize="lg"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            aria-invalid={failure === "invalidEmail" || undefined}
+            aria-describedby={failure ? `${errorId} ${hintId}` : hintId}
+          />
+        </div>
       </div>
       {failure && (
         <p id={errorId} role="alert" className="type-caption font-bold text-destructive">

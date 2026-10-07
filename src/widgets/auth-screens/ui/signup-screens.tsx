@@ -1,4 +1,12 @@
-import { Building2Icon, DumbbellIcon, InfoIcon, MailIcon, StarIcon, UsersIcon } from "lucide-react";
+import {
+  Building2Icon,
+  CircleHelpIcon,
+  DumbbellIcon,
+  InfoIcon,
+  MailIcon,
+  StarIcon,
+  UsersIcon,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
@@ -6,15 +14,28 @@ import { RegistrationCodeStep, RegistrationEmailForm } from "@/features/email-au
 import { AppleSignInButton } from "@/features/sign-in-with-apple";
 import { GoogleSignInButton } from "@/features/sign-in-with-google";
 import { Link } from "@/shared/i18n/navigation";
+import { cn } from "@/shared/lib/utils";
+import { routeHref } from "@/shared/routes/routes";
 import { withReturnTo } from "@/shared/routes/return-to";
 import { Badge } from "@/shared/ui/badge";
-import { BrandTile } from "@/shared/ui/brand-mark";
+import { BrandMark, BrandTile } from "@/shared/ui/brand-mark";
 import { Button } from "@/shared/ui/button";
+import { Checkbox } from "@/shared/ui/checkbox";
 import { Container } from "@/shared/ui/container";
+import { Input } from "@/shared/ui/input";
 import { Notice } from "@/shared/ui/notice";
 import { textLinkClass } from "@/shared/ui/text-link";
 
-import { AuthStepFrame } from "./auth-frame";
+import { AuthInfoList, AuthStepFrame } from "./auth-frame";
+
+/*
+ * Sign-up compositions (Claude Design WebSignUp O02w, WebRegAccount WA3,
+ * WebRegVerify WA4). The registration API owns the email address only, so
+ * every designed element whose behaviour belongs to the onboarding domain
+ * (SF-25) keeps its place in a non-deceptive state: role cards link on
+ * without carrying a role, the WA3 role selector, full name and consents are
+ * disabled and never sent, and the role overviews are static.
+ */
 
 const ROLE_CARDS = [
   { key: "fighter", icon: DumbbellIcon },
@@ -24,19 +45,21 @@ const ROLE_CARDS = [
 ] as const;
 
 /**
- * O02w "Join the boxing community": Google, Apple or email (SF-24). Renders
- * the page body; the page puts it in the public site header and footer.
- *
- * The role cards describe the roles one account can hold. Choosing a role at
- * sign-up belongs to the onboarding domain (SF-25): the cards are not
- * selectable, carry no "Continue" action and nothing about a role is sent or
- * stored.
+ * O02w "Join the boxing community" (page body; the page renders it in the
+ * site chrome): the site Container, a 1 : 1.25 grid with a 72 px gap (64 +
+ * 8 px steps). Left: tile, headline, lead, the three 54 px methods (max
+ * 420 px) and the sign-in / legal line. Right: the role cards (2 × 2, 16 px
+ * gap; Fighter is the design's emphasised card) and the info strip.
  */
 export function SignupScreen({ returnTo }: { returnTo?: string }) {
   const t = useTranslations("auth.signup");
+  const account = withReturnTo("web.signup.account", returnTo);
 
   return (
-    <Container className="grid gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] lg:gap-16 lg:py-14">
+    <Container
+      data-auth-frame="signup"
+      className="grid gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] lg:gap-16 lg:py-14"
+    >
       <div className="flex min-w-0 flex-col gap-5.5">
         <BrandTile size="xl" />
         <h1 className="type-auth-display text-balance">
@@ -47,7 +70,7 @@ export function SignupScreen({ returnTo }: { returnTo?: string }) {
           <GoogleSignInButton />
           <AppleSignInButton />
           <Button asChild variant="quiet" size="xl" className="w-full">
-            <Link href={withReturnTo("web.signup.account", returnTo)}>
+            <Link href={account}>
               <MailIcon aria-hidden />
               {t("email")}
             </Link>
@@ -63,26 +86,46 @@ export function SignupScreen({ returnTo }: { returnTo?: string }) {
           })}
         </p>
       </div>
-      {/* 64 + 8 px: the designed 72 px column gap from canonical steps. */}
       <section aria-labelledby="signup-roles" className="flex min-w-0 flex-col gap-4 lg:pl-2">
         <h2 id="signup-roles" className="type-label-lg text-highlight">
           {t("roles.title")}
         </h2>
         <ul className="grid gap-4 sm:grid-cols-2">
-          {ROLE_CARDS.map(({ key, icon: Icon }) => (
-            <li key={key} className="flex flex-col gap-2.5 rounded-3xl border bg-surface p-5">
-              <span
-                aria-hidden
-                className="flex size-11.5 items-center justify-center rounded-lg bg-surface-elevated text-highlight"
-              >
-                <Icon className="size-5.5" />
-              </span>
-              <h3 className="type-h3">{t(`roles.${key}.title`)}</h3>
-              <p className="type-body-sm text-pretty text-muted-foreground">
-                {t(`roles.${key}.description`)}
-              </p>
-            </li>
-          ))}
+          {ROLE_CARDS.map(({ key, icon: Icon }, index) => {
+            const emphasised = index === 0;
+            return (
+              <li key={key} className="flex">
+                <Link
+                  href={key === "sponsor" ? routeHref("web.partners.apply") : account}
+                  className={cn(
+                    "flex w-full flex-col gap-2.5 rounded-3xl border p-5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    emphasised
+                      ? "border-[1.5px] border-highlight bg-accent"
+                      : "bg-surface hover:border-border-strong",
+                  )}
+                >
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "flex size-11.5 items-center justify-center rounded-lg",
+                      emphasised
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-surface-elevated text-highlight",
+                    )}
+                  >
+                    <Icon className="size-5.5" />
+                  </span>
+                  <span className="type-h3">{t(`roles.${key}.title`)}</span>
+                  <span className="type-body-sm text-pretty text-muted-foreground">
+                    {t(`roles.${key}.description`)}
+                  </span>
+                  <span className="mt-auto type-body-sm font-extrabold text-highlight">
+                    {t("roles.continue")}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
         <Notice tone="muted" icon={InfoIcon}>
           {t("roles.note")}
@@ -93,14 +136,20 @@ export function SignupScreen({ returnTo }: { returnTo?: string }) {
 }
 
 const IDENTITY_ROLES = ["fighter", "coach", "gym", "sponsor"] as const;
+const SIGNUP_ROLES = ["fighter", "coach", "gym"] as const;
+const CONSENTS = [
+  { key: "terms", required: true },
+  { key: "age", required: true },
+  { key: "news", required: false },
+] as const;
+const NEXT_STEPS = ["verify", "setup", "home"] as const;
 
 /**
- * WA3 "Create your SimpleFit account" (email_verification). The registration
- * API takes the email address only: the design's role selector, full name,
- * consent checkboxes and per-role "What happens next" belong to the
- * onboarding domain (SF-25) and are not rendered, so nothing suggests they
- * were stored. The approved legal line stays as static copy; it records
- * nothing.
+ * WA3 "Create your SimpleFit account" (email_verification), in the auth step
+ * frame (1fr | 420 px, 56 px gap). The role selector, full name and consent
+ * checkboxes are rendered in place but disabled and never sent: they are set
+ * after verification by the onboarding domain (SF-25). Only the email address
+ * is submitted.
  */
 export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
   const t = useTranslations("auth.account");
@@ -114,22 +163,67 @@ export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
     <AuthStepFrame
       action={t.rich("member", { link: signIn })}
       aside={
-        <div className="flex flex-col gap-3 rounded-3xl border bg-surface p-5.5">
-          <h2 className="type-label text-faint-foreground">{t("identity.title")}</h2>
-          <p className="type-body text-pretty">{t("identity.body")}</p>
-          <ul className="flex flex-wrap items-center gap-1.5">
-            {IDENTITY_ROLES.map((role) => (
-              <li key={role}>
-                <Badge>{t(`identity.roles.${role}`)}</Badge>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <>
+          <div className="flex flex-col gap-3 rounded-3xl border bg-surface p-5.5">
+            <h2 className="type-label text-faint-foreground">{t("identity.title")}</h2>
+            <p className="type-body text-pretty">{t("identity.body")}</p>
+            <ul className="flex flex-wrap items-center gap-1.5">
+              {IDENTITY_ROLES.map((role) => (
+                <li key={role}>
+                  <Badge>{t(`identity.roles.${role}`)}</Badge>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <AuthInfoList
+            title={t("next.title")}
+            rows={NEXT_STEPS.map((key) => ({
+              key,
+              title: t(`next.${key}.title`),
+              detail: t(`next.${key}.detail`),
+            }))}
+          />
+          <Notice tone="muted" icon={CircleHelpIcon}>
+            {t("next.note")}
+          </Notice>
+        </>
       }
     >
-      <div className="flex max-w-103 flex-col gap-4">
+      <div data-auth-step-column className="flex flex-col gap-4">
         <p className="type-label text-highlight">{t("eyebrow")}</p>
         <h1 className="type-auth-title text-balance">{t("title")}</h1>
+        <div className="flex flex-col gap-2">
+          <p id="signup-role-label" className="type-body-sm font-bold text-muted-foreground">
+            {t("signingUpAs")}
+          </p>
+          <div
+            role="radiogroup"
+            aria-labelledby="signup-role-label"
+            aria-disabled="true"
+            className="grid grid-cols-3 gap-1 rounded-3xl border bg-surface p-1"
+          >
+            {SIGNUP_ROLES.map((role) => (
+              <span
+                key={role}
+                role="radio"
+                aria-checked="false"
+                aria-disabled="true"
+                className="flex h-9 items-center justify-center rounded-xl type-caption font-bold text-faint-foreground"
+              >
+                {t(`roles.${role}`)}
+              </span>
+            ))}
+          </div>
+          <p className="type-body-sm text-faint-foreground">
+            {t.rich("sponsor", {
+              link: (chunks) => (
+                <Link href={routeHref("web.partners.apply")} className={textLinkClass}>
+                  {chunks}
+                </Link>
+              ),
+            })}
+          </p>
+        </div>
         <RegistrationEmailForm
           returnTo={returnTo}
           submitLabel={t("submit")}
@@ -137,8 +231,36 @@ export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
           hintPlacement="field"
           fullWidth={false}
           className="flex flex-col gap-4"
+          besideField={
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="signup-full-name"
+                className="type-caption font-bold text-muted-foreground"
+              >
+                {t("fullName")}
+              </label>
+              <Input id="signup-full-name" fieldSize="lg" disabled autoComplete="off" />
+            </div>
+          }
         >
-          <p className="type-body-sm text-pretty text-faint-foreground">{t("legal")}</p>
+          <div className="flex flex-col gap-2.5">
+            {CONSENTS.map(({ key, required }) => (
+              <label key={key} className="flex items-center gap-3">
+                <Checkbox
+                  disabled
+                  checked={false}
+                  className="size-5.5 rounded-xs border-2 border-border-strong"
+                />
+                <span className="type-body font-semibold text-foreground/60">
+                  {t(`consents.${key}`)}
+                  {required && (
+                    <span className="text-faint-foreground"> {t("consents.required")}</span>
+                  )}
+                </span>
+              </label>
+            ))}
+          </div>
+          <p className="type-body-sm text-pretty text-faint-foreground">{t("deferred")}</p>
         </RegistrationEmailForm>
         <p className="type-body-sm text-faint-foreground">
           {t.rich("haveAccount", { link: signIn })}
@@ -148,14 +270,50 @@ export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
   );
 }
 
+const AFTER_VERIFYING = ["fighter", "coach", "gym"] as const;
+
 /**
- * WA4 "Verify your email" (email_verification). The design's aside (an E01
- * email preview and the per-role "After verifying" destinations) is
- * deferred: the destinations need the onboarding domain (SF-25).
+ * WA4 "Verify your email" (email_verification), in the auth step frame. The
+ * aside shows the E01 email as an illustration with the code masked (never a
+ * code anyone could type) and a static "After verifying" overview.
  */
 export function SignupVerifyScreen({ returnTo }: { returnTo?: string }) {
+  const t = useTranslations("auth.code.registration.aside");
+
   return (
-    <AuthStepFrame>
+    <AuthStepFrame
+      aside={
+        <>
+          <section
+            aria-label={t("preview.label")}
+            className="flex flex-col gap-2.5 rounded-3xl border bg-surface p-4.5"
+          >
+            <p className="type-label text-faint-foreground">{t("preview.label")}</p>
+            <div className="flex flex-col gap-2.5 rounded-lg bg-secondary p-4.5 text-secondary-foreground">
+              <div className="flex items-center gap-2">
+                <span
+                  aria-hidden
+                  className="flex size-6.5 flex-none items-center justify-center rounded-sm bg-primary text-primary-foreground"
+                >
+                  <BrandMark className="size-4.5" />
+                </span>
+                <span className="type-body-sm font-extrabold">{t("preview.brand")}</span>
+              </div>
+              <p className="type-h3">{t("preview.code")}</p>
+              <p className="type-caption">{t("preview.body")}</p>
+            </div>
+          </section>
+          <AuthInfoList
+            title={t("afterVerifying.title")}
+            rows={AFTER_VERIFYING.map((key) => ({
+              key,
+              title: t(`afterVerifying.${key}.title`),
+              detail: t(`afterVerifying.${key}.detail`),
+            }))}
+          />
+        </>
+      }
+    >
       <RegistrationCodeStep returnTo={returnTo} />
     </AuthStepFrame>
   );

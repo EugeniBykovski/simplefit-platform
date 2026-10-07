@@ -7,14 +7,32 @@ import { Link } from "@/shared/i18n/navigation";
 import { withReturnTo } from "@/shared/routes/return-to";
 import { textLinkClass } from "@/shared/ui/text-link";
 
-import { AuthDivider, AuthSplitFrame } from "./auth-frame";
+import { AuthDivider, AuthInfoList, AuthSplitFrame } from "./auth-frame";
 
 /*
- * WA1 and WA1b (Claude Design onboarding page, 1440). The panel's "You land in
- * your last workspace" line and its "After sign-in" destination list describe
- * runtime facts the API cannot provide yet (workspaces, last workspace); they
- * are deferred to SF-25+ and not rendered.
+ * WA1 and WA1b (Claude Design WebLogin / WebSignInCode, 1440) share the split
+ * frame and its brand panel. The panel's "After sign-in" card is a static
+ * overview of each role's home; the line above it ("You land in your last
+ * workspace") claims a runtime fact the API cannot provide yet (SF-25+) and
+ * is not rendered.
  */
+
+const ROLE_HOMES = ["fighter", "coach", "gym", "sponsor"] as const;
+
+function AfterSignInPanel() {
+  const t = useTranslations("auth.login.afterSignIn");
+  return (
+    <AuthInfoList
+      variant="panel"
+      title={t("title")}
+      rows={ROLE_HOMES.map((key) => ({
+        key,
+        title: t(`${key}.title`),
+        detail: t(`${key}.detail`),
+      }))}
+    />
+  );
+}
 
 /**
  * WA1 "Sign in": Google (SF-22), Apple (SF-23) and the email sign-in code
@@ -25,7 +43,7 @@ export function LoginScreen({ returnTo }: { returnTo?: string }) {
   const t = useTranslations("auth.login");
 
   return (
-    <AuthSplitFrame hero={t("hero")}>
+    <AuthSplitFrame hero={t("hero")} panel={<AfterSignInPanel />}>
       <div className="flex flex-col gap-3.5">
         <h1 className="type-auth-heading">{t("title")}</h1>
         <p className="type-body text-pretty text-muted-foreground">{t("description")}</p>
@@ -56,7 +74,7 @@ export function LoginScreen({ returnTo }: { returnTo?: string }) {
 export function LoginCodeScreen({ returnTo }: { returnTo?: string }) {
   const t = useTranslations("auth.login");
   return (
-    <AuthSplitFrame hero={t("hero")}>
+    <AuthSplitFrame hero={t("hero")} panel={<AfterSignInPanel />}>
       <SignInCodeStep returnTo={returnTo} />
     </AuthSplitFrame>
   );

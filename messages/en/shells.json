@@ -140,7 +140,33 @@
       "enterprise": "Enterprise"
     },
     "signIn": "Sign in",
-    "getStarted": "Get started"
+    "getStarted": "Get started",
+    "footer": {
+      "blurb": "The boxing operating system. Made in Warsaw · EUR · USD · GBP · PLN",
+      "columns": {
+        "product": "Product",
+        "business": "Business",
+        "partners": "Partners",
+        "company": "Company"
+      },
+      "links": {
+        "fighters": "Fighters",
+        "coaches": "Coaches",
+        "gyms": "Gyms",
+        "signIn": "Sign in",
+        "pricing": "Pricing",
+        "marketplace": "Marketplace",
+        "enterprise": "Enterprise",
+        "whiteLabel": "White label",
+        "becomeSponsor": "Become a sponsor",
+        "partnership": "Partnership overview",
+        "sponsorSignIn": "Sponsor sign in",
+        "about": "About",
+        "careers": "Careers",
+        "privacy": "Privacy",
+        "terms": "Terms"
+      }
+    }
   },
   "frame": {
     "home": "SimpleFit home"

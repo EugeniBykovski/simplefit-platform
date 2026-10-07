@@ -1,11 +1,12 @@
 import { MenuIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import type { ReactNode } from "react";
 
 import { LocaleSwitcher } from "@/features/switch-locale";
 import { ThemeSwitcher } from "@/features/switch-theme";
 import { siteConfig } from "@/shared/config/site";
 import { Link } from "@/shared/i18n/navigation";
-import { routeHref } from "@/shared/routes/routes";
+import { routeHref, type WebRouteId } from "@/shared/routes/routes";
 import { BrandTile, BrandWordmark } from "@/shared/ui/brand-mark";
 import { Button } from "@/shared/ui/button";
 import { Container } from "@/shared/ui/container";
@@ -121,13 +122,118 @@ function BrandLockup() {
   );
 }
 
-/** Public website footer (`web.site`). */
+type FooterLinkKey =
+  | "fighters"
+  | "coaches"
+  | "gyms"
+  | "signIn"
+  | "pricing"
+  | "marketplace"
+  | "enterprise"
+  | "whiteLabel"
+  | "becomeSponsor"
+  | "partnership"
+  | "sponsorSignIn";
+type FooterTextKey = "about" | "careers" | "privacy" | "terms";
+type FooterColumn = {
+  key: "product" | "business" | "partners" | "company";
+  links: readonly { key: FooterLinkKey; route: WebRouteId; query?: Record<string, string> }[];
+  text?: readonly FooterTextKey[];
+};
+
+/*
+ * Footer columns of the landing artboards (WebSignUp O02w, LandHome). Every
+ * link is a registry route; the company entries have no routes yet and are
+ * plain text, as in the design.
+ */
+const footerColumns: readonly FooterColumn[] = [
+  {
+    key: "product",
+    links: [
+      { key: "fighters", route: "web.fighters" },
+      { key: "coaches", route: "web.coaches" },
+      { key: "gyms", route: "web.gyms" },
+      { key: "signIn", route: "web.login" },
+    ],
+  },
+  {
+    key: "business",
+    links: [
+      { key: "pricing", route: "web.pricing" },
+      { key: "marketplace", route: "web.marketplace" },
+      { key: "enterprise", route: "web.pricing", query: { role: "enterprise" } },
+      { key: "whiteLabel", route: "web.white-label" },
+    ],
+  },
+  {
+    key: "partners",
+    links: [
+      { key: "becomeSponsor", route: "web.partners.apply" },
+      { key: "partnership", route: "web.partners" },
+      { key: "sponsorSignIn", route: "web.sponsor.login" },
+    ],
+  },
+  { key: "company", links: [], text: ["about", "careers", "privacy", "terms"] },
+];
+
+/**
+ * Public website footer (`web.site`; Claude Design WebSignUp / LandHome): the
+ * brand blurb and four link columns on the site Container, 36 px vertical
+ * padding (32 + 4 px steps), 80 px between groups.
+ */
 export function SiteFooter() {
+  const t = useTranslations("shells.site.footer");
+
   return (
-    <footer className="border-t">
-      <Container asChild>
-        <p className="py-6 type-body-sm text-muted-foreground">{siteConfig.name}</p>
+    <footer data-site-footer className="border-t bg-background">
+      <Container className="py-8">
+        <div className="flex flex-wrap gap-x-20 gap-y-8 py-1">
+          <div className="flex max-w-65 flex-col gap-2.5">
+            <BrandTile size="sm" />
+            <p className="type-caption text-faint-foreground">{t("blurb")}</p>
+          </div>
+          {footerColumns.map((column) => (
+            <nav
+              key={column.key}
+              aria-label={t(`columns.${column.key}`)}
+              className="flex flex-col gap-2"
+            >
+              <p className="type-label text-faint-foreground">{t(`columns.${column.key}`)}</p>
+              {column.links.map((link) => (
+                <Link
+                  key={link.key}
+                  href={routeHref(link.route, {}, link.query)}
+                  className="w-fit rounded-xs type-body-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {t(`links.${link.key}`)}
+                </Link>
+              ))}
+              {column.text?.map((key) => (
+                <span key={key} className="type-body-sm text-muted-foreground">
+                  {t(`links.${key}`)}
+                </span>
+              ))}
+            </nav>
+          ))}
+        </div>
       </Container>
     </footer>
+  );
+}
+
+/**
+ * The `web.site` chrome: header, the page's `main` landmark and footer. The
+ * site layout and pages that render the site chrome themselves (O02w sign-up
+ * in the auth group) share it, so their geometry is one implementation.
+ */
+export function SiteFrame({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex min-h-dvh flex-col">
+      <SiteHeader />
+      <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
+        {children}
+      </main>
+      <SiteFooter />
+    </div>
   );
 }

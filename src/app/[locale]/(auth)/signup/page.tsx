@@ -5,7 +5,7 @@ import { localeAlternates } from "@/shared/i18n/metadata";
 import { resolveLocaleParam } from "@/shared/i18n/params";
 import { sanitizeReturnTo } from "@/shared/routes/return-to";
 import { SignupScreen } from "@/widgets/auth-screens";
-import { SiteFooter, SiteHeader } from "@/widgets/site-header";
+import { SiteFrame } from "@/widgets/site-header";
 
 export async function generateMetadata({
   params,
@@ -20,12 +20,8 @@ export default async function Page({ params, searchParams }: PageProps<"/[locale
   await resolveLocaleParam(params);
   const returnTo = sanitizeReturnTo((await searchParams).returnTo);
   return (
-    <div className="flex min-h-dvh flex-col">
-      <SiteHeader />
-      <main id="main" tabIndex={-1} className="flex-1 outline-none">
-        <SignupScreen returnTo={returnTo} />
-      </main>
-      <SiteFooter />
-    </div>
+    <SiteFrame>
+      <SignupScreen returnTo={returnTo} />
+    </SiteFrame>
   );
 }

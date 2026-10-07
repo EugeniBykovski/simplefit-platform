@@ -195,3 +195,198 @@ test("Storybook never loads a live auth provider script", async ({ page }) => {
   await expect(page.getByText("Google sign-in is not available right now.")).toBeVisible();
   expect(providers).toEqual([]);
 });
+
+/*
+ * SF-24 layout regression: every auth composition lives inside the canonical
+ * 1440 px frame (SF-34 Container) and stays centred beyond it; the design's
+ * canvas width is never treated as the viewport. Values from WebLogin (WA1),
+ * WebSignUp (O02w) and WebRegAccount (WA3), measured on the full-page stories.
+ */
+const frameOf = (page: Page, kind: string) => page.locator(`[data-auth-frame="${kind}"]`);
+
+async function overflow(page: Page) {
+  return page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  );
+}
+
+test.describe("auth frame geometry (SF-24 regression)", () => {
+  for (const width of [1920, 1440, 1280, 1024]) {
+    test(`WA1 split frame is centred and contained at ${width}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await story(page, "authentication-login--full-page");
+      const frame = await box(frameOf(page, "split"));
+      const expected = Math.min(width, 1440);
+      near(frame.width, expected);
+      near(frame.x, (width - expected) / 2);
+
+      // The form column is centred in the right half of the frame.
+      const column = await box(page.locator("[data-auth-column]"));
+      near(column.x + column.width / 2, frame.x + (frame.width * 3) / 4);
+      expect(await overflow(page)).toBeLessThanOrEqual(0);
+    });
+  }
+
+  test("WA1 at 1440: 720 px halves, bottom-anchored hero and After sign-in card, 440 px form column", async ({
+    page,
+  }) => {
+    await story(page, "authentication-login--full-page");
+    const panel = await box(page.locator("[data-auth-panel]"));
+    near(panel.x, 0);
+    near(panel.width, 720);
+    near(panel.height, 900);
+
+    // WebLogin: card max 460 px, its bottom on the 56 px panel padding, the
+    // headline 20 px above it (the subtitle between them is not rendered).
+    const card = await box(page.locator("[data-auth-panel] [data-auth-info-list]"));
+    near(card.width, 460);
+    near(card.x, 64);
+    near(card.y + card.height, 900 - 56);
+    await expect(page.locator("[data-auth-panel] [data-auth-info-list] li")).toHaveCount(4);
+    const hero = await box(page.locator("[data-auth-hero]"));
+    near(hero.x, 64);
+    near(card.y - (hero.y + hero.height), 20);
+
+    const column = await box(page.locator("[data-auth-column]"));
+    near(column.width, 440);
+    near(column.x, 720 + (720 - 440) / 2);
+    near(column.y + column.height / 2, 450);
+    await page.screenshot({ path: "test-results/wa1-full-page-1440.png" });
+  });
+
+  test("WA1b keeps the WA1 split frame and panel with the 440 px code column", async ({ page }) => {
+    await story(page, "authentication-email-code--sign-in-sent");
+    await page.getByRole("heading", { level: 1, name: "Enter your sign-in code" }).waitFor();
+    near((await box(page.locator("[data-auth-panel]"))).width, 720);
+    await expect(page.locator("[data-auth-panel] [data-auth-info-list]")).toBeVisible();
+    const column = await box(page.locator("[data-auth-column]"));
+    near(column.x, 860);
+    near(column.width, 440);
+  });
+
+  test("WA3 at 1440: 72 px header, 1fr | 420 px grid with 56 px gap, two-column fields", async ({
+    page,
+  }) => {
+    await story(page, "authentication-sign-up--create-account");
+    near((await box(page.locator("header").first())).height, 73);
+    const frame = await box(frameOf(page, "step"));
+    near(frame.x, 0);
+    near(frame.width, 1440);
+    const left = await box(page.locator("[data-auth-step-column]"));
+    const aside = await box(page.locator("aside"));
+    near(left.x, 64);
+    near(left.y, 73 + 48);
+    near(aside.width, 420);
+    near(aside.x, 1440 - 64 - 420);
+    near(aside.x - (64 + (1440 - 128 - 56 - 420)), 56);
+    // Full name | Email, 14 px apart, each 44 px tall.
+    const name = await box(page.getByLabel("Full name"));
+    const email = await box(page.getByLabel("Email"));
+    near(name.height, 44);
+    near(email.x - (name.x + name.width), 14);
+    near(name.width, email.width);
+    // ONE IDENTITY, WHAT HAPPENS NEXT and the info strip.
+    await expect(page.locator("aside > *")).toHaveCount(3);
+    await page.screenshot({ path: "test-results/wa3-1440.png" });
+  });
+
+  test("WA4 at 1440: the 420 px aside holds the masked E01 preview and After verifying", async ({
+    page,
+  }) => {
+    await story(page, "authentication-email-code--verify-typing");
+    await page.getByRole("heading", { level: 1, name: "Verify your email" }).waitFor();
+    const aside = await box(page.locator("aside"));
+    near(aside.width, 420);
+    near(aside.x, 956);
+    await expect(page.locator("aside > *")).toHaveCount(2);
+    await expect(page.getByText("Your code is ••• •••")).toBeVisible();
+    await expect(page.locator("aside [data-auth-info-list] li")).toHaveCount(3);
+    await page.screenshot({ path: "test-results/wa4-1440.png" });
+  });
+
+  test("WA4b at 1440: site chrome and the 560 px result column", async ({ page }) => {
+    await story(page, "authentication-verify-email--verified");
+    const heading = page.getByRole("heading", { level: 1, name: "Email verified" });
+    await heading.waitFor();
+    near((await box(page.locator("header").first())).height, 77);
+    near((await box(heading.locator("../.."))).width, 560);
+    await expect(page.locator("[data-site-footer]")).toBeVisible();
+  });
+
+  test("WA1 at 768 collapses to the centred form column without overflow", async ({ page }) => {
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await story(page, "authentication-login--full-page");
+    await expect(page.locator("[data-auth-hero]")).toBeHidden();
+    const column = await box(page.locator("[data-auth-column]"));
+    near(column.x + column.width / 2, 384);
+    expect(await overflow(page)).toBeLessThanOrEqual(0);
+  });
+
+  test("WA1 at 1920 keeps the hero and the form inside the centred frame", async ({ page }) => {
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    await story(page, "authentication-login--full-page");
+    near((await box(page.locator("[data-auth-hero]"))).x, 240 + 64);
+    near((await box(page.locator("[data-auth-column]"))).x, 240 + 860);
+    await page.screenshot({ path: "test-results/wa1-full-page-1920.png" });
+  });
+
+  for (const width of [1920, 1440, 1280, 1024, 768]) {
+    test(`O02w content frame is centred and contained at ${width}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 940 });
+      await story(page, "authentication-sign-up--full-page");
+      const frame = await box(frameOf(page, "signup"));
+      near(frame.width, Math.min(width, 1440));
+      near(frame.x, (width - frame.width) / 2);
+      expect(await overflow(page)).toBeLessThanOrEqual(0);
+    });
+  }
+
+  test("O02w at 1440: 64 px gutters, 1 : 1.25 columns, 72 px gap and the 2 × 2 role grid", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 940 });
+    await story(page, "authentication-sign-up--full-page");
+    const frame = frameOf(page, "signup");
+    const left = await box(frame.locator("> div").first());
+    const roles = await box(frame.locator("section ul"));
+
+    near(left.x, 64);
+    near(roles.x + roles.width, 1440 - 64);
+    // Design: (1312 − 72) split 1 : 1.25 → 551 | 689. Production composes the
+    // 72 px gap from the canonical 64 + 8 steps, so the split moves ≤ 4 px.
+    expect(Math.abs(left.width - 551)).toBeLessThanOrEqual(4);
+    expect(Math.abs(roles.width - 689)).toBeLessThanOrEqual(4);
+    near(roles.x - (left.x + left.width), 72);
+
+    const cards = frame.locator("section ul > li");
+    await expect(cards).toHaveCount(4);
+    const [a, b, c] = [await box(cards.nth(0)), await box(cards.nth(1)), await box(cards.nth(2))];
+    near(b.x - (a.x + a.width), 16);
+    near(c.y - (a.y + a.height), 16);
+    near(a.width, b.width);
+    // Content starts below the 76 px header + 56 px top padding.
+    near(left.y, 77 + 56);
+    // The site footer: 64 px gutters, groups 80 px apart.
+    const footer = page.locator("[data-site-footer]");
+    const groups = footer.locator("div.flex-wrap > *");
+    await expect(groups).toHaveCount(5);
+    const [blurb, product] = [await box(groups.nth(0)), await box(groups.nth(1))];
+    near(blurb.x, 64);
+    near(product.x - (blurb.x + blurb.width), 80);
+    await page.screenshot({ path: "test-results/o02w-full-page-1440.png" });
+  });
+
+  test("WA3 step frame stays centred beyond 1440 with the 420 px aside on the frame gutter", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1920, height: 900 });
+    await story(page, "authentication-sign-up--create-account-wide");
+    const frame = await box(frameOf(page, "step"));
+    near(frame.x, 240);
+    near(frame.width, 1440);
+    const aside = await box(page.locator("aside"));
+    near(aside.width, 420);
+    near(aside.x + aside.width, 240 + 1440 - 64);
+    expect(await overflow(page)).toBeLessThanOrEqual(0);
+  });
+});
