@@ -6,8 +6,23 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
  * FighterWebNav sidebar, WebHome/LoadingWeb page header, LoadingWebLaunch,
  * NotFoundWeb). Values in CSS px, ±1 px.
  */
+/**
+ * Opens a story and waits for Storybook's own render signal: the preview
+ * puts `sb-show-main` on <body> once the story has rendered and
+ * `sb-show-errordisplay` when it failed (Storybook 10 preview runtime). A
+ * failed story is reported with Storybook's error message instead of timing
+ * out on an empty root.
+ */
 async function story(page: Page, id: string) {
-  await page.goto(`/iframe.html?id=${id}&viewMode=story&globals=theme:Dark`);
+  const response = await page.goto(`/iframe.html?id=${id}&viewMode=story&globals=theme:Dark`);
+  expect(response?.ok(), `iframe for ${id}`).toBe(true);
+  await page.waitForFunction(() =>
+    ["sb-show-main", "sb-show-errordisplay"].some((name) => document.body.classList.contains(name)),
+  );
+  if (await page.evaluate(() => document.body.classList.contains("sb-show-errordisplay"))) {
+    const message = await page.locator("#error-message").textContent();
+    throw new Error(`Story ${id} failed to render: ${message ?? "unknown error"}`);
+  }
   await page.locator("#storybook-root > *").first().waitFor();
   await page.evaluate(() => document.fonts.ready);
 }
