@@ -179,6 +179,15 @@ Other SF-17 decisions:
   gains `brand` (the 13 px sidebar wordmark) and mono 600; the button
   contract gains the `warning` variant and the 44 px `system` size (System
   states sheet).
+- **SF-24 extension (decision):** the authentication artboards use type and
+  control sizes beyond the product roles (WA1 48 px hero, O02w 52 px
+  display and 17 px lead, 30 and 34 px form headings, 30 / 24 px code
+  digits, A01 31 px hero, a 44 px web email field). They are added as
+  `typography.authRoles` (web `auth-display`, `auth-hero`, `auth-title`,
+  `auth-heading`, `auth-lead`, `code-digit`; mobile `auth-hero`,
+  `code-digit`) and `controls.field.webLarge`, for authentication screens
+  only. The 50 and 52 px web auth buttons translate to the `xl` button
+  (54 px).
 - **Undocumented olive steps** `#1C2010` (selected deep surface) and
   `#EEF2D2` map to `accent` / `accent-foreground`, the nearest roles; they
   are within tolerance and not systematic enough for tokens.
