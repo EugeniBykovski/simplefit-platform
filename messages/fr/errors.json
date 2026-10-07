@@ -1,6 +1,28 @@
 {
-  "notFound": {
-    "title": "Page introuvable",
-    "description": "La page que vous recherchez n’existe pas."
+  "states": {
+    "unexpected": {
+      "tag": "Erreur",
+      "title": "Un problème est survenu",
+      "description": "Un problème est survenu de notre côté. Rien de ce que vous avez enregistré n’est perdu.",
+      "action": "Réessayer"
+    },
+    "offline": {
+      "tag": "Hors ligne",
+      "title": "Vous êtes hors ligne",
+      "description": "Vérifiez votre connexion. Nous rechargerons cette page dès votre retour en ligne.",
+      "action": "Réessayer"
+    },
+    "forbidden": {
+      "tag": "Accès refusé",
+      "title": "Vous n’avez pas accès",
+      "description": "Cette page appartient à un compte ou un espace de travail dont vous ne faites pas partie.",
+      "action": "Retour à l’accueil"
+    },
+    "unavailable": {
+      "tag": "Service indisponible",
+      "title": "SimpleFit reprend son souffle",
+      "description": "Le service est temporairement indisponible. Réessayez dans quelques minutes.",
+      "action": "Réessayer"
+    }
   }
 }

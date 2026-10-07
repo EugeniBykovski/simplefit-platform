@@ -146,7 +146,51 @@ purpose: pointer versus touch.
 **Elevation** is semantic: surfaces and borders first; shadows (web:
 `shadow-raised`, `shadow-overlay`, `shadow-modal`) only for floating layers.
 **Motion:** short (150 ms) colour/opacity transitions; no decorative
-animation; reduced motion respected.
+animation in product UI; reduced motion respected. **Exception (SF-34):** the
+approved system states of Claude Design section 35 (launch, loading, 404)
+carry their designed motion: `animate-system-*` (logo ring, corner posts,
+drawn "S", glow, running bar, indeterminate segments, pop, shake) and the
+`skeleton-shimmer` sweeps in `theme.css`. All of it stops under
+`prefers-reduced-motion` (`reduce` on mobile) and leaves the static layout.
+
+### System-state typography (SF-34)
+
+`typography.systemRoles` in `docs/design-tokens.json` extends the SF-17 type
+scale for system states only (launch wordmark, 404 headline and numerals).
+Each role has a value per frame: web 1440 (`type-*` utilities in `theme.css`)
+and mobile 390 (NativeWind `text-*`).
+
+| Role         | Web                     | Mobile  | Use                         |
+| ------------ | ----------------------- | ------- | --------------------------- |
+| `hero`       | 52/56 Unbounded 600     | 28/30   | 404 headline                |
+| `lead`       | 17/26 Manrope 400       | —       | 404 explanation (web)       |
+| `wordmark`   | 44/42 Unbounded 700     | 36/34   | Launch wordmark "SimpleFit" |
+| `numeral`    | 200/200 Unbounded 700   | 112/112 | Referee count numeral       |
+| `numeral-ko` | 168/152 Unbounded 700   | 92/84   | Knockout "404"              |
+| `label-wide` | 11/14 mono 600, 0.62 em | same    | "BOXING" under the wordmark |
+| `count-word` | 12/16 mono, 0.3 em      | same    | 404 count word ("ONE")      |
+
+Product screens keep using the roles above; a new system role needs a design
+reason and a contract test, never a one-off value.
+
+Also from SF-34: the product role `brand` (Unbounded 13/16, 600, −0.01 em)
+for the wordmark in product chrome (the FighterWebNav sidebar), and mono 600
+(`typography.weights.mono`) for the "BOXING" label and the 404 KO tag. The
+`Button` gains the `warning` variant (amber action of warning-tone system
+states) and the `system` size (44 px, radius `md`, body-sm 800: the action of
+the system-state cards), on web and mobile.
+
+### System-state colour compositions (SF-34)
+
+No new colour tokens. `theme.css` composes the existing semantic tokens:
+`bg-system-glow` (radial `accent` → `background`, position via
+`--glow-x`/`--glow-y`), `bg-system-mark-glow` (`primary` at 22 %),
+`skeleton-shimmer` (`muted` → `border`), `skeleton-shimmer-accent`
+(`accent`/`accent-strong` mix → `accent-strong`). Artboard literals map to the
+nearest roles: `#0D0E0D` → `background`, `#141614` → `surface-subtle`,
+`#23272A` → `border`, `#2E332F` → `input`, `#3A403B` → `border-strong`,
+`#C9CDBF` → `foreground` at 80 %, `#5B615C`/`#3A403B` meta text →
+`faint-foreground` (contrast, SF-17).
 
 ## Accessibility
 
@@ -250,6 +294,27 @@ and an entry in the gallery.
 
 **Icons:** `lucide-react` only, decorative (`aria-hidden`) next to text or
 inside a labelled control.
+
+### Layout primitives (SF-34)
+
+The canonical web geometry of the Claude Design 1440 px frames lives in
+primitives; screens never add their own page margins:
+
+- `Container` (`size="site"`): public site, auth and system pages. 64 px
+  gutters at desktop (1312 px of content), centred beyond 1440 px; 16/24/32 px
+  below `lg`.
+- `Container` (`size="app"`): the fluid content column beside a shell
+  sidebar, 32 px gutters at desktop (16/24 below).
+- `PageHeader`: the 76 px page header with a hairline (title, page actions);
+  `PageBody`: 24 px top and bottom. Both take `inset="app" | "site"` to line
+  up with their frame.
+- Shells: `SiteHeader` 76 px on the site Container; `WorkspaceShell` sidebar
+  240 px with 22/14 px padding, nav items 38 px (radius `md`), the active
+  item on `accent` / `accent-foreground` with a `highlight` icon; `<main>`
+  has no padding. `AppFrame` and `AuthShell` headers are 76 px on the site
+  Container.
+- `Skeleton` gains `motion="shimmer"` and `tone="accent"` (the loading
+  artboards' sweep and its olive variant); the default stays the SF-13 pulse.
 
 ## Gallery
 

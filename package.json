@@ -27,7 +27,8 @@
     "ui:add": "node scripts/ui-add.mjs",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build --output-dir storybook-static",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test:geometry": "playwright test"
   },
   "dependencies": {
     "@hookform/resolvers": "5.9.1",
@@ -50,6 +51,7 @@
   "devDependencies": {
     "@commitlint/cli": "21.2.3",
     "@commitlint/types": "21.2.3",
+    "@playwright/test": "1.63.0",
     "@storybook/addon-a11y": "10.6.1",
     "@storybook/addon-docs": "10.6.1",
     "@storybook/addon-themes": "10.6.1",

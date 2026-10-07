@@ -1,6 +1,28 @@
 {
-  "notFound": {
-    "title": "Seite nicht gefunden",
-    "description": "Die gesuchte Seite existiert nicht."
+  "states": {
+    "unexpected": {
+      "tag": "Fehler",
+      "title": "Etwas ist schiefgelaufen",
+      "description": "Bei uns ist etwas schiefgelaufen. Nichts, was du gespeichert hast, ist verloren.",
+      "action": "Erneut versuchen"
+    },
+    "offline": {
+      "tag": "Offline",
+      "title": "Du bist offline",
+      "description": "Prüfe deine Verbindung. Wir laden die Seite erneut, sobald du wieder online bist.",
+      "action": "Erneut versuchen"
+    },
+    "forbidden": {
+      "tag": "Zugriff verweigert",
+      "title": "Du hast keinen Zugriff",
+      "description": "Diese Seite gehört zu einem Konto oder Arbeitsbereich, dem du nicht angehörst.",
+      "action": "Zur Startseite"
+    },
+    "unavailable": {
+      "tag": "Dienst nicht verfügbar",
+      "title": "SimpleFit macht kurz Pause",
+      "description": "Der Dienst ist vorübergehend nicht verfügbar. Versuch es in ein paar Minuten erneut.",
+      "action": "Erneut versuchen"
+    }
   }
 }

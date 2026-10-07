@@ -3,7 +3,9 @@ import { useTranslations } from "next-intl";
 import { siteConfig } from "@/shared/config/site";
 import { Link } from "@/shared/i18n/navigation";
 import { Badge } from "@/shared/ui/badge";
+import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
+import { containerVariants } from "@/shared/ui/container";
 
 const audiences = ["fighters", "coaches", "gyms", "sponsors"] as const;
 
@@ -16,7 +18,10 @@ export function HomeHero() {
     <main
       id="main"
       tabIndex={-1}
-      className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center gap-8 px-4 py-16 outline-none sm:px-6 sm:py-20"
+      className={cn(
+        containerVariants(),
+        "flex flex-1 flex-col justify-center gap-8 py-14 outline-none",
+      )}
     >
       <div className="flex max-w-3xl flex-col gap-6">
         <p className="type-label text-highlight">{t("badge")}</p>

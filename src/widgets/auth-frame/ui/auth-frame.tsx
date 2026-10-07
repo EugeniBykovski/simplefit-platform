@@ -5,23 +5,29 @@ import { ThemeSwitcher } from "@/features/switch-theme";
 import { siteConfig } from "@/shared/config/site";
 import { Link } from "@/shared/i18n/navigation";
 import { routeHref } from "@/shared/routes/routes";
+import { BrandTile } from "@/shared/ui/brand-mark";
+import { Container } from "@/shared/ui/container";
 
 /**
  * The `web.auth` shell (route-architecture §8): minimal chrome without
  * product navigation for /login, /signup and their steps, /sponsor/login and
- * /admin/login. The designed auth shell (WA1, O02w) is built by SF-24.
+ * /admin/login. The designed auth shell (WA1, O02w) is built by SF-24;
+ * until then its header sits on the canonical site Container (SF-34).
  */
 export function AuthShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href={routeHref("web.root")} className="rounded-md type-title">
-          {siteConfig.name}
-        </Link>
-        <div className="flex items-center gap-1">
-          <LocaleSwitcher />
-          <ThemeSwitcher />
-        </div>
+      <header>
+        <Container className="flex h-19 items-center justify-between gap-4">
+          <Link href={routeHref("web.root")} className="flex items-center gap-2.5 rounded-md">
+            <BrandTile />
+            <span className="type-title">{siteConfig.name}</span>
+          </Link>
+          <div className="flex items-center gap-1">
+            <LocaleSwitcher />
+            <ThemeSwitcher />
+          </div>
+        </Container>
       </header>
       <main
         id="main"

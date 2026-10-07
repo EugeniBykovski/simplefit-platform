@@ -16,6 +16,7 @@ const roleClass = {
   h2: "type-h2",
   h3: "type-h3",
   title: "type-title",
+  brand: "type-brand",
   "metric-xl": "type-metric-xl",
   "metric-lg": "type-metric-lg",
   metric: "type-metric",
@@ -31,6 +32,7 @@ const roleClass = {
 } as const satisfies Record<Role, string>;
 
 const samples: Partial<Record<Role, string>> = {
+  brand: "SimpleFit",
   display: "18:00",
   "metric-xl": "€29.99",
   "metric-lg": "142",

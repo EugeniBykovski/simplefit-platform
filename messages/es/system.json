@@ -1,0 +1,73 @@
+{
+  "launch": {
+    "label": "Cargando SimpleFit",
+    "status": "Vendando las manos…",
+    "tipLabel": "Consejo de la esquina",
+    "tip": "Exhala en cada golpe: mantiene el abdomen firme y la barbilla abajo.",
+    "footer": "SimpleFit web · una cuenta para boxeadores, entrenadores, gimnasios y socios"
+  },
+  "skeleton": {
+    "label": "Cargando esta página",
+    "status": "Vendando las manos…"
+  },
+  "notFound": {
+    "metaTitle": "Página no encontrada",
+    "refCount": "Cuenta del árbitro",
+    "count": {
+      "kicker": "Error 404 · Asalto no encontrado",
+      "title": "Esta página está en la lona.",
+      "description": "El enlace es antiguo o la página se ha movido. Levántate antes de diez y volverás al combate.",
+      "beat": "Levántate antes de diez",
+      "home": "Volver al inicio"
+    },
+    "ko": {
+      "kicker": "Error 404 · Nocaut",
+      "title": "KO. Esta página no se levantó.",
+      "description": "Puede que se haya eliminado o hecho privada. Tus asaltos, tu tablero y tus pagos están a salvo.",
+      "tag": "KO · Página no encontrada",
+      "corner": "Volver a mi esquina",
+      "again": "Contar de nuevo"
+    },
+    "saved": {
+      "kicker": "De nuevo en pie",
+      "title": "Salvado por la campana.",
+      "description": "Buenos reflejos. Elige adónde ir: tu esquina te espera.",
+      "tag": "En pie a los {count} · Salvado por la campana",
+      "corner": "Volver a mi esquina",
+      "search": "Buscar"
+    },
+    "words": {
+      "1": "Uno",
+      "2": "Dos",
+      "3": "Tres",
+      "4": "Cuatro",
+      "5": "Cinco",
+      "6": "Seis",
+      "7": "Siete",
+      "8": "Ocho",
+      "9": "Nueve",
+      "10": "Diez"
+    },
+    "searchPlaceholder": "Busca gimnasios, entrenadores, programas…",
+    "quickLinks": "Adónde ir",
+    "links": {
+      "board": {
+        "title": "Live Board",
+        "description": "Tu vida en el boxeo"
+      },
+      "gyms": {
+        "title": "Encontrar un gimnasio",
+        "description": "Varsovia y más allá"
+      },
+      "coaches": {
+        "title": "Entrenadores",
+        "description": "Reserva 1:1 o únete a un equipo"
+      },
+      "pricing": {
+        "title": "Precios",
+        "description": "Planes para cada rol"
+      }
+    },
+    "requested": "GET {path} → 404"
+  }
+}

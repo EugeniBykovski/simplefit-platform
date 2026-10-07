@@ -19,8 +19,21 @@ import { Spinner } from "@/shared/ui/spinner";
  * add them on top of these gates instead of inventing that state.
  */
 
-/** AUTHENTICATED: signed-out visitors go to the area's sign-in route with `returnTo`. */
-export function RequireSession({ signIn, children }: { signIn: WebRouteId; children: ReactNode }) {
+/**
+ * AUTHENTICATED: signed-out visitors go to the area's sign-in route with
+ * `returnTo`. While the session is restored the layout's `pending` state
+ * renders (the signed-in layouts pass the LD3 launch screen, SF-34); it is
+ * shown only while that real work runs.
+ */
+export function RequireSession({
+  signIn,
+  pending,
+  children,
+}: {
+  signIn: WebRouteId;
+  pending?: ReactNode;
+  children: ReactNode;
+}) {
   const status = useSessionStatus();
   const router = useRouter();
   const pathname = usePathname();
@@ -31,7 +44,8 @@ export function RequireSession({ signIn, children }: { signIn: WebRouteId; child
     router.replace(routeHref(signIn, {}, { [webGuards.returnToParam]: returnTo }));
   }, [status, pathname, router, signIn]);
 
-  return status === "authenticated" ? children : <SessionPending />;
+  if (status === "authenticated") return children;
+  return pending ?? <SessionPending />;
 }
 
 /** GUEST_ONLY: signed-in users go to the web entry route (`/app`), which resolves their destination. */

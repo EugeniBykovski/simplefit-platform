@@ -1,23 +1,26 @@
-import { useTranslations } from "next-intl";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
-import { Link } from "@/shared/i18n/navigation";
-import { Button } from "@/shared/ui/button";
+import { SiteHeader } from "@/widgets/site-header";
+import { NotFoundState } from "@/widgets/system-states";
 
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("system.notFound");
+  return { title: t("metaTitle"), robots: { index: false } };
+}
+
+/**
+ * ER2 · the web 404 (SF-34) for every unknown path in a locale (the
+ * `[...rest]` catch-all) and every `notFound()`: the public SiteHeader and the
+ * referee count on the launch glow. One catch-all for every area (D-404-SCOPE).
+ */
 export default function NotFound() {
-  const t = useTranslations("errors.notFound");
-  const actions = useTranslations("actions");
-
   return (
-    <main
-      id="main"
-      className="mx-auto flex min-h-dvh w-full max-w-xl flex-col items-start justify-center gap-4 px-4"
-    >
-      <p className="type-label text-faint-foreground">404</p>
-      <h1 className="type-h1">{t("title")}</h1>
-      <p className="text-muted-foreground">{t("description")}</p>
-      <Button asChild variant="outline">
-        <Link href="/">{actions("backToHome")}</Link>
-      </Button>
-    </main>
+    <div className="flex min-h-dvh flex-col bg-system-glow [--glow-x:74%] [--glow-y:46%]">
+      <SiteHeader />
+      <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
+        <NotFoundState />
+      </main>
+    </div>
   );
 }

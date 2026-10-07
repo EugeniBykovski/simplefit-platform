@@ -9,8 +9,8 @@ import { siteConfig } from "@/shared/config/site";
 import { Link } from "@/shared/i18n/navigation";
 import { routeHref, webShell } from "@/shared/routes/routes";
 import { Badge } from "@/shared/ui/badge";
+import { BrandTile } from "@/shared/ui/brand-mark";
 import { Button } from "@/shared/ui/button";
-import { Separator } from "@/shared/ui/separator";
 import {
   Sheet,
   SheetContent,
@@ -28,7 +28,9 @@ import { ShellNav, ShellNavLinks, type ShellNavSection } from "./shell-nav";
  * gym workspaces under /app, the partner portal and the admin control plane.
  * Navigation items and their targets come from the registry; sections,
  * order and icons follow the shell's nav artboard. Sidebar from the md
- * breakpoint, a sheet menu below it.
+ * breakpoint, a sheet menu below it. Geometry (SF-34, FighterWebNav): a
+ * 240 px `surface` sidebar with 22/14 px padding; `<main>` has no padding of
+ * its own, pages compose PageHeader and PageBody.
  *
  * Deliberately absent until their features exist: the workspace identity
  * card / switcher (an in-shell action, D-WEB-WORKSPACE-SWITCHER), item
@@ -60,7 +62,7 @@ export function WorkspaceShell({
         key,
         href: routeHref(item.route, {}, "query" in item ? item.query : {}),
         label: message(`${config.messages}.nav.${key}`),
-        icon: <Icon aria-hidden className="size-4" />,
+        icon: <Icon aria-hidden className="size-4.5" />,
       };
     }),
   }));
@@ -74,9 +76,8 @@ export function WorkspaceShell({
 
   return (
     <div data-shell={shell} className="flex min-h-dvh flex-col md:flex-row">
-      <aside className="hidden w-64 shrink-0 flex-col gap-2 border-r bg-surface p-4 md:sticky md:top-0 md:flex md:h-dvh">
+      <aside className="hidden w-60 shrink-0 flex-col gap-0.5 bg-surface px-3.5 py-5.5 md:sticky md:top-0 md:flex md:h-dvh">
         <Brand name={name} internal={shell === "web.admin" ? t("admin.internal") : undefined} />
-        <Separator />
         <div className="flex-1 overflow-y-auto">{nav(false)}</div>
         <div className="flex flex-col items-start gap-2 pt-2">
           <SessionControl />
@@ -121,11 +122,7 @@ export function WorkspaceShell({
           </div>
         </header>
 
-        <main
-          id="main"
-          tabIndex={-1}
-          className="flex-1 px-4 py-6 outline-none sm:px-6 lg:px-10 lg:py-10"
-        >
+        <main id="main" tabIndex={-1} className="flex min-w-0 flex-1 flex-col outline-none">
           {children}
         </main>
       </div>
@@ -133,11 +130,17 @@ export function WorkspaceShell({
   );
 }
 
+/**
+ * Brand row (FighterWebNav): the 30 px tile and the wordmark, then the shell
+ * name where the design shows the workspace identity card (deferred until
+ * workspace data exists).
+ */
 function Brand({ name, internal }: { name: string; internal?: string | undefined }) {
   return (
-    <div className="flex flex-col items-start gap-1 px-1">
-      <Link href={routeHref("web.root")} className="rounded-md type-title">
-        {siteConfig.name}
+    <div className="flex flex-col items-start gap-1 px-2 pb-4">
+      <Link href={routeHref("web.root")} className="flex items-center gap-2.5 rounded-md">
+        <BrandTile size="sm" />
+        <span className="type-brand">{siteConfig.name.split(" ")[0]}</span>
       </Link>
       <span className="type-label text-faint-foreground">{name}</span>
       {internal ? <Badge variant="warning">{internal}</Badge> : null}

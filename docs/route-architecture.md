@@ -485,9 +485,11 @@ src/app/[locale]/
   and the backend authorizes all data. `web.app.active` pages render in the
   header-only frame until the active workspace's sidebar can be resolved.
 - **Boundaries.** SF-24/SF-25 own the auth UI, consuming `returnTo` and the
-  `/app` entry's default-destination redirect; SF-34 owns the loading,
-  not-found and error states (the session gate's pending spinner is the only
-  loading UI here, and the existing not-found is unchanged).
+  `/app` entry's default-destination redirect. SF-34 owns the loading,
+  not-found and error states: `RequireSession` shows the LD3 launch screen
+  while the session is restored, the sidebar shells' `loading.tsx` the LD4
+  skeleton, `not-found.tsx` and `global-not-found.tsx` the ER2 404, and
+  `error.tsx`/`global-error.tsx` the failure states.
 
 - Query-state screens read `searchParams`; overlays use the query as their
   open state so they stay linkable.
@@ -592,8 +594,10 @@ src/app/
 - **Boundaries.** SF-24/SF-25 own the auth UI, consuming `returnTo` and the
   entry's default-destination redirect. Until then `/` is still the SF-12
   foundation home, so the role shells are reached by link or deep link. SF-34
-  owns the loading, not-found and error states: the gate's pending spinner is
-  the only loading UI here, and the existing `+not-found` is unchanged. The
+  owns the loading, not-found and error states: the gate's pending cover is
+  the LD1 launch screen, `+not-found` the ER1 404 and the root layout's
+  `ErrorBoundary` the failure states; LD2 has primitives only until home
+  loads real data. The
   SF-12 `/app` page stays an internal route, moved out of the removed `(app)`
   group (`D-PRODUCTION-FOUNDATION`).
 - Tests: `scripts/route-registry.test.js` (every route file is a registry

@@ -1,0 +1,73 @@
+{
+  "launch": {
+    "label": "Ładowanie SimpleFit",
+    "status": "Bandażujemy dłonie…",
+    "tipLabel": "Rada z narożnika",
+    "tip": "Wydychaj przy każdym ciosie — brzuch zostaje napięty, a broda nisko.",
+    "footer": "SimpleFit web · jedno konto dla zawodników, trenerów, klubów i partnerów"
+  },
+  "skeleton": {
+    "label": "Ładowanie strony",
+    "status": "Bandażujemy dłonie…"
+  },
+  "notFound": {
+    "metaTitle": "Nie znaleziono strony",
+    "refCount": "Liczenie sędziego",
+    "count": {
+      "kicker": "Błąd 404 · Nie znaleziono rundy",
+      "title": "Ta strona jest liczona.",
+      "description": "Link jest stary albo strona się przeniosła. Zdąż przed dziesięcioma, a wrócisz do walki.",
+      "beat": "Wstań przed dziesięcioma",
+      "home": "Na start"
+    },
+    "ko": {
+      "kicker": "Błąd 404 · Nokaut",
+      "title": "Nokaut. Ta strona nie wstała.",
+      "description": "Mogła zostać usunięta lub ukryta. Twoje rundy, tablica i płatności są bezpieczne.",
+      "tag": "Nokaut · Nie znaleziono strony",
+      "corner": "Wróć do mojego narożnika",
+      "again": "Licz od nowa"
+    },
+    "saved": {
+      "kicker": "Znowu na nogach",
+      "title": "Uratowany przez gong.",
+      "description": "Dobry refleks. Wybierz, dokąd dalej — twój narożnik czeka.",
+      "tag": "Wstał na {count} · Uratowany przez gong",
+      "corner": "Wróć do mojego narożnika",
+      "search": "Szukaj"
+    },
+    "words": {
+      "1": "Jeden",
+      "2": "Dwa",
+      "3": "Trzy",
+      "4": "Cztery",
+      "5": "Pięć",
+      "6": "Sześć",
+      "7": "Siedem",
+      "8": "Osiem",
+      "9": "Dziewięć",
+      "10": "Dziesięć"
+    },
+    "searchPlaceholder": "Szukaj klubów, trenerów, programów…",
+    "quickLinks": "Dokąd dalej",
+    "links": {
+      "board": {
+        "title": "Live Board",
+        "description": "Twoje bokserskie życie"
+      },
+      "gyms": {
+        "title": "Znajdź klub",
+        "description": "Warszawa i nie tylko"
+      },
+      "coaches": {
+        "title": "Trenerzy",
+        "description": "Indywidualnie lub w drużynie"
+      },
+      "pricing": {
+        "title": "Cennik",
+        "description": "Plany dla każdej roli"
+      }
+    },
+    "requested": "GET {path} → 404"
+  }
+}

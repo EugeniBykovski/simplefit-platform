@@ -171,6 +171,14 @@ Other SF-17 decisions:
 - **Hero type** larger than `display` (40–58 px on a handful of landing and hero artboards)
   is **DEFERRED** to the public-website ticket, which decides whether a
   `display-lg` role is needed.
+- **SF-34 extension:** the system states of Claude Design section 35 use
+  sizes beyond `display` (404 numerals 92–200 px, a 52 px headline, the
+  launch wordmark). They are added as `typography.systemRoles` with a web and
+  a mobile value each (`hero`, `lead`, `wordmark`, `numeral`, `numeral-ko`,
+  `label-wide`, `count-word`), for system states only. The product scale
+  gains `brand` (the 13 px sidebar wordmark) and mono 600; the button
+  contract gains the `warning` variant and the 44 px `system` size (System
+  states sheet).
 - **Undocumented olive steps** `#1C2010` (selected deep surface) and
   `#EEF2D2` map to `accent` / `accent-foreground`, the nearest roles; they
   are within tolerance and not systematic enough for tokens.

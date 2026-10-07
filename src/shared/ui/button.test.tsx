@@ -25,6 +25,7 @@ describe("Button", () => {
       "destructive-subtle",
       ["bg-destructive-subtle", "border-destructive-border", "text-destructive-subtle-foreground"],
     ],
+    ["warning", ["bg-warning", "text-warning-foreground"]],
   ] as const)("renders the %s variant with semantic tokens", (variant, tokens) => {
     render(<Button variant={variant}>Action</Button>);
     expect(screen.getByRole("button", { name: "Action" })).toHaveClass(...tokens);
@@ -36,6 +37,7 @@ describe("Button", () => {
     ["md", ["h-10", "rounded-md", "type-body-sm"]],
     ["lg", ["h-12", "rounded-md", "type-body-sm"]],
     ["xl", ["h-13.5", "rounded-xl", "type-body-lg"]],
+    ["system", ["h-11", "rounded-md", "type-body-sm"]],
   ] as const)(
     "renders the %s size with the canonical height, radius and text role",
     (size, classes) => {

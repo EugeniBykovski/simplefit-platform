@@ -79,3 +79,11 @@ jobs:
       - name: Storybook build
         # The component workshop must keep compiling with the real primitives.
         run: pnpm storybook:build
+
+      # SF-34: canonical layout and system-state geometry at 1440 × 900,
+      # measured on the static Storybook build above.
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Geometry QA (Playwright)
+        run: pnpm test:geometry

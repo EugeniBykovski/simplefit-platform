@@ -6,7 +6,9 @@ import { ThemeSwitcher } from "@/features/switch-theme";
 import { siteConfig } from "@/shared/config/site";
 import { Link } from "@/shared/i18n/navigation";
 import { routeHref } from "@/shared/routes/routes";
+import { BrandTile } from "@/shared/ui/brand-mark";
 import { Button } from "@/shared/ui/button";
+import { Container } from "@/shared/ui/container";
 import {
   Sheet,
   SheetClose,
@@ -19,7 +21,12 @@ import {
 
 import { siteNavigation } from "../model/navigation";
 
-/** Public website header (`web.site`): brand, site links, sign-in and sign-up. */
+/**
+ * Public website header (`web.site`; Claude Design LandHome, ER2): 76 px on
+ * the site Container, brand lockup, site links, sign-in and sign-up. The
+ * language and theme switchers are production additions the design does not
+ * draw.
+ */
 export function SiteHeader() {
   const t = useTranslations("shells.site");
   const navigation = useTranslations("navigation");
@@ -32,17 +39,15 @@ export function SiteHeader() {
 
   return (
     <header className="border-b">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-4 px-4 sm:px-6">
-        <Link href={routeHref("web.root")} className="rounded-md type-title">
-          {siteConfig.name}
-        </Link>
-        <nav aria-label={t("navigation")} className="hidden lg:block">
-          <ul className="flex items-center gap-1">
+      <Container className="flex h-19 items-center gap-4">
+        <BrandLockup />
+        <nav aria-label={t("navigation")} className="ml-8 hidden xl:block">
+          <ul className="flex items-center gap-6">
             {links.map((link) => (
               <li key={link.key}>
                 <Link
                   href={link.href}
-                  className="rounded-md px-2 py-1 type-body-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+                  className="rounded-md type-body font-semibold text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {link.label}
                 </Link>
@@ -53,10 +58,13 @@ export function SiteHeader() {
         <div className="ml-auto flex items-center gap-1">
           <LocaleSwitcher />
           <ThemeSwitcher />
-          <Button asChild size="sm" variant="ghost" className="hidden sm:inline-flex">
-            <Link href={routeHref("web.login")}>{t("signIn")}</Link>
-          </Button>
-          <Button asChild size="sm" className="hidden sm:inline-flex">
+          <Link
+            href={routeHref("web.login")}
+            className="ml-4 hidden rounded-md type-body font-bold text-foreground sm:inline"
+          >
+            {t("signIn")}
+          </Link>
+          <Button asChild className="ml-8 hidden sm:inline-flex">
             <Link href={routeHref("web.signup")}>{t("getStarted")}</Link>
           </Button>
           <Sheet>
@@ -64,7 +72,7 @@ export function SiteHeader() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden"
+                className="xl:hidden"
                 aria-label={navigation("openNavigation")}
               >
                 <MenuIcon aria-hidden />
@@ -98,8 +106,22 @@ export function SiteHeader() {
             </SheetContent>
           </Sheet>
         </div>
-      </div>
+      </Container>
     </header>
+  );
+}
+
+/** Brand lockup of the public header: the olive tile and "SimpleFit Boxing". */
+function BrandLockup() {
+  const [brand, ...sport] = siteConfig.name.split(" ");
+  return (
+    <Link href={routeHref("web.root")} className="flex items-center gap-2.5 rounded-md">
+      <BrandTile />
+      <span className="type-title">
+        {brand}
+        <span className="text-primary-muted"> {sport.join(" ")}</span>
+      </span>
+    </Link>
   );
 }
 
@@ -107,9 +129,9 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer className="border-t">
-      <p className="mx-auto w-full max-w-6xl px-4 py-6 type-body-sm text-muted-foreground sm:px-6">
-        {siteConfig.name}
-      </p>
+      <Container asChild>
+        <p className="py-6 type-body-sm text-muted-foreground">{siteConfig.name}</p>
+      </Container>
     </footer>
   );
 }

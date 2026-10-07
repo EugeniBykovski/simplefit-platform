@@ -51,8 +51,8 @@ export function ShellNavLinks({
     <nav aria-label={label}>
       {sections.map((section) => (
         <div key={section.key} className="flex flex-col gap-1">
-          <h2 className="px-3 pt-4 pb-1 type-label text-faint-foreground">{section.label}</h2>
-          <ul className="flex flex-col gap-1">
+          <h2 className="px-2.5 pt-4 pb-1.5 type-label text-faint-foreground">{section.label}</h2>
+          <ul className="flex flex-col gap-0.5">
             {section.items.map((item) => {
               const active = item.key === activeKey;
               const link = (
@@ -60,9 +60,11 @@ export function ShellNavLinks({
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex items-center gap-2 rounded-md px-3 py-2 type-body-sm font-bold transition-colors",
-                    "hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
-                    active ? "bg-muted text-foreground" : "text-muted-foreground",
+                    "flex h-9.5 items-center gap-2.5 rounded-md px-2.5 type-body-sm font-bold transition-colors",
+                    "focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+                    active
+                      ? "bg-accent text-accent-foreground [&_svg]:text-highlight"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground [&_svg]:text-faint-foreground",
                   )}
                 >
                   {item.icon}

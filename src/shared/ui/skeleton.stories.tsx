@@ -26,3 +26,17 @@ export const ListRow: Story = {
 export const CardBlock: Story = {
   render: () => <Skeleton className="h-24 max-w-sm rounded-3xl" />,
 };
+
+/** The loading-artboard sweep (LD2, LD4); stops under reduced motion. */
+export const Shimmer: Story = {
+  render: () => (
+    <div className="flex max-w-sm flex-col gap-3">
+      <Skeleton motion="shimmer" className="h-3 w-2/3" />
+      <Skeleton motion="shimmer" className="h-6 w-full rounded-lg" />
+      <div className="flex flex-col gap-2 rounded-4xl border border-accent-strong bg-accent p-4.5">
+        <Skeleton motion="shimmer" tone="accent" className="h-2.5 w-1/3" />
+        <Skeleton motion="shimmer" tone="accent" className="h-16 w-2/3 rounded-md" />
+      </div>
+    </div>
+  ),
+};

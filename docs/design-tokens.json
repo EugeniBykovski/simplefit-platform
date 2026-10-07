@@ -189,7 +189,7 @@
     "weights": {
       "display": [600, 700],
       "sans": [400, 600, 700, 800],
-      "mono": [400]
+      "mono": [400, 600]
     },
     "roles": {
       "display": {
@@ -199,10 +199,41 @@
         "weight": 600,
         "tracking": -0.02
       },
-      "h1": { "family": "display", "size": 26, "lineHeight": 30, "weight": 600, "tracking": -0.02 },
-      "h2": { "family": "display", "size": 22, "lineHeight": 26, "weight": 600, "tracking": -0.02 },
-      "h3": { "family": "display", "size": 19, "lineHeight": 24, "weight": 600, "tracking": -0.01 },
-      "title": { "family": "display", "size": 15, "lineHeight": 20, "weight": 600, "tracking": 0 },
+      "h1": {
+        "family": "display",
+        "size": 26,
+        "lineHeight": 30,
+        "weight": 600,
+        "tracking": -0.02
+      },
+      "h2": {
+        "family": "display",
+        "size": 22,
+        "lineHeight": 26,
+        "weight": 600,
+        "tracking": -0.02
+      },
+      "h3": {
+        "family": "display",
+        "size": 19,
+        "lineHeight": 24,
+        "weight": 600,
+        "tracking": -0.01
+      },
+      "title": {
+        "family": "display",
+        "size": 15,
+        "lineHeight": 20,
+        "weight": 600,
+        "tracking": 0
+      },
+      "brand": {
+        "family": "display",
+        "size": 13,
+        "lineHeight": 16,
+        "weight": 600,
+        "tracking": -0.01
+      },
       "metric-xl": {
         "family": "display",
         "size": 30,
@@ -231,11 +262,41 @@
         "weight": 700,
         "tracking": -0.03
       },
-      "body-lg": { "family": "sans", "size": 15, "lineHeight": 22, "weight": 400, "tracking": 0 },
-      "body": { "family": "sans", "size": 14, "lineHeight": 21, "weight": 400, "tracking": 0 },
-      "body-sm": { "family": "sans", "size": 13, "lineHeight": 20, "weight": 400, "tracking": 0 },
-      "caption": { "family": "sans", "size": 12, "lineHeight": 18, "weight": 400, "tracking": 0 },
-      "micro": { "family": "sans", "size": 11, "lineHeight": 16, "weight": 400, "tracking": 0 },
+      "body-lg": {
+        "family": "sans",
+        "size": 15,
+        "lineHeight": 22,
+        "weight": 400,
+        "tracking": 0
+      },
+      "body": {
+        "family": "sans",
+        "size": 14,
+        "lineHeight": 21,
+        "weight": 400,
+        "tracking": 0
+      },
+      "body-sm": {
+        "family": "sans",
+        "size": 13,
+        "lineHeight": 20,
+        "weight": 400,
+        "tracking": 0
+      },
+      "caption": {
+        "family": "sans",
+        "size": 12,
+        "lineHeight": 18,
+        "weight": 400,
+        "tracking": 0
+      },
+      "micro": {
+        "family": "sans",
+        "size": 11,
+        "lineHeight": 16,
+        "weight": 400,
+        "tracking": 0
+      },
       "badge": {
         "family": "sans",
         "size": 10,
@@ -259,6 +320,108 @@
         "weight": 400,
         "tracking": 0.14,
         "uppercase": true
+      }
+    },
+    "systemRoles": {
+      "$comment": "SF-34: system-state typography (Claude Design section 35: LD1/LD3 launch, ER1/ER2 404). Larger than the product roles and specific to the frame, so each role has a web (1440) and a mobile (390) value. Use only for launch, not-found and error states.",
+      "web": {
+        "hero": {
+          "family": "display",
+          "size": 52,
+          "lineHeight": 56,
+          "weight": 600,
+          "tracking": -0.025
+        },
+        "lead": {
+          "family": "sans",
+          "size": 17,
+          "lineHeight": 26,
+          "weight": 400,
+          "tracking": 0
+        },
+        "wordmark": {
+          "family": "display",
+          "size": 44,
+          "lineHeight": 42,
+          "weight": 700,
+          "tracking": -0.035
+        },
+        "numeral": {
+          "family": "display",
+          "size": 200,
+          "lineHeight": 200,
+          "weight": 700,
+          "tracking": -0.04
+        },
+        "numeral-ko": {
+          "family": "display",
+          "size": 168,
+          "lineHeight": 152,
+          "weight": 700,
+          "tracking": -0.05
+        },
+        "label-wide": {
+          "family": "mono",
+          "size": 11,
+          "lineHeight": 14,
+          "weight": 600,
+          "tracking": 0.62,
+          "uppercase": true
+        },
+        "count-word": {
+          "family": "mono",
+          "size": 12,
+          "lineHeight": 16,
+          "weight": 400,
+          "tracking": 0.3,
+          "uppercase": true
+        }
+      },
+      "mobile": {
+        "hero": {
+          "family": "display",
+          "size": 28,
+          "lineHeight": 30,
+          "weight": 600,
+          "tracking": -0.025
+        },
+        "wordmark": {
+          "family": "display",
+          "size": 36,
+          "lineHeight": 34,
+          "weight": 700,
+          "tracking": -0.035
+        },
+        "numeral": {
+          "family": "display",
+          "size": 112,
+          "lineHeight": 112,
+          "weight": 700,
+          "tracking": -0.04
+        },
+        "numeral-ko": {
+          "family": "display",
+          "size": 92,
+          "lineHeight": 84,
+          "weight": 700,
+          "tracking": -0.05
+        },
+        "label-wide": {
+          "family": "mono",
+          "size": 11,
+          "lineHeight": 14,
+          "weight": 600,
+          "tracking": 0.62,
+          "uppercase": true
+        },
+        "count-word": {
+          "family": "mono",
+          "size": 12,
+          "lineHeight": 16,
+          "weight": 400,
+          "tracking": 0.3,
+          "uppercase": true
+        }
       }
     }
   },
@@ -299,10 +462,36 @@
   "controls": {
     "button": {
       "web": {
-        "sm": { "height": 32, "radius": "md", "text": "body-sm", "weight": 800 },
-        "md": { "height": 40, "radius": "md", "text": "body-sm", "weight": 800 },
-        "lg": { "height": 48, "radius": "md", "text": "body-sm", "weight": 800 },
-        "xl": { "height": 54, "radius": "xl", "text": "body-lg", "weight": 800 }
+        "sm": {
+          "height": 32,
+          "radius": "md",
+          "text": "body-sm",
+          "weight": 800
+        },
+        "md": {
+          "height": 40,
+          "radius": "md",
+          "text": "body-sm",
+          "weight": 800
+        },
+        "lg": {
+          "height": 48,
+          "radius": "md",
+          "text": "body-sm",
+          "weight": 800
+        },
+        "xl": {
+          "height": 54,
+          "radius": "xl",
+          "text": "body-lg",
+          "weight": 800
+        },
+        "system": {
+          "height": 44,
+          "radius": "md",
+          "text": "body-sm",
+          "weight": 800
+        }
       },
       "mobile": {
         "sm": {
@@ -312,9 +501,30 @@
           "weight": 800,
           "touchTarget": 44
         },
-        "md": { "height": 50, "radius": "xl", "text": "body", "weight": 800 },
-        "lg": { "height": 56, "radius": "xl", "text": "body-lg", "weight": 800 },
-        "gym": { "height": 60, "radius": "2xl", "text": "body-lg", "weight": 800 }
+        "md": {
+          "height": 50,
+          "radius": "xl",
+          "text": "body",
+          "weight": 800
+        },
+        "lg": {
+          "height": 56,
+          "radius": "xl",
+          "text": "body-lg",
+          "weight": 800
+        },
+        "gym": {
+          "height": 60,
+          "radius": "2xl",
+          "text": "body-lg",
+          "weight": 800
+        },
+        "system": {
+          "height": 44,
+          "radius": "md",
+          "text": "body-sm",
+          "weight": 800
+        }
       },
       "variants": [
         "primary",
@@ -323,20 +533,43 @@
         "outline",
         "ghost",
         "destructive",
-        "destructive-subtle"
+        "destructive-subtle",
+        "warning"
       ]
     },
     "field": {
-      "web": { "height": 40, "radius": "md", "text": "body-sm" },
-      "mobile": { "height": 54, "radius": "lg", "text": "body-lg", "weight": 600 },
-      "label": { "text": "caption", "weight": 700, "color": "muted-foreground" }
+      "web": {
+        "height": 40,
+        "radius": "md",
+        "text": "body-sm"
+      },
+      "mobile": {
+        "height": 54,
+        "radius": "lg",
+        "text": "body-lg",
+        "weight": 600
+      },
+      "label": {
+        "text": "caption",
+        "weight": 700,
+        "color": "muted-foreground"
+      }
     },
-    "badge": { "text": "badge", "radius": "sm" },
+    "badge": {
+      "text": "badge",
+      "radius": "sm"
+    },
     "card": {
       "radius": "3xl",
       "padding": [18, 20],
-      "compact": { "radius": "2xl", "padding": [14, 16] }
+      "compact": {
+        "radius": "2xl",
+        "padding": [14, 16]
+      }
     },
-    "switch": { "width": 44, "height": 26 }
+    "switch": {
+      "width": 44,
+      "height": 26
+    }
   }
 }

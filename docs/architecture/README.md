@@ -232,6 +232,32 @@ by a handwritten path; a new or changed route starts in the registry
 (`pnpm routes:generate`); a feature ticket replaces its route's
 `placeholderRoute(...)` page with the real screen.
 
+## System states (SF-34)
+
+Production loading, not-found and error states (`widgets/system-states`,
+Claude Design section 35), each owned by a real boundary:
+
+| State                       | Boundary                                                                    | Real trigger                                        |
+| --------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------- |
+| LD3 launch (`LaunchScreen`) | `RequireSession`'s `pending` in the app, account, sponsor and admin layouts | the session restore before a signed-in surface      |
+| LD4 (`ApplicationSkeleton`) | `loading.tsx` of the five sidebar shells (inside the shell)                 | a route segment rendering on the server             |
+| ER2 404 (`NotFoundState`)   | `app/[locale]/not-found.tsx` (catch-all, `notFound()`), `global-not-found`  | an unknown path                                     |
+| Failure (`FailureView`)     | `app/[locale]/error.tsx`, `app/global-error.tsx`                            | a render error; `failureFor` reads only status/type |
+
+No artificial delays: a state renders only while its work runs. Launch
+progress is indeterminate (the app has no discrete bootstrap steps). The 404
+referee count is local presentation state; its actions open registry routes
+only, and search opens the Marketplace until a search capability exists.
+Failure states never render an error's message, stack or digest; a 401 is not
+a screen but a return to the area's sign-in with `returnTo`. Unexpected,
+offline and forbidden follow the Claude Design "System states" sheet;
+service unavailable is the design-system fallback (no artboard).
+
+Stories (`src/app/_stories`, real components): `System/Loading` (Launch,
+Application Skeleton in the fighter shell), `System/Errors/Not Found` (Count,
+KO, Saved, frozen), `System/Errors/Error State`. `pnpm test:geometry`
+(Playwright) measures them at 1440 × 900 on the static Storybook build.
+
 ## Session (SF-22)
 
 `entities/session` is the browser's SimpleFit session (simplefit-api ADR 0010,
@@ -453,8 +479,13 @@ domains, so local testing needs an HTTPS host (see `.env.example`).
   single retry, sign-out, no token storage), Google sign-in with GIS
   stubbed on `window.google` (real Google is verified manually only), and
   the SF-32 route skeleton (registry → files, shells, named parameters,
-  session gates, active navigation, the canonical placeholder).
-- No Playwright yet: E2E arrives with the first meaningful user flow.
+  session gates, active navigation, the canonical placeholder), and the SF-34
+  system states (boundaries, referee count, failure mapping without leaks).
+- **Playwright geometry QA** (`pnpm test:geometry`, `e2e/`): the canonical
+  layout and system-state geometry at 1440 × 900, measured on the static
+  Storybook build (`pnpm storybook:build` first) and run in CI. It checks
+  layout values, not pixel parity with the artboards (Design QA does that).
+  E2E user flows arrive with the first meaningful user flow.
 
 ## Quality commands
 
@@ -535,9 +566,21 @@ MIT, actively maintained, devDependencies only).
 - **Known warning:** pnpm reports an optional peer warning (`tsconfck` wants
   TypeScript ^5; the repository uses 6). It is harmless for the Vite build.
 
+**Added in SF-34:** `@playwright/test` 1.63.0 (Apache-2.0, actively
+maintained by Microsoft, devDependency only).
+
+- **Problem:** the canonical layout geometry (header heights, gutters,
+  sidebar width, system-state composition) must be checked deterministically
+  against the Claude Design 1440 px frames.
+- **Why existing tools fall short:** Vitest runs in jsdom, which has no
+  layout engine; Storybook's own tests do not measure geometry.
+- **Integration:** `playwright.config.ts` serves `storybook-static` with
+  `scripts/serve-static.mjs` (no extra dependency); Chromium is installed
+  with `pnpm exec playwright install chromium` (outside the repository).
+
 **Deferred until a ticket needs them:** authentication libraries, Stripe,
 Sentry, PostHog/analytics, XYFlow, maps, rich text, uploads, WebSocket
-clients, animation libraries beyond `tw-animate-css`, `server-only`, TanStack Query Devtools, Zustand/Redux, Playwright, date-fns
+clients, animation libraries beyond `tw-animate-css`, `server-only`, TanStack Query Devtools, Zustand/Redux, date-fns
 (Intl/next-intl cover formatting; add only for date arithmetic).
 
 ## Known limitations

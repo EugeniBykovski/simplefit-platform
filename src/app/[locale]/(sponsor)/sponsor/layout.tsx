@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { RequireSession } from "@/features/session-gate";
 import { resolveLocaleParam } from "@/shared/i18n/params";
 import { signInRouteFor } from "@/shared/routes/routes";
+import { LaunchScreen } from "@/widgets/system-states";
 import { WorkspaceShell } from "@/widgets/workspace-shell";
 
 /** `web.sponsor`: the partner portal. */
@@ -15,7 +16,7 @@ export default async function SponsorLayout({
 }) {
   await resolveLocaleParam(params);
   return (
-    <RequireSession signIn={signInRouteFor("web.sponsor")}>
+    <RequireSession signIn={signInRouteFor("web.sponsor")} pending={<LaunchScreen />}>
       <WorkspaceShell shell="web.sponsor">{children}</WorkspaceShell>
     </RequireSession>
   );

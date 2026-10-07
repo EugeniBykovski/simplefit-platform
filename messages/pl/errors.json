@@ -1,6 +1,28 @@
 {
-  "notFound": {
-    "title": "Nie znaleziono strony",
-    "description": "Strona, której szukasz, nie istnieje."
+  "states": {
+    "unexpected": {
+      "tag": "Błąd",
+      "title": "Coś poszło nie tak",
+      "description": "Coś poszło nie tak po naszej stronie. Nic, co zapisałeś, nie zginęło.",
+      "action": "Spróbuj ponownie"
+    },
+    "offline": {
+      "tag": "Offline",
+      "title": "Jesteś offline",
+      "description": "Sprawdź połączenie. Wczytamy tę stronę ponownie, gdy wrócisz do sieci.",
+      "action": "Spróbuj ponownie"
+    },
+    "forbidden": {
+      "tag": "Brak dostępu",
+      "title": "Nie masz dostępu",
+      "description": "Ta strona należy do konta lub przestrzeni roboczej, do której nie należysz.",
+      "action": "Na start"
+    },
+    "unavailable": {
+      "tag": "Usługa niedostępna",
+      "title": "SimpleFit łapie oddech",
+      "description": "Usługa jest chwilowo niedostępna. Spróbuj ponownie za kilka minut.",
+      "action": "Spróbuj ponownie"
+    }
   }
 }
