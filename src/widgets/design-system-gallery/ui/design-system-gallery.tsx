@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { toast } from "sonner";
 
 import { ThemeSwitcher } from "@/features/switch-theme";
+import { cn } from "@/shared/lib/utils";
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
@@ -18,6 +19,7 @@ import {
   CardTitle,
 } from "@/shared/ui/card";
 import { Checkbox } from "@/shared/ui/checkbox";
+import { containerVariants } from "@/shared/ui/container";
 import {
   Dialog,
   DialogContent,
@@ -209,10 +211,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 
 export function DesignSystemGallery() {
   return (
-    <main
-      id="main"
-      className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-10 sm:px-6 lg:py-14"
-    >
+    <main id="main" className={cn(containerVariants(), "flex flex-col gap-12 py-10 lg:py-14")}>
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex flex-col gap-2">
           <p className="type-label text-highlight">SimpleFit · Visual system 2026</p>
