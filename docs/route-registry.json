@@ -3,15 +3,15 @@
   "schemaVersion": 1,
   "source": {
     "artifact": "https://claude.ai/artifact/JEsBg51MjX8KiHWEro8omY",
-    "version": "1791311129-8fec",
-    "readOn": "2026-10-06",
+    "version": "1791399145-48dd",
+    "readOn": "2026-10-07",
     "ticket": "SF-31",
     "galleries": [
       {
         "id": "gallery-1",
         "artboard": "GalleryIndex.dc.html",
         "title": "route gallery 1 / 3 · onboarding & fighter mobile",
-        "rows": 239
+        "rows": 240
       },
       {
         "id": "gallery-2",
@@ -1505,15 +1505,16 @@
       },
       "access": {
         "session": "AUTHENTICATED",
-        "capability": "FIGHTER",
+        "capability": null,
         "phase": "ONBOARDING"
       },
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/app/onboarding/fighter/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; SF-27 builds the current steps WF0 (?step=basics), WF1 (?step=profile) and WF6 (?step=complete). The step query is navigation only: resume and completion come from GET /api/v1/me/fighter-profile (SF-25). WF2-WF5 are DEFERRED."
       },
-      "screens": ["WF1", "WF2", "WF3", "WF4", "WF5", "WF6"]
+      "screens": ["WF0", "WF1", "WF2", "WF3", "WF4", "WF5", "WF6"],
+      "discrepancies": ["D-WEB-FIGHTER-ONBOARDING-FLOW"]
     },
     {
       "id": "mobile.coach.welcome",
@@ -8710,6 +8711,23 @@
       }
     },
     {
+      "id": "WF0",
+      "code": "WF0",
+      "name": "Fighter · profile basics",
+      "route": "web.app.onboarding.fighter",
+      "query": {
+        "step": "basics"
+      },
+      "design": {
+        "gallery": "gallery-1",
+        "page": "onboarding",
+        "section": "FIGHTER · 5c · Registration · web",
+        "step": "5.17a",
+        "tag": "WEB_APP",
+        "artboard": "WebRegFAccount.dc.html"
+      }
+    },
+    {
       "id": "WF1",
       "code": "WF1",
       "name": "Fighter · boxing profile",
@@ -8741,7 +8759,9 @@
         "step": "5.18",
         "tag": "WEB_APP",
         "artboard": "WebRegFGym.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-FIGHTER-ONBOARDING-FLOW"]
     },
     {
       "id": "WF3",
@@ -8758,7 +8778,9 @@
         "step": "5.19",
         "tag": "WEB_APP",
         "artboard": "WebRegFCoach.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-FIGHTER-ONBOARDING-FLOW"]
     },
     {
       "id": "WF4",
@@ -8775,7 +8797,9 @@
         "step": "5.20",
         "tag": "WEB_APP",
         "artboard": "WebRegFPrivacy.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-FIGHTER-ONBOARDING-FLOW"]
     },
     {
       "id": "WF5",
@@ -8792,7 +8816,9 @@
         "step": "5.21",
         "tag": "WEB_APP",
         "artboard": "WebRegFNotify.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-FIGHTER-ONBOARDING-FLOW"]
     },
     {
       "id": "WF6",
@@ -16334,6 +16360,20 @@
       "status": "DEFERRED",
       "routes": ["web.app.coach.fighters"],
       "designGaps": ["GAP-WEB-COACH-FIGHTER-INVITE"]
+    },
+    {
+      "id": "D-WEB-FIGHTER-ONBOARDING-FLOW",
+      "title": "Web Fighter onboarding reduced to the backend-supported steps",
+      "sourceA": "Claude Design 1791399145-48dd (Version 75): WF0 Profile basics → WF1 Boxing profile → WF6 Complete; WF2 Gym, WF3 Coach, WF4 Privacy, WF5 Notifications grouped as FUTURE — NOT IN CURRENT PRODUCTION FLOW",
+      "sourceB": "SF-25 backend (ADR 0015): FighterProfile persists the WF0 and WF1 fields only; no Gym, Coach, privacy-settings or notification-preferences domain exists",
+      "mismatch": "The earlier web flow had six steps; four of them have no owning backend domain, the WF0 fields (required for completion) had no web step, and the route required the FIGHTER capability that only a FighterProfile can grant.",
+      "impact": "Building WF2-WF5 would fake persistence or cross-client resume; requiring FIGHTER before the route that creates the FighterProfile is circular.",
+      "resolution": "Current screens WF0 (?step=basics), WF1 (?step=profile) and WF6 (?step=complete). WF2-WF5 stay registered as gallery rows with status DEFERRED. The route needs an authenticated session only (capability null, phase ONBOARDING); Fighter intent travels via returnTo, never a user role. The step query is navigation only: resume and completion come from the backend profile state.",
+      "decision": "Web Fighter onboarding follows the SF-25 backend scope; WF2-WF5 return with their owning domains.",
+      "decidedOn": "2026-10-07",
+      "status": "DEFERRED",
+      "routes": ["web.app.onboarding.fighter"],
+      "screens": ["WF2", "WF3", "WF4", "WF5"]
     }
   ]
 }
