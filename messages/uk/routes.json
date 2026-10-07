@@ -117,6 +117,7 @@
     "web/coaches": "Для тренерів",
     "web/fighters": "Для бійців",
     "web/gyms": "Для залів",
+    "web/login/code": "Код для входу",
     "web/marketplace": "Маркетплейс",
     "web/partners": "Партнерам",
     "web/partners/apply": "Заявка спонсора",
@@ -133,6 +134,7 @@
     "web/sponsor/invoices": "Рахунки",
     "web/sponsor/login": "Вхід для спонсорів",
     "web/sponsor/settings": "Налаштування",
+    "web/verify-email": "Email підтверджено",
     "web/white-label": "White label"
   }
 }
