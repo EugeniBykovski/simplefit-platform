@@ -1,42 +1,43 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { Link } from "@/shared/i18n/navigation";
 import { routing } from "@/shared/i18n/routing";
 import { fontVariables } from "@/shared/styles/fonts";
-import { Button } from "@/shared/ui/button";
+import { SiteHeader } from "@/widgets/site-header";
+import { NotFoundState } from "@/widgets/system-states";
 
+import { Providers } from "./[locale]/providers";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "404",
-  robots: { index: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations({ locale: routing.defaultLocale, namespace: "system.notFound" });
+  return { title: t("metaTitle"), robots: { index: false } };
+}
 
 /**
  * Global 404 for URLs that match no route at all (e.g. an unsupported locale
  * segment rejected by app/[locale]/layout.tsx). Bypasses layouts, so it
- * renders a full document and imports global styles itself. Rendered in the
- * default locale; 404s inside a locale use app/[locale]/not-found.tsx.
+ * renders a full document with the app's providers itself, in the default
+ * locale. The same ER2 composition as app/[locale]/not-found.tsx (SF-34).
  */
-export default async function GlobalNotFound() {
+export default function GlobalNotFound() {
   const locale = routing.defaultLocale;
-  const t = await getTranslations({ locale, namespace: "errors.notFound" });
-  const actions = await getTranslations({ locale, namespace: "actions" });
+  setRequestLocale(locale);
 
   return (
-    <html lang={locale} className={`dark ${fontVariables}`}>
+    <html lang={locale} className={`dark ${fontVariables}`} suppressHydrationWarning>
       <body>
-        <main className="mx-auto flex min-h-dvh w-full max-w-xl flex-col items-start justify-center gap-4 px-4">
-          <p className="type-label text-faint-foreground">404</p>
-          <h1 className="type-h1">{t("title")}</h1>
-          <p className="text-muted-foreground">{t("description")}</p>
-          <Button asChild variant="outline">
-            <Link href="/" locale={locale}>
-              {actions("backToHome")}
-            </Link>
-          </Button>
-        </main>
+        <NextIntlClientProvider locale={locale}>
+          <Providers>
+            <div className="flex min-h-dvh flex-col bg-system-glow [--glow-x:74%] [--glow-y:46%]">
+              <SiteHeader />
+              <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
+                <NotFoundState />
+              </main>
+            </div>
+          </Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

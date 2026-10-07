@@ -227,3 +227,247 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+
+/*
+ * System-state typography (SF-34, docs/design-tokens.json
+ * typography.systemRoles.web): launch wordmark, 404 headline and numerals.
+ * Only for launch, not-found and error states; product screens use the roles
+ * above.
+ */
+@utility type-hero {
+  font-family: var(--font-display);
+  font-size: 3.25rem;
+  line-height: 3.5rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+@utility type-lead {
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.625rem;
+  font-weight: 400;
+}
+@utility type-wordmark {
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  line-height: 2.625rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+@utility type-numeral {
+  font-family: var(--font-display);
+  font-size: 12.5rem;
+  line-height: 12.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+@utility type-numeral-ko {
+  font-family: var(--font-display);
+  font-size: 10.5rem;
+  line-height: 9.5rem;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+@utility type-label-wide {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.62em;
+  text-transform: uppercase;
+}
+
+/*
+ * System-state surfaces and motion (SF-34, Claude Design section 35). Built
+ * only from semantic tokens: the launch and 404 glow is `accent` fading into
+ * `background`; skeleton shimmer sweeps `muted` -> `border` (neutral) or an
+ * `accent`/`accent-strong` mix -> `accent-strong` (olive). Every animation stops under
+ * prefers-reduced-motion and leaves the static layout in place.
+ */
+@utility bg-system-glow {
+  background-color: var(--background);
+  background-image: radial-gradient(
+    circle at var(--glow-x, 50%) var(--glow-y, 42%),
+    color-mix(in oklab, var(--accent) 70%, var(--background)) 0%,
+    var(--background) 56%
+  );
+}
+/* The halo behind the launch mark: `primary` at 22 % fading out. */
+@utility bg-system-mark-glow {
+  background-image: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--primary) 22%, transparent),
+    transparent 70%
+  );
+}
+@utility skeleton-shimmer {
+  background-color: var(--muted);
+  background-image: linear-gradient(
+    90deg,
+    var(--muted) 0px,
+    var(--border) 140px,
+    var(--muted) 280px
+  );
+  background-size: 920px 100%;
+  animation: sf-shimmer 1.5s linear infinite;
+}
+@utility skeleton-shimmer-accent {
+  background-color: color-mix(in oklab, var(--accent) 55%, var(--accent-strong));
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--accent) 55%, var(--accent-strong)) 0px,
+    var(--accent-strong) 140px,
+    color-mix(in oklab, var(--accent) 55%, var(--accent-strong)) 280px
+  );
+  background-size: 920px 100%;
+  animation: sf-shimmer 1.5s linear infinite;
+}
+@utility animate-system-spin {
+  animation: sf-spin 1.1s linear infinite;
+  transform-origin: center;
+}
+@utility animate-system-post {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sf-post 1.6s ease-in-out infinite;
+}
+@utility animate-system-draw {
+  stroke-dasharray: 120;
+  animation: sf-draw 2.4s ease-in-out infinite;
+}
+@utility animate-system-glow {
+  animation: sf-glow 2.4s ease-in-out infinite;
+}
+@utility animate-system-bar {
+  animation: sf-bar 1.3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@utility animate-system-segment {
+  animation: sf-segment 1.4s ease-in-out infinite;
+}
+@utility animate-system-pop {
+  animation: sf-pop 0.45s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+@utility animate-system-shake {
+  animation: sf-shake 0.5s ease-in-out;
+}
+
+@keyframes sf-shimmer {
+  0% {
+    background-position: -460px 0;
+  }
+  100% {
+    background-position: 460px 0;
+  }
+}
+@keyframes sf-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes sf-post {
+  0%,
+  100% {
+    opacity: 0.22;
+    transform: scale(0.75);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+@keyframes sf-draw {
+  0% {
+    stroke-dashoffset: 120;
+  }
+  55%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes sf-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes sf-bar {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(420%);
+  }
+}
+/* Indeterminate segments: each lights up in turn (no claimed progress). */
+@keyframes sf-segment {
+  0%,
+  100% {
+    background-color: var(--input);
+  }
+  35% {
+    background-color: var(--accent-foreground);
+  }
+  60% {
+    background-color: var(--primary);
+  }
+}
+@keyframes sf-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes sf-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px) rotate(-2deg);
+  }
+  40% {
+    transform: translateX(5px) rotate(1.5deg);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer,
+  .skeleton-shimmer-accent {
+    animation: none;
+    background-image: none;
+  }
+  .animate-system-spin,
+  .animate-system-post,
+  .animate-system-draw,
+  .animate-system-glow,
+  .animate-system-bar,
+  .animate-system-segment,
+  .animate-system-pop,
+  .animate-system-shake {
+    animation: none;
+  }
+  .animate-system-draw {
+    stroke-dashoffset: 0;
+  }
+  .animate-system-post {
+    opacity: 1;
+  }
+}

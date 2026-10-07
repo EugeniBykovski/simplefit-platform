@@ -1,0 +1,73 @@
+{
+  "launch": {
+    "label": "SimpleFit wird geladen",
+    "status": "Hände werden bandagiert…",
+    "tipLabel": "Tipp aus der Ecke",
+    "tip": "Bei jedem Schlag ausatmen – so bleibt die Mitte fest und das Kinn unten.",
+    "footer": "SimpleFit Web · ein Konto für Fighter, Trainer, Gyms und Partner"
+  },
+  "skeleton": {
+    "label": "Seite wird geladen",
+    "status": "Hände werden bandagiert…"
+  },
+  "notFound": {
+    "metaTitle": "Seite nicht gefunden",
+    "refCount": "Ringrichter zählt",
+    "count": {
+      "kicker": "Fehler 404 · Runde nicht gefunden",
+      "title": "Diese Seite wird angezählt.",
+      "description": "Der Link ist alt oder die Seite ist umgezogen. Steh vor der Zehn auf und wir bringen dich zurück in den Kampf.",
+      "beat": "Vor der Zehn aufstehen",
+      "home": "Zur Startseite"
+    },
+    "ko": {
+      "kicker": "Fehler 404 · Knockout",
+      "title": "K. o. Diese Seite ist nicht aufgestanden.",
+      "description": "Sie wurde vielleicht gelöscht oder auf privat gestellt. Deine Runden, dein Board und deine Zahlungen sind sicher.",
+      "tag": "K. o. · Seite nicht gefunden",
+      "corner": "Zurück in meine Ecke",
+      "again": "Neu anzählen"
+    },
+    "saved": {
+      "kicker": "Wieder auf den Beinen",
+      "title": "Vom Gong gerettet.",
+      "description": "Gute Reflexe. Such dir aus, wohin es weitergeht – deine Ecke wartet.",
+      "tag": "Bei {count} aufgestanden · Vom Gong gerettet",
+      "corner": "Zurück in meine Ecke",
+      "search": "Suchen"
+    },
+    "words": {
+      "1": "Eins",
+      "2": "Zwei",
+      "3": "Drei",
+      "4": "Vier",
+      "5": "Fünf",
+      "6": "Sechs",
+      "7": "Sieben",
+      "8": "Acht",
+      "9": "Neun",
+      "10": "Zehn"
+    },
+    "searchPlaceholder": "Gyms, Trainer, Programme suchen…",
+    "quickLinks": "Wohin als Nächstes",
+    "links": {
+      "board": {
+        "title": "Live Board",
+        "description": "Dein Boxleben"
+      },
+      "gyms": {
+        "title": "Gym finden",
+        "description": "Warschau und darüber hinaus"
+      },
+      "coaches": {
+        "title": "Trainer",
+        "description": "1:1 buchen oder einem Team beitreten"
+      },
+      "pricing": {
+        "title": "Preise",
+        "description": "Pläne für jede Rolle"
+      }
+    },
+    "requested": "GET {path} → 404"
+  }
+}

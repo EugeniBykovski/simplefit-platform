@@ -1,0 +1,61 @@
+{
+  "launch": {
+    "label": "Loading SimpleFit",
+    "status": "Taping hands…",
+    "tipLabel": "Corner tip",
+    "tip": "Exhale on every punch — it keeps your core tight and your chin down.",
+    "footer": "SimpleFit web · one account for fighters, coaches, gyms and partners"
+  },
+  "skeleton": {
+    "label": "Loading this page",
+    "status": "Taping hands…"
+  },
+  "notFound": {
+    "metaTitle": "Page not found",
+    "refCount": "Ref count",
+    "count": {
+      "kicker": "Error 404 · Round not found",
+      "title": "This page is down for the count.",
+      "description": "The link is old or the page moved. Beat the count before ten and we’ll get you back in the fight.",
+      "beat": "Beat the count",
+      "home": "Back home"
+    },
+    "ko": {
+      "kicker": "Error 404 · Knockout",
+      "title": "KO. This page didn’t get up.",
+      "description": "It may have been deleted or made private. Your rounds, board and payments are safe.",
+      "tag": "KO · Page not found",
+      "corner": "Back to my corner",
+      "again": "Count again"
+    },
+    "saved": {
+      "kicker": "Back on your feet",
+      "title": "Saved by the bell.",
+      "description": "Good reflexes. Pick where to go next — your corner is waiting.",
+      "tag": "Up at {count} · Saved by the bell",
+      "corner": "Back to my corner",
+      "search": "Search"
+    },
+    "words": {
+      "1": "One",
+      "2": "Two",
+      "3": "Three",
+      "4": "Four",
+      "5": "Five",
+      "6": "Six",
+      "7": "Seven",
+      "8": "Eight",
+      "9": "Nine",
+      "10": "Ten"
+    },
+    "searchPlaceholder": "Search gyms, coaches, programs…",
+    "quickLinks": "Where to next",
+    "links": {
+      "board": { "title": "Live Board", "description": "Your boxing life" },
+      "gyms": { "title": "Find a gym", "description": "Warsaw and beyond" },
+      "coaches": { "title": "Coaches", "description": "Book 1:1 or join a team" },
+      "pricing": { "title": "Pricing", "description": "Plans for every role" }
+    },
+    "requested": "GET {path} → 404"
+  }
+}

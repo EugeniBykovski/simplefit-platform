@@ -1,6 +1,28 @@
 {
-  "notFound": {
-    "title": "Page not found",
-    "description": "The page you are looking for does not exist."
+  "states": {
+    "unexpected": {
+      "tag": "Error",
+      "title": "Something went wrong",
+      "description": "Something went wrong on our side. Nothing you saved is lost.",
+      "action": "Try again"
+    },
+    "offline": {
+      "tag": "Offline",
+      "title": "You’re offline",
+      "description": "Check your connection. We’ll load this page again when you’re back online.",
+      "action": "Try again"
+    },
+    "forbidden": {
+      "tag": "Permission denied",
+      "title": "You don’t have access",
+      "description": "This page belongs to an account or workspace you’re not part of.",
+      "action": "Back home"
+    },
+    "unavailable": {
+      "tag": "Service unavailable",
+      "title": "SimpleFit is taking a breather",
+      "description": "The service is temporarily unavailable. Try again in a few minutes.",
+      "action": "Try again"
+    }
   }
 }

@@ -1,5 +1,6 @@
 import type { Preview } from "@storybook/nextjs-vite";
 import { withThemeByClassName } from "@storybook/addon-themes";
+import { NextIntlClientProvider } from "next-intl";
 
 import { fontVariables } from "@/shared/styles/fonts";
 import { Toaster } from "@/shared/ui/sonner";
@@ -10,6 +11,19 @@ import "../src/app/globals.css";
 
 // The same brand fonts the root layout puts on <html> (next/font, self-hosted).
 document.documentElement.classList.add(...fontVariables.split(" "));
+
+/*
+ * The English messages of every namespace (messages/en/*.json), so stories of
+ * production components that read copy with useTranslations render the real
+ * strings (SF-34 system states, shells).
+ */
+const messages = Object.fromEntries(
+  Object.entries(
+    import.meta.glob<{ default: Record<string, unknown> }>("../messages/en/*.json", {
+      eager: true,
+    }),
+  ).map(([path, module]) => [path.replace(/^.*\/(\w+)\.json$/, "$1"), module.default]),
+);
 
 /*
  * QA viewports for the web. They are inspection tools, not canonical
@@ -41,16 +55,25 @@ const preview: Preview = {
           "Foundations",
           ["Colors", "Typography", "Spacing", "Radius", "Icons"],
           "Components",
+          "System",
+          [
+            "Loading",
+            ["Launch", "Application Skeleton"],
+            "Errors",
+            ["Not Found", ["Count", "KO", "Saved"], "Error State"],
+          ],
         ],
       },
     },
   },
   decorators: [
     (Story) => (
-      <TooltipProvider>
-        <Story />
-        <Toaster />
-      </TooltipProvider>
+      <NextIntlClientProvider locale="en" messages={messages} timeZone="UTC">
+        <TooltipProvider>
+          <Story />
+          <Toaster />
+        </TooltipProvider>
+      </NextIntlClientProvider>
     ),
     // Same class model as production (next-themes sets `dark`/`light` on
     // <html>); dark is the canonical Claude Design reference.
