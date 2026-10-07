@@ -38,7 +38,8 @@ export interface FighterProfileUpdateRequest {
      */
   country_code?: string | null;
   /**
-     * Current weight in kilograms, rounded to one decimal (OF4, optional). Private. The bounds are technical
+     * Current weight in kilograms with at most one decimal place (OF4, optional); more precision is rejected
+     * with `invalid_format`, never rounded. Private. The bounds are technical
      * validity only, not eligibility rules.
      * @exclusiveMinimum 0
      * @exclusiveMaximum 1000
@@ -67,7 +68,7 @@ export interface FighterProfileUpdateRequest {
      */
   height_cm?: number | null;
   /**
-     * Event of the next fight (OF3, optional). Requires `next_fight_on`.
+     * Event of the next fight (OF3, optional). Independent of `next_fight_on`.
      * @minLength 1
      * @maxLength 120
      * @nullable
