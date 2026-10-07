@@ -142,6 +142,14 @@
   line-height: 1.25rem;
   font-weight: 600;
 }
+/* Brand wordmark in product chrome (FighterWebNav sidebar), SF-34. */
+@utility type-brand {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  line-height: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
 @utility type-metric-xl {
   font-family: var(--font-display);
   font-size: 1.875rem;
@@ -274,8 +282,16 @@
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   line-height: 0.875rem;
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: 0.62em;
+  text-transform: uppercase;
+}
+@utility type-count-word {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
 }
 

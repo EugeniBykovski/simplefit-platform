@@ -12,9 +12,10 @@ const variants = [
   "ghost",
   "destructive",
   "destructive-subtle",
+  "warning",
   "link",
 ] as const;
-const sizes = ["sm", "md", "lg", "xl"] as const;
+const sizes = ["sm", "md", "lg", "xl", "system"] as const;
 
 const meta = {
   title: "Components/Button",

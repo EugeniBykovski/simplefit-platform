@@ -160,17 +160,25 @@ scale for system states only (launch wordmark, 404 headline and numerals).
 Each role has a value per frame: web 1440 (`type-*` utilities in `theme.css`)
 and mobile 390 (NativeWind `text-*`).
 
-| Role         | Web                   | Mobile  | Use                         |
-| ------------ | --------------------- | ------- | --------------------------- |
-| `hero`       | 52/56 Unbounded 600   | 28/30   | 404 headline                |
-| `lead`       | 17/26 Manrope 400     | —       | 404 explanation (web)       |
-| `wordmark`   | 44/42 Unbounded 700   | 36/34   | Launch wordmark "SimpleFit" |
-| `numeral`    | 200/200 Unbounded 700 | 112/112 | Referee count numeral       |
-| `numeral-ko` | 168/152 Unbounded 700 | 92/84   | Knockout "404"              |
-| `label-wide` | 11/14 mono, 0.62 em   | same    | "BOXING" under the wordmark |
+| Role         | Web                     | Mobile  | Use                         |
+| ------------ | ----------------------- | ------- | --------------------------- |
+| `hero`       | 52/56 Unbounded 600     | 28/30   | 404 headline                |
+| `lead`       | 17/26 Manrope 400       | —       | 404 explanation (web)       |
+| `wordmark`   | 44/42 Unbounded 700     | 36/34   | Launch wordmark "SimpleFit" |
+| `numeral`    | 200/200 Unbounded 700   | 112/112 | Referee count numeral       |
+| `numeral-ko` | 168/152 Unbounded 700   | 92/84   | Knockout "404"              |
+| `label-wide` | 11/14 mono 600, 0.62 em | same    | "BOXING" under the wordmark |
+| `count-word` | 12/16 mono, 0.3 em      | same    | 404 count word ("ONE")      |
 
 Product screens keep using the roles above; a new system role needs a design
 reason and a contract test, never a one-off value.
+
+Also from SF-34: the product role `brand` (Unbounded 13/16, 600, −0.01 em)
+for the wordmark in product chrome (the FighterWebNav sidebar), and mono 600
+(`typography.weights.mono`) for the "BOXING" label and the 404 KO tag. The
+`Button` gains the `warning` variant (amber action of warning-tone system
+states) and the `system` size (44 px, radius `md`, body-sm 800: the action of
+the system-state cards), on web and mobile.
 
 ### System-state colour compositions (SF-34)
 

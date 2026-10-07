@@ -123,3 +123,89 @@ test.describe("LD3 · web launch", () => {
     await page.screenshot({ path: "test-results/ld3.png" });
   });
 });
+
+/** Computed style of the first element matching `locator`. */
+async function style(locator: Locator, ...properties: string[]) {
+  return locator.evaluate(
+    (el, names) => names.map((name) => getComputedStyle(el).getPropertyValue(name)),
+    properties,
+  );
+}
+
+test.describe("SF-34 visual fixes", () => {
+  test("sidebar wordmark is the 13 px brand role (FighterWebNav)", async ({ page }) => {
+    await story(page, "system-loading--application-skeleton-in-shell");
+    const wordmark = page.locator("aside").getByText("SimpleFit", { exact: true });
+    const [size, weight, family] = await style(wordmark, "font-size", "font-weight", "font-family");
+    expect([size, weight]).toEqual(["13px", "600"]);
+    expect(family).toMatch(/Unbounded/i);
+  });
+
+  test("the site header keeps the designed distances next to the production controls", async ({
+    page,
+  }) => {
+    await story(page, "system-errors-not-found--count");
+    const brand = await box(page.getByRole("link", { name: /SimpleFit/ }).first());
+    const firstLink = await box(page.getByRole("link", { name: "Fighters" }));
+    near(firstLink.x - (brand.x + brand.width), 48);
+    const signIn = await box(page.getByRole("link", { name: "Sign in" }));
+    const cta = await box(page.getByRole("link", { name: "Get started" }));
+    near(cta.x - (signIn.x + signIn.width), 36);
+    near(cta.height, 40);
+  });
+
+  test("ER2 count, knockout and saved typography", async ({ page }) => {
+    await story(page, "system-errors-not-found--count");
+    expect(await style(page.locator(".type-numeral"), "font-size", "font-weight")).toEqual([
+      "200px",
+      "700",
+    ]);
+    expect(
+      await style(
+        page.locator(".type-count-word").filter({ visible: true }),
+        "font-size",
+        "letter-spacing",
+      ),
+    ).toEqual(["12px", "3.6px"]);
+    await story(page, "system-errors-not-found--knockout");
+    expect(await style(page.locator(".type-numeral-ko"), "font-size")).toEqual(["168px"]);
+    expect(
+      await style(
+        page.getByText("KO · Page not found").filter({ visible: true }),
+        "font-size",
+        "font-weight",
+        "font-family",
+      ),
+    ).toEqual(["11px", "600", expect.stringMatching(/JetBrains/i)]);
+  });
+
+  test("LD3 BOXING label is mono 600 with the wide tracking", async ({ page }) => {
+    await story(page, "system-loading--launch");
+    const [size, weight, spacing] = await style(
+      page.getByText("Boxing", { exact: true }),
+      "font-size",
+      "font-weight",
+      "letter-spacing",
+    );
+    expect([size, weight, spacing]).toEqual(["11px", "600", "6.82px"]);
+  });
+
+  test("failure-state action: 44 px, full card width, amber on Offline", async ({ page }) => {
+    await story(page, "system-errors-error-state--offline");
+    const card = await box(page.getByRole("alert"));
+    near(card.width, 380);
+    const action = page.getByRole("button", { name: "Try again" });
+    const button = await box(action);
+    near(button.height, 44);
+    near(button.width, 380 - 2 * 20 - 2);
+    const [background, warning] = await action.evaluate((el) => {
+      const probe = document.createElement("span");
+      probe.style.color = "var(--warning)";
+      document.body.append(probe);
+      const resolved = getComputedStyle(probe).color;
+      probe.remove();
+      return [getComputedStyle(el).backgroundColor, resolved];
+    });
+    expect(background).toBe(warning);
+  });
+});

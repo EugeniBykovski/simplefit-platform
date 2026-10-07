@@ -140,7 +140,7 @@ function Brand({ name, internal }: { name: string; internal?: string | undefined
     <div className="flex flex-col items-start gap-1 px-2 pb-4">
       <Link href={routeHref("web.root")} className="flex items-center gap-2.5 rounded-md">
         <BrandTile size="sm" />
-        <span className="type-title">{siteConfig.name.split(" ")[0]}</span>
+        <span className="type-brand">{siteConfig.name.split(" ")[0]}</span>
       </Link>
       <span className="type-label text-faint-foreground">{name}</span>
       {internal ? <Badge variant="warning">{internal}</Badge> : null}

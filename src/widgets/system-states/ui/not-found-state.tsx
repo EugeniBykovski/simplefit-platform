@@ -229,7 +229,7 @@ function RefereeCount({
         <span className={cn("text-foreground", compact ? "type-metric-xl" : "type-numeral-ko")}>
           404
         </span>
-        <span className="rounded-sm bg-destructive-subtle px-2.5 py-1.5 type-label-lg text-destructive-subtle-foreground">
+        <span className="rounded-sm bg-destructive-subtle px-2.5 py-1.5 type-label-lg font-semibold text-destructive-subtle-foreground">
           {t("ko.tag")}
         </span>
         {ticks}
@@ -249,7 +249,7 @@ function RefereeCount({
       >
         {count}
       </span>
-      <span className="type-label-lg text-highlight">{t(`words.${count}` as "words.1")}</span>
+      <span className="type-count-word text-highlight">{t(`words.${count}` as "words.1")}</span>
       {ticks}
     </div>
   );

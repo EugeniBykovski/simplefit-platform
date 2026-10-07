@@ -64,7 +64,7 @@ export function SiteHeader() {
           >
             {t("signIn")}
           </Link>
-          <Button asChild className="ml-5 hidden sm:inline-flex">
+          <Button asChild className="ml-8 hidden sm:inline-flex">
             <Link href={routeHref("web.signup")}>{t("getStarted")}</Link>
           </Button>
           <Sheet>

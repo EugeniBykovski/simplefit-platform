@@ -35,6 +35,8 @@ const buttonVariants = cva(
           "bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive/80",
+        // Amber action of warning-tone system states (Claude Design "System states" sheet, SF-34).
+        warning: "bg-warning text-warning-foreground hover:bg-warning/90 active:bg-warning/80",
         "destructive-subtle":
           "border-destructive-border bg-destructive-subtle text-destructive-subtle-foreground hover:bg-destructive-subtle/80",
         link: "h-auto border-0 px-0 text-highlight underline-offset-4 hover:underline",
@@ -44,6 +46,8 @@ const buttonVariants = cva(
         md: "h-10 rounded-md px-4 type-body-sm font-extrabold",
         lg: "h-12 rounded-md px-4.5 type-body-sm font-extrabold",
         xl: "h-13.5 rounded-xl px-4.5 type-body-lg font-extrabold",
+        // The 44 px action of the system-state cards (SF-34).
+        system: "h-11 rounded-md px-4 type-body-sm font-extrabold",
         icon: "size-10 rounded-md",
         "icon-sm": "size-8 rounded-md",
       },

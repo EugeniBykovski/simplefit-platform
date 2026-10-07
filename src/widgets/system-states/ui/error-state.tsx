@@ -21,7 +21,7 @@ const TONES: Record<
     card: string;
     tag: string;
     iconWrap: string;
-    action: "destructive-subtle" | "primary" | "quiet";
+    action: "destructive-subtle" | "warning" | "primary";
   }
 > = {
   unexpected: {
@@ -36,21 +36,21 @@ const TONES: Record<
     card: "border-warning-subtle",
     tag: "text-warning",
     iconWrap: "bg-warning-subtle text-warning",
-    action: "primary",
+    action: "warning",
   },
   forbidden: {
     icon: LockIcon,
     card: "border-warning-subtle",
     tag: "text-warning",
     iconWrap: "bg-warning-subtle text-warning",
-    action: "primary",
+    action: "warning",
   },
   unavailable: {
     icon: ServerOffIcon,
     card: "border-border",
     tag: "text-faint-foreground",
     iconWrap: "bg-muted text-muted-foreground",
-    action: "quiet",
+    action: "primary",
   },
 };
 
@@ -96,11 +96,11 @@ export function ErrorState({
         <p className="type-body-sm text-muted-foreground">{t(`${kind}.description`)}</p>
       </span>
       {retry ? (
-        <Button size="lg" variant={tone.action} onClick={onRetry}>
+        <Button size="system" variant={tone.action} onClick={onRetry}>
           {t(`${kind}.action`)}
         </Button>
       ) : (
-        <Button size="lg" variant={tone.action} asChild>
+        <Button size="system" variant={tone.action} asChild>
           <Link href={routeHref("web.root")}>
             {kind === "forbidden" ? t("forbidden.action") : actions("backToHome")}
           </Link>

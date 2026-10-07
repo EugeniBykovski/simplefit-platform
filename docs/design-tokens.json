@@ -189,7 +189,7 @@
     "weights": {
       "display": [600, 700],
       "sans": [400, 600, 700, 800],
-      "mono": [400]
+      "mono": [400, 600]
     },
     "roles": {
       "display": {
@@ -226,6 +226,13 @@
         "lineHeight": 20,
         "weight": 600,
         "tracking": 0
+      },
+      "brand": {
+        "family": "display",
+        "size": 13,
+        "lineHeight": 16,
+        "weight": 600,
+        "tracking": -0.01
       },
       "metric-xl": {
         "family": "display",
@@ -357,8 +364,16 @@
           "family": "mono",
           "size": 11,
           "lineHeight": 14,
-          "weight": 400,
+          "weight": 600,
           "tracking": 0.62,
+          "uppercase": true
+        },
+        "count-word": {
+          "family": "mono",
+          "size": 12,
+          "lineHeight": 16,
+          "weight": 400,
+          "tracking": 0.3,
           "uppercase": true
         }
       },
@@ -395,8 +410,16 @@
           "family": "mono",
           "size": 11,
           "lineHeight": 14,
-          "weight": 400,
+          "weight": 600,
           "tracking": 0.62,
+          "uppercase": true
+        },
+        "count-word": {
+          "family": "mono",
+          "size": 12,
+          "lineHeight": 16,
+          "weight": 400,
+          "tracking": 0.3,
           "uppercase": true
         }
       }
@@ -462,6 +485,12 @@
           "radius": "xl",
           "text": "body-lg",
           "weight": 800
+        },
+        "system": {
+          "height": 44,
+          "radius": "md",
+          "text": "body-sm",
+          "weight": 800
         }
       },
       "mobile": {
@@ -489,6 +518,12 @@
           "radius": "2xl",
           "text": "body-lg",
           "weight": 800
+        },
+        "system": {
+          "height": 44,
+          "radius": "md",
+          "text": "body-sm",
+          "weight": 800
         }
       },
       "variants": [
@@ -498,7 +533,8 @@
         "outline",
         "ghost",
         "destructive",
-        "destructive-subtle"
+        "destructive-subtle",
+        "warning"
       ]
     },
     "field": {
