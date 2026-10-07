@@ -4,11 +4,10 @@ import { useTranslations } from "next-intl";
 import Script from "next/script";
 import { useRef, useState } from "react";
 
-import { cookieTransport, startSession } from "@/entities/session";
+import { completeAuthentication, cookieTransport } from "@/entities/session";
 import { authenticateWithApple } from "@/shared/api/generated/endpoints/auth/auth";
 import { isApiError } from "@/shared/api/http/api-error";
 import { publicEnv } from "@/shared/config/env";
-import { useRouter } from "@/shared/i18n/navigation";
 import {
   APPLE_ID_SCRIPT_URL,
   appleIdAuth,
@@ -31,8 +30,10 @@ type Failure = "rejected" | "rateLimited" | "unavailable" | "scriptFailed" | "ge
  * attempt and checked when Apple answers. There is no callback route, no
  * authorization-code exchange and no client secret.
  *
- * Both a new and an existing account continue to the `/app` entry route,
- * like Google (route-architecture §9); no role is inferred here.
+ * The session goes through `completeAuthentication`, the pipeline shared with
+ * Google and the email code (SF-24); the guest-only gate then enters the
+ * application. A new and an existing account are treated alike; no role is
+ * inferred here.
  */
 export function AppleSignInButton() {
   const servicesId = publicEnv.NEXT_PUBLIC_APPLE_SERVICES_ID;
@@ -40,7 +41,12 @@ export function AppleSignInButton() {
   const t = useTranslations("auth.apple");
 
   if (servicesId === undefined || redirectUri === undefined) {
-    return <p className="type-body-sm text-muted-foreground">{t("notConfigured")}</p>;
+    // Keeps the button's 54 px row, so the composition does not shift.
+    return (
+      <p className="flex h-13.5 items-center justify-center type-body-sm text-muted-foreground">
+        {t("notConfigured")}
+      </p>
+    );
   }
 
   return <AppleButton servicesId={servicesId} redirectUri={redirectUri} />;
@@ -48,7 +54,6 @@ export function AppleSignInButton() {
 
 function AppleButton({ servicesId, redirectUri }: { servicesId: string; redirectUri: string }) {
   const t = useTranslations("auth.apple");
-  const router = useRouter();
   const [ready, setReady] = useState(() => appleIdAuth() !== undefined);
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState<Failure | undefined>();
@@ -84,8 +89,7 @@ function AppleButton({ servicesId, redirectUri }: { servicesId: string; redirect
         { id_token: authorization.id_token, nonce, refresh_token_transport: "cookie" },
         cookieTransport,
       );
-      startSession(session);
-      router.replace("/app");
+      if ((await completeAuthentication(session)) === "anonymous") setFailure("generic");
     } catch (error) {
       if (!isAppleCancellation(error)) setFailure(failureOf(error));
     } finally {
@@ -104,7 +108,7 @@ function AppleButton({ servicesId, redirectUri }: { servicesId: string; redirect
       />
       <Button
         variant="secondary"
-        size="lg"
+        size="xl"
         className="w-full"
         disabled={!ready}
         loading={busy}

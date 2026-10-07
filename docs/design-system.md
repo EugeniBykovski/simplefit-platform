@@ -173,6 +173,33 @@ and mobile 390 (NativeWind `text-*`).
 Product screens keep using the roles above; a new system role needs a design
 reason and a contract test, never a one-off value.
 
+### Authentication typography and controls (SF-24)
+
+`typography.authRoles` extends the scale for the authentication screens
+only (Claude Design onboarding page: WA1/WA1b, O02w, WA3/WA4, WA4b, A01,
+O01c/O03), with a web (1440) and a mobile (390) value per role, by decision
+in SF-24 instead of off-scale local values.
+
+| Role           | Web                 | Mobile | Use                                 |
+| -------------- | ------------------- | ------ | ----------------------------------- |
+| `auth-display` | 52/54 Unbounded 600 | —      | O02w "Join the boxing community."   |
+| `auth-hero`    | 48/50 Unbounded 600 | 31/35  | WA1 panel "Welcome back.", A01 hero |
+| `auth-title`   | 34/38 Unbounded 600 | —      | WA3, WA4, WA4b headings             |
+| `auth-heading` | 30/34 Unbounded 600 | —      | WA1, WA1b form headings             |
+| `auth-lead`    | 17/26 Manrope 400   | —      | O02w lead                           |
+| `code-digit`   | 30/34 Unbounded 700 | 24/28  | the six code cells                  |
+
+`controls.field.webLarge` is the 44 px, body 600 email field of the web auth
+screens (`<Input fieldSize="lg">`). The auth CTAs use the existing `xl`
+button (54 px, radius `xl`); the designed 50 and 52 px buttons translate to
+it.
+
+Primitives added with them: `CodeInput` (Claude Design component
+"AuthCodeInput": one `one-time-code` input over six decorative cells, states
+typing, filled, error, expired, submitting, success, locked; 66 × 78 cells,
+fluid below `sm`), `Notice` (olive, amber, coral and muted status boxes) and
+`textLinkClass` (inline text actions).
+
 Also from SF-34: the product role `brand` (Unbounded 13/16, 600, −0.01 em)
 for the wordmark in product chrome (the FighterWebNav sidebar), and mono 600
 (`typography.weights.mono`) for the "BOXING" label and the 404 KO tag. The

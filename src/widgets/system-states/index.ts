@@ -8,3 +8,4 @@ export { FailureView } from "./ui/failure-view";
 export { LaunchScreen } from "./ui/launch-screen";
 export { LoadingBar, LoadingPill, LoadingSegments } from "./ui/loading-indicators";
 export { NotFoundState } from "./ui/not-found-state";
+export { SessionFailure } from "./ui/session-failure";

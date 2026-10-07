@@ -28,8 +28,13 @@ const unauthorized = () =>
     { status: 401 },
   );
 
-/** A fresh session module per test: the session is per page load. */
+/**
+ * A fresh session module per test: the session is per page load. Each copy
+ * would join the same cross-tab channel as the previous test's copy, so the
+ * channel is switched off here.
+ */
 async function load() {
+  vi.stubGlobal("BroadcastChannel", undefined);
   vi.resetModules();
   return (await import("./session-control")).SessionControl;
 }
@@ -52,6 +57,11 @@ describe("SessionControl", () => {
     const fetchMock = vi
       .fn()
       .mockResolvedValueOnce(restored())
+      .mockResolvedValueOnce(
+        jsonResponse({
+          user: { id: "8a6e0804-2bd0-4672-b79d-d97027f9071b", created_at: "2026-10-01T10:00:00Z" },
+        }),
+      )
       .mockResolvedValueOnce(new Response(null, { status: 204 }));
     vi.stubGlobal("fetch", fetchMock);
     const disableAutoSelect = vi.fn();
@@ -62,7 +72,7 @@ describe("SessionControl", () => {
     await renderWithProviders(<SessionControl />, { locale: "uk" });
     await user.click(await screen.findByRole("button", { name: "Вийти" }));
 
-    const [url, init] = fetchMock.mock.calls[1] as [string, RequestInit];
+    const [url, init] = fetchMock.mock.calls[2] as [string, RequestInit];
     expect(url).toBe("http://api.test/api/auth/logout");
     expect(new Headers(init.headers).get("authorization")).toBe("Bearer sfa_restored");
     expect(disableAutoSelect).toHaveBeenCalled();

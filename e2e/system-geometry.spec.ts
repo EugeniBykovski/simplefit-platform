@@ -39,7 +39,7 @@ test.describe("public site frame (SiteHeader, site Container)", () => {
   test("76 px header and 64 px gutters at 1440", async ({ page }) => {
     await story(page, "system-errors-not-found--count");
     const header = await box(page.locator("header").first());
-    near(header.height, 77); // 76 px + the 1 px hairline below
+    near(header.height, 76); // 76 px including the hairline (LandHome)
     const brand = await box(page.getByRole("link", { name: /SimpleFit/ }).first());
     near(brand.x, 64);
     const cta = await box(page.getByRole("link", { name: "Get started" }));

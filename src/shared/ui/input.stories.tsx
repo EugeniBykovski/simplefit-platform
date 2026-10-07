@@ -5,7 +5,7 @@ import { Field, FieldDescription, FieldError, FieldLabel } from "./field";
 import { Input } from "./input";
 
 /*
- * Canonical web field: 40 px, radius md, body-sm on the `surface` well with a
+ * Canonical web field: 40 px (`fieldSize="lg"`: 44 px), radius md, body-sm on the `surface` well with a
  * hairline border, olive border + ring on focus; label caption 700 muted.
  */
 const meta = {
@@ -31,6 +31,19 @@ export const Default: Story = {
       <FieldDescription>We send a 6-digit code to confirm it’s you.</FieldDescription>
     </Field>
   ),
+};
+
+/** controls.field.webLarge: the 44 px, body 600 email field of the auth screens (SF-24). */
+export const Large: Story = {
+  render: () => (
+    <Field>
+      <FieldLabel htmlFor="auth-email">Email</FieldLabel>
+      <Input id="auth-email" type="email" fieldSize="lg" defaultValue="fighter@example.com" />
+    </Field>
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByLabelText("Email").getBoundingClientRect().height).toBe(44);
+  },
 };
 
 export const Populated: Story = {

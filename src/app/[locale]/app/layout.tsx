@@ -1,7 +1,7 @@
 import { RequireSession } from "@/features/session-gate";
 import { resolveLocaleParam } from "@/shared/i18n/params";
 import { signInRouteFor } from "@/shared/routes/routes";
-import { LaunchScreen } from "@/widgets/system-states";
+import { LaunchScreen, SessionFailure } from "@/widgets/system-states";
 
 /**
  * `web.app`: the authenticated /app frame (session gate). The workspace
@@ -11,7 +11,11 @@ import { LaunchScreen } from "@/widgets/system-states";
 export default async function AppLayout({ children, params }: LayoutProps<"/[locale]/app">) {
   await resolveLocaleParam(params);
   return (
-    <RequireSession signIn={signInRouteFor("web")} pending={<LaunchScreen />}>
+    <RequireSession
+      signIn={signInRouteFor("web")}
+      pending={<LaunchScreen />}
+      unavailable={<SessionFailure />}
+    >
       {children}
     </RequireSession>
   );

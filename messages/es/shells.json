@@ -140,7 +140,33 @@
       "enterprise": "Empresas"
     },
     "signIn": "Iniciar sesión",
-    "getStarted": "Empezar"
+    "getStarted": "Empezar",
+    "footer": {
+      "blurb": "El sistema operativo del boxeo. Hecho en Varsovia · EUR · USD · GBP · PLN",
+      "columns": {
+        "product": "Producto",
+        "business": "Empresas",
+        "partners": "Socios",
+        "company": "Compañía"
+      },
+      "links": {
+        "fighters": "Boxeadores",
+        "coaches": "Entrenadores",
+        "gyms": "Gimnasios",
+        "signIn": "Iniciar sesión",
+        "pricing": "Precios",
+        "marketplace": "Marketplace",
+        "enterprise": "Empresas",
+        "whiteLabel": "Marca blanca",
+        "becomeSponsor": "Hazte patrocinador",
+        "partnership": "Programa de socios",
+        "sponsorSignIn": "Acceso de patrocinadores",
+        "about": "Sobre nosotros",
+        "careers": "Empleo",
+        "privacy": "Privacidad",
+        "terms": "Términos"
+      }
+    }
   },
   "frame": {
     "home": "Inicio de SimpleFit"

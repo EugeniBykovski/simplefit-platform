@@ -66,6 +66,16 @@ describe("session restore (LD3)", () => {
     ]);
     for (const file of gated) expect(code(file)).toContain("pending={<LaunchScreen />}");
   });
+
+  it("every gated layout shows the retryable failure state while the session is unavailable (SF-24)", () => {
+    const gated = appFiles.filter(
+      (file) =>
+        file.endsWith("layout.tsx") &&
+        (code(file).includes("<RequireSession") || code(file).includes("<GuestOnly")),
+    );
+    expect(gated.length).toBeGreaterThan(4);
+    for (const file of gated) expect(code(file)).toContain("unavailable={<SessionFailure />}");
+  });
 });
 
 describe("error boundaries", () => {
@@ -93,7 +103,9 @@ describe("no artificial delays", () => {
 
 describe("Storybook", () => {
   it("system stories render only production components", () => {
-    const stories = [...files("src/app/_stories")].filter((file) => file.endsWith(".stories.tsx"));
+    const stories = [...files("src/app/_stories")].filter(
+      (file) => file.endsWith(".stories.tsx") && code(file).includes('title: "System/'),
+    );
     expect(stories.length).toBe(3);
     for (const file of stories) {
       const imports = [...code(file).matchAll(/from "([^"]+)"/g)].map((match) => match[1]);
@@ -112,5 +124,35 @@ describe("Storybook", () => {
       "System/Errors/Not Found",
       "System/Loading",
     ]);
+  });
+
+  it("authentication stories render production components with the deterministic API adapter (SF-24)", () => {
+    const stories = [...files("src/app/_stories")].filter(
+      (file) => file.endsWith(".stories.tsx") && code(file).includes('title: "Authentication/'),
+    );
+    const titles = stories.map((file) => code(file).match(/title: "([^"]+)"/)?.[1]).sort();
+    expect(titles).toEqual([
+      "Authentication/Application Entry",
+      "Authentication/Email Code",
+      "Authentication/Login",
+      "Authentication/Provider States",
+      "Authentication/Sign In",
+      "Authentication/Sign Up",
+      "Authentication/Verify Email",
+      "Authentication/Welcome",
+    ]);
+    for (const file of stories) {
+      const imports = [...code(file).matchAll(/from "([^"]+)"/g)].map((match) => match[1]);
+      for (const source of imports) {
+        expect([file, source]).toEqual([
+          file,
+          expect.stringMatching(
+            /^(@storybook\/nextjs-vite|storybook\/test|@\/widgets\/[\w-]+|@\/features\/sign-in-with-(google|apple)|@\/shared\/api\/http\/api-error|\.\/auth-story-api)$/,
+          ),
+        ]);
+      }
+    }
+    // No story reaches a real backend or a live provider: fetch is replaced per story.
+    expect(code("src/app/_stories/auth-story-api.ts")).toContain("window.fetch = async");
   });
 });

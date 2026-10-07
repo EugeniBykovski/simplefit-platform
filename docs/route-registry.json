@@ -985,7 +985,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(auth)/welcome.tsx",
-        "note": "SF-22/SF-23: Google and Apple sign-in in the mobile.auth group, without the designed auth shell; the A01 design (email, invites) is SF-24."
+        "note": "SF-24: A01 (Google, Apple, email). The invite and brands links are hidden until their routes can take them (invite codes, partners)."
       },
       "screens": ["A01"]
     },
@@ -1010,7 +1010,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(auth)/login.tsx",
-        "note": "SF-22/SF-23: Google and Apple sign-in in the mobile.auth group, without the designed auth shell; the O01b design (passkey, email code) is SF-24."
+        "note": "SF-24: O01b (Google, Apple, email sign-in code). Recover account is hidden until the recovery ticket."
       },
       "screens": ["O01b"]
     },
@@ -1035,7 +1035,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(auth)/signup/index.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-24: O02, email only (the registration API owns the address only); full name is deferred to the onboarding domain (SF-25)."
       },
       "screens": ["O02"]
     },
@@ -1086,7 +1086,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(auth)/signup/verify.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-24: O03 email verification code (email_verification); verified_elsewhere continues with a new email_sign_in challenge."
       },
       "discrepancies": ["D-SIGNUP-SESSION-BOUNDARY"],
       "screens": ["O03"]
@@ -1333,7 +1333,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(auth)/signup/page.tsx",
-        "note": "SF-22: Google sign-up only, in a minimal frame; the O02w design (role picker, email, Apple) is SF-24."
+        "note": "SF-24: O02w (Google, Apple, email) in the site chrome with the designed site footer. The role cards are rendered as designed and link to the account step (sponsor: /partners/apply) without carrying or storing a role. SF-25 still owns role selection, onboarding/profile state, consent persistence and post-auth role/workspace resolution; SF-24 persists no domain state."
       },
       "screens": ["O02w"]
     },
@@ -1358,7 +1358,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(auth)/signup/account/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-24: WA3. Only the email address is submitted (the registration API owns the address only). The role selector, full name and consent checkboxes are rendered in place, disabled, unchecked and never sent; the One identity and What happens next panels and the info strip are static. SF-25 still owns role selection, onboarding/profile state, consent persistence and post-auth role/workspace resolution; SF-24 persists no domain state."
       },
       "screens": ["WA3", "x-web-create-account"]
     },
@@ -1384,7 +1384,7 @@
       "discrepancies": ["D-SIGNUP-SESSION-BOUNDARY"],
       "production": {
         "file": "src/app/[locale]/(auth)/signup/verify/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-24: WA4 email verification code (email_verification); verified_elsewhere continues with a new email_sign_in challenge. The aside renders the E01 email preview with the code masked and a static After verifying overview (no screen codes). SF-25 still owns role selection, onboarding/profile state, consent persistence and post-auth role/workspace resolution; SF-24 persists no domain state."
       },
       "screens": ["WA4"]
     },
@@ -1410,7 +1410,7 @@
       "discrepancies": ["D-WEB-WORKSPACE-SWITCHER", "D-SIGNUP-SESSION-BOUNDARY"],
       "production": {
         "file": "src/app/[locale]/(auth)/login/page.tsx",
-        "note": "SF-22: Google sign-in only, in a minimal frame; the WA1/WA2 design (email, passkey, Apple, workspace step) is SF-24."
+        "note": "SF-24: WA1 (Google SF-22, Apple SF-23, email sign-in code) in the split frame inside the canonical 1440 px frame. The After sign-in card is rendered as a static role overview (no screen codes); the last-workspace line is not rendered because it states a runtime fact the API cannot provide. The WA2 workspace step needs workspace data (SF-25+). SF-25 still owns role selection, onboarding/profile state, consent persistence and post-auth role/workspace resolution; SF-24 persists no domain state."
       },
       "screens": ["WA1", "WA2"]
     },
@@ -7933,7 +7933,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(auth)/login/code.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-24: O01c email sign-in code (email_sign_in)."
       },
       "screens": ["O01c"]
     },
@@ -7983,7 +7983,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(auth)/login/code/page.tsx",
-        "note": "SF-33 (registry sync): canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-24: WA1b email sign-in code (email_sign_in), in the WA1 split frame with the same static After sign-in card. SF-25 still owns role selection, onboarding/profile state, consent persistence and post-auth role/workspace resolution; SF-24 persists no domain state."
       },
       "screens": ["WA1b"]
     },
@@ -8008,7 +8008,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(site)/verify-email/page.tsx",
-        "note": "SF-33 (registry sync): canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-24: WA4b, the E01 link (/verify-email#token=…): verifies the address only, never creates a session."
       },
       "screens": ["WA4b"]
     }

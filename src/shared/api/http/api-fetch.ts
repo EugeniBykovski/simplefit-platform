@@ -25,7 +25,12 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
   const body = await readBody(response);
 
   if (!response.ok) {
-    throw ApiError.fromResponse(response.status, body, response.headers.get("x-request-id"));
+    throw ApiError.fromResponse(
+      response.status,
+      body,
+      response.headers.get("x-request-id"),
+      response.headers.get("retry-after"),
+    );
   }
 
   return body as T;

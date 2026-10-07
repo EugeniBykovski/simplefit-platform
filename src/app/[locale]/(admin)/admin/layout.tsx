@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { RequireSession } from "@/features/session-gate";
 import { resolveLocaleParam } from "@/shared/i18n/params";
 import { signInRouteFor } from "@/shared/routes/routes";
-import { LaunchScreen } from "@/widgets/system-states";
+import { LaunchScreen, SessionFailure } from "@/widgets/system-states";
 import { WorkspaceShell } from "@/widgets/workspace-shell";
 
 /**
@@ -20,7 +20,11 @@ export default async function AdminLayout({
 }) {
   await resolveLocaleParam(params);
   return (
-    <RequireSession signIn={signInRouteFor("web.admin")} pending={<LaunchScreen />}>
+    <RequireSession
+      signIn={signInRouteFor("web.admin")}
+      pending={<LaunchScreen />}
+      unavailable={<SessionFailure />}
+    >
       <WorkspaceShell shell="web.admin">{children}</WorkspaceShell>
     </RequireSession>
   );

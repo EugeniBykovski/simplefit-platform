@@ -296,6 +296,54 @@
 }
 
 /*
+ * Authentication typography (SF-24, docs/design-tokens.json
+ * typography.authRoles.web): the sign-in, sign-up and verification headlines
+ * and the code-entry digits. Only for authentication screens; product screens
+ * use the roles above.
+ */
+@utility type-auth-display {
+  font-family: var(--font-display);
+  font-size: 3.25rem;
+  line-height: 3.375rem;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+@utility type-auth-hero {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  line-height: 3.125rem;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+@utility type-auth-title {
+  font-family: var(--font-display);
+  font-size: 2.125rem;
+  line-height: 2.375rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+@utility type-auth-heading {
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  line-height: 2.125rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+@utility type-auth-lead {
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.625rem;
+  font-weight: 400;
+}
+@utility type-code-digit {
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  line-height: 2.125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/*
  * System-state surfaces and motion (SF-34, Claude Design section 35). Built
  * only from semantic tokens: the launch and 404 glow is `accent` fading into
  * `background`; skeleton shimmer sweeps `muted` -> `border` (neutral) or an

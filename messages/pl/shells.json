@@ -140,7 +140,33 @@
       "enterprise": "Enterprise"
     },
     "signIn": "Zaloguj się",
-    "getStarted": "Zacznij"
+    "getStarted": "Zacznij",
+    "footer": {
+      "blurb": "System operacyjny boksu. Stworzone w Warszawie · EUR · USD · GBP · PLN",
+      "columns": {
+        "product": "Produkt",
+        "business": "Biznes",
+        "partners": "Partnerzy",
+        "company": "Firma"
+      },
+      "links": {
+        "fighters": "Zawodnicy",
+        "coaches": "Trenerzy",
+        "gyms": "Kluby",
+        "signIn": "Zaloguj się",
+        "pricing": "Cennik",
+        "marketplace": "Marketplace",
+        "enterprise": "Dla firm",
+        "whiteLabel": "White label",
+        "becomeSponsor": "Zostań sponsorem",
+        "partnership": "O partnerstwie",
+        "sponsorSignIn": "Logowanie sponsora",
+        "about": "O nas",
+        "careers": "Kariera",
+        "privacy": "Prywatność",
+        "terms": "Regulamin"
+      }
+    }
   },
   "frame": {
     "home": "Strona główna SimpleFit"

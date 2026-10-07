@@ -12,6 +12,9 @@ import { cn } from "@/shared/lib/utils";
  *   (1312 px of content in the 1440 frame), centred beyond 1440 px.
  * - `app`: the fluid content column of the signed-in shells. 32 px gutters at
  *   desktop beside the sidebar, never capped.
+ * - `frame`: the same centred 1440 px frame as `site`, without gutters, for
+ *   compositions that draw their own edge-to-edge columns inside the frame
+ *   (the WA1 split sign-in, SF-24).
  *
  * Gutters step down below the designed frame (the design draws only 1440):
  * 16 px phones, 24 px from `sm`, 32 px from `md`. Screens never add their own
@@ -22,6 +25,7 @@ export const containerVariants = cva("w-full", {
     size: {
       site: "mx-auto max-w-[1440px] px-4 sm:px-6 md:px-8 lg:px-16",
       app: "px-4 sm:px-6 md:px-8",
+      frame: "mx-auto max-w-[1440px]",
     },
   },
   defaultVariants: { size: "site" },

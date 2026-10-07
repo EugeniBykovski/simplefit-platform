@@ -3,6 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { useEffect } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import type * as SessionModule from "@/entities/session";
+
 import { sha256Hex, type AppleSignInResponse } from "@/shared/lib/apple-identity";
 import { jsonResponse, renderWithProviders } from "@/test/render";
 
@@ -17,8 +19,12 @@ const env = vi.hoisted(() => ({
 }));
 vi.mock("@/shared/config/env", () => ({ publicEnv: env }));
 
-const replace = vi.hoisted(() => vi.fn());
-vi.mock("@/shared/i18n/navigation", () => ({ useRouter: () => ({ replace }) }));
+// Every sign-in method ends in the shared session pipeline (SF-24); navigation is the gate's job.
+const completeAuthentication = vi.hoisted(() => vi.fn(async () => "authenticated" as const));
+vi.mock("@/entities/session", async (importOriginal) => ({
+  ...(await importOriginal<typeof SessionModule>()),
+  completeAuthentication,
+}));
 
 // next/script cannot load anything in jsdom: report the script as loaded, or failed.
 const script = vi.hoisted(() => ({ fails: false }));
@@ -69,6 +75,7 @@ describe("AppleSignInButton", () => {
     env.NEXT_PUBLIC_APPLE_SERVICES_ID = "com.simplefit.test.web";
     env.NEXT_PUBLIC_APPLE_REDIRECT_URI = "https://app.simplefit.test/login";
     script.fails = false;
+    completeAuthentication.mockClear();
     localStorage.clear();
     sessionStorage.clear();
   });
@@ -84,7 +91,11 @@ describe("AppleSignInButton", () => {
       await renderWithProviders(<AppleSignInButton />);
       await press();
 
-      await waitFor(() => expect(replace).toHaveBeenCalledWith("/app"));
+      await waitFor(() =>
+        expect(completeAuthentication).toHaveBeenCalledExactlyOnceWith(
+          expect.objectContaining({ refresh_token_transport: "cookie" }),
+        ),
+      );
       const config = apple.init.mock.calls[0]?.[0] as InitConfig;
       expect(config).toMatchObject({
         clientId: "com.simplefit.test.web",
@@ -191,7 +202,7 @@ describe("AppleSignInButton", () => {
     await press();
 
     expect(await screen.findByRole("alert")).toHaveTextContent(message);
-    expect(replace).not.toHaveBeenCalled();
+    expect(completeAuthentication).not.toHaveBeenCalled();
   });
 
   it("ignores repeated clicks while a sign-in is in flight", async () => {
