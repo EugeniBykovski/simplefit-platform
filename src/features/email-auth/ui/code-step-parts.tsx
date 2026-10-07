@@ -33,29 +33,36 @@ const NOTICES: Partial<Record<CodeStepStatus, { tone: Tone; icon: LucideIcon }>>
 const copyNamespace = (purpose: Purpose) =>
   purpose === "sign-in" ? "auth.code.signIn" : "auth.code.registration";
 
-/** The status message of the step (olive, amber or coral), announced politely. */
+/**
+ * The status message of the step (olive, amber or coral). The polite live
+ * region is a visually hidden twin outside the layout flow, so an empty
+ * status never adds a gap the artboards don't draw; the visible box is hidden
+ * from assistive technology to avoid reading it twice.
+ */
 export function StatusNotice({
   purpose,
   status,
   email,
-  className,
 }: {
   purpose: Purpose;
   status: CodeStepStatus;
   email: string;
-  className?: string;
 }) {
   const t = useTranslations(copyNamespace(purpose));
   const notice = NOTICES[status];
+  const message = notice ? t(`notices.${status}` as "notices.sent", { email }) : "";
 
   return (
-    <div role="status" aria-live="polite" className={className}>
+    <>
+      <p role="status" aria-live="polite" className="sr-only">
+        {message}
+      </p>
       {notice && (
-        <Notice tone={notice.tone} icon={notice.icon}>
-          {t(`notices.${status}` as "notices.sent", { email })}
+        <Notice tone={notice.tone} icon={notice.icon} aria-hidden>
+          {message}
         </Notice>
       )}
-    </div>
+    </>
   );
 }
 

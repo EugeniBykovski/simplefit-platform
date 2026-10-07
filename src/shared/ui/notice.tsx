@@ -44,7 +44,10 @@ type NoticeProps = ComponentProps<"div"> &
 export function Notice({ tone, icon: Icon, className, children, ...props }: NoticeProps) {
   return (
     <div data-slot="notice" className={cn(noticeVariants({ tone }), className)} {...props}>
-      <Icon aria-hidden className={cn("mt-px size-4 flex-none", iconTone[tone ?? "muted"])} />
+      {/* The artboards' icon box: a 16 px glyph in a 21 px line box, 1 px down. */}
+      <span aria-hidden className="mt-px flex h-[21px] flex-none">
+        <Icon className={cn("size-4", iconTone[tone ?? "muted"])} />
+      </span>
       <div className="min-w-0">{children}</div>
     </div>
   );

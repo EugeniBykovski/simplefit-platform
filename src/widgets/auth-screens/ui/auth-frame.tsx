@@ -63,14 +63,24 @@ function AuthControls() {
 export function AuthSplitFrame({
   hero,
   panel,
+  column = "sign-in",
   children,
 }: {
   hero: string;
   panel: ReactNode;
+  /** WA1 draws a 440 px auth column, WA1b a 446 px one (the code row). */
+  column?: "sign-in" | "code";
   children: ReactNode;
 }) {
   return (
-    <Container size="frame" data-auth-frame="split" className="grid min-h-dvh lg:grid-cols-2">
+    // The artboard is a fixed 1440 × 900 composition: at desktop the frame is
+    // exactly 900 px tall, so a taller window never spreads the panel and the
+    // form apart. Below lg it fills the viewport.
+    <Container
+      size="frame"
+      data-auth-frame="split"
+      className="grid min-h-dvh lg:h-225 lg:min-h-0 lg:grid-cols-2"
+    >
       <div
         data-auth-panel
         className="hidden flex-col gap-5 bg-linear-160 from-accent to-background to-70% px-16 py-14 lg:flex"
@@ -88,7 +98,10 @@ export function AuthSplitFrame({
           <AuthControls />
         </div>
         <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6 lg:p-12">
-          <div data-auth-column className="w-full max-w-110">
+          <div
+            data-auth-column
+            className={cn("w-full", column === "code" ? "max-w-[446px]" : "max-w-110")}
+          >
             {children}
           </div>
         </div>
@@ -112,8 +125,11 @@ export function AuthInfoList({
 }: {
   title: string;
   rows: readonly { key: string; title: string; detail: string }[];
-  /** `panel`: translucent on the WA1 gradient (14 × 18 px); `card`: the surface card (16 × 20 px). */
-  variant?: "panel" | "card";
+  /**
+   * `panel`: translucent on the WA1 gradient (14 × 18 px); `card`: the surface
+   * card of WA3 (16 × 20 px); `compact`: the surface card of WA4 (14 × 20 px).
+   */
+  variant?: "panel" | "card" | "compact";
   className?: string;
 }) {
   return (
@@ -122,12 +138,15 @@ export function AuthInfoList({
       data-auth-info-list
       className={cn(
         "flex flex-col gap-0.5 rounded-3xl border",
-        variant === "panel" ? "max-w-115 bg-background/60 px-4.5 py-3.5" : "bg-surface px-5 py-4",
+        // WA1's max-width (460 px) applies to the content box: 460 + 2 × 18 + 2 = 498.
+        variant === "panel" && "max-w-[498px] bg-background/60 px-4.5 py-3.5",
+        variant === "card" && "bg-surface px-5 py-4",
+        variant === "compact" && "bg-surface px-5 py-3.5",
         className,
       )}
     >
       <p className="type-label text-faint-foreground">{title}</p>
-      <ul>
+      <ul className="flex flex-col gap-0.5">
         {rows.map((row) => (
           <li
             key={row.key}
@@ -158,17 +177,24 @@ export function AuthStepFrame({
 }) {
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="border-b">
+      {/* 72 px including the hairline, as in the artboards (border inside). */}
+      <header className="h-18 border-b">
         <Container
           size="frame"
-          className="flex h-18 items-center gap-4 px-4 sm:px-6 md:px-8 lg:px-14"
+          className="flex h-full items-center gap-4 px-4 sm:px-6 md:px-8 lg:px-14"
         >
           <AuthBrand size="sm" />
           <span className="flex-1" />
-          {action && (
-            <div className="hidden type-body-sm text-muted-foreground sm:block">{action}</div>
-          )}
+          {/* Production addition, kept off the designed right-edge anchor. */}
           <AuthControls />
+          {action && (
+            <div
+              data-auth-header-action
+              className="hidden type-body-sm text-muted-foreground sm:block"
+            >
+              {action}
+            </div>
+          )}
         </Container>
       </header>
       <main id="main" tabIndex={-1} className="flex-1 outline-none">

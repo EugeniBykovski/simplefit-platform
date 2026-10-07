@@ -39,8 +39,9 @@ export function SiteHeader() {
   }));
 
   return (
-    <header className="border-b">
-      <Container className="flex h-19 items-center gap-4">
+    // 76 px including the hairline, as LandHome / WebSignUp draw it.
+    <header className="h-19 border-b">
+      <Container className="flex h-full items-center gap-4">
         <BrandLockup />
         <nav aria-label={t("navigation")} className="ml-8 hidden xl:block">
           <ul className="flex items-center gap-6">
@@ -203,13 +204,13 @@ export function SiteFooter() {
                 <Link
                   key={link.key}
                   href={routeHref(link.route, {}, link.query)}
-                  className="w-fit rounded-xs type-body-sm text-muted-foreground transition-colors hover:text-foreground"
+                  className="w-fit rounded-xs type-caption text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {t(`links.${link.key}`)}
                 </Link>
               ))}
               {column.text?.map((key) => (
-                <span key={key} className="type-body-sm text-muted-foreground">
+                <span key={key} className="type-caption text-muted-foreground">
                   {t(`links.${key}`)}
                 </span>
               ))}

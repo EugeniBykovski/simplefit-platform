@@ -69,6 +69,9 @@ function stubFetch(...answers: (() => Response | Promise<Response>)[]) {
   return fetchMock;
 }
 
+/** The visible status box (its live-region twin is visually hidden). */
+const NOTICE = { selector: '[data-slot="notice"] div' };
+
 /** Markup without React's per-render ids, to compare two renders. */
 const normalized = (html: string) => html.replace(/\s(id|for|aria-describedby)="[^"]*"/g, "");
 
@@ -191,7 +194,7 @@ describe("B: sign-in code (WA1b)", () => {
     await renderStep();
 
     expect(screen.getByText(/If there’s a SimpleFit account for/)).toBeInTheDocument();
-    expect(screen.getByText(/Code sent\. It expires in 10 minutes/)).toBeInTheDocument();
+    expect(screen.getByText(/Code sent\. It expires in 10 minutes/, NOTICE)).toBeInTheDocument();
     expect(screen.getByText(/Resend in [01]:\d\d/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Sign in" })).toBeDisabled();
   });
@@ -210,7 +213,7 @@ describe("B: sign-in code (WA1b)", () => {
       init: { credentials: "include" },
     });
     expect(new Headers(call!.init.headers).get("x-simplefit-csrf")).toBe("1");
-    expect(screen.getByText("You’re signed in.")).toBeInTheDocument();
+    expect(screen.getByText("You’re signed in.", NOTICE)).toBeInTheDocument();
     // Navigation belongs to the guest-only gate.
     expect(router.push).not.toHaveBeenCalled();
     expect(router.replace).not.toHaveBeenCalled();
@@ -222,7 +225,7 @@ describe("B: sign-in code (WA1b)", () => {
 
     await user.type(input, "000000");
 
-    expect(await screen.findByText(/That code isn’t right/)).toBeInTheDocument();
+    expect(await screen.findByText(/That code isn’t right/, NOTICE)).toBeInTheDocument();
     expect(input).toHaveAttribute("aria-invalid", "true");
     await user.type(input, "{Backspace}");
     expect(input).not.toHaveAttribute("aria-invalid");
@@ -234,11 +237,11 @@ describe("B: sign-in code (WA1b)", () => {
     const { user, input } = await renderStep();
 
     await user.type(input, CODE);
-    expect(await screen.findByText(/This code has expired/)).toBeInTheDocument();
+    expect(await screen.findByText(/This code has expired/, NOTICE)).toBeInTheDocument();
     expect(input).toHaveAttribute("readonly");
     await user.click(screen.getByRole("button", { name: "Send a new code" }));
 
-    expect(await screen.findByText(/We sent a new code/)).toBeInTheDocument();
+    expect(await screen.findByText(/We sent a new code/, NOTICE)).toBeInTheDocument();
     expect(input).toHaveValue("");
     expect(sent(fetchMock)[1]).toMatchObject({
       path: "/api/auth/email/sign-in",
@@ -252,7 +255,7 @@ describe("B: sign-in code (WA1b)", () => {
 
     await user.type(input, CODE);
 
-    expect(await screen.findByText(/Too many attempts/)).toBeInTheDocument();
+    expect(await screen.findByText(/Too many attempts/, NOTICE)).toBeInTheDocument();
     expect(screen.getByText("Resend unavailable for now")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Sign in" })).toBeDisabled();
     expect(input).toHaveAttribute("readonly");
@@ -263,7 +266,7 @@ describe("B: sign-in code (WA1b)", () => {
     const { user, input } = await renderStep();
 
     await user.type(input, CODE);
-    expect(await screen.findByText("Something went wrong. Try again.")).toBeInTheDocument();
+    expect(await screen.findByText("Something went wrong. Try again.", NOTICE)).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Try again" }));
 
     await waitFor(() => expect(completeAuthentication).toHaveBeenCalledTimes(1));
@@ -323,7 +326,7 @@ describe("A: registration code (WA4)", () => {
         },
       },
     ]);
-    expect(screen.getByText("Email verified on this device.")).toBeInTheDocument();
+    expect(screen.getByText("Email verified on this device.", NOTICE)).toBeInTheDocument();
   });
 
   it("verified elsewhere: requests a NEW email_sign_in challenge and never reuses the registration token", async () => {
@@ -332,7 +335,7 @@ describe("A: registration code (WA4)", () => {
 
     await user.type(input, CODE);
     expect(
-      await screen.findByText(/This email was verified from another device/),
+      await screen.findByText(/This email was verified from another device/, NOTICE),
     ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sign in with a code" })).toHaveAttribute(
       "href",
@@ -360,7 +363,7 @@ describe("A: registration code (WA4)", () => {
     });
 
     expect(
-      await screen.findByText(/This email was verified from another device/),
+      await screen.findByText(/This email was verified from another device/, NOTICE),
     ).toBeInTheDocument();
     expect(sent(fetchMock)).toMatchObject([
       {
@@ -380,7 +383,7 @@ describe("A: registration code (WA4)", () => {
 
     await user.type(input, CODE);
     await user.click(await screen.findByRole("button", { name: "Send a new code" }));
-    await screen.findByText(/We sent a new code/);
+    await screen.findByText(/We sent a new code/, NOTICE);
     await user.type(input, "111222");
 
     await waitFor(() => expect(completeAuthentication).toHaveBeenCalled());

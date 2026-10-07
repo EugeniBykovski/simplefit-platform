@@ -58,7 +58,10 @@ export function SignupScreen({ returnTo }: { returnTo?: string }) {
   return (
     <Container
       data-auth-frame="signup"
-      className="grid gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] lg:gap-16 lg:py-14"
+      // WebSignUp: (1312 − 72) split 1 : 1.25 with a 72 px gap. The left track is
+      // that exact share; the canonical 64 px gap plus the section's 8 px inset
+      // make the 72 px.
+      className="grid gap-10 py-10 lg:grid-cols-[minmax(0,calc((100%-4.5rem)/2.25))_minmax(0,1fr)] lg:gap-16 lg:py-14"
     >
       <div className="flex min-w-0 flex-col gap-5.5">
         <BrandTile size="xl" />
@@ -168,9 +171,12 @@ export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
             <h2 className="type-label text-faint-foreground">{t("identity.title")}</h2>
             <p className="type-body text-pretty">{t("identity.body")}</p>
             <ul className="flex flex-wrap items-center gap-1.5">
-              {IDENTITY_ROLES.map((role) => (
+              {IDENTITY_ROLES.map((role, index) => (
                 <li key={role}>
-                  <Badge>{t(`identity.roles.${role}`)}</Badge>
+                  {/* WA3 draws FIGHTER in the olive accent, matching the Fighter segment. */}
+                  <Badge variant={index === 0 ? "accent" : "neutral"}>
+                    {t(`identity.roles.${role}`)}
+                  </Badge>
                 </li>
               ))}
             </ul>
@@ -202,17 +208,28 @@ export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
             aria-disabled="true"
             className="grid grid-cols-3 gap-1 rounded-3xl border bg-surface p-1"
           >
-            {SIGNUP_ROLES.map((role) => (
-              <span
-                key={role}
-                role="radio"
-                aria-checked="false"
-                aria-disabled="true"
-                className="flex h-9 items-center justify-center rounded-xl type-caption font-bold text-faint-foreground"
-              >
-                {t(`roles.${role}`)}
-              </span>
-            ))}
+            {SIGNUP_ROLES.map((role, index) => {
+              // WA3 draws Fighter as the selected (bone) segment. The control is
+              // presentation only: nothing is submitted, stored or put in the URL.
+              const active = index === 0;
+              return (
+                <span
+                  key={role}
+                  role="radio"
+                  aria-checked={active}
+                  aria-disabled="true"
+                  data-active={active || undefined}
+                  className={cn(
+                    "flex h-9 items-center justify-center rounded-xl type-caption",
+                    active
+                      ? "bg-secondary font-extrabold text-secondary-foreground"
+                      : "font-bold text-muted-foreground",
+                  )}
+                >
+                  {t(`roles.${role}`)}
+                </span>
+              );
+            })}
           </div>
           <p className="type-body-sm text-faint-foreground">
             {t.rich("sponsor", {
@@ -239,19 +256,27 @@ export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
               >
                 {t("fullName")}
               </label>
-              <Input id="signup-full-name" fieldSize="lg" disabled autoComplete="off" />
+              {/* Presentation only (SF-25 owns the profile): never submitted. */}
+              <Input
+                id="signup-full-name"
+                fieldSize="lg"
+                disabled
+                autoComplete="off"
+                className="disabled:bg-background disabled:opacity-100"
+              />
             </div>
           }
         >
           <div className="flex flex-col gap-2.5">
             {CONSENTS.map(({ key, required }) => (
               <label key={key} className="flex items-center gap-3">
+                {/* Never pre-ticked and never stored: consent persistence is SF-25. */}
                 <Checkbox
                   disabled
                   checked={false}
-                  className="size-5.5 rounded-xs border-2 border-border-strong"
+                  className="size-5.5 rounded-xs border-2 border-border-strong disabled:cursor-default disabled:opacity-100"
                 />
-                <span className="type-body font-semibold text-foreground/60">
+                <span className="type-body font-semibold">
                   {t(`consents.${key}`)}
                   {required && (
                     <span className="text-faint-foreground"> {t("consents.required")}</span>
@@ -260,7 +285,6 @@ export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
               </label>
             ))}
           </div>
-          <p className="type-body-sm text-pretty text-faint-foreground">{t("deferred")}</p>
         </RegistrationEmailForm>
         <p className="type-body-sm text-faint-foreground">
           {t.rich("haveAccount", { link: signIn })}
@@ -304,6 +328,7 @@ export function SignupVerifyScreen({ returnTo }: { returnTo?: string }) {
             </div>
           </section>
           <AuthInfoList
+            variant="compact"
             title={t("afterVerifying.title")}
             rows={AFTER_VERIFYING.map((key) => ({
               key,

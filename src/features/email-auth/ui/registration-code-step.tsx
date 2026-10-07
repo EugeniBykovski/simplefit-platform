@@ -135,13 +135,9 @@ export function RegistrationCodeForm({
           state={inputStateFor(status, step.code)}
           autoFocus
         />
-        <div className="flex max-w-140 flex-col gap-5 empty:hidden">
-          <StatusNotice
-            purpose="registration"
-            status={status}
-            email={flow.email}
-            className="empty:hidden"
-          />
+        {/* WA4's 560 px message block: always present, as in the artboard. */}
+        <div className="flex max-w-140 flex-col gap-5">
+          <StatusNotice purpose="registration" status={status} email={flow.email} />
           {handOffFailure && (
             <p role="alert" className="type-caption font-bold text-destructive">
               {email(`errors.${handOffFailure}`)}

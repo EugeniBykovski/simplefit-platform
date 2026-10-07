@@ -20,6 +20,8 @@ export default {
 } satisfies Meta;
 
 const CODE = "528461";
+/** The visible status box (its live-region twin is visually hidden). */
+const NOTICE = { selector: '[data-slot="notice"] div' };
 const signedIn = { "/api/me": ok({ user: VIEWER }), "/api/auth/session/refresh": ok(SESSION) };
 
 function signInStory(
@@ -61,20 +63,20 @@ SignInTyping.name = "Sign in · typing";
 
 export const SignInInvalid = signInStory(apiError(422, "code_invalid"), async (context) => {
   await typeCode("528400")?.(context);
-  await expect(await context.canvas.findByText(/That code isn’t right/)).toBeVisible();
+  await expect(await context.canvas.findByText(/That code isn’t right/, NOTICE)).toBeVisible();
 });
 SignInInvalid.name = "Sign in · invalid";
 
 export const SignInExpired = signInStory(apiError(422, "code_expired"), async (context) => {
   await typeCode()?.(context);
-  await expect(await context.canvas.findByText(/This code has expired/)).toBeVisible();
+  await expect(await context.canvas.findByText(/This code has expired/, NOTICE)).toBeVisible();
 });
 SignInExpired.name = "Sign in · expired";
 
 export const SignInResent = signInStory(apiError(422, "code_expired"), async (context) => {
   await typeCode()?.(context);
   await userEvent.click(await context.canvas.findByRole("button", { name: "Send a new code" }));
-  await expect(await context.canvas.findByText(/We sent a new code/)).toBeVisible();
+  await expect(await context.canvas.findByText(/We sent a new code/, NOTICE)).toBeVisible();
 });
 SignInResent.name = "Sign in · resent";
 
@@ -86,7 +88,7 @@ SignInSubmitting.name = "Sign in · submitting";
 
 export const SignInSuccess = signInStory(ok(SESSION), async (context) => {
   await typeCode()?.(context);
-  await expect(await context.canvas.findByText("You’re signed in.")).toBeVisible();
+  await expect(await context.canvas.findByText("You’re signed in.", NOTICE)).toBeVisible();
 });
 SignInSuccess.name = "Sign in · success";
 
@@ -144,13 +146,13 @@ VerifyTyping.name = "Verify · typing";
 
 export const VerifyInvalid = verifyStory(apiError(422, "code_invalid"), async (context) => {
   await typeCode("482900")?.(context);
-  await expect(await context.canvas.findByText(/That code isn’t right/)).toBeVisible();
+  await expect(await context.canvas.findByText(/That code isn’t right/, NOTICE)).toBeVisible();
 });
 VerifyInvalid.name = "Verify · invalid";
 
 export const VerifyExpired = verifyStory(apiError(422, "code_expired"), async (context) => {
   await typeCode()?.(context);
-  await expect(await context.canvas.findByText(/This code has expired/)).toBeVisible();
+  await expect(await context.canvas.findByText(/This code has expired/, NOTICE)).toBeVisible();
 });
 VerifyExpired.name = "Verify · expired";
 
@@ -162,7 +164,9 @@ VerifySubmitting.name = "Verify · submitting";
 
 export const VerifyVerified = verifyStory(ok(SESSION), async (context) => {
   await typeCode()?.(context);
-  await expect(await context.canvas.findByText("Email verified on this device.")).toBeVisible();
+  await expect(
+    await context.canvas.findByText("Email verified on this device.", NOTICE),
+  ).toBeVisible();
 });
 VerifyVerified.name = "Verify · verified";
 
@@ -171,7 +175,7 @@ export const VerifyVerifiedElsewhere = verifyStory(
   async (context) => {
     await typeCode()?.(context);
     await expect(
-      await context.canvas.findByText(/This email was verified from another device/),
+      await context.canvas.findByText(/This email was verified from another device/, NOTICE),
     ).toBeVisible();
   },
 );

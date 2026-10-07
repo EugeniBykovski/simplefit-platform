@@ -141,11 +141,17 @@ describe("WA3 /signup/account", () => {
     expect(
       within(roles)
         .getAllByRole("radio")
-        .every((r) => r.getAttribute("aria-checked") === "false"),
-    ).toBe(true);
+        .map((radio) => radio.getAttribute("aria-checked")),
+    ).toEqual(["true", "false", "false"]);
+    // No invented explanatory copy (WA3 draws none).
     expect(
-      screen.getByText("Role, name and consents are set after you verify your email."),
-    ).toBeInTheDocument();
+      screen.queryByText("Role, name and consents are set after you verify your email."),
+    ).not.toBeInTheDocument();
+    // Fighter carries the artboard's selected look; nothing is selectable or sent.
+    expect(within(roles).getByRole("radio", { name: "Fighter" })).toHaveAttribute(
+      "data-active",
+      "true",
+    );
     expect(screen.getByRole("button", { name: "Create account" })).toBeEnabled();
   });
 

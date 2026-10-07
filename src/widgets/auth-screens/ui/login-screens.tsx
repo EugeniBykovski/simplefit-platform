@@ -74,7 +74,7 @@ export function LoginScreen({ returnTo }: { returnTo?: string }) {
 export function LoginCodeScreen({ returnTo }: { returnTo?: string }) {
   const t = useTranslations("auth.login");
   return (
-    <AuthSplitFrame hero={t("hero")} panel={<AfterSignInPanel />}>
+    <AuthSplitFrame hero={t("hero")} panel={<AfterSignInPanel />} column="code">
       <SignInCodeStep returnTo={returnTo} />
     </AuthSplitFrame>
   );
