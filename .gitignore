@@ -43,3 +43,7 @@ canvas.json
 
 # Apple Sign in with Apple private keys (never commit; SF-23)
 *.p8
+
+# Playwright geometry QA (pnpm test:geometry)
+/test-results
+/playwright-report

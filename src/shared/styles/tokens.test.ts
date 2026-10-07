@@ -134,8 +134,27 @@ describe("Tailwind theme", () => {
     expect(body?.includes("text-transform: uppercase")).toBe(Boolean("uppercase" in def));
   });
 
+  it.each(Object.entries(spec.typography.systemRoles.web))(
+    "type-%s matches its web system role (SF-34)",
+    (role, def) => {
+      const body = themeCss.match(new RegExp(`@utility type-${role} \\{([^}]*)\\}`))?.[1];
+      expect(body, role).toBeDefined();
+      const rem = (px: number) => `${px / 16}rem`;
+      expect(body).toContain(`font-family: var(--font-${def.family});`);
+      expect(body).toContain(`font-size: ${rem(def.size)};`);
+      expect(body).toContain(`line-height: ${rem(def.lineHeight)};`);
+      expect(body).toContain(`font-weight: ${def.weight};`);
+      if (def.tracking) expect(body).toContain(`letter-spacing: ${def.tracking}em;`);
+      expect(body?.includes("text-transform: uppercase")).toBe(Boolean("uppercase" in def));
+    },
+  );
+
   it("only uses font weights the contract allows for each family", () => {
-    for (const def of Object.values(spec.typography.roles)) {
+    for (const def of [
+      ...Object.values(spec.typography.roles),
+      ...Object.values(spec.typography.systemRoles.web),
+      ...Object.values(spec.typography.systemRoles.mobile),
+    ]) {
       const family = def.family as keyof typeof spec.typography.weights;
       expect(spec.typography.weights[family]).toContain(def.weight);
     }

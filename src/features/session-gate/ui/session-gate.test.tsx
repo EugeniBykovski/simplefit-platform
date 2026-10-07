@@ -42,6 +42,26 @@ describe("RequireSession (AUTHENTICATED)", () => {
     expect(screen.getByRole("status", { name: "Checking your session" })).toBeInTheDocument();
   });
 
+  it("renders the layout's pending state (the SF-34 launch screen) only while restoring", async () => {
+    session.status = "loading";
+    const { rerender } = await renderWithProviders(
+      <RequireSession signIn="web.login" pending={<p>launch</p>}>
+        <p>private</p>
+      </RequireSession>,
+    );
+    expect(screen.getByText("launch")).toBeInTheDocument();
+    expect(screen.queryByText("private")).not.toBeInTheDocument();
+
+    session.status = "authenticated";
+    rerender(
+      <RequireSession signIn="web.login" pending={<p>launch</p>}>
+        <p>private</p>
+      </RequireSession>,
+    );
+    expect(screen.queryByText("launch")).not.toBeInTheDocument();
+    expect(screen.getByText("private")).toBeInTheDocument();
+  });
+
   it.each([
     ["web.login", "/login"],
     ["web.sponsor.login", "/sponsor/login"],
