@@ -3,10 +3,13 @@
 import { useTranslations } from "next-intl";
 import { useEffect, type ReactNode } from "react";
 
-import { useSessionStatus } from "@/entities/session";
+import { useSession } from "@/entities/session";
 import { usePathname, useRouter } from "@/shared/i18n/navigation";
+import { returnToOf, sanitizeReturnTo } from "@/shared/routes/return-to";
 import { routeHref, webGuards, type WebRouteId } from "@/shared/routes/routes";
 import { Spinner } from "@/shared/ui/spinner";
+
+import { resolveEntry } from "../model/entry";
 
 /**
  * Session part of the SF-31 access composition (route-architecture §6, §9).
@@ -17,47 +20,73 @@ import { Spinner } from "@/shared/ui/spinner";
  * and restricted-account checks are not decided here: the API exposes no
  * capability, workspace or account-state data yet. Their identity tickets
  * add them on top of these gates instead of inventing that state.
+ *
+ * While the session cannot be confirmed because of a network or server
+ * failure (`unavailable`), neither gate redirects: they render the layout's
+ * `unavailable` view, which retries the restore. A transient failure is
+ * never treated as a sign-out.
  */
 
 /**
  * AUTHENTICATED: signed-out visitors go to the area's sign-in route with
- * `returnTo`. While the session is restored the layout's `pending` state
- * renders (the signed-in layouts pass the LD3 launch screen, SF-34); it is
- * shown only while that real work runs.
+ * `returnTo` when the current page is a valid destination (SF-24 policy).
+ * While the session is restored the layout's `pending` state renders (the
+ * signed-in layouts pass the LD3 launch screen, SF-34); it is shown only
+ * while that real work runs.
  */
 export function RequireSession({
   signIn,
   pending,
+  unavailable,
   children,
 }: {
   signIn: WebRouteId;
   pending?: ReactNode;
+  unavailable?: ReactNode;
   children: ReactNode;
 }) {
-  const status = useSessionStatus();
+  const { status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
     if (status !== "anonymous") return;
-    const returnTo = `${pathname}${window.location.search}`;
-    router.replace(routeHref(signIn, {}, { [webGuards.returnToParam]: returnTo }));
+    const returnTo = sanitizeReturnTo(`${pathname}${window.location.search}`);
+    router.replace(
+      routeHref(signIn, {}, returnTo === undefined ? {} : { [webGuards.returnToParam]: returnTo }),
+    );
   }, [status, pathname, router, signIn]);
 
   if (status === "authenticated") return children;
+  if (status === "unavailable" && unavailable !== undefined) return unavailable;
   return pending ?? <SessionPending />;
 }
 
-/** GUEST_ONLY: signed-in users go to the web entry route (`/app`), which resolves their destination. */
-export function GuestOnly({ children }: { children: ReactNode }) {
-  const status = useSessionStatus();
+/**
+ * GUEST_ONLY: an authenticated viewer (a restored session, or a sign-in that
+ * just completed in this or another tab) enters the application: the valid
+ * `returnTo` of the page, otherwise `/app` (`resolveEntry`). This is the one
+ * place authentication navigates; the sign-in methods only complete the
+ * session.
+ */
+export function GuestOnly({
+  unavailable,
+  children,
+}: {
+  unavailable?: ReactNode;
+  children: ReactNode;
+}) {
+  const { status, viewer } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (status === "authenticated") router.replace(routeHref(webGuards.entry));
-  }, [status, router]);
+    if (status !== "authenticated" || viewer === undefined) return;
+    router.replace(resolveEntry(viewer, returnToOf(window.location.search)));
+  }, [status, viewer, router]);
 
-  return status === "authenticated" ? <SessionPending /> : children;
+  if (status === "authenticated") return <SessionPending />;
+  if (status === "unavailable" && unavailable !== undefined) return unavailable;
+  return children;
 }
 
 function SessionPending() {

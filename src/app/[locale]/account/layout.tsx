@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { RequireSession } from "@/features/session-gate";
 import { resolveLocaleParam } from "@/shared/i18n/params";
 import { signInRouteFor } from "@/shared/routes/routes";
-import { LaunchScreen } from "@/widgets/system-states";
+import { LaunchScreen, SessionFailure } from "@/widgets/system-states";
 import { AppFrame } from "@/widgets/app-frame";
 
 /**
@@ -20,7 +20,11 @@ export default async function AccountLayout({
 }) {
   await resolveLocaleParam(params);
   return (
-    <RequireSession signIn={signInRouteFor("web")} pending={<LaunchScreen />}>
+    <RequireSession
+      signIn={signInRouteFor("web")}
+      pending={<LaunchScreen />}
+      unavailable={<SessionFailure />}
+    >
       <AppFrame>{children}</AppFrame>
     </RequireSession>
   );

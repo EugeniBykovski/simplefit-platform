@@ -330,7 +330,16 @@ decides; all targets are registry routes (`guards`, `capabilities`).
    (`guards.signIn`: `/login`; `/sponsor/login` for `/sponsor/*`;
    `/admin/login` for `/admin/*`) with `returnTo=<requested path + query>`.
    `returnTo` accepts only a relative path of the same platform that matches a
-   registry route; anything else is dropped.
+   registry route; anything else is dropped. The SF-24 policy, identical on
+   both platforms: one leading `/` (never `//`), no backslash, whitespace,
+   control character or scheme, decoded exactly once, at most 2048
+   characters; a leading web locale segment is removed; the path must match a
+   registry route that is not `GUEST_ONLY` (no login loop), not
+   `phase: ONBOARDING`, not a `restrictedAccount` route, not the not-found
+   catch-all and not `web.verify-email`. Only pathname and query are kept (the
+   hash is dropped). Gates add `returnTo` only for a valid destination; the
+   auth screens carry it between their steps and provider buttons; it is
+   consumed once, by replacing the auth page.
 3. **Authenticated → `GUEST_ONLY` route** → the default destination (below),
    except the sign-in flow's own workspace step. For email authentication the
    session begins after successful email verification; consent and role
@@ -368,7 +377,22 @@ decides; all targets are registry routes (`guards`, `capabilities`).
 Without one, the first held capability in the order FIGHTER, COACH,
 GYM_WORKSPACE, SPONSOR_WORKSPACE (web). Without any, account onboarding.
 `web.app` and `mobile.root` are `ENTRY` routes that apply exactly this
-resolution. Without any mobile destination (a sponsor-only user), mobile
+resolution.
+
+**Application entry (SF-24).** Every sign-in method (Google, Apple, the
+email sign-in code and the sign-up verification code) ends in one pipeline,
+`completeAuthentication`: store the session, resolve the viewer with
+`GET /api/me`, publish `authenticated`. The guest-only gate then navigates
+once, through a pure `resolveEntry(viewer, returnTo)` per client: the valid
+`returnTo`, otherwise the neutral entry (`/app` on web, `/` on mobile). The
+API exposes only the viewer's id today, so the default destination,
+onboarding, restricted-account and workspace rules above are not applied
+yet: no role, profile, workspace, onboarding phase, consent, account status
+or last workspace is inferred on the client. SF-25+ add those branches to
+`resolveEntry` when `GET /api/me` carries that state. A network or server
+failure while the session is restored or the viewer resolved is
+`unavailable` (credentials kept, retryable failure state), never a sign-out;
+only a rejected credential (401) is. Without any mobile destination (a sponsor-only user), mobile
 falls back to `guards.defaultDestinationFallback` (`/workspaces`,
 `D-MOBILE-SPONSOR-ADMIN`).
 
@@ -476,7 +500,12 @@ src/app/[locale]/
 - **Guards (UX only, §6).** `RequireSession` (AUTHENTICATED) waits for the
   session restore, then sends signed-out visitors to the area's sign-in route
   (`guards.signIn`: `/login`, `/sponsor/login`, `/admin/login`) with
-  `returnTo`; `GuestOnly` sends signed-in users to the `/app` entry.
+  `returnTo` (when the page is a valid destination); `GuestOnly` sends an
+  authenticated viewer to `resolveEntry` (the valid `returnTo`, otherwise
+  `/app`). Both render the layout's `unavailable` view (`SessionFailure`)
+  while the session cannot be confirmed. Refreshes are serialized across tabs
+  with a Web Lock and sign-in / sign-out are broadcast between tabs (ADR 0010
+  in simplefit-api).
   Capability (FIGHTER, COACH, GYM_WORKSPACE, SPONSOR_WORKSPACE, ADMIN),
   phase, active workspace and restricted-account rules are **not resolved**:
   the API exposes no capability, workspace or account-state data yet, so no
@@ -484,8 +513,8 @@ src/app/[locale]/
   gates; until then every signed-in user can open every shell's placeholders,
   and the backend authorizes all data. `web.app.active` pages render in the
   header-only frame until the active workspace's sidebar can be resolved.
-- **Boundaries.** SF-24/SF-25 own the auth UI, consuming `returnTo` and the
-  `/app` entry's default-destination redirect. SF-34 owns the loading,
+- **Boundaries.** SF-24 owns the auth UI, `returnTo` and the neutral entry;
+  SF-25+ the `/app` entry's default-destination redirect. SF-34 owns the loading,
   not-found and error states: `RequireSession` shows the LD3 launch screen
   while the session is restored, the sidebar shells' `loading.tsx` the LD4
   skeleton, `not-found.tsx` and `global-not-found.tsx` the ER2 404, and
@@ -566,7 +595,8 @@ src/app/
   sign-in and authenticated consent):
   - AUTHENTICATED: waits for the session restore, then sends signed-out
     visitors to `/login` with `returnTo=<path + query>`;
-  - GUEST_ONLY: sends signed-in users to the entry `/`;
+  - GUEST_ONLY: sends an authenticated viewer to `resolveEntry` (the valid
+    `returnTo`, otherwise the entry `/`);
   - PUBLIC (`/checkout`, invite links): renders for everyone.
 
   The navigator stays mounted under the pending cover (hidden from assistive
@@ -588,12 +618,12 @@ src/app/
 - **Deep links.** `simplefit://<canonical path>` opens the route
   (`simplefit://camp/weight`); route groups never appear in URLs. Parameters
   are opaque and only fill their own segment (`routeHref` URL-encodes them).
-  `returnTo` is only carried to sign-in, and the sign-in flow (SF-24) must
-  accept it only as a relative registry path (§9). Unknown paths and the
+  `returnTo` is only carried to sign-in, and the sign-in flow (SF-24) accepts
+  it only under the §9 policy. Unknown paths and the
   deferred `/sparring/find` land on `+not-found`.
-- **Boundaries.** SF-24/SF-25 own the auth UI, consuming `returnTo` and the
-  entry's default-destination redirect. Until then `/` is still the SF-12
-  foundation home, so the role shells are reached by link or deep link. SF-34
+- **Boundaries.** SF-24 owns the auth UI, `returnTo` and the neutral entry;
+  SF-25+ the entry's default-destination redirect. Until then `/` is still the
+  SF-12 foundation home, so the role shells are reached by link or deep link. SF-34
   owns the loading, not-found and error states: the gate's pending cover is
   the LD1 launch screen, `+not-found` the ER1 404 and the root layout's
   `ErrorBoundary` the failure states; LD2 has primitives only until home

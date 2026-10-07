@@ -59,6 +59,42 @@ describe("apiFetch", () => {
     });
   });
 
+  it("carries the retry-after delay of a rate-limited response", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          jsonResponse(
+            { error: { code: "rate_limited", message: "Too many requests", details: {} } },
+            { status: 429, headers: { "retry-after": "42" } },
+          ),
+        ),
+    );
+
+    await expect(apiFetch("/api/auth/email/sign-in")).rejects.toMatchObject({
+      status: 429,
+      code: "rate_limited",
+      retryAfterSeconds: 42,
+    });
+  });
+
+  it("ignores a retry-after that is not a delay in seconds", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response("slow down", {
+          status: 429,
+          headers: { "retry-after": "Wed, 21 Oct 2026 07:28:00 GMT" },
+        }),
+      ),
+    );
+
+    await expect(apiFetch("/api/auth/email/sign-in")).rejects.toMatchObject({
+      retryAfterSeconds: null,
+    });
+  });
+
   it("throws ApiError for non-envelope error bodies", async () => {
     vi.stubGlobal(
       "fetch",
