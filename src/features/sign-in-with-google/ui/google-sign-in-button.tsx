@@ -14,6 +14,7 @@ import {
   googleIdentity,
   initializeGoogleIdentity,
 } from "@/shared/lib/google-identity";
+import { cn } from "@/shared/lib/utils";
 import { Spinner } from "@/shared/ui/spinner";
 
 type Failure = "rejected" | "rateLimited" | "unavailable" | "scriptFailed" | "generic";
@@ -36,19 +37,32 @@ const MAX_WIDTH = 400;
  * guest-only gate then enters the application (a valid `returnTo`, otherwise
  * `/app`). A new and an existing account are treated alike; no role is
  * inferred here.
+ *
+ * `className` sizes the row the button is centred in, so a composition keeps
+ * its designed provider row (WA1 50 px slot, O02w 54 px) whether the button
+ * is loading, rendered by Google or not configured.
  */
-export function GoogleSignInButton() {
+export function GoogleSignInButton({ className }: { className?: string }) {
   const clientId = publicEnv.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
   const t = useTranslations("auth.google");
 
   if (clientId === undefined) {
-    return <p className="type-body-sm text-muted-foreground">{t("notConfigured")}</p>;
+    return (
+      <p
+        className={cn(
+          "flex min-h-11 items-center justify-center type-body-sm text-muted-foreground",
+          className,
+        )}
+      >
+        {t("notConfigured")}
+      </p>
+    );
   }
 
-  return <GoogleButton clientId={clientId} />;
+  return <GoogleButton clientId={clientId} className={className} />;
 }
 
-function GoogleButton({ clientId }: { clientId: string }) {
+function GoogleButton({ clientId, className }: { clientId: string; className?: string }) {
   const t = useTranslations("auth.google");
   const locale = useLocale();
   const { resolvedTheme } = useTheme();
@@ -103,7 +117,11 @@ function GoogleButton({ clientId }: { clientId: string }) {
         onReady={() => setReady(true)}
         onError={() => setFailure("scriptFailed")}
       />
-      <div ref={container} hidden={exchanging} className="flex min-h-11 w-full justify-center" />
+      <div
+        ref={container}
+        hidden={exchanging}
+        className={cn("flex min-h-11 w-full items-center justify-center", className)}
+      />
       {exchanging && (
         <p className="flex items-center justify-center gap-2 type-body-sm text-muted-foreground">
           <Spinner />

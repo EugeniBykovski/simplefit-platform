@@ -47,16 +47,23 @@ export function LoginScreen({ returnTo }: { returnTo?: string }) {
       <div className="flex flex-col gap-3.5">
         <h1 className="type-auth-heading">{t("title")}</h1>
         <p className="type-body text-pretty text-muted-foreground">{t("description")}</p>
-        <GoogleSignInButton />
+        {/*
+          WA1 draws two 52 px provider buttons and a 50 px CTA. Apple is the
+          nearest button step (`xl`, 54) and the CTA `lg` (48); Google renders
+          in a 50 px slot, so the provider pair keeps its designed 2 × 52 px.
+        */}
+        <GoogleSignInButton className="min-h-12.5" />
         <AppleSignInButton />
         <AuthDivider label={t("orEmail")} />
         <SignInEmailForm
           returnTo={returnTo}
           submitLabel={t("emailSubmit")}
+          submitSize="lg"
           hint={t("emailHint")}
           className="flex flex-col gap-3.5"
         />
-        <p className="type-body-sm text-faint-foreground">
+        {/* The hint and this line are 13 px on 20 px lines; the artboard's are 18. */}
+        <p className="-mt-1 type-body-sm text-faint-foreground">
           {t.rich("noAccount", {
             link: (chunks) => (
               <Link href={withReturnTo("web.signup", returnTo)} className={textLinkClass}>

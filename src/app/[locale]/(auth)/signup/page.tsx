@@ -20,7 +20,7 @@ export default async function Page({ params, searchParams }: PageProps<"/[locale
   await resolveLocaleParam(params);
   const returnTo = sanitizeReturnTo((await searchParams).returnTo);
   return (
-    <SiteFrame>
+    <SiteFrame fill={false}>
       <SignupScreen returnTo={returnTo} />
     </SiteFrame>
   );

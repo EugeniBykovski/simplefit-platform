@@ -38,7 +38,7 @@ export const CreateAccountError: StoryObj = {
 export const FullPage: StoryObj = {
   name: "Full Page",
   render: () => (
-    <SiteFrame>
+    <SiteFrame fill={false}>
       <SignupScreen />
     </SiteFrame>
   ),

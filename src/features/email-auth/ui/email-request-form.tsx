@@ -32,6 +32,8 @@ type Props = {
   besideField?: ReactNode;
   /** WA1 stretches the button over the column; WA3 sizes it to its label. */
   fullWidth?: boolean;
+  /** The designed CTA height: WA1 draws 50 px (`lg`, 48), WA3 52 px (`xl`, 54). */
+  submitSize?: "lg" | "xl";
   className?: string;
 };
 
@@ -55,6 +57,7 @@ export function EmailRequestForm({
   children,
   besideField,
   fullWidth = true,
+  submitSize = "xl",
   className,
 }: Props) {
   const t = useTranslations("auth.email");
@@ -122,7 +125,12 @@ export function EmailRequestForm({
       )}
       {hintPlacement === "field" && hintText}
       {children}
-      <Button type="submit" size="xl" className={fullWidth ? "w-full" : "w-fit"} loading={busy}>
+      <Button
+        type="submit"
+        size={submitSize}
+        className={fullWidth ? "w-full" : "w-fit"}
+        loading={busy}
+      >
         {icon && <MailIcon aria-hidden />}
         {submitLabel}
       </Button>

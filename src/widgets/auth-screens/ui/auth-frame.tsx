@@ -57,8 +57,15 @@ function AuthControls() {
  *   brand at the top, flexible space, then the bottom-anchored "Welcome
  *   back." headline and the `panel` card ("After sign-in"). The artboard's
  *   line between them ("You land in your last workspace") describes a
- *   runtime fact the API cannot provide yet and is not rendered (SF-25+).
+ *   runtime fact the API cannot provide yet and is not rendered (SF-25+);
+ *   its 24 px line and 20 px gap stay reserved, so nothing above it moves.
  * - Right: the 440 px auth column (`children`), centred in its half.
+ *
+ * The artboard is a fixed 1440 × 900 composition. At desktop both halves lay
+ * out inside that 900 px box, so a taller window never spreads the panel and
+ * the form apart; the panel itself (the gradient owner, as in the artboard)
+ * still runs the full height of the window. Below lg the form fills the
+ * viewport.
  */
 export function AuthSplitFrame({
   hero,
@@ -73,31 +80,28 @@ export function AuthSplitFrame({
   children: ReactNode;
 }) {
   return (
-    // The artboard is a fixed 1440 × 900 composition: at desktop the frame is
-    // exactly 900 px tall, so a taller window never spreads the panel and the
-    // form apart. Below lg it fills the viewport.
-    <Container
-      size="frame"
-      data-auth-frame="split"
-      className="grid min-h-dvh lg:h-225 lg:min-h-0 lg:grid-cols-2"
-    >
+    <Container size="frame" data-auth-frame="split" className="grid min-h-dvh lg:grid-cols-2">
       <div
         data-auth-panel
-        className="hidden flex-col gap-5 bg-linear-160 from-accent to-background to-70% px-16 py-14 lg:flex"
+        className="hidden bg-linear-160 from-accent to-background to-70% lg:block"
       >
-        <AuthBrand size="lg" />
-        <span className="flex-1" />
-        <p data-auth-hero className="type-auth-hero text-balance">
-          {hero}
-        </p>
-        {panel}
+        <div className="flex h-225 flex-col gap-5 px-16 py-14">
+          <AuthBrand size="lg" />
+          <span className="flex-1" />
+          <p data-auth-hero className="type-auth-hero text-balance">
+            {hero}
+          </p>
+          {/* The omitted "last workspace" line's 24 px row (see above). */}
+          <span data-auth-hero-reserve className="h-6 flex-none" />
+          {panel}
+        </div>
       </div>
       <main id="main" tabIndex={-1} className="relative flex flex-col outline-none">
         <div className="flex items-center justify-between gap-4 px-4 pt-4 sm:px-6 lg:absolute lg:inset-x-0 lg:top-0 lg:justify-end lg:px-12 lg:pt-6">
           <AuthBrand size="sm" className="lg:hidden" />
           <AuthControls />
         </div>
-        <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6 lg:p-12">
+        <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6 lg:h-225 lg:flex-none lg:p-12">
           <div
             data-auth-column
             className={cn("w-full", column === "code" ? "max-w-[446px]" : "max-w-110")}
@@ -127,7 +131,7 @@ export function AuthInfoList({
   rows: readonly { key: string; title: string; detail: string }[];
   /**
    * `panel`: translucent on the WA1 gradient (14 × 18 px); `card`: the surface
-   * card of WA3 (16 × 20 px); `compact`: the surface card of WA4 (14 × 20 px).
+   * card of WA3 (16 / 14 × 20 px); `compact`: the surface card of WA4 (14 × 20 px).
    */
   variant?: "panel" | "card" | "compact";
   className?: string;
@@ -140,7 +144,8 @@ export function AuthInfoList({
         "flex flex-col gap-0.5 rounded-3xl border",
         // WA1's max-width (460 px) applies to the content box: 460 + 2 × 18 + 2 = 498.
         variant === "panel" && "max-w-[498px] bg-background/60 px-4.5 py-3.5",
-        variant === "card" && "bg-surface px-5 py-4",
+        // 14 px at the bottom: the 14 px label line is 1 px over the artboard's.
+        variant === "card" && "bg-surface px-5 pt-4 pb-3.5",
         variant === "compact" && "bg-surface px-5 py-3.5",
         className,
       )}
@@ -216,7 +221,8 @@ export function AuthStepFrame({
 /** "or with email" between the provider buttons and the email form (WA1). */
 export function AuthDivider({ label }: { label: string }) {
   return (
-    <div className="flex items-center gap-3 type-caption text-faint-foreground">
+    // 16 px row: the artboard's 17 px divider within 1 px (the caption line is 18).
+    <div className="flex h-4 items-center gap-3 type-caption text-faint-foreground">
       <span aria-hidden className="h-px flex-1 bg-border" />
       {label}
       <span aria-hidden className="h-px flex-1 bg-border" />

@@ -60,8 +60,9 @@ export function SignupScreen({ returnTo }: { returnTo?: string }) {
       data-auth-frame="signup"
       // WebSignUp: (1312 − 72) split 1 : 1.25 with a 72 px gap. The left track is
       // that exact share; the canonical 64 px gap plus the section's 8 px inset
-      // make the 72 px.
-      className="grid gap-10 py-10 lg:grid-cols-[minmax(0,calc((100%-4.5rem)/2.25))_minmax(0,1fr)] lg:gap-16 lg:py-14"
+      // make the 72 px. The artboard is a fixed 1440 × 940 frame whose body fills
+      // 940 − 76 (header) − 190 (footer) = 674 px, so the footer sits at y 750.
+      className="grid content-start gap-10 py-10 lg:min-h-[674px] lg:grid-cols-[minmax(0,calc((100%-4.5rem)/2.25))_minmax(0,1fr)] lg:gap-16 lg:py-14"
     >
       <div className="flex min-w-0 flex-col gap-5.5">
         <BrandTile size="xl" />
@@ -70,7 +71,8 @@ export function SignupScreen({ returnTo }: { returnTo?: string }) {
         </h1>
         <p className="type-auth-lead text-pretty text-muted-foreground">{t("description")}</p>
         <div className="flex max-w-105 flex-col gap-2.5">
-          <GoogleSignInButton />
+          {/* O02w's three methods are 54 px (`xl`); Google renders in a slot of that height. */}
+          <GoogleSignInButton className="min-h-13.5" />
           <AppleSignInButton />
           <Button asChild variant="quiet" size="xl" className="w-full">
             <Link href={account}>
@@ -101,7 +103,9 @@ export function SignupScreen({ returnTo }: { returnTo?: string }) {
                 <Link
                   href={key === "sponsor" ? routeHref("web.partners.apply") : account}
                   className={cn(
-                    "flex w-full flex-col gap-2.5 rounded-3xl border p-5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    // 20 px padding; 16 at the bottom absorbs the 13 px lines' 20 px
+                    // line height (the artboard's is 19.5 / 18), keeping the 197 px card.
+                    "flex w-full flex-col gap-2.5 rounded-3xl border px-5 pt-5 pb-4 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     emphasised
                       ? "border-[1.5px] border-highlight bg-accent"
                       : "bg-surface hover:border-border-strong",
@@ -118,7 +122,8 @@ export function SignupScreen({ returnTo }: { returnTo?: string }) {
                   >
                     <Icon className="size-5.5" />
                   </span>
-                  <span className="type-h3">{t(`roles.${key}.title`)}</span>
+                  {/* The artboard's 18 px display title on a 22 px line. */}
+                  <span className="type-metric-sm font-semibold">{t(`roles.${key}.title`)}</span>
                   <span className="type-body-sm text-pretty text-muted-foreground">
                     {t(`roles.${key}.description`)}
                   </span>
@@ -167,7 +172,8 @@ export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
       action={t.rich("member", { link: signIn })}
       aside={
         <>
-          <div className="flex flex-col gap-3 rounded-3xl border bg-surface p-5.5">
+          {/* 20 px at the bottom: the label (14) and chips (24) run 3 px over the artboard's 13 / 22. */}
+          <div className="flex flex-col gap-3 rounded-3xl border bg-surface px-5.5 pt-5.5 pb-5">
             <h2 className="type-label text-faint-foreground">{t("identity.title")}</h2>
             <p className="type-body text-pretty">{t("identity.body")}</p>
             <ul className="flex flex-wrap items-center gap-1.5">
@@ -198,7 +204,13 @@ export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
       <div data-auth-step-column className="flex flex-col gap-4">
         <p className="type-label text-highlight">{t("eyebrow")}</p>
         <h1 className="type-auth-title text-balance">{t("title")}</h1>
-        <div className="flex flex-col gap-2">
+        {/*
+          The eyebrow (14), title (38) and field labels (18) sit on type-role
+          lines 1 px taller than the artboard's; the role block, the form and
+          the closing line each start 2 px earlier so every row keeps its
+          designed position.
+        */}
+        <div className="-mt-0.5 flex flex-col gap-2">
           <p id="signup-role-label" className="type-body-sm font-bold text-muted-foreground">
             {t("signingUpAs")}
           </p>
@@ -247,7 +259,7 @@ export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
           hint={t("hint")}
           hintPlacement="field"
           fullWidth={false}
-          className="flex flex-col gap-4"
+          className="-mt-0.5 flex flex-col gap-4"
           besideField={
             <div className="flex flex-col gap-1.5">
               <label
@@ -286,7 +298,7 @@ export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
             ))}
           </div>
         </RegistrationEmailForm>
-        <p className="type-body-sm text-faint-foreground">
+        <p className="-mt-0.5 type-body-sm text-faint-foreground">
           {t.rich("haveAccount", { link: signIn })}
         </p>
       </div>
@@ -323,7 +335,8 @@ export function SignupVerifyScreen({ returnTo }: { returnTo?: string }) {
                 </span>
                 <span className="type-body-sm font-extrabold">{t("preview.brand")}</span>
               </div>
-              <p className="type-h3">{t("preview.code")}</p>
+              {/* The artboard's 18 px display line (22 px). */}
+              <p className="type-metric-sm font-semibold">{t("preview.code")}</p>
               <p className="type-caption">{t("preview.body")}</p>
             </div>
           </section>

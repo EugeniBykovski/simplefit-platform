@@ -6,7 +6,7 @@ import { CodeInput, type CodeInputState } from "./code-input";
 
 /*
  * Claude Design component "AuthCodeInput" (shared by O03, WA4, O01c, WA1b):
- * six 64 × 76 px cells, radius xl, type-code-digit, over one real
+ * six 66 × 78 px cells, radius xl, type-code-digit, over one real
  * `one-time-code` input.
  */
 function Controlled({

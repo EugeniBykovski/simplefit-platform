@@ -23,7 +23,17 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 1440, height: 900 },
+        // Headless Chromium on Linux (CI) defaults to full hinting, which
+        // snaps every glyph advance to a whole pixel: 13 px Manrope runs ~4 %
+        // wide and 12 px narrow, so right-aligned text and line breaks move.
+        // Unhinted outlines render the fractional advances the artboards were
+        // measured with (Chrome on macOS; `slight`, the Linux desktop default,
+        // is identical).
+        launchOptions: { args: ["--font-render-hinting=none"] },
+      },
     },
   ],
   webServer: {

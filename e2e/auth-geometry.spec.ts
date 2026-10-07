@@ -51,13 +51,15 @@ test.describe("WA1 · sign in", () => {
     near(column.x, 720 + (720 - 440) / 2);
 
     near((await box(page.getByLabel("Email"))).height, 44);
-    near((await box(page.getByRole("button", { name: "Email me a sign-in code" }))).height, 54);
+    // The artboard's 50 px CTA on the nearest button step (`lg`, 48; §8.1).
+    const cta = await box(page.getByRole("button", { name: "Email me a sign-in code" }));
+    expect(Math.abs(cta.height - 50)).toBeLessThanOrEqual(2);
     await page.screenshot({ path: "test-results/wa1-sign-in.png" });
   });
 });
 
 test.describe("WA1b · sign-in code", () => {
-  test("six 64 × 76 px cells, 10 px apart, in the 440 px column", async ({ page }) => {
+  test("six 66 × 78 px cells, 10 px apart, in the 446 px column", async ({ page }) => {
     await story(page, "authentication-email-code--sign-in-sent");
     const heading = page.getByRole("heading", { level: 1, name: "Enter your sign-in code" });
     await heading.waitFor();
@@ -67,8 +69,8 @@ test.describe("WA1b · sign-in code", () => {
     await expect(cells).toHaveCount(6);
     const first = await box(cells.nth(0));
     const second = await box(cells.nth(1));
-    near(first.width, 64);
-    near(first.height, 76);
+    near(first.width, 66);
+    near(first.height, 78);
     near(second.x - (first.x + first.width), 10);
     expect(await fontSize(cells.nth(0))).toBe("30px");
     await page.screenshot({ path: "test-results/wa1b-sent.png" });
@@ -256,22 +258,49 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
   }) => {
     await story(page, "authentication-login--full-page");
     await fontsLoaded(page);
+    // The branded half owns the full 900 px frame; the form half starts at the split.
     await expectBox(page.locator("[data-auth-panel]"), [0, 0, 720, 900]);
+    await expectBox(page.locator("main"), { 0: 720, 1: 0, 2: 720 });
     await expectBox(page.locator("[data-auth-panel] a").first(), { 0: 64, 1: 56, 3: 36 });
-    const card = page.locator("[data-auth-panel] [data-auth-info-list]");
-    await expectBox(card, [64, 553, 498, 291]);
-    // The artboard's subtitle (24 px + 20 px gap) is not rendered (decision D5),
-    // so the headline sits 20 px above the card instead of 64 px.
-    const hero = await box(page.locator("[data-auth-hero]"));
-    near(hero.x, 64);
-    near((await box(card)).y - (hero.y + hero.height), 20);
-    const column = await box(page.locator("[data-auth-column]"));
-    near(column.x, 860);
-    near(column.width, 440);
-    near(column.y + column.height / 2, 450);
+    // The artboard's subtitle is not rendered (decision D5) but its row stays
+    // reserved: the headline keeps the designed 439.
+    await expectBox(page.locator("[data-auth-hero]"), [64, 439, 592, 50]);
+    await expectBox(page.locator("[data-auth-panel] [data-auth-info-list]"), [64, 553, 498, 291]);
+    await expectBox(page.locator("[data-auth-column]"), [860, 230, 440, 440]);
+    await expectBox(page.locator("[data-auth-column] h1"), { 0: 860, 1: 230 });
+    await expectBox(page.getByLabel("Email"), [860, 498, 440, 44]);
+    await expectBox(
+      page.getByRole("button", { name: "Email me a sign-in code" }),
+      [860, 556, 440, 50],
+    );
+    // The provider rows (2 × 52 px with a 14 px gap) end where the divider starts.
+    await expectBox(page.getByText("or with email", { exact: true }), { 1: 444 });
+    // Not linked: /sponsor/login is a placeholder (D7), so WA1 omits it.
+    await expect(page.getByRole("link", { name: "Sponsor sign in" })).toHaveCount(0);
   });
 
-  test("WA1b: 446 px code column, 64 × 76 cells 10 px apart, 48 px guidance box", async ({
+  test("WA1b typing: eyebrow, title, code row, CTA and guidance on the artboard rows", async ({
+    page,
+  }) => {
+    await story(page, "authentication-email-code--sign-in-typing");
+    await page.getByRole("heading", { level: 1, name: "Enter your sign-in code" }).waitFor();
+    await fontsLoaded(page);
+    // Both edges of the centred column on the artboard's (233 → 668).
+    const column = page.locator("[data-auth-column]");
+    await expectBox(column, { 0: 857, 1: 233, 2: 446 });
+    const { y, height } = await box(column);
+    expect(Math.abs(y + height - 668)).toBeLessThanOrEqual(2);
+    await expectBox(page.getByRole("heading", { level: 1 }), { 0: 857, 1: 260 });
+    await expectBox(page.locator('[data-slot="code-input"] + div'), [857, 363, 446, 78]);
+    await expectBox(page.getByRole("button", { name: "Sign in", exact: true }), {
+      0: 857,
+      1: 455,
+      2: 446,
+    });
+    await expectBox(page.locator('[data-slot="notice"]').last(), [857, 588, 446, 48]);
+  });
+
+  test("WA1b: 446 px code column, 66 × 78 cells 10 px apart, 48 px guidance box", async ({
     page,
   }) => {
     await story(page, "authentication-email-code--sign-in-sent");
@@ -280,19 +309,40 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
     await expectBox(page.locator("[data-auth-panel] [data-auth-info-list]"), [64, 553, 498, 291]);
     await expectBox(page.locator("[data-auth-column]"), { 0: 857, 2: 446 });
     const cells = page.locator('[data-slot="code-input"] + div > span');
-    await expectBox(cells.nth(0), { 0: 857, 2: 64, 3: 76 }, 1);
-    near((await box(cells.nth(1))).x, 857 + 74);
+    await expectBox(cells.nth(0), { 0: 857, 2: 66, 3: 78 }, 1);
+    near((await box(cells.nth(1))).x, 857 + 76);
+    await expectBox(page.locator('[data-slot="code-input"] + div'), { 0: 857, 2: 446, 3: 78 }, 1);
     await expectBox(page.locator('[data-slot="notice"]').last(), { 0: 857, 2: 446, 3: 48 }, 1);
   });
 
-  test("a taller window keeps the 900 px composition instead of spreading it", async ({ page }) => {
-    await page.setViewportSize({ width: 1440, height: 1200 });
-    await story(page, "authentication-login--full-page");
-    await expectBox(page.locator("[data-auth-panel]"), [0, 0, 720, 900]);
-    await expectBox(page.locator("[data-auth-panel] [data-auth-info-list]"), [64, 553, 498, 291]);
-    const column = await box(page.locator("[data-auth-column]"));
-    near(column.y + column.height / 2, 450);
-  });
+  for (const [width, height] of [
+    [1440, 1200],
+    [1920, 1080],
+  ] as const) {
+    test(`at ${width} × ${height} the branded panel runs the full height and the 900 px composition stays put`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height });
+      await story(page, "authentication-login--full-page");
+      await fontsLoaded(page);
+      const x = (width - 1440) / 2;
+      // The panel owns its gradient down to the bottom of the window ...
+      await expectBox(page.locator("[data-auth-panel]"), [x, 0, 720, height]);
+      // ... while the content keeps its 1440 × 900 coordinates.
+      await expectBox(page.locator("[data-auth-hero]"), { 0: x + 64, 1: 439 });
+      await expectBox(page.locator("[data-auth-panel] [data-auth-info-list]"), {
+        0: x + 64,
+        1: 553,
+        3: 291,
+      });
+      await expectBox(page.locator("[data-auth-column]"), { 0: x + 860, 1: 230, 3: 440 });
+      expect(
+        await page
+          .locator("[data-auth-panel]")
+          .evaluate((el) => getComputedStyle(el).backgroundImage.startsWith("linear-gradient")),
+      ).toBe(true);
+    });
+  }
 
   for (const width of [1920, 1280, 1024]) {
     test(`WA1 frame is centred and contained at ${width}`, async ({ page }) => {
@@ -326,18 +376,61 @@ test.describe("O02w conformance (WebSignUp · 1440 × 940)", () => {
     await fontsLoaded(page);
     await expectBox(page.locator("header").first(), [0, 0, 1440, 76]);
     const frame = frameOf(page, "signup");
-    await expectBox(frame.locator("> div").first(), { 0: 64, 1: 132, 2: 551 });
-    await expectBox(frame.locator("> div > span").first(), [64, 132, 72, 72]);
+    const left = frame.locator("> div").first();
+    await expectBox(left, [64, 132, 551, 522]);
+    await expectBox(left.locator("> span").first(), [64, 132, 72, 72]);
     await expectBox(frame.locator("h1"), { 0: 64, 1: 226, 2: 551 });
+    // The three 54 px methods, 10 px apart (Google renders in a 54 px slot).
+    await expectBox(left.locator("> div").first(), [64, 430, 420, 182]);
+    await expectBox(page.getByRole("link", { name: "Continue with email" }), [64, 558, 420, 54]);
     const grid = frame.locator("section ul");
-    await expectBox(grid, { 0: 687, 1: 164, 2: 689 });
-    // Cards: Unbounded title on the 19/24 h3 role and the 13/20 "Continue" line
-    // (artboard: 18 px / normal) make each card up to 5 px taller.
-    await expectBox(grid.locator("> li").nth(0), { 0: 687, 1: 164, 2: 336, 3: 197 }, 5);
-    await expectBox(grid.locator("> li").nth(1), { 0: 1040, 1: 164, 2: 336 });
-    await expectBox(frame.locator('[data-slot="notice"]'), { 0: 687, 2: 689, 3: 48 });
+    await expectBox(grid, [687, 164, 689, 410]);
+    for (const [index, x, y] of [
+      [0, 687, 164],
+      [1, 1040, 164],
+      [2, 687, 377],
+      [3, 1040, 377],
+    ] as const) {
+      await expectBox(grid.locator("> li").nth(index), [x, y, 336, 197]);
+    }
+    await expectBox(frame.locator('[data-slot="notice"]'), [687, 590, 689, 48]);
     await expectBox(page.locator("[data-site-footer]"), [0, 750, 1440, 190]);
     expect(await overflow(page)).toBeLessThanOrEqual(0);
+  });
+
+  test("footer columns sit on the artboard's x and row positions", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 940 });
+    await story(page, "authentication-sign-up--full-page");
+    await fontsLoaded(page);
+    const footer = page.locator("[data-site-footer]");
+    for (const [name, x, rows] of [
+      ["Product", 404, 4],
+      ["Business", 538, 4],
+      ["Partners", 692, 3],
+      ["Company", 897, 4],
+    ] as const) {
+      const column = footer.getByRole("navigation", { name });
+      await expectBox(column, { 0: x, 1: 787 });
+      // 26 px rows from 808 (13 px links, 8 px apart on the artboard).
+      for (let row = 0; row < rows; row++) {
+        await expectBox(column.locator("> *").nth(row + 1), { 0: x, 1: 808 + row * 26 });
+      }
+    }
+    await expectBox(footer.getByText("The boxing operating system", { exact: false }), {
+      0: 64,
+      1: 827,
+      2: 260,
+    });
+  });
+
+  test("a taller window does not spread the 940 px composition: the footer stays at 750", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 1200 });
+    await story(page, "authentication-sign-up--full-page");
+    await fontsLoaded(page);
+    await expectBox(frameOf(page, "signup").locator("h1"), { 0: 64, 1: 226 });
+    await expectBox(page.locator("[data-site-footer]"), [0, 750, 1440, 190]);
   });
 
   for (const width of [1920, 1280, 1024, 768]) {
@@ -361,14 +454,15 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
     await expectBox(page.locator("header").first(), [0, 0, 1440, 72]);
     await expectBox(page.locator("header a").first(), { 0: 56, 1: 21, 3: 30 });
     await expectBox(page.locator("[data-auth-header-action]"), [1224, 26, 160, 20]);
+    // Right-aligned on the header's 56 px gutter (1440 − 56).
+    const action = await box(page.locator("[data-auth-header-action]"));
+    near(action.x + action.width, 1384);
     await expectBox(page.locator("[data-auth-step-column]"), { 0: 64, 1: 120, 2: 836 });
-    // Below the title, the eyebrow (10/14 label role, artboard 10 px / normal ≈ 13)
-    // and the 34/38 title role (artboard 37.4) accumulate up to 4 px.
     const segmented = page.getByRole("radiogroup", { name: "Signing up as" });
-    await expectBox(segmented, [64, 230, 836, 46], 4);
+    await expectBox(segmented, [64, 230, 836, 46]);
     const fighter = segmented.getByRole("radio", { name: "Fighter" });
     await expect(fighter).toHaveAttribute("data-active", "true");
-    await expectBox(fighter, [69, 235, 273, 36], 4);
+    await expectBox(fighter, [69, 235, 273, 36]);
     expect(await fighter.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
       "rgb(237, 239, 231)",
     );
@@ -379,26 +473,29 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
         "rgba(0, 0, 0, 0)",
       );
     }
-    await expectBox(page.getByLabel("Full name"), [64, 342, 411, 44], 5);
-    await expectBox(page.getByLabel("Email"), [489, 342, 411, 44], 5);
-    await expectBox(
-      page.locator("[data-auth-step-column] form label:has([data-slot=checkbox])").first(),
-      { 0: 64, 1: 438 },
-      5,
-    );
-    await expectBox(
-      page.getByRole("button", { name: "Create account" }),
-      { 0: 64, 1: 540, 2: 150 },
-      5,
-    );
+    await expectBox(page.getByLabel("Full name"), [64, 342, 411, 44]);
+    await expectBox(page.getByLabel("Email"), [489, 342, 411, 44]);
+    const checks = page.locator("[data-auth-step-column] form label:has([data-slot=checkbox])");
+    await expect(checks).toHaveCount(3);
+    for (const [index, y] of [
+      [0, 438],
+      [1, 470],
+      [2, 502],
+    ] as const) {
+      await expectBox(checks.nth(index), { 0: 64, 1: y });
+      await expect(checks.nth(index).locator("[data-slot=checkbox]")).not.toBeChecked();
+    }
+    const create = page.getByRole("button", { name: "Create account" });
+    await expectBox(create, { 0: 64, 1: 540 });
+    // Width follows the label's glyphs (15 px Manrope): within 3 px of 150.
+    await expectBox(create, { 2: 150 }, 3);
     await expect(
       page.getByText("Role, name and consents are set after you verify your email."),
     ).toHaveCount(0);
 
     const aside = page.locator("aside");
     await expectBox(aside, { 0: 956, 1: 120, 2: 420 });
-    // Cards: label (10/14 vs ≈ 13) and badges (10/14 + 8 vs ≈ 20) add up to 3 px.
-    await expectBox(aside.locator("> *").nth(0), [956, 120, 420, 147], 4);
+    await expectBox(aside.locator("> *").nth(0), [956, 120, 420, 147]);
     const chips = aside.locator("> *").nth(0).locator("li > span");
     expect(await chips.nth(0).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
       "rgb(38, 43, 21)",
@@ -406,8 +503,8 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
     expect(await chips.nth(1).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
       "rgb(31, 35, 32)",
     );
-    await expectBox(aside.locator("> *").nth(1), [956, 281, 420, 233], 4);
-    await expectBox(aside.locator("> *").nth(2), [956, 528, 420, 62], 5);
+    await expectBox(aside.locator("> *").nth(1), [956, 281, 420, 233]);
+    await expectBox(aside.locator("> *").nth(2), [956, 528, 420, 62]);
     await expect(page.getByText(/\bW01\b/)).toHaveCount(0);
     await page.screenshot({ path: "test-results/wa3-1440.png" });
   });
@@ -436,20 +533,16 @@ test.describe("WA4 conformance (WebRegVerify · 1440 × 900)", () => {
     await expectBox(page.locator('[data-slot="code-input"] + div'), {
       0: 64,
       1: 254,
-      2: 434,
-      3: 76,
+      2: 446,
+      3: 78,
     });
-    await expectBox(
-      page.getByRole("button", { name: "Verify and continue" }),
-      { 0: 64, 1: 372 },
-      3,
-    );
+    await expectBox(page.getByRole("button", { name: "Verify and continue" }), { 0: 64, 1: 372 });
     await expectBox(page.getByText("Wrong address?", { exact: false }), { 0: 64, 1: 444, 3: 20 });
     await expectBox(page.locator('main [data-slot="notice"]').last(), [64, 484, 560, 80]);
     const aside = page.locator("aside");
     await expectBox(aside, { 0: 956, 1: 120, 2: 420 });
-    await expectBox(aside.locator("> *").nth(0), [956, 120, 420, 201], 4);
-    await expectBox(aside.locator("> *").nth(1), [956, 335, 420, 229], 4);
+    await expectBox(aside.locator("> *").nth(0), [956, 120, 420, 201]);
+    await expectBox(aside.locator("> *").nth(1), [956, 335, 420, 229]);
     await expect(page.getByText("Your code is ••• •••")).toBeVisible();
     await page.screenshot({ path: "test-results/wa4-1440.png" });
   });

@@ -196,7 +196,7 @@ it.
 
 Primitives added with them: `CodeInput` (Claude Design component
 "AuthCodeInput": one `one-time-code` input over six decorative cells, states
-typing, filled, error, expired, submitting, success, locked; 64 × 76 cells,
+typing, filled, error, expired, submitting, success, locked; 66 × 78 cells,
 fluid below `sm`), `Notice` (olive, amber, coral and muted status boxes) and
 `textLinkClass` (inline text actions).
 

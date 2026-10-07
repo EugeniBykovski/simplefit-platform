@@ -52,7 +52,8 @@ type CodeInputProps = Omit<
  * cells: typing, deleting, pasting and screen readers work as in any text
  * field. Purpose, copy, resend and outcome belong to the screens.
  *
- * Web cells are 64 × 76 px, radius `xl`, `type-code-digit`
+ * Web cells are 66 × 78 px (the artboard's 64 × 76 content box inside its
+ * 1 px border; six make the designed 446 px row), radius `xl`, `type-code-digit`
  * (typography.authRoles.web), 10 px apart. Below `sm` (the design draws only
  * 1440) they share the column like the 390 artboards: 62 px tall, radius
  * `lg`, 8 px apart.
@@ -115,7 +116,7 @@ export function CodeInput({
               key={index}
               data-caret={caret || undefined}
               className={cn(
-                "flex h-15.5 min-w-0 flex-1 items-center justify-center rounded-lg border type-code-digit transition-colors sm:h-19 sm:w-16 sm:flex-none sm:rounded-xl",
+                "flex h-15.5 min-w-0 flex-1 items-center justify-center rounded-lg border type-code-digit transition-colors sm:h-19.5 sm:w-16.5 sm:flex-none sm:rounded-xl",
                 CELL_STATE[state],
                 caret && "border-[1.5px] border-primary text-border-strong",
                 state === "error" && "border-[1.5px]",

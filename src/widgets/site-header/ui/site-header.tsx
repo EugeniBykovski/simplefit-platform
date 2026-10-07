@@ -180,7 +180,9 @@ const footerColumns: readonly FooterColumn[] = [
 /**
  * Public website footer (`web.site`; Claude Design WebSignUp / LandHome): the
  * brand blurb and four link columns on the site Container, 36 px vertical
- * padding (32 + 4 px steps), 80 px between groups.
+ * padding (32 + 4 px steps), 80 px between groups. The artboard sets the 13 px
+ * links on 18 px lines, 8 px apart (a 26 px row); with the 20 px `body-sm`
+ * line the gap is 6 px, so every row keeps its designed position.
  */
 export function SiteFooter() {
   const t = useTranslations("shells.site.footer");
@@ -188,7 +190,7 @@ export function SiteFooter() {
   return (
     <footer data-site-footer className="border-t bg-background">
       <Container className="py-8">
-        <div className="flex flex-wrap gap-x-20 gap-y-8 py-1">
+        <div className="flex flex-wrap gap-x-20 gap-y-8 pt-1">
           <div className="flex max-w-65 flex-col gap-2.5">
             <BrandTile size="sm" />
             <p className="type-caption text-faint-foreground">{t("blurb")}</p>
@@ -197,20 +199,22 @@ export function SiteFooter() {
             <nav
               key={column.key}
               aria-label={t(`columns.${column.key}`)}
-              className="flex flex-col gap-2"
+              className="flex flex-col gap-1.5"
             >
-              <p className="type-label text-faint-foreground">{t(`columns.${column.key}`)}</p>
+              <p className="mb-0.5 type-label text-faint-foreground">
+                {t(`columns.${column.key}`)}
+              </p>
               {column.links.map((link) => (
                 <Link
                   key={link.key}
                   href={routeHref(link.route, {}, link.query)}
-                  className="w-fit rounded-xs type-caption text-muted-foreground transition-colors hover:text-foreground"
+                  className="w-fit rounded-xs type-body-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {t(`links.${link.key}`)}
                 </Link>
               ))}
               {column.text?.map((key) => (
-                <span key={key} className="type-caption text-muted-foreground">
+                <span key={key} className="type-body-sm text-muted-foreground">
                   {t(`links.${key}`)}
                 </span>
               ))}
@@ -226,12 +230,22 @@ export function SiteFooter() {
  * The `web.site` chrome: header, the page's `main` landmark and footer. The
  * site layout and pages that render the site chrome themselves (O02w sign-up
  * in the auth group) share it, so their geometry is one implementation.
+ *
+ * - `fill` (the site layout, unchanged from SF-11): `main` grows so the footer
+ *   sits at the bottom of a tall window; the foundation pages centre in it.
+ * - `fill={false}` (O02w): a designed fixed composition. Header, content and
+ *   footer keep their artboard positions at any window height; extra height
+ *   stays below the footer instead of being spread through the page.
  */
-export function SiteFrame({ children }: { children: ReactNode }) {
+export function SiteFrame({ children, fill = true }: { children: ReactNode; fill?: boolean }) {
   return (
-    <div className="flex min-h-dvh flex-col">
+    <div className={fill ? "flex min-h-dvh flex-col" : "flex flex-col"}>
       <SiteHeader />
-      <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
+      <main
+        id="main"
+        tabIndex={-1}
+        className={fill ? "flex flex-1 flex-col outline-none" : "flex flex-col outline-none"}
+      >
         {children}
       </main>
       <SiteFooter />

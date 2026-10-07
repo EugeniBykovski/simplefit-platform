@@ -41,7 +41,12 @@ export function AppleSignInButton() {
   const t = useTranslations("auth.apple");
 
   if (servicesId === undefined || redirectUri === undefined) {
-    return <p className="type-body-sm text-muted-foreground">{t("notConfigured")}</p>;
+    // Keeps the button's 54 px row, so the composition does not shift.
+    return (
+      <p className="flex h-13.5 items-center justify-center type-body-sm text-muted-foreground">
+        {t("notConfigured")}
+      </p>
+    );
   }
 
   return <AppleButton servicesId={servicesId} redirectUri={redirectUri} />;

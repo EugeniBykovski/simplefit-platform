@@ -100,7 +100,9 @@ export function SignInCodeForm({ flow, returnTo }: { flow: PendingSignIn; return
         </div>
       )}
       {!final && (
-        <p className="type-body-sm text-faint-foreground">
+        // WA1b: 13 px under the resend row, and the eyebrow, title and CTA run
+        // 4 px over the artboard; 2 px back keeps the centred column on it.
+        <p className="-mt-0.5 type-body-sm text-faint-foreground">
           {t.rich("wrongEmail", {
             link: (chunks) => (
               <Link href={withReturnTo("web.login", returnTo)} className={textLinkClass}>
@@ -113,7 +115,8 @@ export function SignInCodeForm({ flow, returnTo }: { flow: PendingSignIn; return
       <Notice tone="muted" icon={ShieldIcon}>
         {code("neverShare")}
       </Notice>
-      <p className="type-body-sm text-faint-foreground">
+      {/* 2 px closer: WA1b sets this line at 18 px, the `body-sm` line is 20. */}
+      <p className="-mt-0.5 type-body-sm text-faint-foreground">
         {t.rich("newHere", {
           link: (chunks) => (
             <Link href={withReturnTo("web.signup", returnTo)} className={textLinkClass}>

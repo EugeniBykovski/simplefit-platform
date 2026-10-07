@@ -274,6 +274,27 @@ genuinely SimpleFit-specific graphics.
 - Never export from Claude Design: buttons, cards, Lucide icons, typography,
   UI backgrounds, borders or screen compositions.
 
+### 8.4 Fixed-frame compositions (web)
+
+Web artboards are fixed frames: 1440 px wide and the artboard's own height
+(900 for the auth screens, 940 for O02w). Production reproduces that
+coordinate system:
+
+- At 1440 × the artboard height, every element lands on the artboard's
+  coordinates (the geometry suite checks major anchors within 2 px).
+- Wider than 1440, the composition is centred in the canonical `frame`
+  Container and never stretched horizontally.
+- Taller than the artboard, the internal layout is not redistributed: no
+  `min-h-dvh` + `flex-1` spreading, `justify-between` or bottom-anchored
+  footers inside a designed composition. Extra height stays outside it (below
+  the footer, or under a background that the design structurally assigns to
+  a full-height region, such as the WA1 brand panel).
+- Narrower than 1440, the layout adapts responsively.
+
+Type roles whose line height differs from the artboard's `line-height:
+normal` are compensated with spacing steps where they accumulate, so rows
+keep their designed positions; tokens are not changed to match.
+
 ## 9. States and flows
 
 These artboards are **specifications, not scope**:
