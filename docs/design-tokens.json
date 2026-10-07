@@ -423,6 +423,69 @@
           "uppercase": true
         }
       }
+    },
+    "authRoles": {
+      "$comment": "SF-24: authentication typography (Claude Design onboarding page: WA1/WA1b sign in, O02w sign up, WA3/WA4 registration, WA4b link result, A01 welcome, O01c/O03 code entry). Larger than the product roles and specific to the auth frames, so each role has a web (1440) and a mobile (390) value. Use only on authentication screens.",
+      "web": {
+        "auth-display": {
+          "family": "display",
+          "size": 52,
+          "lineHeight": 54,
+          "weight": 600,
+          "tracking": -0.035
+        },
+        "auth-hero": {
+          "family": "display",
+          "size": 48,
+          "lineHeight": 50,
+          "weight": 600,
+          "tracking": -0.035
+        },
+        "auth-title": {
+          "family": "display",
+          "size": 34,
+          "lineHeight": 38,
+          "weight": 600,
+          "tracking": -0.025
+        },
+        "auth-heading": {
+          "family": "display",
+          "size": 30,
+          "lineHeight": 34,
+          "weight": 600,
+          "tracking": -0.025
+        },
+        "auth-lead": {
+          "family": "sans",
+          "size": 17,
+          "lineHeight": 26,
+          "weight": 400,
+          "tracking": 0
+        },
+        "code-digit": {
+          "family": "display",
+          "size": 30,
+          "lineHeight": 34,
+          "weight": 700,
+          "tracking": 0
+        }
+      },
+      "mobile": {
+        "auth-hero": {
+          "family": "display",
+          "size": 31,
+          "lineHeight": 35,
+          "weight": 600,
+          "tracking": -0.03
+        },
+        "code-digit": {
+          "family": "display",
+          "size": 24,
+          "lineHeight": 28,
+          "weight": 700,
+          "tracking": 0
+        }
+      }
     }
   },
   "spacing": {
@@ -542,6 +605,13 @@
         "height": 40,
         "radius": "md",
         "text": "body-sm"
+      },
+      "webLarge": {
+        "height": 44,
+        "radius": "md",
+        "text": "body",
+        "weight": 600,
+        "$comment": "SF-24: the 44 px email field of the web auth screens (WA1, WA3)."
       },
       "mobile": {
         "height": 54,

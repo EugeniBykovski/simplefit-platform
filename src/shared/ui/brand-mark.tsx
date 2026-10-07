@@ -1,5 +1,6 @@
 import type { ComponentProps } from "react";
 
+import { siteConfig } from "@/shared/config/site";
 import { cn } from "@/shared/lib/utils";
 
 /**
@@ -29,18 +30,46 @@ export function BrandMark({ className, ...props }: ComponentProps<"svg">) {
   );
 }
 
-/** The mark on its olive tile (site header 32 px, sidebar 30 px; radius `sm`). */
-export function BrandTile({ size = "md", className }: { size?: "sm" | "md"; className?: string }) {
+const tileSizes = {
+  sm: { tile: "size-7.5 rounded-sm", mark: "size-5.5" },
+  md: { tile: "size-8 rounded-sm", mark: "size-5.75" },
+  lg: { tile: "size-9 rounded-sm", mark: "size-6.5" },
+  xl: { tile: "size-18 rounded-3xl", mark: "size-13" },
+} as const;
+
+/**
+ * The mark on its olive tile: sidebar and registration header 30 px, site
+ * header 32 px, sign-in panel 36 px (radius `sm`); the 72 px sign-up tile
+ * (radius `3xl`, O02w).
+ */
+export function BrandTile({
+  size = "md",
+  className,
+}: {
+  size?: keyof typeof tileSizes;
+  className?: string;
+}) {
   return (
     <span
       aria-hidden
       className={cn(
-        "flex flex-none items-center justify-center rounded-sm bg-primary text-primary-foreground",
-        size === "md" ? "size-8" : "size-7.5",
+        "flex flex-none items-center justify-center bg-primary text-primary-foreground",
+        tileSizes[size].tile,
         className,
       )}
     >
-      <BrandMark className={size === "md" ? "size-5.75" : "size-5.5"} />
+      <BrandMark className={tileSizes[size].mark} />
+    </span>
+  );
+}
+
+/** "SimpleFit Boxing" with the sport in olive 500, as in every brand lockup. */
+export function BrandWordmark({ className }: { className?: string }) {
+  const [brand, ...sport] = siteConfig.name.split(" ");
+  return (
+    <span className={cn("type-title", className)}>
+      {brand}
+      <span className="text-primary-muted"> {sport.join(" ")}</span>
     </span>
   );
 }

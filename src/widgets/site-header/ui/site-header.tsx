@@ -6,7 +6,7 @@ import { ThemeSwitcher } from "@/features/switch-theme";
 import { siteConfig } from "@/shared/config/site";
 import { Link } from "@/shared/i18n/navigation";
 import { routeHref } from "@/shared/routes/routes";
-import { BrandTile } from "@/shared/ui/brand-mark";
+import { BrandTile, BrandWordmark } from "@/shared/ui/brand-mark";
 import { Button } from "@/shared/ui/button";
 import { Container } from "@/shared/ui/container";
 import {
@@ -113,14 +113,10 @@ export function SiteHeader() {
 
 /** Brand lockup of the public header: the olive tile and "SimpleFit Boxing". */
 function BrandLockup() {
-  const [brand, ...sport] = siteConfig.name.split(" ");
   return (
     <Link href={routeHref("web.root")} className="flex items-center gap-2.5 rounded-md">
       <BrandTile />
-      <span className="type-title">
-        {brand}
-        <span className="text-primary-muted"> {sport.join(" ")}</span>
-      </span>
+      <BrandWordmark />
     </Link>
   );
 }
