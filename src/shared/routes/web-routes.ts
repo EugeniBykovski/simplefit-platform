@@ -1308,7 +1308,7 @@ export const webRoutes = [
     parent: "web.app",
     nav: "WIZARD",
     session: "AUTHENTICATED",
-    capability: "FIGHTER",
+    capability: null,
     phase: "ONBOARDING",
   },
   {

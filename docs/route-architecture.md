@@ -39,7 +39,7 @@ canonical artifact (https://claude.ai/artifact/JEsBg51MjX8KiHWEro8omY):
 
 | Registry id | Artboard                | Title                                                 | Rows |
 | ----------- | ----------------------- | ----------------------------------------------------- | ---- |
-| `gallery-1` | `GalleryIndex.dc.html`  | route gallery 1 / 3 · onboarding & fighter mobile     | 239  |
+| `gallery-1` | `GalleryIndex.dc.html`  | route gallery 1 / 3 · onboarding & fighter mobile     | 240  |
 | `gallery-2` | `GalleryIndex2.dc.html` | route gallery 2 / 3 · coach & gym mobile, web app     | 122  |
 | `gallery-3` | `GalleryIndex4.dc.html` | route gallery 3 / 3 · partners, admin, site & backend | 118  |
 
@@ -60,7 +60,9 @@ Rules:
   the SF-21 email sign-in code (mobile O01c and web WA1b, `/login/code`), the
   staff-invite email confirmation (OS1b, `/invite/staff/:token/confirm`), the
   web email-verification link landing (WA4b, `/verify-email`) and the E17
-  sign-in code email (`source.version`).
+  sign-in code email, then with `1791399145-48dd` (SF-27 design pass), which
+  added the WF0 row (web Fighter "Profile basics", `?step=basics`) and marked
+  WF2–WF5 future (`D-WEB-FIGHTER-ONBOARDING-FLOW`) (`source.version`).
 
 ## 2. Canonical route model
 
@@ -119,6 +121,7 @@ an output or an `excludedRows` entry; the tests check the total.
 | `route`                   | Route id                                                                                                                       |
 | `query`, `hash`, `states` | The row's query (`step`, `state`, `modal`, `tab`, …), fragment and listed states                                               |
 | `condition`               | Session condition that selects the screen instead of a query (`NO_SESSION` for QA1)                                            |
+| `status`, `discrepancies` | Absent for a current screen. `DEFERRED` keeps a gallery row the design marks future, with the discrepancy that says why (§10)  |
 | `design`                  | `gallery`, canvas `page`, `section`, `step`, platform `tag`, `artboard`; `galleryPath`/`pathNote` when the path was normalized |
 
 ## 3. Route ownership
@@ -299,7 +302,7 @@ mobile.root  root Stack (IMPLEMENTED)
 | ------------ | ---------------------------------------------------------------------------------------------------------------- |
 | `NAV_ITEM`   | Linked from a tab bar or sidebar item (`nav.from`)                                                               |
 | `STACK`      | Child page reached from its `parent`                                                                             |
-| `WIZARD`     | One route whose screens are `?step=` steps                                                                       |
+| `WIZARD`     | One route whose screens are `?step=` steps; the step is navigation only, never the persisted wizard state        |
 | `STANDALONE` | Top-level page with no parent route (auth pages, site pages, deep-linkable details)                              |
 | `ENTRY`      | Resolves and redirects (`web.app`, `mobile.root`)                                                                |
 | `REDIRECT`   | Section entry that always redirects to `redirect.to` and renders nothing (`web.app.camp` → `web.app.camp.board`) |
@@ -396,6 +399,19 @@ only a rejected credential (401) is. Without any mobile destination (a sponsor-o
 falls back to `guards.defaultDestinationFallback` (`/workspaces`,
 `D-MOBILE-SPONSOR-ADMIN`).
 
+**Web Fighter onboarding (SF-27).** `/app/onboarding/fighter` needs an
+authenticated session only (`capability: null`, `phase: ONBOARDING`): it is
+the route that creates and resumes the FighterProfile, and the FIGHTER
+capability exists only once that profile does, so requiring it would be
+circular. Fighter intent reaches it through `returnTo` from sign-up, never
+through a user role or type. Its current steps are WF0 (`?step=basics`), WF1
+(`?step=profile`) and WF6 (`?step=complete`); the query is navigation only.
+Which step to show, and whether onboarding is complete, comes from
+`GET /api/v1/me/fighter-profile` (SF-25: `onboarding.status`,
+`missing_requirements`), and completion happens only through
+`POST /api/v1/me/fighter-profile/complete-onboarding`. WF2–WF5 are
+`DEFERRED` until their Gym, Coach, privacy and notification domains exist.
+
 **Checkout** (`/checkout`, mobile) is `PUBLIC`. Without a session it renders
 the designed quick-account state (QA1, `condition: NO_SESSION`); every payment
 operation requires a normal SimpleFit identity and session, enforced by the
@@ -444,6 +460,11 @@ Both repositories carry this registry byte for byte, including both
 platforms' statuses: a ticket that changes routes or statuses on one platform
 copies the registry (and this document) to the other repository in the same
 change, and each repository's tests check its own router against it.
+
+Screens carry no status while current. A gallery row the design keeps but
+marks future gets `status: "DEFERRED"` and the discrepancy that explains it;
+clients never build or route to it. Since `1791399145-48dd` that is WF2–WF5
+of web Fighter onboarding (`D-WEB-FIGHTER-ONBOARDING-FLOW`).
 
 A screen's visual fidelity is not tracked here. It is delivered by the feature
 ticket that implements the screen from its artboard.
@@ -718,8 +739,9 @@ screenshots:
 
 Every entry has a source A, a source B, the exact mismatch, its impact, a
 resolution and a status; the full text is in `discrepancies` of the registry.
-The 18 product decisions approved on 2026-10-06 carry `decision` and
-`decidedOn`. No discrepancy awaits a product decision; five are `DEFERRED`.
+The 18 product decisions approved on 2026-10-06 and the SF-27 decision of
+2026-10-07 carry `decision` and `decidedOn`. No discrepancy awaits a product
+decision; six are `DEFERRED`.
 
 | Id                                 | Status   | Decision / summary                                                                         |
 | ---------------------------------- | -------- | ------------------------------------------------------------------------------------------ |
@@ -757,6 +779,7 @@ The 18 product decisions approved on 2026-10-06 carry `decision` and
 | `D-404-SCOPE`                      | RESOLVED | One web catch-all for every area                                                           |
 | `D-CANVAS-GROWTH`                  | RESOLVED | Canvas grew from 456 (SF-16) to 473 artboards (`1791276973-ad1d`)                          |
 | `D-WEB-COACH-FIGHTER-INVITE`       | DEFERRED | Coach web "Invite fighters" links the mobile INV1 artboard: design gap, no web route       |
+| `D-WEB-FIGHTER-ONBOARDING-FLOW`    | DEFERRED | Web Fighter onboarding: WF0, WF1, WF6 current; WF2–WF5 future; session-only access         |
 
 Gallery rows dropped by a decision are listed in `excludedRows`, so every
 row stays accounted for:

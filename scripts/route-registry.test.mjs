@@ -264,6 +264,23 @@ describe("screens", () => {
     expect(found).toEqual([]);
   });
 
+  it("are current unless DEFERRED by a discrepancy that lists them", () => {
+    const found = problems(screens, (screen, report) => {
+      if (!("status" in screen)) {
+        if ("discrepancies" in screen) report("discrepancies without a status");
+        return;
+      }
+      if (screen.status !== "DEFERRED") report(`unknown screen status ${screen.status}`);
+      if (!(screen.discrepancies?.length > 0)) report("DEFERRED without a discrepancy");
+      for (const id of screen.discrepancies ?? []) {
+        const entry = discrepancies.find((candidate) => candidate.id === id);
+        if (!entry) report(`unknown discrepancy ${id}`);
+        else if (!entry.screens?.includes(screen.id)) report(`${id} does not list it`);
+      }
+    });
+    expect(found).toEqual([]);
+  });
+
   it("select their state by query or a known session condition", () => {
     const found = problems(screens, (screen, report) => {
       if ("condition" in screen && screen.condition !== "NO_SESSION") {
@@ -540,6 +557,37 @@ describe("design gaps", () => {
   });
 });
 
+describe("web Fighter onboarding (SF-27, design 1791399145-48dd)", () => {
+  const route = routeById.get("web.app.onboarding.fighter");
+  const ofRoute = screens.filter((screen) => screen.route === "web.app.onboarding.fighter");
+
+  it("needs a session only: the route creates the FighterProfile that grants FIGHTER", () => {
+    expect(route.access).toEqual({
+      session: "AUTHENTICATED",
+      capability: null,
+      phase: "ONBOARDING",
+    });
+    expect(registry.capabilities.FIGHTER.onboarding.web).toBe("web.app.onboarding.fighter");
+  });
+
+  it("has exactly WF0, WF1 and WF6 as current steps, addressed by ?step=", () => {
+    const current = ofRoute.filter((screen) => !("status" in screen));
+    expect(current.map((screen) => [screen.id, screen.query])).toEqual([
+      ["WF0", { step: "basics" }],
+      ["WF1", { step: "profile" }],
+      ["WF6", { step: "complete" }],
+    ]);
+    expect(route.screens).toEqual(["WF0", "WF1", "WF2", "WF3", "WF4", "WF5", "WF6"]);
+  });
+
+  it("keeps WF2-WF5 as DEFERRED gallery rows, never current", () => {
+    const deferred = ofRoute.filter((screen) => screen.status === "DEFERRED");
+    expect(deferred.map((screen) => screen.id)).toEqual(["WF2", "WF3", "WF4", "WF5"]);
+    for (const screen of deferred)
+      expect(screen.discrepancies).toEqual(["D-WEB-FIGHTER-ONBOARDING-FLOW"]);
+  });
+});
+
 describe("discrepancies", () => {
   it("are complete and referenced consistently", () => {
     expect(duplicates(discrepancies.map((entry) => entry.id))).toEqual([]);
@@ -551,6 +599,8 @@ describe("discrepancies", () => {
       for (const id of entry.routes) if (!routeById.has(id)) report(`unknown route ${id}`);
       for (const id of entry.designGaps ?? [])
         if (!gapIds.has(id)) report(`unknown design gap ${id}`);
+      for (const id of entry.screens ?? [])
+        if (!screens.some((screen) => screen.id === id)) report(`unknown screen ${id}`);
     });
     expect(found).toEqual([]);
   });
