@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-import { AppleSignInButton } from "@/features/sign-in-with-apple";
-import { GoogleSignInButton } from "@/features/sign-in-with-google";
-import { Link } from "@/shared/i18n/navigation";
 import { localeAlternates } from "@/shared/i18n/metadata";
 import { resolveLocaleParam } from "@/shared/i18n/params";
-import { AuthFrame } from "@/widgets/auth-frame";
+import { sanitizeReturnTo } from "@/shared/routes/return-to";
+import { SignupScreen } from "@/widgets/auth-screens";
+import { SiteFooter, SiteHeader } from "@/widgets/site-header";
 
 export async function generateMetadata({
   params,
@@ -16,25 +15,17 @@ export async function generateMetadata({
   return { title: t("metaTitle"), alternates: localeAlternates("/signup", locale) };
 }
 
-/** O02w sign-up with Google (SF-22) and Apple (SF-23); the role picker and email follow in SF-24. */
-export default async function SignupPage({ params }: PageProps<"/[locale]/signup">) {
-  const locale = await resolveLocaleParam(params);
-  const t = await getTranslations({ locale, namespace: "auth.signup" });
-
+/** O02w sign-up in the public site chrome (SF-24). */
+export default async function Page({ params, searchParams }: PageProps<"/[locale]/signup">) {
+  await resolveLocaleParam(params);
+  const returnTo = sanitizeReturnTo((await searchParams).returnTo);
   return (
-    <AuthFrame
-      title={t("title")}
-      description={t("description")}
-      footer={t.rich("haveAccount", {
-        link: (chunks) => (
-          <Link href="/login" className="rounded-xs font-extrabold text-highlight">
-            {chunks}
-          </Link>
-        ),
-      })}
-    >
-      <GoogleSignInButton />
-      <AppleSignInButton />
-    </AuthFrame>
+    <div className="flex min-h-dvh flex-col">
+      <SiteHeader />
+      <main id="main" tabIndex={-1} className="flex-1 outline-none">
+        <SignupScreen returnTo={returnTo} />
+      </main>
+      <SiteFooter />
+    </div>
   );
 }

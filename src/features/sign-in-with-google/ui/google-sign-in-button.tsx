@@ -5,11 +5,10 @@ import { useTheme } from "next-themes";
 import Script from "next/script";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { cookieTransport, startSession } from "@/entities/session";
+import { completeAuthentication, cookieTransport } from "@/entities/session";
 import { authenticateWithGoogle } from "@/shared/api/generated/endpoints/auth/auth";
 import { isApiError } from "@/shared/api/http/api-error";
 import { publicEnv } from "@/shared/config/env";
-import { useRouter } from "@/shared/i18n/navigation";
 import {
   GOOGLE_IDENTITY_SCRIPT_URL,
   googleIdentity,
@@ -32,9 +31,11 @@ const MAX_WIDTH = 400;
  * stored, logged or put in a URL. There is no client secret and no
  * authorization-code flow.
  *
- * Both a new and an existing account continue to the `/app` entry route, which
- * resolves where the user belongs (route-architecture §9); no role is inferred
- * here.
+ * The session goes through `completeAuthentication`, the pipeline shared with
+ * Apple and the email code (SF-24): it resolves the viewer, and the
+ * guest-only gate then enters the application (a valid `returnTo`, otherwise
+ * `/app`). A new and an existing account are treated alike; no role is
+ * inferred here.
  */
 export function GoogleSignInButton() {
   const clientId = publicEnv.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
@@ -51,30 +52,29 @@ function GoogleButton({ clientId }: { clientId: string }) {
   const t = useTranslations("auth.google");
   const locale = useLocale();
   const { resolvedTheme } = useTheme();
-  const router = useRouter();
   const container = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(() => googleIdentity() !== undefined);
   const [exchanging, setExchanging] = useState(false);
   const [failure, setFailure] = useState<Failure | undefined>();
 
-  const exchange = useCallback(
-    async (idToken: string) => {
-      setExchanging(true);
-      setFailure(undefined);
-      try {
-        const session = await authenticateWithGoogle(
-          { id_token: idToken, refresh_token_transport: "cookie" },
-          cookieTransport,
-        );
-        startSession(session);
-        router.replace("/app");
-      } catch (error) {
-        setFailure(failureOf(error));
+  const exchange = useCallback(async (idToken: string) => {
+    setExchanging(true);
+    setFailure(undefined);
+    try {
+      const session = await authenticateWithGoogle(
+        { id_token: idToken, refresh_token_transport: "cookie" },
+        cookieTransport,
+      );
+      // Stays "exchanging" until the gate navigates into the application.
+      if ((await completeAuthentication(session)) === "anonymous") {
+        setFailure("generic");
         setExchanging(false);
       }
-    },
-    [router],
-  );
+    } catch (error) {
+      setFailure(failureOf(error));
+      setExchanging(false);
+    }
+  }, []);
 
   useEffect(() => {
     const identity = googleIdentity();

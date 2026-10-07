@@ -2,6 +2,8 @@ import { act, screen } from "@testing-library/react";
 import { useEffect } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import type * as SessionModule from "@/entities/session";
+
 import { resetGoogleIdentityForTests, type GoogleIdentity } from "@/shared/lib/google-identity";
 import { jsonResponse, renderWithProviders } from "@/test/render";
 
@@ -16,8 +18,12 @@ const env = vi.hoisted(() => ({
 }));
 vi.mock("@/shared/config/env", () => ({ publicEnv: env }));
 
-const replace = vi.hoisted(() => vi.fn());
-vi.mock("@/shared/i18n/navigation", () => ({ useRouter: () => ({ replace }) }));
+// Every sign-in method ends in the shared session pipeline (SF-24); navigation is the gate's job.
+const completeAuthentication = vi.hoisted(() => vi.fn(async () => "authenticated" as const));
+vi.mock("@/entities/session", async (importOriginal) => ({
+  ...(await importOriginal<typeof SessionModule>()),
+  completeAuthentication,
+}));
 
 // next/script cannot load anything in jsdom: report the script as loaded, or failed.
 const script = vi.hoisted(() => ({ fails: false }));
@@ -70,6 +76,7 @@ describe("GoogleSignInButton", () => {
     env.NEXT_PUBLIC_GOOGLE_CLIENT_ID = CLIENT_ID;
     script.fails = false;
     resetGoogleIdentityForTests();
+    completeAuthentication.mockClear();
     localStorage.clear();
     sessionStorage.clear();
   });
@@ -90,7 +97,7 @@ describe("GoogleSignInButton", () => {
   });
 
   it.each(["created", "existing"] as const)(
-    "exchanges the ID token for a cookie session and enters the app (%s account)",
+    "exchanges the ID token for a cookie session and completes the shared session pipeline (%s account)",
     async (account) => {
       const google = installGoogle();
       const fetchMock = vi.fn().mockResolvedValue(session(account));
@@ -109,7 +116,9 @@ describe("GoogleSignInButton", () => {
         id_token: ID_TOKEN,
         refresh_token_transport: "cookie",
       });
-      expect(replace).toHaveBeenCalledWith("/app");
+      expect(completeAuthentication).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({ refresh_token_transport: "cookie" }),
+      );
 
       // The Google ID token is used once and never kept.
       const kept = [
@@ -142,7 +151,7 @@ describe("GoogleSignInButton", () => {
 
     expect(screen.getByRole("alert")).toHaveTextContent(message);
     expect(screen.getByRole("button", { name: "Continue with Google" })).toBeVisible();
-    expect(replace).not.toHaveBeenCalled();
+    expect(completeAuthentication).not.toHaveBeenCalled();
   });
 
   it("reports a network failure", async () => {

@@ -19,7 +19,17 @@ const shells = new Map(
 const LOCALE_ROOT = "src/app/[locale]";
 
 /** Real screens from earlier tickets: SF-32 must never turn them into placeholders. */
-const REAL_SCREENS = ["web.root", "web.app", "web.login", "web.signup", "web.dev.design-system"];
+const REAL_SCREENS = [
+  "web.root",
+  "web.app",
+  "web.login",
+  "web.login.code",
+  "web.signup",
+  "web.signup.account",
+  "web.signup.verify",
+  "web.verify-email",
+  "web.dev.design-system",
+];
 
 const placeholderSource = (id) => `import { placeholderRoute } from "@/widgets/feature-placeholder";
 

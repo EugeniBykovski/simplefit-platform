@@ -11,6 +11,15 @@ import type { StorybookConfig } from "@storybook/nextjs-vite";
  * files hold, and in CI, which has none.
  */
 process.env.NEXT_PUBLIC_API_URL = "http://localhost:4000";
+/*
+ * Auth providers are never configured in the workshop (SF-24): Google and
+ * Apple render their "not available" fallback instead of loading Google
+ * Identity Services or Apple JS, whatever the local .env files hold. Blank
+ * means "not configured" (src/shared/config/env.ts).
+ */
+process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID = "";
+process.env.NEXT_PUBLIC_APPLE_SERVICES_ID = "";
+process.env.NEXT_PUBLIC_APPLE_REDIRECT_URI = "";
 
 /*
  * Storybook is the development, documentation and visual-QA workshop for the
