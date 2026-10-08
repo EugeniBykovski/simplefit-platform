@@ -29,6 +29,8 @@ const REAL_SCREENS = [
   "web.signup.verify",
   "web.verify-email",
   "web.dev.design-system",
+  // SF-38: Fighter web registration (WF0, WF1, WF6).
+  "web.app.onboarding.fighter",
 ];
 
 const placeholderSource = (id) => `import { placeholderRoute } from "@/widgets/feature-placeholder";

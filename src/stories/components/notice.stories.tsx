@@ -38,3 +38,35 @@ export const Muted: Story = {
     children: "Never share this code. SimpleFit staff will never ask you for it.",
   },
 };
+
+/** Fighter registration (WF0 / WF1): the status dot instead of an icon, with an action at the right. */
+export const DotWithAction: Story = {
+  args: {
+    tone: "amber",
+    icon: undefined,
+    children: (
+      <span className="flex flex-col gap-0.5">
+        <b>We couldn’t save your changes.</b>
+        <span>Check your connection. Nothing you typed is lost.</span>
+      </span>
+    ),
+    action: (
+      <button type="button" className="type-caption font-extrabold underline">
+        Retry
+      </button>
+    ),
+  },
+};
+
+export const DotCoral: Story = {
+  args: {
+    tone: "coral",
+    icon: undefined,
+    children: (
+      <span className="flex flex-col gap-0.5">
+        <b>Check the highlighted fields.</b>
+        <span>Fix them to save this step.</span>
+      </span>
+    ),
+  },
+};

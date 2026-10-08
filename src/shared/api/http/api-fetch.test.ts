@@ -59,6 +59,38 @@ describe("apiFetch", () => {
     });
   });
 
+  it("exposes the stable field codes of a validation error", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        jsonResponse(
+          {
+            error: {
+              code: "validation_error",
+              message: "Request validation failed",
+              details: {
+                fields: { username: ["has already been taken"], city: ["can't be blank", 7] },
+                field_codes: { username: ["already_exists"], city: ["required", 7] },
+              },
+              request_id: null,
+            },
+          },
+          { status: 422 },
+        ),
+      ),
+    );
+
+    const error = await apiFetch("/api/v1/things").catch((e: unknown) => e);
+
+    expect(error).toBeInstanceOf(ApiError);
+    // Only well-formed entries: a field whose codes are not all strings is dropped.
+    expect((error as ApiError).fieldCodes).toEqual({ username: ["already_exists"] });
+    // Field codes belong to validation errors only.
+    expect(
+      new ApiError(409, "conflict", "", { field_codes: { a: ["x"] } }, null).fieldCodes,
+    ).toEqual({});
+  });
+
   it("carries the retry-after delay of a rate-limited response", async () => {
     vi.stubGlobal(
       "fetch",

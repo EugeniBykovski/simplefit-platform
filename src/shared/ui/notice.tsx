@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type { LucideIcon } from "lucide-react";
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
 
 import { cn } from "@/shared/lib/utils";
 
@@ -13,6 +13,10 @@ import { cn } from "@/shared/lib/utils";
  * - `amber`: something to act on ("This code has expired");
  * - `coral`: errors ("That code isn't right");
  * - `muted`: guidance ("Never share this code").
+ *
+ * Without an `icon` the marker is the 8 px status dot of the Fighter
+ * registration notices (WF0, WF1; SF-38); `action` sits at the right
+ * ("Retry", "Go to Profile basics").
  */
 const noticeVariants = cva(
   "flex items-start gap-2.5 rounded-lg border px-3.5 py-3 type-caption text-pretty",
@@ -36,19 +40,36 @@ const iconTone = {
   muted: "text-faint-foreground",
 } as const;
 
+const dotTone = {
+  olive: "bg-highlight",
+  amber: "bg-warning",
+  coral: "bg-destructive",
+  muted: "bg-faint-foreground",
+} as const;
+
 type NoticeProps = ComponentProps<"div"> &
   VariantProps<typeof noticeVariants> & {
-    icon: LucideIcon;
+    icon?: LucideIcon;
+    action?: ReactNode;
   };
 
-export function Notice({ tone, icon: Icon, className, children, ...props }: NoticeProps) {
+export function Notice({ tone, icon: Icon, action, className, children, ...props }: NoticeProps) {
   return (
     <div data-slot="notice" className={cn(noticeVariants({ tone }), className)} {...props}>
-      {/* The artboards' icon box: a 16 px glyph in a 21 px line box, 1 px down. */}
-      <span aria-hidden className="mt-px flex h-[21px] flex-none">
-        <Icon className={cn("size-4", iconTone[tone ?? "muted"])} />
-      </span>
+      {Icon ? (
+        // The artboards' icon box: a 16 px glyph in a 21 px line box, 1 px down.
+        <span aria-hidden className="mt-px flex h-[21px] flex-none">
+          <Icon className={cn("size-4", iconTone[tone ?? "muted"])} />
+        </span>
+      ) : (
+        // The status dot: 8 px, on the first line (WF0 / WF1 draw it 5 px down; 4 is the step).
+        <span
+          aria-hidden
+          className={cn("mt-1 size-2 flex-none rounded-full", dotTone[tone ?? "muted"])}
+        />
+      )}
       <div className="min-w-0">{children}</div>
+      {action !== undefined && <div className="ml-auto flex-none">{action}</div>}
     </div>
   );
 }

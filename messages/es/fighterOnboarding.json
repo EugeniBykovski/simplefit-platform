@@ -1,0 +1,192 @@
+{
+  "metaTitle": "Registro de boxeador",
+  "frame": {
+    "badge": "Registro de boxeador",
+    "doneBadge": "Boxeador · listo",
+    "saveExit": "Guardar y salir"
+  },
+  "nav": {
+    "label": "Pasos del registro de boxeador",
+    "title": "Registro de boxeador",
+    "note": "Se guarda sobre la marcha · termina luego desde cualquier dispositivo.",
+    "steps": {
+      "basics": "Datos del perfil",
+      "profile": "Perfil de boxeo",
+      "complete": "Listo"
+    },
+    "done": "hecho",
+    "unavailable": "al terminar"
+  },
+  "loading": "Cargando tu perfil de boxeador…",
+  "loadFailure": {
+    "title": "No pudimos cargar tu perfil de boxeador.",
+    "body": "Revisa tu conexión e inténtalo de nuevo.",
+    "retry": "Reintentar"
+  },
+  "notices": {
+    "failure": {
+      "title": "No pudimos guardar tus cambios.",
+      "typed": "Revisa tu conexión. No se perdió nada de lo que escribiste.",
+      "selected": "Revisa tu conexión. No se perdió nada de lo que elegiste.",
+      "retry": "Reintentar"
+    },
+    "invalid": {
+      "title": "Revisa los campos marcados.",
+      "body": "Corrígelos para guardar este paso."
+    },
+    "rejected": {
+      "title": "Aún faltan algunos datos.",
+      "basics": "Datos del perfil: {fields}",
+      "profile": "Perfil de boxeo: {fields}",
+      "goBasics": "Ir a datos del perfil"
+    },
+    "account": {
+      "title": "Primero completa los datos básicos de tu cuenta.",
+      "body": "Tu nombre, fecha de nacimiento y consentimientos van antes de tu perfil de boxeador.",
+      "action": "Ir a datos de la cuenta"
+    }
+  },
+  "basics": {
+    "eyebrow": "Paso 1 de 2 · Datos del perfil",
+    "title": "Tu perfil de boxeador",
+    "lead": "Así te encuentran compañeros y entrenadores. Nombre, usuario y ciudad se muestran en tu perfil.",
+    "name": {
+      "label": "Nombre",
+      "placeholder": "Tu nombre",
+      "help": "Lo ven tus compañeros y entrenadores."
+    },
+    "username": {
+      "label": "Usuario",
+      "placeholder": "username",
+      "help": "3–30 letras, dígitos o _ · único · en minúsculas."
+    },
+    "country": {
+      "label": "País",
+      "placeholder": "Selecciona un país",
+      "help": "Busca en la lista. Se guarda como código de país ISO.",
+      "search": "Buscar países",
+      "searchPlaceholder": "Buscar",
+      "empty": "Ningún país coincide."
+    },
+    "city": {
+      "label": "Ciudad",
+      "placeholder": "Tu ciudad",
+      "help": "Texto libre."
+    },
+    "continue": "Continuar",
+    "saving": "Guardando…"
+  },
+  "preview": {
+    "title": "Vista previa del perfil",
+    "name": "Tu nombre",
+    "username": "username",
+    "city": "Ciudad",
+    "country": "País",
+    "private": "Los datos corporales que añadas luego (peso, altura) son privados."
+  },
+  "profile": {
+    "eyebrow": "Paso 2 de 2 · Perfil de boxeo",
+    "title": "Tu perfil de boxeo",
+    "lead": "Ayuda a entrenadores y gimnasios a saber en qué punto estás. Cámbialo cuando quieras.",
+    "experience": {
+      "label": "Experiencia",
+      "options": {
+        "new_to_boxing": "Nuevo en el boxeo",
+        "recreational": "Recreativo",
+        "amateur": "Amateur",
+        "competitive_amateur": "Amateur competitivo",
+        "professional": "Profesional"
+      }
+    },
+    "stance": {
+      "label": "Guardia",
+      "options": {
+        "orthodox": "Ortodoxa",
+        "southpaw": "Zurda",
+        "switch": "Cambiante"
+      }
+    },
+    "bouts": {
+      "label": "Peleas amateur · opcional",
+      "placeholder": "0",
+      "help": "Se conserva si cambias de nivel."
+    },
+    "goals": {
+      "label": "Objetivos · los que quieras",
+      "options": {
+        "fitness": "Forma física",
+        "learn_boxing": "Aprender boxeo",
+        "improve_technique": "Mejorar la técnica",
+        "competition": "Competición",
+        "fight_preparation": "Preparar una pelea"
+      }
+    },
+    "weightClass": {
+      "label": "Categoría de peso · privada",
+      "placeholder": "Selecciona · o No estoy seguro",
+      "options": {
+        "minus_63_5": "−63,5 kg",
+        "minus_67": "−67 kg",
+        "minus_71": "−71 kg",
+        "minus_75": "−75 kg",
+        "minus_80": "−80 kg",
+        "minus_86": "−86 kg",
+        "plus_86": "+86 kg",
+        "not_sure": "No estoy seguro"
+      }
+    },
+    "weight": {
+      "label": "Peso actual · opcional",
+      "unit": "kg",
+      "placeholder": "—",
+      "help": "Como máximo un decimal."
+    },
+    "height": {
+      "label": "Altura · opcional",
+      "unit": "cm",
+      "placeholder": "—"
+    },
+    "fightDate": {
+      "label": "Fecha de la próxima pelea · opcional"
+    },
+    "fightEvent": {
+      "label": "Próximo evento · opcional",
+      "placeholder": "Nombre del evento"
+    },
+    "back": "Atrás",
+    "finish": "Terminar",
+    "finishing": "Terminando…"
+  },
+  "summary": {
+    "experience": "Experiencia",
+    "stance": "Guardia",
+    "goals": "Objetivos: {goals}",
+    "noGoals": "Objetivos: aún ninguno",
+    "private": "La categoría de peso, el peso y la altura son privados: solo tú los ves."
+  },
+  "errors": {
+    "required": {
+      "display_name": "Escribe tu nombre.",
+      "username": "Elige un usuario.",
+      "country_code": "Selecciona tu país.",
+      "city": "Escribe tu ciudad.",
+      "experience_level": "Elige una opción para terminar.",
+      "stance": "Elige una opción para terminar."
+    },
+    "usernameFormat": "Usa 3–30 letras, dígitos o _, empezando y terminando con letra o dígito.",
+    "usernameTaken": "Ese usuario ya existe. Prueba con otro.",
+    "weightPrecision": "Usa como máximo un decimal, por ejemplo 73.8.",
+    "wholeNumber": "Escribe un número entero, 0 o más.",
+    "tooLong": "Es demasiado largo.",
+    "outOfRange": "Escribe un valor realista.",
+    "invalidChoice": "Elige una de las opciones.",
+    "invalidDate": "Escribe una fecha válida.",
+    "invalid": "Revisa este valor."
+  },
+  "done": {
+    "eyebrow": "Registro de boxeador · listo",
+    "title": "Ya estás dentro, {name}.",
+    "lead": "Tu perfil de boxeador está listo. Puedes cambiar cualquier dato luego desde tu perfil.",
+    "home": "Ir a mi inicio"
+  }
+}

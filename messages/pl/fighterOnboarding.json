@@ -1,0 +1,192 @@
+{
+  "metaTitle": "Rejestracja zawodnika",
+  "frame": {
+    "badge": "Rejestracja zawodnika",
+    "doneBadge": "Zawodnik · gotowe",
+    "saveExit": "Zapisz i wyjdź"
+  },
+  "nav": {
+    "label": "Kroki rejestracji zawodnika",
+    "title": "Rejestracja zawodnika",
+    "note": "Zapisujemy na bieżąco · dokończ później na dowolnym urządzeniu.",
+    "steps": {
+      "basics": "Podstawy profilu",
+      "profile": "Profil bokserski",
+      "complete": "Gotowe"
+    },
+    "done": "gotowe",
+    "unavailable": "po zakończeniu"
+  },
+  "loading": "Wczytujemy Twój profil zawodnika…",
+  "loadFailure": {
+    "title": "Nie udało się wczytać profilu zawodnika.",
+    "body": "Sprawdź połączenie i spróbuj ponownie.",
+    "retry": "Spróbuj ponownie"
+  },
+  "notices": {
+    "failure": {
+      "title": "Nie udało się zapisać zmian.",
+      "typed": "Sprawdź połączenie. Nic z tego, co wpisano, nie przepadło.",
+      "selected": "Sprawdź połączenie. Nic z tego, co wybrano, nie przepadło.",
+      "retry": "Ponów"
+    },
+    "invalid": {
+      "title": "Sprawdź zaznaczone pola.",
+      "body": "Popraw je, aby zapisać ten krok."
+    },
+    "rejected": {
+      "title": "Brakuje jeszcze kilku danych.",
+      "basics": "Podstawy profilu: {fields}",
+      "profile": "Profil bokserski: {fields}",
+      "goBasics": "Przejdź do podstaw profilu"
+    },
+    "account": {
+      "title": "Najpierw uzupełnij podstawowe dane konta.",
+      "body": "Imię i nazwisko, data urodzenia i zgody są przed profilem zawodnika.",
+      "action": "Przejdź do danych konta"
+    }
+  },
+  "basics": {
+    "eyebrow": "Krok 1 z 2 · Podstawy profilu",
+    "title": "Twój profil zawodnika",
+    "lead": "Tak znajdą Cię koledzy z drużyny i trenerzy. Imię, nazwa użytkownika i miasto są widoczne w profilu.",
+    "name": {
+      "label": "Imię",
+      "placeholder": "Twoje imię",
+      "help": "Widoczne dla kolegów z drużyny i trenerów."
+    },
+    "username": {
+      "label": "Nazwa użytkownika",
+      "placeholder": "username",
+      "help": "3–30 liter, cyfr lub _ · unikalna · małymi literami."
+    },
+    "country": {
+      "label": "Kraj",
+      "placeholder": "Wybierz kraj",
+      "help": "Wyszukaj na liście. Zapisywany jako kod kraju ISO.",
+      "search": "Szukaj kraju",
+      "searchPlaceholder": "Szukaj",
+      "empty": "Brak pasującego kraju."
+    },
+    "city": {
+      "label": "Miasto",
+      "placeholder": "Twoje miasto",
+      "help": "Dowolny tekst."
+    },
+    "continue": "Dalej",
+    "saving": "Zapisywanie…"
+  },
+  "preview": {
+    "title": "Podgląd profilu",
+    "name": "Twoje imię",
+    "username": "username",
+    "city": "Miasto",
+    "country": "Kraj",
+    "private": "Dane o ciele, które dodasz później (waga, wzrost), pozostają prywatne."
+  },
+  "profile": {
+    "eyebrow": "Krok 2 z 2 · Profil bokserski",
+    "title": "Twój profil bokserski",
+    "lead": "Pomaga trenerom i klubom zrozumieć, na jakim jesteś etapie. Zmienisz go w każdej chwili.",
+    "experience": {
+      "label": "Doświadczenie",
+      "options": {
+        "new_to_boxing": "Początkujący",
+        "recreational": "Rekreacyjnie",
+        "amateur": "Amator",
+        "competitive_amateur": "Amator startujący",
+        "professional": "Zawodowiec"
+      }
+    },
+    "stance": {
+      "label": "Pozycja",
+      "options": {
+        "orthodox": "Klasyczna",
+        "southpaw": "Odwrotna",
+        "switch": "Zmienna"
+      }
+    },
+    "bouts": {
+      "label": "Walki amatorskie · opcjonalnie",
+      "placeholder": "0",
+      "help": "Zostaje, gdy zmienisz poziom."
+    },
+    "goals": {
+      "label": "Cele · dowolne",
+      "options": {
+        "fitness": "Kondycja",
+        "learn_boxing": "Nauka boksu",
+        "improve_technique": "Lepsza technika",
+        "competition": "Zawody",
+        "fight_preparation": "Przygotowanie do walki"
+      }
+    },
+    "weightClass": {
+      "label": "Kategoria wagowa · prywatne",
+      "placeholder": "Wybierz · lub Nie wiem",
+      "options": {
+        "minus_63_5": "−63,5 kg",
+        "minus_67": "−67 kg",
+        "minus_71": "−71 kg",
+        "minus_75": "−75 kg",
+        "minus_80": "−80 kg",
+        "minus_86": "−86 kg",
+        "plus_86": "+86 kg",
+        "not_sure": "Nie wiem"
+      }
+    },
+    "weight": {
+      "label": "Aktualna waga · opcjonalnie",
+      "unit": "kg",
+      "placeholder": "—",
+      "help": "Najwyżej jedno miejsce po przecinku."
+    },
+    "height": {
+      "label": "Wzrost · opcjonalnie",
+      "unit": "cm",
+      "placeholder": "—"
+    },
+    "fightDate": {
+      "label": "Data następnej walki · opcjonalnie"
+    },
+    "fightEvent": {
+      "label": "Następna gala · opcjonalnie",
+      "placeholder": "Nazwa wydarzenia"
+    },
+    "back": "Wstecz",
+    "finish": "Zakończ",
+    "finishing": "Kończenie…"
+  },
+  "summary": {
+    "experience": "Doświadczenie",
+    "stance": "Pozycja",
+    "goals": "Cele: {goals}",
+    "noGoals": "Cele: jeszcze brak",
+    "private": "Kategoria wagowa, waga i wzrost są prywatne — widzisz je tylko Ty."
+  },
+  "errors": {
+    "required": {
+      "display_name": "Podaj imię.",
+      "username": "Wybierz nazwę użytkownika.",
+      "country_code": "Wybierz kraj.",
+      "city": "Podaj miasto.",
+      "experience_level": "Wybierz jedną opcję, aby zakończyć.",
+      "stance": "Wybierz jedną opcję, aby zakończyć."
+    },
+    "usernameFormat": "Użyj 3–30 liter, cyfr lub _, z literą lub cyfrą na początku i na końcu.",
+    "usernameTaken": "Ta nazwa użytkownika jest zajęta. Spróbuj innej.",
+    "weightPrecision": "Najwyżej jedno miejsce po przecinku, np. 73.8.",
+    "wholeNumber": "Podaj liczbę całkowitą, 0 lub więcej.",
+    "tooLong": "To za długie.",
+    "outOfRange": "Podaj realną wartość.",
+    "invalidChoice": "Wybierz jedną z opcji.",
+    "invalidDate": "Podaj poprawną datę.",
+    "invalid": "Sprawdź tę wartość."
+  },
+  "done": {
+    "eyebrow": "Rejestracja zawodnika · gotowe",
+    "title": "Jesteś z nami, {name}.",
+    "lead": "Twój profil zawodnika jest gotowy. Wszystko zmienisz później w profilu.",
+    "home": "Przejdź do mojej strony głównej"
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "metaTitle": "Fighter registration",
+  "frame": {
+    "badge": "Fighter sign-up",
+    "doneBadge": "Fighter · done",
+    "saveExit": "Save & exit"
+  },
+  "nav": {
+    "label": "Fighter sign-up steps",
+    "title": "Fighter sign-up",
+    "note": "Saved as you go · finish later from any device.",
+    "steps": {
+      "basics": "Profile basics",
+      "profile": "Boxing profile",
+      "complete": "Complete"
+    },
+    "done": "done",
+    "unavailable": "after you finish"
+  },
+  "loading": "Loading your fighter profile…",
+  "loadFailure": {
+    "title": "We couldn’t load your fighter profile.",
+    "body": "Check your connection and try again.",
+    "retry": "Try again"
+  },
+  "notices": {
+    "failure": {
+      "title": "We couldn’t save your changes.",
+      "typed": "Check your connection. Nothing you typed is lost.",
+      "selected": "Check your connection. Nothing you selected is lost.",
+      "retry": "Retry"
+    },
+    "invalid": {
+      "title": "Check the highlighted fields.",
+      "body": "Fix them to save this step."
+    },
+    "rejected": {
+      "title": "A few details are still missing.",
+      "basics": "Profile basics: {fields}",
+      "profile": "Boxing profile: {fields}",
+      "goBasics": "Go to Profile basics"
+    },
+    "account": {
+      "title": "Finish your account basics first.",
+      "body": "Your name, date of birth and agreements come before your fighter profile.",
+      "action": "Go to Account basics"
+    }
+  },
+  "basics": {
+    "eyebrow": "Step 1 of 2 · Profile basics",
+    "title": "Your fighter profile",
+    "lead": "How teammates and coaches find you. Name, username and city are shown on your profile.",
+    "name": {
+      "label": "Name",
+      "placeholder": "Your name",
+      "help": "Shown to teammates and coaches."
+    },
+    "username": {
+      "label": "Username",
+      "placeholder": "username",
+      "help": "3–30 letters, digits or _ · unique · shown in lowercase."
+    },
+    "country": {
+      "label": "Country",
+      "placeholder": "Select a country",
+      "help": "Search the list. Stored as the ISO country code.",
+      "search": "Search countries",
+      "searchPlaceholder": "Search",
+      "empty": "No country matches."
+    },
+    "city": {
+      "label": "City",
+      "placeholder": "Your city",
+      "help": "Free text."
+    },
+    "continue": "Continue",
+    "saving": "Saving…"
+  },
+  "preview": {
+    "title": "Profile preview",
+    "name": "Your name",
+    "username": "username",
+    "city": "City",
+    "country": "Country",
+    "private": "Body data you add later (weight, height) stays private."
+  },
+  "profile": {
+    "eyebrow": "Step 2 of 2 · Boxing profile",
+    "title": "Your boxing profile",
+    "lead": "Helps coaches and gyms understand where you are. Change it any time.",
+    "experience": {
+      "label": "Experience",
+      "options": {
+        "new_to_boxing": "New to boxing",
+        "recreational": "Recreational",
+        "amateur": "Amateur",
+        "competitive_amateur": "Competitive amateur",
+        "professional": "Professional"
+      }
+    },
+    "stance": {
+      "label": "Stance",
+      "options": {
+        "orthodox": "Orthodox",
+        "southpaw": "Southpaw",
+        "switch": "Switch"
+      }
+    },
+    "bouts": {
+      "label": "Amateur bouts · optional",
+      "placeholder": "0",
+      "help": "Kept if your level changes."
+    },
+    "goals": {
+      "label": "Goals · pick any",
+      "options": {
+        "fitness": "Fitness",
+        "learn_boxing": "Learn boxing",
+        "improve_technique": "Improve technique",
+        "competition": "Competition",
+        "fight_preparation": "Fight preparation"
+      }
+    },
+    "weightClass": {
+      "label": "Weight class · private",
+      "placeholder": "Select · or Not sure",
+      "options": {
+        "minus_63_5": "−63.5 kg",
+        "minus_67": "−67 kg",
+        "minus_71": "−71 kg",
+        "minus_75": "−75 kg",
+        "minus_80": "−80 kg",
+        "minus_86": "−86 kg",
+        "plus_86": "+86 kg",
+        "not_sure": "Not sure"
+      }
+    },
+    "weight": {
+      "label": "Current weight · optional",
+      "unit": "kg",
+      "placeholder": "—",
+      "help": "One decimal at most."
+    },
+    "height": {
+      "label": "Height · optional",
+      "unit": "cm",
+      "placeholder": "—"
+    },
+    "fightDate": {
+      "label": "Next fight date · optional"
+    },
+    "fightEvent": {
+      "label": "Next fight event · optional",
+      "placeholder": "Event name"
+    },
+    "back": "Back",
+    "finish": "Finish",
+    "finishing": "Finishing…"
+  },
+  "summary": {
+    "experience": "Experience",
+    "stance": "Stance",
+    "goals": "Goals: {goals}",
+    "noGoals": "Goals: none yet",
+    "private": "Weight class, weight and height are private — only you see them."
+  },
+  "errors": {
+    "required": {
+      "display_name": "Enter your name.",
+      "username": "Choose a username.",
+      "country_code": "Select your country.",
+      "city": "Enter your city.",
+      "experience_level": "Choose one to finish.",
+      "stance": "Choose one to finish."
+    },
+    "usernameFormat": "Use 3–30 letters, digits or _, starting and ending with a letter or digit.",
+    "usernameTaken": "That username is taken. Try another.",
+    "weightPrecision": "Use at most one decimal place, like 73.8.",
+    "wholeNumber": "Enter a whole number, 0 or more.",
+    "tooLong": "That’s too long.",
+    "outOfRange": "Enter a realistic value.",
+    "invalidChoice": "Choose one of the options.",
+    "invalidDate": "Enter a valid date.",
+    "invalid": "Check this value."
+  },
+  "done": {
+    "eyebrow": "Fighter sign-up · complete",
+    "title": "You’re in, {name}.",
+    "lead": "Your fighter profile is ready. You can change any of it later from your profile.",
+    "home": "Go to my home"
+  }
+}

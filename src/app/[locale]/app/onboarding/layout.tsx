@@ -2,13 +2,15 @@ import type { ReactNode } from "react";
 
 import { resolveLocaleParam } from "@/shared/i18n/params";
 import { OnboardingGate } from "@/features/session-gate";
-import { AppFrame } from "@/widgets/app-frame";
 import { EntryFailure, LaunchScreen } from "@/widgets/system-states";
 
 /**
  * `web.app.onboarding`: account registration, role choice and the role
  * registration wizards, without product navigation. Account registration
- * comes first (SF-45, `OnboardingGate`).
+ * comes first (SF-45, `OnboardingGate`); its pending and failure states are
+ * full-viewport system screens. Each step brings its frame: the Fighter
+ * registration its designed WF header (SF-38), the other steps `AppFrame`
+ * (the `(app-frame)` group).
  */
 export default async function OnboardingLayout({
   children,
@@ -19,10 +21,8 @@ export default async function OnboardingLayout({
 }) {
   await resolveLocaleParam(params);
   return (
-    <AppFrame>
-      <OnboardingGate pending={<LaunchScreen />} failure={<EntryFailure />}>
-        {children}
-      </OnboardingGate>
-    </AppFrame>
+    <OnboardingGate pending={<LaunchScreen />} failure={<EntryFailure />}>
+      {children}
+    </OnboardingGate>
   );
 }

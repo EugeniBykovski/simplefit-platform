@@ -30,14 +30,21 @@ export const apiError = (
   headers,
 });
 
-/** Installs `routes` (path → answer) as `fetch`; `"pending"` never settles. Returns the cleanup. */
+/**
+ * Installs `routes` as `fetch`: a key is a path, or `"METHOD /path"` when one
+ * path answers differently per method (it wins over the bare path);
+ * `"pending"` never settles. Returns the cleanup.
+ */
 export function installApi(routes: Record<string, Answer>) {
   const original = window.fetch;
-  window.fetch = async (input) => {
+  window.fetch = async (input, init) => {
     const path = new URL(
       typeof input === "string" ? input : input instanceof URL ? input.href : input.url,
     ).pathname;
-    const answer = routes[path] ?? apiError(404, "not_found");
+    const method = (
+      init?.method ?? (input instanceof Request ? input.method : "GET")
+    ).toUpperCase();
+    const answer = routes[`${method} ${path}`] ?? routes[path] ?? apiError(404, "not_found");
     if (answer === "pending") return new Promise<Response>(() => undefined);
     return new Response(answer.body === undefined ? null : JSON.stringify(answer.body), {
       status: answer.status,
