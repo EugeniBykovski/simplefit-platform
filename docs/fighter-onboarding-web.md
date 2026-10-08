@@ -92,19 +92,17 @@ resolves to the resume step.
 
 ## Current limitation
 
-Fighter onboarding completes against the real API, but a brand-new user
-reaches it only after account registration (WA5), which is still a
-placeholder: the full sign-up → Fighter journey is not yet possible for a new
-account in the browser. Accounts whose registration is complete (created by
-the API or the mobile app) go through WF0 → WF1 → WF6 end to end. The Fighter
-home (`/app/home`) is also a placeholder.
+A brand-new user reaches Fighter onboarding after account registration
+(WA5, SF-46): sign-up → WA5 → WF0 → WF1 → WF6 runs end to end in the browser
+(`e2e/production/account-registration.spec.ts`). The Fighter home
+(`/app/home`) is still a placeholder.
 
 ## Verification
 
 - `src/features/fighter-onboarding/model/model.test.ts`: step resolution,
   error mapping, number parsing.
 - `e2e/production/fighter-onboarding.spec.ts`: the flows on the production
-  build against an SF-25 test double (`e2e/production/fighter-api.ts`).
+  build against an SF-25 test double (`e2e/production/onboarding-api.ts`).
 - `e2e/production/fighter-geometry.spec.ts`: artboard geometry at 1440 and
   the laptop matrix, axe on every screen.
 - `src/stories/screens/fighter-onboarding/registration.stories.tsx` and

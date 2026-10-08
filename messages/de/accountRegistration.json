@@ -1,0 +1,92 @@
+{
+  "metaTitle": "Kontodaten",
+  "frame": {
+    "badge": "Konto einrichten",
+    "signOut": "Abmelden"
+  },
+  "nav": {
+    "label": "Schritte der Kontoeinrichtung",
+    "title": "Konto einrichten",
+    "note": "Einmal nötig für jede Rolle auf deinem Konto.",
+    "steps": {
+      "basics": "Kontodaten",
+      "start": "Wo du startest",
+      "setup": "Deine Einrichtung"
+    },
+    "footnote": "Schritt 2 entfällt, wenn du schon gewählt hast, wo du startest.",
+    "later": "nach der Kontoeinrichtung"
+  },
+  "eyebrow": "Kontodaten · einmalig",
+  "title": "Bevor du startest",
+  "lead": "Diese Angaben gehören zu deinem SimpleFit-Konto, nicht zu einem Rollenprofil. Du machst sie einmal — jede Rolle, die du später einrichtest, nutzt dasselbe Konto.",
+  "loading": "Dein Konto wird geladen…",
+  "loadFailure": {
+    "title": "Dein Konto konnte nicht geladen werden.",
+    "body": "Prüfe deine Verbindung und versuche es erneut.",
+    "retry": "Erneut versuchen"
+  },
+  "notices": {
+    "failure": {
+      "title": "Deine Angaben konnten nicht gespeichert werden.",
+      "body": "Prüfe deine Verbindung. Nichts, was du eingegeben hast, ist verloren.",
+      "retry": "Erneut"
+    },
+    "invalid": {
+      "title": "Prüfe die markierten Felder.",
+      "body": "Korrigiere sie, um fortzufahren."
+    }
+  },
+  "fullName": {
+    "label": "Vollständiger Name",
+    "placeholder": "Dein vollständiger Name",
+    "help": "Wird in keinem Profil angezeigt."
+  },
+  "dateOfBirth": {
+    "label": "Geburtsdatum",
+    "help": "16 oder älter · lässt sich nach dem Fortfahren nicht mehr ändern."
+  },
+  "agreements": {
+    "label": "Einwilligungen",
+    "terms": "Ich akzeptiere die Nutzungsbedingungen",
+    "privacy": "Ich akzeptiere die Datenschutzerklärung",
+    "required": "· erforderlich",
+    "news": "Produktneuigkeiten per E-Mail senden",
+    "newsNote": "· optional · höchstens 2 pro Monat",
+    "newsFootnote": "Produktneuigkeiten sind nie erforderlich. Du kannst das jederzeit in den Einstellungen ändern.",
+    "accepted": "Akzeptiert",
+    "newVersion": "Eine neue Version gilt: Akzeptiere sie, um fortzufahren."
+  },
+  "continue": "Weiter",
+  "saving": "Wird gespeichert…",
+  "why": {
+    "title": "Warum wir fragen",
+    "fullName": {
+      "title": "Vollständiger Name",
+      "body": "Der Name auf deinem Konto. Rollenprofile wählen später ihren eigenen Anzeigenamen."
+    },
+    "dateOfBirth": {
+      "title": "Geburtsdatum",
+      "body": "Bestätigt, dass du 16 oder älter bist. Privat — wird anderen nie angezeigt."
+    },
+    "consents": {
+      "title": "Bedingungen & Datenschutz",
+      "body": "Wir speichern, welche Version du akzeptiert hast und wann."
+    }
+  },
+  "next": {
+    "title": "Wie es weitergeht",
+    "body": "Vor der Anmeldung gewählt, wo du startest? Wir bringen dich direkt dorthin. Sonst wählst du als Nächstes.",
+    "note": "Hier wird keine Rolle gewählt. Auch die Anmeldung mit Google oder Apple wählt keine."
+  },
+  "errors": {
+    "fullNameRequired": "Gib deinen vollständigen Namen ein.",
+    "dateOfBirthRequired": "Gib dein Geburtsdatum ein.",
+    "tooYoung": "Du musst mindestens 16 sein, um SimpleFit zu nutzen.",
+    "invalidDate": "Gib ein echtes Datum ein, nicht in der Zukunft.",
+    "immutable": "Dein Geburtsdatum lässt sich nicht mehr ändern.",
+    "tooLong": "Das ist zu lang.",
+    "terms": "Akzeptiere die Nutzungsbedingungen, um fortzufahren.",
+    "privacy": "Akzeptiere die Datenschutzerklärung, um fortzufahren.",
+    "invalid": "Prüfe diesen Wert."
+  }
+}

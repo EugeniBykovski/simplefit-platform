@@ -16,14 +16,17 @@ import {
   type Step,
   type StepSaver,
 } from "@/features/fighter-onboarding";
-import { Link, useRouter } from "@/shared/i18n/navigation";
+import { useRouter } from "@/shared/i18n/navigation";
 import { continuationOf, continuationQuery, withContinuation } from "@/shared/routes/continuation";
 import { routeHref } from "@/shared/routes/routes";
-import { Badge } from "@/shared/ui/badge";
-import { BrandTile, BrandWordmark } from "@/shared/ui/brand-mark";
 import { Button } from "@/shared/ui/button";
 import { Container } from "@/shared/ui/container";
 import { Notice } from "@/shared/ui/notice";
+import {
+  OnboardingFrame,
+  OnboardingGrid,
+  onboardingActionClass,
+} from "@/shared/ui/onboarding-frame";
 import { Spinner } from "@/shared/ui/spinner";
 import { TriangleAlertIcon } from "lucide-react";
 
@@ -137,78 +140,59 @@ export function FighterOnboarding() {
       if ((await saver.current?.()) ?? true) go(next);
     };
     body = (
-      <Container className="py-12">
-        <div
-          data-onboarding-grid
-          className="grid items-start gap-10 desktop:grid-cols-[250px_minmax(0,1fr)_320px]"
-        >
-          <StepNav
-            current={step}
-            basicsDone={basicsDone}
-            onNavigate={(next) => void navigate(next)}
+      <OnboardingGrid>
+        <StepNav
+          current={step}
+          basicsDone={basicsDone}
+          onNavigate={(next) => void navigate(next)}
+        />
+        {step === "basics" ? (
+          <BasicsStep
+            key="basics"
+            profile={profile}
+            save={save}
+            onDone={go}
+            registerSaver={registerSaver}
           />
-          {step === "basics" ? (
-            <BasicsStep
-              key="basics"
-              profile={profile}
-              save={save}
-              onDone={go}
-              registerSaver={registerSaver}
-            />
-          ) : (
-            <ProfileStep
-              key="profile"
-              profile={profile}
-              save={save}
-              complete={complete}
-              onBack={go}
-              onCompleted={() => {
-                setJustCompleted(true);
-                router.push(hrefFor("complete"));
-              }}
-              accountHref={withContinuation("web.app.onboarding.account", {
-                ...continuation,
-                intent: continuation.intent ?? "fighter",
-              })}
-              registerSaver={registerSaver}
-            />
-          )}
-        </div>
-      </Container>
+        ) : (
+          <ProfileStep
+            key="profile"
+            profile={profile}
+            save={save}
+            complete={complete}
+            onBack={go}
+            onCompleted={() => {
+              setJustCompleted(true);
+              router.push(hrefFor("complete"));
+            }}
+            accountHref={withContinuation("web.app.onboarding.account", {
+              ...continuation,
+              intent: continuation.intent ?? "fighter",
+            })}
+            registerSaver={registerSaver}
+          />
+        )}
+      </OnboardingGrid>
     );
   }
 
   return (
-    <div data-fighter-onboarding className="flex min-h-dvh w-full flex-col bg-background">
-      <header className="h-18 flex-none border-b border-border-subtle">
-        <Container
-          size="frame"
-          className="flex h-full items-center gap-4 px-4 sm:px-6 md:px-8 desktop:px-14"
-        >
-          <Link href={routeHref("web.root")} className="flex w-fit items-center gap-2.5 rounded-md">
-            <BrandTile size="sm" />
-            <BrandWordmark size="sm" />
-          </Link>
-          <span className="flex-1" />
-          <div className="flex items-center gap-4">
-            <Badge variant="accent">
-              {step === "complete" ? t("frame.doneBadge") : t("frame.badge")}
-            </Badge>
-            {step !== "complete" && (
-              <Button
-                variant="ghost"
-                className="h-auto px-0 type-body-sm font-extrabold text-muted-foreground hover:bg-transparent hover:text-foreground"
-                onClick={() => void saveAndExit()}
-              >
-                {t("frame.saveExit")}
-              </Button>
-            )}
-          </div>
-        </Container>
-      </header>
-      <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
-        {body}
-      </main>
-    </div>
+    <OnboardingFrame
+      data-fighter-onboarding
+      badge={step === "complete" ? t("frame.doneBadge") : t("frame.badge")}
+      actions={
+        step !== "complete" && (
+          <Button
+            variant="ghost"
+            className={onboardingActionClass}
+            onClick={() => void saveAndExit()}
+          >
+            {t("frame.saveExit")}
+          </Button>
+        )
+      }
+    >
+      {body}
+    </OnboardingFrame>
   );
 }

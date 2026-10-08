@@ -6,18 +6,13 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 
 import type { FighterProfile, FighterProfilePatch } from "@/entities/fighter-profile";
 import { countryOptions } from "@/shared/lib/countries";
+import { changedOnly } from "@/shared/lib/forms";
 import { Button } from "@/shared/ui/button";
 import { Combobox } from "@/shared/ui/combobox";
 import { Input } from "@/shared/ui/input";
 
 import { rejectionOf, type FieldMessage } from "../model/errors";
-import {
-  basicsErrors,
-  basicsFrom,
-  basicsPatch,
-  changedOnly,
-  type BasicsValues,
-} from "../model/form-values";
+import { basicsErrors, basicsFrom, basicsPatch, type BasicsValues } from "../model/form-values";
 import type { FormStep } from "../model/steps";
 import { describedBy, FormField } from "./form-field";
 import { BasicsPreview } from "./profile-preview";

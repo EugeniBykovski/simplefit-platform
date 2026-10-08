@@ -1,11 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { fighterApi } from "./fighter-api";
+import { fighterApi } from "./onboarding-api";
 
 /*
  * Fighter web registration on the production build (SF-38): the real route
  * (`/app/onboarding/fighter`), its gates and components against a test double
- * of the SF-25 API (./fighter-api). Every assertion about persistence reads
+ * of the SF-25 API (./onboarding-api). Every assertion about persistence reads
  * what the page sent or what the double stored, never client state.
  */
 
@@ -446,8 +446,8 @@ test.describe("entry and resume boundaries (SF-27)", () => {
     const api = await fighterApi(page, { accountComplete: false });
     await page.goto(`${ROUTE}?step=basics&intent=fighter`);
     await page.waitForURL("**/en/app/onboarding/account?intent=fighter");
-    // WA5 is still a placeholder: the route is right, there is no form yet.
-    await expect(heading(page, "Account basics")).toBeVisible();
+    // WA5 (SF-46): the account basics form, nothing written on arrival.
+    await expect(heading(page, "Before you start")).toBeVisible();
     expect(writes(api)).toEqual([]);
   });
 

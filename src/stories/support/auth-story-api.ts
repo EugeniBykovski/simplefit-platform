@@ -4,7 +4,8 @@
  * production components in every state without a backend, a network or a
  * live auth provider. Installed per story in `beforeEach`; restored after.
  */
-type Answer = { status: number; body?: unknown; headers?: Record<string, string> } | "pending";
+type Answer =
+  { status: number; body?: unknown; headers?: Record<string, string> } | "pending" | "offline";
 
 export const VIEWER = {
   id: "8a6e0804-2bd0-4672-b79d-d97027f9071b",
@@ -33,10 +34,13 @@ export const apiError = (
 /**
  * Installs `routes` as `fetch`: a key is a path, or `"METHOD /path"` when one
  * path answers differently per method (it wins over the bare path);
- * `"pending"` never settles. Returns the cleanup.
+ * `"pending"` never settles; `"offline"` fails as a dropped connection does.
+ * A list answers its calls in order, its last answer repeating. Returns the
+ * cleanup.
  */
-export function installApi(routes: Record<string, Answer>) {
+export function installApi(routes: Record<string, Answer | Answer[]>) {
   const original = window.fetch;
+  const calls = new Map<string, number>();
   window.fetch = async (input, init) => {
     const path = new URL(
       typeof input === "string" ? input : input instanceof URL ? input.href : input.url,
@@ -44,8 +48,15 @@ export function installApi(routes: Record<string, Answer>) {
     const method = (
       init?.method ?? (input instanceof Request ? input.method : "GET")
     ).toUpperCase();
-    const answer = routes[`${method} ${path}`] ?? routes[path] ?? apiError(404, "not_found");
+    const key = routes[`${method} ${path}`] === undefined ? path : `${method} ${path}`;
+    const entry = routes[key] ?? apiError(404, "not_found");
+    const call = calls.get(key) ?? 0;
+    calls.set(key, call + 1);
+    const answer = Array.isArray(entry)
+      ? (entry[Math.min(call, entry.length - 1)] ?? apiError(404, "not_found"))
+      : entry;
     if (answer === "pending") return new Promise<Response>(() => undefined);
+    if (answer === "offline") throw new TypeError("Failed to fetch");
     return new Response(answer.body === undefined ? null : JSON.stringify(answer.body), {
       status: answer.status,
       headers: { "content-type": "application/json", ...answer.headers },

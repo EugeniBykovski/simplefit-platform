@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { fighterApi } from "../production/fighter-api";
+import { fighterApi } from "../production/onboarding-api";
 
 /*
  * The WF0 country selector (SF-38) in every engine, on the production build:

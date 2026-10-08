@@ -1,0 +1,82 @@
+{
+  "metaTitle": "Account basics",
+  "frame": { "badge": "Account setup", "signOut": "Sign out" },
+  "nav": {
+    "label": "Account setup steps",
+    "title": "Account setup",
+    "note": "Needed once for every role on your account.",
+    "steps": { "basics": "Account basics", "start": "Where to start", "setup": "Your setup" },
+    "footnote": "Step 2 is skipped when you already picked where to start.",
+    "later": "after account setup"
+  },
+  "eyebrow": "Account basics · needed once",
+  "title": "Before you start",
+  "lead": "These details belong to your SimpleFit account, not to a role profile. You give them once — every role you set up later uses the same account.",
+  "loading": "Loading your account…",
+  "loadFailure": {
+    "title": "We couldn’t load your account.",
+    "body": "Check your connection and try again.",
+    "retry": "Try again"
+  },
+  "notices": {
+    "failure": {
+      "title": "We couldn’t save your details.",
+      "body": "Check your connection. Nothing you entered is lost.",
+      "retry": "Retry"
+    },
+    "invalid": { "title": "Check the highlighted fields.", "body": "Fix them to continue." }
+  },
+  "fullName": {
+    "label": "Full name",
+    "placeholder": "Your full name",
+    "help": "Not shown on any profile."
+  },
+  "dateOfBirth": {
+    "label": "Date of birth",
+    "help": "16 or older · can’t be changed once you continue."
+  },
+  "agreements": {
+    "label": "Agreements",
+    "terms": "I accept the Terms of Service",
+    "privacy": "I accept the Privacy Policy",
+    "required": "· required",
+    "news": "Send me product news by email",
+    "newsNote": "· optional · max 2 per month",
+    "newsFootnote": "Product news is never required. Change it any time in settings.",
+    "accepted": "Accepted",
+    "newVersion": "A new version is in force: accept it to continue."
+  },
+  "continue": "Continue",
+  "saving": "Saving…",
+  "why": {
+    "title": "Why we ask",
+    "fullName": {
+      "title": "Full name",
+      "body": "The name on your account. Role profiles choose their own display name later."
+    },
+    "dateOfBirth": {
+      "title": "Date of birth",
+      "body": "Confirms you’re 16 or older. Private — never shown to others."
+    },
+    "consents": {
+      "title": "Terms & Privacy",
+      "body": "We record which version you accepted and when."
+    }
+  },
+  "next": {
+    "title": "What happens next",
+    "body": "Picked where to start before signing in? We take you straight there. Otherwise you choose next.",
+    "note": "Nothing here picks a role. Signing in with Google or Apple doesn’t either."
+  },
+  "errors": {
+    "fullNameRequired": "Enter your full name.",
+    "dateOfBirthRequired": "Enter your date of birth.",
+    "tooYoung": "You must be 16 or older to use SimpleFit.",
+    "invalidDate": "Enter a real date, not in the future.",
+    "immutable": "Your date of birth can’t be changed anymore.",
+    "tooLong": "That’s too long.",
+    "terms": "Accept the Terms of Service to continue.",
+    "privacy": "Accept the Privacy Policy to continue.",
+    "invalid": "Check this value."
+  }
+}

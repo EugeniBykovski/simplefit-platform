@@ -1629,8 +1629,8 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/app/onboarding/(app-frame)/account/page.tsx",
-        "note": "SF-45: canonical feature placeholder in its shell; the WA5 form is built by its UI ticket on the SF-44 account registration API. Entry resolution sends account_registration here; ?intent= and ?returnTo= ride along as the continuation, resolved again once registration completes."
+        "file": "src/app/[locale]/app/onboarding/account/page.tsx",
+        "note": "SF-46: WA5 Account basics & consent on the SF-44 account registration (full name, date of birth, the Terms and Privacy acceptances recorded by the server at their current versions, optional product news), in the onboarding frame of Claude Design V78. Completion is the API's; the onboarding gate then sends the visitor to the entry resolver's destination with ?intent= and ?returnTo=. The Terms and Privacy documents are not published yet (no route or content), so the acceptance cannot link to them."
       },
       "discrepancies": ["D-ENTRY-RESOLUTION"],
       "screens": ["WA5"]

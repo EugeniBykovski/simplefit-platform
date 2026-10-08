@@ -1,0 +1,92 @@
+{
+  "metaTitle": "Infos du compte",
+  "frame": {
+    "badge": "Configuration du compte",
+    "signOut": "Se déconnecter"
+  },
+  "nav": {
+    "label": "Étapes de configuration du compte",
+    "title": "Configuration du compte",
+    "note": "Nécessaire une fois pour chaque rôle de votre compte.",
+    "steps": {
+      "basics": "Infos du compte",
+      "start": "Par où commencer",
+      "setup": "Votre configuration"
+    },
+    "footnote": "L’étape 2 est ignorée si vous avez déjà choisi par où commencer.",
+    "later": "après la configuration du compte"
+  },
+  "eyebrow": "Infos du compte · une seule fois",
+  "title": "Avant de commencer",
+  "lead": "Ces informations appartiennent à votre compte SimpleFit, pas à un profil de rôle. Vous les donnez une fois : chaque rôle configuré ensuite utilise le même compte.",
+  "loading": "Chargement de votre compte…",
+  "loadFailure": {
+    "title": "Impossible de charger votre compte.",
+    "body": "Vérifiez votre connexion et réessayez.",
+    "retry": "Réessayer"
+  },
+  "notices": {
+    "failure": {
+      "title": "Impossible d’enregistrer vos informations.",
+      "body": "Vérifiez votre connexion. Rien de ce que vous avez saisi n’est perdu.",
+      "retry": "Réessayer"
+    },
+    "invalid": {
+      "title": "Vérifiez les champs signalés.",
+      "body": "Corrigez-les pour continuer."
+    }
+  },
+  "fullName": {
+    "label": "Nom complet",
+    "placeholder": "Votre nom complet",
+    "help": "N’apparaît sur aucun profil."
+  },
+  "dateOfBirth": {
+    "label": "Date de naissance",
+    "help": "16 ans ou plus · non modifiable une fois que vous continuez."
+  },
+  "agreements": {
+    "label": "Accords",
+    "terms": "J’accepte les Conditions d’utilisation",
+    "privacy": "J’accepte la Politique de confidentialité",
+    "required": "· obligatoire",
+    "news": "M’envoyer les nouveautés produit par e-mail",
+    "newsNote": "· facultatif · 2 par mois maximum",
+    "newsFootnote": "Les nouveautés produit ne sont jamais obligatoires. Modifiable à tout moment dans les paramètres.",
+    "accepted": "Accepté",
+    "newVersion": "Une nouvelle version est en vigueur : acceptez-la pour continuer."
+  },
+  "continue": "Continuer",
+  "saving": "Enregistrement…",
+  "why": {
+    "title": "Pourquoi nous demandons",
+    "fullName": {
+      "title": "Nom complet",
+      "body": "Le nom de votre compte. Les profils de rôle choisissent plus tard leur propre nom affiché."
+    },
+    "dateOfBirth": {
+      "title": "Date de naissance",
+      "body": "Confirme que vous avez 16 ans ou plus. Privée : jamais montrée aux autres."
+    },
+    "consents": {
+      "title": "Conditions et confidentialité",
+      "body": "Nous enregistrons la version acceptée et la date."
+    }
+  },
+  "next": {
+    "title": "Et ensuite",
+    "body": "Vous avez choisi par où commencer avant de vous connecter ? Nous vous y emmenons directement. Sinon, vous choisissez à l’étape suivante.",
+    "note": "Rien ici ne choisit un rôle. Se connecter avec Google ou Apple non plus."
+  },
+  "errors": {
+    "fullNameRequired": "Saisissez votre nom complet.",
+    "dateOfBirthRequired": "Saisissez votre date de naissance.",
+    "tooYoung": "Vous devez avoir 16 ans ou plus pour utiliser SimpleFit.",
+    "invalidDate": "Saisissez une vraie date, pas dans le futur.",
+    "immutable": "Votre date de naissance ne peut plus être modifiée.",
+    "tooLong": "C’est trop long.",
+    "terms": "Acceptez les Conditions d’utilisation pour continuer.",
+    "privacy": "Acceptez la Politique de confidentialité pour continuer.",
+    "invalid": "Vérifiez cette valeur."
+  }
+}
