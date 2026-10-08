@@ -9,6 +9,7 @@ import { withContinuation, type Continuation } from "@/shared/routes/continuatio
 import type { WebRouteId } from "@/shared/routes/routes";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
+import { cn } from "@/shared/lib/utils";
 
 import { requestRegistrationCode, requestSignInCode } from "../model/api";
 import { requestFailureOf, type RequestFailure } from "../model/code-step";
@@ -34,6 +35,8 @@ type Props = {
   fullWidth?: boolean;
   /** The designed CTA height: WA1 draws 50 px (`lg`, 48), WA3 52 px (`xl`, 54). */
   submitSize?: "lg" | "xl";
+  /** Extra classes for the submit button (WA1 draws its 15 px CTA 50 px tall). */
+  submitClassName?: string;
   className?: string;
 };
 
@@ -58,6 +61,7 @@ export function EmailRequestForm({
   besideField,
   fullWidth = true,
   submitSize = "xl",
+  submitClassName,
   className,
 }: Props) {
   const t = useTranslations("auth.email");
@@ -128,7 +132,7 @@ export function EmailRequestForm({
       <Button
         type="submit"
         size={submitSize}
-        className={fullWidth ? "w-full" : "w-fit"}
+        className={cn(fullWidth ? "w-full" : "w-fit", submitClassName)}
         loading={busy}
       >
         {icon && <MailIcon aria-hidden />}

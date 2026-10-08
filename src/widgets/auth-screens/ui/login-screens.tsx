@@ -5,6 +5,7 @@ import { AppleSignInButton } from "@/features/sign-in-with-apple";
 import { GoogleSignInButton } from "@/features/sign-in-with-google";
 import { Link } from "@/shared/i18n/navigation";
 import { withContinuation, type Continuation } from "@/shared/routes/continuation";
+import { routeHref } from "@/shared/routes/routes";
 import { textLinkClass } from "@/shared/ui/text-link";
 
 import { AuthDivider, AuthInfoList, AuthSplitFrame } from "./auth-frame";
@@ -48,17 +49,18 @@ export function LoginScreen({ continuation }: { continuation?: Continuation }) {
         <h1 className="type-auth-heading">{t("title")}</h1>
         <p className="type-body text-pretty text-muted-foreground">{t("description")}</p>
         {/*
-          WA1 draws two 52 px provider buttons and a 50 px CTA. Apple is the
-          nearest button step (`xl`, 54) and the CTA `lg` (48); Google renders
-          in a 50 px slot, so the provider pair keeps its designed 2 × 52 px.
+          WA1 draws two 52 px provider buttons and a 50 px CTA, all 15 px 800
+          on radius 18. Google's own button (GSI, at most 400 × 40) is centred
+          in a 52 px slot, so the provider pair keeps its designed rhythm.
         */}
-        <GoogleSignInButton className="min-h-12.5" />
-        <AppleSignInButton />
+        <GoogleSignInButton className="min-h-13" />
+        <AppleSignInButton className="h-13" />
         <AuthDivider label={t("orEmail")} />
         <SignInEmailForm
           continuation={continuation}
           submitLabel={t("emailSubmit")}
-          submitSize="lg"
+          submitSize="xl"
+          submitClassName="h-12.5"
           hint={t("emailHint")}
           className="flex flex-col gap-3.5"
         />
@@ -67,6 +69,11 @@ export function LoginScreen({ continuation }: { continuation?: Continuation }) {
           {t.rich("noAccount", {
             link: (chunks) => (
               <Link href={withContinuation("web.signup", continuation)} className={textLinkClass}>
+                {chunks}
+              </Link>
+            ),
+            sponsor: (chunks) => (
+              <Link href={routeHref("web.sponsor.login")} className={textLinkClass}>
                 {chunks}
               </Link>
             ),

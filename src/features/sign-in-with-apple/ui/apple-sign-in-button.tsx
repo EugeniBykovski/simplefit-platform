@@ -16,6 +16,7 @@ import {
   sha256Hex,
 } from "@/shared/lib/apple-identity";
 import { Button } from "@/shared/ui/button";
+import { cn } from "@/shared/lib/utils";
 
 type Failure = "rejected" | "rateLimited" | "unavailable" | "scriptFailed" | "generic";
 
@@ -35,7 +36,7 @@ type Failure = "rejected" | "rateLimited" | "unavailable" | "scriptFailed" | "ge
  * application. A new and an existing account are treated alike; no role is
  * inferred here.
  */
-export function AppleSignInButton() {
+export function AppleSignInButton({ className }: { className?: string }) {
   const servicesId = publicEnv.NEXT_PUBLIC_APPLE_SERVICES_ID;
   const redirectUri = publicEnv.NEXT_PUBLIC_APPLE_REDIRECT_URI;
   const t = useTranslations("auth.apple");
@@ -43,16 +44,29 @@ export function AppleSignInButton() {
   if (servicesId === undefined || redirectUri === undefined) {
     // Keeps the button's 54 px row, so the composition does not shift.
     return (
-      <p className="flex h-13.5 items-center justify-center type-body-sm text-muted-foreground">
+      <p
+        className={cn(
+          "flex h-13.5 items-center justify-center type-body-sm text-muted-foreground",
+          className,
+        )}
+      >
         {t("notConfigured")}
       </p>
     );
   }
 
-  return <AppleButton servicesId={servicesId} redirectUri={redirectUri} />;
+  return <AppleButton servicesId={servicesId} redirectUri={redirectUri} className={className} />;
 }
 
-function AppleButton({ servicesId, redirectUri }: { servicesId: string; redirectUri: string }) {
+function AppleButton({
+  servicesId,
+  redirectUri,
+  className,
+}: {
+  servicesId: string;
+  redirectUri: string;
+  className?: string;
+}) {
   const t = useTranslations("auth.apple");
   const [ready, setReady] = useState(() => appleIdAuth() !== undefined);
   const [busy, setBusy] = useState(false);
@@ -109,7 +123,7 @@ function AppleButton({ servicesId, redirectUri }: { servicesId: string; redirect
       <Button
         variant="secondary"
         size="xl"
-        className="w-full"
+        className={cn("w-full", className)}
         disabled={!ready}
         loading={busy}
         onClick={() => void signIn()}

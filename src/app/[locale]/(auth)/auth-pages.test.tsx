@@ -70,12 +70,16 @@ describe("WA1 /login", () => {
     expect(screen.getByLabelText("Email")).toHaveAttribute("autocomplete", "email");
   });
 
-  it("exposes no password, recovery or sponsor sign-in", async () => {
+  it("exposes no password or recovery, and links sponsors to their own sign-in as WA1 draws", async () => {
     await renderPage(LoginPage as Page);
 
     expect(document.querySelector('input[type="password"]')).toBeNull();
     expect(screen.queryByText(/password\?|recover|forgot/i)).not.toBeInTheDocument();
-    expect(hrefs()).not.toContain("/sponsor/login");
+    expect(screen.getByRole("link", { name: "Sponsor sign in" })).toHaveAttribute(
+      "href",
+      "/sponsor/login",
+    );
+    expect(screen.getByText(/Brand partner\?/)).toBeInTheDocument();
   });
 
   it("carries a valid returnTo to sign-up and drops an unsafe one", async () => {

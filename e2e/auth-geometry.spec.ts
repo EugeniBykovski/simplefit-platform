@@ -287,8 +287,26 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
     );
     // The provider rows (2 × 52 px with a 14 px gap) end where the divider starts.
     await expectBox(page.getByText("or with email", { exact: true }), { 1: 444 });
-    // Not linked: /sponsor/login is a placeholder (D7), so WA1 omits it.
-    await expect(page.getByRole("link", { name: "Sponsor sign in" })).toHaveCount(0);
+    const cta = page.getByRole("button", { name: "Email me a sign-in code" });
+    expect(
+      await cta.evaluate((el) => {
+        const style = getComputedStyle(el);
+        return [style.fontSize, style.fontWeight, style.borderRadius];
+      }),
+    ).toEqual(["15px", "800", "18px"]);
+    // The artboard's closing line ends with the sponsor sign-in link.
+    await expectBox(page.getByRole("link", { name: "Sponsor sign in" }), [1186, 652, 98.5, 18]);
+    // Nothing the artboard does not draw: no language or theme controls.
+    await expect(page.getByRole("button", { name: /language|theme/i })).toHaveCount(0);
+    // The panel's 16 px wordmark.
+    expect(
+      await page
+        .locator("[data-auth-panel] a")
+        .first()
+        .getByText("SimpleFit", { exact: false })
+        .last()
+        .evaluate((el) => getComputedStyle(el).fontSize),
+    ).toBe("16px");
   });
 
   test("WA1b typing: eyebrow, title, code row, CTA and guidance on the artboard rows", async ({
@@ -573,13 +591,32 @@ test.describe("WA4 conformance (WebRegVerify · 1440 × 900)", () => {
 });
 
 test.describe("WA4b (WebEmailVerified · 1440 × 900)", () => {
-  test("560 px result column in the registry's site chrome", async ({ page }) => {
+  test("the minimal shell: 72 px auth header, brand only, no site navigation or footer", async ({
+    page,
+  }) => {
     await story(page, "authentication-verify-email--verified");
     const heading = page.getByRole("heading", { level: 1, name: "Email verified" });
     await heading.waitFor();
-    await expectBox(page.locator("header").first(), { 0: 0, 1: 0, 2: 1440, 3: 76 });
+    const header = page.locator("header").first();
+    await expectBox(header, [0, 0, 1440, 72]);
+    expect(
+      await header.evaluate((el) => [
+        getComputedStyle(el).borderBottomWidth,
+        getComputedStyle(el).borderBottomColor,
+      ]),
+    ).toEqual(["1px", "rgb(31, 35, 32)"]);
+    const brand = header.getByRole("link", { name: /SimpleFit/ });
+    await expectBox(brand, [56, 20.5, 183.9, 30]);
+    await expectBox(brand.locator("> span").first(), [56, 20.5, 30, 30]);
+    const wordmark = brand.getByText("SimpleFit", { exact: false }).last();
+    await expectBox(wordmark, { 0: 96, 2: 143.9 });
+    expect(await wordmark.evaluate((el) => getComputedStyle(el).fontSize)).toBe("14px");
+    await expect(header.getByRole("button")).toHaveCount(0);
+    await expect(header.getByRole("navigation")).toHaveCount(0);
+    await expect(page.locator("[data-site-footer]")).toHaveCount(0);
+    await expect(page.locator("footer")).toHaveCount(0);
     near((await box(heading.locator("../.."))).width, 560);
     near((await box(heading.locator("../.."))).x, 440);
-    await expect(page.locator("[data-site-footer]")).toBeVisible();
+    await page.screenshot({ path: "test-results/wa4b-minimal.png" });
   });
 });
