@@ -3,15 +3,15 @@
   "schemaVersion": 1,
   "source": {
     "artifact": "https://claude.ai/artifact/JEsBg51MjX8KiHWEro8omY",
-    "version": "1791399145-48dd",
-    "readOn": "2026-10-07",
+    "version": "1791448557-b0b9",
+    "readOn": "2026-10-08",
     "ticket": "SF-31",
     "galleries": [
       {
         "id": "gallery-1",
         "artboard": "GalleryIndex.dc.html",
         "title": "route gallery 1 / 3 · onboarding & fighter mobile",
-        "rows": 240
+        "rows": 242
       },
       {
         "id": "gallery-2",
@@ -95,7 +95,7 @@
     },
     "accountOnboarding": {
       "mobile": ["mobile.signup.consent", "mobile.onboarding.role"],
-      "web": []
+      "web": ["web.app.onboarding.account", "web.app.onboarding.role"]
     },
     "workspaceChooser": {
       "mobile": "mobile.workspaces",
@@ -120,6 +120,38 @@
       "web": "web.app"
     },
     "returnToParam": "returnTo",
+    "intentParam": "intent",
+    "entryDestinations": {
+      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. null: no surface on that platform.",
+      "account_registration": {
+        "web": "web.app.onboarding.account",
+        "mobile": "mobile.signup.consent"
+      },
+      "role_selection": {
+        "web": "web.app.onboarding.role",
+        "mobile": "mobile.onboarding.role"
+      },
+      "fighter_onboarding": {
+        "web": "web.app.onboarding.fighter",
+        "mobile": "mobile.onboarding.fighter"
+      },
+      "fighter_home": {
+        "web": "web.app.home",
+        "mobile": "mobile.home"
+      },
+      "coach_onboarding": {
+        "web": "web.app.onboarding.coach",
+        "mobile": "mobile.onboarding.coach"
+      },
+      "gym_onboarding": {
+        "web": "web.app.onboarding.gym",
+        "mobile": "mobile.onboarding.gym"
+      },
+      "sponsor_application": {
+        "web": "web.partners.apply",
+        "mobile": null
+      }
+    },
     "workspaceSwitcher": {
       "mobile": "Route mobile.workspaces (A04).",
       "web": "In-shell action in the web.app.fighter / web.app.coach / web.app.gym sidebars; no route. During sign-in, the workspace step of web.login (WA2) chooses the first workspace (D-WEB-WORKSPACE-SWITCHER)."
@@ -832,7 +864,7 @@
         "file": "src/app/index.tsx",
         "note": "SF-12 foundation home, not yet the launch/redirect behaviour of LD1."
       },
-      "discrepancies": ["D-PRODUCTION-FOUNDATION"],
+      "discrepancies": ["D-PRODUCTION-FOUNDATION", "D-ENTRY-RESOLUTION"],
       "screens": ["LD1"]
     },
     {
@@ -905,10 +937,10 @@
         "phase": null
       },
       "status": "IMPLEMENTED",
-      "discrepancies": ["D-WEB-DEFAULT-WORKSPACE", "D-PRODUCTION-FOUNDATION"],
+      "discrepancies": ["D-WEB-DEFAULT-WORKSPACE", "D-PRODUCTION-FOUNDATION", "D-ENTRY-RESOLUTION"],
       "production": {
         "file": "src/app/[locale]/app/page.tsx",
-        "note": "SF-11 foundation page inside the foundation AppShell; the design uses /app only as the entry that loads and redirects (LD3)."
+        "note": "SF-45: the entry that loads (LD3) and redirects to the destination resolved by GET /api/v1/me/entry, mapped through guards.entryDestinations. It renders no page of its own."
       },
       "screens": ["LD3"]
     },
@@ -1054,7 +1086,7 @@
       },
       "access": {
         "session": "AUTHENTICATED",
-        "capability": "COACH",
+        "capability": null,
         "phase": "ONBOARDING"
       },
       "status": "IMPLEMENTED",
@@ -1062,7 +1094,7 @@
         "file": "src/app/(onboarding)/onboarding/coach.tsx",
         "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
       },
-      "discrepancies": ["D-REUSED-ARTBOARDS"],
+      "discrepancies": ["D-REUSED-ARTBOARDS", "D-ONBOARDING-ENTRY-CAPABILITY"],
       "screens": ["OC1", "OC2", "OC3", "OC4", "OC5", "OC6", "OC7", "OC8", "OC9", "OC10", "OC11"]
     },
     {
@@ -1114,7 +1146,7 @@
         "file": "src/app/(auth)/signup/consent.tsx",
         "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
       },
-      "discrepancies": ["D-SIGNUP-SESSION-BOUNDARY"],
+      "discrepancies": ["D-SIGNUP-SESSION-BOUNDARY", "D-ENTRY-RESOLUTION"],
       "screens": ["O04"]
     },
     {
@@ -1140,7 +1172,7 @@
         "file": "src/app/(auth)/onboarding/role.tsx",
         "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
       },
-      "discrepancies": ["D-ROLE-SELECTION-PATH", "D-SIGNUP-SESSION-BOUNDARY"],
+      "discrepancies": ["D-ROLE-SELECTION-PATH", "D-SIGNUP-SESSION-BOUNDARY", "D-ENTRY-RESOLUTION"],
       "screens": ["O05"]
     },
     {
@@ -1429,7 +1461,7 @@
       },
       "access": {
         "session": "AUTHENTICATED",
-        "capability": "FIGHTER",
+        "capability": null,
         "phase": "ONBOARDING"
       },
       "status": "IMPLEMENTED",
@@ -1437,7 +1469,7 @@
         "file": "src/app/(onboarding)/onboarding/fighter.tsx",
         "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
       },
-      "discrepancies": ["D-REUSED-ARTBOARDS"],
+      "discrepancies": ["D-REUSED-ARTBOARDS", "D-ONBOARDING-ENTRY-CAPABILITY"],
       "screens": ["OF1", "OF2", "OF3", "OF4", "OF5", "OF6", "OF7", "OF8", "OF9", "OF10", "OF11"]
     },
     {
@@ -1567,6 +1599,58 @@
       "screens": ["CR4", "CR5", "CR6", "C01"]
     },
     {
+      "id": "web.app.onboarding.account",
+      "platform": "web",
+      "path": "/app/onboarding/account",
+      "params": [],
+      "name": "Account basics & consent (web)",
+      "surface": "ONBOARDING",
+      "shell": "web.app.onboarding",
+      "parent": "web.app",
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": "ONBOARDING"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/onboarding/account/page.tsx",
+        "note": "SF-45: canonical feature placeholder in its shell; the WA5 form is built by its UI ticket on the SF-44 account registration API. Entry resolution sends account_registration here; ?intent= and ?returnTo= ride along as the continuation, resolved again once registration completes."
+      },
+      "discrepancies": ["D-ENTRY-RESOLUTION"],
+      "screens": ["WA5"]
+    },
+    {
+      "id": "web.app.onboarding.role",
+      "platform": "web",
+      "path": "/app/onboarding/role",
+      "params": [],
+      "name": "Choose where to start (web)",
+      "surface": "ONBOARDING",
+      "shell": "web.app.onboarding",
+      "parent": "web.app",
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": "ONBOARDING"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/onboarding/role/page.tsx",
+        "note": "SF-45: canonical feature placeholder in its shell; the WA6 choice is built by its UI ticket. Entry resolution sends role_selection here (account registration complete, no explicit intent, no role state). A choice is navigation intent only: nothing is stored and no role, capability or workspace is created."
+      },
+      "discrepancies": ["D-ENTRY-RESOLUTION"],
+      "screens": ["WA6"]
+    },
+    {
       "id": "web.app.onboarding.coach",
       "platform": "web",
       "path": "/app/onboarding/coach",
@@ -1581,7 +1665,7 @@
       },
       "access": {
         "session": "AUTHENTICATED",
-        "capability": "COACH",
+        "capability": null,
         "phase": "ONBOARDING"
       },
       "status": "IMPLEMENTED",
@@ -1589,7 +1673,8 @@
         "file": "src/app/[locale]/app/onboarding/coach/page.tsx",
         "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
       },
-      "screens": ["WCR1", "WCR2", "WCR3", "WCR4", "WCR5", "WCR6", "WCR7"]
+      "screens": ["WCR1", "WCR2", "WCR3", "WCR4", "WCR5", "WCR6", "WCR7"],
+      "discrepancies": ["D-ONBOARDING-ENTRY-CAPABILITY"]
     },
     {
       "id": "web.app.coach",
@@ -1731,7 +1816,7 @@
       },
       "access": {
         "session": "AUTHENTICATED",
-        "capability": "GYM_WORKSPACE",
+        "capability": null,
         "phase": "ONBOARDING"
       },
       "status": "IMPLEMENTED",
@@ -1739,7 +1824,8 @@
         "file": "src/app/(onboarding)/onboarding/gym.tsx",
         "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
       },
-      "screens": ["OG0"]
+      "screens": ["OG0"],
+      "discrepancies": ["D-ONBOARDING-ENTRY-CAPABILITY"]
     },
     {
       "id": "mobile.gym.pulse",
@@ -1782,7 +1868,7 @@
       },
       "access": {
         "session": "AUTHENTICATED",
-        "capability": "GYM_WORKSPACE",
+        "capability": null,
         "phase": "ONBOARDING"
       },
       "status": "IMPLEMENTED",
@@ -1806,7 +1892,8 @@
         "OG12",
         "OG13",
         "OG14"
-      ]
+      ],
+      "discrepancies": ["D-ONBOARDING-ENTRY-CAPABILITY"]
     },
     {
       "id": "web.app.gym",
@@ -8355,6 +8442,36 @@
         "step": "5.14",
         "tag": "WEB_SITE",
         "artboard": "WebRegVerify.dc.html"
+      }
+    },
+    {
+      "id": "WA5",
+      "code": "WA5",
+      "name": "Account basics & consent",
+      "route": "web.app.onboarding.account",
+      "states": ["loading", "empty", "resumed", "ready", "saving", "invalid", "failure"],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "onboarding",
+        "section": "5b · Web route · sign up & sign in (all roles)",
+        "step": "5.14a",
+        "tag": "WEB_APP",
+        "artboard": "WebAccountBasics.dc.html"
+      }
+    },
+    {
+      "id": "WA6",
+      "code": "WA6",
+      "name": "Choose where to start",
+      "route": "web.app.onboarding.role",
+      "states": ["none", "fighter", "coach", "gym", "sponsor", "continuing"],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "onboarding",
+        "section": "5b · Web route · sign up & sign in (all roles)",
+        "step": "5.14b",
+        "tag": "WEB_APP",
+        "artboard": "WebRoleSelect.dc.html"
       }
     },
     {
@@ -16368,12 +16485,62 @@
       "sourceB": "SF-25 backend (ADR 0015): FighterProfile persists the WF0 and WF1 fields only; no Gym, Coach, privacy-settings or notification-preferences domain exists",
       "mismatch": "The earlier web flow had six steps; four of them have no owning backend domain, the WF0 fields (required for completion) had no web step, and the route required the FIGHTER capability that only a FighterProfile can grant.",
       "impact": "Building WF2-WF5 would fake persistence or cross-client resume; requiring FIGHTER before the route that creates the FighterProfile is circular.",
-      "resolution": "Current screens WF0 (?step=basics), WF1 (?step=profile) and WF6 (?step=complete). WF2-WF5 stay registered as gallery rows with status DEFERRED. The route needs an authenticated session only (capability null, phase ONBOARDING); Fighter intent travels via returnTo, never a user role. The step query is navigation only: resume and completion come from the backend profile state.",
+      "resolution": "Current screens WF0 (?step=basics), WF1 (?step=profile) and WF6 (?step=complete). WF2-WF5 stay registered as gallery rows with status DEFERRED. The route needs an authenticated session only (capability null, phase ONBOARDING); Fighter intent travels as the ephemeral ?intent=fighter parameter resolved by GET /api/v1/me/entry (D-ENTRY-RESOLUTION), never a user role. The step query is navigation only: resume and completion come from the backend profile state.",
       "decision": "Web Fighter onboarding follows the SF-25 backend scope; WF2-WF5 return with their owning domains.",
       "decidedOn": "2026-10-07",
       "status": "DEFERRED",
       "routes": ["web.app.onboarding.fighter"],
       "screens": ["WF2", "WF3", "WF4", "WF5"]
+    },
+    {
+      "id": "D-ENTRY-RESOLUTION",
+      "title": "Post-authentication entry is resolved by the backend",
+      "sourceA": "Claude Design 1791448557-b0b9 (Version 78): WA5 Account basics & consent (/app/onboarding/account) and WA6 Choose where to start (/app/onboarding/role); RouteAuth, FlowAuthModel and FlowWebRoute: auth -> account basics if incomplete -> explicit intent if present -> otherwise role selection -> role journey; Google / Apple never imply Fighter",
+      "sourceB": "SF-24 clients: resolveEntry(viewer, returnTo) = a valid returnTo, otherwise the neutral entry; GET /api/me carries only the viewer id",
+      "mismatch": "The design routes every authenticated entry through account registration and role intent; the clients only knew returnTo and the app root, and web had no account-basics or role-selection route.",
+      "impact": "Without one resolver, web and mobile would each re-derive registration and onboarding state, and generic provider sign-up would drift towards Fighter.",
+      "resolution": "GET /api/v1/me/entry (simplefit-api ADR 0017) returns a semantic destination derived from persisted state; guards.entryDestinations maps it to one route per platform. Intent is the allow-listed, ephemeral guards.intentParam query parameter, never stored and never a capability. Mandatory destinations (account_registration, fighter_onboarding) win over a safe returnTo, which is kept as the continuation. Web adds WA5 and WA6; mobile maps to O04 and O05.",
+      "decision": "One backend entry resolver for all providers and both platforms; intent is navigation only.",
+      "decidedOn": "2026-10-08",
+      "status": "RESOLVED",
+      "routes": [
+        "web.app",
+        "web.app.onboarding.account",
+        "web.app.onboarding.role",
+        "mobile.root",
+        "mobile.signup.consent",
+        "mobile.onboarding.role"
+      ]
+    },
+    {
+      "id": "D-ONBOARDING-ENTRY-CAPABILITY",
+      "title": "Onboarding entry routes required the capability they create",
+      "sourceA": "Route registry: web.app.onboarding.coach (COACH), web.app.onboarding.gym (GYM_WORKSPACE), mobile.onboarding.fighter (FIGHTER), mobile.onboarding.coach (COACH), mobile.onboarding.gym (GYM_WORKSPACE)",
+      "sourceB": "Capability model: FIGHTER is granted by a FighterProfile, COACH by a CoachProfile, GYM_WORKSPACE by a workspace membership; those are created by these very onboarding routes",
+      "mismatch": "A user without the capability could never reach the route that grants it.",
+      "impact": "Onboarding would be unreachable, or clients would have to fake the capability.",
+      "resolution": "Onboarding entry routes need an authenticated session only (capability null, phase ONBOARDING), like web.app.onboarding.fighter (D-WEB-FIGHTER-ONBOARDING-FLOW). Post-onboarding application routes keep their capability. Intent is not authorization.",
+      "decision": "Onboarding entry routes never require the capability they create.",
+      "decidedOn": "2026-10-08",
+      "status": "RESOLVED",
+      "routes": [
+        "web.app.onboarding.coach",
+        "web.app.onboarding.gym",
+        "mobile.onboarding.fighter",
+        "mobile.onboarding.coach",
+        "mobile.onboarding.gym"
+      ]
+    },
+    {
+      "id": "D-WA3-PREAUTH-CONSENT",
+      "title": "WA3 shows consent checkboxes before authentication",
+      "sourceA": "Claude Design WebRegAccount (WA3): 'I accept the Terms and Privacy Policy', 'I am 16 or older' and product news checkboxes on the pre-authentication create-account step",
+      "sourceB": "SF-44 (simplefit-api ADR 0016) and Claude Design WA5: consents are recorded with their document version after authentication, through the account registration API",
+      "mismatch": "Two consent surfaces; only the post-authentication one can be persisted.",
+      "impact": "Persisting or trusting the WA3 checkboxes would create a second, unversioned consent record.",
+      "resolution": "The WA3 checkboxes stay disabled and are never sent or stored; WA5 (account_registration) is the canonical consent flow. SF-36 reconciles or removes the WA3 presentation.",
+      "status": "DEFERRED",
+      "routes": ["web.signup.account"]
     }
   ]
 }

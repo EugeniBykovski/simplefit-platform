@@ -588,6 +588,106 @@ describe("web Fighter onboarding (SF-27, design 1791399145-48dd)", () => {
   });
 });
 
+describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
+  const DESTINATIONS = [
+    "account_registration",
+    "role_selection",
+    "fighter_onboarding",
+    "fighter_home",
+    "coach_onboarding",
+    "gym_onboarding",
+    "sponsor_application",
+  ];
+  const { entryDestinations } = registry.guards;
+
+  it("carries intent as an ephemeral query parameter next to returnTo", () => {
+    expect(registry.guards.intentParam).toBe("intent");
+    expect(registry.guards.returnToParam).toBe("returnTo");
+  });
+
+  it("maps every backend semantic destination to one route per platform", () => {
+    expect(Object.keys(entryDestinations).filter((key) => !key.startsWith("$"))).toEqual(
+      DESTINATIONS,
+    );
+    const found = [];
+    for (const destination of DESTINATIONS) {
+      for (const platform of PLATFORMS) {
+        const id = entryDestinations[destination][platform];
+        if (id === null) {
+          if (!(destination === "sponsor_application" && platform === "mobile"))
+            found.push(`${destination}.${platform}: no route`);
+        } else if (routeById.get(id)?.platform !== platform) {
+          found.push(`${destination}.${platform}: ${id}`);
+        }
+      }
+    }
+    expect(found).toEqual([]);
+    expect(entryDestinations.account_registration).toEqual({
+      web: "web.app.onboarding.account",
+      mobile: "mobile.signup.consent",
+    });
+    expect(entryDestinations.role_selection).toEqual({
+      web: "web.app.onboarding.role",
+      mobile: "mobile.onboarding.role",
+    });
+  });
+
+  it("adds WA5 and WA6 as session-only account onboarding routes", () => {
+    for (const [id, path, screen] of [
+      ["web.app.onboarding.account", "/app/onboarding/account", "WA5"],
+      ["web.app.onboarding.role", "/app/onboarding/role", "WA6"],
+    ]) {
+      const route = routeById.get(id);
+      expect(route.path).toBe(path);
+      expect(route.access).toEqual({
+        session: "AUTHENTICATED",
+        capability: null,
+        phase: "ONBOARDING",
+      });
+      expect(route.screens).toEqual([screen]);
+    }
+    expect(registry.guards.accountOnboarding.web).toEqual([
+      "web.app.onboarding.account",
+      "web.app.onboarding.role",
+    ]);
+  });
+
+  it("never requires the capability an onboarding entry route creates", () => {
+    const entryRoutes = [
+      "web.app.onboarding.fighter",
+      "web.app.onboarding.coach",
+      "web.app.onboarding.gym",
+      "mobile.onboarding.fighter",
+      "mobile.onboarding.coach",
+      "mobile.onboarding.gym",
+    ];
+    for (const id of entryRoutes) {
+      expect(routeById.get(id).access).toEqual({
+        session: "AUTHENTICATED",
+        capability: null,
+        phase: "ONBOARDING",
+      });
+    }
+    for (const [id, capability] of [
+      ["web.app.home", "FIGHTER"],
+      ["web.app.coach", "COACH"],
+      ["web.app.gym", "GYM_WORKSPACE"],
+      ["mobile.home", "FIGHTER"],
+    ]) {
+      expect(routeById.get(id).access.capability).toBe(capability);
+    }
+  });
+
+  it("never resolves to a workspace chooser", () => {
+    const targets = DESTINATIONS.flatMap((destination) =>
+      PLATFORMS.map((platform) => entryDestinations[destination][platform]),
+    );
+    expect(targets).not.toContain("web.login");
+    expect(targets).not.toContain(registry.guards.workspaceChooser.mobile);
+    expect(registry.guards.workspaceChooser.web).toBeNull();
+  });
+});
+
 describe("discrepancies", () => {
   it("are complete and referenced consistently", () => {
     expect(duplicates(discrepancies.map((entry) => entry.id))).toEqual([]);
