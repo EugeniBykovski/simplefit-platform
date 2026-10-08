@@ -134,11 +134,14 @@ BasicsInvalid.name = "WF0 · field validation";
 export const BasicsConflict = story(
   "basics",
   {
-    "GET /api/v1/me/fighter-profile": ok(profile({ ...BASICS, username: "alex" })),
+    "GET /api/v1/me/fighter-profile": ok(profile(BASICS)),
     "PATCH /api/v1/me/fighter-profile": validation({ username: ["already_exists"] }),
   },
   async ({ canvasElement }) => {
     await heading(canvasElement, "Your fighter profile");
+    const username = within(canvasElement).getByRole("textbox", { name: "Username" });
+    await userEvent.clear(username);
+    await userEvent.type(username, "alex");
     await userEvent.click(within(canvasElement).getByRole("button", { name: "Continue" }));
     await expect(
       await within(canvasElement).findByText("That username is taken. Try another."),
@@ -155,6 +158,8 @@ export const BasicsSaving = story(
   },
   async ({ canvasElement }) => {
     await heading(canvasElement, "Your fighter profile");
+    // A change to save: Continue sends only what changed.
+    await userEvent.type(within(canvasElement).getByLabelText("City"), " Centre");
     await userEvent.click(within(canvasElement).getByRole("button", { name: "Continue" }));
     await expect(
       await within(canvasElement).findByRole("button", { name: "Saving…" }),
@@ -171,6 +176,8 @@ export const BasicsFailure = story(
   },
   async ({ canvasElement }) => {
     await heading(canvasElement, "Your fighter profile");
+    // A change to save: Continue sends only what changed.
+    await userEvent.type(within(canvasElement).getByLabelText("City"), " Centre");
     await userEvent.click(within(canvasElement).getByRole("button", { name: "Continue" }));
     await expect(
       await within(canvasElement).findByText("We couldn’t save your changes."),
@@ -264,6 +271,8 @@ export const ProfileFailure = story(
   {
     "GET /api/v1/me/fighter-profile": ok(profile({ ...BASICS, ...BOXING })),
     "PATCH /api/v1/me/fighter-profile": apiError(503, "service_unavailable"),
+    // Nothing changed, so Finish goes straight to completion, which fails.
+    "POST /api/v1/me/fighter-profile/complete-onboarding": apiError(503, "service_unavailable"),
   },
   async ({ canvasElement }) => {
     await heading(canvasElement, "Your boxing profile");

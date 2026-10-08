@@ -29,8 +29,14 @@ resolves to the resume step.
   `null` clears, the first save creates the profile) and
   `POST …/complete-onboarding` (the server checks every requirement and the
   completed account registration). The cache holds the backend's latest
-  answer only; it is refetched on window focus, and a form that is being
-  edited is never overwritten by it.
+  answer only; it is refetched on window focus.
+- **Several clients at once** (SF-27): a save sends only the fields this
+  page changed (`changedOnly`, React Hook Form's dirty fields), so a value
+  the mobile app or another tab saved meanwhile is never written back with
+  this page's older copy; a refetch updates every field not being edited
+  (`keepDirtyValues`) and keeps the visitor's input in the rest. A profile
+  completed elsewhere sends an open tab home on its next refetch; the
+  backend's completion is never undone by a stale tab.
 - **Fields** (`display_name` is the Fighter-facing name; it never touches the
   account's `full_name`): WF0 `display_name`, `username`, `country_code`
   (ISO 3166-1 alpha-2), `city`; WF1 `experience_level`, `stance`,

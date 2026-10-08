@@ -73,10 +73,11 @@ test("a new Fighter: WF0 → WF1 → complete → WF6 → home, every value save
       goals: ["improve_technique", "competition"],
       current_weight_kg: 73.8,
       height_cm: 178,
-      next_fight_on: null,
       next_fight_name: "Warsaw Cup",
     },
   });
+  // Only what was changed is sent: the untouched date stays out of the PATCH.
+  expect(sent.at(-2)?.body).not.toHaveProperty("next_fight_on");
   expect(sent.at(-1)).toMatchObject({
     method: "POST",
     path: "/api/v1/me/fighter-profile/complete-onboarding",
@@ -375,4 +376,137 @@ test("display_name and weight_class round-trip: sent under their SF-25 names, re
   await expect(page.getByRole("combobox", { name: "Weight class · private" })).toHaveText(/−75 kg/);
   await page.goto(`${ROUTE}?step=basics`);
   await expect(page.getByLabel("Name", { exact: true })).toHaveValue("Alex K.");
+});
+
+test.describe("concurrent clients (SF-27)", () => {
+  const SAVED = {
+    display_name: "Alex K.",
+    username: "alex_k",
+    country_code: "PL",
+    city: "Warsaw",
+    experience_level: "amateur",
+    height_cm: 178,
+  };
+
+  test("a save sends only what this page changed: another client's newer values survive", async ({
+    page,
+  }) => {
+    const api = await fighterApi(page, { fields: SAVED });
+    await page.goto(`${ROUTE}?step=profile`);
+    await expect(heading(page, "Your boxing profile")).toBeVisible();
+    await page.getByText("Southpaw").click();
+    // Meanwhile the mobile app saves the height and the city.
+    api.externalUpdate({ height_cm: 181, city: "Kraków" });
+    await page.getByRole("button", { name: "Back" }).click();
+    await expect(heading(page, "Your fighter profile")).toBeVisible();
+
+    expect(writes(api).at(-1)?.body).toEqual({ stance: "southpaw" });
+    expect(api.state()).toMatchObject({ stance: "southpaw", height_cm: 181, city: "Kraków" });
+    // And the page now shows the newest backend values.
+    await expect(page.getByLabel("City")).toHaveValue("Kraków");
+  });
+
+  test("an untouched field takes another client's newer value while you edit a different one", async ({
+    page,
+  }) => {
+    const api = await fighterApi(page, { fields: SAVED });
+    await page.goto(`${ROUTE}?step=basics`);
+    await page.getByLabel("Name", { exact: true }).fill("Alex Kowalski");
+    api.externalUpdate({ city: "Gdańsk" });
+    // Focus returning to the tab refetches the profile (TanStack Query).
+    await page.evaluate(() => window.dispatchEvent(new Event("visibilitychange")));
+    await expect(page.getByLabel("City")).toHaveValue("Gdańsk");
+    await expect(page.getByLabel("Name", { exact: true })).toHaveValue("Alex Kowalski");
+    await page.getByRole("button", { name: "Continue" }).click();
+    await expect(heading(page, "Your boxing profile")).toBeVisible();
+    expect(writes(api).at(-1)?.body).toEqual({ display_name: "Alex Kowalski" });
+    expect(api.state()).toMatchObject({ display_name: "Alex Kowalski", city: "Gdańsk" });
+  });
+
+  test("a profile completed in another tab sends this tab home on its next look", async ({
+    page,
+  }) => {
+    const api = await fighterApi(page, { fields: { ...SAVED, stance: "orthodox" } });
+    await page.goto(`${ROUTE}?step=profile`);
+    await expect(heading(page, "Your boxing profile")).toBeVisible();
+    // Tab B finishes onboarding; this tab still shows WF1.
+    api.completeExternally();
+    // Returning to this tab refetches the profile: completed, so it leaves for home
+    // (never WF6, which only the completing tab shows).
+    await page.evaluate(() => window.dispatchEvent(new Event("visibilitychange")));
+    await page.waitForURL("**/en/app/home");
+    expect(writes(api)).toEqual([]);
+  });
+});
+
+test.describe("entry and resume boundaries (SF-27)", () => {
+  test("account registration incomplete: the onboarding gate sends the visitor to account basics, keeping the Fighter intent", async ({
+    page,
+  }) => {
+    const api = await fighterApi(page, { accountComplete: false });
+    await page.goto(`${ROUTE}?step=basics&intent=fighter`);
+    await page.waitForURL("**/en/app/onboarding/account?intent=fighter");
+    // WA5 is still a placeholder: the route is right, there is no form yet.
+    await expect(heading(page, "Account basics")).toBeVisible();
+    expect(writes(api)).toEqual([]);
+  });
+
+  test("Save & exit, then a later visit resumes from the saved profile", async ({ page }) => {
+    const api = await fighterApi(page);
+    await page.goto(ROUTE);
+    await page.getByLabel("Name", { exact: true }).fill("Alex K.");
+    await page.getByRole("textbox", { name: "Username" }).fill("alex_k");
+    await page.getByRole("button", { name: "Save & exit" }).click();
+    await page.waitForURL((url) => url.pathname === "/en");
+    expect(api.state()).toMatchObject({ display_name: "Alex K.", username: "alex_k" });
+    // Coming back (another day, another tab): the resolver's step, the saved values.
+    await page.goto(ROUTE);
+    await expect(heading(page, "Your fighter profile")).toBeVisible();
+    await expect(page.getByLabel("Name", { exact: true })).toHaveValue("Alex K.");
+    await expect(page.getByRole("textbox", { name: "Username" })).toHaveValue("alex_k");
+  });
+
+  test("Save & exit that fails stays put: no navigation, no false success", async ({ page }) => {
+    const api = await fighterApi(page);
+    await page.goto(ROUTE);
+    await page.getByLabel("Name", { exact: true }).fill("Alex K.");
+    api.failWrites(1);
+    await page.getByRole("button", { name: "Save & exit" }).click();
+    await expect(page.getByText("We couldn’t save your changes.")).toBeVisible();
+    expect(new URL(page.url()).pathname).toBe("/en/app/onboarding/fighter");
+    expect(api.state()).toBeUndefined();
+  });
+
+  test("a boxing value the API rejects (invalid_choice) is marked on its field", async ({
+    page,
+  }) => {
+    await fighterApi(page, {
+      fields: { display_name: "Alex K.", username: "alex_k", country_code: "PL", city: "Warsaw" },
+    });
+    await page.route(
+      (url) => url.pathname === "/api/v1/me/fighter-profile",
+      (call) =>
+        call.request().method() === "PATCH"
+          ? call.fulfill({
+              status: 422,
+              json: {
+                error: {
+                  code: "validation_error",
+                  message: "",
+                  details: {
+                    fields: { stance: ["is invalid"] },
+                    field_codes: { stance: ["invalid_choice"] },
+                  },
+                  request_id: null,
+                },
+              },
+            })
+          : call.fallback(),
+    );
+    await page.goto(`${ROUTE}?step=profile`);
+    await page.getByText("Southpaw").click();
+    await page.getByRole("button", { name: "Finish" }).click();
+    await expect(page.getByText("Choose one of the options.")).toBeVisible();
+    await expect(page.getByText("Check the highlighted fields.")).toBeVisible();
+  });
 });
