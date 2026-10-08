@@ -55,9 +55,9 @@ const offScale =
 const offScaleMessage =
   "Off-scale value: use the SF-13 spacing, radius and type scales (docs/design-handoff.md §8.1), not arbitrary values.";
 const spacingSteps =
-  "(^|[\\s:])-?([pm][xytrblse]?|gap(-[xy])?|space-[xy])-(?=\\d)(?!(0|0\\.5|1|1\\.5|2|2\\.5|3|3\\.5|4|4\\.5|5|5\\.5|6|8|10|12|14|16|20)(?![\\w.-]))";
+  "(^|[\\s:])-?([pm][xytrblse]?|gap(-[xy])?|space-[xy])-(?=\\d)(?!(0|0\\.5|1|1\\.5|2|2\\.5|3|3\\.5|4|4\\.5|5|5\\.5|6|6\\.5|8|9|10|12|14|16|20)(?![\\w.-]))";
 const spacingStepsMessage =
-  "Spacing step outside the SimpleFit scale (docs/design-tokens.json spacing.steps: 0.5–6 in half steps, then 8, 10, 12, 14, 16, 20).";
+  "Spacing step outside the SimpleFit scale (docs/design-tokens.json spacing.steps: 0.5–6 in half steps, 6.5, then 8, 9, 10, 12, 14, 16, 20).";
 const classScopes = [
   "JSXAttribute[name.name='className']",
   "CallExpression[callee.name=/^(cn|cva)$/]",

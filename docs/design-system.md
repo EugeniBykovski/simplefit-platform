@@ -67,9 +67,11 @@ Two layers, with **identical names and values on both platforms**:
 | -------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | `background` / `foreground`                                                                              | Page and default text                                                               |
 | `surface` (+`-foreground`), `surface-subtle`, `surface-elevated`                                         | Cards and fields, wells, quiet controls / dialogs / popovers                        |
+| `surface-sunken`                                                                                         | Below the page: the public-site footer band (SF-42)                                 |
 | `muted` / `muted-foreground`                                                                             | Quiet fills; **secondary** text                                                     |
 | `faint-foreground`                                                                                       | **Tertiary** text: metadata, helper copy, inactive icons                            |
 | `border`, `border-strong`, `input`, `ring`                                                               | Hairlines, stronger dividers / handles, control borders, focus indicator            |
+| `border-subtle`                                                                                          | The public-site header and footer hairline, `#1F2320` (SF-42)                       |
 | `overlay`                                                                                                | Modal scrim                                                                         |
 | `primary` / `primary-foreground`, `primary-muted`                                                        | The one olive call to action; olive mid-tone for outline borders and progress steps |
 | `secondary` / `secondary-foreground`                                                                     | High-contrast neutral (bone) action, selected segment                               |
@@ -110,33 +112,38 @@ button label). JetBrains Mono 400. No other weights are loaded or allowed.
 
 **Spacing** uses only these steps (Tailwind keys, 1 step = 4 px):
 
-| Key | 0.5 | 1   | 1.5 | 2   | 2.5 | 3   | 3.5 | 4   | 4.5 | 5   | 5.5 | 6   | 8   | 10  | 12  | 14  | 16  | 20  |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| px  | 2   | 4   | 6   | 8   | 10  | 12  | 14  | 16  | 18  | 20  | 22  | 24  | 32  | 40  | 48  | 56  | 64  | 80  |
+| Key | 0.5 | 1   | 1.5 | 2   | 2.5 | 3   | 3.5 | 4   | 4.5 | 5   | 5.5 | 6   | 6.5 | 8   | 9   | 10  | 12  | 14  | 16  | 20  |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| px  | 2   | 4   | 6   | 8   | 10  | 12  | 14  | 16  | 18  | 20  | 22  | 24  | 26  | 32  | 36  | 40  | 48  | 56  | 64  | 80  |
 
 The canonical design spaces in 2 px steps up to 24, then 32–64. 80 is the
-public-website section rhythm. ESLint rejects other steps and arbitrary
+public-website section rhythm; 26 and 36 are the public-website header and
+footer rhythm (SF-42: the 26 px between site links, the 36 px between header
+items and above and below the footer). ESLint rejects other steps and arbitrary
 values in product code.
 
 **Radius** (`rounded-*`): `xs` 6 (marks), `sm` 9 (badges, small tiles),
-`md` 12 (compact controls ≤ 48 px: web buttons and fields, chips), `lg` 16
+`md` 12 (compact controls ≤ 48 px: web buttons and fields, chips), `md-lg`
+14 (public-site controls 40–46 px, such as the 42 px header Get started;
+SF-42), `lg` 16
 (mobile fields, banners), `xl` 18 (primary CTAs 50–56 px), `2xl` 20 (compact
 cards), `3xl` 22 (cards), `4xl` 28 (sheets, dialogs), `full` (pills, circles,
 segmented controls, toggles).
 
 **Controls** (`controls` in the contract):
 
-|                     | Web                                                                      | Mobile                                             |
-| ------------------- | ------------------------------------------------------------------------ | -------------------------------------------------- |
-| Button `sm`         | 32, `md`, body-sm 800                                                    | 36 pill, body-sm 800, touch target extended to 44  |
-| Button `md`         | 40, `md`, body-sm 800 (default)                                          | 50, `xl`, body 800 (default)                       |
-| Button `lg`         | 48, `md`, body-sm 800                                                    | 56, `xl`, body-lg 800 (main action)                |
-| Button `xl` / `gym` | `xl` 54, `xl`, body-lg 800 (hero, checkout)                              | `gym` 60, `2xl`, body-lg 800                       |
-| Field               | 40, `md`, body-sm, `surface` well, hairline `border`, olive focus border | 54, `lg`, body-lg 600, same colours                |
-| Field label         | caption 700, `muted-foreground`                                          | same                                               |
-| Badge               | badge role, `sm`, padding 4 × 9                                          | same                                               |
-| Card                | `3xl`, padding 18 × 20; compact `2xl`, 14 × 16                           | same                                               |
-| Switch              | 44 × 26                                                                  | native switch (platform convention), token colours |
+|                     | Web                                                                       | Mobile                                             |
+| ------------------- | ------------------------------------------------------------------------- | -------------------------------------------------- |
+| Button `sm`         | 32, `md`, body-sm 800                                                     | 36 pill, body-sm 800, touch target extended to 44  |
+| Button `md`         | 40, `md`, body-sm 800 (default)                                           | 50, `xl`, body 800 (default)                       |
+| Button `lg`         | 48, `md`, body-sm 800                                                     | 56, `xl`, body-lg 800 (main action)                |
+| Button `xl` / `gym` | `xl` 54, `xl`, body-lg 800 (hero, checkout)                               | `gym` 60, `2xl`, body-lg 800                       |
+| Button `site`       | 42, `md-lg`, body 800, 18 px sides, no border (public-site header, SF-42) | —                                                  |
+| Field               | 40, `md`, body-sm, `surface` well, hairline `border`, olive focus border  | 54, `lg`, body-lg 600, same colours                |
+| Field label         | caption 700, `muted-foreground`                                           | same                                               |
+| Badge               | badge role, `sm`, padding 4 × 9                                           | same                                               |
+| Card                | `3xl`, padding 18 × 20; compact `2xl`, 14 × 16                            | same                                               |
+| Switch              | 44 × 26                                                                   | native switch (platform convention), token colours |
 
 Button variants on both platforms: `primary`, `secondary`, `quiet`,
 `outline`, `ghost`, `destructive`, `destructive-subtle` (mobile
@@ -206,6 +213,27 @@ for the wordmark in product chrome (the FighterWebNav sidebar), and mono 600
 `Button` gains the `warning` variant (amber action of warning-tone system
 states) and the `system` size (44 px, radius `md`, body-sm 800: the action of
 the system-state cards), on web and mobile.
+
+### Public website shell (SF-42)
+
+The header and footer every public-website artboard shares (Claude Design
+`1791448557-b0b9`), measured and matched 1:1 at 1440. The values the scales
+lacked became contract tokens rather than local values (handoff §8.1, case
+3), because they recur on every public page: spacing `6.5` (26) and `9`
+(36), radius `md-lg` (14), `surface-sunken` (`#0D0E0D`, the footer band) and
+`border-subtle` (`#1F2320`, the header and footer hairline), the Button
+`site` size, and four public-site type roles that keep the artboards'
+natural line boxes (`typography.siteRoles.web`):
+
+| Role                | Size / line | Family, weight                        | Use                         |
+| ------------------- | ----------- | ------------------------------------- | --------------------------- |
+| `site-nav`          | 14 / 19     | Manrope 600                           | Header links, Sign in (700) |
+| `site-footer-label` | 10 / 13     | JetBrains Mono 400, 0.14em, uppercase | Footer column labels        |
+| `site-footer-link`  | 13 / 18     | Manrope 400                           | Footer links and entries    |
+| `site-footer-blurb` | 12 / 19.2   | Manrope 400                           | Footer brand blurb          |
+
+Use them only in the shell (`widgets/site-header`); pages use the product
+roles.
 
 ### System-state colour compositions (SF-34)
 

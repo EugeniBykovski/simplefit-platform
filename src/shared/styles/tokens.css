@@ -18,6 +18,8 @@
 :root {
   /* Graphite: foundation */
   --graphite-950: #111312;
+  /* Public-site canvas: the footer band (SF-42). */
+  --graphite-975: #0d0e0d;
   --graphite-925: #151816;
   --graphite-900: #181b19;
   --graphite-850: #1f2320;
@@ -77,6 +79,8 @@
   --surface-foreground: var(--bone);
   --surface-subtle: var(--graphite-925);
   --surface-elevated: var(--graphite-850);
+  /* Below the page: the public-site footer (SF-42). */
+  --surface-sunken: var(--graphite-975);
 
   --muted: var(--graphite-850);
   /* Secondary text. */
@@ -85,6 +89,8 @@
   --faint-foreground: var(--stone-550);
 
   --border: var(--graphite-800);
+  /* The public-site header and footer hairline (SF-42). */
+  --border-subtle: var(--graphite-850);
   --border-strong: var(--graphite-600);
   --input: var(--graphite-700);
   --ring: var(--olive-300);
@@ -144,12 +150,14 @@
   --surface-foreground: var(--graphite-950);
   --surface-subtle: var(--bone-200);
   --surface-elevated: #ffffff;
+  --surface-sunken: var(--bone-200);
 
   --muted: var(--bone-200);
   --muted-foreground: var(--stone-600);
   --faint-foreground: var(--stone-650);
 
   --border: var(--bone-300);
+  --border-subtle: var(--bone-200);
   --border-strong: var(--bone-400);
   --input: var(--bone-400);
   --ring: var(--olive-600);

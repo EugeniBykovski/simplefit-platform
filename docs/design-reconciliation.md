@@ -168,6 +168,16 @@ Other SF-17 decisions:
   colours.
 - **Avatar** initials sit on `highlight` in Unbounded (badge role on the
   smallest mobile avatar).
+- **SF-42 public website shell:** the header and footer shared by every
+  public-website artboard are matched 1:1 at 1440 instead of by nearest step,
+  so the values the scales lacked are now tokens: spacing `6.5` (26) and `9`
+  (36), radius `md-lg` (14), palette `graphite-975` (`#0D0E0D`) as
+  `surface-sunken` (the footer band; light `bone-200`), `border-subtle`
+  (graphite 850 `#1F2320`, the shell's hairline; light `bone-200`) and the web
+  type roles `typography.siteRoles.web`. Decision 11 (hairlines → `border`)
+  still holds everywhere else; the public-site shell uses `border-subtle`.
+  New contrast pairs: `muted-foreground` and `faint-foreground` on
+  `surface-sunken`, AA in both themes.
 - **Hero type** larger than `display` (40–58 px on a handful of landing and hero artboards)
   is **DEFERRED** to the public-website ticket, which decides whether a
   `display-lg` role is needed.
