@@ -39,9 +39,10 @@ import { AuthInfoList, AuthStepFrame } from "./auth-frame";
  * the backend, never a role. Google and Apple carry only an intent the page
  * already has; on their own they never mean Fighter.
  *
- * The WA3 consent checkboxes are not authoritative (D-WA3-PREAUTH-CONSENT):
- * consents are recorded after authentication by account registration (WA5,
- * SF-44). SF-36 reconciles their presentation.
+ * Consent is recorded after authentication, by account registration (WA5,
+ * SF-44), never before a User exists (D-WA3-PREAUTH-CONSENT). WA3 keeps its
+ * three consent checkboxes where the artboard draws them, disabled and
+ * unchecked: nothing is collected, validated or sent at this step.
  */
 
 const ROLE_CARDS = [
@@ -161,14 +162,16 @@ const CONSENTS = [
   { key: "age", required: true },
   { key: "news", required: false },
 ] as const;
-const NEXT_STEPS = ["verify", "setup", "home"] as const;
+const NEXT_STEPS = ["verify", "basics", "setup"] as const;
 
 /**
  * WA3 "Create your SimpleFit account" (email_verification), in the auth step
- * frame (1fr | 420 px, 56 px gap). The role selector, full name and consent
- * checkboxes are rendered in place but disabled and never sent: they are set
- * after verification by the onboarding domain (SF-25). Only the email address
- * is submitted.
+ * frame (1fr | 420 px, 56 px gap). Only the email address is submitted. The
+ * role segments and the identity chip show the journey chosen on O02w
+ * (`intent`, navigation only; none without one), and the full name and the
+ * consents are given after verification, in account registration (WA5):
+ * the name field and the three consent checkboxes are disabled, unchecked and
+ * never sent; only the email address is submitted.
  */
 export function SignupAccountScreen({ continuation }: { continuation?: Continuation }) {
   const t = useTranslations("auth.account");
@@ -188,10 +191,10 @@ export function SignupAccountScreen({ continuation }: { continuation?: Continuat
             <h2 className="type-label text-faint-foreground">{t("identity.title")}</h2>
             <p className="type-body text-pretty">{t("identity.body")}</p>
             <ul className="flex flex-wrap items-center gap-1.5">
-              {IDENTITY_ROLES.map((role, index) => (
+              {IDENTITY_ROLES.map((role) => (
                 <li key={role}>
-                  {/* WA3 draws FIGHTER in the olive accent, matching the Fighter segment. */}
-                  <Badge variant={index === 0 ? "accent" : "neutral"}>
+                  {/* WA3 draws the chosen journey's chip in the olive accent, as its segment. */}
+                  <Badge variant={role === continuation?.intent ? "accent" : "neutral"}>
                     {t(`identity.roles.${role}`)}
                   </Badge>
                 </li>
@@ -268,6 +271,8 @@ export function SignupAccountScreen({ continuation }: { continuation?: Continuat
         <RegistrationEmailForm
           continuation={continuation}
           submitLabel={t("submit")}
+          // WA3's 52 px CTA (15 / 800, radius 18).
+          submitClassName="h-13"
           hint={t("hint")}
           hintPlacement="field"
           fullWidth={false}
@@ -280,21 +285,21 @@ export function SignupAccountScreen({ continuation }: { continuation?: Continuat
               >
                 {t("fullName")}
               </label>
-              {/* Presentation only (SF-25 owns the profile): never submitted. */}
+              {/* Given in account registration (WA5) after verifying: never submitted here. */}
               <Input
                 id="signup-full-name"
                 fieldSize="lg"
                 disabled
                 autoComplete="off"
-                className="disabled:bg-background disabled:opacity-100"
+                placeholder={t("fullNamePlaceholder")}
               />
             </div>
           }
         >
-          <div className="flex flex-col gap-2.5">
+          {/* WA3's three 22 px checkboxes, 10 px apart: disabled, unchecked, never sent (WA5 owns consent). */}
+          <div data-auth-consents className="flex flex-col gap-2.5">
             {CONSENTS.map(({ key, required }) => (
               <label key={key} className="flex items-center gap-3">
-                {/* Never pre-ticked and never stored: consent persistence is SF-25. */}
                 <Checkbox
                   disabled
                   checked={false}
@@ -318,12 +323,14 @@ export function SignupAccountScreen({ continuation }: { continuation?: Continuat
   );
 }
 
-const AFTER_VERIFYING = ["fighter", "coach", "gym"] as const;
+const AFTER_VERIFYING = ["everyone", "journey", "none"] as const;
 
 /**
  * WA4 "Verify your email" (email_verification), in the auth step frame. The
  * aside shows the E01 email as an illustration with the code masked (never a
- * code anyone could type) and a static "After verifying" overview.
+ * code anyone could type) and the static "After verifying" overview of the
+ * entry resolution (SF-45): account basics for everyone, then the journey
+ * picked before sign-in, or the choice of where to start.
  */
 export function SignupVerifyScreen({ continuation }: { continuation?: Continuation }) {
   const t = useTranslations("auth.code.registration.aside");

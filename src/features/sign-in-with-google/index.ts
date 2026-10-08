@@ -1,1 +1,5 @@
-export { GoogleSignInButton } from "./ui/google-sign-in-button";
+export {
+  GoogleSignInButton,
+  GoogleSignInView,
+  type GoogleSignInFailure,
+} from "./ui/google-sign-in-button";

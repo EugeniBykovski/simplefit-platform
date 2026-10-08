@@ -1376,7 +1376,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(auth)/signup/page.tsx",
-        "note": "SF-24: O02w (Google, Apple, email) in the site chrome with the designed site footer. The role cards are rendered as designed and link to the account step (sponsor: /partners/apply) without carrying or storing a role. SF-25 still owns role selection, onboarding/profile state, consent persistence and post-auth role/workspace resolution; SF-24 persists no domain state."
+        "note": "SF-24: O02w (Google, Apple, email) in the site chrome with the designed site footer. The role cards carry the journey as the ephemeral intent (SF-45; sponsor: /partners/apply), never a role. SF-36: the V78 legal line (the Terms and Privacy Policy are reviewed after sign-in); consent is recorded by account registration (WA5)."
       },
       "screens": ["O02w"]
     },
@@ -1401,7 +1401,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(auth)/signup/account/page.tsx",
-        "note": "SF-24: WA3. Only the email address is submitted (the registration API owns the address only). The role selector, full name and consent checkboxes are rendered in place, disabled, unchecked and never sent; the One identity and What happens next panels and the info strip are static. SF-25 still owns role selection, onboarding/profile state, consent persistence and post-auth role/workspace resolution; SF-24 persists no domain state."
+        "note": "SF-24: WA3. Only the email address is submitted (the registration API owns the address only). SF-36: the role segments and the identity chip show the O02w intent only (none without one); the full name and the three consent checkboxes are disabled, unchecked and never sent (D-WA3-PREAUTH-CONSENT; WA5 owns them); What happens next follows V78 (verify, account basics, your setup)."
       },
       "screens": ["WA3", "x-web-create-account"]
     },
@@ -1427,7 +1427,7 @@
       "discrepancies": ["D-SIGNUP-SESSION-BOUNDARY"],
       "production": {
         "file": "src/app/[locale]/(auth)/signup/verify/page.tsx",
-        "note": "SF-24: WA4 email verification code (email_verification); verified_elsewhere continues with a new email_sign_in challenge. The aside renders the E01 email preview with the code masked and a static After verifying overview (no screen codes). SF-25 still owns role selection, onboarding/profile state, consent persistence and post-auth role/workspace resolution; SF-24 persists no domain state."
+        "note": "SF-24: WA4 email verification code (email_verification); verified_elsewhere continues with a new email_sign_in challenge. The aside renders the E01 email preview with the code masked and the static V78 After verifying overview of the entry resolution (account basics, the picked journey or the choice of where to start; no screen codes) (SF-36)."
       },
       "screens": ["WA4"]
     },
@@ -1453,7 +1453,7 @@
       "discrepancies": ["D-WEB-WORKSPACE-SWITCHER", "D-SIGNUP-SESSION-BOUNDARY"],
       "production": {
         "file": "src/app/[locale]/(auth)/login/page.tsx",
-        "note": "SF-24: WA1 (Google SF-22, Apple SF-23, email sign-in code) in the split frame inside the canonical 1440 px frame. The After sign-in card is rendered as a static role overview (no screen codes); the last-workspace line is not rendered because it states a runtime fact the API cannot provide. The WA2 workspace step needs workspace data (SF-25+). SF-25 still owns role selection, onboarding/profile state, consent persistence and post-auth role/workspace resolution; SF-24 persists no domain state."
+        "note": "SF-24: WA1 (Google SF-22, Apple SF-23, email sign-in code) in a full-viewport 50 / 50 split (SF-36, SF-42). The After sign-in card is rendered as a static role overview (no screen codes); the last-workspace line is not rendered because it states a runtime fact the API cannot provide. WA2 (choose workspace) is not rendered: no backend owns workspace data yet, so sign-in enters through the backend entry resolution (SF-45) and never shows invented workspaces (D-WEB-WORKSPACE-SWITCHER)."
       },
       "screens": ["WA1", "WA2"]
     },
@@ -16549,8 +16549,8 @@
       "sourceB": "SF-44 (simplefit-api ADR 0016) and Claude Design WA5: consents are recorded with their document version after authentication, through the account registration API",
       "mismatch": "Two consent surfaces; only the post-authentication one can be persisted.",
       "impact": "Persisting or trusting the WA3 checkboxes would create a second, unversioned consent record.",
-      "resolution": "The WA3 checkboxes stay disabled and are never sent or stored; WA5 (account_registration) is the canonical consent flow. SF-36 reconciles or removes the WA3 presentation.",
-      "status": "DEFERRED",
+      "resolution": "SF-36: WA3 keeps the artboard's three consent checkboxes and the full name in place, disabled and unchecked (the name field says it is added after verifying). Only the email address is submitted; nothing is collected, validated or stored before a User exists. WA5 (account_registration) owns full name, date of birth, Terms and Privacy acceptance and the optional product news.",
+      "status": "RESOLVED",
       "routes": ["web.signup.account"]
     }
   ]

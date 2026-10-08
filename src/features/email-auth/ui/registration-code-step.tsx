@@ -156,9 +156,11 @@ export function RegistrationCodeForm({
           )}
         </div>
         <div className="flex flex-wrap items-center gap-4">
+          {/* WA4's 52 px CTA (15 / 800, radius 18). */}
           <Button
             type="submit"
             size="xl"
+            className="h-13"
             disabled={cta.disabled || handingOff}
             loading={status === "submitting" || status === "success" || handingOff}
           >

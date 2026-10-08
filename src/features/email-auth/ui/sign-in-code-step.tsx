@@ -81,10 +81,11 @@ export function SignInCodeForm({
           autoFocus
         />
         <StatusNotice purpose="sign-in" status={step.status} email={flow.email} />
+        {/* WA1b's 52 px CTA (15 / 800, radius 18). */}
         <Button
           type="submit"
           size="xl"
-          className="w-full"
+          className="h-13 w-full"
           disabled={cta.disabled}
           loading={step.status === "submitting" || final}
         >

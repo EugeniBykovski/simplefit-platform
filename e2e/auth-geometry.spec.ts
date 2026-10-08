@@ -50,7 +50,7 @@ test.describe("WA1 · sign in", () => {
     near(column.width, 440);
     near(column.x, 720 + (720 - 440) / 2);
 
-    near((await box(page.getByLabel("Email"))).height, 44);
+    near((await box(page.getByLabel("Email", { exact: true }))).height, 44);
     // The artboard's 50 px CTA on the nearest button step (`lg`, 48; §8.1).
     const cta = await box(page.getByRole("button", { name: "Email me a sign-in code" }));
     expect(Math.abs(cta.height - 50)).toBeLessThanOrEqual(2);
@@ -109,8 +109,9 @@ test.describe("WA3 / WA4 · registration steps", () => {
     expect(await fontSize(heading)).toBe("34px");
     near((await box(heading)).x, 64);
     near((await box(page.locator("aside"))).width, 420);
-    near((await box(page.getByLabel("Email"))).height, 44);
-    near((await box(page.getByRole("button", { name: "Create account" }))).height, 54);
+    near((await box(page.getByLabel("Email", { exact: true }))).height, 44);
+    // WebRegAccount draws its CTA 52 px tall (O02w's methods are the 54 px ones).
+    near((await box(page.getByRole("button", { name: "Create account" }))).height, 52);
     await page.screenshot({ path: "test-results/wa3-account.png" });
   });
 
@@ -283,7 +284,7 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
     await expectBox(page.locator("[data-auth-panel] [data-auth-info-list]"), [64, 553, 498, 291]);
     await expectBox(page.locator("[data-auth-column]"), [860, 230, 440, 440]);
     await expectBox(page.locator("[data-auth-column] h1"), { 0: 860, 1: 230 });
-    await expectBox(page.getByLabel("Email"), [860, 498, 440, 44]);
+    await expectBox(page.getByLabel("Email", { exact: true }), [860, 498, 440, 44]);
     await expectBox(
       page.getByRole("button", { name: "Email me a sign-in code" }),
       [860, 556, 440, 50],
@@ -547,7 +548,9 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
     await expectInactiveSegments(segmented, ["Fighter", "Coach", "Gym / Club"]);
     await expectBox(segmented.getByRole("radio", { name: "Fighter" }), [69, 235, 273, 36]);
     await expectBox(page.getByLabel("Full name"), [64, 342, 411, 44]);
-    await expectBox(page.getByLabel("Email"), [489, 342, 411, 44]);
+    await expectBox(page.getByLabel("Email", { exact: true }), [489, 342, 411, 44]);
+    // The artboard's three 22 px checkboxes on their rows: disabled, unchecked
+    // (D-WA3-PREAUTH-CONSENT; account registration, WA5, records consent).
     const checks = page.locator("[data-auth-step-column] form label:has([data-slot=checkbox])");
     await expect(checks).toHaveCount(3);
     for (const [index, y] of [
@@ -556,8 +559,13 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
       [2, 502],
     ] as const) {
       await expectBox(checks.nth(index), { 0: 64, 1: y });
-      await expect(checks.nth(index).locator("[data-slot=checkbox]")).not.toBeChecked();
+      const checkbox = checks.nth(index).locator("[data-slot=checkbox]");
+      await expectBox(checkbox, { 0: 64, 2: 22, 3: 22 });
+      await expect(checkbox).toBeDisabled();
+      await expect(checkbox).not.toBeChecked();
     }
+    await expect(page.getByLabel("Full name")).toBeDisabled();
+    await expect(page.getByLabel("Email", { exact: true })).toBeEnabled();
     const create = page.getByRole("button", { name: "Create account" });
     await expectBox(create, { 0: 64, 1: 540 });
     // Width follows the label's glyphs (15 px Manrope): within 3 px of 150.
@@ -569,13 +577,13 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
     const aside = page.locator("aside");
     await expectBox(aside, { 0: 956, 1: 120, 2: 420 });
     await expectBox(aside.locator("> *").nth(0), [956, 120, 420, 147]);
+    // No journey chosen: no chip in the olive accent (no role is implied).
     const chips = aside.locator("> *").nth(0).locator("li > span");
-    expect(await chips.nth(0).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
-      "rgb(38, 43, 21)",
-    );
-    expect(await chips.nth(1).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
-      "rgb(31, 35, 32)",
-    );
+    for (const index of [0, 1, 2, 3]) {
+      expect(await chips.nth(index).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
+        "rgb(31, 35, 32)",
+      );
+    }
     await expectBox(aside.locator("> *").nth(1), [956, 281, 420, 233]);
     await expectBox(aside.locator("> *").nth(2), [956, 528, 420, 62]);
     await expect(page.getByText(/\bW01\b/)).toHaveCount(0);
@@ -598,8 +606,16 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
       "rgb(237, 239, 231)",
     );
     await expectInactiveSegments(segmented, ["Coach", "Gym / Club"]);
+    // The FIGHTER chip in the olive accent, as the artboard draws it with this segment.
+    const chips = page.locator("aside > *").nth(0).locator("li > span");
+    expect(await chips.nth(0).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
+      "rgb(38, 43, 21)",
+    );
+    expect(await chips.nth(1).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
+      "rgb(31, 35, 32)",
+    );
     // The rest of the step keeps its place whatever the intent.
-    await expectBox(page.getByLabel("Email"), [489, 342, 411, 44]);
+    await expectBox(page.getByLabel("Email", { exact: true }), [489, 342, 411, 44]);
     await expectBox(page.getByRole("button", { name: "Create account" }), { 0: 64, 1: 540 });
     await page.screenshot({ path: "test-results/wa3-1440-fighter-intent.png" });
   });
@@ -640,6 +656,16 @@ test.describe("WA4 conformance (WebRegVerify · 1440 × 900)", () => {
     await expectBox(aside.locator("> *").nth(0), [956, 120, 420, 201]);
     await expectBox(aside.locator("> *").nth(1), [956, 335, 420, 229]);
     await expect(page.getByText("Your code is ••• •••")).toBeVisible();
+    // V78's "After verifying": the entry resolution's three outcomes, not per-role profiles.
+    const after = aside.locator("> *").nth(1).locator("li");
+    await expect(after).toHaveCount(3);
+    for (const [index, text] of [
+      [0, "EveryoneAccount basics & consent · once"],
+      [1, "Picked a journeyFighter · Coach · Gym setup"],
+      [2, "Nothing picked yetChoose where to start"],
+    ] as const) {
+      await expect(after.nth(index)).toHaveText(text);
+    }
     await page.screenshot({ path: "test-results/wa4-1440.png" });
   });
 });
@@ -673,4 +699,60 @@ test.describe("WA4b (WebEmailVerified · 1440 × 900)", () => {
     near((await box(heading.locator("../.."))).x, 440);
     await page.screenshot({ path: "test-results/wa4b-minimal.png" });
   });
+});
+
+test.describe("provider states (Storybook, production presentation components)", () => {
+  for (const [id, apple, messages] of [
+    ["loading", "disabled", []],
+    ["ready-or-cancelled", "enabled", []],
+    ["pending", "busy", ["Signing you in…"]],
+    [
+      "rejected",
+      "enabled",
+      [
+        "We couldn't verify your Google sign-in. Please try again.",
+        "We couldn't verify your Apple sign-in. Please try again.",
+      ],
+    ],
+    ["rate-limited", "enabled", ["Too many sign-in attempts. Wait a few minutes and try again."]],
+    [
+      "unavailable",
+      "enabled",
+      [
+        "Google sign-in is temporarily unavailable. Please try again later.",
+        "Apple sign-in is temporarily unavailable. Please try again later.",
+      ],
+    ],
+    [
+      "script-failed",
+      "enabled",
+      [
+        "Google sign-in couldn't load. Check your connection and reload the page.",
+        "Apple sign-in couldn't load. Check your connection and reload the page.",
+      ],
+    ],
+    ["generic-error", "enabled", ["Something went wrong. Please try again."]],
+  ] as const) {
+    test(`${id}: the state, with no provider script or network call`, async ({ page }) => {
+      const providerRequests: string[] = [];
+      page.on("request", (request) => {
+        if (/accounts\.google\.com|appleid\.cdn-apple\.com|\/api\//.test(request.url())) {
+          providerRequests.push(request.url());
+        }
+      });
+      await story(page, `authentication-provider-states--${id}`);
+      const appleButton = page.getByRole("button", { name: "Continue with Apple" });
+      if (apple === "disabled") await expect(appleButton).toBeDisabled();
+      if (apple === "enabled") await expect(appleButton).toBeEnabled();
+      if (apple === "busy") await expect(appleButton).toHaveAttribute("aria-busy", "true");
+      for (const message of messages) {
+        await expect(page.getByText(message, { exact: true }).first()).toBeVisible();
+      }
+      // Google's slot keeps its designed row; Google (not SimpleFit) draws the button into it.
+      const slot = page.locator("[data-google-slot]");
+      if (id === "pending") await expect(slot).toBeHidden();
+      else expect((await box(slot)).height).toBeGreaterThanOrEqual(52);
+      expect(providerRequests).toEqual([]);
+    });
+  }
 });

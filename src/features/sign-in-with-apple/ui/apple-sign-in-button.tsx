@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import Script from "next/script";
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 
 import { completeAuthentication, cookieTransport } from "@/entities/session";
 import { authenticateWithApple } from "@/shared/api/generated/endpoints/auth/auth";
@@ -18,7 +18,9 @@ import {
 import { Button } from "@/shared/ui/button";
 import { cn } from "@/shared/lib/utils";
 
-type Failure = "rejected" | "rateLimited" | "unavailable" | "scriptFailed" | "generic";
+export type AppleSignInFailure =
+  "rejected" | "rateLimited" | "unavailable" | "scriptFailed" | "generic";
+type Failure = AppleSignInFailure;
 
 /**
  * "Continue with Apple" (SF-23, ADR 0014 in simplefit-api).
@@ -67,7 +69,6 @@ function AppleButton({
   redirectUri: string;
   className?: string;
 }) {
-  const t = useTranslations("auth.apple");
   const [ready, setReady] = useState(() => appleIdAuth() !== undefined);
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState<Failure | undefined>();
@@ -113,20 +114,56 @@ function AppleButton({
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <AppleSignInView
+      ready={ready}
+      busy={busy}
+      failure={failure}
+      onSignIn={() => void signIn()}
+      className={className}
+    >
       <Script
         src={APPLE_ID_SCRIPT_URL}
         strategy="afterInteractive"
         onReady={() => setReady(true)}
         onError={() => setFailure("scriptFailed")}
       />
+    </AppleSignInView>
+  );
+}
+
+/**
+ * The Apple control's presentation, for every state of `AppleSignInButton`:
+ * the button (disabled until Apple JS loads, busy while the token is
+ * exchanged), the polite status and the failure. A cancelled popup is not a
+ * state of its own: the control simply returns to `ready`.
+ */
+export function AppleSignInView({
+  ready,
+  busy = false,
+  failure,
+  onSignIn,
+  className,
+  children,
+}: {
+  ready: boolean;
+  busy?: boolean;
+  failure?: AppleSignInFailure;
+  onSignIn?: () => void;
+  className?: string;
+  /** The script loader (production only). */
+  children?: ReactNode;
+}) {
+  const t = useTranslations("auth.apple");
+  return (
+    <div className="flex flex-col gap-3">
+      {children}
       <Button
         variant="secondary"
         size="xl"
         className={cn("w-full", className)}
         disabled={!ready}
         loading={busy}
-        onClick={() => void signIn()}
+        onClick={onSignIn}
       >
         {t("continue")}
       </Button>

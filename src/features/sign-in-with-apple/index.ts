@@ -1,1 +1,5 @@
-export { AppleSignInButton } from "./ui/apple-sign-in-button";
+export {
+  AppleSignInButton,
+  AppleSignInView,
+  type AppleSignInFailure,
+} from "./ui/apple-sign-in-button";

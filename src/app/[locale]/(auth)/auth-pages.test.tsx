@@ -1,4 +1,5 @@
-import { screen, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { createTranslator } from "next-intl";
 import type { ReactElement, ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
@@ -94,7 +95,7 @@ describe("WA1 /login", () => {
 });
 
 describe("O02w /signup", () => {
-  it("offers Google, Apple and email, with the approved static legal line", async () => {
+  it("offers Google, Apple and email, with the V78 legal line (consent comes after sign-in)", async () => {
     await renderPage(SignupPage as Page);
 
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
@@ -105,8 +106,10 @@ describe("O02w /signup", () => {
       "/signup/account",
     );
     expect(
-      screen.getByText(/By continuing you accept the Terms and Privacy Policy/),
+      screen.getByText(/You’ll review the Terms and Privacy Policy after sign-in\./),
     ).toBeInTheDocument();
+    // Nothing on O02w claims consent was given (D-WA3-PREAUTH-CONSENT).
+    expect(screen.queryByText(/By continuing you accept/)).not.toBeInTheDocument();
   });
 
   it("role cards carry the explicit journey as an ephemeral intent, never a role", async () => {
@@ -156,20 +159,34 @@ describe("O02w /signup", () => {
 });
 
 describe("WA3 /signup/account", () => {
-  it("submits the email only: role, name and consents are rendered disabled and never checked", async () => {
+  it("submits the email only: full name and the three consents are disabled and unchecked", async () => {
     await renderPage(SignupAccountPage as Page);
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Create your SimpleFit account" }),
     ).toBeInTheDocument();
     expect(screen.getByLabelText("Email")).toBeEnabled();
-    expect(screen.getByLabelText("Full name")).toBeDisabled();
+    const fullName = screen.getByLabelText("Full name");
+    expect(fullName).toBeDisabled();
+    expect(fullName).toHaveAttribute("placeholder", "Added after you verify");
+    // D-WA3-PREAUTH-CONSENT: WA5 owns consent; WA3 keeps the artboard's checkboxes,
+    // disabled and never ticked.
     const checkboxes = screen.getAllByRole("checkbox");
     expect(checkboxes).toHaveLength(3);
     for (const checkbox of checkboxes) {
       expect(checkbox).toBeDisabled();
       expect(checkbox).not.toBeChecked();
     }
+    expect(
+      checkboxes.map((checkbox) => checkbox.closest("label")?.textContent?.replace(/\s+/g, " ")),
+    ).toEqual([
+      "I accept the Terms and Privacy Policy · required",
+      "I am 16 or older · required",
+      "Send me product news (optional)",
+    ]);
+    // The next steps are the entry resolution's, never a Fighter default.
+    expect(screen.getByText("2 · Account basics")).toBeInTheDocument();
+    expect(screen.queryByText(/Fighter setup/)).not.toBeInTheDocument();
     const roles = screen.getByRole("radiogroup", { name: "Signing up as" });
     expect(roles).toHaveAttribute("aria-disabled", "true");
     // Without an intent nothing is selected: no role is implied.
@@ -185,6 +202,33 @@ describe("WA3 /signup/account", () => {
     expect(screen.getByRole("button", { name: "Create account" })).toBeEnabled();
   });
 
+  it("Create account sends only the email: never a name, a role or a consent", async () => {
+    const fetchMock = vi.fn(async () =>
+      Response.json(
+        { registration_token: "sfg_test", expires_in_seconds: 600, resend_after_seconds: 60 },
+        { status: 202 },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    try {
+      await renderPage(SignupAccountPage as Page, { intent: "coach" });
+      const user = userEvent.setup();
+      const create = screen.getByRole("button", { name: "Create account" });
+      expect(create).toBeEnabled();
+      await user.type(screen.getByLabelText("Email"), "fighter@example.com");
+      // Trying the disabled controls changes nothing.
+      await user.click(screen.getAllByRole("checkbox")[0] as HTMLElement);
+      expect(screen.getAllByRole("checkbox")[0]).not.toBeChecked();
+      await user.click(create);
+      await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+      const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+      expect(url).toMatch(/\/api\/auth\/email\/registrations$/);
+      expect(JSON.parse(String(init.body))).toEqual({ email: "fighter@example.com" });
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
   it("shows the journey chosen on O02w, as presentation only", async () => {
     await renderPage(SignupAccountPage as Page, { intent: "coach" });
     const roles = screen.getByRole("radiogroup", { name: "Signing up as" });
@@ -194,6 +238,30 @@ describe("WA3 /signup/account", () => {
     );
     expect(roles).toHaveAttribute("aria-disabled", "true");
     expect(hrefs()).toContain("/login?intent=coach");
+    // The identity card highlights the same journey, and only that one.
+    const identity = screen.getByRole("heading", { name: "One identity" }).parentElement;
+    if (!identity) throw new Error("missing identity card");
+    expect(
+      within(identity)
+        .getAllByText(/^(Fighter|Coach|Gym|Sponsor)$/)
+        .map((chip) => [chip.textContent, chip.getAttribute("data-variant")]),
+    ).toEqual([
+      ["Fighter", "neutral"],
+      ["Coach", "accent"],
+      ["Gym", "neutral"],
+      ["Sponsor", "neutral"],
+    ]);
+  });
+
+  it("without a journey no identity chip is highlighted", async () => {
+    await renderPage(SignupAccountPage as Page);
+    const identity = screen.getByRole("heading", { name: "One identity" }).parentElement;
+    if (!identity) throw new Error("missing identity card");
+    expect(
+      within(identity)
+        .getAllByText(/^(Fighter|Coach|Gym|Sponsor)$/)
+        .map((chip) => chip.getAttribute("data-variant")),
+    ).toEqual(["neutral", "neutral", "neutral", "neutral"]);
   });
 
   it.each(["ru", "de", "es-MX"] as const)("is translated in %s", async (locale) => {
