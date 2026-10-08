@@ -15,8 +15,8 @@ export function HomeHero() {
   const actions = useTranslations("actions");
 
   return (
-    // The SF-32 placeholder body (SF-43 replaces it): the page's content inside the
-    // site frame's `main`, top-anchored on the artboard's 56 × 64 px body padding.
+    // The SF-32 placeholder body (SF-43 replaces it) on the artboard's 56 × 64 px
+    // body padding; the page places it in the site frame's `main` (PageContent).
     <div className={cn(containerVariants(), "flex flex-col gap-8 py-14")}>
       <div className="flex max-w-3xl flex-col gap-6">
         <p className="type-label text-highlight">{t("badge")}</p>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { localeAlternates } from "@/shared/i18n/metadata";
 import { resolveLocaleParam } from "@/shared/i18n/params";
+import { PageContent } from "@/shared/ui/page";
 import { HomeHero } from "@/widgets/home-hero";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
@@ -11,5 +12,10 @@ export async function generateMetadata({ params }: PageProps<"/[locale]">): Prom
 
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   await resolveLocaleParam(params);
-  return <HomeHero />;
+  // A short single-screen composition: centred in the space between header and footer.
+  return (
+    <PageContent align="center">
+      <HomeHero />
+    </PageContent>
+  );
 }

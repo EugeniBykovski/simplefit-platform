@@ -1,3 +1,4 @@
+import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
 
 import { cn } from "@/shared/lib/utils";
@@ -44,6 +45,49 @@ export function PageBody({ inset = "app", className, ...props }: ComponentProps<
     <div
       data-slot="page-body"
       className={cn(containerVariants({ size: inset }), "py-6", className)}
+      {...props}
+    />
+  );
+}
+
+/**
+ * How a page's composition sits in its frame's `main` (SF-42). The frame
+ * (`SiteFrame`) makes `main` a column that fills the space between header and
+ * footer; the page picks its alignment there, never with its own margins:
+ *
+ * - `center`: a short single-screen composition, centred vertically in
+ *   `main` (not the window) by equal auto margins. Taller than `main`, the
+ *   margins collapse to 0: it flows from the top, is never clipped, and the
+ *   footer follows it.
+ * - `top`: a designed page composition placed at the top of `main`, as the
+ *   artboards draw landing, pricing and sign-up pages.
+ * - `full-bleed`: fills `main` (both ways) for compositions that draw their own
+ *   full-height regions.
+ *
+ * Horizontally every variant spans `main`; the page's own Container gives it
+ * the frame's gutters, so its content keeps the header's left edge.
+ */
+export const pageContentVariants = cva("w-full min-w-0", {
+  variants: {
+    align: {
+      center: "my-auto",
+      top: "",
+      "full-bleed": "flex flex-1 flex-col",
+    },
+  },
+  defaultVariants: { align: "top" },
+});
+
+export function PageContent({
+  align,
+  className,
+  ...props
+}: ComponentProps<"div"> & VariantProps<typeof pageContentVariants>) {
+  return (
+    <div
+      data-slot="page-content"
+      data-align={align ?? "top"}
+      className={cn(pageContentVariants({ align }), className)}
       {...props}
     />
   );

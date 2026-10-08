@@ -66,6 +66,28 @@ async function open(page: Page, route: string, ready: Locator) {
   await page.evaluate(() => document.fonts.ready);
 }
 
+/**
+ * The provider row is measured with Google's and Apple's controls rendered,
+ * which needs a build with their public IDs (CI sets fixture IDs). A build
+ * without them renders the "not available" lines and requests no script, so
+ * no stand-in could ever appear: fail with the reason instead of a timeout.
+ */
+async function expectProviderControls(page: Page) {
+  for (const line of [
+    "Google sign-in is not available right now.",
+    "Apple sign-in is not available here.",
+  ]) {
+    if (await page.getByText(line).isVisible()) {
+      throw new Error(
+        `The production build has no provider IDs ("${line}"): build with ` +
+          "NEXT_PUBLIC_GOOGLE_CLIENT_ID, NEXT_PUBLIC_APPLE_SERVICES_ID and " +
+          "NEXT_PUBLIC_APPLE_REDIRECT_URI set (see the CI production build step).",
+      );
+    }
+  }
+  await page.locator("[data-gsi-stub]").waitFor();
+}
+
 async function box(locator: Locator) {
   const rect = await locator.boundingBox();
   if (!rect) throw new Error("element is not visible");
@@ -167,7 +189,7 @@ for (const [width, height] of VIEWPORTS) {
       page,
     }) => {
       await open(page, "/en/login", page.getByRole("heading", { level: 1, name: "Sign in" }));
-      await page.locator("[data-gsi-stub]").waitFor();
+      await expectProviderControls(page);
       const half = width / 2;
       await expectBox(page.locator("[data-auth-frame=split]"), { x: 0, y: 0, w: width, h: height });
       await expectBox(page.locator("[data-auth-panel]"), { x: 0, y: 0, w: half, h: height });
@@ -219,7 +241,7 @@ for (const [width, height] of VIEWPORTS) {
       page,
     }) => {
       await open(page, "/en/signup", page.getByRole("heading", { level: 1 }));
-      await page.locator("[data-gsi-stub]").waitFor();
+      await expectProviderControls(page);
       await expectSiteShell(page, width);
       expect(await overflow(page)).toBeLessThanOrEqual(0);
       const frame = page.locator("[data-auth-frame=signup]");
@@ -271,21 +293,25 @@ for (const [width, height] of VIEWPORTS) {
       });
     });
 
-    test("/ : the site shell, one left edge, the footer at the window's bottom", async ({
-      page,
-    }) => {
+    test("/ : the site shell, one left edge, the short page centred in main", async ({ page }) => {
       await open(page, "/en", page.locator("[data-site-frame]"));
       await expectSiteShell(page, width);
       expect(await overflow(page)).toBeLessThanOrEqual(0);
-      // The SF-32 placeholder body (SF-43 replaces it) is shorter than every window:
-      // top-anchored on the 56 px body padding, the footer closing the window.
-      const heading = page.getByRole("heading", { level: 1 });
-      await expectBox(heading, { x: 64 });
       await expect(page.locator("main")).toHaveCount(1);
-      const body = await box(page.locator("main > *").first());
-      expect(body.y).toBe(76);
-      expect(body.y + body.height).toBeLessThan(height - 190);
+      await expectBox(page.getByRole("heading", { level: 1 }), { x: 64 });
+      // The SF-32 placeholder (SF-43 replaces it) is a short single-screen page
+      // (PageContent `center`): the footer closes the window and the composition
+      // is centred in main, between header and footer, not in the window.
+      const content = page.locator("[data-slot=page-content]");
+      await expect(content).toHaveAttribute("data-align", "center");
+      const body = await box(content);
+      const footerY = height - 190;
+      expect(body.height).toBeLessThan(footerY - 76);
       await expectFooterPlacement(page, height, body.y + body.height);
+      const above = body.y - 76;
+      const below = footerY - (body.y + body.height);
+      expect(Math.abs(above - below), `${above} above, ${below} below`).toBeLessThanOrEqual(1);
+      await expectBox(content, { x: 0, w: width });
       await page.screenshot({
         path: `test-results/production/home-${width}x${height}.png`,
         fullPage: true,

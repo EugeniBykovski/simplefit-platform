@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, screen, userEvent, within } from "storybook/test";
 
+import { PageContent } from "@/shared/ui/page";
 import { HomeHero } from "@/widgets/home-hero";
 import { SiteFrame } from "@/widgets/site-header";
 
@@ -73,9 +74,10 @@ export const Wide: StoryObj = {
 };
 
 /**
- * Short content: the SF-32 foundation placeholder (`/`) in the shell. The header
- * brand, the page and the footer brand share the 64 px left edge; the footer
- * sits at the bottom of the window.
+ * Short content: the SF-32 foundation placeholder (`/`) in the shell, centred in
+ * `main` as the route places it (PageContent `center`). The header brand, the
+ * page and the footer brand share the 64 px left edge; the footer sits at the
+ * bottom of the window.
  */
 export const ShortPage: StoryObj = {
   name: "Short page · MacBook Pro 14 · 1512 × 982",
@@ -83,9 +85,22 @@ export const ShortPage: StoryObj = {
   globals: { viewport: { value: "macbook", isRotated: false } },
   render: () => (
     <SiteFrame>
-      <div data-page-body>
+      <PageContent align="center" data-page-body>
         <HomeHero />
-      </div>
+      </PageContent>
+    </SiteFrame>
+  ),
+};
+
+/** A centred composition taller than the window: it flows from the top of main, the footer follows. */
+export const CenteredOverflowing: StoryObj = {
+  name: "Centred page taller than the window · 1280 × 720",
+  parameters: { nextjs: { appDirectory: true, navigation: { pathname: "/en" } } },
+  globals: { viewport: { value: "laptop", isRotated: false } },
+  render: () => (
+    <SiteFrame>
+      {/* Stand-in body: 900 px of composition in a 720 px window. */}
+      <PageContent align="center" data-page-body className="h-225" />
     </SiteFrame>
   ),
 };

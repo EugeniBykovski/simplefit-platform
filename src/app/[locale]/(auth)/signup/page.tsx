@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { localeAlternates } from "@/shared/i18n/metadata";
 import { resolveLocaleParam } from "@/shared/i18n/params";
 import { continuationOf } from "@/shared/routes/continuation";
+import { PageContent } from "@/shared/ui/page";
 import { SignupScreen } from "@/widgets/auth-screens";
 import { SiteFrame } from "@/widgets/site-header";
 
@@ -21,7 +22,10 @@ export default async function Page({ params, searchParams }: PageProps<"/[locale
   const continuation = continuationOf(await searchParams);
   return (
     <SiteFrame>
-      <SignupScreen continuation={continuation} />
+      {/* The artboard's composition at the top of main (O02w body: y 76–750). */}
+      <PageContent align="top">
+        <SignupScreen continuation={continuation} />
+      </PageContent>
     </SiteFrame>
   );
 }

@@ -382,6 +382,15 @@ inside a labelled control.
   1366 × 768 show the whole composition; page compositions keep their own
   height and `SiteFrame`'s `main` takes the remaining space, which puts the
   footer at the bottom of a short page and after the content of a long one.
+- **Page alignment in `main`:** a page declares how it sits between header
+  and footer with `PageContent` (`@/shared/ui/page`), never with its own
+  margins: `center` for short single-screen compositions (centred in `main`,
+  not the window, by equal auto margins; taller than `main`, it flows from the
+  top and the footer follows), `top` for designed page compositions (landing,
+  pricing, O02w sign-up), `full-bleed` for compositions that fill `main`.
+  Today `/` (the SF-32 placeholder) is `center`, `/signup` is `top`; the
+  SF-32 feature placeholders keep their PageHeader / PageBody top layout;
+  WA1, WA3 / WA4 and the 404 have their own frames.
 - **Narrow viewports** (below `desktop`) use production extensions where the
   design has no approved tablet or phone web composition, and only where the
   desktop composition cannot fit.

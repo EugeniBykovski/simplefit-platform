@@ -228,6 +228,26 @@ test.describe("public site shell frame", () => {
     expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBe(2180);
   });
 
+  test("a centred short page sits in the middle of main, not of the window", async ({ page }) => {
+    await page.setViewportSize({ width: 1512, height: 982 });
+    await story(page, "public-website-shell--short-page");
+    await expectBox(page.getByRole("main"), [0, 76, 1512, 982 - 76 - 190]);
+    const body = await box(page.locator("[data-page-body]"));
+    expect(Math.abs(body.y - 76 - (982 - 190 - (body.y + body.height)))).toBeLessThanOrEqual(1);
+    await expectFooter(page, 982 - 190, 1512);
+    expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBe(982);
+  });
+
+  test("a centred page taller than main flows from the top; the footer follows it", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 720 });
+    await story(page, "public-website-shell--centered-overflowing");
+    await expectBox(page.locator("[data-page-body]"), [0, 76, 1280, 900]);
+    await expectFooter(page, 76 + 900, 1280);
+    expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBe(76 + 900 + 190);
+  });
+
   test("header, page and footer share one left edge on the 64 px gutter", async ({ page }) => {
     await page.setViewportSize({ width: 1512, height: 982 });
     await story(page, "public-website-shell--short-page");
