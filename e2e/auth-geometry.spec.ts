@@ -240,6 +240,18 @@ async function expectBox(
   }
 }
 
+/** WA3 role segments that are not selected: not checked, not active, transparent. */
+async function expectInactiveSegments(segmented: Locator, names: string[]) {
+  for (const name of names) {
+    const radio = segmented.getByRole("radio", { name });
+    await expect(radio).toHaveAttribute("aria-checked", "false");
+    expect(await radio.getAttribute("data-active")).toBeNull();
+    expect(await radio.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
+      "rgba(0, 0, 0, 0)",
+    );
+  }
+}
+
 async function fontsLoaded(page: Page) {
   const families = await page.evaluate(() =>
     [...document.fonts].filter((f) => f.status === "loaded").map((f) => f.family),
@@ -446,7 +458,7 @@ test.describe("O02w conformance (WebSignUp · 1440 × 940)", () => {
 });
 
 test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
-  test("header, active Fighter segment, name | email, checks, CTA and the aside cards", async ({
+  test("header, neutral role segments, name | email, checks, CTA and the aside cards", async ({
     page,
   }) => {
     await story(page, "authentication-sign-up--create-account");
@@ -460,19 +472,9 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
     await expectBox(page.locator("[data-auth-step-column]"), { 0: 64, 1: 120, 2: 836 });
     const segmented = page.getByRole("radiogroup", { name: "Signing up as" });
     await expectBox(segmented, [64, 230, 836, 46]);
-    const fighter = segmented.getByRole("radio", { name: "Fighter" });
-    await expect(fighter).toHaveAttribute("data-active", "true");
-    await expectBox(fighter, [69, 235, 273, 36]);
-    expect(await fighter.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
-      "rgb(237, 239, 231)",
-    );
-    for (const name of ["Coach", "Gym / Club"]) {
-      const radio = segmented.getByRole("radio", { name });
-      expect(await radio.getAttribute("data-active")).toBeNull();
-      expect(await radio.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
-        "rgba(0, 0, 0, 0)",
-      );
-    }
+    // No intent (SF-45): no segment is active, so no role is implied.
+    await expectInactiveSegments(segmented, ["Fighter", "Coach", "Gym / Club"]);
+    await expectBox(segmented.getByRole("radio", { name: "Fighter" }), [69, 235, 273, 36]);
     await expectBox(page.getByLabel("Full name"), [64, 342, 411, 44]);
     await expectBox(page.getByLabel("Email"), [489, 342, 411, 44]);
     const checks = page.locator("[data-auth-step-column] form label:has([data-slot=checkbox])");
@@ -507,6 +509,28 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
     await expectBox(aside.locator("> *").nth(2), [956, 528, 420, 62]);
     await expect(page.getByText(/\bW01\b/)).toHaveCount(0);
     await page.screenshot({ path: "test-results/wa3-1440.png" });
+  });
+
+  test("Fighter intent: the Fighter segment is active in the artboard's bone segment", async ({
+    page,
+  }) => {
+    await story(page, "authentication-sign-up--create-account-fighter-intent");
+    await fontsLoaded(page);
+    const segmented = page.getByRole("radiogroup", { name: "Signing up as" });
+    await expectBox(segmented, [64, 230, 836, 46]);
+    await expect(segmented).toHaveAttribute("aria-disabled", "true");
+    const fighter = segmented.getByRole("radio", { name: "Fighter" });
+    await expect(fighter).toHaveAttribute("aria-checked", "true");
+    await expect(fighter).toHaveAttribute("data-active", "true");
+    await expectBox(fighter, [69, 235, 273, 36]);
+    expect(await fighter.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
+      "rgb(237, 239, 231)",
+    );
+    await expectInactiveSegments(segmented, ["Coach", "Gym / Club"]);
+    // The rest of the step keeps its place whatever the intent.
+    await expectBox(page.getByLabel("Email"), [489, 342, 411, 44]);
+    await expectBox(page.getByRole("button", { name: "Create account" }), { 0: 64, 1: 540 });
+    await page.screenshot({ path: "test-results/wa3-1440-fighter-intent.png" });
   });
 
   test("WA3 step frame stays centred beyond 1440 with the 420 px aside on the frame gutter", async ({
