@@ -50,8 +50,11 @@ function AuthControls() {
 }
 
 /**
- * WA1 / WA1b (WebLogin, WebSignInCode): two equal columns inside the
- * canonical 1440 px frame (SF-34 Container `frame`), centred beyond it.
+ * WA1 / WA1b (WebLogin, WebSignInCode): a full-viewport split. The frame
+ * spans the whole window (x 0 to the viewport width, no outer container or
+ * margin) and is two equal halves, so the split line is always at the
+ * viewport's centre and both panel backgrounds reach the viewport edges. The
+ * artboard's measured widths apply only inside each half.
  *
  * - Left: the gradient brand panel, 56 × 64 px padding, 20 px rhythm: the
  *   brand at the top, flexible space, then the bottom-anchored "Welcome
@@ -80,7 +83,7 @@ export function AuthSplitFrame({
   children: ReactNode;
 }) {
   return (
-    <Container size="frame" data-auth-frame="split" className="grid min-h-dvh lg:grid-cols-2">
+    <div data-auth-frame="split" className="grid min-h-dvh w-full lg:grid-cols-2">
       <div
         data-auth-panel
         className="hidden bg-linear-160 from-accent to-background to-70% lg:block"
@@ -110,7 +113,7 @@ export function AuthSplitFrame({
           </div>
         </div>
       </main>
-    </Container>
+    </div>
   );
 }
 

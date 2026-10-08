@@ -271,8 +271,11 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
     await story(page, "authentication-login--full-page");
     await fontsLoaded(page);
     // The branded half owns the full 900 px frame; the form half starts at the split.
+    // The root frame first: the full viewport, split exactly in half, no margin.
+    await expectBox(frameOf(page, "split"), [0, 0, 1440, 900]);
     await expectBox(page.locator("[data-auth-panel]"), [0, 0, 720, 900]);
-    await expectBox(page.locator("main"), { 0: 720, 1: 0, 2: 720 });
+    await expectBox(page.locator("main"), [720, 0, 720, 900]);
+    expect(await overflow(page)).toBeLessThanOrEqual(0);
     await expectBox(page.locator("[data-auth-panel] a").first(), { 0: 64, 1: 56, 3: 36 });
     // The artboard's subtitle is not rendered (decision D5) but its row stays
     // reserved: the headline keeps the designed 439.
@@ -347,25 +350,36 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
 
   for (const [width, height] of [
     [1440, 1200],
+    [1728, 1117],
     [1920, 1080],
   ] as const) {
-    test(`at ${width} × ${height} the branded panel runs the full height and the 900 px composition stays put`, async ({
+    test(`at ${width} × ${height} the split fills the viewport and each half keeps its artboard content`, async ({
       page,
     }) => {
       await page.setViewportSize({ width, height });
       await story(page, "authentication-login--full-page");
       await fontsLoaded(page);
-      const x = (width - 1440) / 2;
-      // The panel owns its gradient down to the bottom of the window ...
-      await expectBox(page.locator("[data-auth-panel]"), [x, 0, 720, height]);
-      // ... while the content keeps its 1440 × 900 coordinates.
-      await expectBox(page.locator("[data-auth-hero]"), { 0: x + 64, 1: 439 });
+      const half = width / 2;
+      // Root: x 0 to the viewport width, the split line at the viewport's centre.
+      await expectBox(frameOf(page, "split"), [0, 0, width, height]);
+      // The panel owns its gradient across its half and down to the bottom of the window ...
+      await expectBox(page.locator("[data-auth-panel]"), [0, 0, half, height]);
+      await expectBox(page.locator("main"), [half, 0, half, height]);
+      expect(await overflow(page)).toBeLessThanOrEqual(0);
+      // ... while the content keeps its 900 px artboard rows, placed within its half.
+      await expectBox(page.locator("[data-auth-panel] a").first(), { 0: 64, 1: 56, 3: 36 });
+      await expectBox(page.locator("[data-auth-hero]"), { 0: 64, 1: 439 });
       await expectBox(page.locator("[data-auth-panel] [data-auth-info-list]"), {
-        0: x + 64,
+        0: 64,
         1: 553,
         3: 291,
       });
-      await expectBox(page.locator("[data-auth-column]"), { 0: x + 860, 1: 230, 3: 440 });
+      await expectBox(page.locator("[data-auth-column]"), {
+        0: half + (half - 440) / 2,
+        1: 230,
+        2: 440,
+        3: 440,
+      });
       expect(
         await page
           .locator("[data-auth-panel]")
@@ -375,14 +389,16 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
   }
 
   for (const width of [1920, 1280, 1024]) {
-    test(`WA1 frame is centred and contained at ${width}`, async ({ page }) => {
+    test(`WA1 frame fills the viewport at ${width}, the column centred in the right half`, async ({
+      page,
+    }) => {
       await page.setViewportSize({ width, height: 900 });
       await story(page, "authentication-login--full-page");
       const frame = await box(frameOf(page, "split"));
-      near(frame.width, Math.min(width, 1440));
-      near(frame.x, (width - frame.width) / 2);
+      near(frame.x, 0);
+      near(frame.width, width);
       const column = await box(page.locator("[data-auth-column]"));
-      near(column.x + column.width / 2, frame.x + (frame.width * 3) / 4);
+      near(column.x + column.width / 2, (width * 3) / 4);
       expect(await overflow(page)).toBeLessThanOrEqual(0);
     });
   }
@@ -398,6 +414,27 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
 });
 
 test.describe("O02w conformance (WebSignUp · 1440 × 940)", () => {
+  test("root composition: the site frame, header and footer span the viewport", async ({
+    page,
+  }) => {
+    await story(page, "authentication-sign-up--full-page");
+    await fontsLoaded(page);
+    await expectBox(page.locator("[data-site-frame]"), { 0: 0, 1: 0, 2: 1440 });
+    await expectBox(page.locator("header").first(), [0, 0, 1440, 76]);
+    await expectBox(frameOf(page, "signup"), { 0: 0, 1: 76, 2: 1440 });
+    await expectBox(page.locator("[data-site-footer]"), [0, 750, 1440, 190]);
+    expect(await overflow(page)).toBeLessThanOrEqual(0);
+
+    // Wider than the artboard: the backgrounds keep reaching the edges; only the
+    // 1440 px site content frame is centred inside them.
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    await expectBox(page.locator("[data-site-frame]"), { 0: 0, 2: 1920 });
+    await expectBox(page.locator("header").first(), { 0: 0, 2: 1920 });
+    await expectBox(page.locator("[data-site-footer]"), { 0: 0, 2: 1920 });
+    await expectBox(frameOf(page, "signup"), { 0: 240, 2: 1440 });
+    expect(await overflow(page)).toBeLessThanOrEqual(0);
+  });
+
   test("header, 1 : 1.25 grid with a 72 px gap, 2 × 2 role cards, info strip and footer", async ({
     page,
   }) => {
