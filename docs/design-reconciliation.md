@@ -178,6 +178,12 @@ Other SF-17 decisions:
   still holds everywhere else; the public-site shell uses `border-subtle`.
   New contrast pairs: `muted-foreground` and `faint-foreground` on
   `surface-sunken`, AA in both themes.
+- **SF-38 Fighter web registration (decision):** WF0 / WF1 set their step
+  heading at 32 px and WF6 its completion headline at 40 px (Unbounded 600),
+  beyond the ±1 px tolerance of every role. They are added as
+  `typography.onboardingRoles.web` (`onboarding-title` 32/40, −0.02em, the
+  font's natural line; `onboarding-done` 40/44, −0.025em), web only and for
+  the Fighter onboarding screens only. The authentication roles are unchanged.
 - **Hero type** larger than `display` (40–58 px on a handful of landing and hero artboards)
   is **DEFERRED** to the public-website ticket, which decides whether a
   `display-lg` role is needed.

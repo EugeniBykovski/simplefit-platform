@@ -180,6 +180,17 @@ and mobile 390 (NativeWind `text-*`).
 Product screens keep using the roles above; a new system role needs a design
 reason and a contract test, never a one-off value.
 
+### Fighter onboarding typography (SF-38)
+
+`typography.onboardingRoles.web`, for the Fighter web registration screens
+only (Claude Design FIGHTER 5c: WF0, WF1, WF6), by decision in SF-38 instead
+of off-scale local values. Web only.
+
+| Role               | Web                        | Use                         |
+| ------------------ | -------------------------- | --------------------------- |
+| `onboarding-title` | 32/40 Unbounded 600 −0.02  | WF0, WF1 step headings      |
+| `onboarding-done`  | 40/44 Unbounded 600 −0.025 | WF6 "You're in, …" headline |
+
 ### Authentication typography and controls (SF-24)
 
 `typography.authRoles` extends the scale for the authentication screens

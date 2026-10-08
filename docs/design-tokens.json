@@ -541,6 +541,25 @@
           "tracking": 0
         }
       }
+    },
+    "onboardingRoles": {
+      "$comment": "SF-38: Fighter web registration typography (Claude Design onboarding page, FIGHTER 5c: WF0 Profile basics, WF1 Boxing profile, WF6 Complete). onboarding-title is the 32 px step heading on the font's natural line; onboarding-done is the 40 px completion headline (line-height 1.1). Web only: the mobile Fighter registration uses its own artboards. Use only in the Fighter onboarding screens.",
+      "web": {
+        "onboarding-title": {
+          "family": "display",
+          "size": 32,
+          "lineHeight": 40,
+          "weight": 600,
+          "tracking": -0.02
+        },
+        "onboarding-done": {
+          "family": "display",
+          "size": 40,
+          "lineHeight": 44,
+          "weight": 600,
+          "tracking": -0.025
+        }
+      }
     }
   },
   "spacing": {
