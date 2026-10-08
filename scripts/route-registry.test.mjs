@@ -613,10 +613,7 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
     for (const destination of DESTINATIONS) {
       for (const platform of PLATFORMS) {
         const id = entryDestinations[destination][platform];
-        if (id === null) {
-          if (!(destination === "sponsor_application" && platform === "mobile"))
-            found.push(`${destination}.${platform}: no route`);
-        } else if (routeById.get(id)?.platform !== platform) {
+        if (routeById.get(id)?.platform !== platform) {
           found.push(`${destination}.${platform}: ${id}`);
         }
       }
@@ -676,6 +673,16 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
     ]) {
       expect(routeById.get(id).access.capability).toBe(capability);
     }
+  });
+
+  it("opens O05 for the sponsor application on mobile, which has no sponsor surface", () => {
+    expect(entryDestinations.sponsor_application).toEqual({
+      web: "web.partners.apply",
+      mobile: "mobile.onboarding.role",
+    });
+    const o05 = routeById.get("mobile.onboarding.role");
+    expect(o05.access).toEqual({ session: "AUTHENTICATED", capability: null, phase: "ONBOARDING" });
+    expect(o05.screens).toEqual(["O05"]);
   });
 
   it("never resolves to a workspace chooser", () => {

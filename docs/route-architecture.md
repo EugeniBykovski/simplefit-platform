@@ -407,7 +407,7 @@ replacing the auth page (`D-ENTRY-RESOLUTION`):
 | `fighter_home`         | `web.app.home`               | `mobile.home`               |
 | `coach_onboarding`     | `web.app.onboarding.coach`   | `mobile.onboarding.coach`   |
 | `gym_onboarding`       | `web.app.onboarding.gym`     | `mobile.onboarding.gym`     |
-| `sponsor_application`  | `web.partners.apply`         | continue on the web         |
+| `sponsor_application`  | `web.partners.apply`         | `mobile.onboarding.role`    |
 
 The backend decides, in order: account registration not complete →
 `account_registration` (mandatory, whatever else applies; a later Terms or
@@ -415,7 +415,13 @@ Privacy version never reopens it); `intent=fighter` → Fighter onboarding until
 the profile is complete, then Fighter home; `coach`, `gym`, `sponsor` →
 those journeys' entry points (nothing is created for them); no intent → an
 in-progress Fighter onboarding resumes, a completed one goes home, otherwise
-`role_selection`. Generic Google / Apple sign-up never implies Fighter.
+`role_selection`. Generic Google / Apple sign-up never implies Fighter. Mobile has no sponsor surface, so
+`sponsor_application` opens O05, whose Sponsor / Brand choice continues to
+the web partner application; it never opens the workspace chooser (A04) and
+implies no Sponsor capability or workspace. `guards.defaultDestinationFallback` (`/workspaces`,
+`D-MOBILE-SPONSOR-ADMIN`) is for a signed-in user whose only real workspace
+has no mobile surface (a sponsor workspace member), once workspace data
+exists; entry resolution never uses it.
 
 `intent` (`guards.intentParam`) is the journey the user explicitly tried to
 enter: `fighter`, `coach`, `gym` or `sponsor`, the backend's allow-list.
@@ -438,9 +444,7 @@ repeated calls converge on current state. Workspace choice (web WA2, mobile
 A04) takes no part until real multi-workspace data exists: no workspace is
 offered or inferred. A network or server failure while the session or the
 entry is resolved is retryable and never a sign-out; only a rejected
-credential (401) is. Without any mobile destination (a sponsor-only user),
-mobile falls back to `guards.defaultDestinationFallback` (`/workspaces`,
-`D-MOBILE-SPONSOR-ADMIN`).
+credential (401) is.
 
 **Onboarding entry routes** never require the capability they create
 (`D-ONBOARDING-ENTRY-CAPABILITY`): Fighter, Coach and Gym onboarding on both
