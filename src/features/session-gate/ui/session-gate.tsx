@@ -5,11 +5,11 @@ import { useEffect, type ReactNode } from "react";
 
 import { useSession } from "@/entities/session";
 import { usePathname, useRouter } from "@/shared/i18n/navigation";
-import { returnToOf, sanitizeReturnTo } from "@/shared/routes/return-to";
+import { sanitizeReturnTo } from "@/shared/routes/return-to";
 import { routeHref, webGuards, type WebRouteId } from "@/shared/routes/routes";
 import { Spinner } from "@/shared/ui/spinner";
 
-import { resolveEntry } from "../model/entry";
+import { EntryRedirect } from "./entry-redirect";
 
 /**
  * Session part of the SF-31 access composition (route-architecture §6, §9).
@@ -64,27 +64,27 @@ export function RequireSession({
 
 /**
  * GUEST_ONLY: an authenticated viewer (a restored session, or a sign-in that
- * just completed in this or another tab) enters the application: the valid
- * `returnTo` of the page, otherwise `/app` (`resolveEntry`). This is the one
- * place authentication navigates; the sign-in methods only complete the
- * session.
+ * just completed in this or another tab) enters the application through the
+ * backend entry resolution (`EntryRedirect`, SF-45) with the page's
+ * continuation (`returnTo`, `intent`). This is the one place authentication
+ * navigates, for every method (email code, Google, Apple); the sign-in
+ * methods only complete the session. `entryFailure` renders when the entry
+ * cannot be resolved (it reads `useEntryFailure`).
  */
 export function GuestOnly({
   unavailable,
+  entryFailure,
   children,
 }: {
   unavailable?: ReactNode;
+  entryFailure: ReactNode;
   children: ReactNode;
 }) {
-  const { status, viewer } = useSession();
-  const router = useRouter();
+  const { status } = useSession();
 
-  useEffect(() => {
-    if (status !== "authenticated" || viewer === undefined) return;
-    router.replace(resolveEntry(viewer, returnToOf(window.location.search)));
-  }, [status, viewer, router]);
-
-  if (status === "authenticated") return <SessionPending />;
+  if (status === "authenticated") {
+    return <EntryRedirect pending={<SessionPending />} failure={entryFailure} />;
+  }
   if (status === "unavailable" && unavailable !== undefined) return unavailable;
   return children;
 }

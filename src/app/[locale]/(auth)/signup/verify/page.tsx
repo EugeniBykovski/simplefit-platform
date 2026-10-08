@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { localeAlternates } from "@/shared/i18n/metadata";
 import { resolveLocaleParam } from "@/shared/i18n/params";
-import { sanitizeReturnTo } from "@/shared/routes/return-to";
+import { continuationOf } from "@/shared/routes/continuation";
 import { SignupVerifyScreen } from "@/widgets/auth-screens";
 
 export async function generateMetadata({
@@ -21,6 +21,6 @@ export async function generateMetadata({
 /** WA4 verify email (SF-24). */
 export default async function Page({ params, searchParams }: PageProps<"/[locale]/signup/verify">) {
   await resolveLocaleParam(params);
-  const returnTo = sanitizeReturnTo((await searchParams).returnTo);
-  return <SignupVerifyScreen returnTo={returnTo} />;
+  const continuation = continuationOf(await searchParams);
+  return <SignupVerifyScreen continuation={continuation} />;
 }

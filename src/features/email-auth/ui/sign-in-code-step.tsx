@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, type FormEvent } from "react";
 
 import { Link, useRouter } from "@/shared/i18n/navigation";
-import { withReturnTo } from "@/shared/routes/return-to";
+import { withContinuation, type Continuation } from "@/shared/routes/continuation";
 import { Button } from "@/shared/ui/button";
 import { CODE_LENGTH, CodeInput } from "@/shared/ui/code-input";
 import { Notice } from "@/shared/ui/notice";
@@ -22,19 +22,25 @@ import { ctaFor, ResendStatus, StatusNotice } from "./code-step-parts";
  * WA1b "Enter your sign-in code" (email_sign_in). Without a pending sign-in in
  * this tab (opened directly, or finished) it goes back to the email step.
  */
-export function SignInCodeStep({ returnTo }: { returnTo?: string }) {
+export function SignInCodeStep({ continuation }: { continuation?: Continuation }) {
   const flow = usePendingFlow("signIn");
   const router = useRouter();
 
   useEffect(() => {
-    if (flow === null) router.replace(withReturnTo("web.login", returnTo));
-  }, [flow, router, returnTo]);
+    if (flow === null) router.replace(withContinuation("web.login", continuation));
+  }, [flow, router, continuation]);
 
   if (!flow) return <StepPending />;
-  return <SignInCodeForm flow={flow} returnTo={returnTo} />;
+  return <SignInCodeForm flow={flow} continuation={continuation} />;
 }
 
-export function SignInCodeForm({ flow, returnTo }: { flow: PendingSignIn; returnTo?: string }) {
+export function SignInCodeForm({
+  flow,
+  continuation,
+}: {
+  flow: PendingSignIn;
+  continuation?: Continuation;
+}) {
   const t = useTranslations("auth.code.signIn");
   const code = useTranslations("auth.code");
   const step = useCodeStep({
@@ -105,7 +111,7 @@ export function SignInCodeForm({ flow, returnTo }: { flow: PendingSignIn; return
         <p className="-mt-0.5 type-body-sm text-faint-foreground">
           {t.rich("wrongEmail", {
             link: (chunks) => (
-              <Link href={withReturnTo("web.login", returnTo)} className={textLinkClass}>
+              <Link href={withContinuation("web.login", continuation)} className={textLinkClass}>
                 {chunks}
               </Link>
             ),
@@ -119,7 +125,7 @@ export function SignInCodeForm({ flow, returnTo }: { flow: PendingSignIn; return
       <p className="-mt-0.5 type-body-sm text-faint-foreground">
         {t.rich("newHere", {
           link: (chunks) => (
-            <Link href={withReturnTo("web.signup", returnTo)} className={textLinkClass}>
+            <Link href={withContinuation("web.signup", continuation)} className={textLinkClass}>
               {chunks}
             </Link>
           ),

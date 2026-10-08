@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { localeAlternates } from "@/shared/i18n/metadata";
 import { resolveLocaleParam } from "@/shared/i18n/params";
-import { sanitizeReturnTo } from "@/shared/routes/return-to";
+import { continuationOf } from "@/shared/routes/continuation";
 import { SignupScreen } from "@/widgets/auth-screens";
 import { SiteFrame } from "@/widgets/site-header";
 
@@ -18,10 +18,10 @@ export async function generateMetadata({
 /** O02w sign-up in the public site chrome (SF-24). */
 export default async function Page({ params, searchParams }: PageProps<"/[locale]/signup">) {
   await resolveLocaleParam(params);
-  const returnTo = sanitizeReturnTo((await searchParams).returnTo);
+  const continuation = continuationOf(await searchParams);
   return (
     <SiteFrame fill={false}>
-      <SignupScreen returnTo={returnTo} />
+      <SignupScreen continuation={continuation} />
     </SiteFrame>
   );
 }

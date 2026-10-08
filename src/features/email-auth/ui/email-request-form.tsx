@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useId, useState, type FormEvent, type ReactNode } from "react";
 
 import { useRouter } from "@/shared/i18n/navigation";
-import { withReturnTo } from "@/shared/routes/return-to";
+import { withContinuation, type Continuation } from "@/shared/routes/continuation";
 import type { WebRouteId } from "@/shared/routes/routes";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
@@ -19,7 +19,7 @@ type Props = {
   request: (email: string) => Promise<unknown>;
   /** Where the code step lives (`/login/code`, `/signup/verify`). */
   next: WebRouteId;
-  returnTo?: string;
+  continuation?: Continuation;
   submitLabel: string;
   hint: string;
   /** Show the mail icon in the submit button (WA1 primary email action). */
@@ -49,7 +49,7 @@ const looksLikeEmail = (value: string) => /^[^\s@]+@[^\s@]+$/.test(value);
 export function EmailRequestForm({
   request,
   next,
-  returnTo,
+  continuation,
   submitLabel,
   hint,
   icon = false,
@@ -79,7 +79,7 @@ export function EmailRequestForm({
     setFailure(undefined);
     try {
       await request(address);
-      router.push(withReturnTo(next, returnTo));
+      router.push(withContinuation(next, continuation));
     } catch (error) {
       setFailure(requestFailureOf(error));
       setBusy(false);

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { returnToOf, sanitizeReturnTo, withReturnTo } from "./return-to";
+import { sanitizeReturnTo } from "./return-to";
 
 describe("sanitizeReturnTo", () => {
   it.each([
@@ -60,26 +60,5 @@ describe("sanitizeReturnTo", () => {
 
   it.each([undefined, null, 42, ["/app"], { href: "/app" }])("rejects non-string %j", (input) => {
     expect(sanitizeReturnTo(input)).toBeUndefined();
-  });
-});
-
-describe("withReturnTo", () => {
-  it("carries a valid returnTo to the next auth route", () => {
-    expect(withReturnTo("web.login.code", "/app/messages?thread=1")).toBe(
-      "/login/code?returnTo=%2Fapp%2Fmessages%3Fthread%3D1",
-    );
-  });
-
-  it("drops an invalid one", () => {
-    expect(withReturnTo("web.signup", "//evil.example")).toBe("/signup");
-    expect(withReturnTo("web.signup", undefined)).toBe("/signup");
-  });
-});
-
-describe("returnToOf", () => {
-  it("reads and validates the returnTo query parameter", () => {
-    expect(returnToOf("?returnTo=%2Fapp%2Fhome")).toBe("/app/home");
-    expect(returnToOf("?returnTo=https%3A%2F%2Fevil.example")).toBeUndefined();
-    expect(returnToOf("")).toBeUndefined();
   });
 });

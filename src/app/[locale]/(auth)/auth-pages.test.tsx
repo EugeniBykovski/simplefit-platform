@@ -105,19 +105,49 @@ describe("O02w /signup", () => {
     ).toBeInTheDocument();
   });
 
-  it("links the role cards on without carrying or storing a role", async () => {
+  it("role cards carry the explicit journey as an ephemeral intent, never a role", async () => {
     await renderPage(SignupPage as Page, { returnTo: "/app/messages" });
 
     const roles = screen.getByRole("region", { name: "How will you use SimpleFit?" });
     const links = within(roles).getAllByRole("link");
     expect(links.map((link) => link.getAttribute("href"))).toEqual([
-      "/signup/account?returnTo=%2Fapp%2Fmessages",
-      "/signup/account?returnTo=%2Fapp%2Fmessages",
-      "/signup/account?returnTo=%2Fapp%2Fmessages",
+      "/signup/account?returnTo=%2Fapp%2Fmessages&intent=fighter",
+      "/signup/account?returnTo=%2Fapp%2Fmessages&intent=coach",
+      "/signup/account?returnTo=%2Fapp%2Fmessages&intent=gym",
       "/partners/apply",
     ]);
     expect(links.every((link) => !link.getAttribute("href")?.includes("role"))).toBe(true);
     expect(within(roles).queryAllByRole("radio")).toEqual([]);
+  });
+
+  it("without an intent, email and sign-in carry none: generic sign-up never means Fighter", async () => {
+    await renderPage(SignupPage as Page);
+    expect(screen.getByRole("link", { name: "Continue with Email" })).toHaveAttribute(
+      "href",
+      "/signup/account",
+    );
+    expect(hrefs().filter((href) => href?.includes("intent="))).toEqual([
+      "/signup/account?intent=fighter",
+      "/signup/account?intent=coach",
+      "/signup/account?intent=gym",
+    ]);
+  });
+
+  it("keeps an allowed intent from the URL across a refresh and drops any other", async () => {
+    const { unmount } = await renderPage(SignupPage as Page, { intent: "fighter" });
+    expect(screen.getByRole("link", { name: "Continue with Email" })).toHaveAttribute(
+      "href",
+      "/signup/account?intent=fighter",
+    );
+    expect(hrefs()).toContain("/login?intent=fighter");
+    unmount();
+
+    await renderPage(SignupPage as Page, { intent: "admin" });
+    expect(screen.getByRole("link", { name: "Continue with Email" })).toHaveAttribute(
+      "href",
+      "/signup/account",
+    );
+    expect(hrefs().some((href) => href?.includes("admin"))).toBe(false);
   });
 });
 
@@ -138,21 +168,28 @@ describe("WA3 /signup/account", () => {
     }
     const roles = screen.getByRole("radiogroup", { name: "Signing up as" });
     expect(roles).toHaveAttribute("aria-disabled", "true");
+    // Without an intent nothing is selected: no role is implied.
     expect(
       within(roles)
         .getAllByRole("radio")
         .map((radio) => radio.getAttribute("aria-checked")),
-    ).toEqual(["true", "false", "false"]);
+    ).toEqual(["false", "false", "false"]);
     // No invented explanatory copy (WA3 draws none).
     expect(
       screen.queryByText("Role, name and consents are set after you verify your email."),
     ).not.toBeInTheDocument();
-    // Fighter carries the artboard's selected look; nothing is selectable or sent.
-    expect(within(roles).getByRole("radio", { name: "Fighter" })).toHaveAttribute(
+    expect(screen.getByRole("button", { name: "Create account" })).toBeEnabled();
+  });
+
+  it("shows the journey chosen on O02w, as presentation only", async () => {
+    await renderPage(SignupAccountPage as Page, { intent: "coach" });
+    const roles = screen.getByRole("radiogroup", { name: "Signing up as" });
+    expect(within(roles).getByRole("radio", { name: "Coach" })).toHaveAttribute(
       "data-active",
       "true",
     );
-    expect(screen.getByRole("button", { name: "Create account" })).toBeEnabled();
+    expect(roles).toHaveAttribute("aria-disabled", "true");
+    expect(hrefs()).toContain("/login?intent=coach");
   });
 
   it.each(["ru", "de", "es-MX"] as const)("is translated in %s", async (locale) => {
