@@ -11,7 +11,13 @@ import { Combobox } from "@/shared/ui/combobox";
 import { Input } from "@/shared/ui/input";
 
 import { rejectionOf, type FieldMessage } from "../model/errors";
-import { basicsErrors, basicsFrom, basicsPatch, type BasicsValues } from "../model/form-values";
+import {
+  basicsErrors,
+  basicsFrom,
+  basicsPatch,
+  changedOnly,
+  type BasicsValues,
+} from "../model/form-values";
 import type { FormStep } from "../model/steps";
 import { describedBy, FormField } from "./form-field";
 import { BasicsPreview } from "./profile-preview";
@@ -54,11 +60,12 @@ export function BasicsStep({
   const [problem, setProblem] = useState<StepProblem>();
   const retry = useRef<() => void>(undefined);
 
-  // A newer backend profile (another tab, the mobile app) replaces the form
-  // only while nothing here is being edited; edits win on their next save.
+  // A newer backend profile (another tab, the mobile app) updates every field
+  // not being edited here; the fields being edited keep the visitor's input.
   useEffect(() => {
-    if (!formState.isDirty) reset(basicsFrom(profile));
-  }, [profile, formState.isDirty, reset]);
+    reset(basicsFrom(profile), { keepDirtyValues: true });
+  }, [profile, reset]);
+  const { dirtyFields } = formState;
 
   const message = (key: FieldMessage) => t(`errors.${key}`);
 
@@ -83,10 +90,12 @@ export function BasicsStep({
       setProblem("invalid");
       return false;
     }
-    if (!requireComplete && !formState.isDirty) return true;
+    // Only what changed here: another client's newer values are never overwritten.
+    const changed = changedOnly(basicsPatch(current), dirtyFields);
+    if (Object.keys(changed).length === 0) return true;
     setBusy(true);
     try {
-      reset(basicsFrom(await save(basicsPatch(current))));
+      reset(basicsFrom(await save(changed)));
       return true;
     } catch (error) {
       const rejection = rejectionOf(error);

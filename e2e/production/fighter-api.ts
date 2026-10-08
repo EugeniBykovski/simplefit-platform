@@ -84,6 +84,13 @@ export type FighterApi = {
   failWrites: (count: number) => void;
   /** Ends the session: the refresh and every API call answer 401 from now on. */
   expire: () => void;
+  /**
+   * Another client (the mobile app, another tab, the API) saves `fields`:
+   * the stored profile changes without this page knowing.
+   */
+  externalUpdate: (fields: Record<string, unknown>) => void;
+  /** Another tab or client completes onboarding through the API. */
+  completeExternally: () => void;
 };
 
 const validation = (field_codes: Record<string, string[]>) => ({
@@ -175,17 +182,25 @@ export async function fighterApi(page: Page, options: FighterApiOptions = {}): P
     return { status: 200, json: { fighter_profile: view() } };
   }
 
-  const entry = () => ({
-    entry: {
-      account_registration: options.accountComplete === false ? "in_progress" : "complete",
-      capabilities: completedAt ? ["FIGHTER"] : [],
-      destination: completedAt ? "fighter_home" : "fighter_onboarding",
-      fighter_profile: view().onboarding.status,
-      intent: null,
-      mandatory: !completedAt,
-      reason: "fixture",
-    },
-  });
+  // The SF-45 resolver's answer for this state: account registration first.
+  const entry = () => {
+    const accountIncomplete = options.accountComplete === false;
+    return {
+      entry: {
+        account_registration: accountIncomplete ? "in_progress" : "complete",
+        capabilities: completedAt ? ["FIGHTER"] : [],
+        destination: accountIncomplete
+          ? "account_registration"
+          : completedAt
+            ? "fighter_home"
+            : "fighter_onboarding",
+        fighter_profile: view().onboarding.status,
+        intent: null,
+        mandatory: accountIncomplete || !completedAt,
+        reason: "fixture",
+      },
+    };
+  };
 
   await page.route(
     (url) => url.pathname.startsWith("/api/") && url.port !== "3100",
@@ -245,6 +260,12 @@ export async function fighterApi(page: Page, options: FighterApiOptions = {}): P
     },
     expire: () => {
       expired = true;
+    },
+    externalUpdate: (fields) => {
+      stored = { ...EMPTY, ...stored, ...fields };
+    },
+    completeExternally: () => {
+      completedAt ??= "2026-10-08T12:00:00Z";
     },
   };
 }

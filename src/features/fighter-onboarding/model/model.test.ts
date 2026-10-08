@@ -7,6 +7,7 @@ import { messageFor, rejectionOf } from "./errors";
 import {
   basicsErrors,
   basicsPatch,
+  changedOnly,
   GOALS,
   profileFrom,
   profilePatch,
@@ -210,5 +211,24 @@ describe("form values (SF-25 vocabulary, nothing rounded)", () => {
       country_code: "PL",
       city: null,
     });
+  });
+});
+
+describe("changedOnly (SF-27: a save never writes back another client's newer values)", () => {
+  it("keeps the fields this page changed, goals included, and nothing else", () => {
+    const patch = {
+      display_name: "Alex",
+      city: "Warsaw",
+      goals: ["fitness" as const],
+      stance: null,
+    };
+    expect(changedOnly(patch, { display_name: true, goals: [false, true] })).toEqual({
+      display_name: "Alex",
+      goals: ["fitness"],
+    });
+    // A deliberately cleared field is a change: `null` is sent.
+    expect(changedOnly(patch, { stance: true })).toEqual({ stance: null });
+    expect(changedOnly(patch, {})).toEqual({});
+    expect(changedOnly(patch, { goals: [false] })).toEqual({});
   });
 });

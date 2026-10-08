@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { rejectionOf, type FieldMessage } from "../model/errors";
 import {
   basicsFrom,
+  changedOnly,
   EXPERIENCE_LEVELS,
   GOALS,
   profileFrom,
@@ -78,10 +79,11 @@ export function ProfileStep({
   const [problem, setProblem] = useState<StepProblem>();
   const retry = useRef<() => void>(undefined);
 
-  // A newer backend profile replaces the form only while nothing is being edited.
+  // A newer backend profile updates every field not being edited here.
   useEffect(() => {
-    if (!formState.isDirty) reset(profileFrom(profile));
-  }, [profile, formState.isDirty, reset]);
+    reset(profileFrom(profile), { keepDirtyValues: true });
+  }, [profile, reset]);
+  const { dirtyFields } = formState;
 
   const basicsLabels: Record<string, string> = {
     display_name: t("basics.name.label"),
@@ -115,8 +117,8 @@ export function ProfileStep({
     return invalid.length > 0;
   }
 
-  /** Saves the changed values; `true` once the API accepted them. */
-  async function persist(force: boolean): Promise<boolean> {
+  /** Saves the changed values; `true` once the API accepted them (or nothing changed). */
+  async function persist(): Promise<boolean> {
     clearErrors();
     setProblem(undefined);
     const parsed = profilePatch(form.getValues());
@@ -124,9 +126,11 @@ export function ProfileStep({
       setProblem("invalid");
       return false;
     }
-    if (!force && !formState.isDirty) return true;
+    // Only what changed here: another client's newer values are never overwritten.
+    const changed = changedOnly(parsed.patch, dirtyFields);
+    if (Object.keys(changed).length === 0) return true;
     try {
-      reset(profileFrom(await save(parsed.patch)));
+      reset(profileFrom(await save(changed)));
       return true;
     } catch (error) {
       const rejection = rejectionOf(error);
@@ -145,7 +149,7 @@ export function ProfileStep({
     retry.current = () => void back();
     setBusy("save");
     try {
-      if (await persist(false)) onBack("basics");
+      if (await persist()) onBack("basics");
     } finally {
       setBusy(undefined);
     }
@@ -156,7 +160,7 @@ export function ProfileStep({
     retry.current = () => void finish();
     setBusy("finish");
     try {
-      if (!(await persist(true))) return;
+      if (!(await persist())) return;
       try {
         await complete();
         onCompleted();
@@ -192,7 +196,7 @@ export function ProfileStep({
   useEffect(() => {
     latestPersist.current = persist;
   });
-  useEffect(() => registerSaver(() => latestPersist.current(false)), [registerSaver]);
+  useEffect(() => registerSaver(() => latestPersist.current()), [registerSaver]);
 
   const error = (field: keyof ProfileValues) => formState.errors[field]?.message;
 
