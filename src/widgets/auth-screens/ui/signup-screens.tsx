@@ -69,7 +69,7 @@ export function SignupScreen({ continuation }: { continuation?: Continuation }) 
       // that exact share; the canonical 64 px gap plus the section's 8 px inset
       // make the 72 px. The artboard is a fixed 1440 × 940 frame whose body fills
       // 940 − 76 (header) − 190 (footer) = 674 px, so the footer sits at y 750.
-      className="grid content-start gap-10 py-10 lg:min-h-[674px] lg:grid-cols-[minmax(0,calc((100%-4.5rem)/2.25))_minmax(0,1fr)] lg:gap-16 lg:py-14"
+      className="grid content-start gap-10 py-10 desktop:min-h-[674px] desktop:grid-cols-[minmax(0,calc((100%-4.5rem)/2.25))_minmax(0,1fr)] desktop:gap-16 desktop:py-14"
     >
       <div className="flex min-w-0 flex-col gap-5.5">
         <BrandTile size="xl" />
@@ -98,7 +98,7 @@ export function SignupScreen({ continuation }: { continuation?: Continuation }) 
           })}
         </p>
       </div>
-      <section aria-labelledby="signup-roles" className="flex min-w-0 flex-col gap-4 lg:pl-2">
+      <section aria-labelledby="signup-roles" className="flex min-w-0 flex-col gap-4 desktop:pl-2">
         <h2 id="signup-roles" className="type-label-lg text-highlight">
           {t("roles.title")}
         </h2>

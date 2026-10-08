@@ -6,26 +6,28 @@ import { cn } from "@/shared/lib/utils";
 
 /**
  * The canonical horizontal frame of every web surface (SF-34), from the
- * Claude Design 1440 px frames:
+ * Claude Design 1440 px frames. Every variant is viewport-fluid: the frame is
+ * the full viewport width at every size, never a centred 1440 px canvas
+ * (docs/design-system.md, "Responsive composition"). The artboard's widths
+ * apply to content inside the frame, not to the frame.
  *
- * - `site`: public website, auth and system pages. 64 px gutters at desktop
- *   (1312 px of content in the 1440 frame), centred beyond 1440 px.
+ * - `site`: public website, auth and system pages. 64 px gutters at desktop,
+ *   as at 1440 (1312 px of content there, more on wider viewports).
  * - `app`: the fluid content column of the signed-in shells. 32 px gutters at
  *   desktop beside the sidebar, never capped.
- * - `frame`: the same centred 1440 px frame as `site`, without gutters, for
- *   compositions that draw their own edge-to-edge columns inside the frame
- *   (the WA1 split sign-in, SF-24).
+ * - `frame`: the full-width frame without gutters, for compositions that draw
+ *   their own columns and edge padding (the auth step header).
  *
- * Gutters step down below the designed frame (the design draws only 1440):
- * 16 px phones, 24 px from `sm`, 32 px from `md`. Screens never add their own
+ * Gutters step down below the desktop range (`desktop`, 1180 px; the design
+ * draws only 1440): 16 px phones, 24 px from `sm`, 32 px from `md`. Screens never add their own
  * horizontal page margins; they sit inside a Container.
  */
 export const containerVariants = cva("w-full", {
   variants: {
     size: {
-      site: "mx-auto max-w-[1440px] px-4 sm:px-6 md:px-8 lg:px-16",
+      site: "px-4 sm:px-6 md:px-8 desktop:px-16",
       app: "px-4 sm:px-6 md:px-8",
-      frame: "mx-auto max-w-[1440px]",
+      frame: "",
     },
   },
   defaultVariants: { size: "site" },

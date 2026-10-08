@@ -34,8 +34,11 @@ const viewports = {
   phone: { name: "Phone web · 390", styles: { width: "390px", height: "844px" } },
   narrow: { name: "Narrow web · 320", styles: { width: "320px", height: "640px" } },
   tablet: { name: "Tablet · 768", styles: { width: "768px", height: "1024px" } },
+  // Laptops: the shortest supported desktop window and a MacBook Pro 14's default.
+  laptop: { name: "Laptop · 1280 × 720", styles: { width: "1280px", height: "720px" } },
+  macbook: { name: "MacBook Pro 14 · 1512 × 982", styles: { width: "1512px", height: "982px" } },
   desktop: { name: "Desktop · 1440", styles: { width: "1440px", height: "900px" } },
-  // Wider than the designed frame: the 1440 px Container must stay centred (SF-24).
+  // Wider than the designed frame: the same composition, fluid (SF-42).
   wide: { name: "Wide desktop · 1920", styles: { width: "1920px", height: "1080px" } },
 };
 

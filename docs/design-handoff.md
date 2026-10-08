@@ -274,22 +274,41 @@ genuinely SimpleFit-specific graphics.
 - Never export from Claude Design: buttons, cards, Lucide icons, typography,
   UI backgrounds, borders or screen compositions.
 
-### 8.4 Fixed-frame compositions (web)
+### 8.4 Fixed-frame artboards, fluid compositions (web)
 
 Web artboards are fixed frames: 1440 px wide and the artboard's own height
 (900 for the auth screens, 940 for O02w). Production reproduces that
-coordinate system:
+coordinate system at 1440 and translates it into responsive constraints for
+every other desktop and laptop width (SF-42):
+
+> Canonical Web compositions are viewport-fluid but topology-invariant across supported desktop/laptop sizes. Breakpoints may adjust spacing and sizing; they must not introduce a different product composition unless an approved responsive design explicitly defines one.
 
 - At 1440 × the artboard height, every element lands on the artboard's
   coordinates (the geometry suite checks major anchors within 2 px).
-- Wider than 1440, the composition is centred in the canonical `frame`
-  Container and never stretched horizontally.
-- Taller than the artboard, the internal layout is not redistributed: no
-  `min-h-dvh` + `flex-1` spreading, `justify-between` or bottom-anchored
-  footers inside a designed composition. Extra height stays outside it (below
-  the footer, or under a background that the design structurally assigns to
-  a full-height region, such as the WA1 brand panel).
-- Narrower than 1440, the layout adapts responsively.
+- At every desktop and laptop width (the `desktop` breakpoint, 1180 px, and
+  up: 1280, 1366, 1440, 1512, 1728, 1920 are tested on the production
+  routes), the composition is the same: frames and full-bleed regions span
+  the viewport (never a centred 1440 px canvas), splits keep their fractions
+  (WA1 50 / 50), edge anchors keep their artboard offsets (64 px gutters),
+  and fixed-width content (the 440 px auth column, the 420 px aside) stays
+  fixed inside its region. Never `transform: scale()`, zoom, a fixed canvas
+  or horizontal scrolling.
+- Vertically, the artboard height is a reference, not a canvas. Content is
+  never stretched, spaced out or scaled to a window:
+  - **Window-height compositions** (WA1 / WA1b: a split the artboard draws as
+    the whole window) turn the artboard's rows into anchors: the brand on
+    the top padding, the headline and card on the bottom padding, the form
+    column centred. At 900 px that is exactly the artboard; at 720–1117 px
+    the composition fits the window with nothing at the fold.
+  - **Page compositions** (the public site, O02w) keep their own height; the
+    site frame's `main` takes the space between header and footer, as the
+    artboards' `flex: 1` body does, so a short page has its footer at the
+    window's bottom and a long page pushes it down after the content.
+- Below the `desktop` breakpoint (only where the desktop composition
+  physically cannot fit; the artboards draw no tablet or phone web), the
+  narrow production extension applies, with the shell and the page switching
+  together: the header's menu sheet, one-column auth and sign-up layouts. No
+  surface has a third, intermediate composition between them.
 
 Type roles whose line height differs from the artboard's `line-height:
 normal` are compensated with spacing steps where they accumulate, so rows

@@ -75,13 +75,21 @@ jobs:
         run: pnpm build
         env:
           NEXT_PUBLIC_API_URL: http://localhost:4000
+          # Public fixture IDs (never deployed): the build renders the Google and
+          # Apple controls, so the production geometry suite measures the real
+          # provider row against its deterministic script stand-ins. Without
+          # them the controls report "not available" and load no script.
+          NEXT_PUBLIC_GOOGLE_CLIENT_ID: 000000000000-geometryfixture.apps.googleusercontent.com
+          NEXT_PUBLIC_APPLE_SERVICES_ID: com.simplefit.geometry.web
+          NEXT_PUBLIC_APPLE_REDIRECT_URI: https://localhost/login
 
       - name: Storybook build
         # The component workshop must keep compiling with the real primitives.
         run: pnpm storybook:build
 
       # SF-34: canonical layout and system-state geometry at 1440 × 900,
-      # measured on the static Storybook build above.
+      # measured on the static Storybook build above; SF-42: the production
+      # routes on the production build (next start), at desktop and laptop sizes.
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium
 

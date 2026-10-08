@@ -8,6 +8,7 @@
   },
   "palette": {
     "graphite-950": "#111312",
+    "graphite-975": "#0d0e0d",
     "graphite-925": "#151816",
     "graphite-900": "#181b19",
     "graphite-850": "#1f2320",
@@ -58,10 +59,12 @@
       "surface-foreground": "bone",
       "surface-subtle": "graphite-925",
       "surface-elevated": "graphite-850",
+      "surface-sunken": "graphite-975",
       "muted": "graphite-850",
       "muted-foreground": "stone-500",
       "faint-foreground": "stone-550",
       "border": "graphite-800",
+      "border-subtle": "graphite-850",
       "border-strong": "graphite-600",
       "input": "graphite-700",
       "ring": "olive-300",
@@ -105,10 +108,12 @@
       "surface-foreground": "graphite-950",
       "surface-subtle": "bone-200",
       "surface-elevated": "white",
+      "surface-sunken": "bone-200",
       "muted": "bone-200",
       "muted-foreground": "stone-600",
       "faint-foreground": "stone-650",
       "border": "bone-300",
+      "border-subtle": "bone-200",
       "border-strong": "bone-400",
       "input": "bone-400",
       "ring": "olive-600",
@@ -173,7 +178,9 @@
       ["warning-foreground", "warning"],
       ["warning-subtle-foreground", "warning-subtle"],
       ["info-foreground", "info"],
-      ["info-subtle-foreground", "info-subtle"]
+      ["info-subtle-foreground", "info-subtle"],
+      ["muted-foreground", "surface-sunken"],
+      ["faint-foreground", "surface-sunken"]
     ],
     "nonText": [
       ["ring", "background"],
@@ -425,7 +432,7 @@
       }
     },
     "authRoles": {
-      "$comment": "SF-24: authentication typography (Claude Design onboarding page: WA1/WA1b sign in, O02w sign up, WA3/WA4 registration, WA4b link result, A01 welcome, O01c/O03 code entry). Larger than the product roles and specific to the auth frames, so each role has a web (1440) and a mobile (390) value. Use only on authentication screens.",
+      "$comment": "SF-24: authentication typography (Claude Design onboarding page: WA1/WA1b sign in, O02w sign up, WA3/WA4 registration, WA4b link result, A01 welcome, O01c/O03 code entry). Larger than the product roles and specific to the auth frames, so each role has a web (1440) and a mobile (390) value. Use only on authentication screens. auth-wordmark (16) and auth-wordmark-sm (14) are the brand lockup of the WA1/WA1b panel and of the 72 px auth header (SF-42).",
       "web": {
         "auth-display": {
           "family": "display",
@@ -468,6 +475,20 @@
           "lineHeight": 34,
           "weight": 700,
           "tracking": 0
+        },
+        "auth-wordmark": {
+          "family": "display",
+          "size": 16,
+          "lineHeight": 20,
+          "weight": 600,
+          "tracking": 0
+        },
+        "auth-wordmark-sm": {
+          "family": "display",
+          "size": 14,
+          "lineHeight": 18,
+          "weight": 600,
+          "tracking": 0
         }
       },
       "mobile": {
@@ -486,10 +507,44 @@
           "tracking": 0
         }
       }
+    },
+    "siteRoles": {
+      "$comment": "SF-42: public website shell typography (Claude Design public-website page: the shared header and footer of L1–L5, PR1–PR6, SPX1–SPX2 and O02w). The artboards set these on the fonts' natural line height; the roles keep those line boxes so the header items and footer rows land on the designed positions. Use only in the public site shell.",
+      "web": {
+        "site-nav": {
+          "family": "sans",
+          "size": 14,
+          "lineHeight": 19,
+          "weight": 600,
+          "tracking": 0
+        },
+        "site-footer-label": {
+          "family": "mono",
+          "size": 10,
+          "lineHeight": 13,
+          "weight": 400,
+          "tracking": 0.14,
+          "uppercase": true
+        },
+        "site-footer-link": {
+          "family": "sans",
+          "size": 13,
+          "lineHeight": 18,
+          "weight": 400,
+          "tracking": 0
+        },
+        "site-footer-blurb": {
+          "family": "sans",
+          "size": 12,
+          "lineHeight": 19.2,
+          "weight": 400,
+          "tracking": 0
+        }
+      }
     }
   },
   "spacing": {
-    "$comment": "Allowed spacing steps in px (padding, margin, gap) and their Tailwind scale keys. 20 (80 px) is the public-website section rhythm.",
+    "$comment": "Allowed spacing steps in px (padding, margin, gap) and their Tailwind scale keys. 20 (80 px) is the public-website section rhythm. 6.5 (26 px) and 9 (36 px) are the public-website header and footer rhythm (SF-42).",
     "steps": {
       "0": 0,
       "0.5": 2,
@@ -504,7 +559,9 @@
       "5": 20,
       "5.5": 22,
       "6": 24,
+      "6.5": 26,
       "8": 32,
+      "9": 36,
       "10": 40,
       "12": 48,
       "14": 56,
@@ -516,6 +573,7 @@
     "xs": 6,
     "sm": 9,
     "md": 12,
+    "md-lg": 14,
     "lg": 16,
     "xl": 18,
     "2xl": 20,

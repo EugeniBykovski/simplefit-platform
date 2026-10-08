@@ -23,6 +23,7 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
+      testIgnore: "production/**",
       use: {
         ...devices["Desktop Chrome"],
         viewport: { width: 1440, height: 900 },
@@ -35,10 +36,30 @@ export default defineConfig({
         launchOptions: { args: ["--font-render-hinting=none"] },
       },
     },
+    {
+      // SF-42: the actual production routes (next start), at every desktop and
+      // laptop width. The backend is mocked at the network edge.
+      name: "production",
+      testMatch: "production/**/*.spec.ts",
+      use: {
+        ...devices["Desktop Chrome"],
+        baseURL: "http://127.0.0.1:3100",
+        launchOptions: { args: ["--font-render-hinting=none"] },
+      },
+    },
   ],
-  webServer: {
-    command: "node scripts/serve-static.mjs storybook-static 6007",
-    url: "http://127.0.0.1:6007/index.json",
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: [
+    {
+      command: "node scripts/serve-static.mjs storybook-static 6007",
+      url: "http://127.0.0.1:6007/index.json",
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      // The production build (`pnpm build`, run before this suite in CI).
+      command: "pnpm exec next start -p 3100",
+      url: "http://127.0.0.1:3100/en",
+      reuseExistingServer: !process.env.CI,
+      timeout: 60_000,
+    },
+  ],
 });

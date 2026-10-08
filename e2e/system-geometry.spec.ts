@@ -49,11 +49,13 @@ test.describe("public site frame (SiteHeader, site Container)", () => {
     await page.screenshot({ path: "test-results/er2-count.png" });
   });
 
-  test("the site Container centres 1440 px beyond the designed frame", async ({ page }) => {
+  test("the site Container stays fluid beyond the designed frame (64 px gutters)", async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 1600, height: 900 });
     await story(page, "system-errors-not-found--count");
     const brand = await box(page.getByRole("link", { name: /SimpleFit/ }).first());
-    near(brand.x, (1600 - 1440) / 2 + 64);
+    near(brand.x, 64);
   });
 });
 
@@ -166,7 +168,7 @@ test.describe("SF-34 visual fixes", () => {
     const signIn = await box(page.getByRole("link", { name: "Sign in" }));
     const cta = await box(page.getByRole("link", { name: "Get started" }));
     near(cta.x - (signIn.x + signIn.width), 36);
-    near(cta.height, 40);
+    near(cta.height, 42); // the public-website artboards' Get started (SF-42)
   });
 
   test("ER2 count, knockout and saved typography", async ({ page }) => {

@@ -63,11 +63,26 @@ export function BrandTile({
   );
 }
 
+const wordmarkSizes = {
+  // The 72 px auth header (WA3, WA4, WA4b): 14 px.
+  sm: "type-auth-wordmark-sm",
+  // The public site header and product chrome: 15 px.
+  md: "type-title",
+  // The WA1 / WA1b brand panel: 16 px.
+  lg: "type-auth-wordmark",
+} as const;
+
 /** "SimpleFit Boxing" with the sport in olive 500, as in every brand lockup. */
-export function BrandWordmark({ className }: { className?: string }) {
+export function BrandWordmark({
+  size = "md",
+  className,
+}: {
+  size?: keyof typeof wordmarkSizes;
+  className?: string;
+}) {
   const [brand, ...sport] = siteConfig.name.split(" ");
   return (
-    <span className={cn("type-title", className)}>
+    <span className={cn(wordmarkSizes[size], className)}>
       {brand}
       <span className="text-primary-muted"> {sport.join(" ")}</span>
     </span>

@@ -199,9 +199,9 @@ test("Storybook never loads a live auth provider script", async ({ page }) => {
 });
 
 /*
- * SF-24 layout regression: every auth composition lives inside the canonical
- * 1440 px frame (SF-34 Container) and stays centred beyond it; the design's
- * canvas width is never treated as the viewport. Values from WebLogin (WA1),
+ * SF-24 layout regression, SF-42 responsive rule: every auth composition is
+ * viewport-fluid (the frame spans the viewport, never a centred 1440 px
+ * canvas) with the artboard's anchoring and content widths inside it. Values from WebLogin (WA1),
  * WebSignUp (O02w) and WebRegAccount (WA3), measured on the full-page stories.
  */
 const frameOf = (page: Page, kind: string) => page.locator(`[data-auth-frame="${kind}"]`);
@@ -271,8 +271,11 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
     await story(page, "authentication-login--full-page");
     await fontsLoaded(page);
     // The branded half owns the full 900 px frame; the form half starts at the split.
+    // The root frame first: the full viewport, split exactly in half, no margin.
+    await expectBox(frameOf(page, "split"), [0, 0, 1440, 900]);
     await expectBox(page.locator("[data-auth-panel]"), [0, 0, 720, 900]);
-    await expectBox(page.locator("main"), { 0: 720, 1: 0, 2: 720 });
+    await expectBox(page.locator("main"), [720, 0, 720, 900]);
+    expect(await overflow(page)).toBeLessThanOrEqual(0);
     await expectBox(page.locator("[data-auth-panel] a").first(), { 0: 64, 1: 56, 3: 36 });
     // The artboard's subtitle is not rendered (decision D5) but its row stays
     // reserved: the headline keeps the designed 439.
@@ -287,8 +290,26 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
     );
     // The provider rows (2 × 52 px with a 14 px gap) end where the divider starts.
     await expectBox(page.getByText("or with email", { exact: true }), { 1: 444 });
-    // Not linked: /sponsor/login is a placeholder (D7), so WA1 omits it.
-    await expect(page.getByRole("link", { name: "Sponsor sign in" })).toHaveCount(0);
+    const cta = page.getByRole("button", { name: "Email me a sign-in code" });
+    expect(
+      await cta.evaluate((el) => {
+        const style = getComputedStyle(el);
+        return [style.fontSize, style.fontWeight, style.borderRadius];
+      }),
+    ).toEqual(["15px", "800", "18px"]);
+    // The artboard's closing line ends with the sponsor sign-in link.
+    await expectBox(page.getByRole("link", { name: "Sponsor sign in" }), [1186, 652, 98.5, 18]);
+    // Nothing the artboard does not draw: no language or theme controls.
+    await expect(page.getByRole("button", { name: /language|theme/i })).toHaveCount(0);
+    // The panel's 16 px wordmark.
+    expect(
+      await page
+        .locator("[data-auth-panel] a")
+        .first()
+        .getByText("SimpleFit", { exact: false })
+        .last()
+        .evaluate((el) => getComputedStyle(el).fontSize),
+    ).toBe("16px");
   });
 
   test("WA1b typing: eyebrow, title, code row, CTA and guidance on the artboard rows", async ({
@@ -329,25 +350,38 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
 
   for (const [width, height] of [
     [1440, 1200],
+    [1728, 1117],
     [1920, 1080],
   ] as const) {
-    test(`at ${width} × ${height} the branded panel runs the full height and the 900 px composition stays put`, async ({
+    test(`at ${width} × ${height} the split fills the viewport and the artboard content is anchored in each half`, async ({
       page,
     }) => {
       await page.setViewportSize({ width, height });
       await story(page, "authentication-login--full-page");
       await fontsLoaded(page);
-      const x = (width - 1440) / 2;
-      // The panel owns its gradient down to the bottom of the window ...
-      await expectBox(page.locator("[data-auth-panel]"), [x, 0, 720, height]);
-      // ... while the content keeps its 1440 × 900 coordinates.
-      await expectBox(page.locator("[data-auth-hero]"), { 0: x + 64, 1: 439 });
+      const half = width / 2;
+      // Root: x 0 to the viewport width, the split line at the viewport's centre.
+      await expectBox(frameOf(page, "split"), [0, 0, width, height]);
+      // The panel owns its gradient across its half and down to the bottom of the window ...
+      await expectBox(page.locator("[data-auth-panel]"), [0, 0, half, height]);
+      await expectBox(page.locator("main"), [half, 0, half, height]);
+      expect(await overflow(page)).toBeLessThanOrEqual(0);
+      // ... and the artboard's rows are constraints within it: the brand on the top
+      // padding, the headline and card on the bottom padding, the column centred
+      // (at 900 exactly the artboard: hero 439, card 553, column 230).
+      await expectBox(page.locator("[data-auth-panel] a").first(), { 0: 64, 1: 56, 3: 36 });
+      await expectBox(page.locator("[data-auth-hero]"), { 0: 64, 1: height - 56 - 291 - 114 });
       await expectBox(page.locator("[data-auth-panel] [data-auth-info-list]"), {
-        0: x + 64,
-        1: 553,
+        0: 64,
+        1: height - 56 - 291,
         3: 291,
       });
-      await expectBox(page.locator("[data-auth-column]"), { 0: x + 860, 1: 230, 3: 440 });
+      await expectBox(page.locator("[data-auth-column]"), {
+        0: half + (half - 440) / 2,
+        1: (height - 440) / 2,
+        2: 440,
+        3: 440,
+      });
       expect(
         await page
           .locator("[data-auth-panel]")
@@ -356,30 +390,65 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
     });
   }
 
-  for (const width of [1920, 1280, 1024]) {
-    test(`WA1 frame is centred and contained at ${width}`, async ({ page }) => {
+  // Every desktop and laptop width, down to the `desktop` breakpoint (1180).
+  for (const width of [1920, 1280, 1180]) {
+    test(`WA1 frame fills the viewport at ${width}, the column centred in the right half`, async ({
+      page,
+    }) => {
       await page.setViewportSize({ width, height: 900 });
       await story(page, "authentication-login--full-page");
       const frame = await box(frameOf(page, "split"));
-      near(frame.width, Math.min(width, 1440));
-      near(frame.x, (width - frame.width) / 2);
+      near(frame.x, 0);
+      near(frame.width, width);
       const column = await box(page.locator("[data-auth-column]"));
-      near(column.x + column.width / 2, frame.x + (frame.width * 3) / 4);
+      near(column.x + column.width / 2, (width * 3) / 4);
       expect(await overflow(page)).toBeLessThanOrEqual(0);
     });
   }
 
-  test("WA1 at 768 collapses to the centred form column without overflow", async ({ page }) => {
-    await page.setViewportSize({ width: 768, height: 1024 });
-    await story(page, "authentication-login--full-page");
-    await expect(page.locator("[data-auth-hero]")).toBeHidden();
-    const column = await box(page.locator("[data-auth-column]"));
-    near(column.x + column.width / 2, 384);
-    expect(await overflow(page)).toBeLessThanOrEqual(0);
-  });
+  // Below `desktop`, together with the site header: one column, no hybrid split.
+  for (const [width, height] of [
+    [1179, 900],
+    [1024, 768],
+    [768, 1024],
+  ] as const) {
+    test(`WA1 at ${width} collapses to the centred form column without overflow`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height });
+      await story(page, "authentication-login--full-page");
+      await expect(page.locator("[data-auth-hero]")).toBeHidden();
+      await expect(page.locator("[data-auth-panel]")).toBeHidden();
+      const column = await box(page.locator("[data-auth-column]"));
+      near(column.x + column.width / 2, width / 2);
+      expect(await overflow(page)).toBeLessThanOrEqual(0);
+    });
+  }
 });
 
 test.describe("O02w conformance (WebSignUp · 1440 × 940)", () => {
+  test("root composition: the site frame, header and footer span the viewport", async ({
+    page,
+  }) => {
+    await story(page, "authentication-sign-up--full-page");
+    await fontsLoaded(page);
+    await expectBox(page.locator("[data-site-frame]"), { 0: 0, 1: 0, 2: 1440 });
+    await expectBox(page.locator("header").first(), [0, 0, 1440, 76]);
+    await expectBox(frameOf(page, "signup"), { 0: 0, 1: 76, 2: 1440 });
+    await expectBox(page.locator("[data-site-footer]"), [0, 750, 1440, 190]);
+    expect(await overflow(page)).toBeLessThanOrEqual(0);
+
+    // Wider than the artboard: the backgrounds keep reaching the edges; only the
+    // 1440 px site content frame is centred inside them.
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    await expectBox(page.locator("[data-site-frame]"), { 0: 0, 2: 1920 });
+    await expectBox(page.locator("header").first(), { 0: 0, 2: 1920 });
+    await expectBox(page.locator("[data-site-footer]"), { 0: 0, 2: 1920 });
+    await expectBox(frameOf(page, "signup"), { 0: 0, 2: 1920 });
+    await expectBox(page.getByRole("heading", { level: 1 }), { 0: 64 });
+    expect(await overflow(page)).toBeLessThanOrEqual(0);
+  });
+
   test("header, 1 : 1.25 grid with a 72 px gap, 2 × 2 role cards, info strip and footer", async ({
     page,
   }) => {
@@ -435,23 +504,25 @@ test.describe("O02w conformance (WebSignUp · 1440 × 940)", () => {
     });
   });
 
-  test("a taller window does not spread the 940 px composition: the footer stays at 750", async ({
+  test("a taller window keeps the 674 px body and closes the window with the footer", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 1200 });
     await story(page, "authentication-sign-up--full-page");
     await fontsLoaded(page);
+    await expectBox(frameOf(page, "signup"), [0, 76, 1440, 674]);
     await expectBox(frameOf(page, "signup").locator("h1"), { 0: 64, 1: 226 });
-    await expectBox(page.locator("[data-site-footer]"), [0, 750, 1440, 190]);
+    await expectBox(page.locator("[data-site-footer]"), [0, 1200 - 190, 1440, 190]);
   });
 
   for (const width of [1920, 1280, 1024, 768]) {
-    test(`O02w content frame is centred and contained at ${width}`, async ({ page }) => {
+    test(`O02w content frame spans the viewport at ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 940 });
       await story(page, "authentication-sign-up--full-page");
       const frame = await box(frameOf(page, "signup"));
-      near(frame.width, Math.min(width, 1440));
-      near(frame.x, (width - frame.width) / 2);
+      // Fluid, never a centred fixed canvas (docs/design-system.md, "Responsive composition").
+      near(frame.width, width);
+      near(frame.x, 0);
       expect(await overflow(page)).toBeLessThanOrEqual(0);
     });
   }
@@ -533,17 +604,18 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
     await page.screenshot({ path: "test-results/wa3-1440-fighter-intent.png" });
   });
 
-  test("WA3 step frame stays centred beyond 1440 with the 420 px aside on the frame gutter", async ({
+  test("WA3 beyond 1440 stays fluid: the 420 px aside on the right gutter, the step fills the rest", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1920, height: 900 });
     await story(page, "authentication-sign-up--create-account-wide");
     const frame = await box(frameOf(page, "step"));
-    near(frame.x, 240);
-    near(frame.width, 1440);
+    near(frame.x, 0);
+    near(frame.width, 1920);
     const aside = await box(page.locator("aside"));
     near(aside.width, 420);
-    near(aside.x + aside.width, 240 + 1440 - 64);
+    near(aside.x + aside.width, 1920 - 64);
+    near((await box(page.locator("[data-auth-step-column]"))).x, 64);
     expect(await overflow(page)).toBeLessThanOrEqual(0);
   });
 });
@@ -573,13 +645,32 @@ test.describe("WA4 conformance (WebRegVerify · 1440 × 900)", () => {
 });
 
 test.describe("WA4b (WebEmailVerified · 1440 × 900)", () => {
-  test("560 px result column in the registry's site chrome", async ({ page }) => {
+  test("the minimal shell: 72 px auth header, brand only, no site navigation or footer", async ({
+    page,
+  }) => {
     await story(page, "authentication-verify-email--verified");
     const heading = page.getByRole("heading", { level: 1, name: "Email verified" });
     await heading.waitFor();
-    await expectBox(page.locator("header").first(), { 0: 0, 1: 0, 2: 1440, 3: 76 });
+    const header = page.locator("header").first();
+    await expectBox(header, [0, 0, 1440, 72]);
+    expect(
+      await header.evaluate((el) => [
+        getComputedStyle(el).borderBottomWidth,
+        getComputedStyle(el).borderBottomColor,
+      ]),
+    ).toEqual(["1px", "rgb(31, 35, 32)"]);
+    const brand = header.getByRole("link", { name: /SimpleFit/ });
+    await expectBox(brand, [56, 20.5, 183.9, 30]);
+    await expectBox(brand.locator("> span").first(), [56, 20.5, 30, 30]);
+    const wordmark = brand.getByText("SimpleFit", { exact: false }).last();
+    await expectBox(wordmark, { 0: 96, 2: 143.9 });
+    expect(await wordmark.evaluate((el) => getComputedStyle(el).fontSize)).toBe("14px");
+    await expect(header.getByRole("button")).toHaveCount(0);
+    await expect(header.getByRole("navigation")).toHaveCount(0);
+    await expect(page.locator("[data-site-footer]")).toHaveCount(0);
+    await expect(page.locator("footer")).toHaveCount(0);
     near((await box(heading.locator("../.."))).width, 560);
     near((await box(heading.locator("../.."))).x, 440);
-    await expect(page.locator("[data-site-footer]")).toBeVisible();
+    await page.screenshot({ path: "test-results/wa4b-minimal.png" });
   });
 });

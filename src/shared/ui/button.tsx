@@ -48,6 +48,8 @@ const buttonVariants = cva(
         xl: "h-13.5 rounded-xl px-4.5 type-body-lg font-extrabold",
         // The 44 px action of the system-state cards (SF-34).
         system: "h-11 rounded-md px-4 type-body-sm font-extrabold",
+        // The 42 px header action of the public site shell (SF-42): 14 px, 18 px sides.
+        site: "h-10.5 rounded-md-lg border-0 px-4.5 type-body font-extrabold",
         icon: "size-10 rounded-md",
         "icon-sm": "size-8 rounded-md",
       },

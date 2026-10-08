@@ -22,10 +22,12 @@
   --color-surface-foreground: var(--surface-foreground);
   --color-surface-subtle: var(--surface-subtle);
   --color-surface-elevated: var(--surface-elevated);
+  --color-surface-sunken: var(--surface-sunken);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-faint-foreground: var(--faint-foreground);
   --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
   --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -77,6 +79,16 @@
 
 @theme {
   /*
+   * The desktop composition's floor (docs/design-system.md, "Responsive
+   * composition"): the width at which the canonical public header (brand, the
+   * seven site links, Sign in, Get started, at the artboard's exact spacing
+   * and 64 px gutters) physically fits: 1043 px of content + 2 × 64. Every
+   * desktop and laptop viewport from here up renders the same composition,
+   * including a 1280 px laptop with classic scrollbars (1265 px).
+   */
+  --breakpoint-desktop: 73.75rem;
+
+  /*
    * Radius scale (docs/design-tokens.json): xs marks, sm badges, md compact
    * controls, lg fields, xl primary CTAs, 2xl compact cards, 3xl cards,
    * 4xl sheets and dialogs. Pills and circles use rounded-full.
@@ -84,6 +96,7 @@
   --radius-xs: 6px;
   --radius-sm: 9px;
   --radius-md: 12px;
+  --radius-md-lg: 14px;
   --radius-lg: 16px;
   --radius-xl: 18px;
   --radius-2xl: 20px;
@@ -335,6 +348,18 @@
   line-height: 1.625rem;
   font-weight: 400;
 }
+@utility type-auth-wordmark {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+}
+@utility type-auth-wordmark-sm {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  font-weight: 600;
+}
 @utility type-code-digit {
   font-family: var(--font-display);
   font-size: 1.875rem;
@@ -534,4 +559,36 @@
   .animate-system-post {
     opacity: 1;
   }
+}
+
+/*
+ * Public website shell typography (SF-42, docs/design-tokens.json
+ * typography.siteRoles.web): the shared header and footer. Only for the
+ * public site shell; pages use the roles above.
+ */
+@utility type-site-nav {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.1875rem;
+  font-weight: 600;
+}
+@utility type-site-footer-label {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+@utility type-site-footer-link {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  font-weight: 400;
+}
+@utility type-site-footer-blurb {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  line-height: 1.2rem;
+  font-weight: 400;
 }

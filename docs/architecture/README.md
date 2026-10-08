@@ -566,6 +566,18 @@ MIT, actively maintained, devDependencies only).
 - **Known warning:** pnpm reports an optional peer warning (`tsconfck` wants
   TypeScript ^5; the repository uses 6). It is harmless for the Vite build.
 
+**Added in SF-42:** `axe-core` 4.13.0 (MPL-2.0, actively maintained by Deque,
+devDependency only). Already installed as a dependency of
+`@storybook/addon-a11y` at the same version; SF-42 declares it directly.
+
+- **Problem:** the public site shell's accessibility must be checked in the
+  geometry suite (landmarks, names, contrast, the open menu), on the real
+  production components, in CI.
+- **Why existing tools fall short:** the Storybook a11y addon reports in the
+  workshop UI only; nothing ran axe in CI.
+- **Integration:** `e2e/site-geometry.spec.ts` injects `axe.min.js` into the
+  story page and fails on any WCAG 2.1 A/AA or best-practice violation.
+
 **Added in SF-34:** `@playwright/test` 1.63.0 (Apache-2.0, actively
 maintained by Microsoft, devDependency only).
 

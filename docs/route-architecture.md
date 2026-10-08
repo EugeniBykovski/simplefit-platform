@@ -281,6 +281,7 @@ Backend-granted internal staff capability on the same User → ADMIN (D-ADMIN-ID
 web.root  /[locale] layout (IMPLEMENTED)
 ├── web.site            public site header + footer
 ├── web.auth            sign-in / sign-up chrome, also /sponsor/login, /admin/login
+├── web.minimal         auth header only, no site navigation or footer: /verify-email (WA4b)
 ├── web.account         /account pages: restricted-account and recovery states, no product navigation
 ├── web.app             /app frame: session gate, workspace context (IMPLEMENTED, foundation)
 │   ├── web.app.onboarding   registration wizards                     GymSetupSteps
@@ -446,6 +447,17 @@ offered or inferred. A network or server failure while the session or the
 entry is resolved is retryable and never a sign-out; only a rejected
 credential (401) is.
 
+**Public website (SF-42, SF-43).** Every `web.site` route renders one
+shared shell, `SiteFrame` (header, navigation, footer), matched to the Claude
+Design shell geometry. The page bodies are not part of it: `/` still renders
+the SF-32 foundation placeholder and the other public routes the canonical
+feature placeholder, until SF-43 (Public Website Web — Complete Claude Design
+Page Set) replaces each with its structured artboard. `/verify-email` (WA4b)
+is drawn outside the public website and uses `web.minimal`: the 72 px auth
+header, no site navigation or footer. `/pricing` renders per request, so
+its `?role=` state (PR4 Enterprise) and the header's current item are right
+in the first HTML.
+
 **Onboarding entry routes** never require the capability they create
 (`D-ONBOARDING-ENTRY-CAPABILITY`): Fighter, Coach and Gym onboarding on both
 platforms need an authenticated session only (`capability: null`,
@@ -548,6 +560,7 @@ src/app/[locale]/
 ├── layout.tsx                         web.root
 ├── (site)/layout.tsx, page.tsx, …     web.site     PUBLIC: /, /fighters, /pricing, /partners…
 ├── (auth)/layout.tsx                  web.auth     GUEST_ONLY: login, signup/*, sponsor/login, admin/login
+├── (minimal)/layout.tsx               web.minimal  PUBLIC: verify-email (WA4b)
 ├── account/layout.tsx                 web.account  AUTHENTICATED: /account/*
 ├── app/layout.tsx                     web.app      AUTHENTICATED session gate; page.tsx = /app entry
 │   ├── onboarding/layout.tsx          web.app.onboarding
