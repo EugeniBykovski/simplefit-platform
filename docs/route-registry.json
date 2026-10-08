@@ -1401,7 +1401,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(auth)/signup/account/page.tsx",
-        "note": "SF-24: WA3. Only the email address is submitted (the registration API owns the address only). SF-36: the role segments and the identity chip show the O02w intent only (none without one); the full name is given after verifying and is disabled here; the three agreement rows are information, not checkboxes (D-WA3-PREAUTH-CONSENT); What happens next follows V78 (verify, account basics, your setup)."
+        "note": "SF-24: WA3. Only the email address is submitted (the registration API owns the address only). SF-36: the role segments and the identity chip show the O02w intent only (none without one); the full name and the three consent checkboxes are disabled, unchecked and never sent (D-WA3-PREAUTH-CONSENT; WA5 owns them); What happens next follows V78 (verify, account basics, your setup)."
       },
       "screens": ["WA3", "x-web-create-account"]
     },
@@ -16549,7 +16549,7 @@
       "sourceB": "SF-44 (simplefit-api ADR 0016) and Claude Design WA5: consents are recorded with their document version after authentication, through the account registration API",
       "mismatch": "Two consent surfaces; only the post-authentication one can be persisted.",
       "impact": "Persisting or trusting the WA3 checkboxes would create a second, unversioned consent record.",
-      "resolution": "SF-36: WA3 keeps the artboard's three agreement rows as information, not checkboxes: each names the agreement and when it is given (after verifying, in account registration), as O02w's V78 legal line does ('You'll review the Terms and Privacy Policy after sign-in'). Nothing is ticked, sent or stored before a User exists; WA5 (account_registration) is the only consent flow.",
+      "resolution": "SF-36: WA3 keeps the artboard's three consent checkboxes and the full name in place, disabled and unchecked (the name field says it is added after verifying). Only the email address is submitted; nothing is collected, validated or stored before a User exists. WA5 (account_registration) owns full name, date of birth, Terms and Privacy acceptance and the optional product news.",
       "status": "RESOLVED",
       "routes": ["web.signup.account"]
     }

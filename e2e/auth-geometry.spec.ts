@@ -530,7 +530,7 @@ test.describe("O02w conformance (WebSignUp · 1440 × 940)", () => {
 });
 
 test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
-  test("header, neutral role segments, name | email, agreement rows, CTA and the aside cards", async ({
+  test("header, neutral role segments, name | email, checks, CTA and the aside cards", async ({
     page,
   }) => {
     await story(page, "authentication-sign-up--create-account");
@@ -549,19 +549,23 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
     await expectBox(segmented.getByRole("radio", { name: "Fighter" }), [69, 235, 273, 36]);
     await expectBox(page.getByLabel("Full name"), [64, 342, 411, 44]);
     await expectBox(page.getByLabel("Email", { exact: true }), [489, 342, 411, 44]);
-    // The artboard's three 22 px rows at their rows, as information (D-WA3-PREAUTH-CONSENT):
-    // consent is given after verifying, so there is no checkbox before a User exists.
-    const agreements = page.locator("[data-auth-agreements] > li");
-    await expect(agreements).toHaveCount(3);
+    // The artboard's three 22 px checkboxes on their rows: disabled, unchecked
+    // (D-WA3-PREAUTH-CONSENT; account registration, WA5, records consent).
+    const checks = page.locator("[data-auth-step-column] form label:has([data-slot=checkbox])");
+    await expect(checks).toHaveCount(3);
     for (const [index, y] of [
       [0, 438],
       [1, 470],
       [2, 502],
     ] as const) {
-      await expectBox(agreements.nth(index), { 0: 64, 1: y });
-      await expectBox(agreements.nth(index).locator("> span").first(), { 0: 64, 2: 22, 3: 22 });
+      await expectBox(checks.nth(index), { 0: 64, 1: y });
+      const checkbox = checks.nth(index).locator("[data-slot=checkbox]");
+      await expectBox(checkbox, { 0: 64, 2: 22, 3: 22 });
+      await expect(checkbox).toBeDisabled();
+      await expect(checkbox).not.toBeChecked();
     }
-    await expect(page.locator("[data-auth-step-column] [data-slot=checkbox]")).toHaveCount(0);
+    await expect(page.getByLabel("Full name")).toBeDisabled();
+    await expect(page.getByLabel("Email", { exact: true })).toBeEnabled();
     const create = page.getByRole("button", { name: "Create account" });
     await expectBox(create, { 0: 64, 1: 540 });
     // Width follows the label's glyphs (15 px Manrope): within 3 px of 150.
@@ -695,4 +699,60 @@ test.describe("WA4b (WebEmailVerified · 1440 × 900)", () => {
     near((await box(heading.locator("../.."))).x, 440);
     await page.screenshot({ path: "test-results/wa4b-minimal.png" });
   });
+});
+
+test.describe("provider states (Storybook, production presentation components)", () => {
+  for (const [id, apple, messages] of [
+    ["loading", "disabled", []],
+    ["ready-or-cancelled", "enabled", []],
+    ["pending", "busy", ["Signing you in…"]],
+    [
+      "rejected",
+      "enabled",
+      [
+        "We couldn't verify your Google sign-in. Please try again.",
+        "We couldn't verify your Apple sign-in. Please try again.",
+      ],
+    ],
+    ["rate-limited", "enabled", ["Too many sign-in attempts. Wait a few minutes and try again."]],
+    [
+      "unavailable",
+      "enabled",
+      [
+        "Google sign-in is temporarily unavailable. Please try again later.",
+        "Apple sign-in is temporarily unavailable. Please try again later.",
+      ],
+    ],
+    [
+      "script-failed",
+      "enabled",
+      [
+        "Google sign-in couldn't load. Check your connection and reload the page.",
+        "Apple sign-in couldn't load. Check your connection and reload the page.",
+      ],
+    ],
+    ["generic-error", "enabled", ["Something went wrong. Please try again."]],
+  ] as const) {
+    test(`${id}: the state, with no provider script or network call`, async ({ page }) => {
+      const providerRequests: string[] = [];
+      page.on("request", (request) => {
+        if (/accounts\.google\.com|appleid\.cdn-apple\.com|\/api\//.test(request.url())) {
+          providerRequests.push(request.url());
+        }
+      });
+      await story(page, `authentication-provider-states--${id}`);
+      const appleButton = page.getByRole("button", { name: "Continue with Apple" });
+      if (apple === "disabled") await expect(appleButton).toBeDisabled();
+      if (apple === "enabled") await expect(appleButton).toBeEnabled();
+      if (apple === "busy") await expect(appleButton).toHaveAttribute("aria-busy", "true");
+      for (const message of messages) {
+        await expect(page.getByText(message, { exact: true }).first()).toBeVisible();
+      }
+      // Google's slot keeps its designed row; Google (not SimpleFit) draws the button into it.
+      const slot = page.locator("[data-google-slot]");
+      if (id === "pending") await expect(slot).toBeHidden();
+      else expect((await box(slot)).height).toBeGreaterThanOrEqual(52);
+      expect(providerRequests).toEqual([]);
+    });
+  }
 });

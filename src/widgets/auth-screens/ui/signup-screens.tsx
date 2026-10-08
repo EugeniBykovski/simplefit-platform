@@ -1,12 +1,9 @@
 import {
   Building2Icon,
-  CakeIcon,
   CircleHelpIcon,
   DumbbellIcon,
-  FileTextIcon,
   InfoIcon,
   MailIcon,
-  NewspaperIcon,
   StarIcon,
   UsersIcon,
 } from "lucide-react";
@@ -23,6 +20,7 @@ import { withContinuation, type Continuation } from "@/shared/routes/continuatio
 import { Badge } from "@/shared/ui/badge";
 import { BrandMark, BrandTile } from "@/shared/ui/brand-mark";
 import { Button } from "@/shared/ui/button";
+import { Checkbox } from "@/shared/ui/checkbox";
 import { Container } from "@/shared/ui/container";
 import { Input } from "@/shared/ui/input";
 import { Notice } from "@/shared/ui/notice";
@@ -42,10 +40,9 @@ import { AuthInfoList, AuthStepFrame } from "./auth-frame";
  * already has; on their own they never mean Fighter.
  *
  * Consent is recorded after authentication, by account registration (WA5,
- * SF-44), never before a User exists. WA3 therefore draws its three agreement
- * rows (D-WA3-PREAUTH-CONSENT, SF-36) as information, not checkboxes: each
- * names the agreement and when it is actually given, as O02w's own legal line
- * does ("You'll review the Terms and Privacy Policy after sign-in").
+ * SF-44), never before a User exists (D-WA3-PREAUTH-CONSENT). WA3 keeps its
+ * three consent checkboxes where the artboard draws them, disabled and
+ * unchecked: nothing is collected, validated or sent at this step.
  */
 
 const ROLE_CARDS = [
@@ -160,10 +157,10 @@ export function SignupScreen({ continuation }: { continuation?: Continuation }) 
 
 const IDENTITY_ROLES = ["fighter", "coach", "gym", "sponsor"] as const;
 const SIGNUP_ROLES = ["fighter", "coach", "gym"] as const;
-const AGREEMENTS = [
-  { key: "terms", icon: FileTextIcon },
-  { key: "age", icon: CakeIcon },
-  { key: "news", icon: NewspaperIcon },
+const CONSENTS = [
+  { key: "terms", required: true },
+  { key: "age", required: true },
+  { key: "news", required: false },
 ] as const;
 const NEXT_STEPS = ["verify", "basics", "setup"] as const;
 
@@ -172,9 +169,9 @@ const NEXT_STEPS = ["verify", "basics", "setup"] as const;
  * frame (1fr | 420 px, 56 px gap). Only the email address is submitted. The
  * role segments and the identity chip show the journey chosen on O02w
  * (`intent`, navigation only; none without one), and the full name and the
- * agreements are given after verification, in account registration (WA5):
- * the name field is disabled and says so, and the agreement rows are
- * information, not checkboxes.
+ * consents are given after verification, in account registration (WA5):
+ * the name field and the three consent checkboxes are disabled, unchecked and
+ * never sent; only the email address is submitted.
  */
 export function SignupAccountScreen({ continuation }: { continuation?: Continuation }) {
   const t = useTranslations("auth.account");
@@ -295,32 +292,28 @@ export function SignupAccountScreen({ continuation }: { continuation?: Continuat
                 disabled
                 autoComplete="off"
                 placeholder={t("fullNamePlaceholder")}
-                className="disabled:bg-background disabled:opacity-100"
               />
             </div>
           }
         >
-          {/* WA3's three 22 px rows, 10 px apart: what is agreed after verifying, and when. */}
-          <ul
-            data-auth-agreements
-            aria-label={t("agreements.label")}
-            className="flex flex-col gap-2.5"
-          >
-            {AGREEMENTS.map(({ key, icon: Icon }) => (
-              <li key={key} className="flex items-center gap-3">
-                <span
-                  aria-hidden
-                  className="flex size-5.5 flex-none items-center justify-center rounded-xs bg-surface-elevated text-faint-foreground"
-                >
-                  <Icon className="size-3.5" />
-                </span>
+          {/* WA3's three 22 px checkboxes, 10 px apart: disabled, unchecked, never sent (WA5 owns consent). */}
+          <div data-auth-consents className="flex flex-col gap-2.5">
+            {CONSENTS.map(({ key, required }) => (
+              <label key={key} className="flex items-center gap-3">
+                <Checkbox
+                  disabled
+                  checked={false}
+                  className="size-5.5 rounded-xs border-2 border-border-strong disabled:cursor-default disabled:opacity-100"
+                />
                 <span className="type-body font-semibold">
-                  {t(`agreements.${key}`)}
-                  <span className="text-faint-foreground"> {t(`agreements.${key}When`)}</span>
+                  {t(`consents.${key}`)}
+                  {required && (
+                    <span className="text-faint-foreground"> {t("consents.required")}</span>
+                  )}
                 </span>
-              </li>
+              </label>
             ))}
-          </ul>
+          </div>
         </RegistrationEmailForm>
         <p className="-mt-0.5 type-body-sm text-faint-foreground">
           {t.rich("haveAccount", { link: signIn })}

@@ -1,4 +1,5 @@
-import { screen, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { createTranslator } from "next-intl";
 import type { ReactElement, ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
@@ -158,7 +159,7 @@ describe("O02w /signup", () => {
 });
 
 describe("WA3 /signup/account", () => {
-  it("submits the email only: no consent control before a User exists, the name comes later", async () => {
+  it("submits the email only: full name and the three consents are disabled and unchecked", async () => {
     await renderPage(SignupAccountPage as Page);
 
     expect(
@@ -168,20 +169,21 @@ describe("WA3 /signup/account", () => {
     const fullName = screen.getByLabelText("Full name");
     expect(fullName).toBeDisabled();
     expect(fullName).toHaveAttribute("placeholder", "Added after you verify");
-    // D-WA3-PREAUTH-CONSENT (SF-36): consent is given in account registration
-    // (WA5) after verifying, so WA3 has no checkbox to tick and claims none.
-    expect(screen.queryAllByRole("checkbox")).toHaveLength(0);
-    const agreements = screen.getByRole("list", { name: "After you verify your email" });
+    // D-WA3-PREAUTH-CONSENT: WA5 owns consent; WA3 keeps the artboard's checkboxes,
+    // disabled and never ticked.
+    const checkboxes = screen.getAllByRole("checkbox");
+    expect(checkboxes).toHaveLength(3);
+    for (const checkbox of checkboxes) {
+      expect(checkbox).toBeDisabled();
+      expect(checkbox).not.toBeChecked();
+    }
     expect(
-      within(agreements)
-        .getAllByRole("listitem")
-        .map((item) => item.textContent),
+      checkboxes.map((checkbox) => checkbox.closest("label")?.textContent?.replace(/\s+/g, " ")),
     ).toEqual([
-      "Terms and Privacy Policy · you accept them after verifying",
-      "16 or older · confirmed with your date of birth",
-      "Product news · optional · you choose after verifying",
+      "I accept the Terms and Privacy Policy · required",
+      "I am 16 or older · required",
+      "Send me product news (optional)",
     ]);
-    expect(screen.queryByText(/· required/)).not.toBeInTheDocument();
     // The next steps are the entry resolution's, never a Fighter default.
     expect(screen.getByText("2 · Account basics")).toBeInTheDocument();
     expect(screen.queryByText(/Fighter setup/)).not.toBeInTheDocument();
@@ -198,6 +200,33 @@ describe("WA3 /signup/account", () => {
       screen.queryByText("Role, name and consents are set after you verify your email."),
     ).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Create account" })).toBeEnabled();
+  });
+
+  it("Create account sends only the email: never a name, a role or a consent", async () => {
+    const fetchMock = vi.fn(async () =>
+      Response.json(
+        { registration_token: "sfg_test", expires_in_seconds: 600, resend_after_seconds: 60 },
+        { status: 202 },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    try {
+      await renderPage(SignupAccountPage as Page, { intent: "coach" });
+      const user = userEvent.setup();
+      const create = screen.getByRole("button", { name: "Create account" });
+      expect(create).toBeEnabled();
+      await user.type(screen.getByLabelText("Email"), "fighter@example.com");
+      // Trying the disabled controls changes nothing.
+      await user.click(screen.getAllByRole("checkbox")[0] as HTMLElement);
+      expect(screen.getAllByRole("checkbox")[0]).not.toBeChecked();
+      await user.click(create);
+      await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+      const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+      expect(url).toMatch(/\/api\/auth\/email\/registrations$/);
+      expect(JSON.parse(String(init.body))).toEqual({ email: "fighter@example.com" });
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 
   it("shows the journey chosen on O02w, as presentation only", async () => {

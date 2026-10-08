@@ -3,7 +3,7 @@
 import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import Script from "next/script";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode, type Ref } from "react";
 
 import { completeAuthentication, cookieTransport } from "@/entities/session";
 import { authenticateWithGoogle } from "@/shared/api/generated/endpoints/auth/auth";
@@ -17,7 +17,9 @@ import {
 import { cn } from "@/shared/lib/utils";
 import { Spinner } from "@/shared/ui/spinner";
 
-type Failure = "rejected" | "rateLimited" | "unavailable" | "scriptFailed" | "generic";
+export type GoogleSignInFailure =
+  "rejected" | "rateLimited" | "unavailable" | "scriptFailed" | "generic";
+type Failure = GoogleSignInFailure;
 
 // Google renders its button between 200 and 400 px wide.
 const MIN_WIDTH = 200;
@@ -63,7 +65,6 @@ export function GoogleSignInButton({ className }: { className?: string }) {
 }
 
 function GoogleButton({ clientId, className }: { clientId: string; className?: string }) {
-  const t = useTranslations("auth.google");
   const locale = useLocale();
   const { resolvedTheme } = useTheme();
   const container = useRef<HTMLDivElement>(null);
@@ -110,15 +111,50 @@ function GoogleButton({ clientId, className }: { clientId: string; className?: s
   }, [ready, clientId, exchange, locale, resolvedTheme]);
 
   return (
-    <div className="flex flex-col gap-3">
+    <GoogleSignInView
+      slotRef={container}
+      exchanging={exchanging}
+      failure={failure}
+      className={className}
+    >
       <Script
         src={GOOGLE_IDENTITY_SCRIPT_URL}
         strategy="afterInteractive"
         onReady={() => setReady(true)}
         onError={() => setFailure("scriptFailed")}
       />
+    </GoogleSignInView>
+  );
+}
+
+/**
+ * The Google control's presentation, for every state of `GoogleSignInButton`:
+ * the slot Google renders its official button into (empty until Google Identity
+ * Services loads, hidden while the token is exchanged), the exchanging status
+ * and the failure. It renders no Google button itself: Storybook shows the
+ * states with an empty slot, never a replica of Google's button.
+ */
+export function GoogleSignInView({
+  slotRef,
+  exchanging = false,
+  failure,
+  className,
+  children,
+}: {
+  slotRef?: Ref<HTMLDivElement>;
+  exchanging?: boolean;
+  failure?: GoogleSignInFailure;
+  className?: string;
+  /** The script loader (production only). */
+  children?: ReactNode;
+}) {
+  const t = useTranslations("auth.google");
+  return (
+    <div className="flex flex-col gap-3">
+      {children}
       <div
-        ref={container}
+        ref={slotRef}
+        data-google-slot
         hidden={exchanging}
         className={cn("flex min-h-11 w-full items-center justify-center", className)}
       />

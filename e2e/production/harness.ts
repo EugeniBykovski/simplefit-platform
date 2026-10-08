@@ -14,10 +14,15 @@ const require = createRequire(import.meta.url);
  * row included, without live services.
  */
 
-/** `google.accounts.id` and `AppleID.auth`: only what the provider buttons call. */
+/**
+ * `google.accounts.id` and `AppleID.auth`: only what the provider buttons call.
+ * They record what the page passes (`__gsiConfig`, `__appleConfig`), so a test
+ * can play the provider's side: `googleCredential` calls the page's GSI
+ * callback, and `appleAnswers` decides how Apple's popup resolves.
+ */
 const PROVIDER_STUBS = {
   google: `window.google = { accounts: { id: {
-    initialize() {}, disableAutoSelect() {},
+    initialize(config) { window.__gsiConfig = config; }, disableAutoSelect() {},
     renderButton(parent, options) {
       const button = document.createElement("div");
       button.dataset.gsiStub = "";
@@ -25,7 +30,10 @@ const PROVIDER_STUBS = {
       parent.append(button);
     },
   } } };`,
-  apple: `window.AppleID = { auth: { init() {}, signIn: () => new Promise(() => {}) } };`,
+  apple: `window.AppleID = { auth: {
+    init(config) { window.__appleConfig = config; },
+    signIn: () => window.__appleSignIn ? window.__appleSignIn(window.__appleConfig) : new Promise(() => {}),
+  } };`,
 };
 
 /**

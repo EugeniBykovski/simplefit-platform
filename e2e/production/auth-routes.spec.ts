@@ -40,7 +40,7 @@ for (const [width, height] of VIEWPORTS) {
   test.describe(`${width} × ${height}`, () => {
     test.use({ viewport: { width, height } });
 
-    test("WA3 /signup/account: 72 px header, step column and 420 px aside, agreements as information", async ({
+    test("WA3 /signup/account: 72 px header, step column and 420 px aside, disabled name and consents", async ({
       page,
     }) => {
       await open(page, "/en/signup/account", page.getByRole("heading", { level: 1 }));
@@ -62,12 +62,18 @@ for (const [width, height] of VIEWPORTS) {
         h: 46,
       });
       await expectBox(page.getByRole("textbox", { name: "Email" }), { y: 342, h: 44 });
-      // D-WA3-PREAUTH-CONSENT: the artboard's three rows, no checkbox before a User exists.
-      const agreements = page.getByRole("list", { name: "After you verify your email" });
+      // D-WA3-PREAUTH-CONSENT: the artboard's three checkboxes on their rows, disabled
+      // and unchecked; the full name is disabled; only the email is interactive.
+      const checkboxes = page.getByRole("checkbox");
+      await expect(checkboxes).toHaveCount(3);
       for (const [index, y] of [438, 470, 502].entries()) {
-        await expectBox(agreements.getByRole("listitem").nth(index), { x: 64, y });
+        const checkbox = checkboxes.nth(index);
+        await expectBox(checkbox, { x: 64, y, w: 22, h: 22 });
+        await expect(checkbox).toBeDisabled();
+        await expect(checkbox).not.toBeChecked();
       }
-      await expect(page.getByRole("checkbox")).toHaveCount(0);
+      await expect(page.getByRole("textbox", { name: "Full name" })).toBeDisabled();
+      await expect(page.getByRole("textbox", { name: "Email" })).toBeEditable();
       const create = page.getByRole("button", { name: "Create account" });
       await expectBox(create, { x: 64, y: 540, h: 52 });
       await expect(create).toBeEnabled();

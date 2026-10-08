@@ -32,13 +32,26 @@ Every artboard of the section is accounted for below; none is omitted.
   navigation context, never authorization. WA3's role segments and identity
   chip show the O02w intent only; without one nothing is highlighted.
 - **Consent** is recorded only by account registration after a User exists.
-  WA3's agreement rows are information (D-WA3-PREAUTH-CONSENT); O02w's legal
-  line is V78's ("You'll review the Terms and Privacy Policy after sign-in").
+  WA3 keeps the artboard's full name and three consent checkboxes, disabled
+  and unchecked; only the email address is sent (D-WA3-PREAUTH-CONSENT).
+  O02w's legal line is V78's ("You'll review the Terms and Privacy Policy
+  after sign-in").
 - **WA2** is not rendered. It lists named workspaces (personal, a coaching
   business, a gym) that no backend provides; sign-in never redirects to it.
 - **States** come from the API's error codes (`code_invalid`, `code_expired`,
   `rate_limited` with `Retry-After`, `verified_elsewhere`), never from
   messages; nothing in production simulates a verification or a resend.
+
+- **Provider states** (Google and Apple: loading, ready / cancelled, pending,
+  rejected, rate limited, unavailable, script failed, error) render in
+  Storybook through the production presentation components
+  (`GoogleSignInView`, `AppleSignInView`), with no script, credential or
+  network call (`auth-provider-states.stories.tsx`, checked in
+  `auth-geometry.spec.ts`). A cancelled popup returns the control to ready.
+- **Navigation** (email registration and sign-in, Google, Apple, cancellation,
+  expired and invalid codes, session restore, the protected-route redirect)
+  is exercised end to end on the production build with deterministic provider
+  and API mocks (`e2e/production/auth-navigation.spec.ts`).
 
 ## Approved differences from the artboards
 
@@ -53,9 +66,10 @@ Every artboard of the section is accounted for below; none is omitted.
    page never shows a code anyone could type.
 5. **WA4b's verified body** says "Your email address" rather than the address:
    the link token does not reveal it to the page.
-6. **WA3's agreement rows** are information, not checkboxes (above), and its
-   full-name field is disabled with "Added after you verify": the name is
-   given in account registration.
+6. **WA3's full name and consent checkboxes** are disabled and unchecked (the
+   design-system disabled style for the name, with "Added after you verify";
+   the artboard's 22 px boxes for the consents): account registration (WA5)
+   collects them after verifying.
 7. **WA3, WA4 and WA1b's CTAs** are 52 px as drawn; WA1's are 52 / 50 px;
    O02w's methods are 54 px.
 
@@ -69,3 +83,19 @@ form centred); WA3 / WA4 keep the step column on the 64 px gutter beside the
 fixed 420 px aside; WA4b centres its 560 px result in `main`. At 1280 × 720 to
 1920 × 1080 nothing is clipped and nothing scrolls
 (`e2e/production/auth-routes.spec.ts`, `web-responsive.spec.ts`).
+
+## Current end-to-end limitation
+
+Authentication completes and the entry resolver routes correctly (verified
+by `e2e/production/auth-navigation.spec.ts`), but the destinations are still
+SF-32 placeholders: a new account lands on **Account basics (WA5)** with no
+form, so it cannot complete account registration and never reaches a role
+journey or the application. The onboarding frame keeps **Sign out** and the
+brand link to the public site, so the visitor is never trapped. WA6 (choose
+where to start) and the Coach, Gym and Fighter onboarding entries are
+placeholders too; WA5 and WA6 are built by their own UI tickets.
+
+A signed-out visitor sent from an onboarding route to `/login` does not keep
+the route's `intent` (onboarding routes are never a `returnTo`; the resolver
+re-derives the step after sign-in). That is the SF-24 / SF-45 return-to
+policy, not SF-36.
