@@ -1,0 +1,54 @@
+{
+  "metaTitle": "Where to start",
+  "eyebrow": "Where to start",
+  "title": "What would you like to set up first?",
+  "lead": "Pick one to open its setup. Choosing here doesn’t add a role to your account — you can set up the others later.",
+  "groupLabel": "Where to start",
+  "journeys": {
+    "fighter": {
+      "title": "Fighter",
+      "body": "Train, track progress and connect. Free forever for the core app.",
+      "note": "Fighter setup · 2 short steps",
+      "cta": "Start fighter setup"
+    },
+    "coach": {
+      "title": "Coach",
+      "body": "Manage fighters, programs and fight camps.",
+      "note": "Coach setup",
+      "cta": "Start coach setup"
+    },
+    "gym": {
+      "title": "Gym / Club",
+      "body": "Manage members, coaches and your boxing business.",
+      "note": "Gym setup",
+      "cta": "Start gym setup"
+    },
+    "sponsor": {
+      "title": "Sponsor / Brand",
+      "body": "Partner with the boxing community — challenges, events, gyms.",
+      "note": "Partner application · reviewed by our team",
+      "cta": "Apply as a partner"
+    }
+  },
+  "hint": "Choose one to continue.",
+  "continue": "Continue",
+  "opening": "Opening…",
+  "stepDone": "done",
+  "account": {
+    "title": "One account",
+    "body": "Fighter, coach, gym owner and sponsor are roles you can set up on the same account. This choice only decides where you start.",
+    "roles": {
+      "fighter": "Fighter",
+      "coach": "Coach",
+      "gym": "Gym",
+      "sponsor": "Sponsor"
+    }
+  },
+  "notSaved": "Your pick isn’t saved. Leave now and we’ll ask again next time.",
+  "failure": {
+    "title": "We couldn’t open that setup.",
+    "body": "Check your connection and try again. Nothing changed on your account.",
+    "unexpected": "This version of SimpleFit can’t open it yet. Reload the page and try again.",
+    "retry": "Retry"
+  }
+}

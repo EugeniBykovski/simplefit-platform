@@ -75,6 +75,51 @@ jobs:
         run: pnpm build
         env:
           NEXT_PUBLIC_API_URL: http://localhost:4000
+
+      - name: Storybook build
+        # The component workshop must keep compiling with the real primitives.
+        run: pnpm storybook:build
+
+  browsers:
+    # SF-34: canonical layout and system-state geometry on the static
+    # Storybook build; SF-42 on: the production routes on the production
+    # build (next start), at desktop and laptop sizes, with axe; SF-38 / SF-46:
+    # engine portability in Chromium, Firefox and WebKit (the country list
+    # and the date of birth come from the engine).
+    #
+    # It runs in Playwright's official image, pinned to the exact
+    # @playwright/test version (scripts/ci-playwright.test.mjs keeps them
+    # equal): the browsers and their system libraries are already in it, so
+    # nothing is downloaded from the Ubuntu mirrors. SF-46's run timed out
+    # after 13 minutes of `playwright install --with-deps` fetching apt
+    # packages (normally 59 s). User 1001 is the runner's, as Playwright's
+    # CI guide prescribes for its image.
+    name: Browsers
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --user 1001
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up pnpm (version from package.json "packageManager")
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js (version from .nvmrc)
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies (frozen lockfile)
+        run: pnpm install --frozen-lockfile
+
+      - name: Production build
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:4000
           # Public fixture IDs (never deployed): the build renders the Google and
           # Apple controls, so the production geometry suite measures the real
           # provider row against its deterministic script stand-ins. Without
@@ -84,16 +129,7 @@ jobs:
           NEXT_PUBLIC_APPLE_REDIRECT_URI: https://localhost/login
 
       - name: Storybook build
-        # The component workshop must keep compiling with the real primitives.
         run: pnpm storybook:build
 
-      # SF-34: canonical layout and system-state geometry at 1440 × 900,
-      # measured on the static Storybook build above; SF-42: the production
-      # routes on the production build (next start), at desktop and laptop sizes.
-      # Chromium for the geometry suites; Firefox and WebKit for the engine
-      # portability checks (SF-38: the country list comes from engine data).
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium firefox webkit
-
-      - name: Geometry QA (Playwright)
+      - name: Geometry, functional and portability QA (Playwright)
         run: pnpm test:geometry

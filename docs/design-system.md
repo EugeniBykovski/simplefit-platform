@@ -186,10 +186,11 @@ reason and a contract test, never a one-off value.
 only (Claude Design FIGHTER 5c: WF0, WF1, WF6), by decision in SF-38 instead
 of off-scale local values. Web only.
 
-| Role               | Web                        | Use                         |
-| ------------------ | -------------------------- | --------------------------- |
-| `onboarding-title` | 32/40 Unbounded 600 −0.02  | WF0, WF1 step headings      |
-| `onboarding-done`  | 40/44 Unbounded 600 −0.025 | WF6 "You're in, …" headline |
+| Role               | Web                        | Use                            |
+| ------------------ | -------------------------- | ------------------------------ |
+| `onboarding-title` | 32/40 Unbounded 600 −0.02  | WF0, WF1 step headings         |
+| `onboarding-done`  | 40/44 Unbounded 600 −0.025 | WF6 "You're in, …" headline    |
+| `label-tight`      | 10/14 mono 400 0.08 upper  | WA6 journey card notes (SF-47) |
 
 ### Authentication typography and controls (SF-24)
 

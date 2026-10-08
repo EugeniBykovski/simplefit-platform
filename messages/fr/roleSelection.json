@@ -1,0 +1,54 @@
+{
+  "metaTitle": "Par où commencer",
+  "eyebrow": "Par où commencer",
+  "title": "Que voulez-vous configurer en premier ?",
+  "lead": "Choisissez une option pour ouvrir sa configuration. Ce choix n’ajoute pas de rôle à votre compte — vous pourrez configurer les autres plus tard.",
+  "groupLabel": "Par où commencer",
+  "journeys": {
+    "fighter": {
+      "title": "Boxeur·se",
+      "body": "Entraînez-vous, suivez vos progrès et échangez. L’app de base est gratuite pour toujours.",
+      "note": "Configuration boxeur · 2 étapes courtes",
+      "cta": "Configurer le profil boxeur"
+    },
+    "coach": {
+      "title": "Coach",
+      "body": "Gérez vos boxeurs, programmes et stages.",
+      "note": "Configuration coach",
+      "cta": "Configurer le profil coach"
+    },
+    "gym": {
+      "title": "Salle / Club",
+      "body": "Gérez les membres, les coachs et votre activité de boxe.",
+      "note": "Configuration de la salle",
+      "cta": "Configurer la salle"
+    },
+    "sponsor": {
+      "title": "Sponsor / Marque",
+      "body": "Collaborez avec la communauté de la boxe — défis, événements, salles.",
+      "note": "Candidature partenaire · examinée par notre équipe",
+      "cta": "Devenir partenaire"
+    }
+  },
+  "hint": "Choisissez une option pour continuer.",
+  "continue": "Continuer",
+  "opening": "Ouverture…",
+  "stepDone": "terminé",
+  "account": {
+    "title": "Un seul compte",
+    "body": "Boxeur, coach, gérant de salle et sponsor sont des rôles que vous pouvez configurer sur le même compte. Ce choix décide seulement par où vous commencez.",
+    "roles": {
+      "fighter": "Boxeur",
+      "coach": "Coach",
+      "gym": "Salle",
+      "sponsor": "Sponsor"
+    }
+  },
+  "notSaved": "Votre choix n’est pas enregistré. Si vous partez maintenant, nous vous redemanderons la prochaine fois.",
+  "failure": {
+    "title": "Impossible d’ouvrir cette configuration.",
+    "body": "Vérifiez votre connexion et réessayez. Rien n’a changé sur votre compte.",
+    "unexpected": "Cette version de SimpleFit ne peut pas encore l’ouvrir. Rechargez la page et réessayez.",
+    "retry": "Réessayer"
+  }
+}

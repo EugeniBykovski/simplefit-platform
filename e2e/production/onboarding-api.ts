@@ -26,8 +26,8 @@ import type { BrowserContext, Request } from "@playwright/test";
  *   the explicit intent's journey, then the role state (Fighter), otherwise
  *   role selection.
  *
- * - Email registration (SF-36 WA3 / WA4), for a signed-out start: the
- *   challenge, then the code `482910` signs the visitor in.
+ * - Sign-in for a signed-out start (SF-36): email registration (WA3 / WA4,
+ *   the code `482910`), Google and Apple (any provider token).
  *
  * Attached to a page, or to a browser context so that its tabs share one
  * backend. Nothing here is used outside the tests.
@@ -410,6 +410,11 @@ export async function onboardingApi(
         }
         expired = false;
         return json(200, TOKENS);
+      }
+      // Google and Apple (SF-36): the provider's token signs the visitor in.
+      if (url.pathname === "/api/auth/google" || url.pathname === "/api/auth/apple") {
+        expired = false;
+        return json(200, { ...TOKENS, account: "created" });
       }
       if (expired && url.pathname !== "/api/auth/session/refresh") return unauthorized();
       if (url.pathname === "/api/auth/session/refresh") {

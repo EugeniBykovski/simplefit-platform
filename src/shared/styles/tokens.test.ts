@@ -164,7 +164,7 @@ describe("Tailwind theme", () => {
   );
 
   it.each(Object.entries(spec.typography.onboardingRoles.web))(
-    "type-%s matches its web Fighter onboarding role (SF-38)",
+    "type-%s matches its web onboarding role (SF-38, SF-47)",
     (role, def) => {
       const body = themeCss.match(new RegExp(`@utility type-${role} \\{([^}]*)\\}`))?.[1];
       expect(body, role).toBeDefined();
@@ -174,6 +174,7 @@ describe("Tailwind theme", () => {
       expect(body).toContain(`line-height: ${rem(def.lineHeight)};`);
       expect(body).toContain(`font-weight: ${def.weight};`);
       expect(body).toContain(`letter-spacing: ${def.tracking}em;`);
+      expect(body?.includes("text-transform: uppercase")).toBe(Boolean("uppercase" in def));
     },
   );
 

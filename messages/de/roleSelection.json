@@ -1,0 +1,54 @@
+{
+  "metaTitle": "Wo du anfängst",
+  "eyebrow": "Wo du anfängst",
+  "title": "Was möchtest du zuerst einrichten?",
+  "lead": "Wähle eine Option, um ihre Einrichtung zu öffnen. Die Auswahl fügt deinem Konto keine Rolle hinzu — die anderen kannst du später einrichten.",
+  "groupLabel": "Wo du anfängst",
+  "journeys": {
+    "fighter": {
+      "title": "Kämpfer:in",
+      "body": "Trainiere, verfolge deine Fortschritte und vernetze dich. Die Kern-App ist für immer kostenlos.",
+      "note": "Kämpfer-Einrichtung · 2 kurze Schritte",
+      "cta": "Kämpferprofil einrichten"
+    },
+    "coach": {
+      "title": "Coach",
+      "body": "Verwalte Kämpfer:innen, Programme und Trainingslager.",
+      "note": "Coach-Einrichtung",
+      "cta": "Coach-Profil einrichten"
+    },
+    "gym": {
+      "title": "Gym / Verein",
+      "body": "Verwalte Mitglieder, Coaches und dein Boxgeschäft.",
+      "note": "Gym-Einrichtung",
+      "cta": "Gym einrichten"
+    },
+    "sponsor": {
+      "title": "Sponsor / Marke",
+      "body": "Arbeite mit der Box-Community zusammen — Challenges, Events, Gyms.",
+      "note": "Partnerbewerbung · von unserem Team geprüft",
+      "cta": "Als Partner bewerben"
+    }
+  },
+  "hint": "Wähle eine Option, um fortzufahren.",
+  "continue": "Weiter",
+  "opening": "Wird geöffnet…",
+  "stepDone": "erledigt",
+  "account": {
+    "title": "Ein Konto",
+    "body": "Kämpfer:in, Coach, Gym-Inhaber:in und Sponsor sind Rollen, die du im selben Konto einrichten kannst. Diese Wahl entscheidet nur, wo du anfängst.",
+    "roles": {
+      "fighter": "Kämpfer",
+      "coach": "Coach",
+      "gym": "Gym",
+      "sponsor": "Sponsor"
+    }
+  },
+  "notSaved": "Deine Auswahl wird nicht gespeichert. Wenn du jetzt gehst, fragen wir beim nächsten Mal erneut.",
+  "failure": {
+    "title": "Wir konnten diese Einrichtung nicht öffnen.",
+    "body": "Prüfe deine Verbindung und versuche es erneut. An deinem Konto hat sich nichts geändert.",
+    "unexpected": "Diese Version von SimpleFit kann das noch nicht öffnen. Lade die Seite neu und versuche es erneut.",
+    "retry": "Erneut versuchen"
+  }
+}

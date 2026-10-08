@@ -6,6 +6,7 @@ import type { Session } from "@/entities/session";
 import type { EntryResponseEntry } from "@/shared/api/generated/model";
 import { jsonResponse, renderWithProviders } from "@/test/render";
 
+import { useEntryChoice } from "./entry-choice";
 import { EntryRedirect, useEntryFailure } from "./entry-redirect";
 import { OnboardingGate } from "./onboarding-gate";
 import { GuestOnly, RequireSession } from "./session-gate";
@@ -20,14 +21,19 @@ vi.mock("@/entities/session", () => ({
     call({ headers: { Authorization: "Bearer test" } }),
 }));
 
-const navigation = vi.hoisted(() => ({ replace: vi.fn(), pathname: "/app/coach/fighters" }));
+const navigation = vi.hoisted(() => ({
+  replace: vi.fn(),
+  push: vi.fn(),
+  pathname: "/app/coach/fighters",
+}));
 vi.mock("@/shared/i18n/navigation", () => ({
   usePathname: () => navigation.pathname,
-  useRouter: () => ({ replace: navigation.replace }),
+  useRouter: () => ({ replace: navigation.replace, push: navigation.push }),
 }));
 
 beforeEach(() => {
   navigation.replace.mockClear();
+  navigation.push.mockClear();
   navigation.pathname = "/app/coach/fighters";
 });
 
@@ -444,5 +450,116 @@ describe("OnboardingGate", () => {
     await renderWithProviders(gate());
     expect(await screen.findByText("onboarding page")).toBeInTheDocument();
     expect(navigation.replace).not.toHaveBeenCalled();
+  });
+
+  it("role selection shows only on role_selection: an existing Fighter continues home", async () => {
+    navigation.pathname = "/app/onboarding/role";
+    window.history.replaceState(null, "", "/en/app/onboarding/role");
+    session.current = { status: "authenticated", viewer: VIEWER };
+    stubEntries(
+      entry({
+        destination: "fighter_home",
+        fighter_profile: "completed",
+        capabilities: ["FIGHTER"],
+      }),
+    );
+    await renderWithProviders(gate());
+    await waitFor(() => expect(navigation.replace).toHaveBeenCalledExactlyOnceWith("/app/home"));
+    expect(screen.queryByText("onboarding page")).not.toBeInTheDocument();
+  });
+
+  it("role selection with an explicit intent continues to that journey, without a bounce", async () => {
+    navigation.pathname = "/app/onboarding/role";
+    window.history.replaceState(null, "", "/en/app/onboarding/role?intent=coach");
+    session.current = { status: "authenticated", viewer: VIEWER };
+    const api = stubEntries(entry({ destination: "coach_onboarding", intent: "coach" }));
+    await renderWithProviders(gate());
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledExactlyOnceWith(
+        "/app/onboarding/coach?intent=coach",
+      ),
+    );
+    expect(api.urls()).toEqual(["/api/v1/me/entry?intent=coach"]);
+  });
+
+  it("a destination this client does not map is a failure, never a guessed route", async () => {
+    navigation.pathname = "/app/onboarding/role";
+    window.history.replaceState(null, "", "/en/app/onboarding/role");
+    session.current = { status: "authenticated", viewer: VIEWER };
+    stubEntries(entry({ destination: "coach_workspace" as EntryResponseEntry["destination"] }));
+    await renderWithProviders(gate());
+    expect(
+      await screen.findByRole("button", { name: "Unknown entry destination" }),
+    ).toBeInTheDocument();
+    expect(navigation.replace).not.toHaveBeenCalled();
+    expect(screen.queryByText("onboarding page")).not.toBeInTheDocument();
+  });
+});
+
+describe("useEntryChoice (WA6)", () => {
+  function Chooser() {
+    const { state, choose } = useEntryChoice();
+    return (
+      <>
+        <p>
+          {state.status}
+          {state.status === "failed" ? ` ${state.reason}` : ""}
+        </p>
+        <button type="button" onClick={() => void choose("coach")}>
+          coach
+        </button>
+        <button type="button" onClick={() => void choose("admin" as "coach")}>
+          admin
+        </button>
+      </>
+    );
+  }
+
+  beforeEach(() => {
+    navigation.pathname = "/app/onboarding/role";
+    session.current = { status: "authenticated", viewer: VIEWER };
+  });
+
+  it("asks the resolver with the chosen intent and goes where it answers, keeping a safe returnTo", async () => {
+    window.history.replaceState(null, "", "/en/app/onboarding/role?returnTo=%2Fapp%2Fmessages");
+    const api = stubEntries(entry({ destination: "coach_onboarding", intent: "coach" }));
+    await renderWithProviders(<Chooser />);
+    await userEvent.click(screen.getByRole("button", { name: "coach" }));
+    await waitFor(() =>
+      expect(navigation.push).toHaveBeenCalledExactlyOnceWith(
+        "/app/onboarding/coach?returnTo=%2Fapp%2Fmessages&intent=coach",
+      ),
+    );
+    expect(api.urls()).toEqual(["/api/v1/me/entry?intent=coach"]);
+    expect(screen.getByText("resolving")).toBeInTheDocument();
+  });
+
+  it("resolves once while a choice is in flight, and ignores intents outside the allow-list", async () => {
+    window.history.replaceState(null, "", "/en/app/onboarding/role");
+    const fetchMock = vi.fn(() => new Promise<Response>(() => undefined));
+    vi.stubGlobal("fetch", fetchMock);
+    await renderWithProviders(<Chooser />);
+    await userEvent.click(screen.getByRole("button", { name: "admin" }));
+    expect(fetchMock).not.toHaveBeenCalled();
+    await userEvent.click(screen.getByRole("button", { name: "coach" }));
+    await userEvent.click(screen.getByRole("button", { name: "coach" }));
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("stays on a failure (unavailable), and a destination it does not map is `unexpected`", async () => {
+    window.history.replaceState(null, "", "/en/app/onboarding/role");
+    const errors = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    stubEntries(
+      new TypeError("Failed to fetch"),
+      entry({ destination: "coach_workspace" as EntryResponseEntry["destination"] }),
+    );
+    await renderWithProviders(<Chooser />);
+    await userEvent.click(screen.getByRole("button", { name: "coach" }));
+    expect(await screen.findByText("failed unavailable")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "coach" }));
+    expect(await screen.findByText("failed unexpected")).toBeInTheDocument();
+    expect(errors).toHaveBeenCalledWith('Unknown entry destination "coach_workspace"');
+    expect(navigation.push).not.toHaveBeenCalled();
+    errors.mockRestore();
   });
 });

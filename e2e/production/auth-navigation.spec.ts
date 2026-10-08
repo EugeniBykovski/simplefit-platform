@@ -11,9 +11,10 @@ import { apiError, expectProviderControls, open, seedPending } from "./harness";
  * network edge; nothing here talks to Google, Apple or a backend.
  *
  * The destinations reached here: account registration (WA5, SF-46) renders
- * its form on a not-started registration; role selection (WA6) and the other
- * role onboarding entries are still SF-32 placeholders, so those flows end on
- * the right route, not on a finished screen.
+ * its form on a not-started registration and role selection (WA6, SF-47) its
+ * four journeys; the Coach, Gym and Sponsor entries are still SF-32
+ * placeholders, so those flows end on the right route, not on a finished
+ * screen.
  */
 
 test.use({ viewport: { width: 1440, height: 900 } });
@@ -192,9 +193,12 @@ test("email sign-in: WA1 → WA1b → entry → role selection (WA6)", async ({ 
   expect(requests).toEqual([{ email: "fighter@example.com" }]);
   await codeInput(page).pressSequentially("528461");
   await page.waitForURL("**/en/app/onboarding/role");
+  // WA6 (SF-47): the four journeys, none picked for the visitor.
   await expect(
-    page.getByRole("heading", { level: 1, name: "Choose where to start" }),
+    page.getByRole("heading", { level: 1, name: "What would you like to set up first?" }),
   ).toBeVisible();
+  await expect(page.getByRole("radio")).toHaveCount(4);
+  await expect(page.getByRole("radio", { checked: true })).toHaveCount(0);
 });
 
 test("Google: the GSI credential → POST /api/auth/google → entry, with no implied role", async ({

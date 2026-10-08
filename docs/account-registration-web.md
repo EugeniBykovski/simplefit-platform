@@ -12,7 +12,7 @@ resolver.
 | ------------------------------ | --------------------------------------- | ------------------------- | ----------------------------------------------------------------------- | ------------------------ | ------- |
 | WA5 · Account basics & consent | `WebAccountBasics.dc.html` (1440 × 980) | `/app/onboarding/account` | `AccountRegistration` (widget) → `AccountBasicsStep` (feature)          | SF-44, SF-45             | current |
 | Onboarding frame               | WA5, WF0, WF1 headers                   | —                         | `OnboardingFrame`, `OnboardingGrid`, `OnboardingStepCard` (`shared/ui`) | —                        | current |
-| WA6 · Where to start           | `WebRoleSelect.dc.html`                 | `/app/onboarding/role`    | SF-32 placeholder                                                       | SF-45 (`role_selection`) | SF-47   |
+| WA6 · Where to start           | `WebRoleSelect.dc.html`                 | `/app/onboarding/role`    | `RoleSelection` (SF-47, `docs/role-selection-web.md`)                   | SF-45 (`role_selection`) | current |
 
 The route renders under the onboarding layout: `RequireSession` (an
 anonymous visitor goes to `/login` with the journey's `intent`) and

@@ -1655,8 +1655,8 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/app/onboarding/(app-frame)/role/page.tsx",
-        "note": "SF-45: canonical feature placeholder in its shell; the WA6 choice is built by its UI ticket. Entry resolution sends role_selection here (account registration complete, no explicit intent, no role state). A choice is navigation intent only: nothing is stored and no role, capability or workspace is created."
+        "file": "src/app/[locale]/app/onboarding/role/page.tsx",
+        "note": "SF-47: WA6 Choose where to start in the onboarding frame of Claude Design V78 (four journeys: Fighter, Coach, Gym / Club, Sponsor / Brand). Shown only when entry resolution answers role_selection (account registration complete, no explicit intent, no role state); any other answer continues to its destination. A choice asks the resolver again with that intent and goes where it answers: navigation only, nothing is stored and no role, profile, capability or workspace is created."
       },
       "discrepancies": ["D-ENTRY-RESOLUTION"],
       "screens": ["WA6"]
