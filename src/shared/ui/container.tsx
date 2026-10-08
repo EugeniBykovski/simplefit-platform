@@ -18,14 +18,14 @@ import { cn } from "@/shared/lib/utils";
  * - `frame`: the full-width frame without gutters, for compositions that draw
  *   their own columns and edge padding (the auth step header).
  *
- * Gutters step down below the designed frame (the design draws only 1440):
- * 16 px phones, 24 px from `sm`, 32 px from `md`. Screens never add their own
+ * Gutters step down below the desktop range (`desktop`, 1180 px; the design
+ * draws only 1440): 16 px phones, 24 px from `sm`, 32 px from `md`. Screens never add their own
  * horizontal page margins; they sit inside a Container.
  */
 export const containerVariants = cva("w-full", {
   variants: {
     size: {
-      site: "px-4 sm:px-6 md:px-8 lg:px-16",
+      site: "px-4 sm:px-6 md:px-8 desktop:px-16",
       app: "px-4 sm:px-6 md:px-8",
       frame: "",
     },

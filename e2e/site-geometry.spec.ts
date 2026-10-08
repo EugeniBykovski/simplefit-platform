@@ -134,8 +134,8 @@ async function expectSiteLinks(page: Page, current: string | undefined, xs: numb
 }
 
 /** The footer of every public-website artboard, at `top` in the frame. */
-async function expectFooter(page: Page, top: number) {
-  await expectBox(footer(page), [0, top, 1440, 190]);
+async function expectFooter(page: Page, top: number, width = 1440) {
+  await expectBox(footer(page), [0, top, width, 190]);
   expect(
     await style(footer(page), "background-color", "border-top-width", "border-top-color"),
   ).toEqual([GRAPHITE_975, "1px", "rgb(31, 35, 32)"]);
@@ -204,17 +204,38 @@ test.describe("public site shell at 1440 (the artboards)", () => {
 });
 
 test.describe("public site shell frame", () => {
-  test("a taller window keeps the composition: nothing stretches, the footer band continues", async ({
+  test("a page shorter than the window: main takes the space, the footer closes the window", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 1080 });
     await story(page, "public-website-shell--become-sponsor");
-    await expectBox(page.getByRole("main"), { 1: 76, 3: 900 - 76 - 190 });
-    await expectFooter(page, 710);
+    // The page keeps its own height at the top of main; only main grows.
+    await expectBox(page.locator("[data-page-body]"), [0, 76, 1440, 900 - 76 - 190]);
+    await expectBox(page.getByRole("main"), [0, 76, 1440, 1080 - 76 - 190]);
+    await expectFooter(page, 1080 - 190);
     const frame = page.locator("[data-site-frame]");
-    await expectBox(frame, { 1: 0, 3: 1080 });
-    expect(await style(frame, "background-color")).toEqual([GRAPHITE_975]);
-    expect(await style(page.getByRole("main"), "background-color")).toEqual([GRAPHITE_950]);
+    await expectBox(frame, [0, 0, 1440, 1080]);
+    expect(await style(frame, "background-color")).toEqual([GRAPHITE_950]);
+    expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBe(1080);
+  });
+
+  test("a page longer than the window: the footer follows the content", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await story(page, "public-website-shell--home");
+    await expectBox(page.locator("[data-page-body]"), [0, 76, 1440, 2180 - 76 - 190]);
+    await expectBox(page.getByRole("main"), [0, 76, 1440, 2180 - 76 - 190]);
+    await expectFooter(page, 2180 - 190);
+    expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBe(2180);
+  });
+
+  test("header, page and footer share one left edge on the 64 px gutter", async ({ page }) => {
+    await page.setViewportSize({ width: 1512, height: 982 });
+    await story(page, "public-website-shell--short-page");
+    const brand = header(page).getByRole("link", { name: /SimpleFit/ });
+    await expectBox(brand.locator("> span").first(), { 0: 64 });
+    await expectBox(page.locator("[data-page-body] h1"), { 0: 64 });
+    await expectBox(footer(page).locator("div > span").first(), { 0: 64 });
+    await expectFooter(page, 982 - 190, 1512);
   });
 
   test("beyond 1440 the shell stays fluid: the same anchoring on the 64 px gutters", async ({

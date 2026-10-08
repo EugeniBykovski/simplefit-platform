@@ -353,7 +353,7 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
     [1728, 1117],
     [1920, 1080],
   ] as const) {
-    test(`at ${width} × ${height} the split fills the viewport and each half keeps its artboard content`, async ({
+    test(`at ${width} × ${height} the split fills the viewport and the artboard content is anchored in each half`, async ({
       page,
     }) => {
       await page.setViewportSize({ width, height });
@@ -366,17 +366,19 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
       await expectBox(page.locator("[data-auth-panel]"), [0, 0, half, height]);
       await expectBox(page.locator("main"), [half, 0, half, height]);
       expect(await overflow(page)).toBeLessThanOrEqual(0);
-      // ... while the content keeps its 900 px artboard rows, placed within its half.
+      // ... and the artboard's rows are constraints within it: the brand on the top
+      // padding, the headline and card on the bottom padding, the column centred
+      // (at 900 exactly the artboard: hero 439, card 553, column 230).
       await expectBox(page.locator("[data-auth-panel] a").first(), { 0: 64, 1: 56, 3: 36 });
-      await expectBox(page.locator("[data-auth-hero]"), { 0: 64, 1: 439 });
+      await expectBox(page.locator("[data-auth-hero]"), { 0: 64, 1: height - 56 - 291 - 114 });
       await expectBox(page.locator("[data-auth-panel] [data-auth-info-list]"), {
         0: 64,
-        1: 553,
+        1: height - 56 - 291,
         3: 291,
       });
       await expectBox(page.locator("[data-auth-column]"), {
         0: half + (half - 440) / 2,
-        1: 230,
+        1: (height - 440) / 2,
         2: 440,
         3: 440,
       });
@@ -388,7 +390,8 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
     });
   }
 
-  for (const width of [1920, 1280, 1024]) {
+  // Every desktop and laptop width, down to the `desktop` breakpoint (1180).
+  for (const width of [1920, 1280, 1180]) {
     test(`WA1 frame fills the viewport at ${width}, the column centred in the right half`, async ({
       page,
     }) => {
@@ -403,14 +406,24 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
     });
   }
 
-  test("WA1 at 768 collapses to the centred form column without overflow", async ({ page }) => {
-    await page.setViewportSize({ width: 768, height: 1024 });
-    await story(page, "authentication-login--full-page");
-    await expect(page.locator("[data-auth-hero]")).toBeHidden();
-    const column = await box(page.locator("[data-auth-column]"));
-    near(column.x + column.width / 2, 384);
-    expect(await overflow(page)).toBeLessThanOrEqual(0);
-  });
+  // Below `desktop`, together with the site header: one column, no hybrid split.
+  for (const [width, height] of [
+    [1179, 900],
+    [1024, 768],
+    [768, 1024],
+  ] as const) {
+    test(`WA1 at ${width} collapses to the centred form column without overflow`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height });
+      await story(page, "authentication-login--full-page");
+      await expect(page.locator("[data-auth-hero]")).toBeHidden();
+      await expect(page.locator("[data-auth-panel]")).toBeHidden();
+      const column = await box(page.locator("[data-auth-column]"));
+      near(column.x + column.width / 2, width / 2);
+      expect(await overflow(page)).toBeLessThanOrEqual(0);
+    });
+  }
 });
 
 test.describe("O02w conformance (WebSignUp · 1440 × 940)", () => {
@@ -491,14 +504,15 @@ test.describe("O02w conformance (WebSignUp · 1440 × 940)", () => {
     });
   });
 
-  test("a taller window does not spread the 940 px composition: the footer stays at 750", async ({
+  test("a taller window keeps the 674 px body and closes the window with the footer", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 1200 });
     await story(page, "authentication-sign-up--full-page");
     await fontsLoaded(page);
+    await expectBox(frameOf(page, "signup"), [0, 76, 1440, 674]);
     await expectBox(frameOf(page, "signup").locator("h1"), { 0: 64, 1: 226 });
-    await expectBox(page.locator("[data-site-footer]"), [0, 750, 1440, 190]);
+    await expectBox(page.locator("[data-site-footer]"), [0, 1200 - 190, 1440, 190]);
   });
 
   for (const width of [1920, 1280, 1024, 768]) {

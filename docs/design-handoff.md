@@ -293,15 +293,22 @@ every other desktop and laptop width (SF-42):
   and fixed-width content (the 440 px auth column, the 420 px aside) stays
   fixed inside its region. Never `transform: scale()`, zoom, a fixed canvas
   or horizontal scrolling.
-- Taller than the artboard, the internal layout is not redistributed: no
-  `min-h-dvh` + `flex-1` spreading, `justify-between` or bottom-anchored
-  footers inside a designed composition. Extra height stays outside it (below
-  the footer, or under a background that the design structurally assigns to
-  a full-height region, such as the WA1 brand panel).
+- Vertically, the artboard height is a reference, not a canvas. Content is
+  never stretched, spaced out or scaled to a window:
+  - **Window-height compositions** (WA1 / WA1b: a split the artboard draws as
+    the whole window) turn the artboard's rows into anchors: the brand on
+    the top padding, the headline and card on the bottom padding, the form
+    column centred. At 900 px that is exactly the artboard; at 720–1117 px
+    the composition fits the window with nothing at the fold.
+  - **Page compositions** (the public site, O02w) keep their own height; the
+    site frame's `main` takes the space between header and footer, as the
+    artboards' `flex: 1` body does, so a short page has its footer at the
+    window's bottom and a long page pushes it down after the content.
 - Below the `desktop` breakpoint (only where the desktop composition
   physically cannot fit; the artboards draw no tablet or phone web), the
-  narrow production extension applies (for example the public header's menu
-  sheet) and is reported as such.
+  narrow production extension applies, with the shell and the page switching
+  together: the header's menu sheet, one-column auth and sign-up layouts. No
+  surface has a third, intermediate composition between them.
 
 Type roles whose line height differs from the artboard's `line-height:
 normal` are compensated with spacing steps where they accumulate, so rows

@@ -20,8 +20,11 @@ import { Container } from "@/shared/ui/container";
  *
  * O02w sign-up renders inside the public site header and footer instead.
  * The language and theme switchers are production additions the design does
- * not draw; they sit where they do not move the designed geometry. Below
- * `lg` (the design draws only 1440) the brand panel and the aside stack.
+ * not draw; they sit where they do not move the designed geometry. Every
+ * desktop and laptop viewport (from `desktop`, 1180 px, the breakpoint the
+ * site header switches at) renders the designed composition; below it the
+ * brand panel and the aside give way to one column (the design draws only
+ * 1440).
  */
 
 function AuthBrand({ size, className }: { size: "sm" | "lg"; className?: string }) {
@@ -64,11 +67,15 @@ function AuthControls() {
  *   its 24 px line and 20 px gap stay reserved, so nothing above it moves.
  * - Right: the 440 px auth column (`children`), centred in its half.
  *
- * The artboard is a fixed 1440 × 900 composition. At desktop both halves lay
- * out inside that 900 px box, so a taller window never spreads the panel and
- * the form apart; the panel itself (the gradient owner, as in the artboard)
- * still runs the full height of the window. Below lg the form fills the
- * viewport.
+ * Vertically the artboard's 900 px positions are constraints, not offsets, so
+ * the composition fits every laptop height: the frame is the window's height
+ * (or its content's, if a window is shorter than the composition), the brand
+ * sits at the top of the panel, the headline and card are bottom-anchored on
+ * the 56 px padding, and the form column is centred in its half. At 900 px
+ * that is exactly the artboard (column y = (900 − 441) / 2 = 229.5; card
+ * bottom at 900 − 56); a 768 px window moves the anchored blocks with the
+ * window instead of cutting them at the fold. Below `desktop` the form fills
+ * the viewport.
  */
 export function AuthSplitFrame({
   hero,
@@ -83,12 +90,12 @@ export function AuthSplitFrame({
   children: ReactNode;
 }) {
   return (
-    <div data-auth-frame="split" className="grid min-h-dvh w-full lg:grid-cols-2">
+    <div data-auth-frame="split" className="grid min-h-dvh w-full desktop:grid-cols-2">
       <div
         data-auth-panel
-        className="hidden bg-linear-160 from-accent to-background to-70% lg:block"
+        className="hidden flex-col bg-linear-160 from-accent to-background to-70% desktop:flex"
       >
-        <div className="flex h-225 flex-col gap-5 px-16 py-14">
+        <div className="flex flex-1 flex-col gap-5 px-16 py-14">
           <AuthBrand size="lg" />
           <span className="flex-1" />
           <p data-auth-hero className="type-auth-hero text-balance">
@@ -100,11 +107,11 @@ export function AuthSplitFrame({
         </div>
       </div>
       <main id="main" tabIndex={-1} className="relative flex flex-col outline-none">
-        {/* Below lg the brand panel is hidden; the brand heads the form instead. */}
-        <div className="flex items-center px-4 pt-4 sm:px-6 lg:hidden">
+        {/* Below desktop the brand panel is hidden; the brand heads the form instead. */}
+        <div className="flex items-center px-4 pt-4 sm:px-6 desktop:hidden">
           <AuthBrand size="sm" />
         </div>
-        <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6 lg:h-225 lg:flex-none lg:p-12">
+        <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6 desktop:p-12">
           <div
             data-auth-column
             className={cn("w-full", column === "code" ? "max-w-[446px]" : "max-w-110")}
@@ -187,7 +194,7 @@ export function AuthHeader({
     <header className="h-18 border-b border-border-subtle">
       <Container
         size="frame"
-        className="flex h-full items-center gap-4 px-4 sm:px-6 md:px-8 lg:px-14"
+        className="flex h-full items-center gap-4 px-4 sm:px-6 md:px-8 desktop:px-14"
       >
         <AuthBrand size="sm" />
         <span className="flex-1" />
@@ -243,8 +250,8 @@ export function AuthStepFrame({
         <Container
           data-auth-frame="step"
           className={cn(
-            "grid gap-14 py-10 lg:py-12",
-            aside !== undefined && "lg:grid-cols-[minmax(0,1fr)_420px]",
+            "grid gap-14 py-10 desktop:py-12",
+            aside !== undefined && "desktop:grid-cols-[minmax(0,1fr)_420px]",
           )}
         >
           <div className="min-w-0">{children}</div>

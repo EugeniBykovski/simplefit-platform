@@ -370,11 +370,26 @@ inside a labelled control.
 - **Frames are fluid:** `Container` has no maximum width. Full-bleed regions
   reach the viewport edges at every width; artboard widths constrain content
   inside its region only.
+- **One switch:** the public site and auth surfaces change composition only
+  at `desktop`: the header's menu sheet, the WA1 split, the WA3 / WA4 aside,
+  the O02w grid and the 404 illustration all use `desktop:`, so the shell and
+  the page always change together; there is no 1024–1179 hybrid. Breakpoints
+  below it (`sm`, `md`) adjust spacing and what fits in the narrow header,
+  not the topology. The signed-in shells have their own sidebar breakpoints
+  (`md`) and are out of this rule's scope until their artboards are built.
+- **Heights:** window-height compositions (WA1) anchor their rows to the
+  window's top and bottom padding and centre the form, so 1280 × 720 and
+  1366 × 768 show the whole composition; page compositions keep their own
+  height and `SiteFrame`'s `main` takes the remaining space, which puts the
+  footer at the bottom of a short page and after the content of a long one.
 - **Narrow viewports** (below `desktop`) use production extensions where the
   design has no approved tablet or phone web composition, and only where the
   desktop composition cannot fit.
-- **Verification:** `e2e/production/web-responsive.spec.ts` checks the
-  production routes at 1280, 1366, 1440, 1512, 1728 and 1920.
+- **Verification:** `e2e/production/web-responsive.spec.ts` checks `/`,
+  `/login` and `/signup` on the production build at 1280 × 720, 1280 × 800,
+  1366 × 768, 1440 × 900, 1512 × 982, 1728 × 1117 and 1920 × 1080: full-bleed
+  roots, the split, one left edge, the footer placement, nothing clipped and
+  no unintended scrolling.
 
 ### Layout primitives (SF-34)
 

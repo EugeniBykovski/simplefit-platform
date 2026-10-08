@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, screen, userEvent, within } from "storybook/test";
 
+import { HomeHero } from "@/widgets/home-hero";
 import { SiteFrame } from "@/widgets/site-header";
 
 /*
@@ -11,7 +12,9 @@ import { SiteFrame } from "@/widgets/site-header";
  * Pages are built by their own tickets, so the body here is a stand-in of the
  * artboard's content height: header, body and footer then sit exactly where
  * the artboard draws them (for example L2 · 1440 × 1820: header 0–76, footer
- * 1630–1820). The current page's header item comes from the route.
+ * 1630–1820). The current page's header item comes from the route. A page
+ * shorter than the window leaves the footer at the window's bottom (`main`
+ * takes the space); a longer one pushes it down after the content.
  */
 export default {
   title: "Public Website/Shell",
@@ -55,7 +58,7 @@ export const BecomeSponsor: StoryObj = {
   ...shellStory(900, "/en/partners/apply"),
 };
 
-/** A window taller than the page: the composition keeps its height; the footer band continues below. */
+/** A window taller than the page: the page keeps its height, `main` takes the space, the footer closes the window. */
 export const TallWindow: StoryObj = {
   name: "Taller window · 1440 × 1080",
   ...shellStory(900, "/en/partners/apply"),
@@ -67,6 +70,31 @@ export const Wide: StoryObj = {
   name: "Wide · 1920",
   ...shellStory(1820, "/en/fighters"),
   globals: { viewport: { value: "wide", isRotated: false } },
+};
+
+/**
+ * Short content: the SF-32 foundation placeholder (`/`) in the shell. The header
+ * brand, the page and the footer brand share the 64 px left edge; the footer
+ * sits at the bottom of the window.
+ */
+export const ShortPage: StoryObj = {
+  name: "Short page · MacBook Pro 14 · 1512 × 982",
+  parameters: { nextjs: { appDirectory: true, navigation: { pathname: "/en" } } },
+  globals: { viewport: { value: "macbook", isRotated: false } },
+  render: () => (
+    <SiteFrame>
+      <div data-page-body>
+        <HomeHero />
+      </div>
+    </SiteFrame>
+  ),
+};
+
+/** Long content (L2, 1820 px) in the shortest supported laptop window: the footer follows the content. */
+export const Laptop: StoryObj = {
+  name: "Long page · Laptop · 1280 × 720",
+  ...shellStory(1820, "/en/fighters"),
+  globals: { viewport: { value: "laptop", isRotated: false } },
 };
 
 /** Tablet (768): the site links move into the menu sheet; Sign in and Get started stay. */

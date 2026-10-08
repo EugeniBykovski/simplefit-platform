@@ -42,7 +42,7 @@ export function SiteHeader() {
   const actions = useTranslations("actions");
 
   return (
-    <header className="h-19 border-b border-border-subtle bg-background">
+    <header className="h-19 flex-none border-b border-border-subtle bg-background">
       <Container className="flex h-full items-center gap-9">
         <BrandLockup />
         <SiteNav />
@@ -162,7 +162,7 @@ export function SiteFooter() {
   const t = useTranslations("shells.site.footer");
 
   return (
-    <footer data-site-footer className="border-t border-border-subtle bg-surface-sunken">
+    <footer data-site-footer className="flex-none border-t border-border-subtle bg-surface-sunken">
       {/* Below 640 px the link columns pair up on a two-column grid under the brand. */}
       <Container className="grid grid-cols-2 gap-8 py-9 sm:flex sm:flex-wrap sm:gap-x-20 sm:gap-y-8">
         <div className="col-span-2 flex max-w-65 flex-col gap-2.5">
@@ -204,16 +204,19 @@ export function SiteFooter() {
  * and footer, the one implementation every public route renders (the site
  * layout, and O02w sign-up from the auth group).
  *
- * The composition keeps its designed height at any window size: nothing
- * between header and footer stretches, and the footer follows the content as
- * in the artboards. A window taller than the page shows the footer's sunken
- * band below it (the frame's background), never a stretched page.
+ * As in the artboards' root (a column whose body is `flex: 1`): the frame is
+ * at least the window's height, header and footer keep their own heights and
+ * `main` takes the space between them. A page shorter than the window puts
+ * the footer at the window's bottom; a longer page pushes it down after the
+ * content. Only the `main` box grows: pages keep their own composition at the
+ * top of it, nothing inside is stretched. Every surface is full-bleed; the
+ * header, page and footer content share the site Container's gutters.
  */
 export function SiteFrame({ children }: { children: ReactNode }) {
   return (
-    <div data-site-frame className="flex min-h-dvh flex-col bg-surface-sunken">
+    <div data-site-frame className="flex min-h-dvh w-full flex-col bg-background">
       <SiteHeader />
-      <main id="main" tabIndex={-1} className="flex flex-col bg-background outline-none">
+      <main id="main" tabIndex={-1} className="flex w-full flex-1 flex-col outline-none">
         {children}
       </main>
       <SiteFooter />

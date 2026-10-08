@@ -119,7 +119,7 @@ describe("SiteFooter", () => {
 });
 
 describe("SiteFrame", () => {
-  it("renders header, the main landmark and footer, without stretching the content", async () => {
+  it("renders header, one main landmark that takes the free height, and footer", async () => {
     await renderWithProviders(
       <SiteFrame>
         <p>page</p>
@@ -127,8 +127,12 @@ describe("SiteFrame", () => {
     );
     const main = screen.getByRole("main");
     expect(main).toHaveAttribute("id", "main");
-    expect(main.className).not.toMatch(/\bflex-1\b|\bgrow\b/);
-    expect(screen.getByRole("banner")).toBeInTheDocument();
-    expect(screen.getByRole("contentinfo")).toBeInTheDocument();
+    // The artboards' `flex: 1` body: main fills the space, so a short page's footer
+    // closes the window; header and footer keep their own heights.
+    expect(main.className).toMatch(/\bflex-1\b/);
+    expect(screen.getByRole("banner").className).toMatch(/\bflex-none\b/);
+    expect(screen.getByRole("contentinfo").className).toMatch(/\bflex-none\b/);
+    // The page itself is not stretched: it is main's child, at its own height.
+    expect(screen.getByText("page").className).toBe("");
   });
 });

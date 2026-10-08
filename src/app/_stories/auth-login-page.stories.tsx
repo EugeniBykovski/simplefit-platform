@@ -21,6 +21,18 @@ export const FullPage: Story = {
   globals: { viewport: { value: "desktop", isRotated: false } },
 };
 
+/** The shortest supported laptop window: the whole composition fits, nothing at the fold. */
+export const FullPageLaptop: Story = {
+  name: "Full Page · 1280 × 720",
+  globals: { viewport: { value: "laptop", isRotated: false } },
+};
+
+/** A MacBook Pro 14's default window: the same split, the rows anchored to the taller window. */
+export const FullPageMacBook: Story = {
+  name: "Full Page · 1512 × 982",
+  globals: { viewport: { value: "macbook", isRotated: false } },
+};
+
 export const FullPageWide: Story = {
   name: "Full Page · 1920",
   globals: { viewport: { value: "wide", isRotated: false } },

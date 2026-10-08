@@ -76,9 +76,9 @@ export function NotFoundState({
   const home = routeHref("web.root");
 
   return (
-    <Container className="grid flex-1 items-center gap-16 pt-14 pb-10 lg:grid-cols-[600px_1fr]">
+    <Container className="grid flex-1 items-center gap-16 pt-14 pb-10 desktop:grid-cols-[600px_1fr]">
       <div className="flex min-w-0 flex-col gap-6">
-        <RefereeCount phase={phase} count={count} compact className="lg:hidden" />
+        <RefereeCount phase={phase} count={count} compact className="desktop:hidden" />
         <div className="flex flex-col gap-2.5">
           <p className="type-label-lg text-highlight">{t(`${phase}.kicker`)}</p>
           <h1 className="type-h1 text-balance sm:type-hero">{t(`${phase}.title`)}</h1>
@@ -159,7 +159,7 @@ export function NotFoundState({
         </nav>
       </div>
 
-      <div className="relative hidden aspect-square w-full max-w-140 justify-self-center lg:block">
+      <div className="relative hidden aspect-square w-full max-w-140 justify-self-center desktop:block">
         <RefereeRing />
         <div className="absolute inset-0 flex items-center justify-center">
           <RefereeCount phase={phase} count={count} />
@@ -168,7 +168,7 @@ export function NotFoundState({
           {t("requested", { path: pathname })}
         </p>
       </div>
-      <p className="type-micro font-mono break-all text-faint-foreground lg:hidden">
+      <p className="type-micro font-mono break-all text-faint-foreground desktop:hidden">
         {t("requested", { path: pathname })}
       </p>
     </Container>

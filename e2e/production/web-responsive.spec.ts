@@ -29,7 +29,12 @@ const PROVIDER_STUBS = {
   apple: `window.AppleID = { auth: { init() {}, signIn: () => new Promise(() => {}) } };`,
 };
 
+/**
+ * Desktop and laptop windows, width × height: the common laptop sizes
+ * (1280 × 720 is the shortest supported) and the 1440 × 900 artboard.
+ */
 const VIEWPORTS = [
+  [1280, 720],
   [1280, 800],
   [1366, 768],
   [1440, 900],
@@ -85,6 +90,27 @@ async function expectBox(
 const overflow = (page: Page) =>
   page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
 
+/** How far the document is taller than the window (0: nothing to scroll). */
+const verticalOverflow = (page: Page) =>
+  page.evaluate(
+    () => document.documentElement.scrollHeight - document.documentElement.clientHeight,
+  );
+
+/** Entirely inside the window: neither clipped by an edge nor below the fold. */
+async function expectInView(locator: Locator, width: number, height: number) {
+  const r = await box(locator);
+  expect(r.x, "left edge").toBeGreaterThanOrEqual(0);
+  expect(r.y, "top edge").toBeGreaterThanOrEqual(0);
+  expect(r.x + r.width, "right edge").toBeLessThanOrEqual(width + 0.5);
+  expect(r.y + r.height, "bottom edge").toBeLessThanOrEqual(height + 0.5);
+}
+
+/** `upper` ends above where `lower` starts: the composition's reading order. */
+async function expectAbove(upper: Locator, lower: Locator) {
+  const [a, b] = [await box(upper), await box(lower)];
+  expect(a.y + a.height).toBeLessThanOrEqual(b.y + 0.5);
+}
+
 /** The public site header and footer: identical composition and anchoring at every width. */
 async function expectSiteShell(page: Page, width: number) {
   const header = page.locator("header").first();
@@ -104,6 +130,9 @@ async function expectSiteShell(page: Page, width: number) {
 
   const footer = page.locator("[data-site-footer]");
   await expectBox(footer, { x: 0, w: width, h: 190 });
+  // One left edge: the header brand, the page body and the footer brand sit on
+  // the artboards' 64 px gutter (header `0 64px`, body `56px 64px`, footer `36px 64px`).
+  await expectBox(footer.locator("svg").first().locator(".."), { x: 64 });
   for (const [name, x] of [
     ["Product", 404],
     ["Business", 537.6],
@@ -112,64 +141,155 @@ async function expectSiteShell(page: Page, width: number) {
   ] as const) {
     await expectBox(footer.getByRole("navigation", { name }), { x });
   }
-  await expectBox(page.locator("[data-site-frame]"), { x: 0, w: width });
+  await expectBox(page.locator("[data-site-frame]"), { x: 0, y: 0, w: width });
+  await expectBox(page.locator("main"), { x: 0, y: 76, w: width });
+}
+
+/**
+ * The footer closes the page: at the window's bottom when the page is shorter
+ * than the window, right after the content when it is longer (`contentBottom`:
+ * where the page's own composition ends). `main` fills exactly the space between.
+ */
+async function expectFooterPlacement(page: Page, height: number, contentBottom: number) {
+  const footerY = Math.max(height, contentBottom + 190) - 190;
+  await expectBox(page.locator("[data-site-footer]"), { y: footerY });
+  await expectBox(page.locator("main"), { h: footerY - 76 });
+  expect(await verticalOverflow(page)).toBeLessThanOrEqual(
+    Math.max(0, contentBottom + 190 - height),
+  );
 }
 
 for (const [width, height] of VIEWPORTS) {
   test.describe(`${width} × ${height}`, () => {
     test.use({ viewport: { width, height } });
 
-    test("WA1 /login: a full-viewport 50 / 50 split with the artboard content in each half", async ({
+    test("WA1 /login: a full-viewport 50 / 50 split, the whole composition in the window", async ({
       page,
     }) => {
       await open(page, "/en/login", page.getByRole("heading", { level: 1, name: "Sign in" }));
       await page.locator("[data-gsi-stub]").waitFor();
       const half = width / 2;
-      await expectBox(page.locator("[data-auth-frame=split]"), { x: 0, y: 0, w: width });
-      await expectBox(page.locator("[data-auth-panel]"), { x: 0, y: 0, w: half });
-      await expectBox(page.locator("main"), { x: half, y: 0, w: half });
+      await expectBox(page.locator("[data-auth-frame=split]"), { x: 0, y: 0, w: width, h: height });
+      await expectBox(page.locator("[data-auth-panel]"), { x: 0, y: 0, w: half, h: height });
+      await expectBox(page.locator("main"), { x: half, y: 0, w: half, h: height });
       expect(await overflow(page)).toBeLessThanOrEqual(0);
-      await expectBox(page.locator("[data-auth-panel] a").first(), { x: 64, y: 56, h: 36 });
-      await expectBox(page.locator("[data-auth-hero]"), { x: 64, y: 439 });
-      await expectBox(page.locator("[data-auth-panel] [data-auth-info-list]"), {
-        x: 64,
-        y: 553,
-        w: 498,
-      });
-      await expectBox(page.locator("[data-auth-column]"), {
+      expect(await verticalOverflow(page)).toBeLessThanOrEqual(0);
+
+      // Left: the brand on the top padding; the headline, the reserved line and the
+      // card bottom-anchored on the bottom padding (exactly the artboard at 900).
+      const panel = page.locator("[data-auth-panel]");
+      const brand = panel.getByRole("link", { name: /SimpleFit/ });
+      const hero = page.locator("[data-auth-hero]");
+      const card = panel.locator("[data-auth-info-list]");
+      await expectBox(brand, { x: 64, y: 56, h: 36 });
+      await expectBox(card, { x: 64, y: height - 56 - 292, w: 498, h: 292 });
+      await expectBox(hero, { x: 64, y: height - 56 - 292 - 20 - 24 - 20 - 50, h: 50 });
+      await expectAbove(brand, hero);
+      await expectAbove(hero, card);
+      for (const item of [brand, hero, card, ...(await card.getByRole("listitem").all())]) {
+        await expectInView(item, half, height);
+      }
+      await expect(card.getByRole("listitem")).toHaveCount(4);
+
+      // Right: the 440 px column centred in its half, both ways (y 229.5 at 900).
+      const column = page.locator("[data-auth-column]");
+      await expectBox(column, {
         x: half + (half - 440) / 2,
-        y: 230,
+        y: (height - 441) / 2,
         w: 440,
+        h: 441,
       });
-      await page.screenshot({ path: `test-results/production/login-${width}.png` });
+      const order = [
+        column.getByRole("heading", { level: 1, name: "Sign in" }),
+        page.locator("[data-gsi-stub]"),
+        column.getByRole("button", { name: "Continue with Apple" }),
+        column.getByText("or with email"),
+        column.getByRole("textbox", { name: "Email" }),
+        column.getByRole("button", { name: "Email me a sign-in code" }),
+        column.getByRole("link", { name: "Sponsor sign in" }),
+      ];
+      for (const item of order) await expectInView(item, width, height);
+      for (const [upper, lower] of order.slice(1).map((item, index) => [order[index], item])) {
+        if (upper && lower) await expectAbove(upper, lower);
+      }
+      await page.screenshot({ path: `test-results/production/login-${width}x${height}.png` });
     });
 
-    test("O02w /signup: the site shell and the 1 : 1.25 sign-up grid", async ({ page }) => {
+    test("O02w /signup: the site shell, the 1 : 1.25 grid and the footer placement", async ({
+      page,
+    }) => {
       await open(page, "/en/signup", page.getByRole("heading", { level: 1 }));
+      await page.locator("[data-gsi-stub]").waitFor();
       await expectSiteShell(page, width);
       expect(await overflow(page)).toBeLessThanOrEqual(0);
       const frame = page.locator("[data-auth-frame=signup]");
-      await expectBox(frame, { x: 0, y: 76, w: width });
+      // The artboard's 674 px body (940 − 76 − 190): the footer at 750 or the window's bottom.
+      await expectBox(frame, { x: 0, y: 76, w: width, h: 674 });
+      await expectFooterPlacement(page, height, 750);
+
       // Content between the 64 px gutters: the left track is (content − 72) / 2.25,
       // then the 64 px gap and the 8 px inset of the role section.
       const content = width - 128;
       const left = (content - 72) / 2.25;
-      await expectBox(page.getByRole("heading", { level: 1 }), { x: 64 });
+      await expectBox(page.getByRole("heading", { level: 1 }), { x: 64, y: 226 });
       const roles = page.getByRole("region", { name: "How will you use SimpleFit?" });
       const rolesBox = await box(roles);
       expect(Math.abs(rolesBox.x - (64 + left + 64))).toBeLessThanOrEqual(1);
       expect(Math.abs(rolesBox.x + rolesBox.width - (width - 64))).toBeLessThanOrEqual(1);
+      // The 2 × 2 cards share the track (16 px gap), on one top edge and one height
+      // per row, each heading on the same line: a narrower track only wraps text.
+      const cards = await roles.getByRole("listitem").all();
+      expect(cards).toHaveLength(4);
+      const cardWidth = (rolesBox.width - 8 - 16) / 2;
+      const boxes = await Promise.all(cards.map((card) => box(card)));
+      for (const [index, card] of boxes.entries()) {
+        expect(Math.abs(card.width - cardWidth)).toBeLessThanOrEqual(1);
+        expect(
+          Math.abs(card.x - (rolesBox.x + 8 + (index % 2) * (cardWidth + 16))),
+        ).toBeLessThanOrEqual(1);
+      }
+      const titles = await Promise.all(cards.map((card) => box(card.locator("a > span").nth(1))));
+      for (const row of [0, 2]) {
+        const [a, b] = [boxes[row], boxes[row + 1]];
+        const [ta, tb] = [titles[row], titles[row + 1]];
+        if (!a || !b || !ta || !tb) throw new Error("missing role card");
+        expect(Math.abs(a.y - b.y)).toBeLessThanOrEqual(0.5);
+        expect(Math.abs(a.height - b.height)).toBeLessThanOrEqual(0.5);
+        expect(Math.abs(ta.y - tb.y)).toBeLessThanOrEqual(0.5);
+      }
+      // The methods keep their 420 px column and 54 px rows.
+      for (const method of [
+        page.locator("[data-gsi-stub]").locator(".."),
+        page.getByRole("button", { name: "Continue with Apple" }),
+        page.getByRole("link", { name: "Continue with Email" }),
+      ]) {
+        await expectBox(method, { x: 64, w: 420, h: 54 });
+      }
       await page.screenshot({
-        path: `test-results/production/signup-${width}.png`,
+        path: `test-results/production/signup-${width}x${height}.png`,
         fullPage: true,
       });
     });
 
-    test("/ : the public site shell (the page body is the SF-43 placeholder)", async ({ page }) => {
+    test("/ : the site shell, one left edge, the footer at the window's bottom", async ({
+      page,
+    }) => {
       await open(page, "/en", page.locator("[data-site-frame]"));
       await expectSiteShell(page, width);
       expect(await overflow(page)).toBeLessThanOrEqual(0);
-      await page.screenshot({ path: `test-results/production/home-${width}.png`, fullPage: true });
+      // The SF-32 placeholder body (SF-43 replaces it) is shorter than every window:
+      // top-anchored on the 56 px body padding, the footer closing the window.
+      const heading = page.getByRole("heading", { level: 1 });
+      await expectBox(heading, { x: 64 });
+      await expect(page.locator("main")).toHaveCount(1);
+      const body = await box(page.locator("main > *").first());
+      expect(body.y).toBe(76);
+      expect(body.y + body.height).toBeLessThan(height - 190);
+      await expectFooterPlacement(page, height, body.y + body.height);
+      await page.screenshot({
+        path: `test-results/production/home-${width}x${height}.png`,
+        fullPage: true,
+      });
     });
   });
 }
