@@ -595,7 +595,10 @@ src/app/[locale]/
 - **Guards (UX only, §6).** `RequireSession` (AUTHENTICATED) waits for the
   session restore, then sends signed-out visitors to the area's sign-in route
   (`guards.signIn`: `/login`, `/sponsor/login`, `/admin/login`) with
-  `returnTo` (when the page is a valid destination); `GuestOnly` sends an
+  `returnTo` (when the page is a valid destination, never an onboarding
+  route) and the journey `intent` the page carries or its route represents
+  (Fighter, Coach, Gym onboarding; SF-36), so an onboarding deep link keeps
+  its journey through sign-in; `GuestOnly` sends an
   authenticated viewer through `EntryRedirect`, the backend entry resolution
   with the page's `returnTo` and `intent` (§9, SF-45), as `/app` does;
   `OnboardingGate` keeps account registration first on the onboarding

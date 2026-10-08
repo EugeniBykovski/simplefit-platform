@@ -161,17 +161,41 @@ describe("RequireSession (AUTHENTICATED)", () => {
     );
   });
 
-  it("omits returnTo when the page is not a valid destination (onboarding)", async () => {
-    session.current = { status: "anonymous" };
-    navigation.pathname = "/app/onboarding/fighter";
-    window.history.replaceState(null, "", "/en/app/onboarding/fighter");
-    await renderWithProviders(
-      <RequireSession signIn="web.login">
-        <p>private</p>
-      </RequireSession>,
-    );
-    expect(navigation.replace).toHaveBeenCalledWith("/login");
-  });
+  it.each([
+    // An onboarding route is never a returnTo, but its journey survives (SF-36 fix).
+    ["/app/onboarding/fighter", "?step=basics&intent=fighter", "/login?intent=fighter"],
+    // The route itself names the journey when the URL has no intent.
+    ["/app/onboarding/fighter", "?step=profile", "/login?intent=fighter"],
+    ["/app/onboarding/coach", "", "/login?intent=coach"],
+    ["/app/onboarding/gym", "", "/login?intent=gym"],
+    // Account registration and role selection belong to no journey: only an explicit intent.
+    ["/app/onboarding/account", "?intent=coach", "/login?intent=coach"],
+    ["/app/onboarding/account", "", "/login"],
+    ["/app/onboarding/role", "", "/login"],
+    // Unsafe or unknown intents are dropped by the shared parser, never guessed.
+    ["/app/onboarding/account", "?intent=admin", "/login"],
+    ["/app/onboarding/account", "?intent=Fighter", "/login"],
+    ["/app/onboarding/role", "?intent=fighter&intent=coach", "/login"],
+    // A valid returnTo and an explicit intent travel together.
+    [
+      "/app/messages",
+      "?intent=gym",
+      `/login?returnTo=${encodeURIComponent("/app/messages?intent=gym")}&intent=gym`,
+    ],
+  ] as const)(
+    "a signed-out visitor on %s%s goes to %s (onboarding is never a returnTo)",
+    async (pathname, search, expected) => {
+      session.current = { status: "anonymous" };
+      navigation.pathname = pathname;
+      window.history.replaceState(null, "", `/en${pathname}${search}`);
+      await renderWithProviders(
+        <RequireSession signIn="web.login">
+          <p>private</p>
+        </RequireSession>,
+      );
+      expect(navigation.replace).toHaveBeenCalledWith(expected);
+    },
+  );
 });
 
 describe("GuestOnly (GUEST_ONLY)", () => {

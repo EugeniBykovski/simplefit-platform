@@ -31,9 +31,12 @@ type EntryFixture = {
     | "fighter_onboarding"
     | "coach_onboarding"
     | "gym_onboarding"
-    | "sponsor_application";
+    | "sponsor_application"
+    | "fighter_home";
   account_registration: "not_started" | "in_progress" | "complete";
   mandatory: boolean;
+  capabilities?: "FIGHTER"[];
+  fighter_profile?: "not_started" | "in_progress" | "completed";
 };
 
 /** The signed-in API: the current user and the entry resolution, which records its intent. */
@@ -347,14 +350,110 @@ test("a signed-out visitor on an app route goes to sign-in with it as a safe ret
   await expect(page.getByRole("heading", { level: 1, name: "Sign in" })).toBeVisible();
 });
 
-test("a signed-out visitor on an onboarding route goes to sign-in; the resolver decides after", async ({
+test("signed-out Fighter onboarding deep link → /login?intent=fighter → email sign-in → resolver(intent=fighter)", async ({
   page,
 }) => {
   await signedOut(page);
-  await page.goto("/en/app/onboarding/role?intent=coach");
-  // Onboarding routes are never a returnTo (return-to policy): the entry resolver
-  // re-derives the step after sign-in. The URL's intent does not survive this hop.
+  let resolutions: (string | null)[] = [];
+  await answer(page, "auth/email/sign-in", 202, {
+    expires_in_seconds: 600,
+    resend_after_seconds: 60,
+  });
+  await answer(page, "auth/email/sign-in/verify", 200, TOKENS);
+  resolutions = await signedInApi(page, {
+    destination: "account_registration",
+    account_registration: "not_started",
+    mandatory: true,
+  });
+  await page.goto("/en/app/onboarding/fighter?step=basics&intent=fighter");
+  // The onboarding URL is never a returnTo; its journey travels as the intent.
+  await page.waitForURL((url) => url.pathname === "/en/login");
+  expect(new URL(page.url()).search).toBe("?intent=fighter");
+  await page.getByRole("textbox", { name: "Email" }).fill("fighter@example.com");
+  await page.getByRole("button", { name: "Email me a sign-in code" }).click();
+  await page.waitForURL("**/en/login/code?intent=fighter");
+  await page.locator('[data-slot="code-input"]').pressSequentially("528461");
+  // Account basics first (mandatory), with the Fighter journey riding along.
+  await page.waitForURL("**/en/app/onboarding/account?intent=fighter");
+  expect(resolutions[0]).toBe("fighter");
+});
+
+test("signed-out account onboarding with a Coach intent → /login?intent=coach", async ({
+  page,
+}) => {
+  await signedOut(page);
+  await page.goto("/en/app/onboarding/account?intent=coach&returnTo=%2Fapp%2Fmessages");
+  await page.waitForURL((url) => url.pathname === "/en/login");
+  // The onboarding page is not a returnTo; its explicit journey is kept.
+  expect(new URL(page.url()).search).toBe("?intent=coach");
+  await expect(page.getByRole("heading", { level: 1, name: "Sign in" })).toBeVisible();
+});
+
+test("an invalid intent on an onboarding deep link is dropped, never guessed", async ({ page }) => {
+  await signedOut(page);
+  await page.goto("/en/app/onboarding/role?intent=admin");
   await page.waitForURL((url) => url.pathname === "/en/login");
   expect(new URL(page.url()).search).toBe("");
-  await expect(page.getByRole("heading", { level: 1, name: "Sign in" })).toBeVisible();
+});
+
+for (const provider of ["Google", "Apple"] as const) {
+  test(`${provider} on /login?intent=fighter: the resolver receives the Fighter intent`, async ({
+    page,
+  }) => {
+    let resolutions: (string | null)[] = [];
+    await open(
+      page,
+      "/en/login?intent=fighter",
+      page.getByRole("heading", { level: 1 }),
+      async (page) => {
+        await answer(page, `auth/${provider.toLowerCase()}`, 200, {
+          ...TOKENS,
+          account: "existing",
+        });
+        resolutions = await signedInApi(page, {
+          destination: "fighter_onboarding",
+          account_registration: "complete",
+          mandatory: true,
+        });
+      },
+    );
+    await expectProviderControls(page);
+    if (provider === "Google") {
+      await page.evaluate(() =>
+        (
+          window as unknown as { __gsiConfig: { callback: (r: { credential: string }) => void } }
+        ).__gsiConfig.callback({ credential: "fixture-google-id-token" }),
+      );
+    } else {
+      await page.evaluate(() => {
+        (
+          window as unknown as { __appleSignIn: (c: { state: string }) => Promise<unknown> }
+        ).__appleSignIn = (config) =>
+          Promise.resolve({
+            authorization: { id_token: "fixture-apple-id-token", state: config.state },
+          });
+      });
+      await page.getByRole("button", { name: "Continue with Apple" }).click();
+    }
+    await page.waitForURL("**/en/app/onboarding/fighter?intent=fighter");
+    expect(resolutions[0]).toBe("fighter");
+  });
+}
+
+test("a completed Fighter with a Fighter intent goes home, not back into onboarding", async ({
+  page,
+}) => {
+  let resolutions: (string | null)[] = [];
+  await open(page, "/en/login?intent=fighter", page.locator("body"), async (page) => {
+    await answer(page, "auth/session/refresh", 200, TOKENS);
+    resolutions = await signedInApi(page, {
+      destination: "fighter_home",
+      account_registration: "complete",
+      mandatory: false,
+      capabilities: ["FIGHTER"],
+      fighter_profile: "completed",
+    });
+  });
+  await page.waitForURL("**/en/app/home");
+  expect(resolutions[0]).toBe("fighter");
 });

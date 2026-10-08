@@ -95,7 +95,10 @@ brand link to the public site, so the visitor is never trapped. WA6 (choose
 where to start) and the Coach, Gym and Fighter onboarding entries are
 placeholders too; WA5 and WA6 are built by their own UI tickets.
 
-A signed-out visitor sent from an onboarding route to `/login` does not keep
-the route's `intent` (onboarding routes are never a `returnTo`; the resolver
-re-derives the step after sign-in). That is the SF-24 / SF-45 return-to
-policy, not SF-36.
+A signed-out visitor sent from an onboarding route to `/login` keeps the
+journey: onboarding routes are never a `returnTo`, but `RequireSession`
+carries the URL's validated `intent`, or the journey the route itself
+represents (`journeyIntentOf`: Fighter, Coach and Gym onboarding), so
+`/app/onboarding/fighter?step=basics` signs in at `/login?intent=fighter` and
+the resolver receives `intent=fighter`. Account registration and role
+selection represent no journey; an invalid intent is dropped.
