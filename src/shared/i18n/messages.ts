@@ -8,6 +8,7 @@ import type errors from "../../../messages/en/errors.json";
 import type fighterOnboarding from "../../../messages/en/fighterOnboarding.json";
 import type home from "../../../messages/en/home.json";
 import type navigation from "../../../messages/en/navigation.json";
+import type roleSelection from "../../../messages/en/roleSelection.json";
 import type routes from "../../../messages/en/routes.json";
 import type shells from "../../../messages/en/shells.json";
 import type system from "../../../messages/en/system.json";
@@ -35,6 +36,7 @@ export const namespaces = [
   "system",
   "fighterOnboarding",
   "accountRegistration",
+  "roleSelection",
 ] as const;
 
 export type Namespace = (typeof namespaces)[number];
@@ -55,6 +57,7 @@ export type Messages = {
   system: typeof system;
   fighterOnboarding: typeof fighterOnboarding;
   accountRegistration: typeof accountRegistration;
+  roleSelection: typeof roleSelection;
 };
 
 export type MessageTree = { [key: string]: string | MessageTree };

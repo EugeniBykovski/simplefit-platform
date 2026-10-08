@@ -4,7 +4,7 @@
  * production components in every state without a backend, a network or a
  * live auth provider. Installed per story in `beforeEach`; restored after.
  */
-type Answer =
+export type Answer =
   { status: number; body?: unknown; headers?: Record<string, string> } | "pending" | "offline";
 
 export const VIEWER = {

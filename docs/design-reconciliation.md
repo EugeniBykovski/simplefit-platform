@@ -184,6 +184,12 @@ Other SF-17 decisions:
   `typography.onboardingRoles.web` (`onboarding-title` 32/40, −0.02em, the
   font's natural line; `onboarding-done` 40/44, −0.025em), web only and for
   the Fighter onboarding screens only. The authentication roles are unchanged.
+- **SF-47 web role selection (decision):** WA6 draws its journey card notes
+  in mono 10 px at 0.08em, uppercase; `label` (0.14em) makes the longest
+  English note wrap where the artboard keeps one line. Added as
+  `typography.onboardingRoles.web.label-tight` (10/14, 0.08em, uppercase),
+  web only and for the web account onboarding screens only. `label` is
+  unchanged.
 - **Hero type** larger than `display` (40–58 px on a handful of landing and hero artboards)
   is **DEFERRED** to the public-website ticket, which decides whether a
   `display-lg` role is needed.

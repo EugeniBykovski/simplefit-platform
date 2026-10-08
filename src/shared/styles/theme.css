@@ -608,3 +608,12 @@
   font-weight: 600;
   letter-spacing: -0.025em;
 }
+/* SF-47: the WA6 journey card note (typography.onboardingRoles), web account onboarding only. */
+@utility type-label-tight {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

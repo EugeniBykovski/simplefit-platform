@@ -18,7 +18,7 @@ Every artboard of the section is accounted for below; none is omitted.
 | WA1b · Sign-in code            | `WebSignInCode.dc.html`                                               | `/login/code`             | `LoginCodeScreen` (`SignInCodeStep`)              | sent, typing, resent, invalid, expired, submitting, success, throttled, error                                     | implemented                                                        | `email-auth.test.tsx`, `screens/authentication/email-code.stories.tsx`, `auth-geometry.spec.ts`, `production/auth-routes.spec.ts`   |
 | WA4b · Email verified          | `WebEmailVerified.dc.html`                                            | `/verify-email`           | `VerifyEmailScreen` in `AuthMinimalFrame`         | verified, already, expired; plus verifying, network error, missing token                                          | implemented                                                        | `email-auth.test.tsx`, `screens/authentication/verify-email.stories.tsx`, `auth-geometry.spec.ts`, `production/auth-routes.spec.ts` |
 | WA5 · Account basics & consent | `WebAccountBasics.dc.html`                                            | `/app/onboarding/account` | `AccountRegistration` (SF-46)                     | —                                                                                                                 | SF-44 account registration; see `docs/account-registration-web.md` | registry `web.app.onboarding.account`                                                                                               |
-| WA6 · Choose where to start    | `WebRoleSelect.dc.html`                                               | `/app/onboarding/role`    | SF-32 placeholder                                 | —                                                                                                                 | owned by the WA6 UI ticket                                         | registry `web.app.onboarding.role`                                                                                                  |
+| WA6 · Choose where to start    | `WebRoleSelect.dc.html`                                               | `/app/onboarding/role`    | `RoleSelection` (SF-47)                           | —                                                                                                                 | SF-45 entry resolver; see `docs/role-selection-web.md`             | registry `web.app.onboarding.role`                                                                                                  |
 | Email code states sheet        | `AuthStatesWeb.dc.html`, `AuthCodeInput.dc.html` (design-system page) | —                         | `CodeInput`, `StatusNotice`, `ResendStatus`       | the shared 6-digit states                                                                                         | implemented                                                        | `email-auth.test.tsx`, `components/code-input.stories.tsx`, `screens/authentication/email-code.stories.tsx`                         |
 
 ## Behaviour
@@ -91,10 +91,12 @@ by `e2e/production/auth-navigation.spec.ts`). A new account lands on
 **Account basics (WA5, SF-46)**, completes account registration and continues
 to the resolver's destination; with a Fighter intent that is the Fighter
 registration (WF0 → WF1 → WF6), verified end to end in
-`e2e/production/account-registration.spec.ts`. WA6 (choose where to start,
-SF-47) and the Coach and Gym onboarding entries are still SF-32 placeholders,
-so a journey without a Fighter intent ends on the right route, not on a
-finished screen. The onboarding frame keeps **Sign out** and the brand link
+`e2e/production/account-registration.spec.ts`. Without an intent the
+resolver answers role selection: **WA6 (SF-47)** lets the visitor choose a
+journey and asks the resolver again with it; a Fighter choice continues
+through WF0 → WF1 → WF6 (`e2e/production/role-selection.spec.ts`). The
+Coach, Gym and Sponsor entries are still SF-32 placeholders, so those
+journeys end on the right route, not on a finished screen. The onboarding frame keeps **Sign out** and the brand link
 to the public site, so the visitor is never trapped.
 
 A signed-out visitor sent from an onboarding route to `/login` keeps the

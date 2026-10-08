@@ -1,0 +1,54 @@
+{
+  "metaTitle": "Por dónde empezar",
+  "eyebrow": "Por dónde empezar",
+  "title": "¿Qué quieres configurar primero?",
+  "lead": "Elige una opción para abrir su configuración. Elegir aquí no añade un rol a tu cuenta: puedes configurar las demás más tarde.",
+  "groupLabel": "Por dónde empezar",
+  "journeys": {
+    "fighter": {
+      "title": "Boxeador/a",
+      "body": "Entrena, sigue tu progreso y conecta. La app principal es gratis para siempre.",
+      "note": "Configuración de boxeador · 2 pasos cortos",
+      "cta": "Configurar perfil de boxeador"
+    },
+    "coach": {
+      "title": "Entrenador/a",
+      "body": "Gestiona boxeadores, programas y campamentos.",
+      "note": "Configuración de entrenador",
+      "cta": "Configurar perfil de entrenador"
+    },
+    "gym": {
+      "title": "Gimnasio / Club",
+      "body": "Gestiona socios, entrenadores y tu negocio de boxeo.",
+      "note": "Configuración del gimnasio",
+      "cta": "Configurar gimnasio"
+    },
+    "sponsor": {
+      "title": "Patrocinador / Marca",
+      "body": "Colabora con la comunidad del boxeo: retos, eventos, gimnasios.",
+      "note": "Solicitud de socio · la revisa nuestro equipo",
+      "cta": "Solicitar ser socio"
+    }
+  },
+  "hint": "Elige una opción para continuar.",
+  "continue": "Continuar",
+  "opening": "Abriendo…",
+  "stepDone": "hecho",
+  "account": {
+    "title": "Una cuenta",
+    "body": "Boxeador, entrenador, dueño de gimnasio y patrocinador son roles que puedes configurar en la misma cuenta. Esta elección solo decide por dónde empiezas.",
+    "roles": {
+      "fighter": "Boxeador",
+      "coach": "Entrenador",
+      "gym": "Gimnasio",
+      "sponsor": "Patrocinador"
+    }
+  },
+  "notSaved": "Tu elección no se guarda. Si te vas ahora, te volveremos a preguntar la próxima vez.",
+  "failure": {
+    "title": "No pudimos abrir esa configuración.",
+    "body": "Revisa tu conexión e inténtalo de nuevo. No cambió nada en tu cuenta.",
+    "unexpected": "Esta versión de SimpleFit aún no puede abrirla. Recarga la página e inténtalo de nuevo.",
+    "retry": "Reintentar"
+  }
+}

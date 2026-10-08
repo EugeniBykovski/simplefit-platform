@@ -33,6 +33,7 @@ const REAL_SCREENS = [
   "web.app.onboarding.fighter",
   // SF-46: account basics & consent (WA5).
   "web.app.onboarding.account",
+  "web.app.onboarding.role",
 ];
 
 const placeholderSource = (id) => `import { placeholderRoute } from "@/widgets/feature-placeholder";

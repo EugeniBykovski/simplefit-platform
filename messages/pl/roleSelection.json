@@ -1,0 +1,54 @@
+{
+  "metaTitle": "Od czego zacząć",
+  "eyebrow": "Od czego zacząć",
+  "title": "Co chcesz skonfigurować najpierw?",
+  "lead": "Wybierz jedną opcję, aby otworzyć jej konfigurację. Wybór nie dodaje roli do Twojego konta — pozostałe skonfigurujesz później.",
+  "groupLabel": "Od czego zacząć",
+  "journeys": {
+    "fighter": {
+      "title": "Zawodnik",
+      "body": "Trenuj, śledź postępy i nawiązuj kontakty. Podstawowa aplikacja zawsze za darmo.",
+      "note": "Konfiguracja zawodnika · 2 krótkie kroki",
+      "cta": "Skonfiguruj profil zawodnika"
+    },
+    "coach": {
+      "title": "Trener",
+      "body": "Zarządzaj zawodnikami, programami i obozami.",
+      "note": "Konfiguracja trenera",
+      "cta": "Skonfiguruj profil trenera"
+    },
+    "gym": {
+      "title": "Klub / Sala",
+      "body": "Zarządzaj członkami, trenerami i swoim biznesem bokserskim.",
+      "note": "Konfiguracja klubu",
+      "cta": "Skonfiguruj klub"
+    },
+    "sponsor": {
+      "title": "Sponsor / Marka",
+      "body": "Współpracuj ze społecznością bokserską — wyzwania, wydarzenia, kluby.",
+      "note": "Wniosek partnera · sprawdza nasz zespół",
+      "cta": "Złóż wniosek partnera"
+    }
+  },
+  "hint": "Wybierz jedną opcję, aby kontynuować.",
+  "continue": "Dalej",
+  "opening": "Otwieramy…",
+  "stepDone": "gotowe",
+  "account": {
+    "title": "Jedno konto",
+    "body": "Zawodnik, trener, właściciel klubu i sponsor to role, które możesz skonfigurować na jednym koncie. Ten wybór decyduje tylko, od czego zaczniesz.",
+    "roles": {
+      "fighter": "Zawodnik",
+      "coach": "Trener",
+      "gym": "Klub",
+      "sponsor": "Sponsor"
+    }
+  },
+  "notSaved": "Twój wybór nie jest zapisywany. Jeśli teraz wyjdziesz, zapytamy ponownie następnym razem.",
+  "failure": {
+    "title": "Nie udało się otworzyć tej konfiguracji.",
+    "body": "Sprawdź połączenie i spróbuj ponownie. Na Twoim koncie nic się nie zmieniło.",
+    "unexpected": "Ta wersja SimpleFit nie może jeszcze tego otworzyć. Odśwież stronę i spróbuj ponownie.",
+    "retry": "Ponów"
+  }
+}
