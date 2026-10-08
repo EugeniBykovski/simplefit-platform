@@ -235,6 +235,12 @@ natural line boxes (`typography.siteRoles.web`):
 Use them only in the shell (`widgets/site-header`); pages use the product
 roles.
 
+The brand lockup's wordmark has three sizes (`BrandWordmark size`): `sm` 14
+(`type-auth-wordmark-sm`, the 72 px auth header of WA3, WA4 and WA4b), `md` 15
+(`type-title`, the site header and product chrome) and `lg` 16
+(`type-auth-wordmark`, the WA1 / WA1b brand panel). The auth header hairline
+is `border-subtle`, as the artboards draw it.
+
 ### System-state colour compositions (SF-34)
 
 No new colour tokens. `theme.css` composes the existing semantic tokens:

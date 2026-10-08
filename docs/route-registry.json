@@ -196,6 +196,17 @@
       }
     },
     {
+      "id": "web.minimal",
+      "platform": "web",
+      "parent": "web.root",
+      "description": "Minimal public chrome: the 72 px auth header without site navigation or footer, for public pages the design draws outside the public website (WA4b, the E01 email-link result). No session gate.",
+      "design": "WebEmailVerified.dc.html",
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(minimal)/layout.tsx"
+      }
+    },
+    {
       "id": "web.account",
       "platform": "web",
       "parent": "web.root",
@@ -7454,7 +7465,7 @@
       "discrepancies": ["D-PRODUCTION-FOUNDATION"],
       "production": {
         "file": "src/app/[locale]/(site)/page.tsx",
-        "note": "SF-11 foundation landing (site header + hero), not yet the L1 artboard."
+        "note": "SF-32 foundation placeholder body (the \"Web platform foundation\" page), not the L1 LandHome design. SF-42 owns only the shared public shell (web.site header, navigation, footer); SF-43 (Public Website Web — Complete Claude Design Page Set) replaces this and every other public placeholder body with its structured artboard, 1:1."
       },
       "screens": ["L1"]
     },
@@ -8082,7 +8093,7 @@
       "params": [],
       "name": "Email verified",
       "surface": "AUTH",
-      "shell": "web.site",
+      "shell": "web.minimal",
       "parent": null,
       "nav": {
         "type": "STANDALONE",
@@ -8095,8 +8106,8 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/(site)/verify-email/page.tsx",
-        "note": "SF-24: WA4b, the E01 link (/verify-email#token=…): verifies the address only, never creates a session."
+        "file": "src/app/[locale]/(minimal)/verify-email/page.tsx",
+        "note": "SF-24: WA4b, the E01 link (/verify-email#token=…): verifies the address only, never creates a session. SF-42: the web.minimal shell, as WebEmailVerified draws it (auth header, no site navigation or footer)."
       },
       "screens": ["WA4b"]
     }

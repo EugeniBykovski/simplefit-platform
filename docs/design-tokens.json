@@ -432,7 +432,7 @@
       }
     },
     "authRoles": {
-      "$comment": "SF-24: authentication typography (Claude Design onboarding page: WA1/WA1b sign in, O02w sign up, WA3/WA4 registration, WA4b link result, A01 welcome, O01c/O03 code entry). Larger than the product roles and specific to the auth frames, so each role has a web (1440) and a mobile (390) value. Use only on authentication screens.",
+      "$comment": "SF-24: authentication typography (Claude Design onboarding page: WA1/WA1b sign in, O02w sign up, WA3/WA4 registration, WA4b link result, A01 welcome, O01c/O03 code entry). Larger than the product roles and specific to the auth frames, so each role has a web (1440) and a mobile (390) value. Use only on authentication screens. auth-wordmark (16) and auth-wordmark-sm (14) are the brand lockup of the WA1/WA1b panel and of the 72 px auth header (SF-42).",
       "web": {
         "auth-display": {
           "family": "display",
@@ -474,6 +474,20 @@
           "size": 30,
           "lineHeight": 34,
           "weight": 700,
+          "tracking": 0
+        },
+        "auth-wordmark": {
+          "family": "display",
+          "size": 16,
+          "lineHeight": 20,
+          "weight": 600,
+          "tracking": 0
+        },
+        "auth-wordmark-sm": {
+          "family": "display",
+          "size": 14,
+          "lineHeight": 18,
+          "weight": 600,
           "tracking": 0
         }
       },

@@ -1711,7 +1711,7 @@ export const webRoutes = [
     id: "web.verify-email",
     path: "/verify-email",
     params: [],
-    shell: "web.site",
+    shell: "web.minimal",
     surface: "AUTH",
     parent: null,
     nav: "STANDALONE",
@@ -1746,6 +1746,11 @@ export const webShells = [
   },
   {
     id: "web.auth",
+    parent: "web.root",
+    navItems: [],
+  },
+  {
+    id: "web.minimal",
     parent: "web.root",
     navItems: [],
   },

@@ -35,7 +35,7 @@ function AuthBrand({ size, className }: { size: "sm" | "lg"; className?: string 
       )}
     >
       <BrandTile size={size} />
-      <BrandWordmark />
+      <BrandWordmark size={size} />
     </Link>
   );
 }
@@ -97,9 +97,9 @@ export function AuthSplitFrame({
         </div>
       </div>
       <main id="main" tabIndex={-1} className="relative flex flex-col outline-none">
-        <div className="flex items-center justify-between gap-4 px-4 pt-4 sm:px-6 lg:absolute lg:inset-x-0 lg:top-0 lg:justify-end lg:px-12 lg:pt-6">
-          <AuthBrand size="sm" className="lg:hidden" />
-          <AuthControls />
+        {/* Below lg the brand panel is hidden; the brand heads the form instead. */}
+        <div className="flex items-center px-4 pt-4 sm:px-6 lg:hidden">
+          <AuthBrand size="sm" />
         </div>
         <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6 lg:h-225 lg:flex-none lg:p-12">
           <div
@@ -167,6 +167,59 @@ export function AuthInfoList({
 }
 
 /**
+ * The 72 px auth header (WA3, WA4, WA4b): the brand on 56 px gutters inside
+ * the canonical 1440 px frame, the hairline inside the 72 px. `action` sits
+ * at the right ("Already a member? Sign in"). `controls` adds the language
+ * and theme switchers the sign-in and sign-up steps carry as production
+ * additions; WA4b draws none.
+ */
+export function AuthHeader({
+  action,
+  controls = false,
+}: {
+  action?: ReactNode;
+  controls?: boolean;
+}) {
+  return (
+    <header className="h-18 border-b border-border-subtle">
+      <Container
+        size="frame"
+        className="flex h-full items-center gap-4 px-4 sm:px-6 md:px-8 lg:px-14"
+      >
+        <AuthBrand size="sm" />
+        <span className="flex-1" />
+        {/* Production addition, kept off the designed right-edge anchor. */}
+        {controls && <AuthControls />}
+        {action && (
+          <div
+            data-auth-header-action
+            className="hidden type-body-sm text-muted-foreground sm:block"
+          >
+            {action}
+          </div>
+        )}
+      </Container>
+    </header>
+  );
+}
+
+/**
+ * The minimal public frame (`web.minimal`, WA4b WebEmailVerified): the auth
+ * header and the page, no site navigation and no footer. The page centres
+ * its column in the space below the header, as the artboard does.
+ */
+export function AuthMinimalFrame({ children }: { children: ReactNode }) {
+  return (
+    <div data-minimal-frame className="flex min-h-dvh flex-col">
+      <AuthHeader />
+      <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
+        {children}
+      </main>
+    </div>
+  );
+}
+
+/**
  * WA3 / WA4: a 72 px header (56 px gutters) and the step beside an optional
  * 420 px aside (56 px gap, 64 px gutters), both inside the canonical 1440 px
  * frame. `action` sits at the right of the header ("Already a member? Sign in").
@@ -182,26 +235,7 @@ export function AuthStepFrame({
 }) {
   return (
     <div className="flex min-h-dvh flex-col">
-      {/* 72 px including the hairline, as in the artboards (border inside). */}
-      <header className="h-18 border-b">
-        <Container
-          size="frame"
-          className="flex h-full items-center gap-4 px-4 sm:px-6 md:px-8 lg:px-14"
-        >
-          <AuthBrand size="sm" />
-          <span className="flex-1" />
-          {/* Production addition, kept off the designed right-edge anchor. */}
-          <AuthControls />
-          {action && (
-            <div
-              data-auth-header-action
-              className="hidden type-body-sm text-muted-foreground sm:block"
-            >
-              {action}
-            </div>
-          )}
-        </Container>
-      </header>
+      <AuthHeader action={action} controls />
       <main id="main" tabIndex={-1} className="flex-1 outline-none">
         <Container
           data-auth-frame="step"

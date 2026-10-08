@@ -338,6 +338,18 @@
   line-height: 1.625rem;
   font-weight: 400;
 }
+@utility type-auth-wordmark {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+}
+@utility type-auth-wordmark-sm {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  font-weight: 600;
+}
 @utility type-code-digit {
   font-family: var(--font-display);
   font-size: 1.875rem;

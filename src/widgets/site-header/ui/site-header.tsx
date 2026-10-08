@@ -24,13 +24,14 @@ import { SiteMenuNav, SiteNav } from "./site-nav";
 /**
  * Public website header (`web.site`): the header every public-website
  * artboard shares (Claude Design 1791448557-b0b9: L1–L5, PR1–PR6, SPX1–SPX2,
- * O02w). 76 px including the `border-subtle` hairline on the site Container; brand lockup,
- * the site links, then Sign in and the 42 px Get started, 36 px apart. The
- * language and theme switchers are approved production additions the
- * artboards do not draw (docs/design-system.md); they sit before Sign in.
- * Below 1280 px the links move into the menu sheet; below 640 px Sign in, Get
- * started and the language and theme controls do too, leaving the brand and
- * the menu.
+ * O02w), and nothing the artboards do not draw. 76 px including the
+ * `border-subtle` hairline on the site Container; brand lockup, the site
+ * links, then Sign in and the 42 px Get started, 36 px apart.
+ *
+ * Below 1280 px (the design draws only 1440) the links move into the menu
+ * sheet; below 640 px Sign in and Get started do too. The menu sheet also
+ * holds the language and theme controls: the artboards draw them nowhere in
+ * the public site, so they never appear in the header bar.
  */
 export function SiteHeader() {
   const t = useTranslations("shells.site");
@@ -42,13 +43,9 @@ export function SiteHeader() {
       <Container className="flex h-full items-center gap-9">
         <BrandLockup />
         <SiteNav />
-        <div className="ml-auto hidden items-center gap-1 sm:flex">
-          <LocaleSwitcher />
-          <ThemeSwitcher />
-        </div>
         <Link
           href={routeHref("web.login")}
-          className="hidden rounded-xs type-site-nav font-bold text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring sm:inline"
+          className="ml-auto hidden rounded-xs type-site-nav font-bold text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring sm:inline"
         >
           {t("signIn")}
         </Link>
@@ -72,7 +69,7 @@ export function SiteHeader() {
               <SheetDescription>{t("navigation")}</SheetDescription>
             </SheetHeader>
             <SiteMenuNav />
-            <div className="flex items-center gap-1 px-4 sm:hidden">
+            <div className="flex items-center gap-1 px-4">
               <LocaleSwitcher />
               <ThemeSwitcher />
             </div>

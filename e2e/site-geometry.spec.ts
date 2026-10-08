@@ -74,6 +74,8 @@ const GRAPHITE_975 = "rgb(13, 14, 13)";
 /** Header items that do not depend on the current page (every public-website artboard). */
 async function expectHeaderFrame(page: Page) {
   await expectBox(header(page), [0, 0, 1440, 76]);
+  // Nothing the artboards do not draw: no language, theme or menu controls at 1440.
+  await expect(header(page).getByRole("button")).toHaveCount(0);
   expect(await style(header(page), "border-bottom-width", "border-bottom-color")).toEqual([
     "1px",
     "rgb(31, 35, 32)",
@@ -312,6 +314,18 @@ test.describe("public site shell, responsive", () => {
 test.describe("public site shell, accessibility", () => {
   async function axe(page: Page) {
     await page.addScriptTag({ path: require.resolve("axe-core/axe.min.js") });
+    // Storybook's a11y addon may be running its own axe pass in the preview: wait for it.
+    for (let attempt = 0; ; attempt += 1) {
+      try {
+        return await runAxe(page);
+      } catch (error) {
+        if (attempt >= 20 || !String(error).includes("Axe is already running")) throw error;
+        await page.waitForTimeout(250);
+      }
+    }
+  }
+
+  async function runAxe(page: Page) {
     return page.evaluate(async () => {
       const { violations } = await (
         window as unknown as {
