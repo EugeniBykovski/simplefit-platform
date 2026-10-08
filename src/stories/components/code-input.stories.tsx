@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useState } from "react";
 import { expect, fn, userEvent } from "storybook/test";
 
-import { CodeInput, type CodeInputState } from "./code-input";
+import { CodeInput, type CodeInputState } from "@/shared/ui/code-input";
 
 /*
  * Claude Design component "AuthCodeInput" (shared by O03, WA4, O01c, WA1b):

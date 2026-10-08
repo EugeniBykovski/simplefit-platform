@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, userEvent } from "storybook/test";
 
-import { Field, FieldDescription, FieldError, FieldLabel } from "./field";
-import { Input } from "./input";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@/shared/ui/field";
+import { Input } from "@/shared/ui/input";
 
 /*
  * Canonical web field: 40 px (`fieldSize="lg"`: 44 px), radius md, body-sm on the `surface` well with a

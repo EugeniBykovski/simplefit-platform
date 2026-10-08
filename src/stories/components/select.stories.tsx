@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { Field, FieldLabel } from "./field";
+import { Field, FieldLabel } from "@/shared/ui/field";
 import {
   Select,
   SelectContent,
@@ -9,7 +9,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "./select";
+} from "@/shared/ui/select";
 
 const meta = {
   title: "Components/Select",

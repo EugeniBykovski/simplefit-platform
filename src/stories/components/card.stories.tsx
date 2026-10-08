@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { Badge } from "./badge";
-import { Button } from "./button";
+import { Badge } from "@/shared/ui/badge";
+import { Button } from "@/shared/ui/button";
 import {
   Card,
   CardAction,
@@ -10,8 +10,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./card";
-import { Skeleton } from "./skeleton";
+} from "@/shared/ui/card";
+import { Skeleton } from "@/shared/ui/skeleton";
 
 /** Card: surface, hairline border, radius 3xl, 18 × 20. Compact (`size="sm"`): 2xl, 14 × 16. */
 const meta = {

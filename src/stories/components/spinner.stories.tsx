@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { Spinner } from "./spinner";
+import { Spinner } from "@/shared/ui/spinner";
 
 /** For short or indeterminate waits. Labelled = announced (`role="status"`); unlabelled = decorative. */
 const meta = {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 
 /** Segmented pill track on surface; selected segment bone (`secondary`) 800. */
 const meta = {

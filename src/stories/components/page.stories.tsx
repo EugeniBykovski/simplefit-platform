@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { Container } from "./container";
-import { PageContent } from "./page";
+import { Container } from "@/shared/ui/container";
+import { PageContent } from "@/shared/ui/page";
 
 /*
  * PageContent (SF-42): how a page sits in its frame's `main`. The frame here

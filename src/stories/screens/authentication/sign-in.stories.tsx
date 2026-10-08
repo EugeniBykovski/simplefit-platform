@@ -3,7 +3,7 @@ import { expect, userEvent } from "storybook/test";
 
 import { LoginScreen } from "@/widgets/auth-screens";
 
-import { apiError, installApi, ok } from "./auth-story-api";
+import { apiError, installApi, ok } from "@/stories/support/auth-story-api";
 
 /*
  * WA1 "Sign in" (Claude Design WebLogin.dc.html, 1440). Google and Apple

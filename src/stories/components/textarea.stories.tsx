@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { Field, FieldDescription, FieldError, FieldLabel } from "./field";
-import { Textarea } from "./textarea";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@/shared/ui/field";
+import { Textarea } from "@/shared/ui/textarea";
 
 const meta = {
   title: "Components/Textarea",

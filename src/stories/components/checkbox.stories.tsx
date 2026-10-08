@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, userEvent } from "storybook/test";
 
-import { Checkbox } from "./checkbox";
-import { Label } from "./label";
+import { Checkbox } from "@/shared/ui/checkbox";
+import { Label } from "@/shared/ui/label";
 
 const meta = {
   title: "Components/Checkbox",

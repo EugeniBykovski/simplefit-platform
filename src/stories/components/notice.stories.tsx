@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { ClockIcon, MailIcon, ShieldIcon, TriangleAlertIcon } from "lucide-react";
 
-import { Notice } from "./notice";
+import { Notice } from "@/shared/ui/notice";
 
 /* Inline status box of the auth screens (O01c, O03, WA1b, WA4, WA4b). */
 const meta = {

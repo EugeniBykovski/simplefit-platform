@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { CopyIcon, PencilIcon, TrashIcon } from "lucide-react";
 
-import { Button } from "./button";
+import { Button } from "@/shared/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "./dropdown-menu";
+} from "@/shared/ui/dropdown-menu";
 
 const meta = {
   title: "Components/Dropdown",

@@ -4,7 +4,7 @@ import { expect, userEvent } from "storybook/test";
 import { SignupAccountScreen, SignupScreen } from "@/widgets/auth-screens";
 import { SiteFrame } from "@/widgets/site-header";
 
-import { apiError, installApi } from "./auth-story-api";
+import { apiError, installApi } from "@/stories/support/auth-story-api";
 
 /*
  * WA3 (WebRegAccount.dc.html). The role segments are presentation only and

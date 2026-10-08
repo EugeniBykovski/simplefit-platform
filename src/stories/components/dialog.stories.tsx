@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, screen, userEvent, waitFor } from "storybook/test";
 
-import { Button } from "./button";
+import { Button } from "@/shared/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./dialog";
+} from "@/shared/ui/dialog";
 import {
   Sheet,
   SheetContent,
@@ -19,7 +19,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./sheet";
+} from "@/shared/ui/sheet";
 
 /** Dialog: surface-elevated, radius 4xl, title h3, `overlay` scrim; Escape and the close button dismiss it. */
 const meta = {

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { ArrowRightIcon, PlusIcon, TimerIcon } from "lucide-react";
 import { expect, fn, userEvent, within } from "storybook/test";
 
-import { Button } from "./button";
+import { Button } from "@/shared/ui/button";
 
 const variants = [
   "primary",

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, userEvent } from "storybook/test";
 
-import { Label } from "./label";
-import { Switch } from "./switch";
+import { Label } from "@/shared/ui/label";
+import { Switch } from "@/shared/ui/switch";
 
 /** Canonical toggle: 44 × 26 (sm 34 × 20); on = primary, off = input. */
 const meta = {

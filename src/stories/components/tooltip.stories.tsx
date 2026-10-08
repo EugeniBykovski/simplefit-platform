@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { TimerIcon } from "lucide-react";
 
-import { Button } from "./button";
+import { Button } from "@/shared/ui/button";
 import {
   Popover,
   PopoverContent,
@@ -9,8 +9,8 @@ import {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-} from "./popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
+} from "@/shared/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 
 const meta = {
   title: "Components/Tooltip",

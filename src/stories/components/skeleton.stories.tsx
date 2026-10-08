@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { Skeleton } from "./skeleton";
+import { Skeleton } from "@/shared/ui/skeleton";
 
 /** For waits longer than ~300 ms; keeps the geometry of the content it replaces. Decorative. */
 const meta = {

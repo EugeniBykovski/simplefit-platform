@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import { AuthMinimalFrame, VerifyEmailScreen } from "@/widgets/auth-screens";
 
-import { apiError, installApi, ok } from "./auth-story-api";
+import { apiError, installApi, ok } from "@/stories/support/auth-story-api";
 
 /*
  * WA4b, the E01 link result (WebEmailVerified.dc.html: verified, already,

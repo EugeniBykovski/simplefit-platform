@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { Avatar, AvatarFallback, AvatarGroup } from "./avatar";
+import { Avatar, AvatarFallback, AvatarGroup } from "@/shared/ui/avatar";
 
 /** Initials on `highlight` in Unbounded 700; the accessible name is the person's name. */
 const meta = {

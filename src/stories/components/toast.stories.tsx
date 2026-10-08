@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { toast } from "sonner";
 
-import { Button } from "./button";
-import { Toaster } from "./sonner";
+import { Button } from "@/shared/ui/button";
+import { Toaster } from "@/shared/ui/sonner";
 
 /** Sonner toasts on surface-elevated (the Toaster is mounted once, in the preview). */
 const meta = {

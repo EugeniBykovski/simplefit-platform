@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { Checkbox } from "./checkbox";
-import { Field, FieldLabel } from "./field";
-import { Input } from "./input";
-import { Label } from "./label";
+import { Checkbox } from "@/shared/ui/checkbox";
+import { Field, FieldLabel } from "@/shared/ui/field";
+import { Input } from "@/shared/ui/input";
+import { Label } from "@/shared/ui/label";
 
 /*
  * Two label roles: a field label above a control (caption 700, muted) and an

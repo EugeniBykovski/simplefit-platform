@@ -3,7 +3,14 @@ import { expect, userEvent } from "storybook/test";
 
 import { LoginCodeScreen, SignupVerifyScreen } from "@/widgets/auth-screens";
 
-import { apiError, installApi, ok, seedPending, SESSION, VIEWER } from "./auth-story-api";
+import {
+  apiError,
+  installApi,
+  ok,
+  seedPending,
+  SESSION,
+  VIEWER,
+} from "@/stories/support/auth-story-api";
 
 /*
  * The shared 6-digit code step in every designed state: WA1b sign-in
