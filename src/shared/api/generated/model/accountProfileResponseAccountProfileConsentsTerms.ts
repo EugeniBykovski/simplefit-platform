@@ -15,7 +15,11 @@ export type AccountProfileResponseAccountProfileConsentsTerms = {
      * @nullable
      */
   accepted_version: string | null;
-  /** Whether the current version has been accepted (what registration completion checks). */
+  /**
+     * Whether the current version has been accepted. Initial registration completion requires it. A completed
+     * registration stays complete when a later version makes this `false`; it only signals that a re-consent is
+     * due (a future flow).
+     */
   current: boolean;
   /** The version currently in force. */
   current_version: string;

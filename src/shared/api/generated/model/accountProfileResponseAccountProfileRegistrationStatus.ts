@@ -7,7 +7,8 @@
 
 /**
  * `not_started`: nothing saved yet. `in_progress`: progress saved, not completed. `complete`:
- * completion recorded by `completeAccountRegistration`.
+ * completion recorded by `completeAccountRegistration`; permanent, also after a later legal
+ * document version change.
  */
 export type AccountProfileResponseAccountProfileRegistrationStatus = typeof AccountProfileResponseAccountProfileRegistrationStatus[keyof typeof AccountProfileResponseAccountProfileRegistrationStatus];
 

@@ -11,13 +11,15 @@ export type AccountProfileResponseAccountProfileRegistration = {
   /** @nullable */
   completed_at: string | null;
   /**
-     * What completion still needs, in form order: empty fields, and required consents not accepted
-     * at their current version. Empty once complete.
+     * What initial completion still needs, in form order: empty fields, and required consents not
+     * accepted at their current version. Always empty once complete, also after a document version
+     * change (see `consents.*.current`).
      */
   missing_requirements: AccountProfileResponseAccountProfileRegistrationMissingRequirementsItem[];
   /**
      * `not_started`: nothing saved yet. `in_progress`: progress saved, not completed. `complete`:
-     * completion recorded by `completeAccountRegistration`.
+     * completion recorded by `completeAccountRegistration`; permanent, also after a later legal
+     * document version change.
      */
   status: AccountProfileResponseAccountProfileRegistrationStatus;
 };
