@@ -350,3 +350,29 @@ test("an expired session goes to sign-in, keeping the Fighter journey", async ({
   await page.waitForURL((url) => url.pathname === "/en/login");
   expect(new URL(page.url()).searchParams.get("intent")).toBe("fighter");
 });
+
+test("display_name and weight_class round-trip: sent under their SF-25 names, restored after a reload", async ({
+  page,
+}) => {
+  const api = await fighterApi(page);
+  await page.goto(ROUTE);
+  await fillBasics(page);
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(heading(page, "Your boxing profile")).toBeVisible();
+  // Weight class: the private `weight_class` enum, chosen from its select.
+  await page.getByRole("combobox", { name: "Weight class · private" }).click();
+  await page.getByRole("option", { name: "−75 kg" }).click();
+  await page.getByRole("button", { name: "Back" }).click();
+  await expect(heading(page, "Your fighter profile")).toBeVisible();
+
+  const bodies = writes(api).map((request) => request.body as Record<string, unknown>);
+  expect(bodies[0]).toMatchObject({ display_name: "Alex K." });
+  expect(bodies[0]).not.toHaveProperty("name");
+  expect(bodies.at(-1)).toMatchObject({ weight_class: "minus_75" });
+  expect(api.state()).toMatchObject({ display_name: "Alex K.", weight_class: "minus_75" });
+
+  await page.goto(`${ROUTE}?step=profile`);
+  await expect(page.getByRole("combobox", { name: "Weight class · private" })).toHaveText(/−75 kg/);
+  await page.goto(`${ROUTE}?step=basics`);
+  await expect(page.getByLabel("Name", { exact: true })).toHaveValue("Alex K.");
+});

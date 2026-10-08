@@ -42,9 +42,15 @@ resolves to the resume step.
   WF0's Continue checks the step's requirements and the published username
   shape first, for immediate feedback only. Numbers are never rounded: a
   weight with two decimals is sent as typed and rejected (`invalid_format`).
-- **Countries** come from the runtime's CLDR region data minus the codes ISO
-  does not assign (`src/shared/lib/countries.ts`): exactly the 249 codes the
-  API accepts, named in the reader's language; the code is stored.
+- **Countries** come from the browser engine's own region names
+  (`Intl.DisplayNames`, so they are localized for free) minus every code
+  class ISO 3166-1 does not assign as a country: user-assigned (AA, QM–QZ,
+  XA–XZ, ZZ), exceptionally and transitionally reserved, and withdrawn codes
+  (`src/shared/lib/countries.ts`). The rule matters: Firefox names 11
+  withdrawn ISO 3166-3 codes (CT, FQ, JT, …) that Chromium and WebKit do not.
+  The result is the 249 codes the API accepts in Chromium, Firefox and
+  WebKit (`e2e/portability/countries.spec.ts`, English and Polish); the code
+  is stored, and the API stays the validator (`invalid_choice`).
 
 ## Steps, resume and completion
 
@@ -73,8 +79,10 @@ resolves to the resume step.
    the drawn 5 px).
 4. **Step rows** are 40 px tall (the drawn 7 px padding around a 26 px
    circle) on the 10 px horizontal step.
-5. **Radii** 24 and 19 px use the `3xl` (22) and `xl` (18) steps; `#5B615C`
-   (Complete, upcoming) uses `faint-foreground`.
+5. **Radii** (§8.1 tolerance ±2 px): the step card's 24 px is `3xl` 22
+   (−2 px); the goal chip's 19 px on a 38 px chip is `xl` 18 on a 36 px chip
+   (−1 px radius, −2 px height; a full pill either way). Every other radius
+   is exact. `#5B615C` (Complete, upcoming) uses `faint-foreground`.
 
 ## Current limitation
 

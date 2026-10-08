@@ -133,6 +133,18 @@ test.describe("at the artboard size (1440 × 980)", () => {
     });
     await expectBox(page.getByLabel("Next fight date · optional"), { x: 354, w: 324, h: 44 });
     await expectBox(page.getByLabel("Next fight event · optional"), { x: 692, w: 324, h: 44 });
+    // Radii (§8.1, ±2 px): the step card's 24 → `3xl` 22, the 38 px goal pill's
+    // 19 → `xl` 18 on a 36 px pill (both full pills); segments 18 = `xl`.
+    const radius = (selector: string) =>
+      page
+        .locator(selector)
+        .first()
+        .evaluate((el) => getComputedStyle(el).borderTopLeftRadius);
+    expect(await radius("[data-step-nav]")).toBe("22px");
+    expect(await radius('[data-field="goals"] label')).toBe("18px");
+    expect(await radius('[data-field="experience_level"] label')).toBe("18px");
+    expect(await radius('[data-field="experience_level"]')).toBe("22px");
+    await expectBox(page.locator('[data-field="goals"] label').first(), { h: 36 });
     await expectBox(page.getByRole("button", { name: "Back" }), { x: 354, h: 48 });
     const finish = await box(page.getByRole("button", { name: "Finish" }));
     expect(Math.abs(finish.x + finish.width - 1016)).toBeLessThanOrEqual(1);

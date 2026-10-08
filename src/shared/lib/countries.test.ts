@@ -8,17 +8,39 @@ describe("countries", () => {
     expect(codes).toHaveLength(249);
     expect(new Set(codes).size).toBe(codes.length);
     for (const code of codes) expect(code).toMatch(/^[A-Z]{2}$/);
-    for (const code of ["PL", "US", "GB", "DE", "UA", "MX", "FR", "AQ", "AX", "SS", "BQ"]) {
+    for (const code of ["PL", "US", "GB", "DE", "UA", "MX", "FR", "AQ", "AX", "SS", "BQ", "QA"]) {
       expect(codes).toContain(code);
     }
   });
 
-  it.each(["XK", "EU", "UN", "UK", "SU", "YU", "ZZ", "AC", "EA"])(
-    "excludes %s: CLDR names it, ISO does not assign it",
-    (code) => {
-      expect(countryCodes()).not.toContain(code);
-    },
-  );
+  it.each([
+    // Exceptionally and transitionally reserved, user-assigned, unknown.
+    "XK",
+    "EU",
+    "UN",
+    "UK",
+    "SU",
+    "YU",
+    "ZZ",
+    "AC",
+    "EA",
+    "NT",
+    "QO",
+    "XA",
+    "AA",
+    // Withdrawn codes some engines still name (Firefox: ISO 3166-3).
+    "CT",
+    "FQ",
+    "JT",
+    "MI",
+    "NQ",
+    "PC",
+    "PU",
+    "PZ",
+    "WK",
+  ])("excludes %s: not an officially assigned country", (code) => {
+    expect(countryCodes()).not.toContain(code);
+  });
 
   it("names and sorts countries in the reader's language", () => {
     const de = countryOptions("de");
