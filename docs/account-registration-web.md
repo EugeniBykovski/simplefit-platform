@@ -135,6 +135,41 @@ nowhere rather than to an empty page or an invented URL.
   links.
 - **Public launch readiness**: blocked by the above.
 
+## Release gate
+
+No repository deploys automatically: `simplefit-platform`, `simplefit-api`
+and `simplefit-mobile` run CI checks on `main` only, with no deployment
+workflow, GitHub environment, deployment or hosting status (checked at
+SF-46). Merging WA5 therefore exposes no public consent collection by
+itself.
+
+Before any public deployment of the web client, the release must have:
+
+1. The approved Terms of Service and Privacy Policy published at registry
+   routes, matching the API's configured current versions.
+2. The WA5 "Read" links to those routes.
+3. Legal sign-off that the published versions are the ones the API records.
+
+## Real-backend smoke test
+
+At SF-46 the production web build ran against a local Phoenix dev API and
+PostgreSQL, with no request mocked, and passed:
+
+1. WA3 → real `POST /api/auth/email/registrations` (202) → WA4.
+2. Authentication was completed for a development test user through the
+   domain's session API, because development never exposes email codes. The
+   session was then restored by the real refresh endpoint.
+3. SF-45 sent the user to WA5 with `intent=fighter`. WA5 loaded
+   `not_started`, empty and unchecked.
+4. A partial save (name, DOB, Terms) was not completed. A reload resumed it,
+   with Terms locked at the current version.
+5. Privacy → `PATCH` → `complete-registration` (200) → entry → WF0
+   (`?step=basics&intent=fighter`).
+6. Reopening WA5 went straight back to WF0.
+
+The database recorded `complete` and both consents at `terms-v1` /
+`privacy-v1`, with product news never written.
+
 ## Verification
 
 - `src/features/account-registration/model/form.test.ts`: dates (time zone,

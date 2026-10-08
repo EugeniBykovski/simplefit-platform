@@ -803,6 +803,26 @@ async function expectFrame(page: Page, width: number) {
 }
 
 test.describe("geometry at the artboard size (1440 × 980)", () => {
+  test("the notice live region is present from the start, takes no room, and announces in place", async ({
+    page,
+  }) => {
+    await openWa5(page);
+    const region = page.locator('main div[role="status"][aria-live="polite"]');
+    await expect(region).toHaveCount(1);
+    // Empty: out of the flow (no 22 px gap between the lead and the fields).
+    expect(await region.evaluate((el) => getComputedStyle(el).position)).toBe("absolute");
+    await expectBox(fullName(page), { y: 279 });
+    // The same element receives the notice, so assistive technology announces it.
+    await region.evaluate((el) => ((el as HTMLElement & { marker?: true }).marker = true));
+    await cta(page).click();
+    const notice = page.locator("[data-step-notice=invalid]");
+    await expect(notice).toContainText("Check the highlighted fields.");
+    expect(
+      await notice.evaluate((el) => (el as HTMLElement & { marker?: true }).marker === true),
+    ).toBe(true);
+    expect(await notice.evaluate((el) => getComputedStyle(el).position)).toBe("static");
+  });
+
   test("WA5: frame, step card, heading, fields, agreements, CTA and aside on the artboard", async ({
     page,
   }) => {
