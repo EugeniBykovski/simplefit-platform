@@ -47,8 +47,9 @@ export default defineConfig({
         launchOptions: { args: ["--font-render-hinting=none"] },
       },
     },
-    // SF-38: browser-engine portability of production behaviour that rests on
-    // engine data (the country list comes from each engine's region names).
+    // SF-38, SF-46: browser-engine portability of production behaviour that
+    // rests on the engine (the country list comes from each engine's region
+    // names; the date of birth from each engine's date input).
     ...(
       [
         ["chromium", devices["Desktop Chrome"]],

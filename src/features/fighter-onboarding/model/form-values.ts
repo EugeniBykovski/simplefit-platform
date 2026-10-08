@@ -146,19 +146,3 @@ export function basicsErrors(
   if (values.city.trim() === "") errors.city = "required.city";
   return errors;
 }
-
-/**
- * The part of `patch` this page changed (`dirty`: React Hook Form's
- * `dirtyFields`). A save sends only these, so a value another client saved
- * meanwhile (the mobile app, another tab) is never written back with this
- * page's older copy. SF-25 merges a partial PATCH; omitted fields are kept.
- */
-export function changedOnly(
-  patch: FighterProfilePatch,
-  dirty: Partial<Record<string, unknown>>,
-): FighterProfilePatch {
-  const isDirty = (value: unknown) => (Array.isArray(value) ? value.some(Boolean) : Boolean(value));
-  return Object.fromEntries(
-    Object.entries(patch).filter(([field]) => isDirty(dirty[field])),
-  ) as FighterProfilePatch;
-}

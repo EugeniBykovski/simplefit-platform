@@ -40,3 +40,20 @@ export function applyApiFieldErrors<TValues extends FieldValues>(
 
   return true;
 }
+
+/**
+ * The part of a PATCH body this form changed (`dirty`: React Hook Form's
+ * `dirtyFields`, keyed like the body). A save sends only these, so a value
+ * another client saved meanwhile (the mobile app, another tab) is never
+ * written back with this form's older copy; the API merges a partial PATCH
+ * and keeps omitted fields (SF-27).
+ */
+export function changedOnly<T extends object>(
+  patch: T,
+  dirty: Partial<Record<string, unknown>>,
+): Partial<T> {
+  const isDirty = (value: unknown) => (Array.isArray(value) ? value.some(Boolean) : Boolean(value));
+  return Object.fromEntries(
+    Object.entries(patch as Record<string, unknown>).filter(([field]) => isDirty(dirty[field])),
+  ) as Partial<T>;
+}

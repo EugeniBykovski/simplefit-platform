@@ -1,0 +1,92 @@
+{
+  "metaTitle": "Podstawowe dane",
+  "frame": {
+    "badge": "Konfiguracja konta",
+    "signOut": "Wyloguj się"
+  },
+  "nav": {
+    "label": "Kroki konfiguracji konta",
+    "title": "Konfiguracja konta",
+    "note": "Potrzebne raz dla każdej roli na Twoim koncie.",
+    "steps": {
+      "basics": "Podstawowe dane",
+      "start": "Od czego zacząć",
+      "setup": "Twoja konfiguracja"
+    },
+    "footnote": "Krok 2 jest pomijany, gdy już wybrano, od czego zacząć.",
+    "later": "po konfiguracji konta"
+  },
+  "eyebrow": "Podstawowe dane · raz",
+  "title": "Zanim zaczniesz",
+  "lead": "Te dane należą do Twojego konta SimpleFit, a nie do profilu roli. Podajesz je raz — każda rola dodana później korzysta z tego samego konta.",
+  "loading": "Wczytujemy Twoje konto…",
+  "loadFailure": {
+    "title": "Nie udało się wczytać konta.",
+    "body": "Sprawdź połączenie i spróbuj ponownie.",
+    "retry": "Spróbuj ponownie"
+  },
+  "notices": {
+    "failure": {
+      "title": "Nie udało się zapisać danych.",
+      "body": "Sprawdź połączenie. Nic z tego, co wpisano, nie przepadło.",
+      "retry": "Ponów"
+    },
+    "invalid": {
+      "title": "Sprawdź zaznaczone pola.",
+      "body": "Popraw je, aby kontynuować."
+    }
+  },
+  "fullName": {
+    "label": "Imię i nazwisko",
+    "placeholder": "Twoje imię i nazwisko",
+    "help": "Nie jest pokazywane w żadnym profilu."
+  },
+  "dateOfBirth": {
+    "label": "Data urodzenia",
+    "help": "Co najmniej 16 lat · po przejściu dalej nie można jej zmienić."
+  },
+  "agreements": {
+    "label": "Zgody",
+    "terms": "Akceptuję Regulamin",
+    "privacy": "Akceptuję Politykę prywatności",
+    "required": "· wymagane",
+    "news": "Wysyłaj mi nowości o produkcie e-mailem",
+    "newsNote": "· opcjonalnie · maks. 2 razy w miesiącu",
+    "newsFootnote": "Nowości o produkcie nigdy nie są wymagane. Zmienisz to w każdej chwili w ustawieniach.",
+    "accepted": "Zaakceptowano",
+    "newVersion": "Obowiązuje nowa wersja: zaakceptuj ją, aby kontynuować."
+  },
+  "continue": "Dalej",
+  "saving": "Zapisywanie…",
+  "why": {
+    "title": "Dlaczego pytamy",
+    "fullName": {
+      "title": "Imię i nazwisko",
+      "body": "Imię i nazwisko na Twoim koncie. Profile ról wybierają później własną nazwę wyświetlaną."
+    },
+    "dateOfBirth": {
+      "title": "Data urodzenia",
+      "body": "Potwierdza, że masz co najmniej 16 lat. Prywatne — nigdy nie jest pokazywane innym."
+    },
+    "consents": {
+      "title": "Regulamin i prywatność",
+      "body": "Zapisujemy, którą wersję zaakceptowano i kiedy."
+    }
+  },
+  "next": {
+    "title": "Co dalej",
+    "body": "Wybrano, od czego zacząć, przed zalogowaniem? Od razu tam przejdziesz. W przeciwnym razie wybierzesz w następnym kroku.",
+    "note": "Nic tutaj nie wybiera roli. Logowanie przez Google lub Apple również nie."
+  },
+  "errors": {
+    "fullNameRequired": "Podaj imię i nazwisko.",
+    "dateOfBirthRequired": "Podaj datę urodzenia.",
+    "tooYoung": "Aby korzystać z SimpleFit, musisz mieć co najmniej 16 lat.",
+    "invalidDate": "Podaj prawdziwą datę, nie z przyszłości.",
+    "immutable": "Daty urodzenia nie można już zmienić.",
+    "tooLong": "To za długie.",
+    "terms": "Zaakceptuj Regulamin, aby kontynuować.",
+    "privacy": "Zaakceptuj Politykę prywatności, aby kontynuować.",
+    "invalid": "Sprawdź tę wartość."
+  }
+}

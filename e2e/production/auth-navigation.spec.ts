@@ -10,9 +10,10 @@ import { apiError, expectProviderControls, open, seedPending } from "./harness";
  * `returnTo`). The API and the providers are deterministic mocks at the
  * network edge; nothing here talks to Google, Apple or a backend.
  *
- * The destinations reached here (account registration WA5, role selection
- * WA6, the role onboarding entries) are still SF-32 placeholders: the flows
- * end on the right route, not on a finished screen.
+ * The destinations reached here: account registration (WA5, SF-46) renders
+ * its form on a not-started registration; role selection (WA6) and the other
+ * role onboarding entries are still SF-32 placeholders, so those flows end on
+ * the right route, not on a finished screen.
  */
 
 test.use({ viewport: { width: 1440, height: 900 } });
@@ -39,9 +40,42 @@ type EntryFixture = {
   fighter_profile?: "not_started" | "in_progress" | "completed";
 };
 
-/** The signed-in API: the current user and the entry resolution, which records its intent. */
+/** A new account's SF-44 registration, as WA5 reads it. */
+const NEW_ACCOUNT = {
+  account_profile: {
+    registration: {
+      status: "not_started",
+      completed_at: null,
+      missing_requirements: ["full_name", "date_of_birth", "terms", "privacy"],
+    },
+    full_name: null,
+    date_of_birth: null,
+    consents: Object.fromEntries(
+      (["terms", "privacy"] as const).map((kind) => [
+        kind,
+        {
+          accepted: false,
+          accepted_version: null,
+          accepted_at: null,
+          current_version: `${kind}-v1`,
+          current: false,
+        },
+      ]),
+    ),
+    product_news: { subscribed: false, updated_at: null },
+  },
+};
+
+/**
+ * The signed-in API: the current user, a new account's registration (WA5) and
+ * the entry resolution, which records its intent.
+ */
 async function signedInApi(page: Page, entry: EntryFixture) {
   const resolutions: (string | null)[] = [];
+  await page.route(
+    (url) => url.pathname === "/api/v1/me/account-profile" && url.port !== "3100",
+    (call) => call.fulfill({ json: NEW_ACCOUNT }),
+  );
   await page.route(
     (url) => url.pathname === "/api/me" && url.port !== "3100",
     (call) =>
@@ -129,13 +163,13 @@ test("email registration: WA3 → WA4 → entry → account registration (WA5), 
     { registration_token: "sfg_fixture", code: "482910", refresh_token_transport: "cookie" },
   ]);
   expect(resolutions[0]).toBe("coach");
-  // WA5 is still the SF-32 placeholder: the flow ends on the right route, not a form.
-  await expect(page.getByRole("heading", { level: 1, name: "Account basics" })).toBeVisible();
-  await expect(page.getByRole("textbox")).toHaveCount(0);
+  // WA5 (SF-46): the account basics form, empty for a new account.
+  await expect(page.getByRole("heading", { level: 1, name: "Before you start" })).toBeVisible();
+  await expect(page.getByLabel("Full name")).toHaveValue("");
   // Not a trap: the frame keeps Sign out and the brand link to the public site.
   await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
   await expect(page.getByRole("link", { name: /SimpleFit Boxing/ })).toHaveAttribute("href", "/en");
-  await page.screenshot({ path: "test-results/production/flow-wa5-placeholder.png" });
+  await page.screenshot({ path: "test-results/production/flow-wa5.png" });
 });
 
 test("email sign-in: WA1 → WA1b → entry → role selection (WA6)", async ({ page }) => {

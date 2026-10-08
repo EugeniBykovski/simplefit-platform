@@ -1,3 +1,4 @@
+import type accountRegistration from "../../../messages/en/accountRegistration.json";
 import type actions from "../../../messages/en/actions.json";
 import type apiHealth from "../../../messages/en/apiHealth.json";
 import type app from "../../../messages/en/app.json";
@@ -33,6 +34,7 @@ export const namespaces = [
   "shells",
   "system",
   "fighterOnboarding",
+  "accountRegistration",
 ] as const;
 
 export type Namespace = (typeof namespaces)[number];
@@ -52,6 +54,7 @@ export type Messages = {
   shells: typeof shells;
   system: typeof system;
   fighterOnboarding: typeof fighterOnboarding;
+  accountRegistration: typeof accountRegistration;
 };
 
 export type MessageTree = { [key: string]: string | MessageTree };

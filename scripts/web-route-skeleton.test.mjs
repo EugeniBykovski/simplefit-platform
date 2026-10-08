@@ -31,6 +31,8 @@ const REAL_SCREENS = [
   "web.dev.design-system",
   // SF-38: Fighter web registration (WF0, WF1, WF6).
   "web.app.onboarding.fighter",
+  // SF-46: account basics & consent (WA5).
+  "web.app.onboarding.account",
 ];
 
 const placeholderSource = (id) => `import { placeholderRoute } from "@/widgets/feature-placeholder";

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { fighterApi } from "./fighter-api";
+import { fighterApi } from "./onboarding-api";
 import { axeViolations, box, expectBox, overflow, VIEWPORTS } from "./harness";
 
 /*

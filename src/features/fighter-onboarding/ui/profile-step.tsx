@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 
 import type { FighterProfile, FighterProfilePatch } from "@/entities/fighter-profile";
+import { changedOnly } from "@/shared/lib/forms";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
@@ -14,7 +15,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { rejectionOf, type FieldMessage } from "../model/errors";
 import {
   basicsFrom,
-  changedOnly,
   EXPERIENCE_LEVELS,
   GOALS,
   profileFrom,

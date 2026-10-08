@@ -2,12 +2,12 @@ import { describe, expect, it } from "vitest";
 
 import type { FighterProfile } from "@/entities/fighter-profile";
 import { ApiError } from "@/shared/api/http/api-error";
+import { changedOnly } from "@/shared/lib/forms";
 
 import { messageFor, rejectionOf } from "./errors";
 import {
   basicsErrors,
   basicsPatch,
-  changedOnly,
   GOALS,
   profileFrom,
   profilePatch,
