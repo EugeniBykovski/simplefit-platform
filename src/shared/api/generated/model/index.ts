@@ -5,6 +5,16 @@
  * SimpleFit API 0.1.0
  */
 
+export * from './accountProfileResponse';
+export * from './accountProfileResponseAccountProfile';
+export * from './accountProfileResponseAccountProfileConsents';
+export * from './accountProfileResponseAccountProfileConsentsPrivacy';
+export * from './accountProfileResponseAccountProfileConsentsTerms';
+export * from './accountProfileResponseAccountProfileProductNews';
+export * from './accountProfileResponseAccountProfileRegistration';
+export * from './accountProfileResponseAccountProfileRegistrationMissingRequirementsItem';
+export * from './accountProfileResponseAccountProfileRegistrationStatus';
+export * from './accountProfileUpdateRequest';
 export * from './appleAuthRequest';
 export * from './appleAuthRequestRefreshTokenTransport';
 export * from './appleAuthResponse';
