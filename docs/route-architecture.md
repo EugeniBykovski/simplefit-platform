@@ -62,7 +62,11 @@ Rules:
   web email-verification link landing (WA4b, `/verify-email`) and the E17
   sign-in code email, then with `1791399145-48dd` (SF-27 design pass), which
   added the WF0 row (web Fighter "Profile basics", `?step=basics`) and marked
-  WF2–WF5 future (`D-WEB-FIGHTER-ONBOARDING-FLOW`) (`source.version`).
+  WF2–WF5 future (`D-WEB-FIGHTER-ONBOARDING-FLOW`), then with
+  `1791448557-b0b9` (SF-45 design pass, Version 78), which added WA5 (web
+  account basics and consent, `/app/onboarding/account`) and WA6 (choose
+  where to start, `/app/onboarding/role`) (`D-ENTRY-RESOLUTION`)
+  (`source.version`).
 
 ## 2. Canonical route model
 
@@ -356,9 +360,12 @@ decides; all targets are registry routes (`guards`, `capabilities`).
    web they are account-level pages in `web.account`, outside `/app` and every
    workspace. The redirects themselves are implemented by the
    authentication/account lifecycle tickets.
-5. **Incomplete account onboarding** (consent or first role missing) → the
-   account onboarding routes (`guards.accountOnboarding`). Account-level
-   `phase: ONBOARDING` routes are offered only until it completes.
+5. **Incomplete account onboarding** (account registration or first role
+   missing) → the account onboarding routes (`guards.accountOnboarding`:
+   `/app/onboarding/account` and `/app/onboarding/role` on web,
+   `/signup/consent` and `/onboarding/role` on mobile), as resolved by the
+   backend (below). Account-level `phase: ONBOARDING` routes are offered only
+   until it completes.
 6. **Missing capability** (for example, a non-fighter opening a fighter-only
    route) → the default destination. `ADMIN` routes answer **not found**
    instead, so their existence is not revealed.
@@ -382,29 +389,81 @@ GYM_WORKSPACE, SPONSOR_WORKSPACE (web). Without any, account onboarding.
 `web.app` and `mobile.root` are `ENTRY` routes that apply exactly this
 resolution.
 
-**Application entry (SF-24).** Every sign-in method (Google, Apple, the
+**Application entry (SF-45).** Every sign-in method (Google, Apple, the
 email sign-in code and the sign-up verification code) ends in one pipeline,
 `completeAuthentication`: store the session, resolve the viewer with
-`GET /api/me`, publish `authenticated`. The guest-only gate then navigates
-once, through a pure `resolveEntry(viewer, returnTo)` per client: the valid
-`returnTo`, otherwise the neutral entry (`/app` on web, `/` on mobile). The
-API exposes only the viewer's id today, so the default destination,
-onboarding, restricted-account and workspace rules above are not applied
-yet: no role, profile, workspace, onboarding phase, consent, account status
-or last workspace is inferred on the client. SF-25+ add those branches to
-`resolveEntry` when `GET /api/me` carries that state. A network or server
-failure while the session is restored or the viewer resolved is
-`unavailable` (credentials kept, retryable failure state), never a sign-out;
-only a rejected credential (401) is. Without any mobile destination (a sponsor-only user), mobile
-falls back to `guards.defaultDestinationFallback` (`/workspaces`,
-`D-MOBILE-SPONSOR-ADMIN`).
+`GET /api/me`, publish `authenticated`. The guest-only gate, and the neutral
+entries `web.app` and `mobile.root`, then ask the backend where to go:
+`GET /api/v1/me/entry?intent=…` (simplefit-api ADR 0017) returns a semantic
+destination derived from current state, never a path. Each client maps it
+through `guards.entryDestinations` to its own route and navigates once,
+replacing the auth page (`D-ENTRY-RESOLUTION`):
+
+| Destination            | Web                          | Mobile                      |
+| ---------------------- | ---------------------------- | --------------------------- |
+| `account_registration` | `web.app.onboarding.account` | `mobile.signup.consent`     |
+| `role_selection`       | `web.app.onboarding.role`    | `mobile.onboarding.role`    |
+| `fighter_onboarding`   | `web.app.onboarding.fighter` | `mobile.onboarding.fighter` |
+| `fighter_home`         | `web.app.home`               | `mobile.home`               |
+| `coach_onboarding`     | `web.app.onboarding.coach`   | `mobile.onboarding.coach`   |
+| `gym_onboarding`       | `web.app.onboarding.gym`     | `mobile.onboarding.gym`     |
+| `sponsor_application`  | `web.partners.apply`         | `mobile.onboarding.role`    |
+
+The backend decides, in order: account registration not complete →
+`account_registration` (mandatory, whatever else applies; a later Terms or
+Privacy version never reopens it); `intent=fighter` → Fighter onboarding until
+the profile is complete, then Fighter home; `coach`, `gym`, `sponsor` →
+those journeys' entry points (nothing is created for them); no intent → an
+in-progress Fighter onboarding resumes, a completed one goes home, otherwise
+`role_selection`. Generic Google / Apple sign-up never implies Fighter. Mobile has no sponsor surface, so
+`sponsor_application` opens O05, whose Sponsor / Brand choice continues to
+the web partner application; it never opens the workspace chooser (A04) and
+implies no Sponsor capability or workspace. `guards.defaultDestinationFallback` (`/workspaces`,
+`D-MOBILE-SPONSOR-ADMIN`) is for a signed-in user whose only real workspace
+has no mobile surface (a sponsor workspace member), once workspace data
+exists; entry resolution never uses it.
+
+`intent` (`guards.intentParam`) is the journey the user explicitly tried to
+enter: `fighter`, `coach`, `gym` or `sponsor`, the backend's allow-list.
+Role calls to action (the O02w role cards) add it; the auth steps carry it
+next to `returnTo`; the backend echoes it and never stores it. It is never a
+role, a capability or an authorization. Anything else is dropped. A refresh
+keeps it only because it is in the URL; when it is lost (a new mobile
+process), role selection is the safe fallback.
+
+`returnTo` keeps the SF-24 policy above and comes after mandatory state: a
+mandatory destination (`account_registration`, unfinished
+`fighter_onboarding`) always wins and the onboarding route keeps
+`returnTo` and `intent` in its URL, so they are resolved again once the step
+completes. An explicit intent leads to its journey unless that journey is
+already complete. Otherwise a safe `returnTo` is used when its route needs no
+capability or one the backend reports (`capabilities`, a routing projection:
+today `FIGHTER` once Fighter onboarding is complete); the entry itself is
+never a `returnTo`. Nothing is stored server-side, so concurrent tabs and
+repeated calls converge on current state. Workspace choice (web WA2, mobile
+A04) takes no part until real multi-workspace data exists: no workspace is
+offered or inferred. A network or server failure while the session or the
+entry is resolved is retryable and never a sign-out; only a rejected
+credential (401) is.
+
+**Onboarding entry routes** never require the capability they create
+(`D-ONBOARDING-ENTRY-CAPABILITY`): Fighter, Coach and Gym onboarding on both
+platforms need an authenticated session only (`capability: null`,
+`phase: ONBOARDING`); the application routes after onboarding keep their
+capability. On web the onboarding layout additionally sends a role
+onboarding page to account registration while it is incomplete, and leaves
+account registration once it is complete.
+
+**WA3 consent** (`D-WA3-PREAUTH-CONSENT`): the pre-authentication checkboxes
+on `/signup/account` are presentation only, never sent or stored; consent is
+recorded by account registration (WA5 on web, O04 on mobile).
 
 **Web Fighter onboarding (SF-27).** `/app/onboarding/fighter` needs an
 authenticated session only (`capability: null`, `phase: ONBOARDING`): it is
 the route that creates and resumes the FighterProfile, and the FIGHTER
 capability exists only once that profile does, so requiring it would be
-circular. Fighter intent reaches it through `returnTo` from sign-up, never
-through a user role or type. Its current steps are WF0 (`?step=basics`), WF1
+circular. Fighter intent reaches it as the ephemeral `intent=fighter`
+parameter resolved by the backend (SF-45), never through a user role or type. Its current steps are WF0 (`?step=basics`), WF1
 (`?step=profile`) and WF6 (`?step=complete`); the query is navigation only.
 Which step to show, and whether onboarding is complete, comes from
 `GET /api/v1/me/fighter-profile` (SF-25: `onboarding.status`,
@@ -522,8 +581,10 @@ src/app/[locale]/
   session restore, then sends signed-out visitors to the area's sign-in route
   (`guards.signIn`: `/login`, `/sponsor/login`, `/admin/login`) with
   `returnTo` (when the page is a valid destination); `GuestOnly` sends an
-  authenticated viewer to `resolveEntry` (the valid `returnTo`, otherwise
-  `/app`). Both render the layout's `unavailable` view (`SessionFailure`)
+  authenticated viewer through `EntryRedirect`, the backend entry resolution
+  with the page's `returnTo` and `intent` (§9, SF-45), as `/app` does;
+  `OnboardingGate` keeps account registration first on the onboarding
+  routes. Both session gates render the layout's `unavailable` view (`SessionFailure`)
   while the session cannot be confirmed. Refreshes are serialized across tabs
   with a Web Lock and sign-in / sign-out are broadcast between tabs (ADR 0010
   in simplefit-api).
@@ -616,8 +677,9 @@ src/app/
   sign-in and authenticated consent):
   - AUTHENTICATED: waits for the session restore, then sends signed-out
     visitors to `/login` with `returnTo=<path + query>`;
-  - GUEST_ONLY: sends an authenticated viewer to `resolveEntry` (the valid
-    `returnTo`, otherwise the entry `/`);
+  - GUEST_ONLY: sends an authenticated viewer through the backend entry
+    resolution with its `returnTo` and `intent` (§9, SF-45), as the entry
+    `/` does;
   - PUBLIC (`/checkout`, invite links): renders for everyone.
 
   The navigator stays mounted under the pending cover (hidden from assistive
@@ -739,9 +801,9 @@ screenshots:
 
 Every entry has a source A, a source B, the exact mismatch, its impact, a
 resolution and a status; the full text is in `discrepancies` of the registry.
-The 18 product decisions approved on 2026-10-06 and the SF-27 decision of
-2026-10-07 carry `decision` and `decidedOn`. No discrepancy awaits a product
-decision; six are `DEFERRED`.
+The 18 product decisions approved on 2026-10-06, the SF-27 decision of
+2026-10-07 and the SF-45 decisions of 2026-10-08 carry `decision` and
+`decidedOn`. No discrepancy awaits a product decision; seven are `DEFERRED`.
 
 | Id                                 | Status   | Decision / summary                                                                         |
 | ---------------------------------- | -------- | ------------------------------------------------------------------------------------------ |
@@ -780,6 +842,9 @@ decision; six are `DEFERRED`.
 | `D-CANVAS-GROWTH`                  | RESOLVED | Canvas grew from 456 (SF-16) to 473 artboards (`1791276973-ad1d`)                          |
 | `D-WEB-COACH-FIGHTER-INVITE`       | DEFERRED | Coach web "Invite fighters" links the mobile INV1 artboard: design gap, no web route       |
 | `D-WEB-FIGHTER-ONBOARDING-FLOW`    | DEFERRED | Web Fighter onboarding: WF0, WF1, WF6 current; WF2–WF5 future; session-only access         |
+| `D-ENTRY-RESOLUTION`               | RESOLVED | Backend entry resolver; semantic destinations; WA5, WA6; ephemeral `intent`                |
+| `D-ONBOARDING-ENTRY-CAPABILITY`    | RESOLVED | Onboarding entry routes need a session only, never the capability they create              |
+| `D-WA3-PREAUTH-CONSENT`            | DEFERRED | WA3 consent checkboxes are not authoritative; WA5 records consent; SF-36 reconciles        |
 
 Gallery rows dropped by a decision are listed in `excludedRows`, so every
 row stays accounted for:

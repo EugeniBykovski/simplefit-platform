@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { Link, useRouter } from "@/shared/i18n/navigation";
-import { withReturnTo } from "@/shared/routes/return-to";
+import { withContinuation, type Continuation } from "@/shared/routes/continuation";
 import { Button } from "@/shared/ui/button";
 import { CODE_LENGTH, CodeInput } from "@/shared/ui/code-input";
 import { Notice } from "@/shared/ui/notice";
@@ -28,24 +28,24 @@ import { StepPending } from "./sign-in-code-step";
  * registration device creates the account and the session. Without a pending
  * registration in this tab it goes back to the email step.
  */
-export function RegistrationCodeStep({ returnTo }: { returnTo?: string }) {
+export function RegistrationCodeStep({ continuation }: { continuation?: Continuation }) {
   const flow = usePendingFlow("registration");
   const router = useRouter();
 
   useEffect(() => {
-    if (flow === null) router.replace(withReturnTo("web.signup.account", returnTo));
-  }, [flow, router, returnTo]);
+    if (flow === null) router.replace(withContinuation("web.signup.account", continuation));
+  }, [flow, router, continuation]);
 
   if (!flow) return <StepPending />;
-  return <RegistrationCodeForm flow={flow} returnTo={returnTo} />;
+  return <RegistrationCodeForm flow={flow} continuation={continuation} />;
 }
 
 export function RegistrationCodeForm({
   flow,
-  returnTo,
+  continuation,
 }: {
   flow: PendingRegistration;
-  returnTo?: string;
+  continuation?: Continuation;
 }) {
   const t = useTranslations("auth.code.registration");
   const code = useTranslations("auth.code");
@@ -96,7 +96,7 @@ export function RegistrationCodeForm({
     setHandOffFailure(undefined);
     try {
       await handOffToSignIn(flow.email);
-      router.push(withReturnTo("web.login.code", returnTo));
+      router.push(withContinuation("web.login.code", continuation));
     } catch (error) {
       setHandOffFailure(requestFailureOf(error));
       setHandingOff(false);
@@ -114,7 +114,7 @@ export function RegistrationCodeForm({
     else if (cta.action === "handoff") void handOff();
   }
 
-  const signIn = withReturnTo("web.login", returnTo);
+  const signIn = withContinuation("web.login", continuation);
 
   return (
     <div className="flex flex-col gap-5">
@@ -180,7 +180,10 @@ export function RegistrationCodeForm({
         <p className="type-body-sm text-faint-foreground">
           {t.rich("links", {
             change: (chunks) => (
-              <Link href={withReturnTo("web.signup.account", returnTo)} className={textLinkClass}>
+              <Link
+                href={withContinuation("web.signup.account", continuation)}
+                className={textLinkClass}
+              >
                 {chunks}
               </Link>
             ),

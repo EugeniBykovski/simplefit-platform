@@ -16,7 +16,7 @@ import { GoogleSignInButton } from "@/features/sign-in-with-google";
 import { Link } from "@/shared/i18n/navigation";
 import { cn } from "@/shared/lib/utils";
 import { routeHref } from "@/shared/routes/routes";
-import { withReturnTo } from "@/shared/routes/return-to";
+import { withContinuation, type Continuation } from "@/shared/routes/continuation";
 import { Badge } from "@/shared/ui/badge";
 import { BrandMark, BrandTile } from "@/shared/ui/brand-mark";
 import { Button } from "@/shared/ui/button";
@@ -32,9 +32,16 @@ import { AuthInfoList, AuthStepFrame } from "./auth-frame";
  * Sign-up compositions (Claude Design WebSignUp O02w, WebRegAccount WA3,
  * WebRegVerify WA4). The registration API owns the email address only, so
  * every designed element whose behaviour belongs to the onboarding domain
- * (SF-25) keeps its place in a non-deceptive state: role cards link on
- * without carrying a role, the WA3 role selector, full name and consents are
- * disabled and never sent, and the role overviews are static.
+ * keeps its place in a non-deceptive state: the WA3 role selector, full name
+ * and consents are disabled and never sent, and the role overviews are
+ * static. The O02w role cards carry the journey as the ephemeral `intent`
+ * continuation (SF-45): navigation only, resolved after authentication by
+ * the backend, never a role. Google and Apple carry only an intent the page
+ * already has; on their own they never mean Fighter.
+ *
+ * The WA3 consent checkboxes are not authoritative (D-WA3-PREAUTH-CONSENT):
+ * consents are recorded after authentication by account registration (WA5,
+ * SF-44). SF-36 reconciles their presentation.
  */
 
 const ROLE_CARDS = [
@@ -51,9 +58,9 @@ const ROLE_CARDS = [
  * 420 px) and the sign-in / legal line. Right: the role cards (2 × 2, 16 px
  * gap; Fighter is the design's emphasised card) and the info strip.
  */
-export function SignupScreen({ returnTo }: { returnTo?: string }) {
+export function SignupScreen({ continuation }: { continuation?: Continuation }) {
   const t = useTranslations("auth.signup");
-  const account = withReturnTo("web.signup.account", returnTo);
+  const account = withContinuation("web.signup.account", continuation);
 
   return (
     <Container
@@ -84,7 +91,7 @@ export function SignupScreen({ returnTo }: { returnTo?: string }) {
         <p className="type-body-sm text-pretty text-faint-foreground">
           {t.rich("haveAccount", {
             link: (chunks) => (
-              <Link href={withReturnTo("web.login", returnTo)} className={textLinkClass}>
+              <Link href={withContinuation("web.login", continuation)} className={textLinkClass}>
                 {chunks}
               </Link>
             ),
@@ -101,7 +108,11 @@ export function SignupScreen({ returnTo }: { returnTo?: string }) {
             return (
               <li key={key} className="flex">
                 <Link
-                  href={key === "sponsor" ? routeHref("web.partners.apply") : account}
+                  href={
+                    key === "sponsor"
+                      ? routeHref("web.partners.apply")
+                      : withContinuation("web.signup.account", { ...continuation, intent: key })
+                  }
                   className={cn(
                     // 20 px padding; 16 at the bottom absorbs the 13 px lines' 20 px
                     // line height (the artboard's is 19.5 / 18), keeping the 197 px card.
@@ -159,10 +170,10 @@ const NEXT_STEPS = ["verify", "setup", "home"] as const;
  * after verification by the onboarding domain (SF-25). Only the email address
  * is submitted.
  */
-export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
+export function SignupAccountScreen({ continuation }: { continuation?: Continuation }) {
   const t = useTranslations("auth.account");
   const signIn = (chunks: ReactNode) => (
-    <Link href={withReturnTo("web.login", returnTo)} className={textLinkClass}>
+    <Link href={withContinuation("web.login", continuation)} className={textLinkClass}>
       {chunks}
     </Link>
   );
@@ -220,10 +231,11 @@ export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
             aria-disabled="true"
             className="grid grid-cols-3 gap-1 rounded-3xl border bg-surface p-1"
           >
-            {SIGNUP_ROLES.map((role, index) => {
-              // WA3 draws Fighter as the selected (bone) segment. The control is
-              // presentation only: nothing is submitted, stored or put in the URL.
-              const active = index === 0;
+            {SIGNUP_ROLES.map((role) => {
+              // Presentation only: nothing is submitted or stored. It shows the
+              // journey the user chose on O02w (`intent`); without one nothing is
+              // selected, so no role is implied.
+              const active = role === continuation?.intent;
               return (
                 <span
                   key={role}
@@ -254,7 +266,7 @@ export function SignupAccountScreen({ returnTo }: { returnTo?: string }) {
           </p>
         </div>
         <RegistrationEmailForm
-          returnTo={returnTo}
+          continuation={continuation}
           submitLabel={t("submit")}
           hint={t("hint")}
           hintPlacement="field"
@@ -313,7 +325,7 @@ const AFTER_VERIFYING = ["fighter", "coach", "gym"] as const;
  * aside shows the E01 email as an illustration with the code masked (never a
  * code anyone could type) and a static "After verifying" overview.
  */
-export function SignupVerifyScreen({ returnTo }: { returnTo?: string }) {
+export function SignupVerifyScreen({ continuation }: { continuation?: Continuation }) {
   const t = useTranslations("auth.code.registration.aside");
 
   return (
@@ -352,7 +364,7 @@ export function SignupVerifyScreen({ returnTo }: { returnTo?: string }) {
         </>
       }
     >
-      <RegistrationCodeStep returnTo={returnTo} />
+      <RegistrationCodeStep continuation={continuation} />
     </AuthStepFrame>
   );
 }

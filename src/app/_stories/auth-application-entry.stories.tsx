@@ -4,11 +4,12 @@ import { ApiError } from "@/shared/api/http/api-error";
 import { FailureView, LaunchScreen } from "@/widgets/system-states";
 
 /*
- * What application entry shows around authentication (SF-24): the launch
- * screen while the session is restored (refresh, then GET /api/me), and the
- * retryable failure state while it cannot be confirmed (network or server
- * failure: never a sign-out). An authenticated viewer is sent to the valid
- * returnTo or the neutral /app entry; that redirect has no screen of its own.
+ * What application entry shows around authentication (SF-24, SF-45): the
+ * launch screen while the session is restored (refresh, then GET /api/me)
+ * and the entry resolved (GET /api/v1/me/entry), and the retryable failure
+ * state while either cannot complete (network or server failure: never a
+ * sign-out). The redirect to the resolved destination has no screen of its
+ * own.
  */
 export default {
   title: "Authentication/Application Entry",

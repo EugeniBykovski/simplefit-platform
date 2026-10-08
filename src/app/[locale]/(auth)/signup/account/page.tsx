@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { localeAlternates } from "@/shared/i18n/metadata";
 import { resolveLocaleParam } from "@/shared/i18n/params";
-import { sanitizeReturnTo } from "@/shared/routes/return-to";
+import { continuationOf } from "@/shared/routes/continuation";
 import { SignupAccountScreen } from "@/widgets/auth-screens";
 
 export async function generateMetadata({
@@ -20,6 +20,6 @@ export default async function Page({
   searchParams,
 }: PageProps<"/[locale]/signup/account">) {
   await resolveLocaleParam(params);
-  const returnTo = sanitizeReturnTo((await searchParams).returnTo);
-  return <SignupAccountScreen returnTo={returnTo} />;
+  const continuation = continuationOf(await searchParams);
+  return <SignupAccountScreen continuation={continuation} />;
 }

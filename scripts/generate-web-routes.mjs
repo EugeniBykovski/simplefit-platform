@@ -3,7 +3,7 @@
  * Generates src/shared/routes/web-routes.ts from the canonical route registry
  * (docs/route-registry.json, SF-31): the web routes with their path, shell,
  * parent, navigation type and access, the shells' navigation items, and the
- * web sign-in and entry guards. Application code links through this module,
+ * web sign-in, entry and entry-destination guards. Application code links through this module,
  * never through handwritten paths (route-architecture §14).
  *
  *   node scripts/generate-web-routes.mjs           write the module
@@ -62,6 +62,13 @@ export async function renderWebRoutes(registry) {
       pendingDeletion: registry.guards.restrictedAccount.pendingDeletion.web,
     },
     returnToParam: registry.guards.returnToParam,
+    intentParam: registry.guards.intentParam,
+    accountOnboarding: registry.guards.accountOnboarding.web,
+    entryDestinations: Object.fromEntries(
+      Object.entries(registry.guards.entryDestinations)
+        .filter(([key]) => !key.startsWith("$"))
+        .map(([destination, target]) => [destination, target.web]),
+    ),
   };
 
   const json = (value) => JSON.stringify(value, null, 2);

@@ -4,7 +4,7 @@ import { SignInCodeStep, SignInEmailForm } from "@/features/email-auth";
 import { AppleSignInButton } from "@/features/sign-in-with-apple";
 import { GoogleSignInButton } from "@/features/sign-in-with-google";
 import { Link } from "@/shared/i18n/navigation";
-import { withReturnTo } from "@/shared/routes/return-to";
+import { withContinuation, type Continuation } from "@/shared/routes/continuation";
 import { textLinkClass } from "@/shared/ui/text-link";
 
 import { AuthDivider, AuthInfoList, AuthSplitFrame } from "./auth-frame";
@@ -37,9 +37,9 @@ function AfterSignInPanel() {
 /**
  * WA1 "Sign in": Google (SF-22), Apple (SF-23) and the email sign-in code
  * (SF-24). Every method ends in the same session pipeline; the auth layout
- * then enters the application (a valid `returnTo`, otherwise `/app`).
+ * then enters the application through the backend entry resolution (SF-45).
  */
-export function LoginScreen({ returnTo }: { returnTo?: string }) {
+export function LoginScreen({ continuation }: { continuation?: Continuation }) {
   const t = useTranslations("auth.login");
 
   return (
@@ -56,7 +56,7 @@ export function LoginScreen({ returnTo }: { returnTo?: string }) {
         <AppleSignInButton />
         <AuthDivider label={t("orEmail")} />
         <SignInEmailForm
-          returnTo={returnTo}
+          continuation={continuation}
           submitLabel={t("emailSubmit")}
           submitSize="lg"
           hint={t("emailHint")}
@@ -66,7 +66,7 @@ export function LoginScreen({ returnTo }: { returnTo?: string }) {
         <p className="-mt-1 type-body-sm text-faint-foreground">
           {t.rich("noAccount", {
             link: (chunks) => (
-              <Link href={withReturnTo("web.signup", returnTo)} className={textLinkClass}>
+              <Link href={withContinuation("web.signup", continuation)} className={textLinkClass}>
                 {chunks}
               </Link>
             ),
@@ -78,11 +78,11 @@ export function LoginScreen({ returnTo }: { returnTo?: string }) {
 }
 
 /** WA1b "Enter your sign-in code" (email_sign_in). */
-export function LoginCodeScreen({ returnTo }: { returnTo?: string }) {
+export function LoginCodeScreen({ continuation }: { continuation?: Continuation }) {
   const t = useTranslations("auth.login");
   return (
     <AuthSplitFrame hero={t("hero")} panel={<AfterSignInPanel />} column="code">
-      <SignInCodeStep returnTo={returnTo} />
+      <SignInCodeStep continuation={continuation} />
     </AuthSplitFrame>
   );
 }

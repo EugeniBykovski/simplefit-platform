@@ -1,6 +1,6 @@
 import { locales } from "@/shared/i18n/routing";
 
-import { matchWebRoute, routeHref, webGuards, type WebRouteId } from "./routes";
+import { matchWebRoute, webGuards, type WebRouteId } from "./routes";
 
 /**
  * The `returnTo` policy (SF-24; route-architecture §9). After authentication
@@ -56,15 +56,4 @@ export function sanitizeReturnTo(value: unknown): string | undefined {
   if (route.session === "GUEST_ONLY" || route.phase === "ONBOARDING") return undefined;
 
   return `${pathname}${url.search}`;
-}
-
-/** The href of an auth route that carries a valid `returnTo` along. */
-export function withReturnTo(id: WebRouteId, returnTo: string | undefined): string {
-  const safe = sanitizeReturnTo(returnTo);
-  return routeHref(id, {}, safe === undefined ? {} : { [webGuards.returnToParam]: safe });
-}
-
-/** The valid `returnTo` of a search string (`window.location.search`), if any. */
-export function returnToOf(search: string): string | undefined {
-  return sanitizeReturnTo(new URLSearchParams(search).get(webGuards.returnToParam));
 }

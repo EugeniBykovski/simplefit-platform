@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { localeAlternates } from "@/shared/i18n/metadata";
 import { resolveLocaleParam } from "@/shared/i18n/params";
-import { sanitizeReturnTo } from "@/shared/routes/return-to";
+import { continuationOf } from "@/shared/routes/continuation";
 import { LoginScreen } from "@/widgets/auth-screens";
 
 export async function generateMetadata({
@@ -17,6 +17,6 @@ export async function generateMetadata({
 /** WA1 sign in (SF-22 Google, SF-23 Apple, SF-24 email code). */
 export default async function Page({ params, searchParams }: PageProps<"/[locale]/login">) {
   await resolveLocaleParam(params);
-  const returnTo = sanitizeReturnTo((await searchParams).returnTo);
-  return <LoginScreen returnTo={returnTo} />;
+  const continuation = continuationOf(await searchParams);
+  return <LoginScreen continuation={continuation} />;
 }

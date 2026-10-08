@@ -34,9 +34,9 @@ const MAX_WIDTH = 400;
  *
  * The session goes through `completeAuthentication`, the pipeline shared with
  * Apple and the email code (SF-24): it resolves the viewer, and the
- * guest-only gate then enters the application (a valid `returnTo`, otherwise
- * `/app`). A new and an existing account are treated alike; no role is
- * inferred here.
+ * guest-only gate then enters the application through the backend entry
+ * resolution (SF-45). A new and an existing account are treated alike; no
+ * role is inferred here, and Google never means Fighter.
  *
  * `className` sizes the row the button is centred in, so a composition keeps
  * its designed provider row (WA1 50 px slot, O02w 54 px) whether the button

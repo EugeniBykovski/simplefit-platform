@@ -7,9 +7,10 @@ import { SiteFrame } from "@/widgets/site-header";
 import { apiError, installApi } from "./auth-story-api";
 
 /*
- * WA3 (WebRegAccount.dc.html).
- * Deferred to SF-25: the role choice, full name, consent checkboxes and
- * "What happens next"; they are not rendered.
+ * WA3 (WebRegAccount.dc.html). The role segments are presentation only and
+ * show the ephemeral journey `intent` chosen on O02w (SF-45): none without an
+ * intent, so no role is implied. Full name and consents stay disabled and
+ * are never sent (D-WA3-PREAUTH-CONSENT).
  */
 export default {
   title: "Authentication/Sign Up",
@@ -20,6 +21,12 @@ export default {
 export const CreateAccount: StoryObj = {
   name: "Create account (WA3)",
   render: () => <SignupAccountScreen />,
+};
+
+/** WA3 reached from the O02w Fighter card (`?intent=fighter`). */
+export const CreateAccountFighterIntent: StoryObj = {
+  name: "Create account (WA3) · Fighter intent",
+  render: () => <SignupAccountScreen continuation={{ intent: "fighter" }} />,
 };
 
 export const CreateAccountError: StoryObj = {

@@ -3,6 +3,7 @@ export { initialRefereeState, refereeReducer, type RefereePhase } from "./model/
 export { ApplicationSkeleton } from "./ui/application-skeleton";
 export { BrandLoader } from "./ui/brand-loader";
 export { CornerTip } from "./ui/corner-tip";
+export { EntryFailure } from "./ui/entry-failure";
 export { ErrorState } from "./ui/error-state";
 export { FailureView } from "./ui/failure-view";
 export { LaunchScreen } from "./ui/launch-screen";

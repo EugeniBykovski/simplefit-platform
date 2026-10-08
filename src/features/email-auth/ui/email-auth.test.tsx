@@ -97,14 +97,18 @@ describe("email step (WA1 sign-in, WA3 sign-up)", () => {
   async function submit(form: "signIn" | "registration", email: string) {
     const Form = form === "signIn" ? SignInEmailForm : RegistrationEmailForm;
     await renderWithProviders(
-      <Form returnTo="/app/messages" submitLabel="Send code" hint="We email a code." />,
+      <Form
+        continuation={{ returnTo: "/app/messages", intent: "fighter" }}
+        submitLabel="Send code"
+        hint="We email a code."
+      />,
     );
     const user = userEvent.setup();
     await user.type(screen.getByLabelText("Email"), email);
     await user.click(screen.getByRole("button", { name: "Send code" }));
   }
 
-  it("B: requests a sign-in code with the normalized address and continues with returnTo", async () => {
+  it("B: requests a sign-in code with the normalized address and carries returnTo and intent to the code step", async () => {
     const fetchMock = stubFetch(accepted);
 
     await submit("signIn", "  Fighter@Example.COM ");
@@ -112,7 +116,9 @@ describe("email step (WA1 sign-in, WA3 sign-up)", () => {
     expect(sent(fetchMock)).toMatchObject([
       { path: "/api/auth/email/sign-in", body: { email: EMAIL } },
     ]);
-    expect(router.push).toHaveBeenCalledExactlyOnceWith("/login/code?returnTo=%2Fapp%2Fmessages");
+    expect(router.push).toHaveBeenCalledExactlyOnceWith(
+      "/login/code?returnTo=%2Fapp%2Fmessages&intent=fighter",
+    );
     expect(pending.get("signIn")).toMatchObject({ email: EMAIL });
     expect(window.location.href).not.toContain("example");
   });
@@ -126,7 +132,7 @@ describe("email step (WA1 sign-in, WA3 sign-up)", () => {
       { path: "/api/auth/email/registrations", body: { email: EMAIL } },
     ]);
     expect(router.push).toHaveBeenCalledExactlyOnceWith(
-      "/signup/verify?returnTo=%2Fapp%2Fmessages",
+      "/signup/verify?returnTo=%2Fapp%2Fmessages&intent=fighter",
     );
     expect(pending.get("registration")).toMatchObject({
       email: EMAIL,
@@ -298,7 +304,7 @@ describe("A: registration code (WA4)", () => {
     });
     await renderWithProviders(
       <RegistrationCodeForm
-        returnTo="/app/home"
+        continuation={{ returnTo: "/app/home", intent: "fighter" }}
         flow={{
           email: EMAIL,
           registrationToken: REGISTRATION_TOKEN,
@@ -339,12 +345,14 @@ describe("A: registration code (WA4)", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sign in with a code" })).toHaveAttribute(
       "href",
-      "/login?returnTo=%2Fapp%2Fhome",
+      "/login?returnTo=%2Fapp%2Fhome&intent=fighter",
     );
     await user.click(screen.getByRole("button", { name: "Send a new code" }));
 
     await waitFor(() =>
-      expect(router.push).toHaveBeenCalledExactlyOnceWith("/login/code?returnTo=%2Fapp%2Fhome"),
+      expect(router.push).toHaveBeenCalledExactlyOnceWith(
+        "/login/code?returnTo=%2Fapp%2Fhome&intent=fighter",
+      ),
     );
     const handOff = sent(fetchMock)[1]!;
     expect(handOff).toMatchObject({ path: "/api/auth/email/sign-in", body: { email: EMAIL } });
