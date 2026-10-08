@@ -29,7 +29,9 @@ process.env.NEXT_PUBLIC_APPLE_REDIRECT_URI = "";
  */
 const config: StorybookConfig = {
   framework: "@storybook/nextjs-vite",
-  stories: ["../src/**/*.stories.@(ts|tsx)"],
+  // One workshop tree (docs/design-system.md#storybook): src/stories mirrors the
+  // sidebar (foundations, components, screens); nothing else is a story.
+  stories: ["../src/stories/**/*.stories.@(ts|tsx)"],
   addons: ["@storybook/addon-docs", "@storybook/addon-a11y", "@storybook/addon-themes"],
   staticDirs: [],
   core: { disableTelemetry: true },

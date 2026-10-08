@@ -103,7 +103,7 @@ describe("no artificial delays", () => {
 
 describe("Storybook", () => {
   it("system stories render only production components", () => {
-    const stories = [...files("src/app/_stories")].filter(
+    const stories = [...files("src/stories/screens/system")].filter(
       (file) => file.endsWith(".stories.tsx") && code(file).includes('title: "System/'),
     );
     expect(stories.length).toBe(3);
@@ -127,7 +127,7 @@ describe("Storybook", () => {
   });
 
   it("authentication stories render production components with the deterministic API adapter (SF-24)", () => {
-    const stories = [...files("src/app/_stories")].filter(
+    const stories = [...files("src/stories/screens/authentication")].filter(
       (file) => file.endsWith(".stories.tsx") && code(file).includes('title: "Authentication/'),
     );
     const titles = stories.map((file) => code(file).match(/title: "([^"]+)"/)?.[1]).sort();
@@ -147,12 +147,12 @@ describe("Storybook", () => {
         expect([file, source]).toEqual([
           file,
           expect.stringMatching(
-            /^(@storybook\/nextjs-vite|storybook\/test|@\/widgets\/[\w-]+|@\/features\/sign-in-with-(google|apple)|@\/shared\/api\/http\/api-error|\.\/auth-story-api)$/,
+            /^(@storybook\/nextjs-vite|storybook\/test|@\/widgets\/[\w-]+|@\/features\/sign-in-with-(google|apple)|@\/shared\/api\/http\/api-error|@\/stories\/support\/auth-story-api)$/,
           ),
         ]);
       }
     }
     // No story reaches a real backend or a live provider: fetch is replaced per story.
-    expect(code("src/app/_stories/auth-story-api.ts")).toContain("window.fetch = async");
+    expect(code("src/stories/support/auth-story-api.ts")).toContain("window.fetch = async");
   });
 });

@@ -23,6 +23,32 @@ export type Continuation = { returnTo?: string; intent?: EntryIntent };
 
 const INTENTS: ReadonlySet<string> = new Set(Object.values(ResolveMyEntryIntent));
 
+/**
+ * The entry destination each journey intent leads to (`guards.entryDestinations`):
+ * the backend resolver's own vocabulary, so a route of one of these destinations
+ * names that journey.
+ */
+const JOURNEY_DESTINATIONS = {
+  fighter: "fighter_onboarding",
+  coach: "coach_onboarding",
+  gym: "gym_onboarding",
+  sponsor: "sponsor_application",
+} as const satisfies Record<EntryIntent, keyof typeof webGuards.entryDestinations>;
+
+/**
+ * The journey a route unambiguously represents (Fighter onboarding → `fighter`),
+ * from the registry's entry destinations; `undefined` for every other route,
+ * including account registration and role selection, which belong to no single
+ * journey. Navigation only: it never authorizes anything.
+ */
+export function journeyIntentOf(routeId: WebRouteId | undefined): EntryIntent | undefined {
+  if (routeId === undefined) return undefined;
+  const match = Object.entries(JOURNEY_DESTINATIONS).find(
+    ([, destination]) => webGuards.entryDestinations[destination] === routeId,
+  );
+  return match === undefined ? undefined : parseIntent(match[0]);
+}
+
 /** An allowed intent, or `undefined`. Exact match only: no case folding or trimming. */
 export function parseIntent(value: unknown): EntryIntent | undefined {
   return typeof value === "string" && INTENTS.has(value) ? (value as EntryIntent) : undefined;

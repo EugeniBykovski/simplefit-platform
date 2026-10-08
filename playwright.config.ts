@@ -23,7 +23,7 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      testIgnore: "production/**",
+      testIgnore: ["production/**", "portability/**"],
       use: {
         ...devices["Desktop Chrome"],
         viewport: { width: 1440, height: 900 },
@@ -47,6 +47,19 @@ export default defineConfig({
         launchOptions: { args: ["--font-render-hinting=none"] },
       },
     },
+    // SF-38: browser-engine portability of production behaviour that rests on
+    // engine data (the country list comes from each engine's region names).
+    ...(
+      [
+        ["chromium", devices["Desktop Chrome"]],
+        ["firefox", devices["Desktop Firefox"]],
+        ["webkit", devices["Desktop Safari"]],
+      ] as const
+    ).map(([engine, device]) => ({
+      name: `portability-${engine}`,
+      testMatch: "portability/**/*.spec.ts",
+      use: { ...device, baseURL: "http://127.0.0.1:3100" },
+    })),
   ],
   webServer: [
     {

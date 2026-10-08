@@ -1,0 +1,192 @@
+{
+  "metaTitle": "Inscription boxeur",
+  "frame": {
+    "badge": "Inscription boxeur",
+    "doneBadge": "Boxeur · terminé",
+    "saveExit": "Enregistrer et quitter"
+  },
+  "nav": {
+    "label": "Étapes de l’inscription boxeur",
+    "title": "Inscription boxeur",
+    "note": "Enregistré au fur et à mesure · terminez plus tard depuis n’importe quel appareil.",
+    "steps": {
+      "basics": "Infos du profil",
+      "profile": "Profil de boxe",
+      "complete": "Terminé"
+    },
+    "done": "fait",
+    "unavailable": "une fois terminé"
+  },
+  "loading": "Chargement de votre profil de boxeur…",
+  "loadFailure": {
+    "title": "Impossible de charger votre profil de boxeur.",
+    "body": "Vérifiez votre connexion et réessayez.",
+    "retry": "Réessayer"
+  },
+  "notices": {
+    "failure": {
+      "title": "Impossible d’enregistrer vos modifications.",
+      "typed": "Vérifiez votre connexion. Rien de ce que vous avez saisi n’est perdu.",
+      "selected": "Vérifiez votre connexion. Rien de ce que vous avez choisi n’est perdu.",
+      "retry": "Réessayer"
+    },
+    "invalid": {
+      "title": "Vérifiez les champs signalés.",
+      "body": "Corrigez-les pour enregistrer cette étape."
+    },
+    "rejected": {
+      "title": "Il manque encore quelques informations.",
+      "basics": "Infos du profil : {fields}",
+      "profile": "Profil de boxe : {fields}",
+      "goBasics": "Aller aux infos du profil"
+    },
+    "account": {
+      "title": "Complétez d’abord les infos de votre compte.",
+      "body": "Votre nom, votre date de naissance et vos consentements passent avant votre profil de boxeur.",
+      "action": "Aller aux infos du compte"
+    }
+  },
+  "basics": {
+    "eyebrow": "Étape 1 sur 2 · Infos du profil",
+    "title": "Votre profil de boxeur",
+    "lead": "C’est ainsi que coéquipiers et coachs vous trouvent. Nom, identifiant et ville apparaissent sur votre profil.",
+    "name": {
+      "label": "Nom",
+      "placeholder": "Votre nom",
+      "help": "Visible par vos coéquipiers et coachs."
+    },
+    "username": {
+      "label": "Identifiant",
+      "placeholder": "username",
+      "help": "3 à 30 lettres, chiffres ou _ · unique · en minuscules."
+    },
+    "country": {
+      "label": "Pays",
+      "placeholder": "Choisir un pays",
+      "help": "Cherchez dans la liste. Enregistré comme code pays ISO.",
+      "search": "Rechercher un pays",
+      "searchPlaceholder": "Rechercher",
+      "empty": "Aucun pays ne correspond."
+    },
+    "city": {
+      "label": "Ville",
+      "placeholder": "Votre ville",
+      "help": "Texte libre."
+    },
+    "continue": "Continuer",
+    "saving": "Enregistrement…"
+  },
+  "preview": {
+    "title": "Aperçu du profil",
+    "name": "Votre nom",
+    "username": "username",
+    "city": "Ville",
+    "country": "Pays",
+    "private": "Les données corporelles ajoutées plus tard (poids, taille) restent privées."
+  },
+  "profile": {
+    "eyebrow": "Étape 2 sur 2 · Profil de boxe",
+    "title": "Votre profil de boxe",
+    "lead": "Aide coachs et salles à comprendre où vous en êtes. Modifiable à tout moment.",
+    "experience": {
+      "label": "Expérience",
+      "options": {
+        "new_to_boxing": "Débutant",
+        "recreational": "Loisir",
+        "amateur": "Amateur",
+        "competitive_amateur": "Amateur en compétition",
+        "professional": "Professionnel"
+      }
+    },
+    "stance": {
+      "label": "Garde",
+      "options": {
+        "orthodox": "Orthodoxe",
+        "southpaw": "Fausse garde",
+        "switch": "Changeante"
+      }
+    },
+    "bouts": {
+      "label": "Combats amateurs · facultatif",
+      "placeholder": "0",
+      "help": "Conservé si votre niveau change."
+    },
+    "goals": {
+      "label": "Objectifs · au choix",
+      "options": {
+        "fitness": "Forme",
+        "learn_boxing": "Apprendre la boxe",
+        "improve_technique": "Améliorer la technique",
+        "competition": "Compétition",
+        "fight_preparation": "Préparer un combat"
+      }
+    },
+    "weightClass": {
+      "label": "Catégorie de poids · privé",
+      "placeholder": "Choisir · ou Pas sûr",
+      "options": {
+        "minus_63_5": "−63,5 kg",
+        "minus_67": "−67 kg",
+        "minus_71": "−71 kg",
+        "minus_75": "−75 kg",
+        "minus_80": "−80 kg",
+        "minus_86": "−86 kg",
+        "plus_86": "+86 kg",
+        "not_sure": "Pas sûr"
+      }
+    },
+    "weight": {
+      "label": "Poids actuel · facultatif",
+      "unit": "kg",
+      "placeholder": "—",
+      "help": "Une décimale au maximum."
+    },
+    "height": {
+      "label": "Taille · facultatif",
+      "unit": "cm",
+      "placeholder": "—"
+    },
+    "fightDate": {
+      "label": "Date du prochain combat · facultatif"
+    },
+    "fightEvent": {
+      "label": "Prochain événement · facultatif",
+      "placeholder": "Nom de l’événement"
+    },
+    "back": "Retour",
+    "finish": "Terminer",
+    "finishing": "Finalisation…"
+  },
+  "summary": {
+    "experience": "Expérience",
+    "stance": "Garde",
+    "goals": "Objectifs : {goals}",
+    "noGoals": "Objectifs : aucun pour l’instant",
+    "private": "Catégorie de poids, poids et taille sont privés : vous seul les voyez."
+  },
+  "errors": {
+    "required": {
+      "display_name": "Saisissez votre nom.",
+      "username": "Choisissez un identifiant.",
+      "country_code": "Choisissez votre pays.",
+      "city": "Saisissez votre ville.",
+      "experience_level": "Choisissez une option pour terminer.",
+      "stance": "Choisissez une option pour terminer."
+    },
+    "usernameFormat": "3 à 30 lettres, chiffres ou _, commençant et finissant par une lettre ou un chiffre.",
+    "usernameTaken": "Cet identifiant est déjà pris. Essayez-en un autre.",
+    "weightPrecision": "Une décimale au maximum, par exemple 73.8.",
+    "wholeNumber": "Saisissez un nombre entier, 0 ou plus.",
+    "tooLong": "C’est trop long.",
+    "outOfRange": "Saisissez une valeur réaliste.",
+    "invalidChoice": "Choisissez une des options.",
+    "invalidDate": "Saisissez une date valide.",
+    "invalid": "Vérifiez cette valeur."
+  },
+  "done": {
+    "eyebrow": "Inscription boxeur · terminé",
+    "title": "Vous êtes inscrit, {name}.",
+    "lead": "Votre profil de boxeur est prêt. Vous pourrez tout modifier plus tard depuis votre profil.",
+    "home": "Aller à mon accueil"
+  }
+}

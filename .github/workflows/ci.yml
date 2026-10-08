@@ -90,8 +90,10 @@ jobs:
       # SF-34: canonical layout and system-state geometry at 1440 × 900,
       # measured on the static Storybook build above; SF-42: the production
       # routes on the production build (next start), at desktop and laptop sizes.
-      - name: Install Playwright Chromium
-        run: pnpm exec playwright install --with-deps chromium
+      # Chromium for the geometry suites; Firefox and WebKit for the engine
+      # portability checks (SF-38: the country list comes from engine data).
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium firefox webkit
 
       - name: Geometry QA (Playwright)
         run: pnpm test:geometry

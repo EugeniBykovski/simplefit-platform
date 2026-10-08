@@ -67,6 +67,24 @@ export class ApiError extends Error {
       ),
     );
   }
+
+  /**
+   * The stable reason codes per field when this is a `validation_error`
+   * (`details.field_codes`; clients branch on these, never on `fieldErrors`'
+   * English messages). Unknown codes are kept: treat them as `invalid`.
+   */
+  get fieldCodes(): Record<string, string[]> {
+    if (this.code !== "validation_error") return {};
+    const codes = this.details.field_codes;
+    if (typeof codes !== "object" || codes === null) return {};
+
+    return Object.fromEntries(
+      Object.entries(codes).filter(
+        (entry): entry is [string, string[]] =>
+          Array.isArray(entry[1]) && entry[1].every((code) => typeof code === "string"),
+      ),
+    );
+  }
 }
 
 /** The delay-seconds form of `retry-after` (the API never sends an HTTP date). */

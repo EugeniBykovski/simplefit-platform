@@ -1,0 +1,192 @@
+{
+  "metaTitle": "Boxer-Registrierung",
+  "frame": {
+    "badge": "Boxer-Registrierung",
+    "doneBadge": "Boxer · fertig",
+    "saveExit": "Speichern & beenden"
+  },
+  "nav": {
+    "label": "Schritte der Boxer-Registrierung",
+    "title": "Boxer-Registrierung",
+    "note": "Wird laufend gespeichert · später auf jedem Gerät abschließen.",
+    "steps": {
+      "basics": "Profil-Grundlagen",
+      "profile": "Boxprofil",
+      "complete": "Fertig"
+    },
+    "done": "erledigt",
+    "unavailable": "nach dem Abschluss"
+  },
+  "loading": "Dein Boxerprofil wird geladen…",
+  "loadFailure": {
+    "title": "Dein Boxerprofil konnte nicht geladen werden.",
+    "body": "Prüfe deine Verbindung und versuche es erneut.",
+    "retry": "Erneut versuchen"
+  },
+  "notices": {
+    "failure": {
+      "title": "Deine Änderungen konnten nicht gespeichert werden.",
+      "typed": "Prüfe deine Verbindung. Nichts, was du eingegeben hast, ist verloren.",
+      "selected": "Prüfe deine Verbindung. Nichts, was du ausgewählt hast, ist verloren.",
+      "retry": "Erneut"
+    },
+    "invalid": {
+      "title": "Prüfe die markierten Felder.",
+      "body": "Korrigiere sie, um diesen Schritt zu speichern."
+    },
+    "rejected": {
+      "title": "Ein paar Angaben fehlen noch.",
+      "basics": "Profil-Grundlagen: {fields}",
+      "profile": "Boxprofil: {fields}",
+      "goBasics": "Zu den Profil-Grundlagen"
+    },
+    "account": {
+      "title": "Vervollständige zuerst deine Kontodaten.",
+      "body": "Name, Geburtsdatum und Einwilligungen kommen vor deinem Boxerprofil.",
+      "action": "Zu den Kontodaten"
+    }
+  },
+  "basics": {
+    "eyebrow": "Schritt 1 von 2 · Profil-Grundlagen",
+    "title": "Dein Boxerprofil",
+    "lead": "So finden dich Teamkolleg:innen und Coaches. Name, Benutzername und Stadt stehen in deinem Profil.",
+    "name": {
+      "label": "Name",
+      "placeholder": "Dein Name",
+      "help": "Für Teamkolleg:innen und Coaches sichtbar."
+    },
+    "username": {
+      "label": "Benutzername",
+      "placeholder": "username",
+      "help": "3–30 Buchstaben, Ziffern oder _ · eindeutig · in Kleinbuchstaben."
+    },
+    "country": {
+      "label": "Land",
+      "placeholder": "Land auswählen",
+      "help": "In der Liste suchen. Gespeichert als ISO-Ländercode.",
+      "search": "Länder durchsuchen",
+      "searchPlaceholder": "Suchen",
+      "empty": "Kein passendes Land."
+    },
+    "city": {
+      "label": "Stadt",
+      "placeholder": "Deine Stadt",
+      "help": "Freitext."
+    },
+    "continue": "Weiter",
+    "saving": "Wird gespeichert…"
+  },
+  "preview": {
+    "title": "Profilvorschau",
+    "name": "Dein Name",
+    "username": "username",
+    "city": "Stadt",
+    "country": "Land",
+    "private": "Körperdaten, die du später ergänzt (Gewicht, Größe), bleiben privat."
+  },
+  "profile": {
+    "eyebrow": "Schritt 2 von 2 · Boxprofil",
+    "title": "Dein Boxprofil",
+    "lead": "Hilft Coaches und Gyms zu verstehen, wo du stehst. Jederzeit änderbar.",
+    "experience": {
+      "label": "Erfahrung",
+      "options": {
+        "new_to_boxing": "Neu im Boxen",
+        "recreational": "Freizeit",
+        "amateur": "Amateur",
+        "competitive_amateur": "Wettkampf-Amateur",
+        "professional": "Profi"
+      }
+    },
+    "stance": {
+      "label": "Auslage",
+      "options": {
+        "orthodox": "Orthodox",
+        "southpaw": "Rechtsauslage",
+        "switch": "Wechselnd"
+      }
+    },
+    "bouts": {
+      "label": "Amateurkämpfe · optional",
+      "placeholder": "0",
+      "help": "Bleibt, wenn sich dein Level ändert."
+    },
+    "goals": {
+      "label": "Ziele · beliebig viele",
+      "options": {
+        "fitness": "Fitness",
+        "learn_boxing": "Boxen lernen",
+        "improve_technique": "Technik verbessern",
+        "competition": "Wettkampf",
+        "fight_preparation": "Kampfvorbereitung"
+      }
+    },
+    "weightClass": {
+      "label": "Gewichtsklasse · privat",
+      "placeholder": "Auswählen · oder Nicht sicher",
+      "options": {
+        "minus_63_5": "−63,5 kg",
+        "minus_67": "−67 kg",
+        "minus_71": "−71 kg",
+        "minus_75": "−75 kg",
+        "minus_80": "−80 kg",
+        "minus_86": "−86 kg",
+        "plus_86": "+86 kg",
+        "not_sure": "Nicht sicher"
+      }
+    },
+    "weight": {
+      "label": "Aktuelles Gewicht · optional",
+      "unit": "kg",
+      "placeholder": "—",
+      "help": "Höchstens eine Nachkommastelle."
+    },
+    "height": {
+      "label": "Größe · optional",
+      "unit": "cm",
+      "placeholder": "—"
+    },
+    "fightDate": {
+      "label": "Datum des nächsten Kampfs · optional"
+    },
+    "fightEvent": {
+      "label": "Nächstes Event · optional",
+      "placeholder": "Name des Events"
+    },
+    "back": "Zurück",
+    "finish": "Abschließen",
+    "finishing": "Wird abgeschlossen…"
+  },
+  "summary": {
+    "experience": "Erfahrung",
+    "stance": "Auslage",
+    "goals": "Ziele: {goals}",
+    "noGoals": "Ziele: noch keine",
+    "private": "Gewichtsklasse, Gewicht und Größe sind privat — nur du siehst sie."
+  },
+  "errors": {
+    "required": {
+      "display_name": "Gib deinen Namen ein.",
+      "username": "Wähle einen Benutzernamen.",
+      "country_code": "Wähle dein Land.",
+      "city": "Gib deine Stadt ein.",
+      "experience_level": "Wähle eine Option, um abzuschließen.",
+      "stance": "Wähle eine Option, um abzuschließen."
+    },
+    "usernameFormat": "3–30 Buchstaben, Ziffern oder _, mit Buchstabe oder Ziffer am Anfang und Ende.",
+    "usernameTaken": "Dieser Benutzername ist vergeben. Versuch einen anderen.",
+    "weightPrecision": "Höchstens eine Nachkommastelle, z. B. 73.8.",
+    "wholeNumber": "Gib eine ganze Zahl ab 0 ein.",
+    "tooLong": "Das ist zu lang.",
+    "outOfRange": "Gib einen realistischen Wert ein.",
+    "invalidChoice": "Wähle eine der Optionen.",
+    "invalidDate": "Gib ein gültiges Datum ein.",
+    "invalid": "Prüfe diesen Wert."
+  },
+  "done": {
+    "eyebrow": "Boxer-Registrierung · fertig",
+    "title": "Du bist dabei, {name}.",
+    "lead": "Dein Boxerprofil ist bereit. Du kannst alles später in deinem Profil ändern.",
+    "home": "Zu meiner Startseite"
+  }
+}

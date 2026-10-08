@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { continuationOf, continuationQuery, parseIntent, withContinuation } from "./continuation";
+import {
+  continuationOf,
+  continuationQuery,
+  journeyIntentOf,
+  parseIntent,
+  withContinuation,
+} from "./continuation";
 
 describe("parseIntent", () => {
   it("accepts exactly the backend's allow-list", () => {
@@ -68,5 +74,30 @@ describe("continuationQuery and withContinuation", () => {
     >[0];
     expect(continuationQuery(forged)).toEqual({});
     expect(withContinuation("web.signup", forged)).toBe("/signup");
+  });
+});
+
+describe("journeyIntentOf", () => {
+  it.each([
+    ["web.app.onboarding.fighter", "fighter"],
+    ["web.app.onboarding.coach", "coach"],
+    ["web.app.onboarding.gym", "gym"],
+    ["web.partners.apply", "sponsor"],
+  ] as const)("%s represents the %s journey", (routeId, intent) => {
+    expect(journeyIntentOf(routeId)).toBe(intent);
+  });
+
+  it.each([
+    "web.app.onboarding.account",
+    "web.app.onboarding.role",
+    "web.app.messages",
+    "web.app",
+    "web.login",
+  ] as const)("%s represents no journey (never a Fighter default)", (routeId) => {
+    expect(journeyIntentOf(routeId)).toBeUndefined();
+  });
+
+  it("an unknown route represents no journey", () => {
+    expect(journeyIntentOf(undefined)).toBeUndefined();
   });
 });

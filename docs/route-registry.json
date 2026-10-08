@@ -1554,7 +1554,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/app/onboarding/fighter/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; SF-27 builds the current steps WF0 (?step=basics), WF1 (?step=profile) and WF6 (?step=complete). The step query is navigation only: resume and completion come from GET /api/v1/me/fighter-profile (SF-25). WF2-WF5 are DEFERRED."
+        "note": "SF-38: the current steps WF0 (?step=basics), WF1 (?step=profile) and WF6 (?step=complete) on the SF-25 FighterProfile, in the WF frame of Claude Design V78. The step query is navigation only: the form values, the resume step (earliest step with a missing requirement) and completion come from GET / PATCH /api/v1/me/fighter-profile and POST .../complete-onboarding; WF6 shows only after this tab completed onboarding, and a completed Fighter otherwise leaves through /app (SF-45). WF2-WF5 are DEFERRED."
       },
       "screens": ["WF0", "WF1", "WF2", "WF3", "WF4", "WF5", "WF6"],
       "discrepancies": ["D-WEB-FIGHTER-ONBOARDING-FLOW"]
@@ -1629,7 +1629,7 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/app/onboarding/account/page.tsx",
+        "file": "src/app/[locale]/app/onboarding/(app-frame)/account/page.tsx",
         "note": "SF-45: canonical feature placeholder in its shell; the WA5 form is built by its UI ticket on the SF-44 account registration API. Entry resolution sends account_registration here; ?intent= and ?returnTo= ride along as the continuation, resolved again once registration completes."
       },
       "discrepancies": ["D-ENTRY-RESOLUTION"],
@@ -1655,7 +1655,7 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/app/onboarding/role/page.tsx",
+        "file": "src/app/[locale]/app/onboarding/(app-frame)/role/page.tsx",
         "note": "SF-45: canonical feature placeholder in its shell; the WA6 choice is built by its UI ticket. Entry resolution sends role_selection here (account registration complete, no explicit intent, no role state). A choice is navigation intent only: nothing is stored and no role, capability or workspace is created."
       },
       "discrepancies": ["D-ENTRY-RESOLUTION"],
@@ -1681,7 +1681,7 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/app/onboarding/coach/page.tsx",
+        "file": "src/app/[locale]/app/onboarding/(app-frame)/coach/page.tsx",
         "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
       },
       "screens": ["WCR1", "WCR2", "WCR3", "WCR4", "WCR5", "WCR6", "WCR7"],
@@ -1884,7 +1884,7 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/app/onboarding/gym/page.tsx",
+        "file": "src/app/[locale]/app/onboarding/(app-frame)/gym/page.tsx",
         "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
       },
       "screens": [

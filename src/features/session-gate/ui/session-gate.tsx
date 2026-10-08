@@ -5,8 +5,9 @@ import { useEffect, type ReactNode } from "react";
 
 import { useSession } from "@/entities/session";
 import { usePathname, useRouter } from "@/shared/i18n/navigation";
+import { continuationOf, continuationQuery, journeyIntentOf } from "@/shared/routes/continuation";
 import { sanitizeReturnTo } from "@/shared/routes/return-to";
-import { routeHref, webGuards, type WebRouteId } from "@/shared/routes/routes";
+import { matchWebRoute, routeHref, type WebRouteId } from "@/shared/routes/routes";
 import { Spinner } from "@/shared/ui/spinner";
 
 import { EntryRedirect } from "./entry-redirect";
@@ -29,7 +30,9 @@ import { EntryRedirect } from "./entry-redirect";
 
 /**
  * AUTHENTICATED: signed-out visitors go to the area's sign-in route with
- * `returnTo` when the current page is a valid destination (SF-24 policy).
+ * `returnTo` when the current page is a valid destination (SF-24 policy) and
+ * the journey `intent` the page carries or represents (SF-45), so an
+ * onboarding deep link resumes its journey through the entry resolver.
  * While the session is restored the layout's `pending` state renders (the
  * signed-in layouts pass the LD3 launch screen, SF-34); it is shown only
  * while that real work runs.
@@ -51,10 +54,13 @@ export function RequireSession({
 
   useEffect(() => {
     if (status !== "anonymous") return;
+    // `returnTo` only when the page is a valid destination (never an onboarding
+    // route); the journey intent independently: the URL's own validated `intent`,
+    // or the journey the route itself represents. The resolver decides after sign-in.
     const returnTo = sanitizeReturnTo(`${pathname}${window.location.search}`);
-    router.replace(
-      routeHref(signIn, {}, returnTo === undefined ? {} : { [webGuards.returnToParam]: returnTo }),
-    );
+    const intent =
+      continuationOf(window.location.search).intent ?? journeyIntentOf(matchWebRoute(pathname)?.id);
+    router.replace(routeHref(signIn, {}, continuationQuery({ returnTo, intent })));
   }, [status, pathname, router, signIn]);
 
   if (status === "authenticated") return children;

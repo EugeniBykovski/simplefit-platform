@@ -93,10 +93,13 @@ const stylingSyntax = [
 
 /** Higher layers each FSD-lite layer must not import from. */
 const forbiddenLayers = {
-  "src/shared/**": ["app", "widgets", "features", "entities"],
-  "src/entities/**": ["app", "widgets", "features"],
-  "src/features/**": ["app", "widgets"],
-  "src/widgets/**": ["app"],
+  "src/shared/**": ["app", "widgets", "features", "entities", "stories"],
+  "src/entities/**": ["app", "widgets", "features", "stories"],
+  "src/features/**": ["app", "widgets", "stories"],
+  "src/widgets/**": ["app", "stories"],
+  // The Storybook workshop (src/stories) sits above every layer: it renders
+  // production code and nothing in production imports it.
+  "src/app/**": ["stories"],
 };
 
 // One block per layer: flat config replaces (not merges) rule options, so each
@@ -112,7 +115,7 @@ function importBoundaries() {
         "no-restricted-imports": restrict([
           {
             group: layers.map((layer) => `@/${layer}/*`),
-            message: `This layer must not import from: ${layers.join(", ")}. Dependencies point downwards (app > widgets > features > entities > shared).`,
+            message: `This layer must not import from: ${layers.join(", ")}. Dependencies point downwards (stories > app > widgets > features > entities > shared).`,
           },
         ]),
       },
@@ -123,7 +126,7 @@ function importBoundaries() {
       rules: {
         "no-restricted-imports": restrict([
           {
-            group: ["@/app/*", "@/widgets/*", "@/features/*", "@/entities/*"],
+            group: ["@/app/*", "@/widgets/*", "@/features/*", "@/entities/*", "@/stories/*"],
             message: "shared/ must not import from higher layers.",
           },
         ]),

@@ -180,6 +180,17 @@ and mobile 390 (NativeWind `text-*`).
 Product screens keep using the roles above; a new system role needs a design
 reason and a contract test, never a one-off value.
 
+### Fighter onboarding typography (SF-38)
+
+`typography.onboardingRoles.web`, for the Fighter web registration screens
+only (Claude Design FIGHTER 5c: WF0, WF1, WF6), by decision in SF-38 instead
+of off-scale local values. Web only.
+
+| Role               | Web                        | Use                         |
+| ------------------ | -------------------------- | --------------------------- |
+| `onboarding-title` | 32/40 Unbounded 600 −0.02  | WF0, WF1 step headings      |
+| `onboarding-done`  | 40/44 Unbounded 600 −0.025 | WF6 "You're in, …" headline |
+
 ### Authentication typography and controls (SF-24)
 
 `typography.authRoles` extends the scale for the authentication screens
@@ -466,17 +477,32 @@ pnpm storybook:build  # static build in storybook-static/ (CI builds it on every
   application code. Stories are not routes, and Storybook packages are
   devDependencies only, so the Next.js build is unaffected.
 
-**Organisation.**
+**Organisation.** One workshop tree, `src/stories/`, whose folders mirror
+the Storybook sidebar. Storybook loads stories from this tree only
+(`.storybook/main.ts`), and `scripts/stories-location.test.mjs` fails on a
+story anywhere else. Stories sit above every FSD layer: they import the real
+production modules through their public paths (`@/shared/ui/<name>`, a
+slice's `index.ts`), and ESLint forbids production code from importing
+`@/stories/*` (the `forbiddenLayers` map), so the workshop never reaches a
+production bundle.
 
-- **Foundations** (`src/shared/styles/*.stories.tsx`): Colors, Typography,
-  Spacing, Radius, Icons. They read names and values from
-  `docs/design-tokens.json` and render the live CSS variables and real
-  utilities. Class maps use `satisfies` against the contract, so a new role
-  or step without a story fails the typecheck.
-- **Components** (`src/shared/ui/<primitive>.stories.tsx`, title
-  `Components/<Name>`): meaningful production states (variants, sizes,
-  disabled, loading, invalid, focus, open). Behaviour stories use play
-  functions (`storybook/test`).
+- **Foundations** (`src/stories/foundations/*.stories.tsx`, titles
+  `Foundations/*`): Colors, Typography, Spacing, Radius, Icons. They read
+  names and values from `docs/design-tokens.json` and render the live CSS
+  variables and real utilities. Class maps use `satisfies` against the
+  contract, so a new role or step without a story fails the typecheck.
+- **Components** (`src/stories/components/<primitive>.stories.tsx`, title
+  `Components/<Name>`): meaningful production states of the `src/shared/ui`
+  primitives (variants, sizes, disabled, loading, invalid, focus, open).
+  Behaviour stories use play functions (`storybook/test`).
+- **Screens** (`src/stories/screens/<area>/`, titles `Authentication/*`,
+  `Public Website/*`, `System/*`, …): production screens and widgets in
+  their states, at the canonical viewports. Geometry QA
+  (`e2e/*-geometry.spec.ts`) addresses them by story id, which comes from
+  the title, so a story keeps its id when its file moves.
+- **Support** (`src/stories/support/`): deterministic test adapters for
+  screen stories (the auth API double replaces `fetch` per story; it never
+  reaches a real backend or provider).
 
 **When stories are required.**
 

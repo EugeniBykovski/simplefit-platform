@@ -253,7 +253,7 @@ a screen but a return to the area's sign-in with `returnTo`. Unexpected,
 offline and forbidden follow the Claude Design "System states" sheet;
 service unavailable is the design-system fallback (no artboard).
 
-Stories (`src/app/_stories`, real components): `System/Loading` (Launch,
+Stories (`src/stories/screens`, real components): `System/Loading` (Launch,
 Application Skeleton in the fighter shell), `System/Errors/Not Found` (Count,
 KO, Saved, frozen), `System/Errors/Error State`. `pnpm test:geometry`
 (Playwright) measures them at 1440 × 900 on the static Storybook build.
