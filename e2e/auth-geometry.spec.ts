@@ -199,9 +199,9 @@ test("Storybook never loads a live auth provider script", async ({ page }) => {
 });
 
 /*
- * SF-24 layout regression: every auth composition lives inside the canonical
- * 1440 px frame (SF-34 Container) and stays centred beyond it; the design's
- * canvas width is never treated as the viewport. Values from WebLogin (WA1),
+ * SF-24 layout regression, SF-42 responsive rule: every auth composition is
+ * viewport-fluid (the frame spans the viewport, never a centred 1440 px
+ * canvas) with the artboard's anchoring and content widths inside it. Values from WebLogin (WA1),
  * WebSignUp (O02w) and WebRegAccount (WA3), measured on the full-page stories.
  */
 const frameOf = (page: Page, kind: string) => page.locator(`[data-auth-frame="${kind}"]`);
@@ -431,7 +431,8 @@ test.describe("O02w conformance (WebSignUp · 1440 × 940)", () => {
     await expectBox(page.locator("[data-site-frame]"), { 0: 0, 2: 1920 });
     await expectBox(page.locator("header").first(), { 0: 0, 2: 1920 });
     await expectBox(page.locator("[data-site-footer]"), { 0: 0, 2: 1920 });
-    await expectBox(frameOf(page, "signup"), { 0: 240, 2: 1440 });
+    await expectBox(frameOf(page, "signup"), { 0: 0, 2: 1920 });
+    await expectBox(page.getByRole("heading", { level: 1 }), { 0: 64 });
     expect(await overflow(page)).toBeLessThanOrEqual(0);
   });
 
@@ -501,12 +502,13 @@ test.describe("O02w conformance (WebSignUp · 1440 × 940)", () => {
   });
 
   for (const width of [1920, 1280, 1024, 768]) {
-    test(`O02w content frame is centred and contained at ${width}`, async ({ page }) => {
+    test(`O02w content frame spans the viewport at ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 940 });
       await story(page, "authentication-sign-up--full-page");
       const frame = await box(frameOf(page, "signup"));
-      near(frame.width, Math.min(width, 1440));
-      near(frame.x, (width - frame.width) / 2);
+      // Fluid, never a centred fixed canvas (docs/design-system.md, "Responsive composition").
+      near(frame.width, width);
+      near(frame.x, 0);
       expect(await overflow(page)).toBeLessThanOrEqual(0);
     });
   }
@@ -588,17 +590,18 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
     await page.screenshot({ path: "test-results/wa3-1440-fighter-intent.png" });
   });
 
-  test("WA3 step frame stays centred beyond 1440 with the 420 px aside on the frame gutter", async ({
+  test("WA3 beyond 1440 stays fluid: the 420 px aside on the right gutter, the step fills the rest", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1920, height: 900 });
     await story(page, "authentication-sign-up--create-account-wide");
     const frame = await box(frameOf(page, "step"));
-    near(frame.x, 240);
-    near(frame.width, 1440);
+    near(frame.x, 0);
+    near(frame.width, 1920);
     const aside = await box(page.locator("aside"));
     near(aside.width, 420);
-    near(aside.x + aside.width, 240 + 1440 - 64);
+    near(aside.x + aside.width, 1920 - 64);
+    near((await box(page.locator("[data-auth-step-column]"))).x, 64);
     expect(await overflow(page)).toBeLessThanOrEqual(0);
   });
 });

@@ -59,11 +59,11 @@ function DesktopLinksFromPath() {
   return <DesktopLinks active={useActiveKey()} />;
 }
 
-/** The desktop site navigation (1280 px and wider). */
+/** The desktop site navigation: every desktop and laptop width (`desktop`, 1180 px, and up). */
 export function SiteNav() {
   const t = useTranslations("shells.site");
   return (
-    <nav aria-label={t("navigation")} className="ml-3 hidden self-center xl:block">
+    <nav aria-label={t("navigation")} className="ml-3 hidden self-center desktop:block">
       <Suspense fallback={<DesktopLinksFromPath />}>
         <DesktopLinksWithQuery />
       </Suspense>
@@ -114,7 +114,7 @@ function MenuLinksFromPath() {
   return <MenuLinks active={useActiveKey()} />;
 }
 
-/** The site navigation in the menu sheet (below 1280 px), with sign-in and sign-up. */
+/** The site navigation in the menu sheet (narrow viewports only, below `desktop`), with sign-in and sign-up. */
 export function SiteMenuNav() {
   const t = useTranslations("shells.site");
   return (

@@ -79,6 +79,16 @@
 
 @theme {
   /*
+   * The desktop composition's floor (docs/design-system.md, "Responsive
+   * composition"): the width at which the canonical public header (brand, the
+   * seven site links, Sign in, Get started, at the artboard's exact spacing
+   * and 64 px gutters) physically fits: 1043 px of content + 2 × 64. Every
+   * desktop and laptop viewport from here up renders the same composition,
+   * including a 1280 px laptop with classic scrollbars (1265 px).
+   */
+  --breakpoint-desktop: 73.75rem;
+
+  /*
    * Radius scale (docs/design-tokens.json): xs marks, sm badges, md compact
    * controls, lg fields, xl primary CTAs, 2xl compact cards, 3xl cards,
    * 4xl sheets and dialogs. Pills and circles use rounded-full.

@@ -170,8 +170,8 @@ export function AuthInfoList({
 }
 
 /**
- * The 72 px auth header (WA3, WA4, WA4b): the brand on 56 px gutters inside
- * the canonical 1440 px frame, the hairline inside the 72 px. `action` sits
+ * The 72 px auth header (WA3, WA4, WA4b): the full-width header with the brand
+ * on 56 px gutters, the hairline inside the 72 px. `action` sits
  * at the right ("Already a member? Sign in"). `controls` adds the language
  * and theme switchers the sign-in and sign-up steps carry as production
  * additions; WA4b draws none.
@@ -224,8 +224,8 @@ export function AuthMinimalFrame({ children }: { children: ReactNode }) {
 
 /**
  * WA3 / WA4: a 72 px header (56 px gutters) and the step beside an optional
- * 420 px aside (56 px gap, 64 px gutters), both inside the canonical 1440 px
- * frame. `action` sits at the right of the header ("Already a member? Sign in").
+ * 420 px aside (56 px gap, 64 px gutters), both viewport-fluid: the step fills
+ * the space the fixed aside leaves. `action` sits at the right of the header ("Already a member? Sign in").
  */
 export function AuthStepFrame({
   action,

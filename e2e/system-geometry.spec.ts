@@ -49,11 +49,13 @@ test.describe("public site frame (SiteHeader, site Container)", () => {
     await page.screenshot({ path: "test-results/er2-count.png" });
   });
 
-  test("the site Container centres 1440 px beyond the designed frame", async ({ page }) => {
+  test("the site Container stays fluid beyond the designed frame (64 px gutters)", async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 1600, height: 900 });
     await story(page, "system-errors-not-found--count");
     const brand = await box(page.getByRole("link", { name: /SimpleFit/ }).first());
-    near(brand.x, (1600 - 1440) / 2 + 64);
+    near(brand.x, 64);
   });
 });
 

@@ -217,17 +217,19 @@ test.describe("public site shell frame", () => {
     expect(await style(page.getByRole("main"), "background-color")).toEqual([GRAPHITE_950]);
   });
 
-  test("beyond 1440 the 1440 px frame stays centred on its 64 px gutters", async ({ page }) => {
+  test("beyond 1440 the shell stays fluid: the same anchoring on the 64 px gutters", async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await story(page, "public-website-shell--fighters");
-    const offset = (1920 - 1440) / 2;
     await expectBox(header(page), [0, 0, 1920, 76]);
     const brand = header(page).getByRole("link", { name: /SimpleFit/ });
-    await expectBox(brand.locator("> span").first(), { 0: offset + 64 });
+    await expectBox(brand.locator("> span").first(), { 0: 64 });
+    await expectBox(siteNav(page).getByRole("link", { name: "Fighters" }), { 0: 308.2 });
     await expectBox(header(page).getByRole("link", { name: "Get started" }), {
-      0: offset + 1261.2,
+      0: 1920 - 64 - 114.8,
     });
-    await expectBox(footer(page).getByRole("navigation", { name: "Product" }), { 0: offset + 404 });
+    await expectBox(footer(page).getByRole("navigation", { name: "Product" }), { 0: 404 });
     expect(await overflow(page)).toBeLessThanOrEqual(0);
   });
 });

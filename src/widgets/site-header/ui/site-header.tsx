@@ -28,8 +28,11 @@ import { SiteMenuNav, SiteNav } from "./site-nav";
  * `border-subtle` hairline on the site Container; brand lockup, the site
  * links, then Sign in and the 42 px Get started, 36 px apart.
  *
- * Below 1280 px (the design draws only 1440) the links move into the menu
- * sheet; below 640 px Sign in and Get started do too. The menu sheet also
+ * Every desktop and laptop viewport (from the `desktop` breakpoint, 1180 px,
+ * where this header physically fits at the artboard's spacing) renders this
+ * same composition, fluid in width. Only narrower viewports, where it cannot
+ * fit, move the links into the menu sheet; below 640 px Sign in and Get
+ * started do too. The menu sheet also
  * holds the language and theme controls: the artboards draw them nowhere in
  * the public site, so they never appear in the header bar.
  */
@@ -57,7 +60,7 @@ export function SiteHeader() {
             <Button
               variant="ghost"
               size="icon"
-              className="ml-auto sm:-ml-5 xl:hidden"
+              className="ml-auto sm:-ml-5 desktop:hidden"
               aria-label={navigation("openNavigation")}
             >
               <MenuIcon aria-hidden />

@@ -62,7 +62,7 @@ export const TallWindow: StoryObj = {
   globals: { viewport: { value: "wide", isRotated: false } },
 };
 
-/** Wider than the designed frame: the site Container stays a centred 1440 px frame. */
+/** Wider than the designed frame: the same composition, fluid; the brand and actions keep their 64 px gutters. */
 export const Wide: StoryObj = {
   name: "Wide · 1920",
   ...shellStory(1820, "/en/fighters"),

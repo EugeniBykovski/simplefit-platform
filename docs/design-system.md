@@ -356,6 +356,26 @@ and an entry in the gallery.
 **Icons:** `lucide-react` only, decorative (`aria-hidden`) next to text or
 inside a labelled control.
 
+### Responsive composition (SF-42)
+
+> Canonical Web compositions are viewport-fluid but topology-invariant across supported desktop/laptop sizes. Breakpoints may adjust spacing and sizing; they must not introduce a different product composition unless an approved responsive design explicitly defines one.
+
+- **Desktop and laptop range:** from the `desktop` breakpoint
+  (`--breakpoint-desktop`, 1180 px) up. 1180 px is where the widest canonical
+  composition, the public header at the artboard's exact spacing, physically
+  fits (1043 px of content plus two 64 px gutters), so every laptop, including
+  a 1280 px screen with classic scrollbars (1265 px), gets the desktop
+  composition. Use `desktop:` for desktop-versus-narrow topology; never `xl:`
+  or another default breakpoint.
+- **Frames are fluid:** `Container` has no maximum width. Full-bleed regions
+  reach the viewport edges at every width; artboard widths constrain content
+  inside its region only.
+- **Narrow viewports** (below `desktop`) use production extensions where the
+  design has no approved tablet or phone web composition, and only where the
+  desktop composition cannot fit.
+- **Verification:** `e2e/production/web-responsive.spec.ts` checks the
+  production routes at 1280, 1366, 1440, 1512, 1728 and 1920.
+
 ### Layout primitives (SF-34)
 
 The canonical web geometry of the Claude Design 1440 px frames lives in
