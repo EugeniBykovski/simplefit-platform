@@ -20,7 +20,7 @@ export default async function Page({ params, searchParams }: PageProps<"/[locale
   await resolveLocaleParam(params);
   const continuation = continuationOf(await searchParams);
   return (
-    <SiteFrame fill={false}>
+    <SiteFrame>
       <SignupScreen continuation={continuation} />
     </SiteFrame>
   );

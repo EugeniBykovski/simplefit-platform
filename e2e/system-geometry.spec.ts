@@ -166,7 +166,7 @@ test.describe("SF-34 visual fixes", () => {
     const signIn = await box(page.getByRole("link", { name: "Sign in" }));
     const cta = await box(page.getByRole("link", { name: "Get started" }));
     near(cta.x - (signIn.x + signIn.width), 36);
-    near(cta.height, 40);
+    near(cta.height, 42); // the public-website artboards' Get started (SF-42)
   });
 
   test("ER2 count, knockout and saved typography", async ({ page }) => {
