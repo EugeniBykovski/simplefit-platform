@@ -9,8 +9,10 @@ import { apiError, installApi } from "./auth-story-api";
 /*
  * WA3 (WebRegAccount.dc.html). The role segments are presentation only and
  * show the ephemeral journey `intent` chosen on O02w (SF-45): none without an
- * intent, so no role is implied. Full name and consents stay disabled and
- * are never sent (D-WA3-PREAUTH-CONSENT).
+ * intent, so no role is implied. The full name is given after verifying
+ * (account registration, WA5) and is never sent here; the agreements are
+ * information rows, not checkboxes, because consent is recorded only after a
+ * User exists (D-WA3-PREAUTH-CONSENT, SF-36).
  */
 export default {
   title: "Authentication/Sign Up",

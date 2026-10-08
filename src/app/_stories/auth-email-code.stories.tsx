@@ -156,6 +156,17 @@ export const VerifyExpired = verifyStory(apiError(422, "code_expired"), async (c
 });
 VerifyExpired.name = "Verify · expired";
 
+/** WA4 "resent": a new code was sent; the countdown restarts and the CTA waits for it. */
+export const VerifyResent = verifyStory(apiError(422, "code_expired"), async (context) => {
+  await typeCode()?.(context);
+  await userEvent.click(await context.canvas.findByRole("button", { name: "Send a new code" }));
+  await expect(await context.canvas.findByText(/We sent a new code/, NOTICE)).toBeVisible();
+  await expect(
+    await context.canvas.findByRole("button", { name: "Verify and continue" }),
+  ).toBeDisabled();
+});
+VerifyResent.name = "Verify · resent";
+
 export const VerifySubmitting = verifyStory("pending", async (context) => {
   await typeCode()?.(context);
   await expect(await context.canvas.findByRole("button", { name: "Verifying…" })).toBeDisabled();

@@ -1,9 +1,12 @@
 import {
   Building2Icon,
+  CakeIcon,
   CircleHelpIcon,
   DumbbellIcon,
+  FileTextIcon,
   InfoIcon,
   MailIcon,
+  NewspaperIcon,
   StarIcon,
   UsersIcon,
 } from "lucide-react";
@@ -20,7 +23,6 @@ import { withContinuation, type Continuation } from "@/shared/routes/continuatio
 import { Badge } from "@/shared/ui/badge";
 import { BrandMark, BrandTile } from "@/shared/ui/brand-mark";
 import { Button } from "@/shared/ui/button";
-import { Checkbox } from "@/shared/ui/checkbox";
 import { Container } from "@/shared/ui/container";
 import { Input } from "@/shared/ui/input";
 import { Notice } from "@/shared/ui/notice";
@@ -39,9 +41,11 @@ import { AuthInfoList, AuthStepFrame } from "./auth-frame";
  * the backend, never a role. Google and Apple carry only an intent the page
  * already has; on their own they never mean Fighter.
  *
- * The WA3 consent checkboxes are not authoritative (D-WA3-PREAUTH-CONSENT):
- * consents are recorded after authentication by account registration (WA5,
- * SF-44). SF-36 reconciles their presentation.
+ * Consent is recorded after authentication, by account registration (WA5,
+ * SF-44), never before a User exists. WA3 therefore draws its three agreement
+ * rows (D-WA3-PREAUTH-CONSENT, SF-36) as information, not checkboxes: each
+ * names the agreement and when it is actually given, as O02w's own legal line
+ * does ("You'll review the Terms and Privacy Policy after sign-in").
  */
 
 const ROLE_CARDS = [
@@ -156,19 +160,21 @@ export function SignupScreen({ continuation }: { continuation?: Continuation }) 
 
 const IDENTITY_ROLES = ["fighter", "coach", "gym", "sponsor"] as const;
 const SIGNUP_ROLES = ["fighter", "coach", "gym"] as const;
-const CONSENTS = [
-  { key: "terms", required: true },
-  { key: "age", required: true },
-  { key: "news", required: false },
+const AGREEMENTS = [
+  { key: "terms", icon: FileTextIcon },
+  { key: "age", icon: CakeIcon },
+  { key: "news", icon: NewspaperIcon },
 ] as const;
-const NEXT_STEPS = ["verify", "setup", "home"] as const;
+const NEXT_STEPS = ["verify", "basics", "setup"] as const;
 
 /**
  * WA3 "Create your SimpleFit account" (email_verification), in the auth step
- * frame (1fr | 420 px, 56 px gap). The role selector, full name and consent
- * checkboxes are rendered in place but disabled and never sent: they are set
- * after verification by the onboarding domain (SF-25). Only the email address
- * is submitted.
+ * frame (1fr | 420 px, 56 px gap). Only the email address is submitted. The
+ * role segments and the identity chip show the journey chosen on O02w
+ * (`intent`, navigation only; none without one), and the full name and the
+ * agreements are given after verification, in account registration (WA5):
+ * the name field is disabled and says so, and the agreement rows are
+ * information, not checkboxes.
  */
 export function SignupAccountScreen({ continuation }: { continuation?: Continuation }) {
   const t = useTranslations("auth.account");
@@ -188,10 +194,10 @@ export function SignupAccountScreen({ continuation }: { continuation?: Continuat
             <h2 className="type-label text-faint-foreground">{t("identity.title")}</h2>
             <p className="type-body text-pretty">{t("identity.body")}</p>
             <ul className="flex flex-wrap items-center gap-1.5">
-              {IDENTITY_ROLES.map((role, index) => (
+              {IDENTITY_ROLES.map((role) => (
                 <li key={role}>
-                  {/* WA3 draws FIGHTER in the olive accent, matching the Fighter segment. */}
-                  <Badge variant={index === 0 ? "accent" : "neutral"}>
+                  {/* WA3 draws the chosen journey's chip in the olive accent, as its segment. */}
+                  <Badge variant={role === continuation?.intent ? "accent" : "neutral"}>
                     {t(`identity.roles.${role}`)}
                   </Badge>
                 </li>
@@ -268,6 +274,8 @@ export function SignupAccountScreen({ continuation }: { continuation?: Continuat
         <RegistrationEmailForm
           continuation={continuation}
           submitLabel={t("submit")}
+          // WA3's 52 px CTA (15 / 800, radius 18).
+          submitClassName="h-13"
           hint={t("hint")}
           hintPlacement="field"
           fullWidth={false}
@@ -280,35 +288,39 @@ export function SignupAccountScreen({ continuation }: { continuation?: Continuat
               >
                 {t("fullName")}
               </label>
-              {/* Presentation only (SF-25 owns the profile): never submitted. */}
+              {/* Given in account registration (WA5) after verifying: never submitted here. */}
               <Input
                 id="signup-full-name"
                 fieldSize="lg"
                 disabled
                 autoComplete="off"
+                placeholder={t("fullNamePlaceholder")}
                 className="disabled:bg-background disabled:opacity-100"
               />
             </div>
           }
         >
-          <div className="flex flex-col gap-2.5">
-            {CONSENTS.map(({ key, required }) => (
-              <label key={key} className="flex items-center gap-3">
-                {/* Never pre-ticked and never stored: consent persistence is SF-25. */}
-                <Checkbox
-                  disabled
-                  checked={false}
-                  className="size-5.5 rounded-xs border-2 border-border-strong disabled:cursor-default disabled:opacity-100"
-                />
-                <span className="type-body font-semibold">
-                  {t(`consents.${key}`)}
-                  {required && (
-                    <span className="text-faint-foreground"> {t("consents.required")}</span>
-                  )}
+          {/* WA3's three 22 px rows, 10 px apart: what is agreed after verifying, and when. */}
+          <ul
+            data-auth-agreements
+            aria-label={t("agreements.label")}
+            className="flex flex-col gap-2.5"
+          >
+            {AGREEMENTS.map(({ key, icon: Icon }) => (
+              <li key={key} className="flex items-center gap-3">
+                <span
+                  aria-hidden
+                  className="flex size-5.5 flex-none items-center justify-center rounded-xs bg-surface-elevated text-faint-foreground"
+                >
+                  <Icon className="size-3.5" />
                 </span>
-              </label>
+                <span className="type-body font-semibold">
+                  {t(`agreements.${key}`)}
+                  <span className="text-faint-foreground"> {t(`agreements.${key}When`)}</span>
+                </span>
+              </li>
             ))}
-          </div>
+          </ul>
         </RegistrationEmailForm>
         <p className="-mt-0.5 type-body-sm text-faint-foreground">
           {t.rich("haveAccount", { link: signIn })}
@@ -318,12 +330,14 @@ export function SignupAccountScreen({ continuation }: { continuation?: Continuat
   );
 }
 
-const AFTER_VERIFYING = ["fighter", "coach", "gym"] as const;
+const AFTER_VERIFYING = ["everyone", "journey", "none"] as const;
 
 /**
  * WA4 "Verify your email" (email_verification), in the auth step frame. The
  * aside shows the E01 email as an illustration with the code masked (never a
- * code anyone could type) and a static "After verifying" overview.
+ * code anyone could type) and the static "After verifying" overview of the
+ * entry resolution (SF-45): account basics for everyone, then the journey
+ * picked before sign-in, or the choice of where to start.
  */
 export function SignupVerifyScreen({ continuation }: { continuation?: Continuation }) {
   const t = useTranslations("auth.code.registration.aside");

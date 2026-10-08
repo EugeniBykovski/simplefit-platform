@@ -94,7 +94,7 @@ describe("WA1 /login", () => {
 });
 
 describe("O02w /signup", () => {
-  it("offers Google, Apple and email, with the approved static legal line", async () => {
+  it("offers Google, Apple and email, with the V78 legal line (consent comes after sign-in)", async () => {
     await renderPage(SignupPage as Page);
 
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
@@ -105,8 +105,10 @@ describe("O02w /signup", () => {
       "/signup/account",
     );
     expect(
-      screen.getByText(/By continuing you accept the Terms and Privacy Policy/),
+      screen.getByText(/You’ll review the Terms and Privacy Policy after sign-in\./),
     ).toBeInTheDocument();
+    // Nothing on O02w claims consent was given (D-WA3-PREAUTH-CONSENT).
+    expect(screen.queryByText(/By continuing you accept/)).not.toBeInTheDocument();
   });
 
   it("role cards carry the explicit journey as an ephemeral intent, never a role", async () => {
@@ -156,20 +158,33 @@ describe("O02w /signup", () => {
 });
 
 describe("WA3 /signup/account", () => {
-  it("submits the email only: role, name and consents are rendered disabled and never checked", async () => {
+  it("submits the email only: no consent control before a User exists, the name comes later", async () => {
     await renderPage(SignupAccountPage as Page);
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Create your SimpleFit account" }),
     ).toBeInTheDocument();
     expect(screen.getByLabelText("Email")).toBeEnabled();
-    expect(screen.getByLabelText("Full name")).toBeDisabled();
-    const checkboxes = screen.getAllByRole("checkbox");
-    expect(checkboxes).toHaveLength(3);
-    for (const checkbox of checkboxes) {
-      expect(checkbox).toBeDisabled();
-      expect(checkbox).not.toBeChecked();
-    }
+    const fullName = screen.getByLabelText("Full name");
+    expect(fullName).toBeDisabled();
+    expect(fullName).toHaveAttribute("placeholder", "Added after you verify");
+    // D-WA3-PREAUTH-CONSENT (SF-36): consent is given in account registration
+    // (WA5) after verifying, so WA3 has no checkbox to tick and claims none.
+    expect(screen.queryAllByRole("checkbox")).toHaveLength(0);
+    const agreements = screen.getByRole("list", { name: "After you verify your email" });
+    expect(
+      within(agreements)
+        .getAllByRole("listitem")
+        .map((item) => item.textContent),
+    ).toEqual([
+      "Terms and Privacy Policy · you accept them after verifying",
+      "16 or older · confirmed with your date of birth",
+      "Product news · optional · you choose after verifying",
+    ]);
+    expect(screen.queryByText(/· required/)).not.toBeInTheDocument();
+    // The next steps are the entry resolution's, never a Fighter default.
+    expect(screen.getByText("2 · Account basics")).toBeInTheDocument();
+    expect(screen.queryByText(/Fighter setup/)).not.toBeInTheDocument();
     const roles = screen.getByRole("radiogroup", { name: "Signing up as" });
     expect(roles).toHaveAttribute("aria-disabled", "true");
     // Without an intent nothing is selected: no role is implied.
@@ -194,6 +209,30 @@ describe("WA3 /signup/account", () => {
     );
     expect(roles).toHaveAttribute("aria-disabled", "true");
     expect(hrefs()).toContain("/login?intent=coach");
+    // The identity card highlights the same journey, and only that one.
+    const identity = screen.getByRole("heading", { name: "One identity" }).parentElement;
+    if (!identity) throw new Error("missing identity card");
+    expect(
+      within(identity)
+        .getAllByText(/^(Fighter|Coach|Gym|Sponsor)$/)
+        .map((chip) => [chip.textContent, chip.getAttribute("data-variant")]),
+    ).toEqual([
+      ["Fighter", "neutral"],
+      ["Coach", "accent"],
+      ["Gym", "neutral"],
+      ["Sponsor", "neutral"],
+    ]);
+  });
+
+  it("without a journey no identity chip is highlighted", async () => {
+    await renderPage(SignupAccountPage as Page);
+    const identity = screen.getByRole("heading", { name: "One identity" }).parentElement;
+    if (!identity) throw new Error("missing identity card");
+    expect(
+      within(identity)
+        .getAllByText(/^(Fighter|Coach|Gym|Sponsor)$/)
+        .map((chip) => chip.getAttribute("data-variant")),
+    ).toEqual(["neutral", "neutral", "neutral", "neutral"]);
   });
 
   it.each(["ru", "de", "es-MX"] as const)("is translated in %s", async (locale) => {

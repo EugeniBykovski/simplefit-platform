@@ -466,9 +466,11 @@ capability. On web the onboarding layout additionally sends a role
 onboarding page to account registration while it is incomplete, and leaves
 account registration once it is complete.
 
-**WA3 consent** (`D-WA3-PREAUTH-CONSENT`): the pre-authentication checkboxes
-on `/signup/account` are presentation only, never sent or stored; consent is
-recorded by account registration (WA5 on web, O04 on mobile).
+**WA3 consent** (`D-WA3-PREAUTH-CONSENT`, resolved by SF-36): consent is
+recorded by account registration (WA5 on web, O04 on mobile), never before a
+User exists. `/signup/account` keeps WA3's three agreement rows as
+information, not checkboxes: each names the agreement and when it is given
+(after verifying), as O02w's legal line does.
 
 **Web Fighter onboarding (SF-27).** `/app/onboarding/fighter` needs an
 authenticated session only (`capability: null`, `phase: ONBOARDING`): it is
@@ -857,7 +859,7 @@ The 18 product decisions approved on 2026-10-06, the SF-27 decision of
 | `D-WEB-FIGHTER-ONBOARDING-FLOW`    | DEFERRED | Web Fighter onboarding: WF0, WF1, WF6 current; WF2–WF5 future; session-only access         |
 | `D-ENTRY-RESOLUTION`               | RESOLVED | Backend entry resolver; semantic destinations; WA5, WA6; ephemeral `intent`                |
 | `D-ONBOARDING-ENTRY-CAPABILITY`    | RESOLVED | Onboarding entry routes need a session only, never the capability they create              |
-| `D-WA3-PREAUTH-CONSENT`            | DEFERRED | WA3 consent checkboxes are not authoritative; WA5 records consent; SF-36 reconciles        |
+| `D-WA3-PREAUTH-CONSENT`            | RESOLVED | WA3 agreement rows are information; WA5 records consent (SF-36)                            |
 
 Gallery rows dropped by a decision are listed in `excludedRows`, so every
 row stays accounted for:

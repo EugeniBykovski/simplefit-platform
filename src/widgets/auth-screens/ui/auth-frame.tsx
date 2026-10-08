@@ -91,21 +91,23 @@ export function AuthSplitFrame({
 }) {
   return (
     <div data-auth-frame="split" className="grid min-h-dvh w-full desktop:grid-cols-2">
-      <div
+      {/* A complementary landmark named by its headline: no content outside a landmark. */}
+      <aside
         data-auth-panel
+        aria-labelledby="auth-hero"
         className="hidden flex-col bg-linear-160 from-accent to-background to-70% desktop:flex"
       >
         <div className="flex flex-1 flex-col gap-5 px-16 py-14">
           <AuthBrand size="lg" />
           <span className="flex-1" />
-          <p data-auth-hero className="type-auth-hero text-balance">
+          <p id="auth-hero" data-auth-hero className="type-auth-hero text-balance">
             {hero}
           </p>
           {/* The omitted "last workspace" line's 24 px row (see above). */}
           <span data-auth-hero-reserve className="h-6 flex-none" />
           {panel}
         </div>
-      </div>
+      </aside>
       <main id="main" tabIndex={-1} className="relative flex flex-col outline-none">
         {/* Below desktop the brand panel is hidden; the brand heads the form instead. */}
         <div className="flex items-center px-4 pt-4 sm:px-6 desktop:hidden">

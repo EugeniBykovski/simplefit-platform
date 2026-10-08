@@ -50,7 +50,7 @@ test.describe("WA1 · sign in", () => {
     near(column.width, 440);
     near(column.x, 720 + (720 - 440) / 2);
 
-    near((await box(page.getByLabel("Email"))).height, 44);
+    near((await box(page.getByLabel("Email", { exact: true }))).height, 44);
     // The artboard's 50 px CTA on the nearest button step (`lg`, 48; §8.1).
     const cta = await box(page.getByRole("button", { name: "Email me a sign-in code" }));
     expect(Math.abs(cta.height - 50)).toBeLessThanOrEqual(2);
@@ -109,8 +109,9 @@ test.describe("WA3 / WA4 · registration steps", () => {
     expect(await fontSize(heading)).toBe("34px");
     near((await box(heading)).x, 64);
     near((await box(page.locator("aside"))).width, 420);
-    near((await box(page.getByLabel("Email"))).height, 44);
-    near((await box(page.getByRole("button", { name: "Create account" }))).height, 54);
+    near((await box(page.getByLabel("Email", { exact: true }))).height, 44);
+    // WebRegAccount draws its CTA 52 px tall (O02w's methods are the 54 px ones).
+    near((await box(page.getByRole("button", { name: "Create account" }))).height, 52);
     await page.screenshot({ path: "test-results/wa3-account.png" });
   });
 
@@ -283,7 +284,7 @@ test.describe("WA1 / WA1b conformance (WebLogin, WebSignInCode · 1440 × 900)",
     await expectBox(page.locator("[data-auth-panel] [data-auth-info-list]"), [64, 553, 498, 291]);
     await expectBox(page.locator("[data-auth-column]"), [860, 230, 440, 440]);
     await expectBox(page.locator("[data-auth-column] h1"), { 0: 860, 1: 230 });
-    await expectBox(page.getByLabel("Email"), [860, 498, 440, 44]);
+    await expectBox(page.getByLabel("Email", { exact: true }), [860, 498, 440, 44]);
     await expectBox(
       page.getByRole("button", { name: "Email me a sign-in code" }),
       [860, 556, 440, 50],
@@ -529,7 +530,7 @@ test.describe("O02w conformance (WebSignUp · 1440 × 940)", () => {
 });
 
 test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
-  test("header, neutral role segments, name | email, checks, CTA and the aside cards", async ({
+  test("header, neutral role segments, name | email, agreement rows, CTA and the aside cards", async ({
     page,
   }) => {
     await story(page, "authentication-sign-up--create-account");
@@ -547,17 +548,20 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
     await expectInactiveSegments(segmented, ["Fighter", "Coach", "Gym / Club"]);
     await expectBox(segmented.getByRole("radio", { name: "Fighter" }), [69, 235, 273, 36]);
     await expectBox(page.getByLabel("Full name"), [64, 342, 411, 44]);
-    await expectBox(page.getByLabel("Email"), [489, 342, 411, 44]);
-    const checks = page.locator("[data-auth-step-column] form label:has([data-slot=checkbox])");
-    await expect(checks).toHaveCount(3);
+    await expectBox(page.getByLabel("Email", { exact: true }), [489, 342, 411, 44]);
+    // The artboard's three 22 px rows at their rows, as information (D-WA3-PREAUTH-CONSENT):
+    // consent is given after verifying, so there is no checkbox before a User exists.
+    const agreements = page.locator("[data-auth-agreements] > li");
+    await expect(agreements).toHaveCount(3);
     for (const [index, y] of [
       [0, 438],
       [1, 470],
       [2, 502],
     ] as const) {
-      await expectBox(checks.nth(index), { 0: 64, 1: y });
-      await expect(checks.nth(index).locator("[data-slot=checkbox]")).not.toBeChecked();
+      await expectBox(agreements.nth(index), { 0: 64, 1: y });
+      await expectBox(agreements.nth(index).locator("> span").first(), { 0: 64, 2: 22, 3: 22 });
     }
+    await expect(page.locator("[data-auth-step-column] [data-slot=checkbox]")).toHaveCount(0);
     const create = page.getByRole("button", { name: "Create account" });
     await expectBox(create, { 0: 64, 1: 540 });
     // Width follows the label's glyphs (15 px Manrope): within 3 px of 150.
@@ -569,13 +573,13 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
     const aside = page.locator("aside");
     await expectBox(aside, { 0: 956, 1: 120, 2: 420 });
     await expectBox(aside.locator("> *").nth(0), [956, 120, 420, 147]);
+    // No journey chosen: no chip in the olive accent (no role is implied).
     const chips = aside.locator("> *").nth(0).locator("li > span");
-    expect(await chips.nth(0).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
-      "rgb(38, 43, 21)",
-    );
-    expect(await chips.nth(1).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
-      "rgb(31, 35, 32)",
-    );
+    for (const index of [0, 1, 2, 3]) {
+      expect(await chips.nth(index).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
+        "rgb(31, 35, 32)",
+      );
+    }
     await expectBox(aside.locator("> *").nth(1), [956, 281, 420, 233]);
     await expectBox(aside.locator("> *").nth(2), [956, 528, 420, 62]);
     await expect(page.getByText(/\bW01\b/)).toHaveCount(0);
@@ -598,8 +602,16 @@ test.describe("WA3 conformance (WebRegAccount · 1440 × 900)", () => {
       "rgb(237, 239, 231)",
     );
     await expectInactiveSegments(segmented, ["Coach", "Gym / Club"]);
+    // The FIGHTER chip in the olive accent, as the artboard draws it with this segment.
+    const chips = page.locator("aside > *").nth(0).locator("li > span");
+    expect(await chips.nth(0).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
+      "rgb(38, 43, 21)",
+    );
+    expect(await chips.nth(1).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
+      "rgb(31, 35, 32)",
+    );
     // The rest of the step keeps its place whatever the intent.
-    await expectBox(page.getByLabel("Email"), [489, 342, 411, 44]);
+    await expectBox(page.getByLabel("Email", { exact: true }), [489, 342, 411, 44]);
     await expectBox(page.getByRole("button", { name: "Create account" }), { 0: 64, 1: 540 });
     await page.screenshot({ path: "test-results/wa3-1440-fighter-intent.png" });
   });
@@ -640,6 +652,16 @@ test.describe("WA4 conformance (WebRegVerify · 1440 × 900)", () => {
     await expectBox(aside.locator("> *").nth(0), [956, 120, 420, 201]);
     await expectBox(aside.locator("> *").nth(1), [956, 335, 420, 229]);
     await expect(page.getByText("Your code is ••• •••")).toBeVisible();
+    // V78's "After verifying": the entry resolution's three outcomes, not per-role profiles.
+    const after = aside.locator("> *").nth(1).locator("li");
+    await expect(after).toHaveCount(3);
+    for (const [index, text] of [
+      [0, "EveryoneAccount basics & consent · once"],
+      [1, "Picked a journeyFighter · Coach · Gym setup"],
+      [2, "Nothing picked yetChoose where to start"],
+    ] as const) {
+      await expect(after.nth(index)).toHaveText(text);
+    }
     await page.screenshot({ path: "test-results/wa4-1440.png" });
   });
 });

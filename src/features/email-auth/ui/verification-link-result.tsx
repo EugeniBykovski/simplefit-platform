@@ -103,12 +103,13 @@ export function VerificationLinkView({
         {t("noSession")}
       </Notice>
       <div className="flex flex-wrap items-center gap-4">
+        {/* WA4b's 52 px action (15 / 800, radius 18). */}
         {result === "error" ? (
-          <Button size="xl" onClick={onRetry}>
+          <Button size="xl" className="h-13" onClick={onRetry}>
             {t("retry")}
           </Button>
         ) : (
-          <Button asChild variant="quiet" size="xl">
+          <Button asChild variant="quiet" size="xl" className="h-13">
             <Link href={routeHref("web.root")}>{t("home")}</Link>
           </Button>
         )}
