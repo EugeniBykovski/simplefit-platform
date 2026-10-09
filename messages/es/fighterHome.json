@@ -1,0 +1,77 @@
+{
+  "metaTitle": "Inicio",
+  "header": {
+    "dateDay": "{date} · Día {day}",
+    "welcome": {
+      "named": "Te damos la bienvenida a SimpleFit, {name}",
+      "anonymous": "Te damos la bienvenida a SimpleFit"
+    },
+    "greeting": {
+      "morning": {
+        "named": "Buenos días, {name}",
+        "anonymous": "Buenos días"
+      },
+      "afternoon": {
+        "named": "Buenas tardes, {name}",
+        "anonymous": "Buenas tardes"
+      },
+      "evening": {
+        "named": "Buenas noches, {name}",
+        "anonymous": "Buenas noches"
+      }
+    },
+    "tour": "Hacer el recorrido"
+  },
+  "checklist": {
+    "label": "Primeros pasos · {count} pasos",
+    "title": "Prepara tu esquina",
+    "progress": "{done} de {total} pasos completados",
+    "unavailable": "Aún no disponible",
+    "steps": {
+      "gym": {
+        "title": "Únete a tu gimnasio",
+        "body": "Tu gimnasio confirma tu membresía"
+      },
+      "app": {
+        "title": "Instala la app en tu teléfono",
+        "body": "Temporizador, registro de entrada y el tablero en tu bolsillo"
+      },
+      "classes": {
+        "title": "Reserva tu primera clase",
+        "body": "Del horario de tu gimnasio"
+      },
+      "training": {
+        "title": "Registra tu primer entrenamiento",
+        "body": "Con el temporizador de la app o aquí en la web"
+      },
+      "privacy": {
+        "title": "Configura tu privacidad",
+        "body": "El peso y las notas del entrenador son privados por defecto"
+      },
+      "partners": {
+        "title": "Encuentra compañeros de entrenamiento",
+        "body": "Personas que entrenan donde tú"
+      }
+    }
+  },
+  "board": {
+    "title": "Tu Live Board",
+    "empty": "Vacío",
+    "body": "Tu primera sesión crea el primer nodo.",
+    "tour": "Hacer el recorrido →"
+  },
+  "app": {
+    "label": "La app",
+    "title": "La misma cuenta en tu teléfono",
+    "body": "La app de SimpleFit inicia sesión con esta cuenta. Los enlaces a las tiendas aparecerán aquí cuando se publique."
+  },
+  "plan": "Entrenar con tu entrenador siempre es gratis. Pro añade analítica más profunda, sugerencias de IA y video, nunca funciones sociales.",
+  "tour": {
+    "label": "Recorrido",
+    "title": "Aquí vive tu Live Board",
+    "body": "Cada sesión que entrenas se suma a un solo tablero: tus gimnasios, compañeros y entrenadores. Empieza vacío y se llena a medida que entrenas; es el mismo tablero que en tu teléfono.",
+    "end": "Terminar recorrido",
+    "done": "Listo",
+    "failed": "No pudimos guardarlo. Revisa tu conexión e inténtalo de nuevo."
+  }
+}

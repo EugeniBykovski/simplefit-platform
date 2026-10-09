@@ -977,7 +977,7 @@
       "discrepancies": ["D-WEB-DEFAULT-WORKSPACE"],
       "production": {
         "file": "src/app/[locale]/app/(fighter)/home/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-40: the Fighter home behind the Fighter gate (every web.app.fighter page renders only when GET /api/v1/me/entry answers fighter_home; anyone else goes where it says, with the page as returnTo). FRW1 while the first-run record (GET /api/v1/me/first-run, simplefit-api ADR 0018) says the Fighter web tour is pending; FRW2 is a one-step coach mark on the sidebar's Live Board item that records completed or dismissed (PUT /api/v1/me/first-run/fighter_web_tour); then the home without the tour prompts. The screens' state / tour queries are design-gallery states only: nothing about the first run is in the URL or in browser storage. Only real data (FighterProfile display name and completion); the checklist's steps are not available until their domains exist."
       },
       "screens": ["LD4", "FRW1", "FRW2", "W01"]
     },

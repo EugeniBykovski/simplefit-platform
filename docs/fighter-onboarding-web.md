@@ -94,8 +94,8 @@ resolves to the resume step.
 
 A brand-new user reaches Fighter onboarding after account registration
 (WA5, SF-46): sign-up → WA5 → WF0 → WF1 → WF6 runs end to end in the browser
-(`e2e/production/account-registration.spec.ts`). The Fighter home
-(`/app/home`) is still a placeholder.
+(`e2e/production/account-registration.spec.ts`). WF6 continues to the
+Fighter home and its first run (SF-40, `docs/fighter-home-web.md`).
 
 ## Verification
 

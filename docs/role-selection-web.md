@@ -101,7 +101,8 @@ the step rows sit 3 px lower, from type-role line heights, as on WA5.
 
 - Coach, Gym and Sponsor onboarding are SF-32 placeholders. WA6 reaches
   their canonical routes truthfully, with no workspace or capability.
-- The Fighter home (`/app/home`, SF-40) is a placeholder.
+- The Fighter home (`/app/home`) and its first run are SF-40
+  (`docs/fighter-home-web.md`).
 - Legal: the Terms and Privacy documents (SF-48) gate public launch. See
   `docs/account-registration-web.md`.
 

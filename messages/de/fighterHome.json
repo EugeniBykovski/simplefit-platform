@@ -1,0 +1,77 @@
+{
+  "metaTitle": "Start",
+  "header": {
+    "dateDay": "{date} · Tag {day}",
+    "welcome": {
+      "named": "Willkommen bei SimpleFit, {name}",
+      "anonymous": "Willkommen bei SimpleFit"
+    },
+    "greeting": {
+      "morning": {
+        "named": "Guten Morgen, {name}",
+        "anonymous": "Guten Morgen"
+      },
+      "afternoon": {
+        "named": "Guten Tag, {name}",
+        "anonymous": "Guten Tag"
+      },
+      "evening": {
+        "named": "Guten Abend, {name}",
+        "anonymous": "Guten Abend"
+      }
+    },
+    "tour": "Tour starten"
+  },
+  "checklist": {
+    "label": "Los geht's · {count} Schritte",
+    "title": "Richte deine Ecke ein",
+    "progress": "{done} von {total} Schritten erledigt",
+    "unavailable": "Noch nicht verfügbar",
+    "steps": {
+      "gym": {
+        "title": "Tritt deinem Gym bei",
+        "body": "Dein Gym bestätigt deine Mitgliedschaft"
+      },
+      "app": {
+        "title": "Hol dir die App aufs Handy",
+        "body": "Timer, Check-in und das Board in der Tasche"
+      },
+      "classes": {
+        "title": "Buche deine erste Stunde",
+        "body": "Aus dem Stundenplan deines Gyms"
+      },
+      "training": {
+        "title": "Erfasse dein erstes Training",
+        "body": "Mit dem App-Timer oder hier im Web"
+      },
+      "privacy": {
+        "title": "Lege deine Privatsphäre fest",
+        "body": "Gewicht und Trainernotizen sind standardmäßig privat"
+      },
+      "partners": {
+        "title": "Finde Trainingspartner",
+        "body": "Leute, die dort trainieren, wo du trainierst"
+      }
+    }
+  },
+  "board": {
+    "title": "Dein Live Board",
+    "empty": "Leer",
+    "body": "Deine erste Einheit erstellt den ersten Knoten.",
+    "tour": "Tour starten →"
+  },
+  "app": {
+    "label": "Die App",
+    "title": "Dasselbe Konto auf dem Handy",
+    "body": "Die SimpleFit-App meldet sich mit diesem Konto an. Store-Links erscheinen hier, sobald sie veröffentlicht ist."
+  },
+  "plan": "Training mit deinem Coach ist immer kostenlos. Pro bringt tiefere Analysen, KI-Hinweise und Video – niemals soziale Funktionen.",
+  "tour": {
+    "label": "Tour",
+    "title": "Hier lebt dein Live Board",
+    "body": "Jede Einheit landet auf einem Board: deine Gyms, Partner und Coaches. Es startet leer und füllt sich, während du trainierst – dasselbe Board wie auf deinem Handy.",
+    "end": "Tour beenden",
+    "done": "Fertig",
+    "failed": "Das konnten wir nicht speichern. Prüfe deine Verbindung und versuche es erneut."
+  }
+}

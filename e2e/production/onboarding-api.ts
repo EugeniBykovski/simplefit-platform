@@ -25,6 +25,10 @@ import type { BrowserContext, Request } from "@playwright/test";
  * - Entry resolution follows SF-45's order: account registration first, then
  *   the explicit intent's journey, then the role state (Fighter), otherwise
  *   role selection.
+ * - First-run experiences (SF-40, ADR 0018): the Fighter web tour is
+ *   `unavailable` until Fighter onboarding is complete, then `pending`; the
+ *   first outcome recorded (`completed` / `dismissed`) is final, an
+ *   unavailable tour answers `409 conflict` and an unknown one `404`.
  *
  * - Sign-in for a signed-out start (SF-36): email registration (WA3 / WA4,
  *   the code `482910`), Google and Apple (any provider token).
@@ -120,6 +124,8 @@ export type OnboardingApiOptions = {
    * (implies a new account, with no registration).
    */
   signedOut?: boolean;
+  /** The Fighter web tour's recorded outcome before the test starts. */
+  tour?: "completed" | "dismissed";
 };
 
 export type OnboardingApi = {
@@ -140,6 +146,12 @@ export type OnboardingApi = {
   rollConsentVersions: (versions: { terms: string; privacy: string }) => void;
   /** The entry resolver fails for the next N requests. */
   failEntry: (count: number) => void;
+  /** The Fighter web tour's recorded outcome (`undefined` while none is). */
+  tour: () => string | undefined;
+  /** Fails the next N first-run reads and writes with a network error. */
+  failFirstRun: (count: number) => void;
+  /** Another tab or client records the tour's outcome through the API. */
+  recordTourExternally: (outcome: "completed" | "dismissed") => void;
 };
 
 const validation = (field_codes: Record<string, string[]>) => ({
@@ -203,6 +215,17 @@ export async function onboardingApi(
     persisted: Object.values(seed).some((value) => value !== undefined && value !== null),
     completedAt: complete ? NOW : (null as string | null),
   };
+
+  // ── First-run experiences (SF-40) ──
+  let tourOutcome: { outcome: string; at: string } | undefined = options.tour
+    ? { outcome: options.tour, at: NOW }
+    : undefined;
+  let firstRunFailures = 0;
+  const tourView = () => ({
+    experience: "fighter_web_tour",
+    status: tourOutcome?.outcome ?? (completedAt ? "pending" : "unavailable"),
+    recorded_at: tourOutcome?.at ?? null,
+  });
 
   let failures = options.failNextWrites ?? 0;
   let entryFailures = 0;
@@ -462,6 +485,35 @@ export async function onboardingApi(
         const result = completeFighter();
         return json(result.status, result.json);
       }
+      if (url.pathname.startsWith("/api/v1/me/first-run")) {
+        if (firstRunFailures > 0) {
+          firstRunFailures -= 1;
+          return call.abort("internetdisconnected");
+        }
+        if (url.pathname === "/api/v1/me/first-run" && !write) {
+          return json(200, { experiences: [tourView()] });
+        }
+        if (
+          url.pathname === "/api/v1/me/first-run/fighter_web_tour" &&
+          request.method() === "PUT"
+        ) {
+          const outcome = (body as { outcome?: unknown } | undefined)?.outcome;
+          if (outcome === undefined) return json(422, validation({ outcome: ["required"] }).json);
+          if (outcome !== "completed" && outcome !== "dismissed") {
+            return json(422, validation({ outcome: ["invalid_choice"] }).json);
+          }
+          if (!completedAt) {
+            return json(409, {
+              error: { code: "conflict", message: "", details: {}, request_id: null },
+            });
+          }
+          tourOutcome ??= { outcome, at: new Date().toISOString() };
+          return json(200, { experience: tourView() });
+        }
+        return json(404, {
+          error: { code: "not_found", message: "", details: {}, request_id: null },
+        });
+      }
       return unauthorized();
     },
   );
@@ -497,6 +549,13 @@ export async function onboardingApi(
     },
     failEntry: (count) => {
       entryFailures = count;
+    },
+    tour: () => tourOutcome?.outcome,
+    failFirstRun: (count) => {
+      firstRunFailures = count;
+    },
+    recordTourExternally: (outcome) => {
+      tourOutcome ??= { outcome, at: NOW };
     },
   };
 }

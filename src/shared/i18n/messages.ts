@@ -5,6 +5,7 @@ import type app from "../../../messages/en/app.json";
 import type auth from "../../../messages/en/auth.json";
 import type common from "../../../messages/en/common.json";
 import type errors from "../../../messages/en/errors.json";
+import type fighterHome from "../../../messages/en/fighterHome.json";
 import type fighterOnboarding from "../../../messages/en/fighterOnboarding.json";
 import type home from "../../../messages/en/home.json";
 import type navigation from "../../../messages/en/navigation.json";
@@ -37,6 +38,7 @@ export const namespaces = [
   "fighterOnboarding",
   "accountRegistration",
   "roleSelection",
+  "fighterHome",
 ] as const;
 
 export type Namespace = (typeof namespaces)[number];
@@ -58,6 +60,7 @@ export type Messages = {
   fighterOnboarding: typeof fighterOnboarding;
   accountRegistration: typeof accountRegistration;
   roleSelection: typeof roleSelection;
+  fighterHome: typeof fighterHome;
 };
 
 export type MessageTree = { [key: string]: string | MessageTree };

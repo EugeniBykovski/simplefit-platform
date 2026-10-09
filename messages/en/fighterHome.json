@@ -1,0 +1,77 @@
+{
+  "metaTitle": "Home",
+  "header": {
+    "dateDay": "{date} · Day {day}",
+    "welcome": {
+      "named": "Welcome to SimpleFit, {name}",
+      "anonymous": "Welcome to SimpleFit"
+    },
+    "greeting": {
+      "morning": {
+        "named": "Good morning, {name}",
+        "anonymous": "Good morning"
+      },
+      "afternoon": {
+        "named": "Good afternoon, {name}",
+        "anonymous": "Good afternoon"
+      },
+      "evening": {
+        "named": "Good evening, {name}",
+        "anonymous": "Good evening"
+      }
+    },
+    "tour": "Take the tour"
+  },
+  "checklist": {
+    "label": "Get started · {count} steps",
+    "title": "Set up your corner",
+    "progress": "{done} of {total} steps done",
+    "unavailable": "Not available yet",
+    "steps": {
+      "gym": {
+        "title": "Join your gym",
+        "body": "Your gym confirms your membership"
+      },
+      "app": {
+        "title": "Get the app on your phone",
+        "body": "Timer, check-in and the board in your pocket"
+      },
+      "classes": {
+        "title": "Book your first class",
+        "body": "From your gym's timetable"
+      },
+      "training": {
+        "title": "Log your first training",
+        "body": "From the app timer or here on web"
+      },
+      "privacy": {
+        "title": "Set your privacy",
+        "body": "Weight and coach notes are private by default"
+      },
+      "partners": {
+        "title": "Find training partners",
+        "body": "People who train where you do"
+      }
+    }
+  },
+  "board": {
+    "title": "Your Live Board",
+    "empty": "Empty",
+    "body": "Your first session creates the first node.",
+    "tour": "Take the tour →"
+  },
+  "app": {
+    "label": "Get the app",
+    "title": "Same account on your phone",
+    "body": "The SimpleFit app signs in with this account. Store links will appear here once it's released."
+  },
+  "plan": "Training with your coach is always free. Pro adds deeper analytics, AI insights and video — never social features.",
+  "tour": {
+    "label": "Tour",
+    "title": "Your Live Board lives here",
+    "body": "Every session you train adds to one board: your gyms, partners and coaches. It starts empty and fills in as you train, the same board as on your phone.",
+    "end": "End tour",
+    "done": "Done",
+    "failed": "We couldn't save that. Check your connection and try again."
+  }
+}
