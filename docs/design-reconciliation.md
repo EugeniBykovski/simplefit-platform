@@ -190,6 +190,13 @@ Other SF-17 decisions:
   `typography.onboardingRoles.web.label-tight` (10/14, 0.08em, uppercase),
   web only and for the web account onboarding screens only. `label` is
   unchanged.
+- **SF-37 mobile account entry (decision, no token change):** O04 draws date
+  of birth, a required contact-sport / health notice and no full name; it is
+  built with the SF-44 fields instead (full name, date of birth, Terms,
+  Privacy, optional product news), as the web WA5, because ADR 0016 makes no
+  health notice global and O02 cannot store a name. O05 draws Fighter
+  preselected; production picks nothing by default (SF-45). Both keep the
+  artboards' layout; their invite links wait for the invite domain (A03).
 - **SF-40 web first-run tour (decision, no token change):** FRW2 draws a
   bone coach-mark card on the dark page. Production builds it from the light
   theme's semantic tokens (`background`, `foreground`, `muted-foreground`,
