@@ -6,11 +6,12 @@
  */
 
 /**
- * `fighter_web_tour`: the Fighter web Home tour, available once Fighter onboarding is complete.
+ * `fighter_web_tour`: the Fighter web Home tour. `fighter_mobile_first_run`: the Fighter mobile introduction. Both are available once Fighter onboarding is complete; each keeps its own outcome.
  */
 export type FirstRunExperienceExperience = typeof FirstRunExperienceExperience[keyof typeof FirstRunExperienceExperience];
 
 
 export const FirstRunExperienceExperience = {
   fighter_web_tour: 'fighter_web_tour',
+  fighter_mobile_first_run: 'fighter_mobile_first_run',
 } as const;

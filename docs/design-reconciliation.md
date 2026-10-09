@@ -215,6 +215,21 @@ Other SF-17 decisions:
   no back button (completion is final). OF4's privacy note drops "and a
   coach you approve" (no coach access exists). The OF11 28 px heading uses
   `h1` (26 px, within tolerance).
+- **SF-41 mobile Fighter first run (decision, no token change):** FR1–FR3
+  illustrations keep the artboards' shapes but use generic labels (Your gym,
+  Training partner, Your coach) instead of named people, a named gym and
+  counts. FR4 draws a gym already joined, a booked class, partner names and
+  a gym workspace pill; production shows no tick, no detail and no link
+  (each step "not available yet"), the Fighter's own name in the pill, and
+  no "Hide checklist" (nothing stores a hidden checklist). FR5 step 1 and
+  step 7 drop "one is already done" and the named gym; the completion card
+  drops "Book a class". FR6 (timer tip) and FR7 (first-training milestone)
+  wait for the round timer and the training log. Off-scale values: the
+  30 pt brand tile and the 30 pt illustration nodes use 32 pt, the 46 px
+  timer digits `display` (44), the 28 px intro heading `h1` (26), the 190 pt
+  intro button 192 pt, illustration offsets of 58, 34 and 230 pt use 56, 32
+  and 218 pt (a runtime constant: the taller class card), the 5 pt bar gap 4 pt; the 360 pt illustration canvas is kept
+  as a runtime constant.
 - **Hero type** larger than `display` (40–58 px on a handful of landing and hero artboards)
   is **DEFERRED** to the public-website ticket, which decides whether a
   `display-lg` role is needed.

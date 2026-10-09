@@ -899,7 +899,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(fighter)/(tabs)/(home)/home.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-41: the Fighter home (FR4) with the FR5 tour. The backend decides: while the fighter_mobile_first_run experience is pending the introduction opens first (mobile.welcome.tour); once completed or dismissed (any device) this home shows; unavailable (Fighter onboarding not complete) goes to the entry. Only real data: display name and the day since onboarding completed. The checklist steps (gym, classes, round timer, training log, partners) belong to domains that do not exist yet: none is ticked or linked, each says not available yet. The Live Board card is empty. The tour points at the real header, checklist and tab bar, is replayable from Help (?) and records nothing. FR7 (first-training milestone) waits for the training log."
       },
       "screens": ["LD2", "FR4", "FR5", "FR7", "F01", "F01b"]
     },
@@ -1504,7 +1504,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(onboarding)/welcome/tour.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-41: FR1–FR3 Fighter mobile introduction on the SF-40 FirstRun API (experience fighter_mobile_first_run, independent of fighter_web_tour). Shown only while the experience is pending; Let’s go records completed, Skip intro records dismissed, each only after the backend kept an outcome (the first one is final, on any device); then the Fighter home. Completed or dismissed goes to the home; unavailable to the entry. The slide is screen state only: an unfinished introduction starts again at FR1. Illustrations use generic labels, never the person’s data."
       },
       "screens": ["FR1", "FR2", "FR3"]
     },
