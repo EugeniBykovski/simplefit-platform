@@ -190,6 +190,12 @@ Other SF-17 decisions:
   `typography.onboardingRoles.web.label-tight` (10/14, 0.08em, uppercase),
   web only and for the web account onboarding screens only. `label` is
   unchanged.
+- **SF-40 web first-run tour (decision, no token change):** FRW2 draws a
+  bone coach-mark card on the dark page. Production builds it from the light
+  theme's semantic tokens (`background`, `foreground`, `muted-foreground`,
+  `highlight`, `secondary`), scoped to the card, so it stays a theme-correct
+  inverse surface without new tokens. The card's 3 px arrow radius has no
+  step within tolerance; the arrow tip is square.
 - **Hero type** larger than `display` (40–58 px on a handful of landing and hero artboards)
   is **DEFERRED** to the public-website ticket, which decides whether a
   `display-lg` role is needed.

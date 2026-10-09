@@ -1,0 +1,77 @@
+{
+  "metaTitle": "Accueil",
+  "header": {
+    "dateDay": "{date} · Jour {day}",
+    "welcome": {
+      "named": "Bienvenue sur SimpleFit, {name}",
+      "anonymous": "Bienvenue sur SimpleFit"
+    },
+    "greeting": {
+      "morning": {
+        "named": "Bonjour, {name}",
+        "anonymous": "Bonjour"
+      },
+      "afternoon": {
+        "named": "Bon après-midi, {name}",
+        "anonymous": "Bon après-midi"
+      },
+      "evening": {
+        "named": "Bonsoir, {name}",
+        "anonymous": "Bonsoir"
+      }
+    },
+    "tour": "Faire la visite"
+  },
+  "checklist": {
+    "label": "Pour commencer · {count} étapes",
+    "title": "Prépare ton coin",
+    "progress": "{done} étapes sur {total} terminées",
+    "unavailable": "Pas encore disponible",
+    "steps": {
+      "gym": {
+        "title": "Rejoins ta salle",
+        "body": "Ta salle confirme ton adhésion"
+      },
+      "app": {
+        "title": "Installe l’app sur ton téléphone",
+        "body": "Minuteur, pointage et tableau dans ta poche"
+      },
+      "classes": {
+        "title": "Réserve ton premier cours",
+        "body": "Depuis le planning de ta salle"
+      },
+      "training": {
+        "title": "Enregistre ton premier entraînement",
+        "body": "Avec le minuteur de l’app ou ici sur le web"
+      },
+      "privacy": {
+        "title": "Règle ta confidentialité",
+        "body": "Le poids et les notes du coach sont privés par défaut"
+      },
+      "partners": {
+        "title": "Trouve des partenaires d’entraînement",
+        "body": "Des gens qui s’entraînent là où tu t’entraînes"
+      }
+    }
+  },
+  "board": {
+    "title": "Ton Live Board",
+    "empty": "Vide",
+    "body": "Ta première séance crée le premier nœud.",
+    "tour": "Faire la visite →"
+  },
+  "app": {
+    "label": "L’app",
+    "title": "Le même compte sur ton téléphone",
+    "body": "L’app SimpleFit se connecte avec ce compte. Les liens vers les stores apparaîtront ici dès sa sortie."
+  },
+  "plan": "S’entraîner avec ton coach est toujours gratuit. Pro ajoute des analyses plus poussées, des conseils IA et la vidéo — jamais de fonctions sociales.",
+  "tour": {
+    "label": "Visite",
+    "title": "Ton Live Board vit ici",
+    "body": "Chaque séance s’ajoute à un seul tableau : tes salles, partenaires et coachs. Il commence vide et se remplit au fil de tes entraînements — le même tableau que sur ton téléphone.",
+    "end": "Terminer la visite",
+    "done": "Terminé",
+    "failed": "Impossible d’enregistrer. Vérifie ta connexion et réessaie."
+  }
+}

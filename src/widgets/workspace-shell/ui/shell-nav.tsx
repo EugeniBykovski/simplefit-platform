@@ -58,6 +58,7 @@ export function ShellNavLinks({
               const link = (
                 <Link
                   href={item.href}
+                  data-nav-item={item.key}
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "flex h-9.5 items-center gap-2.5 rounded-md px-2.5 type-body-sm font-bold transition-colors",

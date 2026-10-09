@@ -1,0 +1,77 @@
+{
+  "metaTitle": "Start",
+  "header": {
+    "dateDay": "{date} · Dzień {day}",
+    "welcome": {
+      "named": "Witaj w SimpleFit, {name}",
+      "anonymous": "Witaj w SimpleFit"
+    },
+    "greeting": {
+      "morning": {
+        "named": "Dzień dobry, {name}",
+        "anonymous": "Dzień dobry"
+      },
+      "afternoon": {
+        "named": "Dzień dobry, {name}",
+        "anonymous": "Dzień dobry"
+      },
+      "evening": {
+        "named": "Dobry wieczór, {name}",
+        "anonymous": "Dobry wieczór"
+      }
+    },
+    "tour": "Zobacz przewodnik"
+  },
+  "checklist": {
+    "label": "Na start · {count} kroków",
+    "title": "Przygotuj swój narożnik",
+    "progress": "Ukończone kroki: {done} z {total}",
+    "unavailable": "Jeszcze niedostępne",
+    "steps": {
+      "gym": {
+        "title": "Dołącz do swojego klubu",
+        "body": "Klub potwierdza twoje członkostwo"
+      },
+      "app": {
+        "title": "Pobierz aplikację na telefon",
+        "body": "Timer, odprawa i tablica w kieszeni"
+      },
+      "classes": {
+        "title": "Zapisz się na pierwsze zajęcia",
+        "body": "Z grafiku twojego klubu"
+      },
+      "training": {
+        "title": "Zapisz pierwszy trening",
+        "body": "Z timera w aplikacji albo tutaj, w przeglądarce"
+      },
+      "privacy": {
+        "title": "Ustaw prywatność",
+        "body": "Waga i notatki trenera są domyślnie prywatne"
+      },
+      "partners": {
+        "title": "Znajdź partnerów treningowych",
+        "body": "Osoby, które trenują tam, gdzie ty"
+      }
+    }
+  },
+  "board": {
+    "title": "Twoja Live Board",
+    "empty": "Pusta",
+    "body": "Pierwszy trening utworzy pierwszy węzeł.",
+    "tour": "Zobacz przewodnik →"
+  },
+  "app": {
+    "label": "Aplikacja",
+    "title": "To samo konto w telefonie",
+    "body": "Aplikacja SimpleFit loguje się na to samo konto. Linki do sklepów pojawią się tutaj po premierze."
+  },
+  "plan": "Trening z trenerem jest zawsze darmowy. Pro dodaje głębszą analitykę, wskazówki AI i wideo — nigdy funkcje społecznościowe.",
+  "tour": {
+    "label": "Przewodnik",
+    "title": "Tu mieszka twoja Live Board",
+    "body": "Każdy trening trafia na jedną tablicę: twoje kluby, partnerów i trenerów. Na początku jest pusta i wypełnia się z każdym treningiem — ta sama tablica co w telefonie.",
+    "end": "Zakończ przewodnik",
+    "done": "Gotowe",
+    "failed": "Nie udało się zapisać. Sprawdź połączenie i spróbuj ponownie."
+  }
+}

@@ -8,6 +8,7 @@ import { jsonResponse, renderWithProviders } from "@/test/render";
 
 import { useEntryChoice } from "./entry-choice";
 import { EntryRedirect, useEntryFailure } from "./entry-redirect";
+import { FighterGate } from "./fighter-gate";
 import { OnboardingGate } from "./onboarding-gate";
 import { GuestOnly, RequireSession } from "./session-gate";
 
@@ -493,6 +494,72 @@ describe("OnboardingGate", () => {
     ).toBeInTheDocument();
     expect(navigation.replace).not.toHaveBeenCalled();
     expect(screen.queryByText("onboarding page")).not.toBeInTheDocument();
+  });
+});
+
+describe("FighterGate (SF-40)", () => {
+  const gate = () => (
+    <FighterGate pending={<p>launch</p>} failure={failure}>
+      <p>fighter page</p>
+    </FighterGate>
+  );
+  const HOME = entry({
+    destination: "fighter_home",
+    reason: "fighter_onboarding_completed",
+    fighter_profile: "completed",
+    capabilities: ["FIGHTER"],
+  });
+
+  beforeEach(() => {
+    navigation.pathname = "/app/home";
+    window.history.replaceState(null, "", "/en/app/home");
+    session.current = { status: "authenticated", viewer: VIEWER };
+  });
+
+  it("renders a Fighter page for a completed Fighter, asking without an intent", async () => {
+    const api = stubEntries(HOME);
+    await renderWithProviders(gate());
+    expect(await screen.findByText("fighter page")).toBeInTheDocument();
+    expect(navigation.replace).not.toHaveBeenCalled();
+    expect(api.urls()).toEqual(["/api/v1/me/entry"]);
+  });
+
+  it.each([
+    ["account registration", ACCOUNT_GATE, "/app/onboarding/account?returnTo=%2Fapp%2Fhome"],
+    [
+      "an unfinished Fighter onboarding",
+      entry({ destination: "fighter_onboarding", mandatory: true, fighter_profile: "in_progress" }),
+      "/app/onboarding/fighter?returnTo=%2Fapp%2Fhome",
+    ],
+    ["no role yet", entry(), "/app/onboarding/role?returnTo=%2Fapp%2Fhome"],
+  ])("sends %s where the resolver says, with the page as returnTo", async (_, answer, href) => {
+    stubEntries(answer);
+    await renderWithProviders(gate());
+    await waitFor(() => expect(navigation.replace).toHaveBeenCalledExactlyOnceWith(href));
+    expect(screen.queryByText("fighter page")).not.toBeInTheDocument();
+  });
+
+  it("gates every Fighter page, keeping that page to come back to", async () => {
+    navigation.pathname = "/app/board";
+    window.history.replaceState(null, "", "/en/app/board");
+    stubEntries(ACCOUNT_GATE);
+    await renderWithProviders(gate());
+    await waitFor(() =>
+      expect(navigation.replace).toHaveBeenCalledExactlyOnceWith(
+        "/app/onboarding/account?returnTo=%2Fapp%2Fboard",
+      ),
+    );
+  });
+
+  it("an unknown destination or a failed resolution is a retryable failure", async () => {
+    stubEntries(
+      entry({ destination: "coach_workspace" as EntryResponseEntry["destination"] }),
+      HOME,
+    );
+    await renderWithProviders(gate());
+    await userEvent.click(await screen.findByRole("button", { name: "Unknown entry destination" }));
+    expect(await screen.findByText("fighter page")).toBeInTheDocument();
+    expect(navigation.replace).not.toHaveBeenCalled();
   });
 });
 
