@@ -11,7 +11,7 @@ import type { FirstRunExperienceStatus } from './firstRunExperienceStatus';
  * A one-time first-run experience and whether the viewer should still be offered it.
  */
 export interface FirstRunExperience {
-  /** `fighter_web_tour`: the Fighter web Home tour, available once Fighter onboarding is complete. */
+  /** `fighter_web_tour`: the Fighter web Home tour. `fighter_mobile_first_run`: the Fighter mobile introduction. Both are available once Fighter onboarding is complete; each keeps its own outcome. */
   experience: FirstRunExperienceExperience;
   /**
      * When the outcome was recorded; `null` until then.

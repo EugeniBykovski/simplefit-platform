@@ -156,7 +156,7 @@ export function useListMyFirstRunExperiences<TData = Awaited<ReturnType<typeof l
 
 
 
-export const getRecordMyFirstRunOutcomeUrl = (experience: 'fighter_web_tour',) => {
+export const getRecordMyFirstRunOutcomeUrl = (experience: 'fighter_web_tour' | 'fighter_mobile_first_run',) => {
 
 
 
@@ -170,12 +170,12 @@ export const getRecordMyFirstRunOutcomeUrl = (experience: 'fighter_web_tour',) =
  * (another tab or device), returns the kept outcome with its original `recorded_at`.
  *
  * * `not_found` - unknown experience.
- * * `conflict` - the experience is `unavailable` to the viewer (for `fighter_web_tour`, Fighter onboarding is
- *   not complete); nothing is recorded.
+ * * `conflict` - the experience is `unavailable` to the viewer (for the Fighter experiences, Fighter
+ *   onboarding is not complete); nothing is recorded.
  * * `validation_error` - `outcome` is missing (`required`) or not an allowed value (`invalid_choice`).
  * @summary Record how I left a first-run experience
  */
-export const recordMyFirstRunOutcome = async (experience: 'fighter_web_tour',
+export const recordMyFirstRunOutcome = async (experience: 'fighter_web_tour' | 'fighter_mobile_first_run',
     firstRunOutcomeRequest: FirstRunOutcomeRequest, options?: Parameters<typeof apiFetch>[1]): Promise<FirstRunExperienceResponse> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
@@ -205,7 +205,7 @@ return apiFetch<FirstRunExperienceResponse>(getRecordMyFirstRunOutcomeUrl(experi
 
 
 
-export const getRecordMyFirstRunOutcomeQueryKey = (experience: 'fighter_web_tour',
+export const getRecordMyFirstRunOutcomeQueryKey = (experience: 'fighter_web_tour' | 'fighter_mobile_first_run',
     firstRunOutcomeRequest?: BodyType<FirstRunOutcomeRequest>,) => {
     return [
     'PUT', `/api/v1/me/first-run/${experience}`, firstRunOutcomeRequest
@@ -213,7 +213,7 @@ export const getRecordMyFirstRunOutcomeQueryKey = (experience: 'fighter_web_tour
     }
 
 
-export const getRecordMyFirstRunOutcomeQueryOptions = <TData = Awaited<ReturnType<typeof recordMyFirstRunOutcome>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(experience: 'fighter_web_tour',
+export const getRecordMyFirstRunOutcomeQueryOptions = <TData = Awaited<ReturnType<typeof recordMyFirstRunOutcome>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(experience: 'fighter_web_tour' | 'fighter_mobile_first_run',
     firstRunOutcomeRequest: BodyType<FirstRunOutcomeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof recordMyFirstRunOutcome>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
 
@@ -237,7 +237,7 @@ export type RecordMyFirstRunOutcomeQueryError = ErrorType<UnauthorizedResponse |
 
 
 export function useRecordMyFirstRunOutcome<TData = Awaited<ReturnType<typeof recordMyFirstRunOutcome>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
- experience: 'fighter_web_tour',
+ experience: 'fighter_web_tour' | 'fighter_mobile_first_run',
     firstRunOutcomeRequest: BodyType<FirstRunOutcomeRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof recordMyFirstRunOutcome>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof recordMyFirstRunOutcome>>,
@@ -248,7 +248,7 @@ export function useRecordMyFirstRunOutcome<TData = Awaited<ReturnType<typeof rec
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useRecordMyFirstRunOutcome<TData = Awaited<ReturnType<typeof recordMyFirstRunOutcome>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
- experience: 'fighter_web_tour',
+ experience: 'fighter_web_tour' | 'fighter_mobile_first_run',
     firstRunOutcomeRequest: BodyType<FirstRunOutcomeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof recordMyFirstRunOutcome>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof recordMyFirstRunOutcome>>,
@@ -259,7 +259,7 @@ export function useRecordMyFirstRunOutcome<TData = Awaited<ReturnType<typeof rec
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useRecordMyFirstRunOutcome<TData = Awaited<ReturnType<typeof recordMyFirstRunOutcome>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
- experience: 'fighter_web_tour',
+ experience: 'fighter_web_tour' | 'fighter_mobile_first_run',
     firstRunOutcomeRequest: BodyType<FirstRunOutcomeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof recordMyFirstRunOutcome>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
@@ -268,7 +268,7 @@ export function useRecordMyFirstRunOutcome<TData = Awaited<ReturnType<typeof rec
  */
 
 export function useRecordMyFirstRunOutcome<TData = Awaited<ReturnType<typeof recordMyFirstRunOutcome>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
- experience: 'fighter_web_tour',
+ experience: 'fighter_web_tour' | 'fighter_mobile_first_run',
     firstRunOutcomeRequest: BodyType<FirstRunOutcomeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof recordMyFirstRunOutcome>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
