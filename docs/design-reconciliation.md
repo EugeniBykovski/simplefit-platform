@@ -228,7 +228,7 @@ Other SF-17 decisions:
   30 pt brand tile and the 30 pt illustration nodes use 32 pt, the 46 px
   timer digits `display` (44), the 28 px intro heading `h1` (26), the 190 pt
   intro button 192 pt, illustration offsets of 58, 34 and 230 pt use 56, 32
-  and 224 pt, the 5 pt bar gap 4 pt; the 360 pt illustration canvas is kept
+  and 218 pt (a runtime constant: the taller class card), the 5 pt bar gap 4 pt; the 360 pt illustration canvas is kept
   as a runtime constant.
 - **Hero type** larger than `display` (40–58 px on a handful of landing and hero artboards)
   is **DEFERRED** to the public-website ticket, which decides whether a
