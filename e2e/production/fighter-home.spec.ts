@@ -5,7 +5,7 @@ import { onboardingApi, type OnboardingApi, type OnboardingApiOptions } from "./
 
 /*
  * The Fighter web home and its first run on the production build (SF-40;
- * Claude Design 34b FRW1 / FRW2, 1440 × 900): the real route (`/app/home`),
+ * Claude Design 34b FRW1 and the FRW2 tour, 1440 × 900): the real route (`/app/home`),
  * the Fighter gate, FighterProfile and the first-run record (simplefit-api
  * ADR 0018) against the test double (./onboarding-api), which applies the
  * contracts' rules. The backend's own tests own the lifecycle rules; these
@@ -19,8 +19,68 @@ const welcome = (page: Page) =>
   page.getByRole("heading", { level: 1, name: "Welcome to SimpleFit, Alex K." });
 const headerTour = (page: Page) => page.getByRole("button", { name: "Take the tour", exact: true });
 const boardTour = (page: Page) => page.getByRole("button", { name: "Take the tour →" });
-const dialog = (page: Page) => page.getByRole("dialog", { name: "Your Live Board lives here" });
+const dialog = (page: Page) => page.getByRole("dialog");
 const navBoard = (page: Page) => page.locator("aside [data-nav-item=board]");
+const button = (page: Page, name: string) =>
+  dialog(page).getByRole("button", { name, exact: true });
+
+/** The nine steps (FRW2 steps 1–9): title, real targets, spotlight padding. */
+const STEPS = [
+  ["Start here", ["[data-tour-target=checklist]"], 6, 7],
+  ["Your Live Board", ["aside [data-nav-item=board]"], 4, 4],
+  ["Fight camp, week by week", ["aside [data-nav-item=training]"], 4, 4],
+  ["See your progress", ["aside [data-nav-item=progress]"], 4, 4],
+  [
+    "Your people",
+    [
+      "aside [data-nav-item=community]",
+      "aside [data-nav-item=discover]",
+      "aside [data-nav-item=profile]",
+    ],
+    4,
+    4,
+  ],
+  ["Coaches, gyms and programs", ["aside [data-nav-item=market]"], 4, 4],
+  [
+    "Your week and your chats",
+    ["aside [data-nav-item=calendar]", "aside [data-nav-item=messages]"],
+    4,
+    4,
+  ],
+  ["You decide who sees what", ["aside [data-nav-item=settings]"], 4, 4],
+  ["One account, every role", ["aside [data-tour-target=workspace]"], 4, 4],
+] as const;
+
+/** Next through steps 1–8, to step 9. */
+async function toLastStep(page: Page) {
+  for (const [title] of STEPS.slice(0, -1)) {
+    await expect(dialog(page)).toHaveAccessibleName(title);
+    await button(page, "Next").click();
+  }
+  await expect(dialog(page)).toHaveAccessibleName("One account, every role");
+}
+
+/** Steps 1–9, Finish, then the completion card's "Back to my checklist". */
+async function finishTour(page: Page) {
+  await toLastStep(page);
+  await button(page, "Finish").click();
+  await expect(dialog(page)).toHaveAccessibleName("You know your way around");
+  await button(page, "Back to my checklist").click();
+  await expect(dialog(page)).toHaveCount(0);
+}
+
+/** The union of the targets' boxes. */
+async function union(page: Page, selectors: readonly string[]) {
+  const boxes = await Promise.all(selectors.map((selector) => box(page.locator(selector))));
+  const x = Math.min(...boxes.map((b) => b.x));
+  const y = Math.min(...boxes.map((b) => b.y));
+  return {
+    x,
+    y,
+    width: Math.max(...boxes.map((b) => b.x + b.width)) - x,
+    height: Math.max(...boxes.map((b) => b.y + b.height)) - y,
+  };
+}
 
 const FIGHTER = { completed: true, fields: { display_name: "Alex K." } } as const;
 
@@ -37,11 +97,11 @@ async function openHome(page: Page, options: OnboardingApiOptions = FIGHTER) {
   return api;
 }
 
-/** A normal (post first-run) home: the greeting of the hour, no tour anywhere. */
+/** A normal (post first-run) home: the greeting of the hour; the tour only as a replay. */
 async function expectNormalHome(page: Page) {
   await expect(page.locator("[data-fighter-home=home]")).toBeVisible();
   await expect(title(page)).toHaveText(/^Good (morning|afternoon|evening), Alex K\.$/);
-  await expect(headerTour(page)).toHaveCount(0);
+  await expect(headerTour(page)).toBeVisible();
   await expect(boardTour(page)).toHaveCount(0);
 }
 
@@ -157,15 +217,17 @@ test.describe("FRW1 · the first run", () => {
 });
 
 test.describe("FRW2 · the tour", () => {
-  test("10, 11 · opens from the header: a modal dialog on the Live Board item", async ({
+  test("10, 11 · opens from the header at step 1: a modal dialog on the checklist", async ({
     page,
   }) => {
     await openHome(page);
     await headerTour(page).click();
     await expect(dialog(page)).toBeVisible();
     await expect(dialog(page)).toHaveAttribute("aria-modal", "true");
-    await expect(dialog(page)).toHaveAccessibleDescription(/Every session you train/);
-    await expect(dialog(page).getByText("Tour", { exact: true })).toBeVisible();
+    await expect(dialog(page)).toHaveAccessibleName("Start here");
+    await expect(dialog(page)).toHaveAccessibleDescription(/Home is where every day starts/);
+    await expect(dialog(page).getByText("Tour · 1 of 9", { exact: true })).toBeVisible();
+    await expect(button(page, "Back")).toHaveCount(0);
     // Focus moved into the dialog; the page behind is inert.
     await expect(dialog(page).getByRole("button", { name: "End tour" })).toBeFocused();
     expect(
@@ -179,10 +241,18 @@ test.describe("FRW2 · the tour", () => {
     await expect(dialog(page)).toBeVisible();
   });
 
-  test("13, 14, 15 · Done records `completed` once, then the normal home", async ({ page }) => {
+  test("1–6, 13–15 · nine steps in order; only Finish records `completed`, once", async ({
+    page,
+  }) => {
     const api = await openHome(page);
     await headerTour(page).click();
-    await dialog(page).getByRole("button", { name: "Done" }).click();
+    await toLastStep(page);
+    expect(writes(api)).toEqual([]);
+    await button(page, "Finish").click();
+    await expect(dialog(page)).toHaveAccessibleName("You know your way around");
+    await expect(dialog(page).getByText("Tour complete", { exact: true }).first()).toBeVisible();
+    expect(api.tour()).toBe("completed");
+    await button(page, "Back to my checklist").click();
     await expect(dialog(page)).toHaveCount(0);
     await expectNormalHome(page);
     await expect(title(page)).toBeFocused();
@@ -192,11 +262,39 @@ test.describe("FRW2 · the tour", () => {
     expect(api.tour()).toBe("completed");
   });
 
-  test("13, 15 · End tour records `dismissed`", async ({ page }) => {
+  test("7 · End tour on a middle step records `dismissed`", async ({ page }) => {
     const api = await openHome(page);
     await boardTour(page).click();
-    await dialog(page).getByRole("button", { name: "End tour" }).click();
+    for (let i = 0; i < 4; i++) await button(page, "Next").click();
+    await expect(dialog(page)).toHaveAccessibleName("Your people");
+    await button(page, "End tour").click();
     await expectNormalHome(page);
+    expect(api.tour()).toBe("dismissed");
+    expect(writes(api)).toHaveLength(1);
+  });
+
+  test("4 · Back returns to the previous step and keeps the progress shown", async ({ page }) => {
+    await openHome(page);
+    await headerTour(page).click();
+    await button(page, "Next").click();
+    await button(page, "Next").click();
+    await expect(dialog(page).getByText("Tour · 3 of 9", { exact: true })).toBeVisible();
+    await button(page, "Back").click();
+    await expect(dialog(page)).toHaveAccessibleName("Your Live Board");
+    await expect(dialog(page).getByText("Tour · 2 of 9", { exact: true })).toBeVisible();
+    await expect(dialog(page).locator("[data-tour-progress] > span.bg-highlight")).toHaveCount(2);
+    await button(page, "Next").click();
+    await expect(dialog(page)).toHaveAccessibleName("Fight camp, week by week");
+  });
+
+  test("replay after the first run: from step 1 again, nothing recorded", async ({ page }) => {
+    const api = await openHome(page, { ...FIGHTER, tour: "dismissed" });
+    await expectNormalHome(page);
+    await headerTour(page).click();
+    await expect(dialog(page)).toHaveAccessibleName("Start here");
+    await finishTour(page);
+    await expectNormalHome(page);
+    expect(writes(api)).toEqual([]);
     expect(api.tour()).toBe("dismissed");
   });
 
@@ -208,9 +306,14 @@ test.describe("FRW2 · the tour", () => {
     await page.keyboard.press("Enter");
     await expect(dialog(page).getByRole("button", { name: "End tour" })).toBeFocused();
     await page.keyboard.press("Tab");
-    await expect(dialog(page).getByRole("button", { name: "Done" })).toBeFocused();
+    await expect(button(page, "Next")).toBeFocused();
     await page.keyboard.press("Tab");
     await expect(dialog(page).getByRole("button", { name: "End tour" })).toBeFocused();
+    // Arrow keys move between steps; focus stays in the card.
+    await page.keyboard.press("ArrowRight");
+    await expect(dialog(page)).toHaveAccessibleName("Your Live Board");
+    await page.keyboard.press("ArrowLeft");
+    await expect(dialog(page)).toHaveAccessibleName("Start here");
     await page.keyboard.press("Escape");
     await expectNormalHome(page);
     expect(api.tour()).toBe("dismissed");
@@ -229,12 +332,15 @@ test.describe("FRW2 · the tour", () => {
   }) => {
     const api = await openHome(page);
     await headerTour(page).click();
+    await toLastStep(page);
     api.failFirstRun(1);
-    await dialog(page).getByRole("button", { name: "Done" }).click();
+    await button(page, "Finish").click();
     await expect(dialog(page).getByRole("alert")).toHaveText(/couldn't save that/);
-    await expect(dialog(page)).toBeVisible();
+    await expect(dialog(page)).toHaveAccessibleName("One account, every role");
     expect(api.tour()).toBeUndefined();
-    await dialog(page).getByRole("button", { name: "Done" }).click();
+    await button(page, "Finish").click();
+    await expect(dialog(page)).toHaveAccessibleName("You know your way around");
+    await button(page, "Back to my checklist").click();
     await expectNormalHome(page);
     expect(api.tour()).toBe("completed");
   });
@@ -245,7 +351,7 @@ test.describe("FRW2 · the tour", () => {
     const api = await openHome(page);
     await headerTour(page).click();
     api.expire();
-    await dialog(page).getByRole("button", { name: "Done" }).click();
+    await button(page, "End tour").click();
     await page.waitForURL((url) => url.pathname === "/en/login");
     expect(api.tour()).toBeUndefined();
   });
@@ -255,10 +361,11 @@ test.describe("lifecycle across reloads, sessions and tabs", () => {
   test("17 · reload after the tour: the normal home, nothing written again", async ({ page }) => {
     const api = await openHome(page);
     await headerTour(page).click();
-    await dialog(page).getByRole("button", { name: "Done" }).click();
+    await finishTour(page);
     await expectNormalHome(page);
     await page.reload();
     await expectNormalHome(page);
+    await expect(dialog(page)).toHaveCount(0);
     expect(writes(api)).toHaveLength(1);
   });
 
@@ -267,6 +374,8 @@ test.describe("lifecycle across reloads, sessions and tabs", () => {
   }) => {
     const api = await openHome(page);
     await headerTour(page).click();
+    await button(page, "Next").click();
+    await button(page, "Next").click();
     await page.reload();
     await expect(welcome(page)).toBeVisible();
     await expect(dialog(page)).toHaveCount(0);
@@ -294,7 +403,7 @@ test.describe("lifecycle across reloads, sessions and tabs", () => {
       await expect(welcome(page)).toBeVisible();
     }
     await headerTour(a).click();
-    await dialog(a).getByRole("button", { name: "End tour" }).click();
+    await finishTour(a);
     await expectNormalHome(a);
 
     await b.bringToFront();
@@ -302,7 +411,7 @@ test.describe("lifecycle across reloads, sessions and tabs", () => {
     await expectNormalHome(b);
     await b.reload();
     await expectNormalHome(b);
-    expect(api.tour()).toBe("dismissed");
+    expect(api.tour()).toBe("completed");
   });
 
   test("20 · a tab with the tour open after another tab recorded: the kept outcome wins", async ({
@@ -313,7 +422,7 @@ test.describe("lifecycle across reloads, sessions and tabs", () => {
     await page.goto(HOME);
     await headerTour(page).click();
     api.recordTourExternally("dismissed");
-    await dialog(page).getByRole("button", { name: "Done" }).click();
+    await finishTour(page);
     await expectNormalHome(page);
     expect(api.tour()).toBe("dismissed");
   });
@@ -333,7 +442,7 @@ test.describe("lifecycle across reloads, sessions and tabs", () => {
   test("30 · nothing about the first run lives in browser storage", async ({ page }) => {
     await openHome(page);
     await headerTour(page).click();
-    await dialog(page).getByRole("button", { name: "Done" }).click();
+    await finishTour(page);
     await expectNormalHome(page);
     const stored = await page.evaluate(() =>
       [...Object.keys(localStorage), ...Object.keys(sessionStorage)].join(" "),
@@ -390,7 +499,7 @@ test("19, 27, 41 · end to end: sign-up → WA5 → WA6 → Fighter → WF6 → 
   // The double dates completion at its fixed NOW; the day count itself is unit-tested.
   await expect(page.locator("hgroup p").first()).toHaveText(/ · Day \d+$/);
   await headerTour(page).click();
-  await dialog(page).getByRole("button", { name: "Done" }).click();
+  await finishTour(page);
   await expectNormalHome(page);
   await page.reload();
   await expectNormalHome(page);
@@ -432,23 +541,73 @@ test.describe("geometry and accessibility", () => {
     await page.screenshot({ path: "test-results/sf40-frw1-1440.png" });
   });
 
-  test("FRW2 at 1440 × 900: the spotlight on the item, the card beside it", async ({ page }) => {
+  test("FRW2 steps 1–9 at 1440 × 900: every step on its real target, the card beside it", async ({
+    page,
+  }) => {
     await openHome(page);
     await headerTour(page).click();
-    await expect(dialog(page)).toBeVisible();
-    const item = await box(navBoard(page));
+    for (const [at, [name, targets, padX, padY]] of STEPS.entries()) {
+      await expect(dialog(page)).toHaveAccessibleName(name);
+      await expect(dialog(page).getByText(`Tour · ${at + 1} of 9`, { exact: true })).toBeVisible();
+      const target = await union(page, targets);
+      const spot = {
+        x: target.x - padX,
+        y: target.y - padY,
+        w: target.width + padX * 2,
+        h: target.height + padY * 2,
+      };
+      await expectBox(page.locator("[data-tour-spotlight]"), spot);
+      const centre = spot.y + spot.h / 2;
+      const card = await box(dialog(page));
+      expect(Math.abs(card.x - (spot.x + spot.w + 22))).toBeLessThanOrEqual(1);
+      expect(card.width).toBeCloseTo(380, 0);
+      expect(
+        Math.abs(card.y - Math.max(16, Math.min(centre - 52, 900 - card.height - 16))),
+      ).toBeLessThanOrEqual(1);
+      const arrow = await box(page.locator("[data-tour-arrow]"));
+      expect(Math.abs(arrow.y + arrow.height / 2 - centre)).toBeLessThanOrEqual(1);
+      await expectBox(dialog(page).getByRole("button", { name: at === 8 ? "Finish" : "Next" }), {
+        h: 42,
+      });
+      await page.screenshot({ path: `test-results/sf40-tour-${at + 1}-1440.png` });
+      if (at < 8) await button(page, "Next").click();
+    }
+    await button(page, "Finish").click();
+    // FRW2 complete: on the "Take the tour" button, the card 20 px below, centred and kept on screen.
+    await expect(dialog(page)).toHaveAccessibleName("You know your way around");
+    // Inert behind the dialog: located by its tour anchor, not by role.
+    const tourButton = await box(page.locator("[data-tour-target=tour-button]"));
     await expectBox(page.locator("[data-tour-spotlight]"), {
-      x: item.x - 4,
-      y: item.y - 4,
-      w: item.width + 8,
-      h: item.height + 8,
+      x: tourButton.x - 4,
+      y: tourButton.y - 4,
+      w: tourButton.width + 8,
+      h: tourButton.height + 8,
     });
-    const centre = item.y + item.height / 2;
-    await expectBox(dialog(page), { x: item.x + item.width + 4 + 22, y: centre - 37, w: 380 });
+    const card = await box(dialog(page));
+    expect(Math.abs(card.y - (tourButton.y + tourButton.height + 4 + 20))).toBeLessThanOrEqual(1);
+    expect(card.x + card.width).toBeLessThanOrEqual(1440 - 16 + 0.5);
     const arrow = await box(page.locator("[data-tour-arrow]"));
-    expect(Math.abs(arrow.y + arrow.height / 2 - centre)).toBeLessThanOrEqual(1);
-    await expectBox(dialog(page).getByRole("button", { name: "Done" }), { h: 42 });
-    await page.screenshot({ path: "test-results/sf40-frw2-1440.png" });
+    expect(
+      Math.abs(arrow.x + arrow.width / 2 - (tourButton.x + tourButton.width / 2)),
+    ).toBeLessThanOrEqual(1);
+    await page.screenshot({ path: "test-results/sf40-tour-done-1440.png" });
+  });
+
+  test("14 · a resize moves the spotlight and the card with the target", async ({ page }) => {
+    await openHome(page);
+    await headerTour(page).click();
+    const before = await box(page.locator("[data-tour-spotlight]"));
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await expect
+      .poll(async () => (await box(page.locator("[data-tour-spotlight]"))).width)
+      .not.toBeCloseTo(before.width, 0);
+    const checklist = await box(page.locator("[data-tour-target=checklist]"));
+    await expectBox(page.locator("[data-tour-spotlight]"), {
+      x: checklist.x - 6,
+      w: checklist.width + 12,
+    });
+    const card = await box(dialog(page));
+    expect(Math.abs(card.x - (checklist.x + checklist.width + 6 + 22))).toBeLessThanOrEqual(1);
   });
 
   for (const [width, height] of VIEWPORTS) {
@@ -464,10 +623,20 @@ test.describe("geometry and accessibility", () => {
       expect(Math.abs(checklist.width / app.width - 1.35)).toBeLessThan(0.01);
       expect(app.x + app.width).toBeCloseTo(width - 32, 0);
       await headerTour(page).click();
-      await expectInView(dialog(page), width, height);
-      await expectInView(dialog(page).getByRole("button", { name: "Done" }), width, height);
-      const item = await box(navBoard(page));
-      await expectBox(page.locator("[data-tour-spotlight]"), { x: item.x - 4, y: item.y - 4 });
+      // Every step's card and actions stay on screen, its spotlight on the target.
+      for (const [at, [, targets, padX, padY]] of STEPS.entries()) {
+        await expectInView(dialog(page), width, height);
+        const primary = button(page, at === 8 ? "Finish" : "Next");
+        await expectInView(primary, width, height);
+        await expectInView(button(page, "End tour"), width, height);
+        const target = await union(page, targets);
+        await expectBox(page.locator("[data-tour-spotlight]"), {
+          x: target.x - padX,
+          y: target.y - padY,
+        });
+        if (at < 8) await primary.click();
+      }
+      expect(await overflow(page)).toBeLessThanOrEqual(0);
     });
   }
 
@@ -483,9 +652,15 @@ test.describe("geometry and accessibility", () => {
     await expect(page.locator("[data-tour-spotlight]")).toHaveCount(0);
     await expect(page.locator("[data-tour-dim]")).toBeAttached();
     await expectInView(dialog(page), 390, 844);
-    const card = await box(dialog(page));
-    expect(Math.abs(card.x + card.width / 2 - 195)).toBeLessThanOrEqual(1);
-    await dialog(page).getByRole("button", { name: "Done" }).click();
+    for (let at = 0; at < 9; at++) {
+      const card = await box(dialog(page));
+      expect(Math.abs(card.x + card.width / 2 - 195)).toBeLessThanOrEqual(1);
+      await expectInView(dialog(page), 390, 844);
+      if (at < 8) await button(page, "Next").click();
+    }
+    await button(page, "Finish").click();
+    await expectInView(dialog(page), 390, 844);
+    await button(page, "Back to my checklist").click();
     await expectNormalHome(page);
     await page.screenshot({ path: "test-results/sf40-home-390.png", fullPage: true });
   });
@@ -496,7 +671,12 @@ test.describe("geometry and accessibility", () => {
     await headerTour(page).click();
     await expect(dialog(page)).toBeVisible();
     expect(await axeViolations(page)).toEqual([]);
-    await dialog(page).getByRole("button", { name: "Done" }).click();
+    await toLastStep(page);
+    expect(await axeViolations(page)).toEqual([]);
+    await button(page, "Finish").click();
+    await expect(dialog(page)).toHaveAccessibleName("You know your way around");
+    expect(await axeViolations(page)).toEqual([]);
+    await button(page, "Back to my checklist").click();
     await expectNormalHome(page);
     expect(await axeViolations(page)).toEqual([]);
   });
@@ -509,5 +689,16 @@ test.describe("geometry and accessibility", () => {
     ).toBeVisible();
     expect(await overflow(page)).toBeLessThanOrEqual(0);
     await expectBox(page.locator("[data-setup-step=privacy]"), { h: 56 });
+    // The longest step copy keeps every action inside the card and the window.
+    await page.getByRole("button", { name: "Tour starten", exact: true }).click();
+    for (let at = 0; at < 9; at++) {
+      await expectInView(dialog(page), 1440, 900);
+      const primary = dialog(page).getByRole("button", {
+        name: at === 8 ? "Abschließen" : "Weiter",
+        exact: true,
+      });
+      await expectInView(primary, 1440, 900);
+      if (at < 8) await primary.click();
+    }
   });
 });

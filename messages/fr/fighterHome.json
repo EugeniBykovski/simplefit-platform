@@ -67,11 +67,55 @@
   },
   "plan": "S’entraîner avec ton coach est toujours gratuit. Pro ajoute des analyses plus poussées, des conseils IA et la vidéo — jamais de fonctions sociales.",
   "tour": {
-    "label": "Visite",
-    "title": "Ton Live Board vit ici",
-    "body": "Chaque séance s’ajoute à un seul tableau : tes salles, partenaires et coachs. Il commence vide et se remplit au fil de tes entraînements — le même tableau que sur ton téléphone.",
+    "step": "Visite · {step} sur {total}",
+    "complete": "Visite terminée",
     "end": "Terminer la visite",
-    "done": "Terminé",
-    "failed": "Impossible d’enregistrer. Vérifie ta connexion et réessaie."
+    "back": "Retour",
+    "next": "Suivant",
+    "finish": "Terminer",
+    "toChecklist": "Retour à ma liste",
+    "failed": "Impossible d’enregistrer. Vérifie ta connexion et réessaie.",
+    "steps": {
+      "home": {
+        "title": "Commence ici",
+        "body": "Chaque journée commence ici : tes étapes de configuration maintenant, puis ton prochain cours et ta semaine dès que tu t’entraînes."
+      },
+      "board": {
+        "title": "Ton Live Board",
+        "body": "Tes séances formeront un seul tableau de salles, partenaires et coachs, le même que sur ton téléphone. Il commence vide et se remplit au fil de tes entraînements."
+      },
+      "camp": {
+        "title": "Le camp, semaine après semaine",
+        "body": "Les camps d’entraînement seront planifiés ici : date du combat, phases, rounds par semaine, charge de sparring et ta fourchette de poids. La planification n’est pas encore ouverte."
+      },
+      "progress": {
+        "title": "Tes progrès",
+        "body": "Rounds par semaine, types d’entraînement et effort s’afficheront ici dès que tu enregistreras tes séances. Seuls toi et ton coach verront cette page."
+      },
+      "people": {
+        "title": "Tes gens",
+        "body": "La communauté montrera les entraînements que tes amis choisissent de partager — sans publicité ni compteur d’abonnés. Découvrir trouvera partenaires, coachs et salles. Mon profil, c’est ce que les autres voient."
+      },
+      "market": {
+        "title": "Coachs, salles et programmes",
+        "body": "Coaching personnel, abonnements, programmes et événements seront proposés ici, avec un paiement via un prestataire sécurisé. Rien n’est encore en vente."
+      },
+      "week": {
+        "title": "Ta semaine et tes discussions",
+        "body": "Le calendrier réunira cours, entraînements, sparrings et tâches du camp. Dans Messages, ton coach, ta salle et tes partenaires pourront te joindre."
+      },
+      "privacy": {
+        "title": "Tu décides qui voit quoi",
+        "body": "Le poids et les notes du coach sont privés par défaut. La visibilité du profil, les notifications, la connexion et les apps connectées seront gérées ici."
+      },
+      "workspace": {
+        "title": "Un compte, tous les rôles",
+        "body": "Voici ton espace personnel de boxeur, sur le compte unique de tous tes rôles. Rejoindre l’équipe d’un coach ou le personnel d’une salle ne demandera jamais de seconde connexion, et ton journal reste à toi."
+      },
+      "done": {
+        "title": "Tu connais les lieux",
+        "body": "Refais la visite quand tu veux depuis Faire la visite. Tes étapes de configuration s’ouvriront à mesure que leurs fonctions arrivent."
+      }
+    }
   }
 }

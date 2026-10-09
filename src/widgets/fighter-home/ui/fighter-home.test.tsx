@@ -92,33 +92,63 @@ describe("FighterHome", () => {
     expect(api.writes()).toEqual([]);
   });
 
-  it.each(["completed", "dismissed"])("after a %s tour: the greeting, no tour", async (status) => {
-    stubApi({ status });
-    await renderWithProviders(<FighterHome />);
-    expect(
-      await screen.findByRole("heading", {
-        level: 1,
-        name: /^Good (morning|afternoon|evening), Alex K\.$/,
-      }),
-    ).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /Take the tour/ })).not.toBeInTheDocument();
-  });
+  it.each(["completed", "dismissed"])(
+    "after a %s tour: the greeting; the tour stays as a replay only",
+    async (status) => {
+      stubApi({ status });
+      await renderWithProviders(<FighterHome />);
+      expect(
+        await screen.findByRole("heading", {
+          level: 1,
+          name: /^Good (morning|afternoon|evening), Alex K\.$/,
+        }),
+      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Take the tour" })).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Take the tour →" })).not.toBeInTheDocument();
+    },
+  );
 
-  it("Done records `completed`, closes the tour and focuses the heading", async () => {
+  it("nine steps in order: Next and Back record nothing; Finish records `completed` once", async () => {
     const api = stubApi();
     await renderWithProviders(<FighterHome />);
     await userEvent.click(await screen.findByRole("button", { name: "Take the tour" }));
-    const dialog = await screen.findByRole("dialog", { name: "Your Live Board lives here" });
-    expect(dialog).toHaveAttribute("aria-modal", "true");
-    await userEvent.click(within(dialog).getByRole("button", { name: "Done" }));
+    const titles = [
+      "Start here",
+      "Your Live Board",
+      "Fight camp, week by week",
+      "See your progress",
+      "Your people",
+      "Coaches, gyms and programs",
+      "Your week and your chats",
+      "You decide who sees what",
+      "One account, every role",
+    ];
+    for (const [at, title] of titles.entries()) {
+      const dialog = await screen.findByRole("dialog", { name: title });
+      expect(within(dialog).getByText(`Tour · ${at + 1} of 9`)).toBeInTheDocument();
+      expect(within(dialog).queryByRole("button", { name: "Back" }) === null).toBe(at === 0);
+      if (at === 2) {
+        await userEvent.click(within(dialog).getByRole("button", { name: "Back" }));
+        await screen.findByRole("dialog", { name: titles[1] });
+        await userEvent.click(screen.getByRole("button", { name: "Next" }));
+        await screen.findByRole("dialog", { name: title });
+      }
+      if (at < 8) await userEvent.click(within(dialog).getByRole("button", { name: "Next" }));
+    }
+    expect(api.writes()).toEqual([]);
+    await userEvent.click(screen.getByRole("button", { name: "Finish" }));
+    const done = await screen.findByRole("dialog", { name: "You know your way around" });
+    // The visible label and the live announcement.
+    expect(within(done).getAllByText("Tour complete")).toHaveLength(2);
+    expect(api.writes()).toEqual(["PUT /api/v1/me/first-run/fighter_web_tour"]);
+    await userEvent.click(within(done).getByRole("button", { name: "Back to my checklist" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
     const heading = screen.getByRole("heading", { level: 1 });
     expect(heading).toHaveTextContent(/^Good (morning|afternoon|evening), Alex K\.$/);
     await waitFor(() => expect(heading).toHaveFocus());
-    expect(api.writes()).toEqual(["PUT /api/v1/me/first-run/fighter_web_tour"]);
   });
 
-  it("Escape ends the tour (`dismissed`); a failed write keeps it open with the error", async () => {
+  it("End tour on any step records `dismissed`; a failed write keeps the step with the error", async () => {
     let fail = true;
     const outcomes: string[] = [];
     stubApi({
@@ -133,25 +163,37 @@ describe("FighterHome", () => {
     });
     await renderWithProviders(<FighterHome />);
     await userEvent.click(await screen.findByRole("button", { name: "Take the tour →" }));
-    await screen.findByRole("dialog");
+    await userEvent.click(await screen.findByRole("button", { name: "Next" }));
+    await screen.findByRole("dialog", { name: "Your Live Board" });
     await userEvent.keyboard("{Escape}");
     expect(await screen.findByRole("alert")).toHaveTextContent("couldn't save that");
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Your Live Board" })).toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: "End tour" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
     expect(outcomes).toEqual(["dismissed", "dismissed"]);
   });
 
-  it("another tab's earlier outcome wins: the kept answer closes the tour", async () => {
-    stubApi({
-      record: () =>
-        Promise.resolve(jsonResponse({ experience: tour("dismissed", "2026-10-10T08:00:00Z") })),
-    });
+  it("a replay after the first run records nothing and starts again at step 1", async () => {
+    const api = stubApi({ status: "completed" });
     await renderWithProviders(<FighterHome />);
     await userEvent.click(await screen.findByRole("button", { name: "Take the tour" }));
-    await userEvent.click(await screen.findByRole("button", { name: "Done" }));
+    await userEvent.click(await screen.findByRole("button", { name: "Next" }));
+    await userEvent.click(screen.getByRole("button", { name: "End tour" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
-    expect(screen.queryByRole("button", { name: /Take the tour/ })).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Take the tour" }));
+    expect(await screen.findByRole("dialog", { name: "Start here" })).toBeInTheDocument();
+    expect(api.writes()).toEqual([]);
+  });
+
+  it("arrow keys move between steps", async () => {
+    stubApi();
+    await renderWithProviders(<FighterHome />);
+    await userEvent.click(await screen.findByRole("button", { name: "Take the tour" }));
+    await screen.findByRole("dialog", { name: "Start here" });
+    await userEvent.keyboard("{ArrowRight}");
+    expect(await screen.findByRole("dialog", { name: "Your Live Board" })).toBeInTheDocument();
+    await userEvent.keyboard("{ArrowLeft}");
+    expect(await screen.findByRole("dialog", { name: "Start here" })).toBeInTheDocument();
   });
 
   it("an experience the API does not list is never offered", async () => {
@@ -167,6 +209,6 @@ describe("FighterHome", () => {
     );
     await renderWithProviders(<FighterHome />);
     expect(await screen.findByRole("heading", { level: 1 })).toHaveTextContent(/^Good /);
-    expect(screen.queryByRole("button", { name: /Take the tour/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Take the tour →" })).not.toBeInTheDocument();
   });
 });

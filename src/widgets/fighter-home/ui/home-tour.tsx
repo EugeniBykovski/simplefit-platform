@@ -1,186 +1,300 @@
 "use client";
 
+import { CheckIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Dialog as DialogPrimitive } from "radix-ui";
-import { useCallback, useLayoutEffect, useState, type CSSProperties } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+} from "react";
 
 import type { FirstRunOutcome } from "@/entities/first-run";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 
+import {
+  TOUR_DONE,
+  TOUR_STEPS,
+  TOUR_TARGETS,
+  place,
+  targetBox,
+  type Placement,
+  type TourStep,
+} from "../model/tour";
+
 /**
- * FRW2 · the Fighter web tour (Claude Design 34b, `FirstRunWebFTour`): a
- * coach mark on the sidebar's Live Board item. The artboard draws step 2 of
- * 4; only that step exists, and its copy promises nothing the Live Board
- * does not do yet (SF-40 decision).
+ * The Fighter web tour (Claude Design 34b, FRW2: steps 1–9 and complete): nine coach marks on
+ * real production elements, then the completion card. The steps, their
+ * targets and placement come from `model/tour`; this component only renders
+ * the current one.
  *
- * It is a modal dialog (focus kept inside, the page inert, Escape ends it),
- * anchored to the real nav item: the spotlight is the item's box plus 4 px,
- * and the card sits 22 px to its right with the arrow on the item's centre,
- * measured again on resize and scroll. Where the item is not visible (the
- * sidebar is a menu below `md`), the card is centred over the dimmed page.
+ * It is one modal dialog for the whole tour (focus kept inside, the page
+ * inert). Every step re-measures its target on open, resize and scroll, and
+ * scrolls it into view; a target that is hidden (the sidebar is a menu below
+ * `md`) or leaves no room for the card centres the card over the dimmed page.
  *
- * "End tour" records `dismissed` and "Done" `completed`
- * (`onFinish`); the dialog stays open, with the error, until the backend has
- * kept the outcome. Escape ends the tour like "End tour".
+ * Outcomes (`onRecord`, simplefit-api ADR 0018) are recorded only by an
+ * explicit end: "End tour" or Escape records `dismissed` on any step, "Finish"
+ * on step 9 records `completed` and then shows the completion card. Back and
+ * Next record nothing. A failed write keeps the step open with the error. A
+ * replay (the outcome is already kept) records nothing at all.
  */
 
-/** The anchor: the desktop sidebar's Live Board item (`ShellNavLinks`). */
-const TARGET = "aside [data-nav-item=board]";
-const SPOT = 4;
-const GAP = 22;
-const CARD_WIDTH = 380;
-const EDGE = 16;
+const SPOT_RADIUS = {
+  "md-lg": "rounded-md-lg",
+  lg: "rounded-lg",
+  xl: "rounded-xl",
+  "4xl": "rounded-4xl",
+} as const;
 
-type Anchor = { left: number; top: number; width: number; height: number };
-
-function measure(): Anchor | undefined {
-  const element = document.querySelector(TARGET);
-  if (!(element instanceof HTMLElement)) return undefined;
-  const box = element.getBoundingClientRect();
-  if (box.width === 0 || box.height === 0) return undefined;
-  // Only an anchor with room for the card beside it.
-  if (box.right + SPOT + GAP + CARD_WIDTH + EDGE > window.innerWidth) return undefined;
-  return {
-    left: box.left - SPOT,
-    top: box.top - SPOT,
-    width: box.width + SPOT * 2,
-    height: box.height + SPOT * 2,
-  };
-}
-
-function useAnchor(open: boolean) {
-  const [anchor, setAnchor] = useState<Anchor>();
+function usePlacement(step: TourStep, open: boolean, card: HTMLElement | null) {
+  const [placement, setPlacement] = useState<Placement>();
   useLayoutEffect(() => {
     if (!open) return;
-    const update = () => setAnchor(measure());
+    const update = () => {
+      const box = targetBox(step);
+      setPlacement(
+        box === undefined
+          ? undefined
+          : place(
+              step,
+              box,
+              { width: window.innerWidth, height: window.innerHeight },
+              card?.offsetHeight ?? 0,
+            ),
+      );
+    };
+    const [first] = step.targets;
+    const target = first === undefined ? null : document.querySelector(TOUR_TARGETS[first]);
+    if (target instanceof HTMLElement) target.scrollIntoView({ block: "nearest" });
     update();
+    const observer = new ResizeObserver(update);
+    if (card) observer.observe(card);
     window.addEventListener("resize", update);
     window.addEventListener("scroll", update, true);
     return () => {
+      observer.disconnect();
       window.removeEventListener("resize", update);
       window.removeEventListener("scroll", update, true);
     };
-  }, [open]);
-  return anchor;
+  }, [step, open, card]);
+  return placement;
 }
 
 export function HomeTour({
   open,
-  onFinish,
+  replay,
+  onRecord,
+  onClose,
   onClosed,
 }: {
   open: boolean;
+  /** The outcome is already kept: the tour records nothing. */
+  replay: boolean;
   /** Records the outcome; rejects when it was not kept. */
-  onFinish: (outcome: FirstRunOutcome) => Promise<unknown>;
+  onRecord: (outcome: FirstRunOutcome) => Promise<unknown>;
+  /** Closes the dialog (after an outcome or the completion card). */
+  onClose: () => void;
   /** After the dialog closed: where focus goes. */
   onClosed: () => void;
 }) {
   const t = useTranslations("fighterHome.tour");
-  const anchor = useAnchor(open);
+  const [index, setIndex] = useState<number | "done">(0);
   const [saving, setSaving] = useState<FirstRunOutcome>();
   const [failed, setFailed] = useState(false);
+  const [card, setCard] = useState<HTMLElement | null>(null);
+  const primary = useRef<HTMLButtonElement>(null);
 
-  const finish = useCallback(
+  const step = index === "done" ? TOUR_DONE : (TOUR_STEPS[index] ?? TOUR_DONE);
+  const placement = usePlacement(step, open, card);
+  const total = TOUR_STEPS.length;
+  const last = index === total - 1;
+
+  // Closing resets the tour, so the next presentation starts at step 1.
+  const close = useCallback(() => {
+    setIndex(0);
+    setFailed(false);
+    onClose();
+  }, [onClose]);
+
+  // Moving between steps keeps focus in the card: Back disappears on step 1.
+  useEffect(() => {
+    if (open && card !== null && !card.contains(document.activeElement)) primary.current?.focus();
+  }, [index, open, card]);
+
+  const end = useCallback(
     async (outcome: FirstRunOutcome) => {
       if (saving !== undefined) return;
+      if (replay) {
+        if (outcome === "completed") setIndex("done");
+        else close();
+        return;
+      }
       setSaving(outcome);
       setFailed(false);
       try {
-        await onFinish(outcome);
+        await onRecord(outcome);
+        if (outcome === "completed") setIndex("done");
+        else close();
       } catch {
         setFailed(true);
       } finally {
         setSaving(undefined);
       }
     },
-    [onFinish, saving],
+    [close, onRecord, replay, saving],
   );
 
-  const centre = anchor === undefined ? undefined : anchor.top + anchor.height / 2;
-  const card: CSSProperties | undefined =
-    anchor === undefined || centre === undefined
-      ? undefined
-      : {
-          left: anchor.left + anchor.width + GAP,
-          top: Math.max(EDGE, centre - 37),
-        };
+  const go = (to: number) => {
+    setFailed(false);
+    setIndex(Math.min(Math.max(to, 0), total - 1));
+  };
+
+  const keys = (event: KeyboardEvent) => {
+    if (index === "done" || saving !== undefined) return;
+    if (event.key === "ArrowRight" && !last) go(index + 1);
+    if (event.key === "ArrowLeft" && index > 0) go(index - 1);
+  };
+
+  const id = step.id;
+  const position = index === "done" ? undefined : index + 1;
 
   return (
     <DialogPrimitive.Root open={open}>
       <DialogPrimitive.Portal>
-        {anchor === undefined ? (
+        {placement === undefined ? (
           <div aria-hidden data-tour-dim className="fixed inset-0 z-50 bg-overlay" />
         ) : (
           <span
             aria-hidden
-            data-tour-spotlight
-            className="pointer-events-none fixed z-50 rounded-md border-2 border-highlight shadow-[0_0_0_4000px_var(--overlay)]"
-            style={anchor}
+            data-tour-spotlight={id}
+            className={cn(
+              "pointer-events-none fixed z-50 border-2 border-highlight shadow-[0_0_0_4000px_var(--overlay)]",
+              SPOT_RADIUS[step.spot.radius],
+            )}
+            style={placement.spot}
           />
         )}
         <DialogPrimitive.Content
-          data-home-tour
+          ref={setCard}
+          data-home-tour={id}
           aria-modal="true"
           aria-describedby="home-tour-body"
+          onKeyDown={keys}
           onEscapeKeyDown={(event) => {
             event.preventDefault();
-            void finish("dismissed");
+            if (index === "done") close();
+            else void end("dismissed");
           }}
           onInteractOutside={(event) => event.preventDefault()}
           onCloseAutoFocus={(event) => {
             event.preventDefault();
             onClosed();
           }}
-          style={card}
+          style={placement?.card}
           className={cn(
-            // The bone card of the artboard: the light theme's tokens, whatever the page's theme.
+            // The bone card of the artboards: the light theme's tokens, whatever the page's theme.
             "light fixed z-50 flex w-95 max-w-[calc(100vw-2rem)] flex-col gap-2.5 rounded-3xl bg-background p-4.5 text-foreground shadow-modal outline-none",
-            card === undefined && "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+            placement === undefined && "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
           )}
         >
-          {anchor !== undefined && centre !== undefined && (
+          {placement !== undefined && (
             <span
               aria-hidden
               data-tour-arrow
               className="fixed size-4 rotate-45 bg-background"
-              style={{ left: anchor.left + anchor.width + GAP - 7, top: centre - 8 }}
+              style={{ left: placement.arrow.x - 8, top: placement.arrow.y - 8 }}
             />
           )}
-          <p className="type-label text-highlight">{t("label")}</p>
+          <div className="flex items-center justify-between gap-3">
+            <p className="type-label text-highlight">
+              {position === undefined ? t("complete") : t("step", { step: position, total })}
+            </p>
+            {position === undefined ? (
+              <span
+                aria-hidden
+                className="flex size-5.5 items-center justify-center rounded-full bg-highlight text-background"
+              >
+                <CheckIcon className="size-3.5" strokeWidth={3} />
+              </span>
+            ) : (
+              <span aria-hidden data-tour-progress className="flex gap-1">
+                {TOUR_STEPS.map((item, at) => (
+                  <span
+                    key={item.id}
+                    className={cn(
+                      "h-1 w-3.5 rounded-full",
+                      at < position ? "bg-highlight" : "bg-input",
+                    )}
+                  />
+                ))}
+              </span>
+            )}
+          </div>
           <DialogPrimitive.Title className="type-h3 text-pretty">
-            {t("title")}
+            {t(`steps.${id}.title`)}
           </DialogPrimitive.Title>
           <DialogPrimitive.Description
             id="home-tour-body"
             className="type-body-sm text-pretty text-muted-foreground"
           >
-            {t("body")}
+            {t(`steps.${id}.body`)}
           </DialogPrimitive.Description>
+          {/* Announces each new step; the title and body above are its content. */}
+          <p aria-live="polite" className="sr-only">
+            {position === undefined
+              ? t("complete")
+              : `${t("step", { step: position, total })}: ${t(`steps.${id}.title`)}`}
+          </p>
           {failed && (
             <p role="alert" className="type-caption font-bold text-destructive">
               {t("failed")}
             </p>
           )}
           <div className="mt-1 flex items-center justify-between gap-3">
-            <Button
-              variant="link"
-              className="type-body-sm text-muted-foreground"
-              disabled={saving !== undefined}
-              loading={saving === "dismissed"}
-              onClick={() => void finish("dismissed")}
-            >
-              {t("end")}
-            </Button>
-            <Button
-              variant="secondary"
-              className="h-10.5 rounded-md-lg"
-              disabled={saving !== undefined}
-              loading={saving === "completed"}
-              onClick={() => void finish("completed")}
-            >
-              {t("done")}
-            </Button>
+            {index === "done" ? (
+              <span />
+            ) : (
+              <Button
+                variant="link"
+                className="type-body-sm text-muted-foreground"
+                disabled={saving !== undefined}
+                loading={saving === "dismissed"}
+                onClick={() => void end("dismissed")}
+              >
+                {t("end")}
+              </Button>
+            )}
+            <span className="flex gap-2">
+              {index !== "done" && index > 0 && (
+                <Button
+                  variant="outline"
+                  className="h-10.5 rounded-md-lg border-input px-4 text-foreground hover:bg-muted hover:text-foreground"
+                  disabled={saving !== undefined}
+                  onClick={() => go(index - 1)}
+                >
+                  {t("back")}
+                </Button>
+              )}
+              <Button
+                ref={primary}
+                variant="secondary"
+                className="h-10.5 rounded-md-lg"
+                disabled={saving !== undefined}
+                loading={saving === "completed"}
+                onClick={() => {
+                  if (index === "done") close();
+                  else if (last) void end("completed");
+                  else go(index + 1);
+                }}
+              >
+                {index === "done" ? t("toChecklist") : last ? t("finish") : t("next")}
+              </Button>
+            </span>
           </div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>

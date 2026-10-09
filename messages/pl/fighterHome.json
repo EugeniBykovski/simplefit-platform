@@ -67,11 +67,55 @@
   },
   "plan": "Trening z trenerem jest zawsze darmowy. Pro dodaje głębszą analitykę, wskazówki AI i wideo — nigdy funkcje społecznościowe.",
   "tour": {
-    "label": "Przewodnik",
-    "title": "Tu mieszka twoja Live Board",
-    "body": "Każdy trening trafia na jedną tablicę: twoje kluby, partnerów i trenerów. Na początku jest pusta i wypełnia się z każdym treningiem — ta sama tablica co w telefonie.",
+    "step": "Przewodnik · {step} z {total}",
+    "complete": "Przewodnik ukończony",
     "end": "Zakończ przewodnik",
-    "done": "Gotowe",
-    "failed": "Nie udało się zapisać. Sprawdź połączenie i spróbuj ponownie."
+    "back": "Wstecz",
+    "next": "Dalej",
+    "finish": "Zakończ",
+    "toChecklist": "Wróć do mojej listy",
+    "failed": "Nie udało się zapisać. Sprawdź połączenie i spróbuj ponownie.",
+    "steps": {
+      "home": {
+        "title": "Zacznij tutaj",
+        "body": "Tu zaczyna się każdy dzień: teraz kroki konfiguracji, a gdy zaczniesz trenować — następne zajęcia i twój tydzień."
+      },
+      "board": {
+        "title": "Twoja Live Board",
+        "body": "Twoje treningi złożą się w jedną tablicę klubów, partnerów i trenerów — tę samą co w telefonie. Na początku jest pusta i wypełnia się z każdym treningiem."
+      },
+      "camp": {
+        "title": "Obóz walki tydzień po tygodniu",
+        "body": "Tu będzie planowanie obozów: data walki, fazy, rundy w tygodniu, obciążenie sparingami i twój korytarz wagowy. Planowanie obozu nie jest jeszcze dostępne."
+      },
+      "progress": {
+        "title": "Twoje postępy",
+        "body": "Rundy w tygodniu, rodzaje treningów i wysiłek pojawią się tutaj, gdy zaczniesz zapisywać treningi. Tę stronę zobaczysz tylko ty i twój trener."
+      },
+      "people": {
+        "title": "Twoi ludzie",
+        "body": "Społeczność pokaże treningi, którymi znajomi zechcą się podzielić — bez reklam i liczników obserwujących. Odkrywaj pomoże znaleźć partnerów, trenerów i kluby. Mój profil to to, co widzą inni."
+      },
+      "market": {
+        "title": "Trenerzy, kluby i programy",
+        "body": "Pojawią się tu treningi personalne, karnety, programy i wydarzenia z płatnością przez bezpiecznego operatora. Na razie nic nie jest w sprzedaży."
+      },
+      "week": {
+        "title": "Twój tydzień i rozmowy",
+        "body": "Kalendarz połączy zajęcia, treningi, sparingi i zadania obozu. W wiadomościach skontaktują się z tobą trener, klub i partnerzy treningowi."
+      },
+      "privacy": {
+        "title": "Ty decydujesz, kto co widzi",
+        "body": "Waga i notatki trenera są domyślnie prywatne. Tu będzie można zarządzać widocznością profilu, powiadomieniami, logowaniem i połączonymi aplikacjami."
+      },
+      "workspace": {
+        "title": "Jedno konto, każda rola",
+        "body": "To twoja osobista przestrzeń zawodnika na jednym koncie do każdej roli. Dołączenie do drużyny trenera lub personelu klubu nie będzie wymagać drugiego logowania, a twój dziennik zostanie twój."
+      },
+      "done": {
+        "title": "Już wiesz, co gdzie jest",
+        "body": "Przewodnik możesz zobaczyć ponownie w każdej chwili przez „Zobacz przewodnik”. Kroki konfiguracji otworzą się wraz z ich funkcjami."
+      }
+    }
   }
 }

@@ -67,11 +67,55 @@
   },
   "plan": "Training with your coach is always free. Pro adds deeper analytics, AI insights and video — never social features.",
   "tour": {
-    "label": "Tour",
-    "title": "Your Live Board lives here",
-    "body": "Every session you train adds to one board: your gyms, partners and coaches. It starts empty and fills in as you train, the same board as on your phone.",
+    "step": "Tour · {step} of {total}",
+    "complete": "Tour complete",
     "end": "End tour",
-    "done": "Done",
-    "failed": "We couldn't save that. Check your connection and try again."
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish",
+    "toChecklist": "Back to my checklist",
+    "failed": "We couldn't save that. Check your connection and try again.",
+    "steps": {
+      "home": {
+        "title": "Start here",
+        "body": "Home is where every day starts: your setup steps now, then your next class and your week once you train."
+      },
+      "board": {
+        "title": "Your Live Board",
+        "body": "Your sessions will build one board of gyms, partners and coaches, the same board as on your phone. It starts empty and fills in as you train."
+      },
+      "camp": {
+        "title": "Fight camp, week by week",
+        "body": "Fight camps will be planned here: a fight date, phases, rounds per week, sparring load and your weight corridor. Camp planning isn't open yet."
+      },
+      "progress": {
+        "title": "See your progress",
+        "body": "Rounds per week, training mix and effort will show here once you log training. Only you and your coach will see this page."
+      },
+      "people": {
+        "title": "Your people",
+        "body": "Community will show trainings friends choose to share — no ads, no follower counts. Discover will find partners, coaches and gyms. My profile is what others see."
+      },
+      "market": {
+        "title": "Coaches, gyms and programs",
+        "body": "Personal training, gym memberships, programs and events will be offered here, with checkout through a secure payment provider. Nothing is on sale yet."
+      },
+      "week": {
+        "title": "Your week and your chats",
+        "body": "Calendar will layer classes, training, sparring and camp tasks. Messages will be where your coach, your gym and training partners reach you."
+      },
+      "privacy": {
+        "title": "You decide who sees what",
+        "body": "Weight and coach notes are private by default. Profile visibility, notifications, sign-in and connected apps will be managed here."
+      },
+      "workspace": {
+        "title": "One account, every role",
+        "body": "This is your personal fighter space, on the one account you use for every role. Joining a coach's team or a gym's staff will never need a second sign-in, and your log stays yours."
+      },
+      "done": {
+        "title": "You know your way around",
+        "body": "Replay the tour any time from Take the tour. Your setup steps open as their features arrive."
+      }
+    }
   }
 }
