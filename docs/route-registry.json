@@ -1155,7 +1155,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(auth)/signup/consent.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-37: O04 Basics & consent on the SF-44 account registration (GET / PATCH /api/v1/me/account-profile, POST .../complete-registration): full name, date of birth (numeric, locale order, sent as a calendar date), Terms and Privacy (required, never pre-ticked; an accepted current version stays ticked and locked) and optional product news. The artboard's contact-sport notice is not a global requirement (ADR 0016); full name is asked here because O02 cannot store it. The onboarding gate shows O04 only while registration is incomplete and then continues to the SF-45 entry."
       },
       "discrepancies": ["D-SIGNUP-SESSION-BOUNDARY", "D-ENTRY-RESOLUTION"],
       "screens": ["O04"]
@@ -1181,7 +1181,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(auth)/onboarding/role.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-37: O05 Choose your role on the SF-45 entry resolver: four journeys, nothing picked by default (an explicit intent=sponsor preselects Sponsor / Brand); Continue asks GET /api/v1/me/entry with the chosen intent and goes where it answers. Nothing is stored or created. sponsor_application, which maps here, opens the web partner application (EXPO_PUBLIC_WEB_URL/partners/apply). The onboarding gate shows O05 only for destinations that map to it. The invite links wait for the invite domain (A03)."
       },
       "discrepancies": ["D-ROLE-SELECTION-PATH", "D-SIGNUP-SESSION-BOUNDARY", "D-ENTRY-RESOLUTION"],
       "screens": ["O05"]
