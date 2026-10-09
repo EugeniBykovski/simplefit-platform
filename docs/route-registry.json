@@ -1478,7 +1478,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(onboarding)/onboarding/fighter.tsx",
-        "note": "SF-39: OF1–OF11 Fighter registration on the SF-25 FighterProfile (getMyFighterProfile, updateMyFighterProfile, completeFighterOnboarding). ?step= is navigation only: the step shown is derived from the backend profile (the earliest step with a missing requirement, else OF3 Goals), so no link skips a required step and nothing is kept on the device. Continue saves only the fields changed on OF1–OF4; OF5–OF10 are informational (no gym, coach, privacy, friends or notification domain exists) and record nothing; OF10's Finish asks the backend to complete, and OF11 shows only after that succeeded, continuing through the SF-45 entry."
+        "note": "SF-39: OF1–OF11 Fighter registration on the SF-25 FighterProfile (getMyFighterProfile, updateMyFighterProfile, completeFighterOnboarding). ?step= is navigation only: the step shown is derived from the backend profile (SF-26 resume policy: the earliest step with a missing requirement, else the step after the furthest optional step with saved data, OF3 to OF5), so no link skips a required step, no visit to a deferred step is claimed and nothing is kept on the device. Continue saves only the fields changed on OF1–OF4; OF5–OF10 are informational (no gym, coach, privacy, friends or notification domain exists) and record nothing; OF10's Finish asks the backend to complete, and OF11 shows only after that succeeded, continuing through the SF-45 entry."
       },
       "discrepancies": ["D-REUSED-ARTBOARDS", "D-ONBOARDING-ENTRY-CAPABILITY"],
       "screens": ["OF1", "OF2", "OF3", "OF4", "OF5", "OF6", "OF7", "OF8", "OF9", "OF10", "OF11"]
