@@ -137,7 +137,8 @@ export function WorkspaceShell({
  */
 function Brand({ name, internal }: { name: string; internal?: string | undefined }) {
   return (
-    <div className="flex flex-col items-start gap-1 px-2 pb-4">
+    // The workspace identity block: the Fighter web tour's step 9 anchors here (SF-40).
+    <div data-tour-target="workspace" className="flex flex-col items-start gap-1 px-2 pb-4">
       <Link href={routeHref("web.root")} className="flex items-center gap-2.5 rounded-md">
         <BrandTile size="sm" />
         <span className="type-brand">{siteConfig.name.split(" ")[0]}</span>

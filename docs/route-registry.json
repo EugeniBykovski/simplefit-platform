@@ -977,7 +977,7 @@
       "discrepancies": ["D-WEB-DEFAULT-WORKSPACE"],
       "production": {
         "file": "src/app/[locale]/app/(fighter)/home/page.tsx",
-        "note": "SF-40: the Fighter home behind the Fighter gate (every web.app.fighter page renders only when GET /api/v1/me/entry answers fighter_home; anyone else goes where it says, with the page as returnTo). FRW1 while the first-run record (GET /api/v1/me/first-run, simplefit-api ADR 0018) says the Fighter web tour is pending; FRW2 is a one-step coach mark on the sidebar's Live Board item that records completed or dismissed (PUT /api/v1/me/first-run/fighter_web_tour); then the home without the tour prompts. The screens' state / tour queries are design-gallery states only: nothing about the first run is in the URL or in browser storage. Only real data (FighterProfile display name and completion); the checklist's steps are not available until their domains exist."
+        "note": "SF-40: the Fighter home behind the Fighter gate (every web.app.fighter page renders only when GET /api/v1/me/entry answers fighter_home; anyone else goes where it says, with the page as returnTo). FRW1 while the first-run record (GET /api/v1/me/first-run, simplefit-api ADR 0018) says the Fighter web tour is pending. FRW2 is the nine-step tour: coach marks on real production elements (the checklist, the sidebar nav items, and the shell identity block where the unbuilt workspace switcher will sit), then the completion card on the Take the tour button. Only End tour / Escape (dismissed) and Finish on step 9 (completed) are recorded (PUT /api/v1/me/first-run/fighter_web_tour). Afterwards the home shows the greeting, and Take the tour replays the tour without recording anything. The screens' tour queries are design-gallery states only: nothing about the first run is in the URL or in browser storage. Only real data is shown (the FighterProfile display name and completion). The checklist's steps are not available until their domains exist, and the tour copy says what each section is for without claiming unbuilt features work."
       },
       "screens": ["LD4", "FRW1", "FRW2", "W01"]
     },
@@ -8977,7 +8977,7 @@
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
-        "section": "FIGHTER · 34b · Onboarding · web first run",
+        "section": "FIGHTER · 34b · Onboarding · web first run · checklist + 9-step tour",
         "step": "34.8",
         "tag": "WEB_APP",
         "artboard": "FirstRunWebF.dc.html"
@@ -8986,16 +8986,27 @@
     {
       "id": "FRW2",
       "code": "FRW2",
-      "name": "Product tour · Live Board",
+      "name": "Product tour · 9 steps + complete",
       "route": "web.app.home",
       "query": {
-        "tour": "2"
+        "tour": "1"
       },
-      "states": ["step 2 / 4"],
+      "states": [
+        "step 1 / 9",
+        "step 2 / 9",
+        "step 3 / 9",
+        "step 4 / 9",
+        "step 5 / 9",
+        "step 6 / 9",
+        "step 7 / 9",
+        "step 8 / 9",
+        "step 9 / 9",
+        "complete"
+      ],
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
-        "section": "FIGHTER · 34b · Onboarding · web first run",
+        "section": "FIGHTER · 34b · Onboarding · web first run · checklist + 9-step tour",
         "step": "34.9",
         "tag": "WEB_APP",
         "artboard": "FirstRunWebFTour.dc.html"

@@ -67,11 +67,55 @@
   },
   "plan": "Entrenar con tu entrenador siempre es gratis. Pro añade analítica más profunda, sugerencias de IA y video, nunca funciones sociales.",
   "tour": {
-    "label": "Recorrido",
-    "title": "Aquí vive tu Live Board",
-    "body": "Cada sesión que entrenas se suma a un solo tablero: tus gimnasios, compañeros y entrenadores. Empieza vacío y se llena a medida que entrenas; es el mismo tablero que en tu teléfono.",
+    "step": "Recorrido · {step} de {total}",
+    "complete": "Recorrido completado",
     "end": "Terminar recorrido",
-    "done": "Listo",
-    "failed": "No pudimos guardarlo. Revisa tu conexión e inténtalo de nuevo."
+    "back": "Atrás",
+    "next": "Siguiente",
+    "finish": "Terminar",
+    "toChecklist": "Volver a mi lista",
+    "failed": "No pudimos guardarlo. Revisa tu conexión e inténtalo de nuevo.",
+    "steps": {
+      "home": {
+        "title": "Empieza aquí",
+        "body": "Aquí empieza cada día: ahora tus pasos de configuración y, cuando entrenes, tu próxima clase y tu semana."
+      },
+      "board": {
+        "title": "Tu Live Board",
+        "body": "Tus sesiones formarán un solo tablero de gimnasios, compañeros y entrenadores, el mismo que en tu teléfono. Empieza vacío y se llena a medida que entrenas."
+      },
+      "camp": {
+        "title": "Campamento de pelea, semana a semana",
+        "body": "Aquí se planificarán los campamentos: fecha de pelea, fases, asaltos por semana, carga de sparring y tu rango de peso. La planificación aún no está disponible."
+      },
+      "progress": {
+        "title": "Tu progreso",
+        "body": "Asaltos por semana, tipos de entrenamiento y esfuerzo aparecerán aquí cuando registres entrenamientos. Solo tú y tu entrenador verán esta página."
+      },
+      "people": {
+        "title": "Tu gente",
+        "body": "La comunidad mostrará los entrenamientos que tus amigos decidan compartir, sin anuncios ni contadores de seguidores. Descubrir encontrará compañeros, entrenadores y gimnasios. Mi perfil es lo que ven los demás."
+      },
+      "market": {
+        "title": "Entrenadores, gimnasios y programas",
+        "body": "Aquí habrá entrenamiento personal, membresías, programas y eventos, con pago a través de un proveedor seguro. Aún no hay nada a la venta."
+      },
+      "week": {
+        "title": "Tu semana y tus chats",
+        "body": "El calendario reunirá clases, entrenamiento, sparring y tareas del campamento. En Mensajes te contactarán tu entrenador, tu gimnasio y tus compañeros."
+      },
+      "privacy": {
+        "title": "Tú decides quién ve qué",
+        "body": "El peso y las notas del entrenador son privados por defecto. Aquí se gestionarán la visibilidad del perfil, las notificaciones, el inicio de sesión y las apps conectadas."
+      },
+      "workspace": {
+        "title": "Una cuenta, todos los roles",
+        "body": "Este es tu espacio personal de peleador, en la misma cuenta para todos los roles. Unirte al equipo de un entrenador o al personal de un gimnasio nunca requerirá otro inicio de sesión, y tu registro sigue siendo tuyo."
+      },
+      "done": {
+        "title": "Ya sabes moverte",
+        "body": "Repite el recorrido cuando quieras desde Hacer el recorrido. Tus pasos de configuración se abrirán a medida que lleguen sus funciones."
+      }
+    }
   }
 }

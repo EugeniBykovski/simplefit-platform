@@ -20,6 +20,7 @@ export function SetupChecklist() {
     <section
       aria-labelledby="setup-checklist"
       data-setup-checklist
+      data-tour-target="checklist"
       className="flex min-w-0 flex-col gap-3 rounded-3xl border border-input bg-surface px-6 pt-5.5 pb-2.5"
     >
       <div className="flex items-end justify-between gap-3">

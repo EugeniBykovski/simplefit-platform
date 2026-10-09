@@ -3,10 +3,10 @@ import { expect, test } from "@playwright/test";
 import { onboardingApi } from "../production/onboarding-api";
 
 /*
- * The Fighter web tour (SF-40, FRW2) in every engine, on the production
- * build: the coach mark is placed from the real Live Board item's box, so
- * each engine's layout must put the spotlight on the item and the card beside
- * it; the dialog keeps focus, Escape ends the tour, and the outcome is
+ * The Fighter web tour (SF-40, FRW2) in every engine, on the
+ * production build: each coach mark is placed from its real target's box, so
+ * each engine's layout must put the spotlight on the target and the card
+ * beside it; the dialog keeps focus, Escape ends the tour, and the outcome is
  * recorded once. The day count uses the engine's local calendar, checked in
  * a far-east and a far-west time zone.
  */
@@ -25,8 +25,10 @@ for (const timezoneId of ["Pacific/Kiritimati", "Pacific/Pago_Pago"]) {
       await page.goto("/en/app/home");
       await expect(page.locator("hgroup p").first()).toHaveText(/ · Day \d+$/);
       await page.getByRole("button", { name: "Take the tour", exact: true }).click();
-      const dialog = page.getByRole("dialog", { name: "Your Live Board lives here" });
+      const dialog = page.getByRole("dialog");
       await expect(dialog.getByRole("button", { name: "End tour" })).toBeFocused();
+      await dialog.getByRole("button", { name: "Next", exact: true }).click();
+      await expect(dialog).toHaveAccessibleName("Your Live Board");
 
       const item = await page.locator("aside [data-nav-item=board]").boundingBox();
       const spot = await page.locator("[data-tour-spotlight]").boundingBox();
@@ -35,7 +37,7 @@ for (const timezoneId of ["Pacific/Kiritimati", "Pacific/Pago_Pago"]) {
       expect(Math.abs(spot.x - (item.x - 4))).toBeLessThanOrEqual(1);
       expect(Math.abs(spot.y - (item.y - 4))).toBeLessThanOrEqual(1);
       expect(Math.abs(card.x - (spot.x + spot.width + 22))).toBeLessThanOrEqual(1);
-      expect(Math.abs(card.y - (item.y + item.height / 2 - 37))).toBeLessThanOrEqual(1);
+      expect(Math.abs(card.y - (item.y + item.height / 2 - 52))).toBeLessThanOrEqual(1);
 
       await page.keyboard.press("Escape");
       await expect(dialog).toHaveCount(0);

@@ -67,11 +67,55 @@
   },
   "plan": "Training mit deinem Coach ist immer kostenlos. Pro bringt tiefere Analysen, KI-Hinweise und Video – niemals soziale Funktionen.",
   "tour": {
-    "label": "Tour",
-    "title": "Hier lebt dein Live Board",
-    "body": "Jede Einheit landet auf einem Board: deine Gyms, Partner und Coaches. Es startet leer und füllt sich, während du trainierst – dasselbe Board wie auf deinem Handy.",
+    "step": "Tour · {step} von {total}",
+    "complete": "Tour abgeschlossen",
     "end": "Tour beenden",
-    "done": "Fertig",
-    "failed": "Das konnten wir nicht speichern. Prüfe deine Verbindung und versuche es erneut."
+    "back": "Zurück",
+    "next": "Weiter",
+    "finish": "Abschließen",
+    "toChecklist": "Zurück zu meiner Liste",
+    "failed": "Das konnten wir nicht speichern. Prüfe deine Verbindung und versuche es erneut.",
+    "steps": {
+      "home": {
+        "title": "Hier geht's los",
+        "body": "Hier beginnt jeder Tag: jetzt deine Einrichtungsschritte, sobald du trainierst, deine nächste Stunde und deine Woche."
+      },
+      "board": {
+        "title": "Dein Live Board",
+        "body": "Deine Einheiten bauen ein Board aus Gyms, Partnern und Coaches – dasselbe wie auf deinem Handy. Es startet leer und füllt sich, während du trainierst."
+      },
+      "camp": {
+        "title": "Fight Camp, Woche für Woche",
+        "body": "Hier werden Fight Camps geplant: Kampftermin, Phasen, Runden pro Woche, Sparringsbelastung und dein Gewichtskorridor. Die Camp-Planung ist noch nicht verfügbar."
+      },
+      "progress": {
+        "title": "Dein Fortschritt",
+        "body": "Runden pro Woche, Trainingsmix und Belastung erscheinen hier, sobald du Training erfasst. Nur du und dein Coach werden diese Seite sehen."
+      },
+      "people": {
+        "title": "Deine Leute",
+        "body": "Die Community zeigt Trainings, die Freunde teilen möchten – ohne Werbung, ohne Followerzahlen. Entdecken findet Partner, Coaches und Gyms. Mein Profil ist, was andere sehen."
+      },
+      "market": {
+        "title": "Coaches, Gyms und Programme",
+        "body": "Hier wird es Personal Training, Mitgliedschaften, Programme und Events geben, bezahlt über einen sicheren Zahlungsanbieter. Noch ist nichts im Angebot."
+      },
+      "week": {
+        "title": "Deine Woche und deine Chats",
+        "body": "Der Kalender wird Stunden, Training, Sparring und Camp-Aufgaben zusammenführen. Über Nachrichten erreichen dich dein Coach, dein Gym und deine Trainingspartner."
+      },
+      "privacy": {
+        "title": "Du entscheidest, wer was sieht",
+        "body": "Gewicht und Trainernotizen sind standardmäßig privat. Profilsichtbarkeit, Benachrichtigungen, Anmeldung und verbundene Apps werden hier verwaltet."
+      },
+      "workspace": {
+        "title": "Ein Konto, jede Rolle",
+        "body": "Das ist dein persönlicher Fighter-Bereich, auf dem einen Konto für jede Rolle. Für das Team eines Coaches oder das Personal eines Gyms brauchst du nie eine zweite Anmeldung, und dein Log bleibt deins."
+      },
+      "done": {
+        "title": "Du kennst dich jetzt aus",
+        "body": "Starte die Tour jederzeit erneut über „Tour starten“. Deine Einrichtungsschritte öffnen sich, sobald ihre Funktionen da sind."
+      }
+    }
   }
 }

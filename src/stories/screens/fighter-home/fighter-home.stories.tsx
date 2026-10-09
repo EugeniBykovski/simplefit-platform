@@ -147,7 +147,17 @@ const page = () => within(document.body);
 const openTour = async (canvasElement: HTMLElement) => {
   await welcome(canvasElement);
   await userEvent.click(within(canvasElement).getByRole("button", { name: "Take the tour" }));
-  return page().findByRole("dialog", { name: "Your Live Board lives here" });
+  return page().findByRole("dialog", { name: "Start here" });
+};
+
+/** Opens the tour and moves to step `n` (1–9) with Next. */
+const toStep = async (canvasElement: HTMLElement, n: number) => {
+  const dialog = await openTour(canvasElement);
+  for (let at = 1; at < n; at++) {
+    await userEvent.click(within(dialog).getByRole("button", { name: "Next" }));
+  }
+  await expect(within(dialog).getByText(`Tour · ${n} of 9`)).toBeVisible();
+  return dialog;
 };
 
 /* ── FRW1 · first run ───────────────────────────────────────────────── */
@@ -170,56 +180,113 @@ export const Failure = story({
 });
 Failure.name = "Backend failure (recoverable)";
 
-/* ── FRW2 · the tour ────────────────────────────────────────────────── */
+/* ── FRW2 · the nine steps ──────────────────────────────────────────── */
 
-export const TourOpen = story({
+const STEP_NAMES = [
+  "Home checklist",
+  "Live Board",
+  "Fight camp",
+  "Progress",
+  "Community · Discover · My profile",
+  "Marketplace",
+  "Calendar · Messages",
+  "Privacy & settings",
+  "Workspace identity",
+];
+
+const stepStory = (n: number) => {
+  const step = story({
+    play: async ({ canvasElement }) => {
+      await toStep(canvasElement, n);
+    },
+  });
+  step.name = `FRW2 · step ${n}/9 · ${STEP_NAMES[n - 1] ?? ""}`;
+  return step;
+};
+
+export const Step1 = stepStory(1);
+export const Step2 = stepStory(2);
+export const Step3 = stepStory(3);
+export const Step4 = stepStory(4);
+export const Step5 = stepStory(5);
+export const Step6 = stepStory(6);
+export const Step7 = stepStory(7);
+export const Step8 = stepStory(8);
+export const Step9 = stepStory(9);
+
+export const BackNext = story({
   play: async ({ canvasElement }) => {
-    await openTour(canvasElement);
+    const dialog = await toStep(canvasElement, 3);
+    await userEvent.click(within(dialog).getByRole("button", { name: "Back" }));
+    await expect(within(dialog).getByText("Tour · 2 of 9")).toBeVisible();
   },
 });
-TourOpen.name = "FRW2 · tour open (step 1 of 1)";
+BackNext.name = "Back from step 3 to step 2";
 
 export const TourSaving = story({
   record: "pending",
   play: async ({ canvasElement }) => {
-    const dialog = await openTour(canvasElement);
-    await userEvent.click(within(dialog).getByRole("button", { name: "Done" }));
-    await expect(within(dialog).getByRole("button", { name: "Done" })).toHaveAttribute(
+    const dialog = await toStep(canvasElement, 9);
+    await userEvent.click(within(dialog).getByRole("button", { name: "Finish" }));
+    await expect(within(dialog).getByRole("button", { name: "Finish" })).toHaveAttribute(
       "aria-busy",
       "true",
     );
   },
 });
-TourSaving.name = "FRW2 · saving the outcome";
+TourSaving.name = "Finish · saving the outcome";
 
 export const TourFailed = story({
   record: "offline",
   play: async ({ canvasElement }) => {
-    const dialog = await openTour(canvasElement);
-    await userEvent.click(within(dialog).getByRole("button", { name: "End tour" }));
+    const dialog = await toStep(canvasElement, 9);
+    await userEvent.click(within(dialog).getByRole("button", { name: "Finish" }));
     await within(dialog).findByRole("alert");
   },
 });
-TourFailed.name = "FRW2 · the outcome could not be saved";
+TourFailed.name = "Finish · the outcome could not be saved";
+
+export const TourRetry = story({
+  record: ["offline", recorded("completed")],
+  play: async ({ canvasElement }) => {
+    const dialog = await toStep(canvasElement, 9);
+    await userEvent.click(within(dialog).getByRole("button", { name: "Finish" }));
+    await within(dialog).findByRole("alert");
+    await userEvent.click(within(dialog).getByRole("button", { name: "Finish" }));
+    await page().findByRole("dialog", { name: "You know your way around" });
+  },
+});
+TourRetry.name = "Finish · retry after a failure";
+
+export const TourComplete = story({
+  play: async ({ canvasElement }) => {
+    const dialog = await toStep(canvasElement, 9);
+    await userEvent.click(within(dialog).getByRole("button", { name: "Finish" }));
+    await page().findByRole("dialog", { name: "You know your way around" });
+  },
+});
+TourComplete.name = "FRW2 · tour complete";
 
 export const TourCompleted = story({
   play: async ({ canvasElement }) => {
-    const dialog = await openTour(canvasElement);
-    await userEvent.click(within(dialog).getByRole("button", { name: "Done" }));
+    const dialog = await toStep(canvasElement, 9);
+    await userEvent.click(within(dialog).getByRole("button", { name: "Finish" }));
+    const done = await page().findByRole("dialog", { name: "You know your way around" });
+    await userEvent.click(within(done).getByRole("button", { name: "Back to my checklist" }));
     await within(canvasElement).findByRole("heading", { level: 1, name: /^Good / });
   },
 });
-TourCompleted.name = "FRW2 · Done → the home";
+TourCompleted.name = "FRW2 · complete → back to the home";
 
 export const TourDismissed = story({
   record: recorded("dismissed"),
   play: async ({ canvasElement }) => {
-    const dialog = await openTour(canvasElement);
+    const dialog = await toStep(canvasElement, 4);
     await userEvent.click(within(dialog).getByRole("button", { name: "End tour" }));
     await within(canvasElement).findByRole("heading", { level: 1, name: /^Good / });
   },
 });
-TourDismissed.name = "FRW2 · End tour → the home";
+TourDismissed.name = "End tour on step 4 → the home";
 
 /* ── After the first run ────────────────────────────────────────────── */
 
@@ -245,12 +312,40 @@ ReturningDismissed.name = "Returning Fighter (tour dismissed)";
 export const Narrow: StoryObj = {
   ...story({
     play: async ({ canvasElement }) => {
-      await openTour(canvasElement);
+      await toStep(canvasElement, 2);
     },
   }),
   globals: { viewport: { value: "phone", isRotated: false } },
 };
-Narrow.name = "Narrow viewport · 390 (tour centred)";
+Narrow.name = "Narrow viewport · 390 (step 2 centred: the sidebar is a menu)";
+
+export const Replay = story({
+  firstRun: ok({ experiences: [tour("completed", "2026-10-03T18:00:00Z")] }),
+  record: apiError(500, "internal_error"),
+  play: async ({ canvasElement }) => {
+    await within(canvasElement).findByRole(
+      "heading",
+      { level: 1, name: /^Good / },
+      { timeout: 5000 },
+    );
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "Take the tour" }));
+    const dialog = await page().findByRole("dialog", { name: "Start here" });
+    await userEvent.click(within(dialog).getByRole("button", { name: "End tour" }));
+  },
+});
+Replay.name = "Replay after the first run (records nothing)";
+
+/** The step 2 target removed: the card is centred, never on an invented element. */
+export const MissingTarget = story({
+  play: async ({ canvasElement }) => {
+    const dialog = await openTour(canvasElement);
+    const target = canvasElement.querySelector("aside [data-nav-item=board]");
+    if (target instanceof HTMLElement) target.style.display = "none";
+    await userEvent.click(within(dialog).getByRole("button", { name: "Next" }));
+    await expect(document.querySelector("[data-tour-spotlight]")).toBeNull();
+  },
+});
+MissingTarget.name = "Missing target (centred card)";
 
 export const LongerLabels: StoryObj = {
   ...story(),

@@ -25,9 +25,10 @@ import { SetupChecklist } from "./setup-checklist";
  *
  * - **First run** (the tour is `pending`): "Welcome to SimpleFit", the day
  *   with SimpleFit, and the tour offered from the header and the Live Board
- *   card (FRW1). The tour (FRW2) opens only when asked.
+ *   card (FRW1). The nine-step tour (FRW2) opens only when asked.
  * - **Home** (the tour was finished or ended, here or on any other client):
- *   the greeting and the date, without the tour prompts.
+ *   the greeting and the date. "Take the tour" stays as a replay (FRW2, complete),
+ *   which records nothing.
  *
  * Only real data is shown: the Fighter's display name and onboarding
  * completion (FighterProfile). Everything the artboard fills from domains
@@ -80,13 +81,8 @@ export function HomeView({
   const date = headerDate(locale, now);
   const named = name === null ? "anonymous" : "named";
 
-  const finish = useCallback(
-    async (outcome: "completed" | "dismissed") => {
-      await record(outcome);
-      setTouring(false);
-    },
-    [record],
-  );
+  const openTour = useCallback(() => setTouring(true), []);
+  const closeTour = useCallback(() => setTouring(false), []);
 
   return (
     <section
@@ -111,12 +107,15 @@ export function HomeView({
           </h1>
         </hgroup>
         <span className="flex-1" />
-        {firstRun && (
-          <Button variant="quiet" onClick={() => setTouring(true)} aria-haspopup="dialog">
-            <EyeIcon aria-hidden className="size-4.5" />
-            {t("header.tour")}
-          </Button>
-        )}
+        <Button
+          variant="quiet"
+          onClick={openTour}
+          aria-haspopup="dialog"
+          data-tour-target="tour-button"
+        >
+          <EyeIcon aria-hidden className="size-4.5" />
+          {t("header.tour")}
+        </Button>
       </PageHeader>
       <PageBody className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
         <div className="flex min-w-0 flex-col gap-4">
@@ -140,7 +139,7 @@ export function HomeView({
               <button
                 type="button"
                 aria-haspopup="dialog"
-                onClick={() => setTouring(true)}
+                onClick={openTour}
                 className="self-start rounded-xs type-body-sm font-extrabold text-highlight outline-none hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {t("board.tour")}
@@ -167,10 +166,12 @@ export function HomeView({
           </Notice>
         </div>
       </PageBody>
-      {/* Mounted in both states, so focus lands on the heading when a kept outcome closes it. */}
+      {/* Mounted in both states: the completion card shows after the outcome is kept. */}
       <HomeTour
-        open={firstRun && touring}
-        onFinish={finish}
+        open={touring}
+        replay={!firstRun}
+        onRecord={record}
+        onClose={closeTour}
         onClosed={() => heading.current?.focus()}
       />
     </section>
