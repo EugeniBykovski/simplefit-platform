@@ -1,6 +1,16 @@
-import { placeholderRoute } from "@/widgets/feature-placeholder";
+import type { Metadata } from "next";
 
-const route = placeholderRoute("web.partners");
+import { resolveLocaleParam } from "@/shared/i18n/params";
+import { PartnersPage, siteMetadata } from "@/widgets/public-site";
 
-export const generateMetadata = route.generateMetadata;
-export default route.Page;
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/partners">): Promise<Metadata> {
+  return siteMetadata("partners", "web.partners", await resolveLocaleParam(params));
+}
+
+/** `web.partners` (SF-43). */
+export default async function PartnersRoute({ params }: PageProps<"/[locale]/partners">) {
+  await resolveLocaleParam(params);
+  return <PartnersPage />;
+}

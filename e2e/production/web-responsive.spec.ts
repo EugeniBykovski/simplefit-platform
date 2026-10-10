@@ -182,25 +182,20 @@ for (const [width, height] of VIEWPORTS) {
       });
     });
 
-    test("/ : the site shell, one left edge, the short page centred in main", async ({ page }) => {
-      await open(page, "/en", page.locator("[data-site-frame]"));
+    test("/ : the site shell, one left edge, the page from the top of main", async ({ page }) => {
+      await open(page, "/en", page.getByRole("heading", { level: 1 }));
       await expectSiteShell(page, width);
       expect(await overflow(page)).toBeLessThanOrEqual(0);
       await expect(page.locator("main")).toHaveCount(1);
       await expectBox(page.getByRole("heading", { level: 1 }), { x: 64 });
-      // The SF-32 placeholder (SF-43 replaces it) is a short single-screen page
-      // (PageContent `center`): the footer closes the window and the composition
-      // is centred in main, between header and footer, not in the window.
-      const content = page.locator("[data-slot=page-content]");
-      await expect(content).toHaveAttribute("data-align", "center");
+      // L1 (SF-43) is longer than every supported window: it starts under the
+      // header and the footer follows it.
+      const content = page.locator("[data-site-page]");
       const body = await box(content);
-      const footerY = height - 190;
-      expect(body.height).toBeLessThan(footerY - 76);
-      await expectFooterPlacement(page, height, body.y + body.height);
-      const above = body.y - 76;
-      const below = footerY - (body.y + body.height);
-      expect(Math.abs(above - below), `${above} above, ${below} below`).toBeLessThanOrEqual(1);
-      await expectBox(content, { x: 0, w: width });
+      await expectBox(content, { x: 0, y: 76, w: width });
+      expect(body.y + body.height).toBeGreaterThan(height - 190);
+      // Whole pixels: the document's height rounds the content bottom up.
+      await expectFooterPlacement(page, height, Math.ceil(body.y + body.height));
       await page.screenshot({
         path: `test-results/production/home-${width}x${height}.png`,
         fullPage: true,

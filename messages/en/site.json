@@ -1,0 +1,821 @@
+{
+  "common": {
+    "example": "Example",
+    "exampleLabel": "Example of the product, not real data",
+    "notOpenYet": "Not open yet",
+    "perMonth": "/mo",
+    "perYear": "/yr"
+  },
+  "meta": {
+    "home": "Train, coach and run your gym in one place. SimpleFit Boxing connects fighters, coaches, gyms and brands with one account.",
+    "fighters": "Log rounds and sparring, book classes, follow your coach’s program and see your year on the Live Board. Free forever.",
+    "coaches": "Programs, fight camps and sparring for your team — and a simple way to sell PT, packages and online coaching with transparent fees.",
+    "gyms": "Memberships and packages, QR check-in, coaches and staff, payouts and a gym store — one console for your gym.",
+    "marketplace": "Find a boxing coach, gym or program in your city.",
+    "pricing": "Free for fighters. Fair for coaches. Built to grow gyms.",
+    "compare": "Compare every SimpleFit gym plan feature by feature.",
+    "whiteLabel": "Your brand, our boxing infrastructure: SimpleFit white label for federations and large academies.",
+    "partners": "Partner with the boxing community through challenges, events and equipment partnerships — native to boxing, never banner ads.",
+    "apply": "Become a SimpleFit sponsor: how the application works and what sponsors get."
+  },
+  "board": {
+    "description": "An example Live Board: a fighter at the centre, connected to a gym, coaches, training partners and a fight.",
+    "nextLabel": "Next · today",
+    "nextTitle": "18:00 Technical · Warsaw BC",
+    "nextPlace": "ul. Belwederska 20 · Ring 2",
+    "liveBoard": "Live Board",
+    "year": "2026",
+    "nodes": {
+      "fighter": "YB",
+      "gym": "WB",
+      "coach": "MR",
+      "partner": "AL",
+      "sparring": "AN"
+    }
+  },
+  "home": {
+    "eyebrow": "The boxing operating system",
+    "title": "Train, coach and run your gym —",
+    "titleAccent": "in one place.",
+    "lead": "SimpleFit Boxing connects fighters, coaches, gyms and brands with one account. Free for fighters, tools for the people who run boxing.",
+    "getStarted": "Get started — it’s free",
+    "signIn": "Sign in",
+    "whoLabel": "Who it’s for",
+    "who": {
+      "fighters": {
+        "title": "Fighters",
+        "body": "Log every round, follow your progress, book classes and train with friends. Free forever.",
+        "link": "For fighters"
+      },
+      "coaches": {
+        "title": "Coaches",
+        "body": "Programs, fight camps and sparring — plus selling PT, packages and online coaching.",
+        "link": "For coaches"
+      },
+      "gyms": {
+        "title": "Gyms & clubs",
+        "body": "Members, timetable, QR check-in, memberships and payouts in one console.",
+        "link": "For gyms"
+      },
+      "brands": {
+        "title": "Brands",
+        "body": "Native challenges, events and gym partnerships. Aggregate analytics only.",
+        "link": "Partner with us"
+      }
+    },
+    "getLabel": "What you get",
+    "get": {
+      "board": {
+        "label": "Live Board",
+        "title": "Your boxing journey, visualised",
+        "body": "Gyms, people and trainings connected over time."
+      },
+      "camps": {
+        "label": "Fight camps",
+        "title": "Plan the 8 weeks before a bout",
+        "body": "Programming, sparring and weight — private by default."
+      },
+      "book": {
+        "label": "Book & pay",
+        "title": "Classes, PT and memberships",
+        "body": "Cards, wallets and BLIK. Clear fees for every seller."
+      },
+      "community": {
+        "label": "Community",
+        "title": "Friends, gyms and challenges",
+        "body": "Never paywalled. Sponsored content is always labelled."
+      }
+    },
+    "market": {
+      "label": "Marketplace",
+      "title": "Find a coach or gym in your city",
+      "body": "Browse coaches, gyms, programs and events. Promoted listings are labelled “Sponsored”.",
+      "link": "Browse the marketplace"
+    },
+    "pricing": {
+      "label": "Pricing",
+      "title": "Free for fighters. Fair for pros.",
+      "fighter": "Fighter core app",
+      "coach": "Coach from",
+      "gym": "Gym from",
+      "link": "See all plans"
+    },
+    "band": {
+      "title": "Your training stays yours.",
+      "body": "Weight, pain and coach notes are never public. Sponsors only see totals — never you.",
+      "primary": "Create free account",
+      "secondary": "How we handle data"
+    }
+  },
+  "fighters": {
+    "eyebrow": "For fighters",
+    "title": "Your boxing, tracked.",
+    "titleAccent": "Free forever.",
+    "lead": "Log rounds and sparring, book classes, follow your coach’s program and see your year on the Live Board. Social is never behind a paywall.",
+    "primary": "Join free",
+    "secondary": "What’s in Pro",
+    "features": {
+      "rounds": {
+        "title": "Every round counts",
+        "body": "Boxing timer, bag, pads, sparring and roadwork — logged in seconds."
+      },
+      "people": {
+        "title": "Train with your people",
+        "body": "Friends, gym community, shared sessions and challenges."
+      },
+      "book": {
+        "title": "Book and pay",
+        "body": "Classes, PT and memberships from the gyms and coaches you trust."
+      }
+    },
+    "privacy": {
+      "label": "Private by default",
+      "items": {
+        "notes": "Weight, RPE and coach notes are never public",
+        "audience": "You choose who sees trainings: friends, gym or only you",
+        "sponsors": "Sponsors never see individual athletes",
+        "export": "Export or delete your data any time"
+      }
+    },
+    "pro": {
+      "label": "SimpleFit Pro · optional",
+      "annual": "or {price}/mo billed yearly",
+      "items": {
+        "analytics": "Advanced analytics & full Live Board history",
+        "ai": "AI weekly analysis",
+        "video": "More video storage"
+      },
+      "link": "Compare Free and Pro"
+    },
+    "band": {
+      "title": "Find your gym or coach",
+      "body": "Search by city. Training with your coach is always free for fighters.",
+      "secondary": "Browse marketplace",
+      "primary": "Join free"
+    }
+  },
+  "coaches": {
+    "eyebrow": "For coaches",
+    "title": "Run your coaching business",
+    "titleAccent": "from one place.",
+    "lead": "Programs, fight camps and sparring for your team — and a simple way to sell PT, packages and online coaching with transparent fees.",
+    "primary": "Start free",
+    "secondary": "See coach plans",
+    "note": "Free up to 3 fighters · Pro free for 14 days, no card",
+    "week": {
+      "label": "This week · Yauheni Coaching",
+      "description": "An example coach week: 14 fighters, 22 sessions, a fight camp on track, sparring on Thursday and a paid PT session.",
+      "fighters": "Fighters",
+      "fightersValue": "14",
+      "fightersNote": "of 30 on Pro",
+      "sessions": "Sessions",
+      "sessionsValue": "22",
+      "sessionsNote": "6 today",
+      "camp": "Fight camp · Anna",
+      "campNote": "Week 6 of 8 · 87% adherence",
+      "onTrack": "On track",
+      "sparring": "Sparring · Thu 19:00",
+      "sparringNote": "6 pairs · Warsaw BC",
+      "pt": "PT · Mike R.",
+      "ptNote": "€50 · paid",
+      "paid": "Paid"
+    },
+    "features": {
+      "programs": {
+        "title": "Programs & fight camps",
+        "body": "Build sessions once, assign to groups, follow adherence."
+      },
+      "sparring": {
+        "title": "Sparring control",
+        "body": "Pairings, rounds and safety notes — private to your team."
+      },
+      "paid": {
+        "title": "Get paid",
+        "body": "PT, packages, online coaching and programs. Payouts weekly."
+      }
+    },
+    "fees": {
+      "label": "Fees you can see",
+      "description": "An example PT sale: the client pays €50.00, payment processing is €1.05 and there is no platform fee for your own clients, so you receive €48.95.",
+      "clientPays": "Client pays",
+      "processing": "Payment processing",
+      "platform": "Platform fee · your own clients",
+      "receive": "You receive",
+      "note": "Marketplace-introduced clients carry an introduction fee, shown on every sale."
+    },
+    "plans": {
+      "label": "Plans",
+      "plan": "Plan",
+      "fighters": "Fighters",
+      "price": "Price",
+      "upTo": "up to {count}",
+      "unlimited": "unlimited",
+      "link": "Compare coach plans"
+    },
+    "band": {
+      "title": "Bring your fighters with you",
+      "body": "Invite them by link or QR — they join free.",
+      "primary": "Start free"
+    }
+  },
+  "gyms": {
+    "eyebrow": "For gyms & clubs",
+    "title": "Members, timetable and money —",
+    "titleAccent": "one console.",
+    "lead": "Memberships and packages, QR check-in, coaches and staff, payouts and a gym store. Your members get the SimpleFit app free.",
+    "primary": "Set up your gym",
+    "secondary": "Compare gym plans",
+    "locations": "Several locations?",
+    "sales": "Talk to sales",
+    "today": {
+      "label": "Warsaw Boxing Club · today",
+      "description": "An example gym day: 42 members checked in, €18,940 revenue in October, a full competition class, failed payments to retry and new trial bookings.",
+      "checkedIn": "Checked in",
+      "checkedInValue": "42",
+      "checkedInNote": "+8 vs avg",
+      "revenue": "Revenue · Oct",
+      "revenueValue": "€18,940",
+      "revenueNote": "memberships & PT",
+      "class": "18:00 Competition Team",
+      "classNote": "12 booked · Ring 1",
+      "failed": "Failed payments",
+      "failedNote": "12 members · €842",
+      "retry": "Retry",
+      "leads": "New leads",
+      "leadsNote": "4 trial bookings"
+    },
+    "features": {
+      "memberships": {
+        "title": "Memberships & packages",
+        "body": "Monthly, 10 visits, drop-in. Fair dunning rules you set."
+      },
+      "checkin": {
+        "title": "QR check-in",
+        "body": "Front desk on a phone. Attendance in real time."
+      },
+      "staff": {
+        "title": "Coaches & staff",
+        "body": "Roles, permissions and shifts per location."
+      },
+      "promote": {
+        "title": "Promote your gym",
+        "body": "Labelled placements by city and district."
+      }
+    },
+    "setup": {
+      "label": "Set up in 14 steps",
+      "items": {
+        "first": "Steps 1–6 · gym, location (address only), brand, size, features, plan",
+        "second": "Steps 7–14 · verification, memberships, payments, timetable, team, import, community, go live",
+        "import": "Import members from CSV — they get an invite email"
+      }
+    },
+    "plans": {
+      "label": "Plans",
+      "plan": "Plan",
+      "members": "Members",
+      "price": "Price",
+      "upTo": "up to {count}",
+      "link": "Compare gym plans"
+    },
+    "band": {
+      "title": "Open your gym on SimpleFit",
+      "body": "Free trial of Pro for 14 days. Keep your data if you leave.",
+      "primary": "Set up your gym"
+    }
+  },
+  "marketplace": {
+    "eyebrow": "Marketplace",
+    "title": "Find a coach, gym or program in your city",
+    "query": "Boxing coach",
+    "city": "Warsaw",
+    "search": "Search",
+    "searchNote": "Search isn’t open yet: the marketplace opens with coach and gym listings.",
+    "tabs": {
+      "coaches": "Coaches",
+      "gyms": "Gyms",
+      "programs": "Programs",
+      "camps": "Fight camps",
+      "events": "Events"
+    },
+    "location": "Search by city or district — we never use your location.",
+    "examples": "Example listings",
+    "sponsored": "Sponsored",
+    "perSession": "per session",
+    "perMonth": "/month",
+    "book": "Book",
+    "viewGym": "View gym",
+    "listings": {
+      "adam": {
+        "initials": "AS",
+        "name": "Adam Smith",
+        "meta": "Warsaw · fight camps · ✓ verified",
+        "tags": {
+          "1": "Amateur competition",
+          "2": "Fight camps"
+        }
+      },
+      "yauheni": {
+        "initials": "YB",
+        "name": "Yauheni Coaching",
+        "meta": "Warsaw BC · Mokotów",
+        "tags": {
+          "1": "Footwork",
+          "2": "Fight camps"
+        }
+      },
+      "marek": {
+        "initials": "MK",
+        "name": "Coach Marek",
+        "meta": "Warsaw BC · team coach",
+        "tags": {
+          "1": "Competition"
+        }
+      },
+      "wbc": {
+        "name": "Warsaw Boxing Club",
+        "meta": "ul. Belwederska 20 · Mokotów",
+        "tags": {
+          "1": "Competition Team",
+          "2": "Open sparring"
+        }
+      },
+      "simple": {
+        "name": "Simple Boxing Gym",
+        "meta": "ul. Ząbkowska 27 · Praga",
+        "tags": {
+          "1": "Beginners",
+          "2": "Pads"
+        }
+      },
+      "tomasz": {
+        "initials": "TO",
+        "name": "Tomasz",
+        "meta": "Simple Boxing · Praga",
+        "tags": {
+          "1": "Pads",
+          "2": "Amateur"
+        }
+      }
+    },
+    "band": {
+      "title": "Create a free account to book",
+      "body": "Booking, paying and messaging a coach need an account. Browsing never does.",
+      "signIn": "Sign in",
+      "join": "Join free"
+    }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "lead": "Free for fighters. Fair for coaches. Built to grow gyms.",
+    "enterpriseLead": "Multi-location clubs, academies and federations.",
+    "roles": {
+      "label": "Plans for",
+      "fighter": "Fighter",
+      "coach": "Coach",
+      "gym": "Gym",
+      "enterprise": "Enterprise"
+    },
+    "billing": {
+      "label": "Billing",
+      "monthly": "Monthly",
+      "annual": "Annual",
+      "save": "save ~20%",
+      "vat": "Prices incl. VAT for consumers · business VAT at checkout",
+      "annualNote": "Billed yearly · about 20% less, set per market"
+    },
+    "mostPopular": "Most popular",
+    "recommended": "Recommended",
+    "faq": "FAQ",
+    "faqs": {
+      "changePlans": {
+        "q": "Can I change plans?",
+        "a": "Yes. Upgrades are prorated today; downgrades apply at the next billing date and never delete data."
+      },
+      "cancel": {
+        "q": "Can I cancel anytime?",
+        "a": "Yes, in two taps. Paid features stay until the end of the period you paid for."
+      },
+      "fighterPays": {
+        "q": "Does a fighter need to pay to work with a coach?",
+        "a": "Never. Coach-assigned training, messages and booking are free for fighters."
+      },
+      "annual": {
+        "q": "How does annual billing work?",
+        "a": "One payment per year, about 20% less than monthly. Exact prices are set per market."
+      },
+      "processing": {
+        "q": "Are payment processing fees included?",
+        "a": "No — processing is charged by the payment provider per transaction and always shown before you sell."
+      },
+      "commission": {
+        "q": "How does marketplace commission work?",
+        "a": "Only when SimpleFit introduces a new client through the marketplace. The rate is shown on every sale."
+      },
+      "international": {
+        "q": "Is SimpleFit available internationally?",
+        "a": "Yes. Prices show in your currency (EUR, USD, GBP, PLN) with local taxes calculated at checkout."
+      }
+    },
+    "coach": {
+      "plans": {
+        "free": {
+          "name": "Free",
+          "limit": "Up to 3 active fighters",
+          "features": {
+            "1": "Fighter profiles",
+            "2": "Basic programming",
+            "3": "Session builder & assignments",
+            "4": "Messaging & calendar",
+            "5": "Basic analytics"
+          },
+          "cta": "Start Free"
+        },
+        "starter": {
+          "name": "Starter",
+          "limit": "Up to 10 fighters",
+          "features": {
+            "1": "Everything in Free",
+            "2": "Groups & templates",
+            "3": "Enhanced analytics",
+            "4": "Basic fight camps"
+          },
+          "cta": "Choose Starter"
+        },
+        "pro": {
+          "name": "Pro",
+          "limit": "Up to 30 fighters",
+          "features": {
+            "1": "Full Fight Camps",
+            "2": "Sparring management",
+            "3": "Advanced analytics",
+            "4": "Video review",
+            "5": "Advanced Live Board",
+            "6": "Public coach profile",
+            "7": "Commerce & automations",
+            "8": "AI Coach Assistant"
+          },
+          "cta": "Start 14-day trial"
+        },
+        "elite": {
+          "name": "Elite",
+          "limit": "Up to 75 fighters",
+          "features": {
+            "1": "Everything in Pro",
+            "2": "Advanced AI",
+            "3": "More video storage",
+            "4": "Advanced automation",
+            "5": "Assistant coaches",
+            "6": "Advanced exports",
+            "7": "Priority support"
+          },
+          "cta": "Choose Elite"
+        },
+        "unlimited": {
+          "name": "Unlimited",
+          "limit": "Unlimited fighters",
+          "features": {
+            "1": "Everything in Elite",
+            "2": "For large independent coaching businesses"
+          },
+          "cta": "Choose Unlimited"
+        }
+      },
+      "note": "Fighters you coach never pay to train with you. Plans limit <b>active</b> fighters — archived fighters keep their history."
+    },
+    "fighter": {
+      "free": {
+        "name": "SimpleFit Free",
+        "tagline": "Everything social, forever",
+        "features": {
+          "1": "Unlimited basic training logging",
+          "2": "Coach-assigned training",
+          "3": "Friends, following, community, sharing",
+          "4": "Calendar, booking, messages",
+          "5": "Basic progress, achievements, challenges",
+          "6": "Gyms, basic Live Board, sparring history"
+        },
+        "cta": "Join free"
+      },
+      "pro": {
+        "name": "SimpleFit Pro",
+        "badge": "Pro",
+        "tagline": "Go deeper on your boxing",
+        "features": {
+          "1": "Advanced analytics · load, rounds, sparring, gym stats",
+          "2": "Advanced Live Board · full history, yearly journey, people graph",
+          "3": "AI weekly analysis, progress insights, camp summaries",
+          "4": "Video · more storage, tagging, comparisons",
+          "5": "Wearable & health integrations"
+        },
+        "cta": "Start free trial"
+      },
+      "stays": {
+        "label": "What stays free",
+        "items": {
+          "1": "Training with your coach",
+          "2": "Friends, sharing, community",
+          "3": "Challenges & achievements",
+          "4": "Booking & gym check-in"
+        },
+        "annual": "Annual: {year}/yr ({month}/mo). Cancel any time — your data stays."
+      }
+    },
+    "gym": {
+      "plans": {
+        "free": {
+          "name": "Free",
+          "limit": "Up to 30 members",
+          "features": {
+            "1": "1 location · 2 coaches",
+            "2": "Classes & basic booking",
+            "3": "QR attendance",
+            "4": "Public profile & community",
+            "5": "Basic reports"
+          },
+          "cta": "Start free"
+        },
+        "starter": {
+          "name": "Starter",
+          "limit": "Up to 100 members",
+          "features": {
+            "1": "Everything in Free",
+            "2": "More coaches",
+            "3": "Booking rules"
+          },
+          "cta": "Choose"
+        },
+        "pro": {
+          "name": "Pro",
+          "limit": "Up to 300 members",
+          "features": {
+            "1": "Payments & memberships",
+            "2": "Packages",
+            "3": "Advanced booking",
+            "4": "Reports & challenges",
+            "5": "Staff permissions"
+          },
+          "cta": "Start trial"
+        },
+        "business": {
+          "name": "Business",
+          "limit": "Up to 750 members",
+          "features": {
+            "1": "Advanced analytics",
+            "2": "Advanced permissions",
+            "3": "Automations",
+            "4": "Advanced commerce",
+            "5": "Multiple managers"
+          },
+          "cta": "Choose"
+        },
+        "club": {
+          "name": "Club+",
+          "limit": "Up to 1,500 members",
+          "features": {
+            "1": "Everything in Business",
+            "2": "Higher limits",
+            "3": "Priority support"
+          },
+          "cta": "Choose"
+        },
+        "multi": {
+          "name": "Multi-location",
+          "from": "from {price}",
+          "limit": "Many clubs, one org",
+          "features": {
+            "1": "Multiple locations",
+            "2": "Centralised analytics",
+            "3": "Org-level permissions",
+            "4": "Consolidated billing",
+            "5": "API & integrations"
+          },
+          "cta": "Contact Sales"
+        }
+      },
+      "note": "Member limits count active memberships only.",
+      "compare": "Compare every feature"
+    },
+    "enterprise": {
+      "eyebrow": "SimpleFit for boxing organizations",
+      "title": "One platform for every club you run.",
+      "lead": "For gym chains, federations, boxing academies and multi-location clubs.",
+      "features": {
+        "locations": {
+          "title": "Multiple locations",
+          "body": "From 2 to 200 clubs"
+        },
+        "analytics": {
+          "title": "Centralised analytics",
+          "body": "Org-wide revenue & attendance"
+        },
+        "permissions": {
+          "title": "Org-level permissions",
+          "body": "Regional managers, auditors"
+        },
+        "billing": {
+          "title": "Consolidated billing",
+          "body": "One invoice, many entities"
+        },
+        "api": {
+          "title": "API access",
+          "body": "Your data warehouse & tools"
+        },
+        "integrations": {
+          "title": "Advanced integrations",
+          "body": "Access control, accounting"
+        }
+      },
+      "ownBrand": "Want your own brand?",
+      "whiteLabel": "White label",
+      "form": {
+        "title": "Talk to Sales",
+        "organization": "Organization",
+        "organizationPlaceholder": "Baltic Boxing Federation",
+        "countries": "Countries",
+        "countriesPlaceholder": "LT · LV · EE",
+        "locations": "Locations",
+        "locationsPlaceholder": "18 clubs",
+        "members": "Members",
+        "membersPlaceholder": "~ 4,200",
+        "requirements": "Requirements",
+        "requirementsPlaceholder": "Federation licensing, tournament entries, coach certification tracking",
+        "contact": "Contact",
+        "contactPlaceholder": "Rūta K. · Secretary General",
+        "email": "Email",
+        "emailPlaceholder": "ruta@federation.example",
+        "submit": "Talk to Sales",
+        "unavailable": "Sales requests aren’t open yet, so nothing can be sent from this form. It opens with SimpleFit’s enterprise plans."
+      }
+    }
+  },
+  "compare": {
+    "title": "Compare gym plans",
+    "lead": "Need more than Club+? Multi-location from {price}/mo.",
+    "plan": "Plan",
+    "feature": "Feature",
+    "yes": "Included",
+    "no": "Not included",
+    "details": "Details: {feature}",
+    "rows": {
+      "members": "Members",
+      "coaches": "Coaches",
+      "locations": "Locations",
+      "classes": "Classes",
+      "bookings": "Bookings",
+      "payments": "Payments",
+      "memberships": "Memberships",
+      "packages": "Packages",
+      "community": "Community",
+      "challenges": "Challenges",
+      "analytics": "Analytics",
+      "automations": "Automations",
+      "branding": "Custom branding",
+      "api": "API",
+      "support": "Priority support"
+    },
+    "values": {
+      "unlimited": "Unlimited",
+      "basic": "Basic",
+      "advanced": "Advanced",
+      "reports": "Reports",
+      "logoColour": "Logo & colour",
+      "read": "Read",
+      "full": "Full"
+    },
+    "packagesTip": "<b>Packages</b> — prepaid credits like “10 visits” or “10 PT sessions”. Booking uses a credit; members see what’s left."
+  },
+  "whiteLabel": {
+    "badge": "Coming 2027 · UI only",
+    "title": "Your brand.",
+    "titleSecond": "Our boxing infrastructure.",
+    "lead": "For federations and large academies that want their own app — powered by SimpleFit underneath.",
+    "items": {
+      "1": "Your brand",
+      "2": "Your colours",
+      "3": "Custom domain",
+      "4": "Branded mobile experience",
+      "5": "Centralised SimpleFit infrastructure"
+    },
+    "apps": {
+      "description": "Three example branded apps on the same SimpleFit infrastructure.",
+      "federation": "Federation app",
+      "academy": "Academy app",
+      "simplefit": "SimpleFit"
+    },
+    "form": {
+      "title": "Request White Label",
+      "organization": "Organization",
+      "organizationPlaceholder": "Nordic Boxing Academy",
+      "members": "Members",
+      "membersPlaceholder": "~ 9,000",
+      "launch": "Launch window",
+      "launchPlaceholder": "Q2 2027",
+      "domain": "Custom domain",
+      "domainPlaceholder": "app.nordicboxing.example",
+      "email": "Contact email",
+      "emailPlaceholder": "it@academy.example",
+      "submit": "Request White Label",
+      "unavailable": "White label requests aren’t open yet, so nothing can be sent from this form. It opens closer to the 2027 launch."
+    }
+  },
+  "partners": {
+    "eyebrow": "SimpleFit Partners",
+    "title": "Partner with the global boxing community.",
+    "lead": "Reach fighters, coaches and gyms through challenges, events and equipment partnerships — native to boxing, never banner ads.",
+    "become": "Become a Sponsor",
+    "download": "Download Partnership Overview",
+    "downloadNote": "The partnership overview isn’t published yet.",
+    "formats": {
+      "challenges": {
+        "title": "Sponsored Challenges",
+        "body": "Rounds-based, opt-in"
+      },
+      "events": {
+        "title": "Events",
+        "body": "Open sparring, clinics"
+      },
+      "gyms": {
+        "title": "Gym Partnerships",
+        "body": "Equipment & branding"
+      },
+      "coaches": {
+        "title": "Coach Partnerships",
+        "body": "Ambassadors, programs"
+      },
+      "equipment": {
+        "title": "Equipment",
+        "body": "Gear in gym stores"
+      },
+      "marketplace": {
+        "title": "Marketplace",
+        "body": "Labelled placements"
+      },
+      "community": {
+        "title": "Community",
+        "body": "Native cards in feeds"
+      },
+      "privacy": {
+        "title": "Privacy-first",
+        "body": "Aggregate analytics only"
+      }
+    },
+    "campaignsLabel": "Example campaigns · mock data",
+    "sponsored": "Sponsored",
+    "campaigns": {
+      "haymaker": {
+        "brand": "Haymaker",
+        "title": "1,000 Round Challenge",
+        "meta": "Oct 1–31 · PL · CZ · DE · 12,482 participants"
+      },
+      "korda": {
+        "brand": "Korda",
+        "title": "Open Sparring Warsaw",
+        "meta": "Sat Oct 10 · Warsaw BC · 48 places"
+      },
+      "ringfuel": {
+        "brand": "RingFuel",
+        "title": "Gym Partnership",
+        "meta": "10 partner gyms · recovery bar"
+      }
+    }
+  },
+  "apply": {
+    "eyebrow": "Become a sponsor",
+    "title": "Apply in 5 minutes. No account needed to start.",
+    "steps": {
+      "brand": {
+        "title": "Tell us about your brand",
+        "body": "Company, contact, interests, markets, budget, goals"
+      },
+      "review": {
+        "title": "We review",
+        "body": "A partner manager replies within 5 business days"
+      },
+      "campaign": {
+        "title": "Plan your first campaign",
+        "body": "Challenges, events or gym partnerships — always approved by SimpleFit before going live"
+      }
+    },
+    "start": "Start application",
+    "unavailable": "Sponsor applications aren’t open yet, so an application can’t be started here.",
+    "signIn": "Already applied? Sign in",
+    "gets": {
+      "label": "What sponsors get",
+      "items": {
+        "1": "Labelled, native placements in Community, Discover, Marketplace, Challenges, Events",
+        "2": "Aggregate analytics: reach, participation, completion, clicks",
+        "3": "A named partner manager",
+        "4": "Invoices in EUR, USD, GBP or PLN"
+      }
+    },
+    "never": {
+      "label": "What we never do",
+      "items": {
+        "1": "Ads inside workouts, timers, fight camps, messages or payments",
+        "2": "Pop-ups, interstitials, gambling or unrelated ads",
+        "3": "Share any individual athlete data"
+      }
+    }
+  }
+}

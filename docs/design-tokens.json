@@ -509,7 +509,7 @@
       }
     },
     "siteRoles": {
-      "$comment": "SF-42: public website shell typography (Claude Design public-website page: the shared header and footer of L1–L5, PR1–PR6, SPX1–SPX2 and O02w). The artboards set these on the fonts' natural line height; the roles keep those line boxes so the header items and footer rows land on the designed positions. Use only in the public site shell.",
+      "$comment": "SF-42: public website shell typography (Claude Design public-website page: the shared header and footer of L1–L5, PR1–PR6, SPX1–SPX2 and O02w). The artboards set these on the fonts' natural line height; the roles keep those line boxes so the header items and footer rows land on the designed positions. Use only in the public site shell. SF-43: the public pages (L1–L5, PR1–PR6, SPX1–SPX2) add their headline, lead, eyebrow and card roles; display roles on Unbounded's natural line (1.25) where the artboards set none. Use only in the public website pages.",
       "web": {
         "site-nav": {
           "family": "sans",
@@ -537,6 +537,147 @@
           "family": "sans",
           "size": 12,
           "lineHeight": 19.2,
+          "weight": 400,
+          "tracking": 0
+        },
+        "site-hero-xl": {
+          "family": "display",
+          "size": 58,
+          "lineHeight": 60.32,
+          "weight": 600,
+          "tracking": -0.035
+        },
+        "site-hero": {
+          "family": "display",
+          "size": 56,
+          "lineHeight": 58.24,
+          "weight": 600,
+          "tracking": -0.035
+        },
+        "site-hero-md": {
+          "family": "display",
+          "size": 50,
+          "lineHeight": 52.5,
+          "weight": 600,
+          "tracking": -0.035
+        },
+        "site-hero-sm": {
+          "family": "display",
+          "size": 46,
+          "lineHeight": 57.5,
+          "weight": 600,
+          "tracking": -0.03
+        },
+        "site-title-lg": {
+          "family": "display",
+          "size": 44,
+          "lineHeight": 45.76,
+          "weight": 600,
+          "tracking": -0.035
+        },
+        "site-title": {
+          "family": "display",
+          "size": 44,
+          "lineHeight": 55,
+          "weight": 600,
+          "tracking": -0.03
+        },
+        "site-title-md": {
+          "family": "display",
+          "size": 36,
+          "lineHeight": 45,
+          "weight": 600,
+          "tracking": -0.02
+        },
+        "site-title-sm": {
+          "family": "display",
+          "size": 34,
+          "lineHeight": 42.5,
+          "weight": 600,
+          "tracking": -0.02
+        },
+        "site-section": {
+          "family": "display",
+          "size": 30,
+          "lineHeight": 33,
+          "weight": 600,
+          "tracking": -0.025
+        },
+        "site-section-md": {
+          "family": "display",
+          "size": 28,
+          "lineHeight": 30.8,
+          "weight": 600,
+          "tracking": -0.025
+        },
+        "site-section-sm": {
+          "family": "display",
+          "size": 26,
+          "lineHeight": 28.6,
+          "weight": 600,
+          "tracking": -0.025
+        },
+        "site-eyebrow": {
+          "family": "mono",
+          "size": 12,
+          "lineHeight": 15.84,
+          "weight": 400,
+          "tracking": 0.14,
+          "uppercase": true
+        },
+        "site-lead": {
+          "family": "sans",
+          "size": 18,
+          "lineHeight": 27,
+          "weight": 400,
+          "tracking": 0
+        },
+        "site-card-title": {
+          "family": "sans",
+          "size": 18,
+          "lineHeight": 27,
+          "weight": 800,
+          "tracking": 0
+        },
+        "site-card-title-sm": {
+          "family": "sans",
+          "size": 16,
+          "lineHeight": 24,
+          "weight": 800,
+          "tracking": 0
+        },
+        "site-check": {
+          "family": "sans",
+          "size": 14,
+          "lineHeight": 18.9,
+          "weight": 400,
+          "tracking": 0
+        },
+        "site-check-lg": {
+          "family": "sans",
+          "size": 16,
+          "lineHeight": 21.6,
+          "weight": 400,
+          "tracking": 0
+        },
+        "site-check-sm": {
+          "family": "sans",
+          "size": 13,
+          "lineHeight": 17.55,
+          "weight": 400,
+          "tracking": 0
+        },
+        "site-check-xs": {
+          "family": "sans",
+          "size": 12,
+          "lineHeight": 16.2,
+          "weight": 400,
+          "tracking": 0
+        },
+        "site-body": {
+          "family": "sans",
+          "size": 16,
+          "lineHeight": 24,
           "weight": 400,
           "tracking": 0
         }

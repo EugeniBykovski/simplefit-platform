@@ -1,0 +1,32 @@
+{
+  "fighters": {
+    "pro": {
+      "items": {
+        "video": "Más almacenamiento de video"
+      }
+    }
+  },
+  "pricing": {
+    "coach": {
+      "plans": {
+        "pro": {
+          "features": {
+            "4": "Revisión de video"
+          }
+        },
+        "elite": {
+          "features": {
+            "3": "Más almacenamiento de video"
+          }
+        }
+      }
+    },
+    "fighter": {
+      "pro": {
+        "features": {
+          "4": "Video · más almacenamiento, etiquetas, comparaciones"
+        }
+      }
+    }
+  }
+}

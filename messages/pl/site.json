@@ -1,0 +1,821 @@
+{
+  "common": {
+    "example": "Przykład",
+    "exampleLabel": "Przykład produktu, nie prawdziwe dane",
+    "notOpenYet": "Jeszcze niedostępne",
+    "perMonth": "/mies.",
+    "perYear": "/rok"
+  },
+  "meta": {
+    "home": "Trenuj, prowadź zawodników i zarządzaj klubem w jednym miejscu. SimpleFit Boxing łączy zawodników, trenerów, kluby i marki jednym kontem.",
+    "fighters": "Zapisuj rundy i sparingi, rezerwuj zajęcia, realizuj plan trenera i oglądaj swój rok na Live Board. Za darmo, na zawsze.",
+    "coaches": "Plany, obozy przygotowawcze i sparingi dla Twojej drużyny — oraz prosty sposób na sprzedaż treningów personalnych, pakietów i treningów online z przejrzystymi opłatami.",
+    "gyms": "Karnety i pakiety, wejścia na kod QR, trenerzy i personel, wypłaty i sklep klubu — jedna konsola dla Twojego klubu.",
+    "marketplace": "Znajdź trenera boksu, klub lub program w swoim mieście.",
+    "pricing": "Za darmo dla zawodników. Uczciwie dla trenerów. Stworzone, by klub rósł.",
+    "compare": "Porównaj wszystkie plany SimpleFit dla klubów funkcja po funkcji.",
+    "whiteLabel": "Twoja marka, nasza bokserska infrastruktura: white label SimpleFit dla federacji i dużych akademii.",
+    "partners": "Współpracuj ze społecznością bokserską przez wyzwania, wydarzenia i partnerstwa sprzętowe — naturalnie dla boksu, nigdy banery reklamowe.",
+    "apply": "Zostań sponsorem SimpleFit: jak wygląda zgłoszenie i co otrzymują sponsorzy."
+  },
+  "board": {
+    "description": "Przykładowy Live Board: zawodnik w centrum, połączony z klubem, trenerami, partnerami treningowymi i walką.",
+    "nextLabel": "Następne · dziś",
+    "nextTitle": "18:00 Technika · Warsaw BC",
+    "nextPlace": "ul. Belwederska 20 · Ring 2",
+    "liveBoard": "Live Board",
+    "year": "2026",
+    "nodes": {
+      "fighter": "YB",
+      "gym": "WB",
+      "coach": "MR",
+      "partner": "AL",
+      "sparring": "AN"
+    }
+  },
+  "home": {
+    "eyebrow": "System operacyjny boksu",
+    "title": "Trenuj, prowadź zawodników i zarządzaj klubem —",
+    "titleAccent": "w jednym miejscu.",
+    "lead": "SimpleFit Boxing łączy zawodników, trenerów, kluby i marki jednym kontem. Za darmo dla zawodników, narzędzia dla tych, którzy tworzą boks.",
+    "getStarted": "Zacznij — to nic nie kosztuje",
+    "signIn": "Zaloguj się",
+    "whoLabel": "Dla kogo",
+    "who": {
+      "fighters": {
+        "title": "Zawodnicy",
+        "body": "Zapisuj każdą rundę, śledź postępy, rezerwuj zajęcia i trenuj ze znajomymi. Za darmo, na zawsze.",
+        "link": "Dla zawodników"
+      },
+      "coaches": {
+        "title": "Trenerzy",
+        "body": "Plany, obozy przygotowawcze i sparingi — oraz sprzedaż treningów personalnych, pakietów i treningów online.",
+        "link": "Dla trenerów"
+      },
+      "gyms": {
+        "title": "Kluby i sekcje",
+        "body": "Członkowie, grafik, wejścia na kod QR, karnety i wypłaty w jednej konsoli.",
+        "link": "Dla klubów"
+      },
+      "brands": {
+        "title": "Marki",
+        "body": "Natywne wyzwania, wydarzenia i partnerstwa z klubami. Wyłącznie zbiorcze statystyki.",
+        "link": "Zostań partnerem"
+      }
+    },
+    "getLabel": "Co otrzymujesz",
+    "get": {
+      "board": {
+        "label": "Live Board",
+        "title": "Twoja bokserska droga w obrazie",
+        "body": "Kluby, ludzie i treningi połączone w czasie."
+      },
+      "camps": {
+        "label": "Obozy przygotowawcze",
+        "title": "Zaplanuj 8 tygodni przed walką",
+        "body": "Plan, sparingi i waga — domyślnie prywatne."
+      },
+      "book": {
+        "label": "Rezerwacje i płatności",
+        "title": "Zajęcia, treningi personalne i karnety",
+        "body": "Karty, portfele i BLIK. Jasne opłaty dla każdego sprzedawcy."
+      },
+      "community": {
+        "label": "Społeczność",
+        "title": "Znajomi, kluby i wyzwania",
+        "body": "Nigdy za paywallem. Treści sponsorowane są zawsze oznaczone."
+      }
+    },
+    "market": {
+      "label": "Marketplace",
+      "title": "Znajdź trenera lub klub w swoim mieście",
+      "body": "Przeglądaj trenerów, kluby, programy i wydarzenia. Promowane ogłoszenia mają oznaczenie „Sponsorowane”.",
+      "link": "Przeglądaj marketplace"
+    },
+    "pricing": {
+      "label": "Cennik",
+      "title": "Za darmo dla zawodników. Uczciwie dla profesjonalistów.",
+      "fighter": "Aplikacja zawodnika",
+      "coach": "Trener od",
+      "gym": "Klub od",
+      "link": "Zobacz wszystkie plany"
+    },
+    "band": {
+      "title": "Twoje treningi należą do Ciebie.",
+      "body": "Waga, ból i notatki trenera nigdy nie są publiczne. Sponsorzy widzą tylko sumy — nigdy Ciebie.",
+      "primary": "Załóż darmowe konto",
+      "secondary": "Jak dbamy o dane"
+    }
+  },
+  "fighters": {
+    "eyebrow": "Dla zawodników",
+    "title": "Twój boks pod kontrolą.",
+    "titleAccent": "Za darmo, na zawsze.",
+    "lead": "Zapisuj rundy i sparingi, rezerwuj zajęcia, realizuj plan trenera i oglądaj swój rok na Live Board. Funkcje społecznościowe nigdy nie są za paywallem.",
+    "primary": "Dołącz za darmo",
+    "secondary": "Co daje Pro",
+    "features": {
+      "rounds": {
+        "title": "Liczy się każda runda",
+        "body": "Timer bokserski, worek, tarcze, sparingi i bieganie — zapisane w kilka sekund."
+      },
+      "people": {
+        "title": "Trenuj ze swoimi",
+        "body": "Znajomi, społeczność klubu, wspólne treningi i wyzwania."
+      },
+      "book": {
+        "title": "Rezerwuj i płać",
+        "body": "Zajęcia, treningi personalne i karnety w klubach i u trenerów, którym ufasz."
+      }
+    },
+    "privacy": {
+      "label": "Domyślnie prywatne",
+      "items": {
+        "notes": "Waga, RPE i notatki trenera nigdy nie są publiczne",
+        "audience": "Ty decydujesz, kto widzi treningi: znajomi, klub czy tylko Ty",
+        "sponsors": "Sponsorzy nigdy nie widzą pojedynczych zawodników",
+        "export": "Eksportuj lub usuń swoje dane w dowolnym momencie"
+      }
+    },
+    "pro": {
+      "label": "SimpleFit Pro · opcjonalnie",
+      "annual": "lub {price}/mies. przy płatności rocznej",
+      "items": {
+        "analytics": "Zaawansowane statystyki i pełna historia Live Board",
+        "ai": "Cotygodniowa analiza AI",
+        "video": "Więcej miejsca na wideo"
+      },
+      "link": "Porównaj Free i Pro"
+    },
+    "band": {
+      "title": "Znajdź swój klub lub trenera",
+      "body": "Szukaj według miasta. Trening z Twoim trenerem jest dla zawodników zawsze darmowy.",
+      "secondary": "Przeglądaj marketplace",
+      "primary": "Dołącz za darmo"
+    }
+  },
+  "coaches": {
+    "eyebrow": "Dla trenerów",
+    "title": "Prowadź swój trenerski biznes",
+    "titleAccent": "z jednego miejsca.",
+    "lead": "Plany, obozy przygotowawcze i sparingi dla Twojej drużyny — oraz prosty sposób na sprzedaż treningów personalnych, pakietów i treningów online z przejrzystymi opłatami.",
+    "primary": "Zacznij za darmo",
+    "secondary": "Plany dla trenerów",
+    "note": "Za darmo do 3 zawodników · Pro za darmo przez 14 dni, bez karty",
+    "week": {
+      "label": "Ten tydzień · Yauheni Coaching",
+      "description": "Przykładowy tydzień trenera: 14 zawodników, 22 treningi, obóz przygotowawczy zgodnie z planem, sparing w czwartek i opłacony trening personalny.",
+      "fighters": "Zawodnicy",
+      "fightersValue": "14",
+      "fightersNote": "z 30 w Pro",
+      "sessions": "Treningi",
+      "sessionsValue": "22",
+      "sessionsNote": "6 dziś",
+      "camp": "Obóz przygotowawczy · Anna",
+      "campNote": "Tydzień 6 z 8 · realizacja 87%",
+      "onTrack": "Zgodnie z planem",
+      "sparring": "Sparing · czw. 19:00",
+      "sparringNote": "6 par · Warsaw BC",
+      "pt": "Trening personalny · Mike R.",
+      "ptNote": "50 € · opłacone",
+      "paid": "Opłacone"
+    },
+    "features": {
+      "programs": {
+        "title": "Plany i obozy przygotowawcze",
+        "body": "Stwórz trening raz, przypisz grupom, śledź realizację."
+      },
+      "sparring": {
+        "title": "Kontrola sparingów",
+        "body": "Pary, rundy i notatki o bezpieczeństwie — widoczne tylko dla Twojej drużyny."
+      },
+      "paid": {
+        "title": "Zarabiaj",
+        "body": "Treningi personalne, pakiety, treningi online i programy. Wypłaty co tydzień."
+      }
+    },
+    "fees": {
+      "label": "Opłaty, które widzisz",
+      "description": "Przykładowa sprzedaż treningu personalnego: klient płaci 50,00 €, obsługa płatności to 1,05 €, a za Twoich własnych klientów nie ma opłaty platformy, więc otrzymujesz 48,95 €.",
+      "clientPays": "Klient płaci",
+      "processing": "Obsługa płatności",
+      "platform": "Opłata platformy · Twoi klienci",
+      "receive": "Otrzymujesz",
+      "note": "Klienci pozyskani przez marketplace wiążą się z opłatą za polecenie, widoczną przy każdej sprzedaży."
+    },
+    "plans": {
+      "label": "Plany",
+      "plan": "Plan",
+      "fighters": "Zawodnicy",
+      "price": "Cena",
+      "upTo": "do {count}",
+      "unlimited": "bez limitu",
+      "link": "Porównaj plany dla trenerów"
+    },
+    "band": {
+      "title": "Zabierz ze sobą swoich zawodników",
+      "body": "Zaproś ich linkiem lub kodem QR — dołączają za darmo.",
+      "primary": "Zacznij za darmo"
+    }
+  },
+  "gyms": {
+    "eyebrow": "Dla klubów i sekcji",
+    "title": "Członkowie, grafik i pieniądze —",
+    "titleAccent": "jedna konsola.",
+    "lead": "Karnety i pakiety, wejścia na kod QR, trenerzy i personel, wypłaty i sklep klubu. Twoi członkowie dostają aplikację SimpleFit za darmo.",
+    "primary": "Skonfiguruj klub",
+    "secondary": "Porównaj plany dla klubów",
+    "locations": "Kilka lokalizacji?",
+    "sales": "Porozmawiaj z działem sprzedaży",
+    "today": {
+      "label": "Warsaw Boxing Club · dziś",
+      "description": "Przykładowy dzień w klubie: 42 wejścia członków, 18 940 € przychodu w październiku, pełna grupa zawodnicza, nieudane płatności do ponowienia i nowe rezerwacje próbne.",
+      "checkedIn": "Wejścia",
+      "checkedInValue": "42",
+      "checkedInNote": "+8 vs średnia",
+      "revenue": "Przychód · paź",
+      "revenueValue": "18 940 €",
+      "revenueNote": "karnety i treningi personalne",
+      "class": "18:00 Grupa zawodnicza",
+      "classNote": "12 rezerwacji · ring 1",
+      "failed": "Nieudane płatności",
+      "failedNote": "12 członków · 842 €",
+      "retry": "Ponów",
+      "leads": "Nowe zgłoszenia",
+      "leadsNote": "4 rezerwacje próbne"
+    },
+    "features": {
+      "memberships": {
+        "title": "Karnety i pakiety",
+        "body": "Miesięczne, 10 wejść, jednorazowe. Uczciwe zasady windykacji ustalasz Ty."
+      },
+      "checkin": {
+        "title": "Wejścia na kod QR",
+        "body": "Recepcja w telefonie. Frekwencja na bieżąco."
+      },
+      "staff": {
+        "title": "Trenerzy i personel",
+        "body": "Role, uprawnienia i zmiany dla każdej lokalizacji."
+      },
+      "promote": {
+        "title": "Promuj swój klub",
+        "body": "Oznaczone miejsca według miasta i dzielnicy."
+      }
+    },
+    "setup": {
+      "label": "Konfiguracja w 14 krokach",
+      "items": {
+        "first": "Kroki 1–6 · klub, lokalizacja (tylko adres), marka, wielkość, funkcje, plan",
+        "second": "Kroki 7–14 · weryfikacja, karnety, płatności, grafik, zespół, import, społeczność, start",
+        "import": "Import członków z pliku CSV — otrzymają e-mail z zaproszeniem"
+      }
+    },
+    "plans": {
+      "label": "Plany",
+      "plan": "Plan",
+      "members": "Członkowie",
+      "price": "Cena",
+      "upTo": "do {count}",
+      "link": "Porównaj plany dla klubów"
+    },
+    "band": {
+      "title": "Otwórz swój klub w SimpleFit",
+      "body": "Darmowy okres próbny Pro przez 14 dni. Zachowujesz swoje dane, jeśli odejdziesz.",
+      "primary": "Skonfiguruj klub"
+    }
+  },
+  "marketplace": {
+    "eyebrow": "Marketplace",
+    "title": "Znajdź trenera, klub lub program w swoim mieście",
+    "query": "Trener boksu",
+    "city": "Warszawa",
+    "search": "Szukaj",
+    "searchNote": "Wyszukiwanie nie jest jeszcze dostępne: marketplace ruszy razem z ogłoszeniami trenerów i klubów.",
+    "tabs": {
+      "coaches": "Trenerzy",
+      "gyms": "Kluby",
+      "programs": "Programy",
+      "camps": "Obozy przygotowawcze",
+      "events": "Wydarzenia"
+    },
+    "location": "Szukaj według miasta lub dzielnicy — nigdy nie używamy Twojej lokalizacji.",
+    "examples": "Przykładowe ogłoszenia",
+    "sponsored": "Sponsorowane",
+    "perSession": "za trening",
+    "perMonth": "/miesiąc",
+    "book": "Zarezerwuj",
+    "viewGym": "Zobacz klub",
+    "listings": {
+      "adam": {
+        "initials": "AS",
+        "name": "Adam Smith",
+        "meta": "Warszawa · obozy przygotowawcze · ✓ zweryfikowany",
+        "tags": {
+          "1": "Boks olimpijski",
+          "2": "Obozy przygotowawcze"
+        }
+      },
+      "yauheni": {
+        "initials": "YB",
+        "name": "Yauheni Coaching",
+        "meta": "Warsaw BC · Mokotów",
+        "tags": {
+          "1": "Praca nóg",
+          "2": "Obozy przygotowawcze"
+        }
+      },
+      "marek": {
+        "initials": "MK",
+        "name": "Trener Marek",
+        "meta": "Warsaw BC · trener drużyny",
+        "tags": {
+          "1": "Zawody"
+        }
+      },
+      "wbc": {
+        "name": "Warsaw Boxing Club",
+        "meta": "ul. Belwederska 20 · Mokotów",
+        "tags": {
+          "1": "Grupa zawodnicza",
+          "2": "Otwarte sparingi"
+        }
+      },
+      "simple": {
+        "name": "Simple Boxing Gym",
+        "meta": "ul. Ząbkowska 27 · Praga",
+        "tags": {
+          "1": "Początkujący",
+          "2": "Tarcze"
+        }
+      },
+      "tomasz": {
+        "initials": "TO",
+        "name": "Tomasz",
+        "meta": "Simple Boxing · Praga",
+        "tags": {
+          "1": "Tarcze",
+          "2": "Amatorzy"
+        }
+      }
+    },
+    "band": {
+      "title": "Załóż darmowe konto, aby rezerwować",
+      "body": "Rezerwacja, płatność i wiadomość do trenera wymagają konta. Przeglądanie — nigdy.",
+      "signIn": "Zaloguj się",
+      "join": "Dołącz za darmo"
+    }
+  },
+  "pricing": {
+    "title": "Cennik",
+    "lead": "Za darmo dla zawodników. Uczciwie dla trenerów. Stworzone, by klub rósł.",
+    "enterpriseLead": "Sieci klubów, akademie i federacje.",
+    "roles": {
+      "label": "Plany dla",
+      "fighter": "Zawodnik",
+      "coach": "Trener",
+      "gym": "Klub",
+      "enterprise": "Enterprise"
+    },
+    "billing": {
+      "label": "Rozliczenie",
+      "monthly": "Miesięcznie",
+      "annual": "Rocznie",
+      "save": "oszczędzasz ~20%",
+      "vat": "Ceny z VAT dla konsumentów · VAT dla firm przy płatności",
+      "annualNote": "Płatność roczna · około 20% taniej, cena zależna od rynku"
+    },
+    "mostPopular": "Najpopularniejszy",
+    "recommended": "Polecany",
+    "faq": "FAQ",
+    "faqs": {
+      "changePlans": {
+        "q": "Czy mogę zmienić plan?",
+        "a": "Tak. Przejście na wyższy plan jest rozliczane proporcjonalnie od razu; na niższy — od następnej daty rozliczenia i nigdy nie usuwa danych."
+      },
+      "cancel": {
+        "q": "Czy mogę zrezygnować w dowolnym momencie?",
+        "a": "Tak, w dwóch dotknięciach. Płatne funkcje działają do końca opłaconego okresu."
+      },
+      "fighterPays": {
+        "q": "Czy zawodnik musi płacić, aby trenować z trenerem?",
+        "a": "Nigdy. Treningi przypisane przez trenera, wiadomości i rezerwacje są dla zawodników darmowe."
+      },
+      "annual": {
+        "q": "Jak działa płatność roczna?",
+        "a": "Jedna płatność w roku, około 20% taniej niż miesięcznie. Dokładne ceny zależą od rynku."
+      },
+      "processing": {
+        "q": "Czy opłaty za obsługę płatności są wliczone?",
+        "a": "Nie — obsługę pobiera operator płatności za każdą transakcję i zawsze widzisz ją przed sprzedażą."
+      },
+      "commission": {
+        "q": "Jak działa prowizja marketplace?",
+        "a": "Tylko wtedy, gdy SimpleFit przyprowadzi nowego klienta przez marketplace. Stawka jest widoczna przy każdej sprzedaży."
+      },
+      "international": {
+        "q": "Czy SimpleFit jest dostępny za granicą?",
+        "a": "Tak. Ceny są wyświetlane w Twojej walucie (EUR, USD, GBP, PLN), a lokalne podatki naliczane przy płatności."
+      }
+    },
+    "coach": {
+      "plans": {
+        "free": {
+          "name": "Free",
+          "limit": "Do 3 aktywnych zawodników",
+          "features": {
+            "1": "Profile zawodników",
+            "2": "Podstawowe planowanie",
+            "3": "Kreator treningów i przypisania",
+            "4": "Wiadomości i kalendarz",
+            "5": "Podstawowe statystyki"
+          },
+          "cta": "Zacznij za darmo"
+        },
+        "starter": {
+          "name": "Starter",
+          "limit": "Do 10 zawodników",
+          "features": {
+            "1": "Wszystko z Free",
+            "2": "Grupy i szablony",
+            "3": "Rozszerzone statystyki",
+            "4": "Podstawowe obozy przygotowawcze"
+          },
+          "cta": "Wybierz Starter"
+        },
+        "pro": {
+          "name": "Pro",
+          "limit": "Do 30 zawodników",
+          "features": {
+            "1": "Pełne obozy przygotowawcze",
+            "2": "Zarządzanie sparingami",
+            "3": "Zaawansowane statystyki",
+            "4": "Analiza wideo",
+            "5": "Zaawansowany Live Board",
+            "6": "Publiczny profil trenera",
+            "7": "Sprzedaż i automatyzacje",
+            "8": "Asystent trenera AI"
+          },
+          "cta": "Zacznij 14-dniowy okres próbny"
+        },
+        "elite": {
+          "name": "Elite",
+          "limit": "Do 75 zawodników",
+          "features": {
+            "1": "Wszystko z Pro",
+            "2": "Zaawansowane AI",
+            "3": "Więcej miejsca na wideo",
+            "4": "Zaawansowana automatyzacja",
+            "5": "Asystenci trenera",
+            "6": "Zaawansowany eksport",
+            "7": "Priorytetowe wsparcie"
+          },
+          "cta": "Wybierz Elite"
+        },
+        "unlimited": {
+          "name": "Unlimited",
+          "limit": "Bez limitu zawodników",
+          "features": {
+            "1": "Wszystko z Elite",
+            "2": "Dla dużych niezależnych firm trenerskich"
+          },
+          "cta": "Wybierz Unlimited"
+        }
+      },
+      "note": "Zawodnicy, których trenujesz, nigdy nie płacą za trening z Tobą. Plany ograniczają <b>aktywnych</b> zawodników — zarchiwizowani zachowują swoją historię."
+    },
+    "fighter": {
+      "free": {
+        "name": "SimpleFit Free",
+        "tagline": "Wszystko, co społecznościowe, na zawsze",
+        "features": {
+          "1": "Nielimitowany podstawowy zapis treningów",
+          "2": "Treningi przypisane przez trenera",
+          "3": "Znajomi, obserwowanie, społeczność, udostępnianie",
+          "4": "Kalendarz, rezerwacje, wiadomości",
+          "5": "Podstawowe postępy, osiągnięcia, wyzwania",
+          "6": "Kluby, podstawowy Live Board, historia sparingów"
+        },
+        "cta": "Dołącz za darmo"
+      },
+      "pro": {
+        "name": "SimpleFit Pro",
+        "badge": "Pro",
+        "tagline": "Wejdź głębiej w swój boks",
+        "features": {
+          "1": "Zaawansowane statystyki · obciążenie, rundy, sparingi, statystyki klubu",
+          "2": "Zaawansowany Live Board · pełna historia, roczna droga, graf ludzi",
+          "3": "Cotygodniowa analiza AI, wnioski o postępach, podsumowania obozów",
+          "4": "Wideo · więcej miejsca, tagowanie, porównania",
+          "5": "Integracje z urządzeniami ubieralnymi i zdrowiem"
+        },
+        "cta": "Zacznij darmowy okres próbny"
+      },
+      "stays": {
+        "label": "Co zostaje za darmo",
+        "items": {
+          "1": "Trening z Twoim trenerem",
+          "2": "Znajomi, udostępnianie, społeczność",
+          "3": "Wyzwania i osiągnięcia",
+          "4": "Rezerwacje i wejścia do klubu"
+        },
+        "annual": "Rocznie: {year}/rok ({month}/mies.). Zrezygnuj w dowolnym momencie — Twoje dane zostają."
+      }
+    },
+    "gym": {
+      "plans": {
+        "free": {
+          "name": "Free",
+          "limit": "Do 30 członków",
+          "features": {
+            "1": "1 lokalizacja · 2 trenerów",
+            "2": "Zajęcia i podstawowe rezerwacje",
+            "3": "Obecność na kod QR",
+            "4": "Publiczny profil i społeczność",
+            "5": "Podstawowe raporty"
+          },
+          "cta": "Zacznij za darmo"
+        },
+        "starter": {
+          "name": "Starter",
+          "limit": "Do 100 członków",
+          "features": {
+            "1": "Wszystko z Free",
+            "2": "Więcej trenerów",
+            "3": "Zasady rezerwacji"
+          },
+          "cta": "Wybierz"
+        },
+        "pro": {
+          "name": "Pro",
+          "limit": "Do 300 członków",
+          "features": {
+            "1": "Płatności i karnety",
+            "2": "Pakiety",
+            "3": "Zaawansowane rezerwacje",
+            "4": "Raporty i wyzwania",
+            "5": "Uprawnienia personelu"
+          },
+          "cta": "Zacznij okres próbny"
+        },
+        "business": {
+          "name": "Business",
+          "limit": "Do 750 członków",
+          "features": {
+            "1": "Zaawansowane statystyki",
+            "2": "Zaawansowane uprawnienia",
+            "3": "Automatyzacje",
+            "4": "Zaawansowana sprzedaż",
+            "5": "Wielu menedżerów"
+          },
+          "cta": "Wybierz"
+        },
+        "club": {
+          "name": "Club+",
+          "limit": "Do 1500 członków",
+          "features": {
+            "1": "Wszystko z Business",
+            "2": "Wyższe limity",
+            "3": "Priorytetowe wsparcie"
+          },
+          "cta": "Wybierz"
+        },
+        "multi": {
+          "name": "Wiele lokalizacji",
+          "from": "od {price}",
+          "limit": "Wiele klubów, jedna organizacja",
+          "features": {
+            "1": "Wiele lokalizacji",
+            "2": "Scentralizowane statystyki",
+            "3": "Uprawnienia na poziomie organizacji",
+            "4": "Zbiorcze rozliczenia",
+            "5": "API i integracje"
+          },
+          "cta": "Skontaktuj się ze sprzedażą"
+        }
+      },
+      "note": "Limity członków obejmują tylko aktywne karnety.",
+      "compare": "Porównaj wszystkie funkcje"
+    },
+    "enterprise": {
+      "eyebrow": "SimpleFit dla organizacji bokserskich",
+      "title": "Jedna platforma dla wszystkich Twoich klubów.",
+      "lead": "Dla sieci klubów, federacji, akademii bokserskich i klubów z wieloma lokalizacjami.",
+      "features": {
+        "locations": {
+          "title": "Wiele lokalizacji",
+          "body": "Od 2 do 200 klubów"
+        },
+        "analytics": {
+          "title": "Scentralizowane statystyki",
+          "body": "Przychód i frekwencja całej organizacji"
+        },
+        "permissions": {
+          "title": "Uprawnienia na poziomie organizacji",
+          "body": "Menedżerowie regionalni, audytorzy"
+        },
+        "billing": {
+          "title": "Zbiorcze rozliczenia",
+          "body": "Jedna faktura, wiele podmiotów"
+        },
+        "api": {
+          "title": "Dostęp do API",
+          "body": "Twoja hurtownia danych i narzędzia"
+        },
+        "integrations": {
+          "title": "Zaawansowane integracje",
+          "body": "Kontrola dostępu, księgowość"
+        }
+      },
+      "ownBrand": "Chcesz własnej marki?",
+      "whiteLabel": "White label",
+      "form": {
+        "title": "Porozmawiaj z działem sprzedaży",
+        "organization": "Organizacja",
+        "organizationPlaceholder": "Baltic Boxing Federation",
+        "countries": "Kraje",
+        "countriesPlaceholder": "LT · LV · EE",
+        "locations": "Lokalizacje",
+        "locationsPlaceholder": "18 klubów",
+        "members": "Członkowie",
+        "membersPlaceholder": "~ 4200",
+        "requirements": "Wymagania",
+        "requirementsPlaceholder": "Licencje federacji, zgłoszenia do turniejów, ewidencja certyfikatów trenerów",
+        "contact": "Kontakt",
+        "contactPlaceholder": "Rūta K. · sekretarz generalna",
+        "email": "E-mail",
+        "emailPlaceholder": "ruta@federation.example",
+        "submit": "Porozmawiaj z działem sprzedaży",
+        "unavailable": "Zapytania do działu sprzedaży nie są jeszcze przyjmowane, więc z tego formularza nie można nic wysłać. Zostanie otwarty razem z planami firmowymi SimpleFit."
+      }
+    }
+  },
+  "compare": {
+    "title": "Porównaj plany dla klubów",
+    "lead": "Potrzebujesz więcej niż Club+? Wiele lokalizacji od {price}/mies.",
+    "plan": "Plan",
+    "feature": "Funkcja",
+    "yes": "W cenie",
+    "no": "Brak",
+    "details": "Szczegóły: {feature}",
+    "rows": {
+      "members": "Członkowie",
+      "coaches": "Trenerzy",
+      "locations": "Lokalizacje",
+      "classes": "Zajęcia",
+      "bookings": "Rezerwacje",
+      "payments": "Płatności",
+      "memberships": "Karnety",
+      "packages": "Pakiety",
+      "community": "Społeczność",
+      "challenges": "Wyzwania",
+      "analytics": "Statystyki",
+      "automations": "Automatyzacje",
+      "branding": "Własny branding",
+      "api": "API",
+      "support": "Priorytetowe wsparcie"
+    },
+    "values": {
+      "unlimited": "Bez limitu",
+      "basic": "Podstawowe",
+      "advanced": "Zaawansowane",
+      "reports": "Raporty",
+      "logoColour": "Logo i kolor",
+      "read": "Odczyt",
+      "full": "Pełne"
+    },
+    "packagesTip": "<b>Pakiety</b> — przedpłacone kredyty, np. „10 wejść” lub „10 treningów personalnych”. Rezerwacja wykorzystuje kredyt; członkowie widzą, ile zostało."
+  },
+  "whiteLabel": {
+    "badge": "Już w 2027 · tylko interfejs",
+    "title": "Twoja marka.",
+    "titleSecond": "Nasza bokserska infrastruktura.",
+    "lead": "Dla federacji i dużych akademii, które chcą mieć własną aplikację — opartą na SimpleFit.",
+    "items": {
+      "1": "Twoja marka",
+      "2": "Twoje kolory",
+      "3": "Własna domena",
+      "4": "Aplikacja mobilna z Twoją marką",
+      "5": "Scentralizowana infrastruktura SimpleFit"
+    },
+    "apps": {
+      "description": "Trzy przykładowe aplikacje z własną marką na tej samej infrastrukturze SimpleFit.",
+      "federation": "Aplikacja federacji",
+      "academy": "Aplikacja akademii",
+      "simplefit": "SimpleFit"
+    },
+    "form": {
+      "title": "Zamów white label",
+      "organization": "Organizacja",
+      "organizationPlaceholder": "Nordic Boxing Academy",
+      "members": "Członkowie",
+      "membersPlaceholder": "~ 9000",
+      "launch": "Termin startu",
+      "launchPlaceholder": "II kw. 2027",
+      "domain": "Własna domena",
+      "domainPlaceholder": "app.nordicboxing.example",
+      "email": "E-mail kontaktowy",
+      "emailPlaceholder": "it@academy.example",
+      "submit": "Zamów white label",
+      "unavailable": "Zgłoszenia white label nie są jeszcze przyjmowane, więc z tego formularza nie można nic wysłać. Zostanie otwarty bliżej startu w 2027 roku."
+    }
+  },
+  "partners": {
+    "eyebrow": "Partnerzy SimpleFit",
+    "title": "Współpracuj z globalną społecznością bokserską.",
+    "lead": "Docieraj do zawodników, trenerów i klubów przez wyzwania, wydarzenia i partnerstwa sprzętowe — naturalnie dla boksu, nigdy banery reklamowe.",
+    "become": "Zostań sponsorem",
+    "download": "Pobierz opis współpracy",
+    "downloadNote": "Opis współpracy nie został jeszcze opublikowany.",
+    "formats": {
+      "challenges": {
+        "title": "Wyzwania sponsorowane",
+        "body": "Oparte na rundach, dobrowolne"
+      },
+      "events": {
+        "title": "Wydarzenia",
+        "body": "Otwarte sparingi, warsztaty"
+      },
+      "gyms": {
+        "title": "Partnerstwa z klubami",
+        "body": "Sprzęt i branding"
+      },
+      "coaches": {
+        "title": "Partnerstwa z trenerami",
+        "body": "Ambasadorzy, programy"
+      },
+      "equipment": {
+        "title": "Sprzęt",
+        "body": "Sprzęt w sklepach klubów"
+      },
+      "marketplace": {
+        "title": "Marketplace",
+        "body": "Oznaczone miejsca"
+      },
+      "community": {
+        "title": "Społeczność",
+        "body": "Natywne karty w aktualnościach"
+      },
+      "privacy": {
+        "title": "Prywatność przede wszystkim",
+        "body": "Wyłącznie zbiorcze statystyki"
+      }
+    },
+    "campaignsLabel": "Przykładowe kampanie · dane poglądowe",
+    "sponsored": "Sponsorowane",
+    "campaigns": {
+      "haymaker": {
+        "brand": "Haymaker",
+        "title": "Wyzwanie 1000 rund",
+        "meta": "1–31 paź · PL · CZ · DE · 12 482 uczestników"
+      },
+      "korda": {
+        "brand": "Korda",
+        "title": "Otwarte sparingi Warszawa",
+        "meta": "sob. 10 paź · Warsaw BC · 48 miejsc"
+      },
+      "ringfuel": {
+        "brand": "RingFuel",
+        "title": "Partnerstwo z klubami",
+        "meta": "10 klubów partnerskich · bar regeneracyjny"
+      }
+    }
+  },
+  "apply": {
+    "eyebrow": "Zostań sponsorem",
+    "title": "Zgłoszenie w 5 minut. Na start nie potrzebujesz konta.",
+    "steps": {
+      "brand": {
+        "title": "Opowiedz nam o swojej marce",
+        "body": "Firma, kontakt, zainteresowania, rynki, budżet, cele"
+      },
+      "review": {
+        "title": "Weryfikujemy",
+        "body": "Opiekun partnera odpowiada w ciągu 5 dni roboczych"
+      },
+      "campaign": {
+        "title": "Zaplanuj pierwszą kampanię",
+        "body": "Wyzwania, wydarzenia lub partnerstwa z klubami — zawsze zatwierdzane przez SimpleFit przed publikacją"
+      }
+    },
+    "start": "Rozpocznij zgłoszenie",
+    "unavailable": "Zgłoszenia sponsorów nie są jeszcze przyjmowane, więc nie można tu rozpocząć zgłoszenia.",
+    "signIn": "Masz już zgłoszenie? Zaloguj się",
+    "gets": {
+      "label": "Co otrzymują sponsorzy",
+      "items": {
+        "1": "Oznaczone, natywne miejsca w Społeczności, Odkrywaj, Marketplace, Wyzwaniach i Wydarzeniach",
+        "2": "Zbiorcze statystyki: zasięg, udział, ukończenia, kliknięcia",
+        "3": "Imienny opiekun partnera",
+        "4": "Faktury w EUR, USD, GBP lub PLN"
+      }
+    },
+    "never": {
+      "label": "Czego nigdy nie robimy",
+      "items": {
+        "1": "Reklam w treningach, timerach, obozach przygotowawczych, wiadomościach ani płatnościach",
+        "2": "Wyskakujących okienek, reklam pełnoekranowych, hazardu ani niezwiązanych reklam",
+        "3": "Udostępniania danych pojedynczych zawodników"
+      }
+    }
+  }
+}

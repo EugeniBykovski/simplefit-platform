@@ -119,8 +119,8 @@ button label). JetBrains Mono 400. No other weights are loaded or allowed.
 The canonical design spaces in 2 px steps up to 24, then 32–64. 80 is the
 public-website section rhythm; 26 and 36 are the public-website header and
 footer rhythm (SF-42: the 26 px between site links, the 36 px between header
-items and above and below the footer). ESLint rejects other steps and arbitrary
-values in product code.
+items and above and below the footer). ESLint rejects other steps and
+arbitrary values in product code.
 
 **Radius** (`rounded-*`): `xs` 6 (marks), `sm` 9 (badges, small tiles),
 `md` 12 (compact controls ≤ 48 px: web buttons and fields, chips), `md-lg`
@@ -252,6 +252,42 @@ The brand lockup's wordmark has three sizes (`BrandWordmark size`): `sm` 14
 (`type-title`, the site header and product chrome) and `lg` 16
 (`type-auth-wordmark`, the WA1 / WA1b brand panel). The auth header hairline
 is `border-subtle`, as the artboards draw it.
+
+### Public website pages (SF-43)
+
+The public pages (`widgets/public-site`: L1–L5, PR1–PR6, SPX1, SPX2) are
+matched to the 1440 artboards. Their headline, lead and card sizes are
+beyond the product roles (the hero type SF-17 deferred to this ticket), so
+they are public-site roles in `typography.siteRoles.web`, for these pages
+only:
+
+| Role                               | Size / line            | Family, weight, tracking        | Use                              |
+| ---------------------------------- | ---------------------- | ------------------------------- | -------------------------------- |
+| `site-hero-xl` · `site-hero`       | 58 / 60.3 · 56 / 58.2  | Unbounded 600, −0.035em         | L1 · L2–L4 hero                  |
+| `site-hero-md` · `site-hero-sm`    | 50 / 52.5 · 46 / 57.5  | Unbounded 600, −0.035 / −0.03em | SPX1 · pricing and PR5 titles    |
+| `site-title-lg` · `site-title`     | 44 / 45.8 · 44 / 55    | Unbounded 600, −0.035 / −0.03em | L5 · SPX2                        |
+| `site-title-md` · `site-title-sm`  | 36 / 45 · 34 / 42.5    | Unbounded 600, −0.02em          | PR6 · PR4 headline               |
+| `site-section` (`-md`, `-sm`)      | 30 / 33 (28, 26)       | Unbounded 600, −0.025em         | Section and band titles          |
+| `site-eyebrow`                     | 12 / 15.8              | JetBrains Mono, 0.14em, upper   | Page kickers                     |
+| `site-lead` · `site-body`          | 18 / 27 · 16 / 24      | Manrope 400                     | Hero lead · pricing card lead    |
+| `site-card-title` (`-sm`)          | 18 / 27 (16 / 24)      | Manrope 800                     | Feature and campaign card titles |
+| `site-check` (`-lg`, `-sm`, `-xs`) | 14 (16, 13, 12) × 1.35 | Manrope 400                     | Check lists                      |
+
+Below `md` the display roles of 44 px and up use `site-section` (30 px), so
+long words fit a 288 px column; the composition is otherwise the artboard's.
+
+- **Colour:** the deep olive of featured cards and closing bands (`#1C2010`)
+  is `accent`, as decided in design reconciliation; the artboards' blue
+  (federation app) is `info`. No colour token is added.
+- **Glove:** the Fighter glyph the artboards draw is `GloveIcon`
+  (`shared/ui/glove-icon`), a 24-grid stroke glyph that takes Lucide's props,
+  the one non-Lucide icon (SF-43 decision; Foundations/Icons).
+- **Illustrations:** the Live Board and the example product views are drawn
+  with tokens, tagged "Example" and exposed as one labelled image; they never
+  show real people, counts or live data.
+- **Unavailable actions:** forms and actions whose backend does not exist
+  (lead forms, search, sponsor application, the overview download) are shown
+  disabled with a note that says so; nothing is collected or sent.
 
 ### System-state colour compositions (SF-34)
 
