@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { BellIcon, CheckIcon, ChevronRightIcon, PlusIcon, TimerIcon, XIcon } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
+import { GloveIcon } from "@/shared/ui/glove-icon";
 
 /*
  * Production icon conventions (docs/design-handoff.md §8.2): Lucide is the
@@ -53,6 +54,17 @@ function Icons() {
         </div>
         <p className="type-caption text-muted-foreground">
           Text glyphs in artboards (✓ ✕ →) become Lucide Check, X and ArrowRight/ChevronRight.
+        </p>
+      </section>
+      <section className="flex flex-col gap-3">
+        <h2 className="type-label text-faint-foreground">SimpleFit glyphs (no Lucide meaning)</h2>
+        <div className="flex items-end gap-6 text-highlight">
+          <GloveIcon className="size-4" />
+          <GloveIcon className="size-5" />
+          <GloveIcon className="size-6" />
+        </div>
+        <p className="type-caption text-muted-foreground">
+          The boxing glove (SF-43): Lucide&apos;s grid and stroke, the same props.
         </p>
       </section>
     </div>

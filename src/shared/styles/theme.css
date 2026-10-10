@@ -593,6 +593,145 @@
   font-weight: 400;
 }
 
+/*
+ * Public website pages (SF-43, docs/design-tokens.json typography.siteRoles.web):
+ * the L1–L5, PR1–PR6 and SPX1–SPX2 headlines, lead, eyebrow and card roles.
+ * Only for the public website pages.
+ */
+@utility type-site-hero-xl {
+  font-family: var(--font-display);
+  font-size: 3.625rem;
+  line-height: 3.77rem;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+@utility type-site-hero {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  line-height: 3.64rem;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+@utility type-site-hero-md {
+  font-family: var(--font-display);
+  font-size: 3.125rem;
+  line-height: 3.28125rem;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+@utility type-site-hero-sm {
+  font-family: var(--font-display);
+  font-size: 2.875rem;
+  line-height: 3.59375rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+@utility type-site-title-lg {
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  line-height: 2.86rem;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+@utility type-site-title {
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  line-height: 3.4375rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+@utility type-site-title-md {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  line-height: 2.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility type-site-title-sm {
+  font-family: var(--font-display);
+  font-size: 2.125rem;
+  line-height: 2.65625rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility type-site-section {
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  line-height: 2.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+@utility type-site-section-md {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  line-height: 1.925rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+@utility type-site-section-sm {
+  font-family: var(--font-display);
+  font-size: 1.625rem;
+  line-height: 1.7875rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+@utility type-site-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 0.99rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+@utility type-site-lead {
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  line-height: 1.6875rem;
+  font-weight: 400;
+}
+@utility type-site-card-title {
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  line-height: 1.6875rem;
+  font-weight: 800;
+}
+@utility type-site-card-title-sm {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 800;
+}
+@utility type-site-check {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.18125rem;
+  font-weight: 400;
+}
+@utility type-site-check-lg {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.35rem;
+  font-weight: 400;
+}
+@utility type-site-check-sm {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.096875rem;
+  font-weight: 400;
+}
+@utility type-site-check-xs {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  line-height: 1.0125rem;
+  font-weight: 400;
+}
+@utility type-site-body {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+}
+
 /* SF-38: Fighter web registration (typography.onboardingRoles), Fighter onboarding screens only. */
 @utility type-onboarding-title {
   font-family: var(--font-display);

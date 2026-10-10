@@ -36,6 +36,16 @@ const REAL_SCREENS = [
   // SF-46: account basics & consent (WA5).
   "web.app.onboarding.account",
   "web.app.onboarding.role",
+  // SF-43: the public website (L1–L5, PR1–PR6, SPX1, SPX2).
+  "web.fighters",
+  "web.coaches",
+  "web.gyms",
+  "web.marketplace",
+  "web.pricing",
+  "web.pricing.compare",
+  "web.white-label",
+  "web.partners",
+  "web.partners.apply",
 ];
 
 const placeholderSource = (id) => `import { placeholderRoute } from "@/widgets/feature-placeholder";

@@ -1978,7 +1978,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(site)/partners/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-43: SPX1 (PartnersLanding), one-column hero without the artboard's reach figures; the partnership overview is not published (download disabled with a note); campaigns are tagged examples."
       },
       "screens": ["SPX1"]
     },
@@ -2003,7 +2003,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(site)/partners/apply/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-43: SPX2 (BecomeSponsor): the three steps, what sponsors get and never get. Start application is disabled with a note (the SP1–SP9 application is its own ticket); Already applied leads to the sponsor sign-in."
       },
       "screens": [
         "SPX2",
@@ -7462,10 +7462,9 @@
         "phase": null
       },
       "status": "IMPLEMENTED",
-      "discrepancies": ["D-PRODUCTION-FOUNDATION"],
       "production": {
         "file": "src/app/[locale]/(site)/page.tsx",
-        "note": "SF-32 foundation placeholder body (the \"Web platform foundation\" page), not the L1 LandHome design. SF-42 owns only the shared public shell (web.site header, navigation, footer); SF-43 (Public Website Web — Complete Claude Design Page Set) replaces this and every other public placeholder body with its structured artboard, 1:1."
+        "note": "SF-43: L1 (LandHome), the public-site home: hero with the tagged example Live Board, who it is for, what you get, marketplace and pricing cards, data-handling band. The artboard's member/gym/market counts are not shown (no live figures)."
       },
       "screens": ["L1"]
     },
@@ -7490,7 +7489,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(site)/fighters/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-43: L2 (LandFighters). Sign-up actions carry the Fighter journey (intent=fighter); the Pro price is the approved one (widgets/public-site model/pricing)."
       },
       "screens": ["L2"]
     },
@@ -7515,7 +7514,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(site)/coaches/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-43: L3 (LandCoaches): tagged example coach week and PT sale, the coach plans table. Sign-up actions carry intent=coach."
       },
       "screens": ["L3"]
     },
@@ -7540,7 +7539,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(site)/gyms/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-43: L4 (LandGyms): tagged example gym day, the 14-step setup and the gym plans table. Sign-up actions carry intent=gym; several locations lead to /pricing?role=enterprise."
       },
       "screens": ["L4"]
     },
@@ -7565,7 +7564,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(site)/marketplace/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-43: L5 (LandMarket). The marketplace is not open: search is shown disabled with a note, listings are tagged examples, and Book / View gym open sign-up."
       },
       "screens": ["L5"]
     },
@@ -7590,7 +7589,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(site)/pricing/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-43: PR1 coach (default), PR2 fighter, PR3 gym and PR4 enterprise as ?role= states, the billing toggle as ?billing=annual; both are links read on the server (Back / Forward / reload keep them). Plan actions open sign-up with the role's intent, never a checkout. The Talk to Sales form is shown disabled: no lead endpoint yet."
       },
       "screens": ["PR1", "PR2", "PR3", "PR4"]
     },
@@ -7615,7 +7614,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(site)/white-label/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-43: PR5 (WhiteLabel), coming 2027: tagged example branded apps and the request form, shown disabled until requests open."
       },
       "screens": ["PR5"]
     },
@@ -7640,7 +7639,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(site)/pricing/compare/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-43: PR6 (PlanCompare), the gym plans feature by feature in one table; only Packages carries the approved detail tooltip."
       },
       "screens": ["PR6"]
     },
@@ -16364,14 +16363,13 @@
     {
       "id": "D-PRODUCTION-FOUNDATION",
       "title": "Existing production routes differ from the design",
-      "sourceA": "simplefit-platform: /[locale] (foundation landing), /[locale]/app (foundation page), [...rest] + not-found, /[locale]/dev/design-system",
+      "sourceA": "simplefit-platform: /[locale]/app (foundation page), [...rest] + not-found, /[locale]/dev/design-system",
       "sourceB": "simplefit-mobile: / (foundation home), (app)/app, +not-found, /dev/design-system",
-      "mismatch": "Web / and mobile / exist but are not yet L1 / LD1; web /app is a page while the design uses it as the entry that redirects (LD3); mobile /app is not in the gallery; /dev/design-system is developer-only on both platforms.",
+      "mismatch": "Mobile / exists but is not yet LD1; web /app is a page while the design uses it as the entry that redirects (LD3); mobile /app is not in the gallery; /dev/design-system is developer-only on both platforms.",
       "impact": "IMPLEMENTED means the route resolves in production, not that its screen matches the artboard.",
-      "resolution": "Recorded as IMPLEMENTED with a production note. Mobile /app is replaced when SF-33 builds the role groups; /dev/design-system is classified INTERNAL. Screens are implemented by their feature tickets.",
+      "resolution": "Recorded as IMPLEMENTED with a production note. Mobile /app is replaced when SF-33 builds the role groups; /dev/design-system is classified INTERNAL. Screens are implemented by their feature tickets. SF-43 replaced the web / foundation landing with L1 (LandHome).",
       "status": "DEFERRED",
       "routes": [
-        "web.root",
         "web.app",
         "web.not-found",
         "mobile.root",

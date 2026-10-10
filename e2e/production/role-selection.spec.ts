@@ -137,7 +137,8 @@ test.describe("choosing a journey", () => {
     ["fighter", "/en/app/onboarding/fighter", "Your fighter profile"],
     ["coach", "/en/app/onboarding/coach", "Coach registration"],
     ["gym", "/en/app/onboarding/gym", "Gym setup"],
-    ["sponsor", "/en/partners/apply", "Sponsor application"],
+    // SPX2, the public sponsor page (SF-43).
+    ["sponsor", "/en/partners/apply", "Apply in 5 minutes. No account needed to start."],
   ] as const) {
     test(`6, 9–16, 33 · ${intent}: the resolver is asked with intent=${intent}; its destination opens, nothing is written`, async ({
       page,

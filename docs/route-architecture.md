@@ -449,13 +449,14 @@ credential (401) is.
 
 **Public website (SF-42, SF-43).** Every `web.site` route renders one
 shared shell, `SiteFrame` (header, navigation, footer), matched to the Claude
-Design shell geometry. The page bodies are not part of it: `/` still renders
-the SF-32 foundation placeholder and the other public routes the canonical
-feature placeholder, until SF-43 (Public Website Web — Complete Claude Design
-Page Set) replaces each with its structured artboard. `/verify-email` (WA4b)
+Design shell geometry. SF-43 builds the page bodies (`widgets/public-site`):
+L1 `/`, L2–L5, PR1–PR4 as the `?role=` states of `/pricing` (the billing
+toggle as `?billing=annual`), PR5 `/white-label`, PR6 `/pricing/compare`,
+SPX1 `/partners` and SPX2 `/partners/apply`; each flows from the top of
+`main` and the footer follows it. `/verify-email` (WA4b)
 is drawn outside the public website and uses `web.minimal`: the 72 px auth
 header, no site navigation or footer. `/pricing` renders per request, so
-its `?role=` state (PR4 Enterprise) and the header's current item are right
+its `?role=` and `?billing=` state and the header's current item are right
 in the first HTML.
 
 **Onboarding entry routes** never require the capability they create

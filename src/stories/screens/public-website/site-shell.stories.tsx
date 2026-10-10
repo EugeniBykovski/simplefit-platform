@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { expect, screen, userEvent, within } from "storybook/test";
 
 import { PageContent } from "@/shared/ui/page";
-import { HomeHero } from "@/widgets/home-hero";
+import { PartnersApplyPage } from "@/widgets/public-site";
 import { SiteFrame } from "@/widgets/site-header";
 
 /*
@@ -74,10 +74,10 @@ export const Wide: StoryObj = {
 };
 
 /**
- * Short content: the SF-32 foundation placeholder (`/`) in the shell, centred in
- * `main` as the route places it (PageContent `center`). The header brand, the
- * page and the footer brand share the 64 px left edge; the footer sits at the
- * bottom of the window.
+ * Short content centred in `main` (PageContent `center`, the shell's placement
+ * for single-screen pages), here with the shortest public page, SPX2. The
+ * header brand, the page and the footer brand share the 64 px left edge; the
+ * footer sits at the bottom of the window.
  */
 export const ShortPage: StoryObj = {
   name: "Short page · MacBook Pro 14 · 1512 × 982",
@@ -86,7 +86,7 @@ export const ShortPage: StoryObj = {
   render: () => (
     <SiteFrame>
       <PageContent align="center" data-page-body>
-        <HomeHero />
+        <PartnersApplyPage />
       </PageContent>
     </SiteFrame>
   ),

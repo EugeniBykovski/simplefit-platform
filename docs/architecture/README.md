@@ -69,7 +69,7 @@ simplefit-platform/
     │   └── global-not-found.tsx
     ├── proxy.ts               locale negotiation (Next.js 16 "proxy", formerly middleware)
     ├── widgets/               large composed UI blocks (workspace-shell, app-frame, auth-frame, site-header,
-    │                          feature-placeholder, home-hero)
+    │                          feature-placeholder, public-site)
     ├── features/              user actions (session-gate, sign-in-with-google, sign-in-with-apple, sign-out,
     │                          switch-locale, check-api-health)
     ├── entities/              client representations of domain concepts (session, system-health)
@@ -359,7 +359,7 @@ messages/<locale>/<namespace>.json
   navigation  navigation labels
   actions     verbs on buttons and links
   errors      error pages and messages
-  home        public home screen
+  site        public website pages (SF-43)
   app         application shell screen
   apiHealth   API status feature
 ```
@@ -388,7 +388,7 @@ regional variant), add `messages/<locale>/` files, run `pnpm test`.
 ```tsx
 // Server Component (default): no client JS for translations.
 const t = await getTranslations({ locale, namespace: "app" }); // async
-const t = useTranslations("home"); // sync
+const t = useTranslations("site.home"); // sync
 
 // Client Component: same hooks, messages come from NextIntlClientProvider.
 ("use client");

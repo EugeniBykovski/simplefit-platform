@@ -1,6 +1,16 @@
-import { placeholderRoute } from "@/widgets/feature-placeholder";
+import type { Metadata } from "next";
 
-const route = placeholderRoute("web.pricing.compare");
+import { resolveLocaleParam } from "@/shared/i18n/params";
+import { PlanComparePage, siteMetadata } from "@/widgets/public-site";
 
-export const generateMetadata = route.generateMetadata;
-export default route.Page;
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/pricing/compare">): Promise<Metadata> {
+  return siteMetadata("compare", "web.pricing.compare", await resolveLocaleParam(params));
+}
+
+/** `web.pricing.compare` (SF-43). */
+export default async function PlanCompareRoute({ params }: PageProps<"/[locale]/pricing/compare">) {
+  await resolveLocaleParam(params);
+  return <PlanComparePage />;
+}

@@ -230,9 +230,29 @@ Other SF-17 decisions:
   intro button 192 pt, illustration offsets of 58, 34 and 230 pt use 56, 32
   and 218 pt (a runtime constant: the taller class card), the 5 pt bar gap 4 pt; the 360 pt illustration canvas is kept
   as a runtime constant.
-- **Hero type** larger than `display` (40–58 px on a handful of landing and hero artboards)
-  is **DEFERRED** to the public-website ticket, which decides whether a
-  `display-lg` role is needed.
+- **Hero type** larger than `display` (40–58 px on the landing and hero
+  artboards) is **RESOLVED by SF-43**: the public pages' headline, lead, card
+  and check-list sizes are public-site roles (`typography.siteRoles.web`,
+  design-system "Public website pages"), web only and for those pages only.
+- **SF-43 public website pages (decisions):** every approved Public Website
+  artboard (L1–L5, PR1–PR6, SPX1, SPX2) is a production route. Decisions:
+  the artboards' live figures (L1 48K / 312 / 5, SPX1 reach and completion)
+  are not shown, so SPX1's hero is one column; product mockups (Live Board,
+  coach week, gym day, PT sale, listings, campaigns, white-label apps) stay
+  as illustrations tagged "Example"; forms and actions without a backend
+  (Talk to Sales, Request White Label, marketplace search, Start
+  application, the partnership overview) are shown disabled with a note;
+  plan actions open sign-up with the role's `intent`, never a checkout, and
+  annual prices are shown only where the artboards state them (Fighter Pro);
+  the Glove glyph is `GloveIcon` and the Live Board graph an SVG drawn with
+  tokens. The 52 px gap the landing artboards set on their body never
+  applies (the body holds a single column whose sections are 16 px apart), so
+  no spacing step is added. Off-scale values:
+  radius 30 → `4xl` (28), 24 → `3xl` (22), 15 → `md-lg` (14); the 52 px CTAs
+  → `xl` (54), the 44 px plan buttons → `system`, the 38 px listing buttons →
+  `md` (40); 9 px badges → 10 px; check-list gaps 7 → 8; 1.5 px borders kept.
+  The `ⓘ` details exist only where approved copy exists (Packages); the PR6
+  "Hover ⓘ" lead is dropped. `#1C2010` stays `accent` (below).
 - **SF-34 extension:** the system states of Claude Design section 35 use
   sizes beyond `display` (404 numerals 92–200 px, a 52 px headline, the
   launch wordmark). They are added as `typography.systemRoles` with a web and

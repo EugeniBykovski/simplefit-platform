@@ -7,11 +7,11 @@ import type common from "../../../messages/en/common.json";
 import type errors from "../../../messages/en/errors.json";
 import type fighterHome from "../../../messages/en/fighterHome.json";
 import type fighterOnboarding from "../../../messages/en/fighterOnboarding.json";
-import type home from "../../../messages/en/home.json";
 import type navigation from "../../../messages/en/navigation.json";
 import type roleSelection from "../../../messages/en/roleSelection.json";
 import type routes from "../../../messages/en/routes.json";
 import type shells from "../../../messages/en/shells.json";
+import type site from "../../../messages/en/site.json";
 import type system from "../../../messages/en/system.json";
 import type theme from "../../../messages/en/theme.json";
 
@@ -27,7 +27,6 @@ export const namespaces = [
   "navigation",
   "actions",
   "errors",
-  "home",
   "app",
   "auth",
   "apiHealth",
@@ -39,6 +38,7 @@ export const namespaces = [
   "accountRegistration",
   "roleSelection",
   "fighterHome",
+  "site",
 ] as const;
 
 export type Namespace = (typeof namespaces)[number];
@@ -49,7 +49,6 @@ export type Messages = {
   navigation: typeof navigation;
   actions: typeof actions;
   errors: typeof errors;
-  home: typeof home;
   app: typeof app;
   auth: typeof auth;
   apiHealth: typeof apiHealth;
@@ -61,6 +60,7 @@ export type Messages = {
   accountRegistration: typeof accountRegistration;
   roleSelection: typeof roleSelection;
   fighterHome: typeof fighterHome;
+  site: typeof site;
 };
 
 export type MessageTree = { [key: string]: string | MessageTree };

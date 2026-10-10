@@ -1,6 +1,16 @@
-import { placeholderRoute } from "@/widgets/feature-placeholder";
+import type { Metadata } from "next";
 
-const route = placeholderRoute("web.white-label");
+import { resolveLocaleParam } from "@/shared/i18n/params";
+import { WhiteLabelPage, siteMetadata } from "@/widgets/public-site";
 
-export const generateMetadata = route.generateMetadata;
-export default route.Page;
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/white-label">): Promise<Metadata> {
+  return siteMetadata("whiteLabel", "web.white-label", await resolveLocaleParam(params));
+}
+
+/** `web.white-label` (SF-43). */
+export default async function WhiteLabelRoute({ params }: PageProps<"/[locale]/white-label">) {
+  await resolveLocaleParam(params);
+  return <WhiteLabelPage />;
+}
