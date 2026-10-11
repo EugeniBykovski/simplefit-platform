@@ -23,7 +23,7 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      testIgnore: ["production/**", "portability/**"],
+      testIgnore: ["production/**", "portability/**", "real-api/**"],
       use: {
         ...devices["Desktop Chrome"],
         viewport: { width: 1440, height: 900 },
