@@ -28,7 +28,8 @@
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build --output-dir storybook-static",
     "prepare": "husky",
-    "test:geometry": "playwright test"
+    "test:geometry": "playwright test",
+    "test:e2e:real-api": "playwright test -c playwright.real-api.config.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "5.9.1",
