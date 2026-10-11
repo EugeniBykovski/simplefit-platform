@@ -2,8 +2,9 @@
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
+import { onSessionBoundary } from "@/entities/session";
 import { getQueryClient } from "@/shared/api/query-client";
 import { TooltipProvider } from "@/shared/ui/tooltip";
 
@@ -31,6 +32,21 @@ const themeScriptProps = {
  */
 export function Providers({ children }: { children: ReactNode }) {
   const queryClient = getQueryClient();
+
+  // Server state belongs to the signed-in user (SF-28): whenever the identity
+  // ends or changes (sign-out, expiry, a sign-in here or in another tab), the
+  // session runs this before publishing the new state, so the next user never
+  // sees the previous user's cached profile, onboarding or entry, not even
+  // for one render. In-flight queries are cancelled; their late answers are
+  // discarded by the session (SessionChangedError).
+  useEffect(
+    () =>
+      onSessionBoundary(() => {
+        void queryClient.cancelQueries();
+        queryClient.clear();
+      }),
+    [queryClient],
+  );
 
   return (
     <ThemeProvider

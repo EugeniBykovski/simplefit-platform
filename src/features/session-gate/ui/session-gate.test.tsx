@@ -205,6 +205,36 @@ describe("RequireSession (AUTHENTICATED)", () => {
   );
 });
 
+describe("RequireSession after a session ended (SF-28)", () => {
+  beforeEach(() => {
+    navigation.pathname = "/app/home";
+    window.history.replaceState(null, "", "/en/app/home?tab=week&intent=fighter");
+  });
+
+  it("a deliberate sign-out goes to sign-in carrying nothing of the previous page", async () => {
+    session.current = { status: "anonymous", ended: "signed-out" };
+    await renderWithProviders(
+      <RequireSession signIn="web.login">
+        <p>private</p>
+      </RequireSession>,
+    );
+    expect(screen.queryByText("private")).not.toBeInTheDocument();
+    expect(navigation.replace).toHaveBeenCalledWith("/login");
+  });
+
+  it("an expired session keeps the safe returnTo and intent to resume after signing in", async () => {
+    session.current = { status: "anonymous", ended: "expired" };
+    await renderWithProviders(
+      <RequireSession signIn="web.login">
+        <p>private</p>
+      </RequireSession>,
+    );
+    expect(navigation.replace).toHaveBeenCalledWith(
+      `/login?returnTo=${encodeURIComponent("/app/home?tab=week&intent=fighter")}&intent=fighter`,
+    );
+  });
+});
+
 describe("GuestOnly (GUEST_ONLY)", () => {
   it.each(["loading", "anonymous"] as const)("renders the page while %s", async (status) => {
     session.current = { status };
