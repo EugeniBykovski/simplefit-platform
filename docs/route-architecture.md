@@ -347,7 +347,13 @@ decides; all targets are registry routes (`guards`, `capabilities`).
    catch-all and not `web.verify-email`. Only pathname and query are kept (the
    hash is dropped). Gates add `returnTo` only for a valid destination; the
    auth screens carry it between their steps and provider buttons; it is
-   consumed once, by replacing the auth page.
+   consumed once, by replacing the auth page. **After a session ends**
+   (SF-28): a deliberate sign-out goes to the plain sign-in route on web
+   (`/login`) and to the welcome screen on mobile (ST1 → A01), carrying no
+   `returnTo` or `intent`, because whoever signs in next may be someone else;
+   a session the API rejected (expired, revoked, a deleted user) keeps rule 2
+   and its `returnTo`, and the sign-in screen says the session ended. A
+   network or server failure is never a sign-out (`unavailable`).
 3. **Authenticated → `GUEST_ONLY` route** → the default destination (below),
    except the sign-in flow's own workspace step. For email authentication the
    session begins after successful email verification; consent and role

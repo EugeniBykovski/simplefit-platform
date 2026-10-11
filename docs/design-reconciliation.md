@@ -230,6 +230,18 @@ Other SF-17 decisions:
   intro button 192 pt, illustration offsets of 58, 34 and 230 pt use 56, 32
   and 218 pt (a runtime constant: the taller class card), the 5 pt bar gap 4 pt; the 360 pt illustration canvas is kept
   as a runtime constant.
+- **SF-28 session lifecycle (decision, no token change):** Sign out uses the
+  approved controls: web keeps the SF-22 header action of every signed-in
+  shell, WA5 and WA6 (WS1's "This browser" card waits for the settings
+  screens); mobile follows F18 → ST1 with ST1's full-width quiet Sign out, on
+  minimal Profile and Settings screens whose other rows are not built yet.
+  O04 and O05 draw no sign-out; mobile adds a ghost Sign out at the right of
+  their header row (as WA5's header link), so a wrong account is never stuck
+  in setup. The sign-in and welcome screens show the existing `Notice`
+  ("Your session ended…", amber; "You're signed out on this browser /
+  device", muted) only after a session ended in the same page or launch. WS1
+  marks session lists and "sign out everywhere" as not current: none is
+  built.
 - **Hero type** larger than `display` (40–58 px on the landing and hero
   artboards) is **RESOLVED by SF-43**: the public pages' headline, lead, card
   and check-list sizes are public-site roles (`typography.siteRoles.web`,

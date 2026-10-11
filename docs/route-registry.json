@@ -2341,7 +2341,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(fighter)/(tabs)/(profile)/profile.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-28: the Profile tab's way into Settings (Claude Design F18 → ST1): the route title, a Planned badge, one line that the profile arrives with its feature, and Settings · account · privacy. The profile itself (stats, camps, sparring, workspaces) is built by its feature ticket."
       },
       "screens": ["F18"]
     },
@@ -2642,7 +2642,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(shared)/settings/index.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-28: ST1's Sign out (current device only, ADR 0010): the session ends at once (SecureStore and memory cleared, the query cache dropped), the API is asked to revoke it, Google is signed out on the device, and the signed-in screens are dismissed for the welcome screen. Offline, the device still stops using its credentials and says it is signed out on this device; nothing is queued. The other settings rows (ST2–ST13) arrive with their features."
       },
       "screens": ["ST1"]
     },

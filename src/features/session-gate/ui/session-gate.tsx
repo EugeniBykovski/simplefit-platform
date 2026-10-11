@@ -48,12 +48,18 @@ export function RequireSession({
   unavailable?: ReactNode;
   children: ReactNode;
 }) {
-  const { status } = useSession();
+  const { status, ended } = useSession();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
     if (status !== "anonymous") return;
+    // A deliberate sign-out carries nothing of the previous session to the
+    // next sign-in, which may be someone else's (SF-28).
+    if (ended === "signed-out") {
+      router.replace(routeHref(signIn));
+      return;
+    }
     // `returnTo` only when the page is a valid destination (never an onboarding
     // route); the journey intent independently: the URL's own validated `intent`,
     // or the journey the route itself represents. The resolver decides after sign-in.
@@ -61,7 +67,7 @@ export function RequireSession({
     const intent =
       continuationOf(window.location.search).intent ?? journeyIntentOf(matchWebRoute(pathname)?.id);
     router.replace(routeHref(signIn, {}, continuationQuery({ returnTo, intent })));
-  }, [status, pathname, router, signIn]);
+  }, [status, ended, pathname, router, signIn]);
 
   if (status === "authenticated") return children;
   if (status === "unavailable" && unavailable !== undefined) return unavailable;

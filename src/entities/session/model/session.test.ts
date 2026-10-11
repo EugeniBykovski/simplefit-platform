@@ -327,7 +327,7 @@ describe("sign-out", () => {
     expect(call?.[1]).toMatchObject({ method: "POST", credentials: "include" });
     expect(call && header(call, "x-simplefit-csrf")).toBe("1");
     expect(call && header(call, "authorization")).toBe("Bearer sfa_current");
-    expect(result.current).toEqual({ status: "anonymous" });
+    expect(result.current).toEqual({ status: "anonymous", ended: "signed-out" });
   });
 
   it("clears the local session even when the logout request fails", async () => {
@@ -492,6 +492,35 @@ describe("across tabs", () => {
     b.resetSessionForTests();
   });
 
+  it("a sign-in as someone else in one tab replaces the viewer of every tab (SF-28)", async () => {
+    const { FakeChannel } = fakeBroadcastChannel();
+    vi.stubGlobal("BroadcastChannel", FakeChannel);
+    const otherUser = {
+      id: "4c5f2b1e-9d0a-4f6e-8a3b-2d7c1e0f9a8b",
+      created_at: "2026-10-02T10:00:00Z",
+    };
+    vi.stubGlobal(
+      "fetch",
+      api({ "/api/auth/session/refresh": [() => tokens("sfa_a")], "/api/me": [viewer] }),
+    );
+    const [a, b] = await twoTabs();
+    await a.restoreSession();
+    await b.restoreSession();
+    const boundary = vi.fn();
+    b.onSessionBoundary(boundary);
+    const { result } = renderHook(() => b.useSession());
+    expect(result.current.viewer).toEqual(VIEWER);
+
+    vi.stubGlobal("fetch", api({ "/api/me": [() => jsonResponse({ user: otherUser })] }));
+    await a.completeAuthentication(tokenBody("sfa_other"));
+
+    // The other tab dropped user A's state before resolving the new viewer.
+    expect(boundary).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(result.current.viewer).toEqual(otherUser));
+    a.resetSessionForTests();
+    b.resetSessionForTests();
+  });
+
   it("ignores malformed messages from the channel", async () => {
     const { FakeChannel } = fakeBroadcastChannel();
     vi.stubGlobal("BroadcastChannel", FakeChannel);
@@ -504,6 +533,8 @@ describe("across tabs", () => {
       "credentials",
       { type: "credentials", accessToken: "", expiresAt: 1 },
       { type: "credentials", accessToken: "x", expiresAt: "soon" },
+      { type: "credentials", accessToken: "x", expiresAt: 1 },
+      { type: "signed-out", reason: "because" },
       { type: "promote", role: "admin" },
     ]) {
       intruder.postMessage(message);
@@ -511,5 +542,266 @@ describe("across tabs", () => {
 
     const { result } = renderHook(() => session.useSessionStatus());
     expect(result.current).toBe("anonymous");
+  });
+});
+
+/*
+ * SF-28: the lifecycle across identity boundaries. Responses are held back
+ * (`deferred`) so they arrive after the user signed out or another user
+ * signed in, the way slow networks deliver them.
+ */
+describe("session boundaries (SF-28)", () => {
+  const VIEWER_B = {
+    id: "4c5f2b1e-9d0a-4f6e-8a3b-2d7c1e0f9a8b",
+    created_at: "2026-10-02T10:00:00Z",
+  };
+  const viewerB = () => jsonResponse({ user: VIEWER_B });
+  const noContent = () => new Response(null, { status: 204 });
+  const forbidden = () =>
+    jsonResponse(
+      { error: { code: "forbidden", message: "Not allowed", details: {} } },
+      { status: 403 },
+    );
+
+  /** navigator.locks: tasks on one lock name run one after another. */
+  function serialLocks() {
+    let tail: Promise<unknown> = Promise.resolve();
+    return {
+      request: (_name: string, _options: unknown, task: () => Promise<unknown>) => {
+        const run = tail.then(task);
+        tail = run.catch(() => undefined);
+        return run;
+      },
+    };
+  }
+
+  function deferred<T>() {
+    let resolve!: (value: T) => void;
+    const promise = new Promise<T>((done) => {
+      resolve = done;
+    });
+    return { promise, resolve };
+  }
+
+  it("drops a refresh that answers after sign-out and another user's sign-in", async () => {
+    vi.stubGlobal("navigator", { ...navigator, locks: serialLocks() });
+    const lateRefresh = deferred<Response>();
+    let meCalls = 0;
+    const fetchMock = vi.fn((url: string) => {
+      const path = new URL(url).pathname;
+      if (path === "/api/auth/session/refresh") return lateRefresh.promise;
+      if (path === "/api/auth/logout") return Promise.resolve(noContent());
+      meCalls += 1;
+      // A signs in; A's next call is rejected (expired access), so it refreshes; then B.
+      return Promise.resolve(meCalls === 1 ? viewer() : meCalls === 2 ? unauthorized() : viewerB());
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await session.completeAuthentication(tokenBody("sfa_a"));
+    const pendingA = session.callWithSession(session.me).catch((error: unknown) => error);
+
+    // The logout waits for A's refresh (the refresh lock); B signs in meanwhile.
+    const signingOut = session.signOut();
+    await session.completeAuthentication(tokenBody("sfa_b"));
+    const { result } = renderHook(() => session.useSession());
+    expect(result.current.viewer).toEqual(VIEWER_B);
+
+    // A's refresh finally answers with A's rotated credentials.
+    lateRefresh.resolve(tokens("sfa_a_rotated"));
+    expect(await pendingA).toBeInstanceOf(session.SessionChangedError);
+
+    // A's logout then revokes A by its bearer token, without B's cookie.
+    expect(await signingOut).toBe("revoked");
+    const logoutCall = calls(fetchMock).find(([url]) => url.endsWith("/api/auth/logout"));
+    expect(logoutCall?.[1].credentials).toBe("omit");
+    expect(logoutCall && header(logoutCall, "authorization")).toBe("Bearer sfa_a");
+
+    // B keeps B's credentials and B's viewer.
+    const after = api({ "/api/me": [viewerB] });
+    vi.stubGlobal("fetch", after);
+    await session.callWithSession(session.me);
+    expect(header(calls(after)[0]!, "authorization")).toBe("Bearer sfa_b");
+    expect(result.current).toEqual({ status: "authenticated", viewer: VIEWER_B });
+  });
+
+  it("a late rejection of the previous session never signs the next user out", async () => {
+    vi.stubGlobal("navigator", { ...navigator, locks: serialLocks() });
+    const lateRefresh = deferred<Response>();
+    let meCalls = 0;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((url: string) => {
+        const path = new URL(url).pathname;
+        if (path === "/api/auth/session/refresh") return lateRefresh.promise;
+        if (path === "/api/auth/logout") return Promise.resolve(noContent());
+        meCalls += 1;
+        return Promise.resolve(
+          meCalls === 1 ? viewer() : meCalls === 2 ? unauthorized() : viewerB(),
+        );
+      }),
+    );
+    await session.completeAuthentication(tokenBody("sfa_a"));
+    const pendingA = session.callWithSession(session.me).catch((error: unknown) => error);
+    const signingOut = session.signOut();
+    await session.completeAuthentication(tokenBody("sfa_b"));
+
+    lateRefresh.resolve(unauthorized());
+    await pendingA;
+    await signingOut;
+
+    const { result } = renderHook(() => session.useSession());
+    expect(result.current).toEqual({ status: "authenticated", viewer: VIEWER_B });
+  });
+
+  it("discards the previous user's slow response instead of handing it to the caller", async () => {
+    const slow = deferred<Response>();
+    const fetchMock = vi.fn((url: string) => {
+      const path = new URL(url).pathname;
+      if (path === "/api/auth/logout") return Promise.resolve(noContent());
+      if (path === "/api/v1/me/fighter-profile") return slow.promise;
+      return Promise.resolve(viewer());
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await session.completeAuthentication(tokenBody("sfa_a"));
+    const { getMyFighterProfile } =
+      await import("@/shared/api/generated/endpoints/fighter-profile/fighter-profile");
+    const pending = session
+      .callWithSession((init) => getMyFighterProfile(init))
+      .catch((error: unknown) => error);
+
+    await session.signOut();
+    slow.resolve(jsonResponse({ fighter_profile: { status: "completed" } }));
+
+    expect(await pending).toBeInstanceOf(session.SessionChangedError);
+  });
+
+  it("a late /api/me of the previous user never becomes the viewer", async () => {
+    const lateMe = deferred<Response>();
+    let meCalls = 0;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((url: string) => {
+        const path = new URL(url).pathname;
+        if (path === "/api/auth/logout") return Promise.resolve(noContent());
+        meCalls += 1;
+        return meCalls === 1 ? lateMe.promise : Promise.resolve(viewerB());
+      }),
+    );
+    const signingInA = session.completeAuthentication(tokenBody("sfa_a"));
+    await session.signOut();
+    await session.completeAuthentication(tokenBody("sfa_b"));
+
+    lateMe.resolve(viewer());
+    await signingInA;
+
+    const { result } = renderHook(() => session.useSession());
+    expect(result.current).toEqual({ status: "authenticated", viewer: VIEWER_B });
+  });
+
+  it("neither refreshes on 403 nor ends the session on 5xx", async () => {
+    vi.stubGlobal("fetch", api({ "/api/me": [viewer] }));
+    await session.completeAuthentication(tokenBody("sfa_a"));
+    const fetchMock = api({ "/api/me": [forbidden, serverError] });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const denied = await session.callWithSession(session.me).catch((error: unknown) => error);
+    const failing = await session.callWithSession(session.me).catch((error: unknown) => error);
+
+    expect(session.isApiError(denied) && denied.status).toBe(403);
+    expect(session.isApiError(failing) && failing.status).toBe(503);
+    expect(urls(fetchMock).filter((url) => url.endsWith("/refresh"))).toEqual([]);
+    const { result } = renderHook(() => session.useSessionStatus());
+    expect(result.current).toBe("authenticated");
+  });
+
+  it("marks an expired session so the sign-in page can say so", async () => {
+    vi.stubGlobal("fetch", api({ "/api/me": [viewer] }));
+    await session.completeAuthentication(tokenBody("sfa_a"));
+    vi.stubGlobal(
+      "fetch",
+      api({ "/api/me": [unauthorized], "/api/auth/session/refresh": [unauthorized] }),
+    );
+
+    await session.callWithSession(session.me).catch(() => undefined);
+
+    const { result } = renderHook(() => session.useSession());
+    expect(result.current).toEqual({ status: "anonymous", ended: "expired" });
+  });
+
+  it("runs the boundary listeners on sign-in, sign-out and expiry, not on a refresh", async () => {
+    const boundary = vi.fn();
+    session.onSessionBoundary(boundary);
+    vi.stubGlobal(
+      "fetch",
+      api({
+        "/api/me": [viewer],
+        "/api/auth/session/refresh": [() => tokens("sfa_rotated")],
+        "/api/auth/logout": [noContent],
+      }),
+    );
+
+    await session.completeAuthentication(tokenBody("sfa_a"));
+    expect(boundary).toHaveBeenCalledTimes(1);
+    await session.refresh();
+    expect(boundary).toHaveBeenCalledTimes(1);
+    await session.signOut();
+    expect(boundary).toHaveBeenCalledTimes(2);
+  });
+
+  describe("an offline sign-out", () => {
+    it("says it only signed out locally and never refreshes with the remaining cookie", async () => {
+      vi.stubGlobal("fetch", api({ "/api/me": [viewer] }));
+      await session.completeAuthentication(tokenBody("sfa_a"));
+      vi.stubGlobal("fetch", vi.fn(offline));
+
+      expect(await session.signOut()).toBe("local");
+
+      // The next page load: it retries the logout instead of refreshing.
+      const reload = await openTab();
+      const fetchMock = api({ "/api/auth/logout": [noContent] });
+      vi.stubGlobal("fetch", fetchMock);
+      expect(await reload.restoreSession()).toBe("anonymous");
+      expect(urls(fetchMock)).toEqual([`${API}/api/auth/logout`]);
+
+      // Confirmed: later loads restore normally again.
+      const later = await openTab();
+      const restore = api({ "/api/auth/session/refresh": [unauthorized] });
+      vi.stubGlobal("fetch", restore);
+      await later.restoreSession();
+      expect(urls(restore)).toEqual([`${API}/api/auth/session/refresh`]);
+      reload.resetSessionForTests();
+      later.resetSessionForTests();
+    });
+
+    it("keeps refusing to refresh while the logout still cannot reach the API", async () => {
+      vi.stubGlobal("fetch", api({ "/api/me": [viewer] }));
+      await session.completeAuthentication(tokenBody("sfa_a"));
+      vi.stubGlobal("fetch", vi.fn(offline));
+      await session.signOut();
+
+      const reload = await openTab();
+      const fetchMock = vi.fn(offline);
+      vi.stubGlobal("fetch", fetchMock);
+      expect(await reload.restoreSession()).toBe("anonymous");
+      expect(urls(fetchMock).some((url) => url.endsWith("/refresh"))).toBe(false);
+      reload.resetSessionForTests();
+    });
+
+    it("a new sign-in clears the pending logout (its cookie replaced the old one)", async () => {
+      vi.stubGlobal("fetch", api({ "/api/me": [viewer] }));
+      await session.completeAuthentication(tokenBody("sfa_a"));
+      vi.stubGlobal("fetch", vi.fn(offline));
+      await session.signOut();
+      vi.stubGlobal("fetch", api({ "/api/me": [viewerB] }));
+      await session.completeAuthentication(tokenBody("sfa_b"));
+
+      const reload = await openTab();
+      const restore = api({
+        "/api/auth/session/refresh": [() => tokens("sfa_b2")],
+        "/api/me": [viewerB],
+      });
+      vi.stubGlobal("fetch", restore);
+      expect(await reload.restoreSession()).toBe("authenticated");
+      reload.resetSessionForTests();
+    });
   });
 });

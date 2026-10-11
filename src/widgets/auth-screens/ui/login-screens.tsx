@@ -9,6 +9,7 @@ import { routeHref } from "@/shared/routes/routes";
 import { textLinkClass } from "@/shared/ui/text-link";
 
 import { AuthDivider, AuthInfoList, AuthSplitFrame } from "./auth-frame";
+import { SessionEndedNotice } from "./session-ended-notice";
 
 /*
  * WA1 and WA1b (Claude Design WebLogin / WebSignInCode, 1440) share the split
@@ -48,6 +49,7 @@ export function LoginScreen({ continuation }: { continuation?: Continuation }) {
       <div className="flex flex-col gap-3.5">
         <h1 className="type-auth-heading">{t("title")}</h1>
         <p className="type-body text-pretty text-muted-foreground">{t("description")}</p>
+        <SessionEndedNotice />
         {/*
           WA1 draws two 52 px provider buttons and a 50 px CTA, all 15 px 800
           on radius 18. Google's own button (GSI, at most 400 × 40) is centred
