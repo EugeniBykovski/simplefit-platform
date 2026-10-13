@@ -4,7 +4,7 @@ import { useEffect, type ReactNode } from "react";
 
 import { usePathname, useRouter } from "@/shared/i18n/navigation";
 
-import { entryHref, knowsDestination } from "../model/entry";
+import { entryHref, isKnownEntry } from "../model/entry";
 import { EntryFailureBoundary, useEntry } from "./entry-redirect";
 
 /**
@@ -30,8 +30,8 @@ export function FighterGate({
   const pathname = usePathname();
   const query = useEntry({});
 
-  const unknown = query.data !== undefined && !knowsDestination(query.data.destination);
-  const entry = unknown ? undefined : query.data;
+  const unknown = query.data !== undefined && !isKnownEntry(query.data);
+  const entry = query.data !== undefined && isKnownEntry(query.data) ? query.data : undefined;
   const redirect =
     entry !== undefined && entry.destination !== "fighter_home"
       ? entryHref(entry, { returnTo: pathname })

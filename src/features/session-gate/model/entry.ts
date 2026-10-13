@@ -26,18 +26,32 @@ import {
 export type Entry = EntryResponseEntry;
 
 /**
+ * The destinations this client maps (`guards.entryDestinations`). The API may
+ * return more (SF-51 added `coach_home` and `context_selection`, mapped once
+ * the registry has their routes); those stay unknown here.
+ */
+export type KnownDestination = keyof typeof webGuards.entryDestinations &
+  EntryResponseEntryDestination;
+
+/** An entry whose destination this client maps. */
+export type KnownEntry = Entry & { destination: KnownDestination };
+
+/**
  * Whether this client maps `destination`: a newer API may resolve to a
  * destination an older client does not know. Such an entry is a controlled
- * failure, never a guessed fallback.
+ * failure, never a guessed fallback (never `fighter_home`).
  */
-export function knowsDestination(
-  destination: string,
-): destination is EntryResponseEntryDestination {
+export function knowsDestination(destination: string): destination is KnownDestination {
   return Object.hasOwn(webGuards.entryDestinations, destination);
 }
 
+/** Whether this client maps the entry's destination (see `knowsDestination`). */
+export function isKnownEntry(entry: Entry): entry is KnownEntry {
+  return knowsDestination(entry.destination);
+}
+
 /** The canonical web route of a semantic destination (`guards.entryDestinations`). */
-export function destinationRoute(destination: EntryResponseEntryDestination): WebRouteId {
+export function destinationRoute(destination: KnownDestination): WebRouteId {
   return webGuards.entryDestinations[destination];
 }
 
@@ -70,7 +84,7 @@ function usableReturnTo(returnTo: string | undefined, entry: Entry): string | un
  * Onboarding routes keep the continuation in their URL, so it survives a
  * refresh and is resolved again once the step completes.
  */
-export function entryHref(entry: Entry, continuation: Continuation = {}): string {
+export function entryHref(entry: KnownEntry, continuation: Continuation = {}): string {
   const target = destinationRoute(entry.destination);
   const intentDriven = continuation.intent !== undefined && entry.destination !== "fighter_home";
 

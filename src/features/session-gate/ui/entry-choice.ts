@@ -5,7 +5,7 @@ import { useCallback, useRef, useState } from "react";
 import { useRouter } from "@/shared/i18n/navigation";
 import { parseIntent, type EntryIntent } from "@/shared/routes/continuation";
 
-import { entryHref, fetchEntry, knowsDestination } from "../model/entry";
+import { entryHref, fetchEntry, isKnownEntry } from "../model/entry";
 import { useUrlContinuation } from "./entry-redirect";
 
 export type EntryChoiceState =
@@ -40,7 +40,7 @@ export function useEntryChoice() {
       const chosen = { ...continuation, intent };
       try {
         const entry = await fetchEntry(chosen);
-        if (!knowsDestination(entry.destination)) {
+        if (!isKnownEntry(entry)) {
           // A newer API than this client: observable, never guessed around.
           console.error(`Unknown entry destination "${entry.destination}"`);
           throw new UnexpectedDestination();

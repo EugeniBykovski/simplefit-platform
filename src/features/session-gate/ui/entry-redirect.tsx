@@ -7,7 +7,7 @@ import { getResolveMyEntryQueryKey } from "@/shared/api/generated/endpoints/entr
 import { useRouter } from "@/shared/i18n/navigation";
 import { continuationOf, type Continuation } from "@/shared/routes/continuation";
 
-import { entryHref, entryParams, fetchEntry, type Entry } from "../model/entry";
+import { entryHref, entryParams, fetchEntry, isKnownEntry, type Entry } from "../model/entry";
 
 type EntryFailureState = { error: unknown; retry: () => void };
 
@@ -64,16 +64,21 @@ export function EntryRedirect({ pending, failure }: { pending: ReactNode; failur
   const router = useRouter();
   const continuation = useUrlContinuation();
   const query = useEntry(continuation);
-  const href = query.data === undefined ? undefined : entryHref(query.data, continuation);
+  // A destination this client does not map (a newer API) is a failure, never guessed.
+  const unknown = query.data !== undefined && !isKnownEntry(query.data);
+  const href =
+    query.data !== undefined && isKnownEntry(query.data)
+      ? entryHref(query.data, continuation)
+      : undefined;
 
   useEffect(() => {
     if (href !== undefined) router.replace(href);
   }, [href, router]);
 
-  if (query.isError) {
+  if (query.isError || unknown) {
     return (
       <EntryFailureBoundary
-        error={query.error}
+        error={query.error ?? new Error("Unknown entry destination")}
         retry={() => void query.refetch()}
         failure={failure}
       />

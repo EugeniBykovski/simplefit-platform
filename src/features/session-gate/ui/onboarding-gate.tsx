@@ -5,7 +5,7 @@ import { useEffect, type ReactNode } from "react";
 import { usePathname, useRouter } from "@/shared/i18n/navigation";
 import { matchWebRoute } from "@/shared/routes/routes";
 
-import { destinationRoute, entryHref, knowsDestination } from "../model/entry";
+import { destinationRoute, entryHref, isKnownEntry } from "../model/entry";
 import { EntryFailureBoundary, useEntry, useUrlContinuation } from "./entry-redirect";
 
 const ACCOUNT_REGISTRATION = destinationRoute("account_registration");
@@ -37,8 +37,8 @@ export function OnboardingGate({
   const query = useEntry(continuation);
 
   // A destination this client does not map (a newer API) is a failure, never guessed.
-  const unknown = query.data !== undefined && !knowsDestination(query.data.destination);
-  const entry = unknown ? undefined : query.data;
+  const unknown = query.data !== undefined && !isKnownEntry(query.data);
+  const entry = query.data !== undefined && isKnownEntry(query.data) ? query.data : undefined;
   const routeId = matchWebRoute(pathname)?.id;
   const onAccountRegistration = routeId === ACCOUNT_REGISTRATION;
   const gated = entry?.destination === "account_registration";
