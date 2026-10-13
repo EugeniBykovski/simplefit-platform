@@ -22,9 +22,21 @@ import type { BrowserContext, Request } from "@playwright/test";
  *   `invalid_format`, never rounded; completion lists every missing
  *   requirement, needs completed account registration
  *   (`account_registration: required`) and keeps the first `completed_at`.
- * - Entry resolution follows SF-45's order: account registration first, then
- *   the explicit intent's journey, then the role state (Fighter), otherwise
- *   role selection.
+ * - CoachProfile (SF-50): a PATCH merges any subset (`null`, blank or `[]`
+ *   clears) and creates the profile on the first save; coach name 1–60, brand
+ *   and city 1–80, bio up to 500 characters; languages, coaching formats and
+ *   competition levels from their vocabularies, a repeated value `invalid`;
+ *   any other field `invalid`; after completion the requirements cannot be
+ *   cleared. Completion lists every missing requirement as `required`, needs
+ *   completed account registration and keeps the first `completed_at`.
+ * - Entry resolution follows SF-51's order: account registration first, then
+ *   the explicit intent's journey (a completed one is its home), then a
+ *   requested completed `context`, then the profiles: none started → role
+ *   selection; one in progress → its onboarding; one completed → its home;
+ *   both completed → the last explicit choice's home, otherwise
+ *   `context_selection` (as with both in progress). An explicit choice
+ *   (`PUT /api/v1/me/entry/context`) is accepted for a completed context only
+ *   (`409 conflict` otherwise).
  * - First-run experiences (SF-40, ADR 0018): the Fighter web tour is
  *   `unavailable` until Fighter onboarding is complete, then `pending`; the
  *   first outcome recorded (`completed` / `dismissed`) is final, an
@@ -89,6 +101,25 @@ const ENUMS: Record<string, string[]> = {
 };
 const NOW = "2026-10-08T12:00:00Z";
 
+// ── CoachProfile (SF-50) ──
+const COACH_REQUIRED = ["display_name", "country_code", "city", "coaching_formats"];
+const COACH_EMPTY: Record<string, unknown> = {
+  display_name: null,
+  brand_name: null,
+  country_code: null,
+  city: null,
+  bio: null,
+  languages: [],
+  coaching_formats: [],
+  competition_levels: [],
+};
+const COACH_TEXT: Record<string, number> = { display_name: 60, brand_name: 80, city: 80, bio: 500 };
+const COACH_CHOICES: Record<string, string[]> = {
+  languages: ["en", "pl", "ru", "be", "uk"],
+  coaching_formats: ["personal_training", "group_coaching", "online_coaching", "fight_camps"],
+  competition_levels: ["amateur", "professional"],
+};
+
 type Consent = { version: string; at: string } | null;
 export type AccountFixture = {
   full_name?: string | null;
@@ -126,6 +157,11 @@ export type OnboardingApiOptions = {
   signedOut?: boolean;
   /** The Fighter web tour's recorded outcome before the test starts. */
   tour?: "completed" | "dismissed";
+  /** Saved CoachProfile fields before the test starts (a profile begun on mobile, say). */
+  coachFields?: Record<string, unknown>;
+  coachCompleted?: boolean;
+  /** The last explicitly chosen context (SF-51). */
+  lastContext?: "fighter" | "coach";
 };
 
 export type OnboardingApi = {
@@ -152,6 +188,14 @@ export type OnboardingApi = {
   failFirstRun: (count: number) => void;
   /** Another tab or client records the tour's outcome through the API. */
   recordTourExternally: (outcome: "completed" | "dismissed") => void;
+  /** The stored CoachProfile, or `undefined` before the first save. */
+  coach: () => Profile | undefined;
+  /** Another client saves CoachProfile `fields` without this page knowing. */
+  externalCoachUpdate: (fields: Record<string, unknown>) => void;
+  /** The last explicitly chosen context. */
+  lastContext: () => string | undefined;
+  /** Fails the next N context choices with a network error. */
+  failContext: (count: number) => void;
 };
 
 const validation = (field_codes: Record<string, string[]>) => ({
@@ -226,6 +270,76 @@ export async function onboardingApi(
     status: tourOutcome?.outcome ?? (completedAt ? "pending" : "unavailable"),
     recorded_at: tourOutcome?.at ?? null,
   });
+
+  // ── CoachProfile (SF-50) and the context choice (SF-51) ──
+  let coachStored: Record<string, unknown> | undefined =
+    options.coachFields || options.coachCompleted
+      ? { ...COACH_EMPTY, ...options.coachFields }
+      : undefined;
+  let coachCompletedAt: string | null = options.coachCompleted ? NOW : null;
+  let lastContext = options.lastContext;
+  let contextFailures = 0;
+  const coachView = (): Profile => {
+    const fields = { ...COACH_EMPTY, ...coachStored };
+    const missing = COACH_REQUIRED.filter((field) => {
+      const value = fields[field];
+      return value === null || (Array.isArray(value) && value.length === 0);
+    });
+    return {
+      ...fields,
+      onboarding: {
+        status: coachCompletedAt ? "completed" : coachStored ? "in_progress" : "not_started",
+        completed_at: coachCompletedAt,
+        missing_requirements: coachCompletedAt ? [] : missing,
+      },
+    };
+  };
+
+  function patchCoach(body: Record<string, unknown>) {
+    const codes: Record<string, string[]> = {};
+    const next: Record<string, unknown> = {};
+    for (const [field, raw] of Object.entries(body)) {
+      const value = typeof raw === "string" ? raw.trim() : raw;
+      const cleared =
+        value === null || value === "" || (Array.isArray(value) && value.length === 0);
+      if (!(field in COACH_EMPTY)) {
+        codes[field] = ["invalid"];
+      } else if (cleared) {
+        if (coachCompletedAt && COACH_REQUIRED.includes(field)) codes[field] = ["required"];
+        else next[field] = field in COACH_CHOICES ? [] : null;
+      } else if (field in COACH_TEXT) {
+        if (typeof value !== "string") codes[field] = ["invalid_type"];
+        else if ([...value].length > (COACH_TEXT[field] ?? 0)) codes[field] = ["too_long"];
+        else next[field] = value;
+      } else if (field === "country_code") {
+        if (typeof value === "string" && /^[A-Za-z]{2}$/.test(value))
+          next[field] = value.toUpperCase();
+        else codes[field] = ["invalid_choice"];
+      } else {
+        const allowed = COACH_CHOICES[field] ?? [];
+        if (!Array.isArray(value)) codes[field] = ["invalid_type"];
+        else if (value.some((item) => !allowed.includes(String(item))))
+          codes[field] = ["invalid_choice"];
+        else if (new Set(value).size !== value.length) codes[field] = ["invalid"];
+        else next[field] = value;
+      }
+    }
+    if (Object.keys(codes).length > 0) return validation(codes);
+    coachStored = { ...COACH_EMPTY, ...coachStored, ...next };
+    return { status: 200, json: { coach_profile: coachView() } };
+  }
+
+  function completeCoach() {
+    const missing = coachView().onboarding.missing_requirements;
+    const codes: Record<string, string[]> = Object.fromEntries(
+      missing.map((field) => [field, ["required"]]),
+    );
+    if (!acc.completedAt) codes.account_registration = ["required"];
+    if (Object.keys(codes).length > 0) return validation(codes);
+    coachStored ??= { ...COACH_EMPTY };
+    coachCompletedAt ??= NOW;
+    return { status: 200, json: { coach_profile: coachView() } };
+  }
 
   let failures = options.failNextWrites ?? 0;
   let entryFailures = 0;
@@ -374,32 +488,50 @@ export async function onboardingApi(
     return { status: 200, json: { fighter_profile: view() } };
   }
 
-  // SF-45's order: account registration, the explicit intent, the role state, role selection.
-  const entry = (intent: string | null) => {
+  // SF-51's order: account registration, the explicit intent, a requested
+  // completed context, then the profiles (see the header).
+  const entry = (intent: string | null, context: string | null) => {
     const fighter = view().onboarding.status;
+    const coachStatus = coachView().onboarding.status;
+    const home = { fighter: "fighter_home", coach: "coach_home" } as const;
     const journeys: Record<string, string> = {
       fighter: fighter === "completed" ? "fighter_home" : "fighter_onboarding",
-      coach: "coach_onboarding",
+      coach: coachStatus === "completed" ? "coach_home" : "coach_onboarding",
       gym: "gym_onboarding",
       sponsor: "sponsor_application",
+    };
+    const completed = (["fighter", "coach"] as const).filter(
+      (role) => (role === "fighter" ? fighter : coachStatus) === "completed",
+    );
+    const started = (["fighter", "coach"] as const).filter(
+      (role) => (role === "fighter" ? fighter : coachStatus) === "in_progress",
+    );
+    const byProfiles = () => {
+      if (completed.length === 2) return lastContext ? home[lastContext] : "context_selection";
+      if (completed.length === 1) return home[completed[0] ?? "fighter"];
+      if (started.length === 2) return "context_selection";
+      if (started.length === 1) return `${started[0] ?? "fighter"}_onboarding`;
+      return "role_selection";
     };
     const destination = !acc.completedAt
       ? "account_registration"
       : intent !== null && journeys[intent]
         ? journeys[intent]
-        : fighter === "completed"
-          ? "fighter_home"
-          : fighter === "in_progress"
-            ? "fighter_onboarding"
-            : "role_selection";
+        : (context === "fighter" || context === "coach") && completed.includes(context)
+          ? home[context]
+          : byProfiles();
     return {
       entry: {
         account_registration: accountView().registration.status,
-        capabilities: completedAt ? ["FIGHTER"] : [],
+        capabilities: completed.map((role) => role.toUpperCase()),
+        coach_profile: coachStatus,
+        context,
         destination,
         fighter_profile: fighter,
         intent,
-        mandatory: destination === "account_registration" || destination === "fighter_onboarding",
+        mandatory: ["account_registration", "fighter_onboarding", "coach_onboarding"].includes(
+          destination,
+        ),
         reason: "fixture",
       },
     };
@@ -455,13 +587,32 @@ export async function onboardingApi(
             error: { code: "service_unavailable", message: "", details: {}, request_id: null },
           });
         }
-        return json(200, entry(url.searchParams.get("intent")));
+        return json(200, entry(url.searchParams.get("intent"), url.searchParams.get("context")));
+      }
+      if (url.pathname === "/api/v1/me/entry/context" && request.method() === "PUT") {
+        if (contextFailures > 0) {
+          contextFailures -= 1;
+          return call.abort("internetdisconnected");
+        }
+        const context = (body as { context?: unknown } | undefined)?.context;
+        if (context !== "fighter" && context !== "coach") {
+          return json(422, validation({ context: ["invalid_choice"] }).json);
+        }
+        const done = context === "fighter" ? completedAt : coachCompletedAt;
+        if (!done) {
+          return json(409, {
+            error: { code: "conflict", message: "", details: {}, request_id: null },
+          });
+        }
+        lastContext = context;
+        return call.fulfill({ status: 204 });
       }
       const write = request.method() !== "GET";
       if (
         write &&
         failures > 0 &&
         (url.pathname.startsWith("/api/v1/me/fighter-profile") ||
+          url.pathname.startsWith("/api/v1/me/coach-profile") ||
           url.pathname.startsWith("/api/v1/me/account-profile"))
       ) {
         failures -= 1;
@@ -483,6 +634,15 @@ export async function onboardingApi(
       }
       if (url.pathname === "/api/v1/me/fighter-profile/complete-onboarding") {
         const result = completeFighter();
+        return json(result.status, result.json);
+      }
+      if (url.pathname === "/api/v1/me/coach-profile") {
+        if (!write) return json(200, { coach_profile: coachView() });
+        const result = patchCoach(body ?? {});
+        return json(result.status, result.json);
+      }
+      if (url.pathname === "/api/v1/me/coach-profile/complete-onboarding") {
+        const result = completeCoach();
         return json(result.status, result.json);
       }
       if (url.pathname.startsWith("/api/v1/me/first-run")) {
@@ -556,6 +716,14 @@ export async function onboardingApi(
     },
     recordTourExternally: (outcome) => {
       tourOutcome ??= { outcome, at: NOW };
+    },
+    coach: () => (coachStored || coachCompletedAt ? coachView() : undefined),
+    externalCoachUpdate: (fields) => {
+      coachStored = { ...COACH_EMPTY, ...coachStored, ...fields };
+    },
+    lastContext: () => lastContext,
+    failContext: (count) => {
+      contextFailures = count;
     },
   };
 }

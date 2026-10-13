@@ -122,7 +122,7 @@
     "returnToParam": "returnTo",
     "intentParam": "intent",
     "entryDestinations": {
-      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied.",
+      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied. coach_home (SF-51, SF-52) opens the Coach home of each platform, today its canonical placeholder. context_selection has no route on either platform until its chooser is designed (D-ENTRY-CONTEXT-SELECTION): clients treat it as an unknown destination (a retryable failure), never as role selection (WA6 / O05) or Fighter home.",
       "account_registration": {
         "web": "web.app.onboarding.account",
         "mobile": "mobile.signup.consent"
@@ -142,6 +142,10 @@
       "coach_onboarding": {
         "web": "web.app.onboarding.coach",
         "mobile": "mobile.onboarding.coach"
+      },
+      "coach_home": {
+        "web": "web.app.coach",
+        "mobile": "mobile.coach.today"
       },
       "gym_onboarding": {
         "web": "web.app.onboarding.gym",
@@ -1681,11 +1685,11 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/app/onboarding/(app-frame)/coach/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/[locale]/app/onboarding/coach/page.tsx",
+        "note": "SF-52: Coach web registration (Claude Design COACH 5d, 1791896379-65b7): WCR1 Coach profile, WCR2 Coaching type, WCR7 Complete on the SF-50 CoachProfile; WCR3-WCR6 are FUTURE (D-WEB-COACH-ONBOARDING-FLOW)."
       },
       "screens": ["WCR1", "WCR2", "WCR3", "WCR4", "WCR5", "WCR6", "WCR7"],
-      "discrepancies": ["D-ONBOARDING-ENTRY-CAPABILITY"]
+      "discrepancies": ["D-ONBOARDING-ENTRY-CAPABILITY", "D-WEB-COACH-ONBOARDING-FLOW"]
     },
     {
       "id": "web.app.coach",
@@ -1708,7 +1712,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/app/coach/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-52: the Coach area renders only for the COACH capability reported by the entry resolver (CoachGate); Coach Home itself is not built yet."
       },
       "screens": ["CRW1", "WC1"]
     },
@@ -9364,7 +9368,9 @@
         "step": "5.25",
         "tag": "WEB_APP",
         "artboard": "WebRegCCreds.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-COACH-ONBOARDING-FLOW"]
     },
     {
       "id": "WCR4",
@@ -9381,7 +9387,9 @@
         "step": "5.26",
         "tag": "WEB_APP",
         "artboard": "WebRegCSize.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-COACH-ONBOARDING-FLOW"]
     },
     {
       "id": "WCR5",
@@ -9398,7 +9406,9 @@
         "step": "5.27",
         "tag": "WEB_APP",
         "artboard": "WebRegCGym.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-COACH-ONBOARDING-FLOW"]
     },
     {
       "id": "WCR6",
@@ -9415,7 +9425,9 @@
         "step": "5.28",
         "tag": "WEB_APP",
         "artboard": "WebRegCPlan.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-COACH-ONBOARDING-FLOW"]
     },
     {
       "id": "WCR7",
@@ -16561,6 +16573,33 @@
       "resolution": "SF-36: WA3 keeps the artboard's three consent checkboxes and the full name in place, disabled and unchecked (the name field says it is added after verifying). Only the email address is submitted; nothing is collected, validated or stored before a User exists. WA5 (account_registration) owns full name, date of birth, Terms and Privacy acceptance and the optional product news.",
       "status": "RESOLVED",
       "routes": ["web.signup.account"]
+    },
+    {
+      "id": "D-WEB-COACH-ONBOARDING-FLOW",
+      "title": "Web Coach onboarding reduced to the backend-supported steps",
+      "sourceA": "Claude Design 1791896379-65b7 (Version 87): WCR1 Coach profile (?step=profile) -> WCR2 Coaching type (?step=type) -> WCR7 Complete (?step=complete); WCR3 Credentials, WCR4 Business size, WCR5 Gym and WCR6 Plan marked FUTURE (verification, gym and billing domains)",
+      "sourceB": "SF-50 backend (ADR 0020): CoachProfile persists display_name, brand_name, country_code, city, bio, languages, coaching_formats and competition_levels; completion needs display_name, country_code, city, at least one coaching format and the account registration. No verification, gym-membership or billing domain exists",
+      "mismatch": "The earlier web flow had seven steps; four of them have no owning backend domain.",
+      "impact": "Building WCR3-WCR6 would fake persistence, verification, gym relationships or billing.",
+      "resolution": "Current screens WCR1, WCR2 and WCR7. WCR3-WCR6 stay registered as gallery rows with status DEFERRED. The route needs an authenticated session only (D-ONBOARDING-ENTRY-CAPABILITY); Coach intent travels as the ephemeral ?intent=coach parameter. The step query is navigation only: resume and completion come from GET /api/v1/me/coach-profile, and completion only from POST /api/v1/me/coach-profile/complete-onboarding. The coach name may be pre-filled with the account's full name only as an editable, unsaved suggestion for a new profile. WCR7 continues through an explicit Coach context choice (PUT /api/v1/me/entry/context) and the entry resolver (coach_home), never to an invented workspace.",
+      "decision": "Web Coach onboarding follows the SF-50 backend scope; WCR3-WCR6 return with their owning domains.",
+      "decidedOn": "2026-10-13",
+      "status": "DEFERRED",
+      "routes": ["web.app.onboarding.coach"],
+      "screens": ["WCR3", "WCR4", "WCR5", "WCR6"]
+    },
+    {
+      "id": "D-ENTRY-CONTEXT-SELECTION",
+      "title": "The context_selection entry destination has no route yet",
+      "sourceA": "simplefit-api SF-51 (ADR 0017 amendment): GET /api/v1/me/entry may answer context_selection (both profiles in progress, or both completed without a last explicit choice); PUT /api/v1/me/entry/context records an explicit choice between completed contexts",
+      "sourceB": "Claude Design and the route registry: no context chooser screen on web or mobile. WA6 (web.app.onboarding.role) and O05 (mobile.onboarding.role) start a journey by intent; they do not choose between completed contexts",
+      "mismatch": "A semantic destination without a canonical route on either platform.",
+      "impact": "Mapping it to WA6 / O05 would present journey selection as a context switcher; mapping it to a home would guess the user's context.",
+      "resolution": "context_selection stays unmapped in guards.entryDestinations; both clients treat it as an unknown destination (a retryable failure). Unfinished journeys are entered with an explicit intent; completed contexts are chosen with the SF-51 choice endpoint (web WCR7 records the Coach context). A dual-profile user opens either workspace directly: workspace gates check the capability, not the last chosen context.",
+      "decision": "No context chooser is invented; it enters the registry once Claude Design adds it.",
+      "decidedOn": "2026-10-13",
+      "status": "DEFERRED",
+      "routes": ["web.app", "mobile.root"]
     }
   ]
 }

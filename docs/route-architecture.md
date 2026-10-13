@@ -492,6 +492,21 @@ Which step to show, and whether onboarding is complete, comes from
 `POST /api/v1/me/fighter-profile/complete-onboarding`. WF2–WF5 are
 `DEFERRED` until their Gym, Coach, privacy and notification domains exist.
 
+**Web Coach onboarding (SF-52).** `/app/onboarding/coach` follows the same
+rules: an authenticated session only (it creates the CoachProfile that grants
+COACH), Coach intent as the ephemeral `intent=coach`, and the step query as
+navigation only. Its current steps are WCR1 (`?step=profile`), WCR2
+(`?step=type`) and WCR7 (`?step=complete`); resume and completion come from
+`GET /api/v1/me/coach-profile` (SF-50) and completion only from
+`POST /api/v1/me/coach-profile/complete-onboarding`. WCR3–WCR6 are `DEFERRED`
+until their verification, gym and billing domains exist
+(`D-WEB-COACH-ONBOARDING-FLOW`). WCR7 continues through an explicit Coach
+context choice (`PUT /api/v1/me/entry/context`, SF-51) and the entry, which
+resolves `coach_home` to `/app/coach` (`mobile.coach.today` on mobile). The
+Coach area is gated on the COACH capability the entry reports; Coach Home
+itself is still the canonical placeholder. `context_selection` has no route on
+either platform (`D-ENTRY-CONTEXT-SELECTION`): it is never mapped to WA6 / O05.
+
 **Checkout** (`/checkout`, mobile) is `PUBLIC`. Without a session it renders
 the designed quick-account state (QA1, `condition: NO_SESSION`); every payment
 operation requires a normal SimpleFit identity and session, enforced by the
@@ -544,7 +559,9 @@ change, and each repository's tests check its own router against it.
 Screens carry no status while current. A gallery row the design keeps but
 marks future gets `status: "DEFERRED"` and the discrepancy that explains it;
 clients never build or route to it. Since `1791399145-48dd` that is WF2–WF5
-of web Fighter onboarding (`D-WEB-FIGHTER-ONBOARDING-FLOW`).
+of web Fighter onboarding (`D-WEB-FIGHTER-ONBOARDING-FLOW`); since
+`1791896379-65b7` also WCR3–WCR6 of web Coach onboarding
+(`D-WEB-COACH-ONBOARDING-FLOW`).
 
 A screen's visual fidelity is not tracked here. It is delivered by the feature
 ticket that implements the screen from its artboard.
@@ -827,8 +844,9 @@ screenshots:
 Every entry has a source A, a source B, the exact mismatch, its impact, a
 resolution and a status; the full text is in `discrepancies` of the registry.
 The 18 product decisions approved on 2026-10-06, the SF-27 decision of
-2026-10-07 and the SF-45 decisions of 2026-10-08 carry `decision` and
-`decidedOn`. No discrepancy awaits a product decision; seven are `DEFERRED`.
+2026-10-07, the SF-45 decisions of 2026-10-08 and the SF-52 decisions of
+2026-10-13 carry `decision` and `decidedOn`. No discrepancy awaits a product
+decision; eight are `DEFERRED`.
 
 | Id                                 | Status   | Decision / summary                                                                         |
 | ---------------------------------- | -------- | ------------------------------------------------------------------------------------------ |
@@ -870,6 +888,8 @@ The 18 product decisions approved on 2026-10-06, the SF-27 decision of
 | `D-ENTRY-RESOLUTION`               | RESOLVED | Backend entry resolver; semantic destinations; WA5, WA6; ephemeral `intent`                |
 | `D-ONBOARDING-ENTRY-CAPABILITY`    | RESOLVED | Onboarding entry routes need a session only, never the capability they create              |
 | `D-WA3-PREAUTH-CONSENT`            | RESOLVED | WA3 name and consents disabled, never sent; WA5 records consent (SF-36)                    |
+| `D-WEB-COACH-ONBOARDING-FLOW`      | DEFERRED | Web Coach onboarding: WCR1, WCR2, WCR7 current; WCR3–WCR6 future; session-only access      |
+| `D-ENTRY-CONTEXT-SELECTION`        | DEFERRED | `context_selection` has no route on either platform; never WA6 / O05 or a home             |
 
 Gallery rows dropped by a decision are listed in `excludedRows`, so every
 row stays accounted for:

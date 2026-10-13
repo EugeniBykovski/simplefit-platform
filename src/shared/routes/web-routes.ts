@@ -2125,6 +2125,7 @@ export const webGuards = {
     fighter_onboarding: "web.app.onboarding.fighter",
     fighter_home: "web.app.home",
     coach_onboarding: "web.app.onboarding.coach",
+    coach_home: "web.app.coach",
     gym_onboarding: "web.app.onboarding.gym",
     sponsor_application: "web.partners.apply",
   },

@@ -588,6 +588,48 @@ describe("web Fighter onboarding (SF-27, design 1791399145-48dd)", () => {
   });
 });
 
+describe("web Coach onboarding (SF-52, design 1791896379-65b7)", () => {
+  const route = routeById.get("web.app.onboarding.coach");
+  const ofRoute = screens.filter((screen) => screen.route === "web.app.onboarding.coach");
+
+  it("needs a session only: the route creates the CoachProfile that grants COACH", () => {
+    expect(route.access).toEqual({
+      session: "AUTHENTICATED",
+      capability: null,
+      phase: "ONBOARDING",
+    });
+    expect(registry.capabilities.COACH.onboarding.web).toBe("web.app.onboarding.coach");
+    expect(registry.capabilities.COACH.home.web).toBe("web.app.coach");
+  });
+
+  it("has exactly WCR1, WCR2 and WCR7 as current steps, addressed by ?step=", () => {
+    const current = ofRoute.filter((screen) => !("status" in screen));
+    expect(current.map((screen) => [screen.id, screen.query])).toEqual([
+      ["WCR1", { step: "profile" }],
+      ["WCR2", { step: "type" }],
+      ["WCR7", { step: "complete" }],
+    ]);
+    expect(route.screens).toEqual(["WCR1", "WCR2", "WCR3", "WCR4", "WCR5", "WCR6", "WCR7"]);
+  });
+
+  it("keeps WCR3-WCR6 as DEFERRED gallery rows, never current", () => {
+    const deferred = ofRoute.filter((screen) => screen.status === "DEFERRED");
+    expect(deferred.map((screen) => screen.id)).toEqual(["WCR3", "WCR4", "WCR5", "WCR6"]);
+    for (const screen of deferred)
+      expect(screen.discrepancies).toEqual(["D-WEB-COACH-ONBOARDING-FLOW"]);
+  });
+
+  it("maps coach_home to each platform's Coach home and leaves context_selection unmapped", () => {
+    expect(registry.guards.entryDestinations.coach_home).toEqual({
+      web: "web.app.coach",
+      mobile: "mobile.coach.today",
+    });
+    expect(registry.guards.entryDestinations).not.toHaveProperty("context_selection");
+    const deferred = discrepancies.find((entry) => entry.id === "D-ENTRY-CONTEXT-SELECTION");
+    expect(deferred?.status).toBe("DEFERRED");
+  });
+});
+
 describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
   const DESTINATIONS = [
     "account_registration",
@@ -595,6 +637,7 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
     "fighter_onboarding",
     "fighter_home",
     "coach_onboarding",
+    "coach_home",
     "gym_onboarding",
     "sponsor_application",
   ];

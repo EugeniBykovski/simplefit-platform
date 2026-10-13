@@ -2,6 +2,7 @@ import { callWithSession } from "@/entities/session";
 import { resolveMyEntry } from "@/shared/api/generated/endpoints/entry/entry";
 import type {
   EntryResponseEntry,
+  EntryResponseEntryCapabilitiesItem,
   EntryResponseEntryDestination,
   ResolveMyEntryParams,
 } from "@/shared/api/generated/model";
@@ -27,8 +28,8 @@ export type Entry = EntryResponseEntry;
 
 /**
  * The destinations this client maps (`guards.entryDestinations`). The API may
- * return more (SF-51 added `coach_home` and `context_selection`, mapped once
- * the registry has their routes); those stay unknown here.
+ * return more (SF-51's `context_selection` has no route until its chooser is
+ * designed and built); those stay unknown here.
  */
 export type KnownDestination = keyof typeof webGuards.entryDestinations &
   EntryResponseEntryDestination;
@@ -71,13 +72,23 @@ function usableReturnTo(returnTo: string | undefined, entry: Entry): string | un
   return safe;
 }
 
+/** The destinations of a completed journey: an intent leading there has nothing left to set up. */
+const HOMES: ReadonlySet<KnownDestination> = new Set(["fighter_home", "coach_home"]);
+
+export type Capability = EntryResponseEntryCapabilitiesItem;
+
+/** Whether the resolved entry reports `capability` (a routing projection, never authorization). */
+export function holds(entry: Entry, capability: Capability): boolean {
+  return entry.capabilities.includes(capability);
+}
+
 /**
  * The href for a resolved entry and the continuation the user carries:
  *
- * 1. A mandatory destination (account registration, unfinished Fighter
- *    onboarding) always wins.
+ * 1. A mandatory destination (account registration, unfinished Fighter or
+ *    Coach onboarding) always wins.
  * 2. An explicit intent leads to its journey, unless that journey is already
- *    complete (`fighter_home`).
+ *    complete (`fighter_home`, `coach_home`).
  * 3. Otherwise a usable `returnTo` wins over the derived destination.
  * 4. Otherwise the destination.
  *
@@ -86,7 +97,7 @@ function usableReturnTo(returnTo: string | undefined, entry: Entry): string | un
  */
 export function entryHref(entry: KnownEntry, continuation: Continuation = {}): string {
   const target = destinationRoute(entry.destination);
-  const intentDriven = continuation.intent !== undefined && entry.destination !== "fighter_home";
+  const intentDriven = continuation.intent !== undefined && !HOMES.has(entry.destination);
 
   if (!entry.mandatory && !intentDriven) {
     const returnTo = usableReturnTo(continuation.returnTo, entry);

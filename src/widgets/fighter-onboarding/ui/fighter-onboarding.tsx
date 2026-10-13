@@ -70,10 +70,12 @@ export function FighterOnboarding() {
     [search],
   );
 
-  // A completed Fighter leaves through the application entry; any other state
-  // shows the step the backend allows, with the URL saying so.
+  // A completed Fighter leaves through the application entry (asked for the
+  // Fighter journey, so it resolves to Fighter home whatever the last chosen
+  // context); any other state shows the step the backend allows, with the URL
+  // saying so.
   useEffect(() => {
-    if (decision?.kind === "exit") router.replace(routeHref("web.app"));
+    if (decision?.kind === "exit") router.replace(routeHref("web.app", {}, { intent: "fighter" }));
     else if (step !== undefined && step !== requested) router.replace(hrefFor(step));
   }, [decision?.kind, step, requested, router, hrefFor]);
 
@@ -86,6 +88,18 @@ export function FighterOnboarding() {
     }
     shown.current = step;
   }, [step]);
+
+  // Completion asked for here: WF6 must show the moment the completed profile
+  // lands in the cache, never the "already completed" exit.
+  const completeHere = async () => {
+    setJustCompleted(true);
+    try {
+      return await complete();
+    } catch (error) {
+      setJustCompleted(false);
+      throw error;
+    }
+  };
 
   const go = (next: FormStep) => router.push(hrefFor(next));
   const saveAndExit = async () => {
@@ -159,12 +173,9 @@ export function FighterOnboarding() {
             key="profile"
             profile={profile}
             save={save}
-            complete={complete}
+            complete={completeHere}
             onBack={go}
-            onCompleted={() => {
-              setJustCompleted(true);
-              router.push(hrefFor("complete"));
-            }}
+            onCompleted={() => router.push(hrefFor("complete"))}
             accountHref={withContinuation("web.app.onboarding.account", {
               ...continuation,
               intent: continuation.intent ?? "fighter",

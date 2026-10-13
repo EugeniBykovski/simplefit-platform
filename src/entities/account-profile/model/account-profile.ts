@@ -34,11 +34,16 @@ export async function fetchAccountProfile(signal?: AbortSignal): Promise<Account
   return account_profile;
 }
 
-/** The current registration; refetched on window focus (another tab, another client). */
-export function useAccountProfile() {
+/**
+ * The current registration; refetched on window focus (another tab, another
+ * client). `enabled: false` reads nothing (a caller that needs it only
+ * sometimes).
+ */
+export function useAccountProfile({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery({
     queryKey: accountProfileQueryKey,
     queryFn: ({ signal }) => fetchAccountProfile(signal),
+    enabled,
     retry: false,
     staleTime: 0,
     refetchOnWindowFocus: true,

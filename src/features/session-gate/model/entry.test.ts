@@ -46,6 +46,7 @@ describe("destinationRoute", () => {
       fighter_onboarding: "web.app.onboarding.fighter",
       fighter_home: "web.app.home",
       coach_onboarding: "web.app.onboarding.coach",
+      coach_home: "web.app.coach",
       gym_onboarding: "web.app.onboarding.gym",
       sponsor_application: "web.partners.apply",
     });
@@ -149,12 +150,36 @@ describe("entryParams", () => {
   });
 });
 
-describe("destinations this client does not map yet (SF-51)", () => {
-  it("are unknown, never mapped or guessed as Fighter home", () => {
-    for (const destination of ["coach_home", "context_selection"] as const) {
-      const unknown = { ...entry({}), destination, capabilities: ["COACH" as const] };
-      expect(isKnownEntry(unknown)).toBe(false);
-    }
+describe("SF-51 destinations (SF-52)", () => {
+  const COACH_HOME = entry({
+    destination: "coach_home",
+    reason: "coach_onboarding_completed",
+    coach_profile: "completed",
+    capabilities: ["COACH"],
+  });
+
+  it("maps Coach home, and keeps context_selection unknown: never role selection or Fighter home", () => {
+    expect(isKnownEntry(COACH_HOME)).toBe(true);
+    expect(routeHref(destinationRoute("coach_home"))).toBe("/app/coach");
+    const choice = { ...entry({}), destination: "context_selection" as const };
+    expect(isKnownEntry(choice)).toBe(false);
     expect(isKnownEntry(entry({ destination: "coach_onboarding" }))).toBe(true);
+  });
+
+  it("a Coach intent that resolves to Coach home is a completed journey: a usable returnTo still wins", () => {
+    expect(entryHref(COACH_HOME, { intent: "coach" })).toBe("/app/coach");
+    expect(entryHref(COACH_HOME, { intent: "coach", returnTo: "/app/coach/fighters" })).toBe(
+      "/app/coach/fighters",
+    );
+  });
+
+  it("a Coach page is not a usable returnTo without the COACH capability", () => {
+    const fighter = entry({
+      destination: "fighter_home",
+      reason: "fighter_onboarding_completed",
+      fighter_profile: "completed",
+      capabilities: ["FIGHTER"],
+    });
+    expect(entryHref(fighter, { returnTo: "/app/coach" })).toBe("/app/home");
   });
 });

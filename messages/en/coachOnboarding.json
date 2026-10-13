@@ -1,0 +1,176 @@
+{
+  "metaTitle": "Coach registration",
+  "frame": {
+    "badge": "Coach sign-up",
+    "doneBadge": "Coach · done",
+    "saveExit": "Save & exit"
+  },
+  "nav": {
+    "label": "Coach sign-up steps",
+    "title": "Coach sign-up",
+    "note": "Saved as you go · finish later from any device.",
+    "steps": {
+      "account": "Account",
+      "profile": "Coach profile",
+      "type": "Coaching type",
+      "complete": "Complete"
+    },
+    "done": "done",
+    "unavailable": "after you finish"
+  },
+  "loading": "Loading your coach profile…",
+  "loadFailure": {
+    "title": "We couldn’t load your coach profile.",
+    "body": "Check your connection and try again.",
+    "retry": "Try again"
+  },
+  "notices": {
+    "failure": {
+      "save": "We couldn’t save your changes.",
+      "finish": "We couldn’t finish your coach sign-up.",
+      "typed": "Check your connection. Nothing you typed is lost.",
+      "selected": "Check your connection. Your choices are kept.",
+      "retry": "Retry"
+    },
+    "invalid": {
+      "title": "Check the highlighted fields.",
+      "body": "Fix them to save this step."
+    },
+    "rejected": {
+      "title": "Your coach profile is missing details.",
+      "body": "Add {fields} to finish.",
+      "goProfile": "Go to Coach profile",
+      "fields": {
+        "display_name": "your coach name",
+        "country_code": "your country",
+        "city": "your city"
+      }
+    },
+    "account": {
+      "title": "Finish your account basics first.",
+      "body": "Your name, date of birth and agreements come before your coach profile.",
+      "action": "Go to Account basics"
+    }
+  },
+  "profile": {
+    "eyebrow": "Step 2 of 3 · Coach profile",
+    "title": "Your coach profile",
+    "lead": "How fighters will recognise you as a coach. Coach name, country and city are required.",
+    "name": {
+      "label": "Coach name",
+      "placeholder": "Your coach name",
+      "help": "Shown to fighters. Up to 60 characters.",
+      "suggested": "Suggested from your account name. Change it if you coach under another name."
+    },
+    "brand": {
+      "label": "Brand name · optional",
+      "placeholder": "Your coaching business",
+      "help": "Your coaching business, if you use one. Up to 80 characters."
+    },
+    "country": {
+      "label": "Country",
+      "placeholder": "Select a country",
+      "help": "Search the list. Stored as the ISO country code.",
+      "search": "Search countries",
+      "searchPlaceholder": "Search",
+      "empty": "No country matches."
+    },
+    "city": {
+      "label": "City",
+      "placeholder": "Your city",
+      "help": "Free text."
+    },
+    "bio": {
+      "label": "Bio · optional",
+      "placeholder": "What you coach and how you work.",
+      "help": "Plain text, up to 500 characters."
+    },
+    "languages": {
+      "label": "Coaching languages · optional",
+      "help": "The languages you coach in.",
+      "options": {
+        "en": "English",
+        "pl": "Polski",
+        "ru": "Русский",
+        "be": "Беларуская",
+        "uk": "Українська"
+      }
+    },
+    "count": "{count} / {max}",
+    "continue": "Continue",
+    "saving": "Saving…"
+  },
+  "type": {
+    "eyebrow": "Step 3 of 3 · Coaching type",
+    "title": "How do you coach?",
+    "lead": "Pick every format you offer. You can change this later.",
+    "formats": {
+      "label": "Coaching formats",
+      "help": "Pick at least one.",
+      "options": {
+        "personal_training": {
+          "label": "Personal Training",
+          "description": "1:1 sessions"
+        },
+        "group_coaching": {
+          "label": "Group Coaching",
+          "description": "Classes and team sessions"
+        },
+        "online_coaching": {
+          "label": "Online Coaching",
+          "description": "Video review, remote plans"
+        },
+        "fight_camps": {
+          "label": "Fight Camps",
+          "description": "6–12 week peaks"
+        }
+      }
+    },
+    "levels": {
+      "label": "Competition level · optional",
+      "help": "The fighters you prepare for bouts.",
+      "options": {
+        "amateur": "Amateur",
+        "professional": "Professional"
+      }
+    },
+    "back": "Back",
+    "finish": "Finish",
+    "finishing": "Finishing…"
+  },
+  "preview": {
+    "title": "Coach preview",
+    "name": "Your coach name",
+    "line": "Coach · City",
+    "formats": "Your formats appear here.",
+    "separate": "Your coach profile is separate from your account name and from a fighter profile."
+  },
+  "done": {
+    "title": "Your coach profile is ready.",
+    "lead": "It is saved to your account and you can change it later. Any fighter profile you have stays as it is.",
+    "pendingTitle": "Coach tools are not available yet.",
+    "pendingBody": "Your coach home shows what is planned. Your profile is ready for it.",
+    "card": "Your coach profile",
+    "formats": "Formats",
+    "competition": "Competition",
+    "languages": "Languages",
+    "none": "—",
+    "continue": "Continue to coach home",
+    "opening": "Opening…",
+    "failureTitle": "We couldn’t open your coach home.",
+    "failureBody": "Your coach profile is saved. Try again.",
+    "retry": "Try again"
+  },
+  "errors": {
+    "required": {
+      "display_name": "Enter your coach name.",
+      "country_code": "Select your country.",
+      "city": "Enter your city.",
+      "coaching_formats": "Pick at least one format."
+    },
+    "tooLong": "That’s too long.",
+    "invalidChoice": "Choose one of the options.",
+    "invalidFormat": "Remove line breaks and other hidden characters.",
+    "invalid": "Check this value."
+  }
+}

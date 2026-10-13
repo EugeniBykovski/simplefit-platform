@@ -1,0 +1,176 @@
+{
+  "metaTitle": "Registro de entrenador",
+  "frame": {
+    "badge": "Registro de entrenador",
+    "doneBadge": "Entrenador · listo",
+    "saveExit": "Guardar y salir"
+  },
+  "nav": {
+    "label": "Pasos del registro de entrenador",
+    "title": "Registro de entrenador",
+    "note": "Se guarda sobre la marcha · termina luego desde cualquier dispositivo.",
+    "steps": {
+      "account": "Cuenta",
+      "profile": "Perfil de entrenador",
+      "type": "Tipo de entrenamiento",
+      "complete": "Listo"
+    },
+    "done": "hecho",
+    "unavailable": "al terminar"
+  },
+  "loading": "Cargando tu perfil de entrenador…",
+  "loadFailure": {
+    "title": "No pudimos cargar tu perfil de entrenador.",
+    "body": "Revisa tu conexión e inténtalo de nuevo.",
+    "retry": "Reintentar"
+  },
+  "notices": {
+    "failure": {
+      "save": "No pudimos guardar tus cambios.",
+      "finish": "No pudimos terminar tu registro de entrenador.",
+      "typed": "Revisa tu conexión. No se perdió nada de lo que escribiste.",
+      "selected": "Revisa tu conexión. Tus elecciones se conservan.",
+      "retry": "Reintentar"
+    },
+    "invalid": {
+      "title": "Revisa los campos marcados.",
+      "body": "Corrígelos para guardar este paso."
+    },
+    "rejected": {
+      "title": "A tu perfil de entrenador le faltan datos.",
+      "body": "Añade {fields} para terminar.",
+      "goProfile": "Ir al perfil de entrenador",
+      "fields": {
+        "display_name": "tu nombre de entrenador",
+        "country_code": "tu país",
+        "city": "tu ciudad"
+      }
+    },
+    "account": {
+      "title": "Primero completa los datos básicos de tu cuenta.",
+      "body": "Tu nombre, fecha de nacimiento y consentimientos van antes de tu perfil de entrenador.",
+      "action": "Ir a datos de la cuenta"
+    }
+  },
+  "profile": {
+    "eyebrow": "Paso 2 de 3 · Perfil de entrenador",
+    "title": "Tu perfil de entrenador",
+    "lead": "Cómo te reconocerán los boxeadores como entrenador. El nombre de entrenador, el país y la ciudad son obligatorios.",
+    "name": {
+      "label": "Nombre de entrenador",
+      "placeholder": "Tu nombre de entrenador",
+      "help": "Visible para los boxeadores. Hasta 60 caracteres.",
+      "suggested": "Sugerido a partir del nombre de tu cuenta. Cámbialo si entrenas con otro nombre."
+    },
+    "brand": {
+      "label": "Nombre de marca · opcional",
+      "placeholder": "Tu negocio de entrenamiento",
+      "help": "Tu negocio de entrenamiento, si tienes uno. Hasta 80 caracteres."
+    },
+    "country": {
+      "label": "País",
+      "placeholder": "Selecciona un país",
+      "help": "Busca en la lista. Se guarda como código de país ISO.",
+      "search": "Buscar países",
+      "searchPlaceholder": "Buscar",
+      "empty": "Ningún país coincide."
+    },
+    "city": {
+      "label": "Ciudad",
+      "placeholder": "Tu ciudad",
+      "help": "Texto libre."
+    },
+    "bio": {
+      "label": "Biografía · opcional",
+      "placeholder": "Qué entrenas y cómo trabajas.",
+      "help": "Texto sin formato, hasta 500 caracteres."
+    },
+    "languages": {
+      "label": "Idiomas de entrenamiento · opcional",
+      "help": "Los idiomas en los que entrenas.",
+      "options": {
+        "en": "English",
+        "pl": "Polski",
+        "ru": "Русский",
+        "be": "Беларуская",
+        "uk": "Українська"
+      }
+    },
+    "count": "{count} / {max}",
+    "continue": "Continuar",
+    "saving": "Guardando…"
+  },
+  "type": {
+    "eyebrow": "Paso 3 de 3 · Tipo de entrenamiento",
+    "title": "¿Cómo entrenas?",
+    "lead": "Elige todos los formatos que ofreces. Puedes cambiarlo más tarde.",
+    "formats": {
+      "label": "Formatos de entrenamiento",
+      "help": "Elige al menos uno.",
+      "options": {
+        "personal_training": {
+          "label": "Entrenamiento personal",
+          "description": "Sesiones 1:1"
+        },
+        "group_coaching": {
+          "label": "Entrenamiento en grupo",
+          "description": "Clases y sesiones de equipo"
+        },
+        "online_coaching": {
+          "label": "Entrenamiento online",
+          "description": "Análisis de video, planes a distancia"
+        },
+        "fight_camps": {
+          "label": "Campamentos de pelea",
+          "description": "Picos de 6–12 semanas"
+        }
+      }
+    },
+    "levels": {
+      "label": "Nivel de competición · opcional",
+      "help": "Los boxeadores que preparas para combates.",
+      "options": {
+        "amateur": "Amateur",
+        "professional": "Profesional"
+      }
+    },
+    "back": "Atrás",
+    "finish": "Terminar",
+    "finishing": "Terminando…"
+  },
+  "preview": {
+    "title": "Vista previa de entrenador",
+    "name": "Tu nombre de entrenador",
+    "line": "Entrenador · Ciudad",
+    "formats": "Tus formatos aparecen aquí.",
+    "separate": "Tu perfil de entrenador es independiente del nombre de tu cuenta y de un perfil de boxeador."
+  },
+  "done": {
+    "title": "Tu perfil de entrenador está listo.",
+    "lead": "Está guardado en tu cuenta y puedes cambiarlo más tarde. Si tienes un perfil de boxeador, se queda como está.",
+    "pendingTitle": "Las herramientas de entrenador aún no están disponibles.",
+    "pendingBody": "Tu inicio de entrenador muestra lo que está previsto. Tu perfil ya está listo para ello.",
+    "card": "Tu perfil de entrenador",
+    "formats": "Formatos",
+    "competition": "Competición",
+    "languages": "Idiomas",
+    "none": "—",
+    "continue": "Continuar al inicio de entrenador",
+    "opening": "Abriendo…",
+    "failureTitle": "No pudimos abrir tu inicio de entrenador.",
+    "failureBody": "Tu perfil de entrenador está guardado. Inténtalo de nuevo.",
+    "retry": "Reintentar"
+  },
+  "errors": {
+    "required": {
+      "display_name": "Escribe tu nombre de entrenador.",
+      "country_code": "Selecciona tu país.",
+      "city": "Escribe tu ciudad.",
+      "coaching_formats": "Elige al menos un formato."
+    },
+    "tooLong": "Es demasiado largo.",
+    "invalidChoice": "Elige una de las opciones.",
+    "invalidFormat": "Quita los saltos de línea y otros caracteres ocultos.",
+    "invalid": "Revisa este valor."
+  }
+}

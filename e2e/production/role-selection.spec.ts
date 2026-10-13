@@ -135,7 +135,7 @@ test.describe("entry conditions", () => {
 test.describe("choosing a journey", () => {
   for (const [intent, path, title] of [
     ["fighter", "/en/app/onboarding/fighter", "Your fighter profile"],
-    ["coach", "/en/app/onboarding/coach", "Coach registration"],
+    ["coach", "/en/app/onboarding/coach", "Your coach profile"],
     ["gym", "/en/app/onboarding/gym", "Gym setup"],
     // SPX2, the public sponsor page (SF-43).
     ["sponsor", "/en/partners/apply", "Apply in 5 minutes. No account needed to start."],
@@ -157,7 +157,7 @@ test.describe("choosing a journey", () => {
       await cta(page).click();
       await page.waitForURL((url) => url.pathname === path);
       expect(resolutions(api).slice(before)[0]).toBe(`?intent=${intent}`);
-      // The journey's own page (Fighter onboarding, or the truthful placeholder).
+      // The journey's own page (Fighter or Coach onboarding, or the truthful placeholder).
       await expect(page.getByRole("heading", { level: 1, name: title })).toBeVisible();
       if (intent === "sponsor") {
         // A public application: no intent carried, never the workspace chooser (WA2).
@@ -169,6 +169,7 @@ test.describe("choosing a journey", () => {
       // No role, profile, capability, workspace or membership was written.
       expect(writes(api)).toEqual([]);
       expect(api.state()).toBeUndefined();
+      expect(api.coach()).toBeUndefined();
     });
   }
 

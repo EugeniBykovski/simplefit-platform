@@ -7,6 +7,11 @@ email registration → code → account registration (WA5) → Fighter onboardin
 Home. It runs in Chromium, Firefox and WebKit at desktop widths and in mobile
 Chromium and mobile WebKit.
 
+`coach-journey.spec.ts` (SF-52) drives the new-Coach journey the same way:
+email registration with `intent=coach` → WA5 → Coach onboarding (WCR1, WCR2,
+WCR7) → the Coach context choice → Coach home → sign out → email sign-in →
+Coach home.
+
 This is a **local acceptance gate, not part of CI**. It needs an API on a
 **disposable** database. Never point it at `simple_fit_dev`: the spec refuses
 any database whose name does not contain `e2e`, because it clears that

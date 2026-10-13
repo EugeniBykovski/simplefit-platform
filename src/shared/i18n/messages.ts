@@ -3,6 +3,7 @@ import type actions from "../../../messages/en/actions.json";
 import type apiHealth from "../../../messages/en/apiHealth.json";
 import type app from "../../../messages/en/app.json";
 import type auth from "../../../messages/en/auth.json";
+import type coachOnboarding from "../../../messages/en/coachOnboarding.json";
 import type common from "../../../messages/en/common.json";
 import type errors from "../../../messages/en/errors.json";
 import type fighterHome from "../../../messages/en/fighterHome.json";
@@ -35,6 +36,7 @@ export const namespaces = [
   "shells",
   "system",
   "fighterOnboarding",
+  "coachOnboarding",
   "accountRegistration",
   "roleSelection",
   "fighterHome",
@@ -57,6 +59,7 @@ export type Messages = {
   shells: typeof shells;
   system: typeof system;
   fighterOnboarding: typeof fighterOnboarding;
+  coachOnboarding: typeof coachOnboarding;
   accountRegistration: typeof accountRegistration;
   roleSelection: typeof roleSelection;
   fighterHome: typeof fighterHome;

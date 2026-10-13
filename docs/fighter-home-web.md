@@ -43,9 +43,10 @@ one.
 ## Lifecycle
 
 - **Who sees Home.** Every `web.app.fighter` page sits behind
-  `FighterGate`. It asks the entry resolver (no intent) and renders only on
-  `fighter_home`. Anyone else goes where the resolver says, with the page as
-  `returnTo`:
+  `FighterGate`. It asks the entry resolver (no intent) and renders only
+  when the entry reports the FIGHTER capability (SF-52: a user with both
+  profiles whose last chosen context is Coach still opens Fighter pages).
+  Anyone else goes where the resolver says, with the page as `returnTo`:
   - an incomplete account goes to account basics (WA5);
   - an unfinished Fighter onboarding goes back to it;
   - a user without a role goes to the role choice (WA6).
