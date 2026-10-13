@@ -1,19 +1,20 @@
 import { describe, expect, it, vi } from "vitest";
 
-import type { EntryResponseEntry } from "@/shared/api/generated/model";
 import { routeHref, webGuards } from "@/shared/routes/routes";
 
-import { destinationRoute, entryHref, entryParams } from "./entry";
+import { destinationRoute, entryHref, entryParams, isKnownEntry, type KnownEntry } from "./entry";
 
 vi.mock("@/entities/session", () => ({ callWithSession: vi.fn() }));
 
-const entry = (overrides: Partial<EntryResponseEntry>): EntryResponseEntry => ({
+const entry = (overrides: Partial<KnownEntry>): KnownEntry => ({
   destination: "role_selection",
   reason: "no_role_started",
   mandatory: false,
   intent: null,
+  context: null,
   account_registration: "complete",
   fighter_profile: "not_started",
+  coach_profile: "not_started",
   capabilities: [],
   ...overrides,
 });
@@ -145,5 +146,15 @@ describe("entryParams", () => {
     expect(entryParams({ intent: "fighter", returnTo: "/app/settings/security" })).toEqual({
       intent: "fighter",
     });
+  });
+});
+
+describe("destinations this client does not map yet (SF-51)", () => {
+  it("are unknown, never mapped or guessed as Fighter home", () => {
+    for (const destination of ["coach_home", "context_selection"] as const) {
+      const unknown = { ...entry({}), destination, capabilities: ["COACH" as const] };
+      expect(isKnownEntry(unknown)).toBe(false);
+    }
+    expect(isKnownEntry(entry({ destination: "coach_onboarding" }))).toBe(true);
   });
 });

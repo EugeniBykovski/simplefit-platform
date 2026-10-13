@@ -49,8 +49,10 @@ const entry = (overrides: Partial<EntryResponseEntry> = {}): EntryResponseEntry 
   reason: "no_role_started",
   mandatory: false,
   intent: null,
+  context: null,
   account_registration: "complete",
   fighter_profile: "not_started",
+  coach_profile: "not_started",
   capabilities: [],
   ...overrides,
 });
@@ -276,6 +278,30 @@ describe("GuestOnly (GUEST_ONLY)", () => {
     expect(api.urls()).toEqual(["/api/v1/me/entry"]);
     expect(api.headers()).toEqual(["Bearer test"]);
   });
+
+  it.each(["coach_home", "context_selection"] as const)(
+    "a destination this client does not map yet (%s) is a visible failure, never Fighter home",
+    async (destination) => {
+      window.history.replaceState(null, "", "/en/login");
+      session.current = { status: "authenticated", viewer: VIEWER };
+      stubEntries(
+        entry({
+          destination,
+          reason:
+            destination === "coach_home" ? "coach_onboarding_completed" : "context_choice_required",
+          coach_profile: "completed",
+          capabilities: ["COACH"],
+        }),
+      );
+      await renderWithProviders(
+        <GuestOnly entryFailure={failure}>
+          <p>sign in</p>
+        </GuestOnly>,
+      );
+      expect(await screen.findByText("Unknown entry destination")).toBeInTheDocument();
+      expect(navigation.replace).not.toHaveBeenCalled();
+    },
+  );
 
   it("an explicit Fighter intent is sent to the resolver and kept through account basics", async () => {
     window.history.replaceState(null, "", "/en/signup/verify?intent=fighter");

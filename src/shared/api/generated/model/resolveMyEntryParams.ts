@@ -4,6 +4,7 @@
  * Regenerate with `pnpm api:generate`; verify with `pnpm api:check`.
  * SimpleFit API 0.1.0
  */
+import type { ResolveMyEntryContext } from './resolveMyEntryContext';
 import type { ResolveMyEntryIntent } from './resolveMyEntryIntent';
 
 export type ResolveMyEntryParams = {
@@ -11,4 +12,9 @@ export type ResolveMyEntryParams = {
  * The journey the user explicitly tried to enter. Omit when there is none.
  */
 intent?: ResolveMyEntryIntent;
+/**
+ * An application context to open. Used only when that profile is completed (otherwise ignored, and it never
+ * starts onboarding); ignored when `intent` is present. Never stored: see `chooseMyEntryContext`.
+ */
+context?: ResolveMyEntryContext;
 };

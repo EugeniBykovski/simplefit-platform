@@ -6,6 +6,8 @@
  */
 import type { EntryResponseEntryAccountRegistration } from './entryResponseEntryAccountRegistration';
 import type { EntryResponseEntryCapabilitiesItem } from './entryResponseEntryCapabilitiesItem';
+import type { EntryResponseEntryCoachProfile } from './entryResponseEntryCoachProfile';
+import type { EntryResponseEntryContext } from './entryResponseEntryContext';
 import type { EntryResponseEntryDestination } from './entryResponseEntryDestination';
 import type { EntryResponseEntryFighterProfile } from './entryResponseEntryFighterProfile';
 import type { EntryResponseEntryIntent } from './entryResponseEntryIntent';
@@ -16,14 +18,26 @@ export type EntryResponseEntry = {
   account_registration: EntryResponseEntryAccountRegistration;
   /**
      * Capabilities derived from real backend state, in the client route registry's vocabulary
-     * (`FIGHTER` once Fighter onboarding is complete). A routing projection, not an authorization grant.
+     * (`FIGHTER` once Fighter onboarding is complete, `COACH` once Coach onboarding is complete; both can
+     * be held at once). A routing projection, not an authorization grant: `COACH` opens the user's own
+     * Coach application only.
      */
   capabilities: EntryResponseEntryCapabilitiesItem[];
+  /** Coach onboarding status (see `getMyCoachProfile`). */
+  coach_profile: EntryResponseEntryCoachProfile;
+  /**
+     * The requested `context` when it was applied (a completed profile, no `intent`, registration
+     * complete); otherwise `null`. Never stored.
+     * @nullable
+     */
+  context: EntryResponseEntryContext;
   /**
      * `account_registration`: shared basics and consents (mandatory). `role_selection`: the user chooses
-     * where to start. `fighter_onboarding` / `fighter_home`: Fighter onboarding, or the Fighter home once
-     * complete. `coach_onboarding`, `gym_onboarding`, `sponsor_application`: those journeys' entry points;
-     * nothing is created for them.
+     * a journey to start. `context_selection`: the user chooses between their profile contexts (both
+     * completed without a remembered choice, or both onboardings in progress). `fighter_onboarding` /
+     * `fighter_home` and `coach_onboarding` / `coach_home`: a profile's onboarding, or its application
+     * once completed. `gym_onboarding`, `sponsor_application`: those journeys' entry points; nothing is
+     * created for them. A client that does not know a destination must fail visibly, never guess.
      */
   destination: EntryResponseEntryDestination;
   /** Fighter onboarding status (see `getMyFighterProfile`). */
@@ -35,7 +49,7 @@ export type EntryResponseEntry = {
   intent: EntryResponseEntryIntent;
   /**
      * `true` when the client must go to `destination` even with a safe `returnTo` in hand (account
-     * registration, unfinished Fighter onboarding); the `returnTo` is kept and resolved again afterwards.
+     * registration, Fighter or Coach onboarding); the `returnTo` is kept and resolved again afterwards.
      */
   mandatory: boolean;
   /** Why this destination was chosen. For diagnostics and copy, not branching. */

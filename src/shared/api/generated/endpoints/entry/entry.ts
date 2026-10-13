@@ -20,6 +20,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ConflictResponse,
+  EntryContextChoiceRequest,
   EntryResponse,
   InternalErrorResponse,
   ResolveMyEntryParams,
@@ -28,7 +30,7 @@ import type {
 } from '../../model';
 
 import { apiFetch } from '../../../http/api-fetch';
-import type { ErrorType } from '../../../http/api-fetch';
+import type { ErrorType , BodyType } from '../../../http/api-fetch';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -67,16 +69,19 @@ export const getResolveMyEntryUrl = (params?: ResolveMyEntryParams,) => {
 
 /**
  * Resolves where the authenticated user should go next, as a semantic destination that each client maps to its
- * own route (never a path). The answer is derived from current state on every call: nothing is stored, so
- * repeated and concurrent calls are safe and advance on their own as registration and onboarding complete.
+ * own route (never a path). The answer is derived from current state on every call and resolving writes nothing,
+ * so repeated and concurrent calls are safe and advance on their own as registration and onboarding complete.
  *
- * Mandatory account registration wins over everything. `intent` is the journey the user explicitly tried to
- * enter (for example a Fighter call to action before signing in); it is navigation only and grants nothing.
- * Without an intent no role is assumed: an in-progress Fighter onboarding resumes, a completed one goes home,
- * otherwise the user chooses (`role_selection`). `capabilities` projects real backend state for routing and is
- * not an authorization grant.
+ * Order (ADR 0017 as amended by SF-51): mandatory account registration first; then an explicit `intent`
+ * (`fighter` / `coach` lead to that profile's home when completed, otherwise to its onboarding, whatever the
+ * other profile's state; `gym` / `sponsor` to their entry points); then a requested `context` that names a
+ * completed profile; otherwise the default by completed profiles: none - resume the one onboarding in progress
+ * or choose (`role_selection`, or `context_selection` when both are in progress); one - its home; both - the
+ * last context chosen with `chooseMyEntryContext`, or `context_selection`. `intent` and `context` are navigation
+ * only and grant nothing; `capabilities` projects completed profiles for routing and is not an authorization
+ * grant.
  *
- * * `validation_error` - `intent` is not one of the allowed values (`invalid_choice`).
+ * * `validation_error` - `intent` or `context` is not one of the allowed values (`invalid_choice`).
  * @summary Where to go next
  */
 export const resolveMyEntry = async (params?: ResolveMyEntryParams, options?: Parameters<typeof apiFetch>[1]): Promise<EntryResponse> => {
@@ -157,6 +162,129 @@ export function useResolveMyEntry<TData = Awaited<ReturnType<typeof resolveMyEnt
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getResolveMyEntryQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getChooseMyEntryContextUrl = () => {
+
+
+
+
+  return `/api/v1/me/entry/context`
+}
+
+/**
+ * Records an explicit choice between the viewer's completed profile contexts (a context switcher or the
+ * context-selection screen). With both Fighter and Coach completed and no `intent` or `context`, the entry then
+ * resolves to this context's home. Only a completed context can be chosen; the latest choice replaces the
+ * previous one, from any device. A navigation preference, never an authorization grant: it is re-checked on
+ * every resolution. Resolving the entry never records a choice.
+ *
+ * * `conflict` - that profile context is not completed; nothing is recorded.
+ * * `validation_error` - `context` is missing (`required`) or not an allowed value (`invalid_choice`); any
+ *   other field is rejected with `invalid` under its name.
+ * @summary Remember the application context I chose
+ */
+export const chooseMyEntryContext = async (entryContextChoiceRequest: EntryContextChoiceRequest, options?: Parameters<typeof apiFetch>[1]): Promise<void> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<void>(getChooseMyEntryContextUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(entryContextChoiceRequest)
+  }
+);}
+
+
+
+
+
+export const getChooseMyEntryContextQueryKey = (entryContextChoiceRequest?: BodyType<EntryContextChoiceRequest>,) => {
+    return [
+    'PUT', `/api/v1/me/entry/context`, entryContextChoiceRequest
+    ] as const;
+    }
+
+
+export const getChooseMyEntryContextQueryOptions = <TData = Awaited<ReturnType<typeof chooseMyEntryContext>>, TError = ErrorType<UnauthorizedResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(entryContextChoiceRequest: BodyType<EntryContextChoiceRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof chooseMyEntryContext>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getChooseMyEntryContextQueryKey(entryContextChoiceRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof chooseMyEntryContext>>> = ({ signal }) => chooseMyEntryContext(entryContextChoiceRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof chooseMyEntryContext>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ChooseMyEntryContextQueryResult = NonNullable<Awaited<ReturnType<typeof chooseMyEntryContext>>>
+export type ChooseMyEntryContextQueryError = ErrorType<UnauthorizedResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useChooseMyEntryContext<TData = Awaited<ReturnType<typeof chooseMyEntryContext>>, TError = ErrorType<UnauthorizedResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ entryContextChoiceRequest: BodyType<EntryContextChoiceRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof chooseMyEntryContext>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof chooseMyEntryContext>>,
+          TError,
+          Awaited<ReturnType<typeof chooseMyEntryContext>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useChooseMyEntryContext<TData = Awaited<ReturnType<typeof chooseMyEntryContext>>, TError = ErrorType<UnauthorizedResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ entryContextChoiceRequest: BodyType<EntryContextChoiceRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof chooseMyEntryContext>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof chooseMyEntryContext>>,
+          TError,
+          Awaited<ReturnType<typeof chooseMyEntryContext>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useChooseMyEntryContext<TData = Awaited<ReturnType<typeof chooseMyEntryContext>>, TError = ErrorType<UnauthorizedResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ entryContextChoiceRequest: BodyType<EntryContextChoiceRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof chooseMyEntryContext>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Remember the application context I chose
+ */
+
+export function useChooseMyEntryContext<TData = Awaited<ReturnType<typeof chooseMyEntryContext>>, TError = ErrorType<UnauthorizedResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ entryContextChoiceRequest: BodyType<EntryContextChoiceRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof chooseMyEntryContext>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getChooseMyEntryContextQueryOptions(entryContextChoiceRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

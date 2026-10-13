@@ -7,9 +7,11 @@
 
 /**
  * `account_registration`: shared basics and consents (mandatory). `role_selection`: the user chooses
- * where to start. `fighter_onboarding` / `fighter_home`: Fighter onboarding, or the Fighter home once
- * complete. `coach_onboarding`, `gym_onboarding`, `sponsor_application`: those journeys' entry points;
- * nothing is created for them.
+ * a journey to start. `context_selection`: the user chooses between their profile contexts (both
+ * completed without a remembered choice, or both onboardings in progress). `fighter_onboarding` /
+ * `fighter_home` and `coach_onboarding` / `coach_home`: a profile's onboarding, or its application
+ * once completed. `gym_onboarding`, `sponsor_application`: those journeys' entry points; nothing is
+ * created for them. A client that does not know a destination must fail visibly, never guess.
  */
 export type EntryResponseEntryDestination = typeof EntryResponseEntryDestination[keyof typeof EntryResponseEntryDestination];
 
@@ -17,9 +19,11 @@ export type EntryResponseEntryDestination = typeof EntryResponseEntryDestination
 export const EntryResponseEntryDestination = {
   account_registration: 'account_registration',
   role_selection: 'role_selection',
+  context_selection: 'context_selection',
   fighter_onboarding: 'fighter_onboarding',
   fighter_home: 'fighter_home',
   coach_onboarding: 'coach_onboarding',
+  coach_home: 'coach_home',
   gym_onboarding: 'gym_onboarding',
   sponsor_application: 'sponsor_application',
 } as const;
