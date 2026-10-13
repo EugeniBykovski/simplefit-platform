@@ -1,7 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { useSearchParams } from "next/navigation";
+import { createContext, useContext, useEffect, useId, useMemo, type ReactNode } from "react";
 
 import { getResolveMyEntryQueryKey } from "@/shared/api/generated/endpoints/entry/entry";
 import { useRouter } from "@/shared/i18n/navigation";
@@ -23,21 +24,29 @@ export function useEntryFailure(): EntryFailureState {
   return state;
 }
 
-/** The continuation (`returnTo`, `intent`) of the current URL, read once in the browser. */
+/**
+ * The continuation (`returnTo`, `intent`) of the current URL. Read from the
+ * router, not `window.location`: a client-side navigation renders the new
+ * page before the browser's URL changes, so `/app?intent=fighter` reached by
+ * a link would otherwise resolve with the previous page's query.
+ */
 export function useUrlContinuation(): Continuation {
-  const [continuation] = useState(() =>
-    typeof window === "undefined" ? {} : continuationOf(window.location.search),
-  );
-  return continuation;
+  const search = useSearchParams().toString();
+  return useMemo(() => continuationOf(search), [search]);
 }
 
 /**
  * The entry of the signed-in user for `continuation` (`GET /api/v1/me/entry`).
- * Never cached between mounts: each resolution reflects current state.
+ * Never shared between mounts: each mount resolves anew under its own key, so
+ * a page never acts on another page's earlier answer for the same intent (the
+ * onboarding gate's "onboarding" read before completion, say, reaching `/app`
+ * after it). Invalidating the operation's key prefix still refreshes every
+ * mounted resolution.
  */
 export function useEntry(continuation: Continuation) {
+  const mount = useId();
   return useQuery<Entry>({
-    queryKey: getResolveMyEntryQueryKey(entryParams(continuation)),
+    queryKey: [...getResolveMyEntryQueryKey(entryParams(continuation)), mount],
     queryFn: ({ signal }) => fetchEntry(continuation, signal),
     retry: false,
     staleTime: 0,

@@ -67,8 +67,10 @@ resolves to the resume step.
   moving; Continue also requires WF0's fields. Finish saves, then completes;
   WF6 shows only after the API confirmed completion in this tab.
 - A completed Fighter on this route (any `?step=`, including `complete`)
-  leaves through `/app`, where the entry resolver (SF-45) sends them home.
-  "Go to my home" on WF6 takes the same path, so there is no redirect loop.
+  leaves through `/app?intent=fighter`, where the entry resolver (SF-45)
+  sends them home. "Go to my home" on WF6 takes the same path, so there is no
+  redirect loop; the Fighter intent keeps a Coach whose last chosen context
+  is Coach (SF-51, SF-52) on the Fighter journey.
 - Completion refused for an incomplete account registration (SF-44) shows a
   notice linking to account basics (WA5) with the Fighter intent. The
   onboarding gate normally sends such a user to WA5 first.

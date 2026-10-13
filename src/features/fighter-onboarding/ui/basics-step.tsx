@@ -14,7 +14,7 @@ import { Input } from "@/shared/ui/input";
 import { rejectionOf, type FieldMessage } from "../model/errors";
 import { basicsErrors, basicsFrom, basicsPatch, type BasicsValues } from "../model/form-values";
 import type { FormStep } from "../model/steps";
-import { describedBy, FormField } from "./form-field";
+import { describedBy, FormField } from "@/shared/ui/form-field";
 import { BasicsPreview } from "./profile-preview";
 import { StepNotice, type StepProblem } from "./step-notice";
 

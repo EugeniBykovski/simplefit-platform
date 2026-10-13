@@ -1,0 +1,176 @@
+{
+  "metaTitle": "Inscription coach",
+  "frame": {
+    "badge": "Inscription coach",
+    "doneBadge": "Coach · terminé",
+    "saveExit": "Enregistrer et quitter"
+  },
+  "nav": {
+    "label": "Étapes de l’inscription coach",
+    "title": "Inscription coach",
+    "note": "Enregistré au fur et à mesure · terminez plus tard depuis n’importe quel appareil.",
+    "steps": {
+      "account": "Compte",
+      "profile": "Profil coach",
+      "type": "Type de coaching",
+      "complete": "Terminé"
+    },
+    "done": "fait",
+    "unavailable": "une fois terminé"
+  },
+  "loading": "Chargement de votre profil coach…",
+  "loadFailure": {
+    "title": "Impossible de charger votre profil coach.",
+    "body": "Vérifiez votre connexion et réessayez.",
+    "retry": "Réessayer"
+  },
+  "notices": {
+    "failure": {
+      "save": "Impossible d’enregistrer vos modifications.",
+      "finish": "Impossible de terminer votre inscription coach.",
+      "typed": "Vérifiez votre connexion. Rien de ce que vous avez saisi n’est perdu.",
+      "selected": "Vérifiez votre connexion. Vos choix sont conservés.",
+      "retry": "Réessayer"
+    },
+    "invalid": {
+      "title": "Vérifiez les champs signalés.",
+      "body": "Corrigez-les pour enregistrer cette étape."
+    },
+    "rejected": {
+      "title": "Il manque des informations à votre profil coach.",
+      "body": "Ajoutez {fields} pour terminer.",
+      "goProfile": "Aller au profil coach",
+      "fields": {
+        "display_name": "votre nom de coach",
+        "country_code": "votre pays",
+        "city": "votre ville"
+      }
+    },
+    "account": {
+      "title": "Complétez d’abord les infos de votre compte.",
+      "body": "Votre nom, votre date de naissance et vos consentements passent avant votre profil coach.",
+      "action": "Aller aux infos du compte"
+    }
+  },
+  "profile": {
+    "eyebrow": "Étape 2 sur 3 · Profil coach",
+    "title": "Votre profil coach",
+    "lead": "Comment les boxeurs vous reconnaîtront en tant que coach. Le nom de coach, le pays et la ville sont obligatoires.",
+    "name": {
+      "label": "Nom de coach",
+      "placeholder": "Votre nom de coach",
+      "help": "Visible par les boxeurs. Jusqu’à 60 caractères.",
+      "suggested": "Suggéré à partir du nom de votre compte. Modifiez-le si vous coachez sous un autre nom."
+    },
+    "brand": {
+      "label": "Nom de marque · facultatif",
+      "placeholder": "Votre activité de coaching",
+      "help": "Votre activité de coaching, si vous en avez une. Jusqu’à 80 caractères."
+    },
+    "country": {
+      "label": "Pays",
+      "placeholder": "Choisir un pays",
+      "help": "Cherchez dans la liste. Enregistré comme code pays ISO.",
+      "search": "Rechercher un pays",
+      "searchPlaceholder": "Rechercher",
+      "empty": "Aucun pays ne correspond."
+    },
+    "city": {
+      "label": "Ville",
+      "placeholder": "Votre ville",
+      "help": "Texte libre."
+    },
+    "bio": {
+      "label": "Bio · facultatif",
+      "placeholder": "Ce que vous enseignez et comment vous travaillez.",
+      "help": "Texte brut, jusqu’à 500 caractères."
+    },
+    "languages": {
+      "label": "Langues de coaching · facultatif",
+      "help": "Les langues dans lesquelles vous coachez.",
+      "options": {
+        "en": "English",
+        "pl": "Polski",
+        "ru": "Русский",
+        "be": "Беларуская",
+        "uk": "Українська"
+      }
+    },
+    "count": "{count} / {max}",
+    "continue": "Continuer",
+    "saving": "Enregistrement…"
+  },
+  "type": {
+    "eyebrow": "Étape 3 sur 3 · Type de coaching",
+    "title": "Comment coachez-vous ?",
+    "lead": "Choisissez tous les formats que vous proposez. Vous pourrez changer cela plus tard.",
+    "formats": {
+      "label": "Formats de coaching",
+      "help": "Choisissez-en au moins un.",
+      "options": {
+        "personal_training": {
+          "label": "Coaching individuel",
+          "description": "Séances 1:1"
+        },
+        "group_coaching": {
+          "label": "Coaching de groupe",
+          "description": "Cours et séances d’équipe"
+        },
+        "online_coaching": {
+          "label": "Coaching en ligne",
+          "description": "Analyse vidéo, programmes à distance"
+        },
+        "fight_camps": {
+          "label": "Camps de combat",
+          "description": "Préparations de 6 à 12 semaines"
+        }
+      }
+    },
+    "levels": {
+      "label": "Niveau de compétition · facultatif",
+      "help": "Les boxeurs que vous préparez aux combats.",
+      "options": {
+        "amateur": "Amateur",
+        "professional": "Professionnel"
+      }
+    },
+    "back": "Retour",
+    "finish": "Terminer",
+    "finishing": "Finalisation…"
+  },
+  "preview": {
+    "title": "Aperçu coach",
+    "name": "Votre nom de coach",
+    "line": "Coach · Ville",
+    "formats": "Vos formats apparaissent ici.",
+    "separate": "Votre profil coach est distinct du nom de votre compte et d’un profil de boxeur."
+  },
+  "done": {
+    "title": "Votre profil coach est prêt.",
+    "lead": "Il est enregistré dans votre compte et vous pourrez le modifier plus tard. Votre éventuel profil de boxeur reste inchangé.",
+    "pendingTitle": "Les outils coach ne sont pas encore disponibles.",
+    "pendingBody": "Votre accueil coach présente ce qui est prévu. Votre profil est prêt.",
+    "card": "Votre profil coach",
+    "formats": "Formats",
+    "competition": "Compétition",
+    "languages": "Langues",
+    "none": "—",
+    "continue": "Continuer vers l’accueil coach",
+    "opening": "Ouverture…",
+    "failureTitle": "Impossible d’ouvrir votre accueil coach.",
+    "failureBody": "Votre profil coach est enregistré. Réessayez.",
+    "retry": "Réessayer"
+  },
+  "errors": {
+    "required": {
+      "display_name": "Saisissez votre nom de coach.",
+      "country_code": "Choisissez votre pays.",
+      "city": "Saisissez votre ville.",
+      "coaching_formats": "Choisissez au moins un format."
+    },
+    "tooLong": "C’est trop long.",
+    "invalidChoice": "Choisissez une des options.",
+    "invalidFormat": "Supprimez les retours à la ligne et autres caractères invisibles.",
+    "invalid": "Vérifiez cette valeur."
+  }
+}

@@ -16,8 +16,9 @@ import { CompletedProfileCard } from "./profile-preview";
  * WF6 "You're in" (Fighter sign-up · complete): shown only once the API has
  * recorded completion (`status: completed`). It states that and nothing else:
  * no email, coach, gym or session is claimed. "Go to my home" goes through
- * the application entry, so the backend resolver (SF-45) picks the
- * destination (the Fighter home once onboarding is complete).
+ * the application entry with the Fighter intent, so the backend resolver
+ * (SF-45, SF-51) picks the destination: the Fighter home once onboarding is
+ * complete, even for a Coach whose last chosen context is Coach.
  */
 export function CompleteStep({ profile }: { profile: FighterProfile }) {
   const t = useTranslations("fighterOnboarding.done");
@@ -43,7 +44,7 @@ export function CompleteStep({ profile }: { profile: FighterProfile }) {
       <p className="type-body-lg text-pretty text-muted-foreground">{t("lead")}</p>
       <CompletedProfileCard basics={basics} values={profileFrom(profile)} />
       <Button asChild size="xl" className="h-13 rounded-md-lg px-5.5 type-body">
-        <Link href={routeHref("web.app")}>{t("home")}</Link>
+        <Link href={routeHref("web.app", {}, { intent: "fighter" })}>{t("home")}</Link>
       </Button>
     </div>
   );

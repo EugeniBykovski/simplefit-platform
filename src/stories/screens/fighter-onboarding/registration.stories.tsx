@@ -301,7 +301,7 @@ export const Completed = story(
     await heading(canvasElement, "You’re in, Alex.");
     await expect(
       within(canvasElement).getByRole("link", { name: "Go to my home" }),
-    ).toHaveAttribute("href", "/en/app");
+    ).toHaveAttribute("href", "/en/app?intent=fighter");
   },
 );
 Completed.name = "WF6 · completed (after Finish)";

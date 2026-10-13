@@ -1,0 +1,176 @@
+{
+  "metaTitle": "Coach-Registrierung",
+  "frame": {
+    "badge": "Coach-Registrierung",
+    "doneBadge": "Coach · fertig",
+    "saveExit": "Speichern & beenden"
+  },
+  "nav": {
+    "label": "Schritte der Coach-Registrierung",
+    "title": "Coach-Registrierung",
+    "note": "Wird laufend gespeichert · später auf jedem Gerät abschließen.",
+    "steps": {
+      "account": "Konto",
+      "profile": "Coach-Profil",
+      "type": "Coaching-Art",
+      "complete": "Fertig"
+    },
+    "done": "erledigt",
+    "unavailable": "nach dem Abschluss"
+  },
+  "loading": "Dein Coach-Profil wird geladen…",
+  "loadFailure": {
+    "title": "Dein Coach-Profil konnte nicht geladen werden.",
+    "body": "Prüfe deine Verbindung und versuche es erneut.",
+    "retry": "Erneut versuchen"
+  },
+  "notices": {
+    "failure": {
+      "save": "Deine Änderungen konnten nicht gespeichert werden.",
+      "finish": "Deine Coach-Registrierung konnte nicht abgeschlossen werden.",
+      "typed": "Prüfe deine Verbindung. Nichts, was du eingegeben hast, ist verloren.",
+      "selected": "Prüfe deine Verbindung. Deine Auswahl bleibt erhalten.",
+      "retry": "Erneut"
+    },
+    "invalid": {
+      "title": "Prüfe die markierten Felder.",
+      "body": "Korrigiere sie, um diesen Schritt zu speichern."
+    },
+    "rejected": {
+      "title": "In deinem Coach-Profil fehlen Angaben.",
+      "body": "Ergänze {fields}, um abzuschließen.",
+      "goProfile": "Zum Coach-Profil",
+      "fields": {
+        "display_name": "deinen Coach-Namen",
+        "country_code": "dein Land",
+        "city": "deine Stadt"
+      }
+    },
+    "account": {
+      "title": "Vervollständige zuerst deine Kontodaten.",
+      "body": "Name, Geburtsdatum und Einwilligungen kommen vor deinem Coach-Profil.",
+      "action": "Zu den Kontodaten"
+    }
+  },
+  "profile": {
+    "eyebrow": "Schritt 2 von 3 · Coach-Profil",
+    "title": "Dein Coach-Profil",
+    "lead": "Woran Boxer:innen dich als Coach erkennen. Coach-Name, Land und Stadt sind Pflicht.",
+    "name": {
+      "label": "Coach-Name",
+      "placeholder": "Dein Coach-Name",
+      "help": "Für Boxer:innen sichtbar. Bis zu 60 Zeichen.",
+      "suggested": "Aus deinem Kontonamen vorgeschlagen. Ändere ihn, wenn du unter einem anderen Namen coachst."
+    },
+    "brand": {
+      "label": "Markenname · optional",
+      "placeholder": "Dein Coaching-Business",
+      "help": "Dein Coaching-Business, falls du eines hast. Bis zu 80 Zeichen."
+    },
+    "country": {
+      "label": "Land",
+      "placeholder": "Land auswählen",
+      "help": "In der Liste suchen. Gespeichert als ISO-Ländercode.",
+      "search": "Länder durchsuchen",
+      "searchPlaceholder": "Suchen",
+      "empty": "Kein passendes Land."
+    },
+    "city": {
+      "label": "Stadt",
+      "placeholder": "Deine Stadt",
+      "help": "Freitext."
+    },
+    "bio": {
+      "label": "Bio · optional",
+      "placeholder": "Was du trainierst und wie du arbeitest.",
+      "help": "Reiner Text, bis zu 500 Zeichen."
+    },
+    "languages": {
+      "label": "Coaching-Sprachen · optional",
+      "help": "Die Sprachen, in denen du coachst.",
+      "options": {
+        "en": "English",
+        "pl": "Polski",
+        "ru": "Русский",
+        "be": "Беларуская",
+        "uk": "Українська"
+      }
+    },
+    "count": "{count} / {max}",
+    "continue": "Weiter",
+    "saving": "Wird gespeichert…"
+  },
+  "type": {
+    "eyebrow": "Schritt 3 von 3 · Coaching-Art",
+    "title": "Wie coachst du?",
+    "lead": "Wähle alle Formate, die du anbietest. Du kannst das später ändern.",
+    "formats": {
+      "label": "Coaching-Formate",
+      "help": "Wähle mindestens eines.",
+      "options": {
+        "personal_training": {
+          "label": "Personal Training",
+          "description": "1:1-Einheiten"
+        },
+        "group_coaching": {
+          "label": "Gruppen-Coaching",
+          "description": "Kurse und Team-Einheiten"
+        },
+        "online_coaching": {
+          "label": "Online-Coaching",
+          "description": "Videoanalyse, Pläne aus der Ferne"
+        },
+        "fight_camps": {
+          "label": "Fight Camps",
+          "description": "6–12 Wochen bis zum Höhepunkt"
+        }
+      }
+    },
+    "levels": {
+      "label": "Wettkampfniveau · optional",
+      "help": "Die Boxer:innen, die du auf Kämpfe vorbereitest.",
+      "options": {
+        "amateur": "Amateur",
+        "professional": "Profi"
+      }
+    },
+    "back": "Zurück",
+    "finish": "Abschließen",
+    "finishing": "Wird abgeschlossen…"
+  },
+  "preview": {
+    "title": "Coach-Vorschau",
+    "name": "Dein Coach-Name",
+    "line": "Coach · Stadt",
+    "formats": "Deine Formate erscheinen hier.",
+    "separate": "Dein Coach-Profil ist getrennt von deinem Kontonamen und von einem Boxerprofil."
+  },
+  "done": {
+    "title": "Dein Coach-Profil ist fertig.",
+    "lead": "Es ist in deinem Konto gespeichert und du kannst es später ändern. Ein vorhandenes Boxerprofil bleibt, wie es ist.",
+    "pendingTitle": "Coach-Werkzeuge sind noch nicht verfügbar.",
+    "pendingBody": "Deine Coach-Startseite zeigt, was geplant ist. Dein Profil ist dafür bereit.",
+    "card": "Dein Coach-Profil",
+    "formats": "Formate",
+    "competition": "Wettkampf",
+    "languages": "Sprachen",
+    "none": "—",
+    "continue": "Weiter zur Coach-Startseite",
+    "opening": "Wird geöffnet…",
+    "failureTitle": "Deine Coach-Startseite konnte nicht geöffnet werden.",
+    "failureBody": "Dein Coach-Profil ist gespeichert. Versuche es erneut.",
+    "retry": "Erneut versuchen"
+  },
+  "errors": {
+    "required": {
+      "display_name": "Gib deinen Coach-Namen ein.",
+      "country_code": "Wähle dein Land.",
+      "city": "Gib deine Stadt ein.",
+      "coaching_formats": "Wähle mindestens ein Format."
+    },
+    "tooLong": "Das ist zu lang.",
+    "invalidChoice": "Wähle eine der Optionen.",
+    "invalidFormat": "Entferne Zeilenumbrüche und andere unsichtbare Zeichen.",
+    "invalid": "Prüfe diesen Wert."
+  }
+}

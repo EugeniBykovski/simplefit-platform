@@ -31,6 +31,8 @@ const REAL_SCREENS = [
   "web.dev.design-system",
   // SF-38: Fighter web registration (WF0, WF1, WF6).
   "web.app.onboarding.fighter",
+  // SF-52: Coach web registration (WCR1, WCR2, WCR7).
+  "web.app.onboarding.coach",
   // SF-40: the Fighter home, its first run and the nine-step tour (FRW1, FRW2).
   "web.app.home",
   // SF-46: account basics & consent (WA5).

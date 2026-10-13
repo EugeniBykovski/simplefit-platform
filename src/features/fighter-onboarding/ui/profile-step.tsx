@@ -25,7 +25,7 @@ import {
 } from "../model/form-values";
 import { REQUIREMENT_STEP, type FormStep } from "../model/steps";
 import type { StepSaver } from "./basics-step";
-import { ChoiceField, describedBy, FormField } from "./form-field";
+import { ChoiceField, describedBy, FormField } from "@/shared/ui/form-field";
 import { ProfileSummary } from "./profile-preview";
 import { StepNotice, type StepProblem } from "./step-notice";
 

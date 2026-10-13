@@ -8,7 +8,7 @@ import { jsonResponse, renderWithProviders } from "@/test/render";
 
 import { useEntryChoice } from "./entry-choice";
 import { EntryRedirect, useEntryFailure } from "./entry-redirect";
-import { FighterGate } from "./fighter-gate";
+import { CoachGate, FighterGate } from "./workspace-gate";
 import { OnboardingGate } from "./onboarding-gate";
 import { GuestOnly, RequireSession } from "./session-gate";
 
@@ -31,8 +31,15 @@ vi.mock("@/shared/i18n/navigation", () => ({
   usePathname: () => navigation.pathname,
   useRouter: () => ({ replace: navigation.replace, push: navigation.push }),
 }));
+// The router's search params: the URL's (the tests set it with replaceState),
+// unless a test sets the router's own (a client navigation still in flight).
+const router = vi.hoisted(() => ({ search: undefined as string | undefined }));
+vi.mock("next/navigation", () => ({
+  useSearchParams: () => new URLSearchParams(router.search ?? window.location.search),
+}));
 
 beforeEach(() => {
+  router.search = undefined;
   navigation.replace.mockClear();
   navigation.push.mockClear();
   navigation.pathname = "/app/coach/fighters";
@@ -279,29 +286,45 @@ describe("GuestOnly (GUEST_ONLY)", () => {
     expect(api.headers()).toEqual(["Bearer test"]);
   });
 
-  it.each(["coach_home", "context_selection"] as const)(
-    "a destination this client does not map yet (%s) is a visible failure, never Fighter home",
-    async (destination) => {
-      window.history.replaceState(null, "", "/en/login");
-      session.current = { status: "authenticated", viewer: VIEWER };
-      stubEntries(
-        entry({
-          destination,
-          reason:
-            destination === "coach_home" ? "coach_onboarding_completed" : "context_choice_required",
-          coach_profile: "completed",
-          capabilities: ["COACH"],
-        }),
-      );
-      await renderWithProviders(
-        <GuestOnly entryFailure={failure}>
-          <p>sign in</p>
-        </GuestOnly>,
-      );
-      expect(await screen.findByText("Unknown entry destination")).toBeInTheDocument();
-      expect(navigation.replace).not.toHaveBeenCalled();
-    },
-  );
+  it("context_selection, which no client maps yet, is a visible failure, never Fighter home", async () => {
+    window.history.replaceState(null, "", "/en/login");
+    session.current = { status: "authenticated", viewer: VIEWER };
+    stubEntries(
+      entry({
+        destination: "context_selection",
+        reason: "context_choice_required",
+        fighter_profile: "completed",
+        coach_profile: "completed",
+        capabilities: ["FIGHTER", "COACH"],
+      }),
+    );
+    await renderWithProviders(
+      <GuestOnly entryFailure={failure}>
+        <p>sign in</p>
+      </GuestOnly>,
+    );
+    expect(await screen.findByText("Unknown entry destination")).toBeInTheDocument();
+    expect(navigation.replace).not.toHaveBeenCalled();
+  });
+
+  it("a completed Coach enters Coach home (SF-52)", async () => {
+    window.history.replaceState(null, "", "/en/login");
+    session.current = { status: "authenticated", viewer: VIEWER };
+    stubEntries(
+      entry({
+        destination: "coach_home",
+        reason: "coach_onboarding_completed",
+        coach_profile: "completed",
+        capabilities: ["COACH"],
+      }),
+    );
+    await renderWithProviders(
+      <GuestOnly entryFailure={failure}>
+        <p>sign in</p>
+      </GuestOnly>,
+    );
+    await waitFor(() => expect(navigation.replace).toHaveBeenCalledExactlyOnceWith("/app/coach"));
+  });
 
   it("an explicit Fighter intent is sent to the resolver and kept through account basics", async () => {
     window.history.replaceState(null, "", "/en/signup/verify?intent=fighter");
@@ -444,6 +467,62 @@ describe("EntryRedirect (/app)", () => {
     await renderWithProviders(<EntryRedirect pending={<p>launch</p>} failure={failure} />);
     await waitFor(() => expect(navigation.replace).toHaveBeenLastCalledWith("/app/home"));
     expect(navigation.replace).toHaveBeenCalledTimes(3);
+  });
+
+  it("never acts on another mount's earlier answer for the same intent (SF-52)", async () => {
+    // The onboarding gate resolved intent=fighter before completion...
+    navigation.pathname = "/app/onboarding/fighter";
+    window.history.replaceState(null, "", "/en/app/onboarding/fighter?intent=fighter");
+    session.current = { status: "authenticated", viewer: VIEWER };
+    const api = stubEntries(
+      entry({ destination: "fighter_onboarding", mandatory: true, fighter_profile: "in_progress" }),
+      entry({
+        destination: "fighter_home",
+        reason: "fighter_onboarding_completed",
+        fighter_profile: "completed",
+        capabilities: ["FIGHTER"],
+      }),
+    );
+    const gate = (
+      <OnboardingGate pending={<p>launch</p>} failure={failure}>
+        <p>onboarding page</p>
+      </OnboardingGate>
+    );
+    const view = await renderWithProviders(gate);
+    expect(await screen.findByText("onboarding page")).toBeInTheDocument();
+    // ...and /app?intent=fighter opens after completion, in the same client.
+    view.rerender(
+      <>
+        {gate}
+        <EntryRedirect pending={<p>launch</p>} failure={failure} />
+      </>,
+    );
+    await waitFor(() => expect(navigation.replace).toHaveBeenLastCalledWith("/app/home"));
+    expect(navigation.replace).not.toHaveBeenCalledWith("/app/onboarding/fighter?intent=fighter");
+    expect(api.urls()).toEqual([
+      "/api/v1/me/entry?intent=fighter",
+      "/api/v1/me/entry?intent=fighter",
+    ]);
+  });
+
+  it("resolves with the router's query, not a URL the browser has not switched to yet (SF-52)", async () => {
+    // A link to /app?intent=fighter from a page whose URL had no intent.
+    window.history.replaceState(null, "", "/en/app/onboarding/fighter?step=complete");
+    router.search = "?intent=fighter";
+    session.current = { status: "authenticated", viewer: VIEWER };
+    const api = stubEntries(
+      entry({
+        destination: "fighter_home",
+        reason: "fighter_onboarding_completed",
+        intent: "fighter",
+        fighter_profile: "completed",
+        coach_profile: "completed",
+        capabilities: ["FIGHTER", "COACH"],
+      }),
+    );
+    await renderWithProviders(<EntryRedirect pending={<p>launch</p>} failure={failure} />);
+    await waitFor(() => expect(navigation.replace).toHaveBeenLastCalledWith("/app/home"));
+    expect(api.urls()).toEqual(["/api/v1/me/entry?intent=fighter"]);
   });
 });
 
@@ -616,6 +695,90 @@ describe("FighterGate (SF-40)", () => {
     await userEvent.click(await screen.findByRole("button", { name: "Unknown entry destination" }));
     expect(await screen.findByText("fighter page")).toBeInTheDocument();
     expect(navigation.replace).not.toHaveBeenCalled();
+  });
+});
+
+describe("FighterGate and CoachGate with both profiles (SF-52)", () => {
+  const BOTH = { fighter_profile: "completed", coach_profile: "completed" } as const;
+
+  beforeEach(() => {
+    session.current = { status: "authenticated", viewer: VIEWER };
+  });
+
+  it("keeps the Fighter area open to a Fighter whose last chosen context is Coach", async () => {
+    navigation.pathname = "/app/home";
+    window.history.replaceState(null, "", "/en/app/home");
+    stubEntries(
+      entry({
+        ...BOTH,
+        destination: "coach_home",
+        reason: "last_context",
+        capabilities: ["FIGHTER", "COACH"],
+      }),
+    );
+    await renderWithProviders(
+      <FighterGate pending={<p>launch</p>} failure={failure}>
+        <p>fighter page</p>
+      </FighterGate>,
+    );
+    expect(await screen.findByText("fighter page")).toBeInTheDocument();
+    expect(navigation.replace).not.toHaveBeenCalled();
+  });
+
+  it("renders the Coach area for a completed Coach, asking without an intent", async () => {
+    navigation.pathname = "/app/coach";
+    window.history.replaceState(null, "", "/en/app/coach");
+    const api = stubEntries(
+      entry({
+        destination: "fighter_home",
+        reason: "last_context",
+        ...BOTH,
+        capabilities: ["FIGHTER", "COACH"],
+      }),
+    );
+    await renderWithProviders(
+      <CoachGate pending={<p>launch</p>} failure={failure}>
+        <p>coach page</p>
+      </CoachGate>,
+    );
+    expect(await screen.findByText("coach page")).toBeInTheDocument();
+    expect(navigation.replace).not.toHaveBeenCalled();
+    expect(api.urls()).toEqual(["/api/v1/me/entry"]);
+  });
+
+  it.each([
+    [
+      "a Fighter without a Coach profile",
+      entry({
+        destination: "fighter_home",
+        reason: "fighter_onboarding_completed",
+        fighter_profile: "completed",
+        capabilities: ["FIGHTER"],
+      }),
+      "/app/home",
+    ],
+    [
+      "an unfinished Coach onboarding",
+      entry({
+        destination: "coach_onboarding",
+        reason: "coach_onboarding_in_progress",
+        mandatory: true,
+        coach_profile: "in_progress",
+      }),
+      "/app/onboarding/coach?returnTo=%2Fapp%2Fcoach",
+    ],
+    ["no role yet", entry(), "/app/onboarding/role?returnTo=%2Fapp%2Fcoach"],
+  ])("sends %s away from the Coach area, where the resolver says", async (_, answer, href) => {
+    navigation.pathname = "/app/coach";
+    window.history.replaceState(null, "", "/en/app/coach");
+    stubEntries(answer);
+    await renderWithProviders(
+      <CoachGate pending={<p>launch</p>} failure={failure}>
+        <p>coach page</p>
+      </CoachGate>,
+    );
+    await waitFor(() => expect(navigation.replace).toHaveBeenCalledExactlyOnceWith(href));
+    expect(screen.queryByText("coach page")).not.toBeInTheDocument();
   });
 });
 
