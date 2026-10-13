@@ -32,13 +32,14 @@ export type CoachProfileResponseCoachProfile = {
      */
   city: string | null;
   /**
-     * How the coach works. Any number, no repeats; `null` or `[]` clears. At least one is required to
+     * How the coach works. Any number; a repeated value is rejected with `invalid`; `null` or `[]` clears. At least one is required to
      * complete onboarding, and a completed profile cannot clear them all.
      */
   coaching_formats: CoachProfileResponseCoachProfileCoachingFormatsItem[];
   /**
      * Optional competitive levels of the fighters the coach prepares (same keys as the fighter
-     * profile's experience levels). Any number, no repeats; `null` or `[]` clears.
+     * profile's experience levels). Any number; a repeated value is rejected with `invalid`; `null` or
+     * `[]` clears.
      */
   competition_levels: CoachProfileResponseCoachProfileCompetitionLevelsItem[];
   /**
@@ -59,8 +60,8 @@ export type CoachProfileResponseCoachProfile = {
      */
   display_name: string | null;
   /**
-     * Languages the coach coaches in (ISO 639-1; spoken languages, not app locales). Any number, no
-     * repeats; `null` or `[]` clears.
+     * Languages the coach coaches in (ISO 639-1; spoken languages, not app locales). Any number; a repeated
+     * value is rejected with `invalid`; `null` or `[]` clears.
      */
   languages: CoachProfileResponseCoachProfileLanguagesItem[];
   onboarding: CoachProfileResponseCoachProfileOnboarding;

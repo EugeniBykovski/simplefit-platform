@@ -11,8 +11,9 @@ import type { CoachProfileUpdateRequestLanguagesItem } from './coachProfileUpdat
 /**
  * Any subset of the coach profile. Omitted fields are unchanged; `null` (or an empty or blank text, or
  * `[]` for a selection) clears a field. Nothing is required while onboarding is in progress and saving
- * never completes it. After completion the required fields can be changed but not cleared. Fields
- * outside this schema (for example ids or completion times) are ignored.
+ * never completes it. After completion the required fields can be changed but not cleared. A field
+ * outside this schema (for example `user_id`, `coach_id`, `gym_id` or `onboarding_completed_at`) is
+ * rejected with `422 validation_error`, code `invalid` under that field name, and nothing is saved.
  */
 export interface CoachProfileUpdateRequest {
   /**
@@ -37,14 +38,15 @@ export interface CoachProfileUpdateRequest {
      */
   city?: string | null;
   /**
-     * How the coach works. Any number, no repeats; `null` or `[]` clears. At least one is required to
+     * How the coach works. Any number; a repeated value is rejected with `invalid`; `null` or `[]` clears. At least one is required to
      * complete onboarding, and a completed profile cannot clear them all.
      * @nullable
      */
   coaching_formats?: CoachProfileUpdateRequestCoachingFormatsItem[] | null;
   /**
      * Optional competitive levels of the fighters the coach prepares (same keys as the fighter
-     * profile's experience levels). Any number, no repeats; `null` or `[]` clears.
+     * profile's experience levels). Any number; a repeated value is rejected with `invalid`; `null` or
+     * `[]` clears.
      * @nullable
      */
   competition_levels?: CoachProfileUpdateRequestCompetitionLevelsItem[] | null;
@@ -66,8 +68,8 @@ export interface CoachProfileUpdateRequest {
      */
   display_name?: string | null;
   /**
-     * Languages the coach coaches in (ISO 639-1; spoken languages, not app locales). Any number, no
-     * repeats; `null` or `[]` clears.
+     * Languages the coach coaches in (ISO 639-1; spoken languages, not app locales). Any number; a repeated
+     * value is rejected with `invalid`; `null` or `[]` clears.
      * @nullable
      */
   languages?: CoachProfileUpdateRequestLanguagesItem[] | null;

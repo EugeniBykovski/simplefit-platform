@@ -164,8 +164,10 @@ export const getUpdateMyCoachProfileUrl = () => {
 /**
  * Saves any subset of the coach profile; the first save that stores a value creates the profile
  * (`in_progress`). Values are validated but nothing is required until completion, and saving never
- * completes onboarding. An invalid request changes nothing. Saving does not require completed account
- * registration.
+ * completes onboarding. A field outside `CoachProfileUpdateRequest` (including ids, the owner and the
+ * completion time) is rejected with `422 validation_error` and code `invalid` under that field name; a
+ * repeated selection value is rejected with `invalid`. An invalid request changes nothing. Saving does not
+ * require completed account registration.
  * @summary Save Coach onboarding progress
  */
 export const updateMyCoachProfile = async (coachProfileUpdateRequest: CoachProfileUpdateRequest, options?: Parameters<typeof apiFetch>[1]): Promise<CoachProfileResponse> => {
