@@ -26,14 +26,16 @@
       "team": "Équipe",
       "plan": "Planification",
       "business": "Activité",
-      "comms": "Communication"
+      "comms": "Communication",
+      "coaching": "Coaching",
+      "account": "Compte"
     },
     "nav": {
       "dashboard": "Tableau de bord",
       "activity": "Activité de l’équipe",
       "fighters": "Boxeurs",
       "board": "Tableau de l’équipe",
-      "programs": "Programmes et séances",
+      "programs": "Séances",
       "sparring": "Planificateur de sparring",
       "calendar": "Calendrier",
       "services": "Services et forfaits",

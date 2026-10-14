@@ -26,14 +26,16 @@
       "team": "Zespół",
       "plan": "Planowanie",
       "business": "Biznes",
-      "comms": "Komunikacja"
+      "comms": "Komunikacja",
+      "coaching": "Trenowanie",
+      "account": "Konto"
     },
     "nav": {
       "dashboard": "Panel",
       "activity": "Aktywność zespołu",
       "fighters": "Zawodnicy",
       "board": "Tablica zespołu",
-      "programs": "Programy i sesje",
+      "programs": "Treningi",
       "sparring": "Planer sparingów",
       "calendar": "Kalendarz",
       "services": "Usługi i pakiety",

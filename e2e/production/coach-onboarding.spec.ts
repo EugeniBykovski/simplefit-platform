@@ -112,7 +112,8 @@ test("a new Coach: WCR1 → WCR2 → complete → WCR7 → Coach home, every val
   await page.getByRole("button", { name: "Continue to coach home" }).click();
   await page.waitForURL("**/en/app/coach");
   expect(api.lastContext()).toBe("coach");
-  await expect(page.getByText("Planned")).toBeVisible();
+  // The real Coach dashboard (SF-54), with the profile just saved.
+  await expect(heading(page, "Welcome, Coach Alex")).toBeVisible();
   // Only the Coach profile and the context choice were written: never the account.
   expect(new Set(writes(api).map((request) => request.path))).toEqual(
     new Set([

@@ -1,0 +1,42 @@
+{
+  "trigger": "{name}, {context}. Switch profile",
+  "heading": "Your profiles",
+  "contexts": {
+    "fighter": "Fighter",
+    "coach": "Coach"
+  },
+  "labels": {
+    "fighter": "Fighter",
+    "coach": "Coach"
+  },
+  "initials": {
+    "fighter": "F",
+    "coach": "C"
+  },
+  "homes": {
+    "fighter": "Fighter home",
+    "coach": "Coach dashboard"
+  },
+  "start": {
+    "fighter": "Set up a fighter profile",
+    "coach": "Set up coaching"
+  },
+  "startLines": {
+    "fighter": "Train and track as a fighter",
+    "coach": "Create your coach profile"
+  },
+  "continue": {
+    "fighter": "Continue fighter setup",
+    "coach": "Continue coach setup"
+  },
+  "continueLines": {
+    "fighter": "Your fighter profile is not finished",
+    "coach": "Your coach profile is not finished"
+  },
+  "opening": "Opening…",
+  "failed": {
+    "title": "We couldn’t switch.",
+    "body": "You’re still in your current profile. Try again."
+  },
+  "footnote": "One account. We open your last choice next time."
+}

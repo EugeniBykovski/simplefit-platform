@@ -9,8 +9,14 @@ Chromium and mobile WebKit.
 
 `coach-journey.spec.ts` (SF-52) drives the new-Coach journey the same way:
 email registration with `intent=coach` → WA5 → Coach onboarding (WCR1, WCR2,
-WCR7) → the Coach context choice → Coach home → sign out → email sign-in →
-Coach home.
+WCR7) → the Coach context choice → the Coach dashboard (SF-54) → Fighter
+setup from the context switcher → switch back to Coach → sign out → email
+sign-in → Coach home (the remembered choice).
+
+`session-navigation-race.spec.ts` reproduces an open **release blocker**: a
+full page load during an in-flight session restore revokes the session
+(`docs/investigations/session-refresh-navigation-race.md`). It is marked as
+an expected failure in Chromium and WebKit until the fix lands.
 
 This is a **local acceptance gate, not part of CI**. It needs an API on a
 **disposable** database. Never point it at `simple_fit_dev`: the spec refuses

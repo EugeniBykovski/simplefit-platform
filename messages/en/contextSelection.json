@@ -1,0 +1,22 @@
+{
+  "metaTitle": "Choose where to continue",
+  "signOut": "Sign out",
+  "open": "Open",
+  "continue": "Continue",
+  "completed": {
+    "eyebrow": "Your profiles",
+    "title": "Where do you want to go?",
+    "lead": "You have a fighter and a coach profile on one account.",
+    "note": "We open your last choice next time. Switch any time from the top of the sidebar."
+  },
+  "setup": {
+    "eyebrow": "Your setup",
+    "title": "Which setup do you want to continue?",
+    "lead": "You started more than one. Pick one; the other waits for you.",
+    "note": "Nothing is lost: each setup keeps what you saved."
+  },
+  "failed": {
+    "title": "We couldn’t open that.",
+    "body": "Nothing changed. Try again."
+  }
+}

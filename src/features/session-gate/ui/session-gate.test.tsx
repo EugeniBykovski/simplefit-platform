@@ -286,7 +286,7 @@ describe("GuestOnly (GUEST_ONLY)", () => {
     expect(api.headers()).toEqual(["Bearer test"]);
   });
 
-  it("context_selection, which no client maps yet, is a visible failure, never Fighter home", async () => {
+  it("context_selection opens the web chooser (WCX1, SF-54), never role selection or Fighter home", async () => {
     window.history.replaceState(null, "", "/en/login");
     session.current = { status: "authenticated", viewer: VIEWER };
     stubEntries(
@@ -303,8 +303,7 @@ describe("GuestOnly (GUEST_ONLY)", () => {
         <p>sign in</p>
       </GuestOnly>,
     );
-    expect(await screen.findByText("Unknown entry destination")).toBeInTheDocument();
-    expect(navigation.replace).not.toHaveBeenCalled();
+    await waitFor(() => expect(navigation.replace).toHaveBeenCalledExactlyOnceWith("/app/context"));
   });
 
   it("a completed Coach enters Coach home (SF-52)", async () => {

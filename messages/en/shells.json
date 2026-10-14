@@ -26,14 +26,16 @@
       "team": "Team",
       "plan": "Plan",
       "business": "Business",
-      "comms": "Comms"
+      "comms": "Comms",
+      "coaching": "Coaching",
+      "account": "Account"
     },
     "nav": {
       "dashboard": "Dashboard",
       "activity": "Team activity",
       "fighters": "Fighters",
       "board": "Team board",
-      "programs": "Programs & sessions",
+      "programs": "Sessions",
       "sparring": "Sparring planner",
       "calendar": "Calendar",
       "services": "Services & packages",

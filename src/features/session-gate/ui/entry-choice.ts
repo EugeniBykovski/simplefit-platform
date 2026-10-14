@@ -40,9 +40,10 @@ export function useEntryChoice() {
       const chosen = { ...continuation, intent };
       try {
         const entry = await fetchEntry(chosen);
+        const destination: string = entry.destination;
         if (!isKnownEntry(entry)) {
           // A newer API than this client: observable, never guessed around.
-          console.error(`Unknown entry destination "${entry.destination}"`);
+          console.error(`Unknown entry destination "${destination}"`);
           throw new UnexpectedDestination();
         }
         router.push(entryHref(entry, chosen));

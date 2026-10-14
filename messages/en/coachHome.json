@@ -1,0 +1,56 @@
+{
+  "metaTitle": "Coach dashboard",
+  "eyebrow": "Coach · Dashboard",
+  "title": "Welcome, {name}",
+  "profile": {
+    "title": "Your coach profile",
+    "complete": "Complete",
+    "formats": "Coaching formats",
+    "competition": "Competition level",
+    "languages": "Coaching languages",
+    "bio": "Bio",
+    "none": "—"
+  },
+  "fills": {
+    "title": "What fills this dashboard",
+    "unavailable": "Not available yet",
+    "fighters": {
+      "label": "Fighters",
+      "when": "when fighters can join you"
+    },
+    "sessions": {
+      "label": "Sessions",
+      "when": "when you can plan sessions"
+    },
+    "invitations": {
+      "label": "Invitations",
+      "when": "when you can invite fighters"
+    }
+  },
+  "setup": {
+    "eyebrow": "Coach setup",
+    "title": "Get your coaching space ready",
+    "done": "Done",
+    "unavailable": "Not available yet",
+    "profile": {
+      "title": "Coach profile",
+      "line": "Saved · you can change it later"
+    },
+    "invite": {
+      "title": "Invite your first fighter",
+      "line": "Fighters join you by invitation"
+    },
+    "session": {
+      "title": "Plan your first session",
+      "line": "Sessions you run with your fighters"
+    },
+    "dataRules": {
+      "title": "Agree to the coach data rules",
+      "line": "What you may see with a fighter’s consent"
+    }
+  },
+  "note": {
+    "title": "Coach tools arrive step by step.",
+    "body": "Fighters, sessions and invitations appear here as soon as they are available. Nothing is shown before it is real."
+  }
+}

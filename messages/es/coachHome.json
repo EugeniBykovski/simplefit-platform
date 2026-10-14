@@ -1,0 +1,56 @@
+{
+  "metaTitle": "Panel de entrenador",
+  "eyebrow": "Entrenador · Panel",
+  "title": "Hola, {name}",
+  "profile": {
+    "title": "Tu perfil de entrenador",
+    "complete": "Completo",
+    "formats": "Formatos de entrenamiento",
+    "competition": "Nivel de competición",
+    "languages": "Idiomas de entrenamiento",
+    "bio": "Biografía",
+    "none": "—"
+  },
+  "fills": {
+    "title": "Qué llenará este panel",
+    "unavailable": "Aún no disponible",
+    "fighters": {
+      "label": "Boxeadores",
+      "when": "cuando los boxeadores puedan unirse a ti"
+    },
+    "sessions": {
+      "label": "Sesiones",
+      "when": "cuando puedas planificar sesiones"
+    },
+    "invitations": {
+      "label": "Invitaciones",
+      "when": "cuando puedas invitar a boxeadores"
+    }
+  },
+  "setup": {
+    "eyebrow": "Registro de entrenador",
+    "title": "Prepara tu espacio de entrenador",
+    "done": "Hecho",
+    "unavailable": "Aún no disponible",
+    "profile": {
+      "title": "Perfil de entrenador",
+      "line": "Guardado · puedes cambiarlo después"
+    },
+    "invite": {
+      "title": "Invita a tu primer boxeador",
+      "line": "Los boxeadores se unen por invitación"
+    },
+    "session": {
+      "title": "Planifica tu primera sesión",
+      "line": "Sesiones que diriges con tus boxeadores"
+    },
+    "dataRules": {
+      "title": "Acepta las reglas de datos del entrenador",
+      "line": "Lo que puedes ver con el consentimiento del boxeador"
+    }
+  },
+  "note": {
+    "title": "Las herramientas de entrenador llegan paso a paso.",
+    "body": "Boxeadores, sesiones e invitaciones aparecerán aquí en cuanto estén disponibles. No se muestra nada antes de que sea real."
+  }
+}

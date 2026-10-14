@@ -1,13 +1,24 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
+import { createContext, useContext, useEffect, type ReactNode } from "react";
 
 import { usePathname, useRouter } from "@/shared/i18n/navigation";
 
-import { entryHref, holds, isKnownEntry, type Capability } from "../model/entry";
+import { entryHref, holds, isKnownEntry, type Capability, type KnownEntry } from "../model/entry";
 import { EntryFailureBoundary, useEntry } from "./entry-redirect";
 
 type GateProps = { pending: ReactNode; failure: ReactNode; children: ReactNode };
+
+const WorkspaceEntryContext = createContext<KnownEntry | undefined>(undefined);
+
+/**
+ * The entry the enclosing workspace gate resolved when the page opened (its
+ * capabilities and profile states): what the context switcher offers. Undefined
+ * outside a workspace gate.
+ */
+export function useWorkspaceEntry(): KnownEntry | undefined {
+  return useContext(WorkspaceEntryContext);
+}
 
 /**
  * A profile workspace's gate: its pages (phase ACTIVE) render only for a
@@ -52,7 +63,7 @@ function WorkspaceGate({
     );
   }
   if (entry === undefined || redirect !== undefined) return pending;
-  return children;
+  return <WorkspaceEntryContext value={entry}>{children}</WorkspaceEntryContext>;
 }
 
 /** The Fighter area (`web.app.fighter`, capability FIGHTER; SF-40). */

@@ -1,0 +1,56 @@
+{
+  "metaTitle": "Panel trenera",
+  "eyebrow": "Trener · Panel",
+  "title": "Witaj, {name}",
+  "profile": {
+    "title": "Twój profil trenera",
+    "complete": "Gotowy",
+    "formats": "Formy treningów",
+    "competition": "Poziom zawodów",
+    "languages": "Języki treningów",
+    "bio": "Bio",
+    "none": "—"
+  },
+  "fills": {
+    "title": "Co wypełni ten panel",
+    "unavailable": "Jeszcze niedostępne",
+    "fighters": {
+      "label": "Zawodnicy",
+      "when": "gdy zawodnicy będą mogli do Ciebie dołączyć"
+    },
+    "sessions": {
+      "label": "Treningi",
+      "when": "gdy będziesz mógł planować treningi"
+    },
+    "invitations": {
+      "label": "Zaproszenia",
+      "when": "gdy będziesz mógł zapraszać zawodników"
+    }
+  },
+  "setup": {
+    "eyebrow": "Konfiguracja trenera",
+    "title": "Przygotuj swoją przestrzeń trenerską",
+    "done": "Gotowe",
+    "unavailable": "Jeszcze niedostępne",
+    "profile": {
+      "title": "Profil trenera",
+      "line": "Zapisany · możesz go później zmienić"
+    },
+    "invite": {
+      "title": "Zaproś pierwszego zawodnika",
+      "line": "Zawodnicy dołączają na zaproszenie"
+    },
+    "session": {
+      "title": "Zaplanuj pierwszy trening",
+      "line": "Treningi, które prowadzisz z zawodnikami"
+    },
+    "dataRules": {
+      "title": "Zaakceptuj zasady danych trenera",
+      "line": "Co możesz zobaczyć za zgodą zawodnika"
+    }
+  },
+  "note": {
+    "title": "Narzędzia trenera pojawiają się krok po kroku.",
+    "body": "Zawodnicy, treningi i zaproszenia pojawią się tutaj, gdy będą dostępne. Nic nie jest pokazywane, zanim stanie się prawdziwe."
+  }
+}

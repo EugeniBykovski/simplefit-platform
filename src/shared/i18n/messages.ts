@@ -3,8 +3,11 @@ import type actions from "../../../messages/en/actions.json";
 import type apiHealth from "../../../messages/en/apiHealth.json";
 import type app from "../../../messages/en/app.json";
 import type auth from "../../../messages/en/auth.json";
+import type coachHome from "../../../messages/en/coachHome.json";
 import type coachOnboarding from "../../../messages/en/coachOnboarding.json";
 import type common from "../../../messages/en/common.json";
+import type contextSelection from "../../../messages/en/contextSelection.json";
+import type contextSwitcher from "../../../messages/en/contextSwitcher.json";
 import type errors from "../../../messages/en/errors.json";
 import type fighterHome from "../../../messages/en/fighterHome.json";
 import type fighterOnboarding from "../../../messages/en/fighterOnboarding.json";
@@ -40,6 +43,9 @@ export const namespaces = [
   "accountRegistration",
   "roleSelection",
   "fighterHome",
+  "coachHome",
+  "contextSwitcher",
+  "contextSelection",
   "site",
 ] as const;
 
@@ -63,6 +69,9 @@ export type Messages = {
   accountRegistration: typeof accountRegistration;
   roleSelection: typeof roleSelection;
   fighterHome: typeof fighterHome;
+  coachHome: typeof coachHome;
+  contextSwitcher: typeof contextSwitcher;
+  contextSelection: typeof contextSelection;
   site: typeof site;
 };
 

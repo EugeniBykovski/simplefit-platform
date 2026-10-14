@@ -1,0 +1,42 @@
+{
+  "trigger": "{name}, {context}. Changer de profil",
+  "heading": "Tes profils",
+  "contexts": {
+    "fighter": "Boxeur",
+    "coach": "Coach"
+  },
+  "labels": {
+    "fighter": "Boxeur",
+    "coach": "Coach"
+  },
+  "initials": {
+    "fighter": "B",
+    "coach": "C"
+  },
+  "homes": {
+    "fighter": "Accueil boxeur",
+    "coach": "Tableau de bord coach"
+  },
+  "start": {
+    "fighter": "Créer un profil de boxeur",
+    "coach": "Commencer comme coach"
+  },
+  "startLines": {
+    "fighter": "T’entraîner et suivre tes progrès",
+    "coach": "Créer ton profil de coach"
+  },
+  "continue": {
+    "fighter": "Reprendre l’inscription boxeur",
+    "coach": "Reprendre l’inscription coach"
+  },
+  "continueLines": {
+    "fighter": "Ton profil de boxeur n’est pas terminé",
+    "coach": "Ton profil de coach n’est pas terminé"
+  },
+  "opening": "Ouverture…",
+  "failed": {
+    "title": "Le changement n’a pas abouti.",
+    "body": "Tu restes dans ton profil actuel. Réessaie."
+  },
+  "footnote": "Un seul compte. La prochaine fois, nous ouvrons ton dernier choix."
+}

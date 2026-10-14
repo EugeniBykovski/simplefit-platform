@@ -35,11 +35,13 @@ export async function fetchCoachProfile(signal?: AbortSignal): Promise<CoachProf
 /**
  * The current profile. Refetched when the window regains focus, so a save from
  * another tab or the mobile app is reconciled instead of overwritten.
+ * `enabled: false` reads nothing (a profile the user may not have).
  */
-export function useCoachProfile() {
+export function useCoachProfile({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery({
     queryKey: coachProfileQueryKey,
     queryFn: ({ signal }) => fetchCoachProfile(signal),
+    enabled,
     retry: false,
     staleTime: 0,
     refetchOnWindowFocus: true,

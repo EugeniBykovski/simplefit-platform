@@ -33,6 +33,9 @@ const REAL_SCREENS = [
   "web.app.onboarding.fighter",
   // SF-52: Coach web registration (WCR1, WCR2, WCR7).
   "web.app.onboarding.coach",
+  // SF-54: the Coach dashboard (WC1) and the context chooser (WCX1).
+  "web.app.coach",
+  "web.app.context",
   // SF-40: the Fighter home, its first run and the nine-step tour (FRW1, FRW2).
   "web.app.home",
   // SF-46: account basics & consent (WA5).
