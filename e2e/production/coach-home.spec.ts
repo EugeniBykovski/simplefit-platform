@@ -216,6 +216,20 @@ test.describe("C · two completed contexts", () => {
   });
 });
 
+test("signing out of the Coach dashboard leaves no Coach data behind (Back shows nothing)", async ({
+  page,
+}) => {
+  await onboardingApi(page, { coachFields: COACH, coachCompleted: true });
+  await page.goto("/en/app/coach");
+  await expect(heading(page, "Welcome, Alex Novak")).toBeVisible();
+  await page.getByRole("button", { name: "Sign out" }).first().click();
+  await page.waitForURL(/\/en\/login$/);
+  await page.goBack();
+  // Whatever the browser restores, the previous user's Coach profile is gone.
+  await expect(page.getByText("Novak Boxing")).toHaveCount(0);
+  await expect(page.getByText("Alex Novak")).toHaveCount(0);
+});
+
 test.describe("D · two unfinished journeys (E11)", () => {
   test("WCX1 continues either setup by intent and records no context", async ({ page }) => {
     const api = await onboardingApi(page, {

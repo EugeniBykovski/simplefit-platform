@@ -25,9 +25,12 @@ CR-9, CR-16):
 | WA2 Sign in                   | `WebLoginWorkspace.dc.html` | `/login` (no workspace chooser now)  | unchanged sign-in             | current |
 | CRW1 Coach first run          | `FirstRunWebC.dc.html`      | —                                    | —                             | FUTURE  |
 
-`RouteCoach.dc.html` and `FlowWebRoute.dc.html` (route diagrams) still draw
-the pre-reconciliation Coach path (WCR3–WCR6, the full WC1); they are
-documentation boards and were not redrawn.
+The route diagrams follow in **Version 91** (`1791985352-6ddc`):
+`RouteCoach.dc.html` draws WA3 → WA4 → WA5 → WCR1 → WCR2 → WCR7 → WC1 with
+WCX1, the entry rules and the switcher, and lists WCR3–WCR6 and CRW1 as
+FUTURE; `FlowWebRoute.dc.html` draws the same Coach row (WCR3–WCR6 dashed
+FUTURE, no plan / checkout branch), WA2 as sign-in → entry and WCX1
+(step 5.16a; it follows sign-in).
 
 ## Coach dashboard (WC1)
 
