@@ -1,6 +1,7 @@
 export * from './account/account';
 export * from './auth/auth';
 export * from './coach-profile/coach-profile';
+export * from './coaching/coaching';
 export * from './entry/entry';
 export * from './fighter-profile/fighter-profile';
 export * from './first-run/first-run';
