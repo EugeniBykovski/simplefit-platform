@@ -507,6 +507,21 @@ Coach area is gated on the COACH capability the entry reports; Coach Home
 itself is still the canonical placeholder. `context_selection` has no route on
 either platform (`D-ENTRY-CONTEXT-SELECTION`): it is never mapped to WA6 / O05.
 
+**Mobile Coach onboarding (SF-53).** `/onboarding/coach` follows the same
+rules on the same contracts: an authenticated session only, Coach intent as
+the ephemeral `intent=coach`, and `?step=` as navigation only. Its current
+steps are OC1 (`?step=profile`), OC2 (`?step=type`, whose Finish completes)
+and OC11 (`?step=complete`, only after the backend confirmed completion on
+that screen), against Claude Design `1791966129-8ecb`. OC3–OC10 are
+`DEFERRED` until their verification, billing, gym, services, payouts,
+invitation and privacy-sharing domains exist
+(`D-MOBILE-COACH-ONBOARDING-FLOW`). OC11 records the Coach context and asks
+the entry with `intent=coach`. The mobile Coach shell (`mobile.coach`) is the
+first mobile workspace with a capability check: its `CapabilityGate` renders
+a Coach route only when `GET /api/v1/me/entry` reports COACH and otherwise
+sends the user where the entry says. Other mobile workspaces keep the
+metadata-only rule below.
+
 **Checkout** (`/checkout`, mobile) is `PUBLIC`. Without a session it renders
 the designed quick-account state (QA1, `condition: NO_SESSION`); every payment
 operation requires a normal SimpleFit identity and session, enforced by the
@@ -731,7 +746,8 @@ src/app/
   GYM_WORKSPACE), phase, active workspace and restricted-account rules are
   **metadata only**: the API exposes no such viewer state yet, so none is
   invented, every signed-in user can open every shell's placeholders, and the
-  backend authorizes all data. The identity tickets add those checks on top
+  backend authorizes all data. The exception is the Coach shell, which checks
+  the COACH capability the entry reports (SF-53). The identity tickets add those checks on top
   of `SessionGate` from the generated metadata.
 
 - **Placeholders.** A route whose screen belongs to a later ticket is the file
@@ -844,9 +860,9 @@ screenshots:
 Every entry has a source A, a source B, the exact mismatch, its impact, a
 resolution and a status; the full text is in `discrepancies` of the registry.
 The 18 product decisions approved on 2026-10-06, the SF-27 decision of
-2026-10-07, the SF-45 decisions of 2026-10-08 and the SF-52 decisions of
-2026-10-13 carry `decision` and `decidedOn`. No discrepancy awaits a product
-decision; eight are `DEFERRED`.
+2026-10-07, the SF-45 decisions of 2026-10-08, the SF-52 decisions of
+2026-10-13 and the SF-53 decision of 2026-10-14 carry `decision` and
+`decidedOn`. No discrepancy awaits a product decision; nine are `DEFERRED`.
 
 | Id                                 | Status   | Decision / summary                                                                         |
 | ---------------------------------- | -------- | ------------------------------------------------------------------------------------------ |
@@ -889,6 +905,7 @@ decision; eight are `DEFERRED`.
 | `D-ONBOARDING-ENTRY-CAPABILITY`    | RESOLVED | Onboarding entry routes need a session only, never the capability they create              |
 | `D-WA3-PREAUTH-CONSENT`            | RESOLVED | WA3 name and consents disabled, never sent; WA5 records consent (SF-36)                    |
 | `D-WEB-COACH-ONBOARDING-FLOW`      | DEFERRED | Web Coach onboarding: WCR1, WCR2, WCR7 current; WCR3–WCR6 future; session-only access      |
+| `D-MOBILE-COACH-ONBOARDING-FLOW`   | DEFERRED | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access      |
 | `D-ENTRY-CONTEXT-SELECTION`        | DEFERRED | `context_selection` has no route on either platform; never WA6 / O05 or a home             |
 
 Gallery rows dropped by a decision are listed in `excludedRows`, so every

@@ -122,7 +122,7 @@
     "returnToParam": "returnTo",
     "intentParam": "intent",
     "entryDestinations": {
-      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied. coach_home (SF-51, SF-52) opens the Coach home of each platform, today its canonical placeholder. context_selection has no route on either platform until its chooser is designed (D-ENTRY-CONTEXT-SELECTION): clients treat it as an unknown destination (a retryable failure), never as role selection (WA6 / O05) or Fighter home.",
+      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied. coach_home (SF-51, SF-52, SF-53) opens the Coach home of each platform, today its canonical placeholder. context_selection has no route on either platform until its chooser is designed (D-ENTRY-CONTEXT-SELECTION): clients treat it as an unknown destination (a retryable failure), never as role selection (WA6 / O05) or Fighter home.",
       "account_registration": {
         "web": "web.app.onboarding.account",
         "mobile": "mobile.signup.consent"
@@ -1107,9 +1107,13 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(onboarding)/onboarding/coach.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-53: the Coach mobile registration on the SF-50 CoachProfile (GET / PATCH /api/v1/me/coach-profile, POST .../complete-onboarding) and the SF-51 entry, against Claude Design 1791966129-8ecb (Version 89): OC1 Coach profile (?step=profile: coach name, brand, country, city, bio, coaching languages) -> OC2 Coaching type (?step=type: coaching formats, competition levels; Finish completes) -> OC11 Complete (?step=complete). ?step= is navigation only: resume and completion come from the backend, and OC11 shows only after the backend confirmed completion on this screen. A save sends only the fields changed here; a refetch keeps unsaved edits. A new, unsaved profile offers the account's full name as an editable coach name, saved only with the step. OC11 records the Coach context (PUT /api/v1/me/entry/context) and asks the entry with intent=coach (coach_home). OC3-OC10 are FUTURE (D-MOBILE-COACH-ONBOARDING-FLOW)."
       },
-      "discrepancies": ["D-REUSED-ARTBOARDS", "D-ONBOARDING-ENTRY-CAPABILITY"],
+      "discrepancies": [
+        "D-REUSED-ARTBOARDS",
+        "D-ONBOARDING-ENTRY-CAPABILITY",
+        "D-MOBILE-COACH-ONBOARDING-FLOW"
+      ],
       "screens": ["OC1", "OC2", "OC3", "OC4", "OC5", "OC6", "OC7", "OC8", "OC9", "OC10", "OC11"]
     },
     {
@@ -9027,7 +9031,7 @@
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
-        "section": "COACH · 3 · Registration · mobile · 11 steps",
+        "section": "COACH · 3 · Registration · mobile · 2 steps + complete",
         "step": "3.1",
         "tag": "MOBILE",
         "artboard": "OnbCProfile.dc.html"
@@ -9045,7 +9049,7 @@
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
-        "section": "COACH · 3 · Registration · mobile · 11 steps",
+        "section": "COACH · 3 · Registration · mobile · 2 steps + complete",
         "step": "3.2",
         "tag": "MOBILE",
         "artboard": "OnbCType.dc.html"
@@ -9063,11 +9067,13 @@
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
-        "section": "COACH · 3 · Registration · mobile · 11 steps",
+        "section": "COACH · 3 · Registration · mobile · 2 steps + complete",
         "step": "3.3",
         "tag": "MOBILE",
         "artboard": "OnbCCredentials.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-MOBILE-COACH-ONBOARDING-FLOW"]
     },
     {
       "id": "OC4",
@@ -9081,11 +9087,13 @@
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
-        "section": "COACH · 3 · Registration · mobile · 11 steps",
+        "section": "COACH · 3 · Registration · mobile · 2 steps + complete",
         "step": "3.4",
         "tag": "MOBILE",
         "artboard": "OnbCSize.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-MOBILE-COACH-ONBOARDING-FLOW"]
     },
     {
       "id": "OC5",
@@ -9099,11 +9107,13 @@
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
-        "section": "COACH · 3 · Registration · mobile · 11 steps",
+        "section": "COACH · 3 · Registration · mobile · 2 steps + complete",
         "step": "3.5",
         "tag": "MOBILE",
         "artboard": "OnbCWhere.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-MOBILE-COACH-ONBOARDING-FLOW"]
     },
     {
       "id": "OC6",
@@ -9117,11 +9127,13 @@
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
-        "section": "COACH · 3 · Registration · mobile · 11 steps",
+        "section": "COACH · 3 · Registration · mobile · 2 steps + complete",
         "step": "3.6",
         "tag": "MOBILE",
         "artboard": "OnbCPlan.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-MOBILE-COACH-ONBOARDING-FLOW"]
     },
     {
       "id": "OC7",
@@ -9135,11 +9147,13 @@
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
-        "section": "COACH · 3 · Registration · mobile · 11 steps",
+        "section": "COACH · 3 · Registration · mobile · 2 steps + complete",
         "step": "3.7",
         "tag": "MOBILE",
         "artboard": "OnbCServices.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-MOBILE-COACH-ONBOARDING-FLOW"]
     },
     {
       "id": "OC8",
@@ -9153,11 +9167,13 @@
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
-        "section": "COACH · 3 · Registration · mobile · 11 steps",
+        "section": "COACH · 3 · Registration · mobile · 2 steps + complete",
         "step": "3.8",
         "tag": "MOBILE",
         "artboard": "OnbCPayouts.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-MOBILE-COACH-ONBOARDING-FLOW"]
     },
     {
       "id": "OC9",
@@ -9171,11 +9187,13 @@
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
-        "section": "COACH · 3 · Registration · mobile · 11 steps",
+        "section": "COACH · 3 · Registration · mobile · 2 steps + complete",
         "step": "3.9",
         "tag": "MOBILE",
         "artboard": "OnbCInvite.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-MOBILE-COACH-ONBOARDING-FLOW"]
     },
     {
       "id": "OC10",
@@ -9189,11 +9207,13 @@
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
-        "section": "COACH · 3 · Registration · mobile · 11 steps",
+        "section": "COACH · 3 · Registration · mobile · 2 steps + complete",
         "step": "3.10",
         "tag": "MOBILE",
         "artboard": "OnbCPrivacy.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-MOBILE-COACH-ONBOARDING-FLOW"]
     },
     {
       "id": "OC11",
@@ -9207,7 +9227,7 @@
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
-        "section": "COACH · 3 · Registration · mobile · 11 steps",
+        "section": "COACH · 3 · Registration · mobile · 2 steps + complete",
         "step": "3.11",
         "tag": "MOBILE",
         "artboard": "OnbCReady.dc.html"
@@ -16589,13 +16609,27 @@
       "screens": ["WCR3", "WCR4", "WCR5", "WCR6"]
     },
     {
+      "id": "D-MOBILE-COACH-ONBOARDING-FLOW",
+      "title": "Mobile Coach onboarding reduced to the backend-supported steps",
+      "sourceA": "Claude Design up to 1791965411-694c: OC1-OC11 (eleven steps) with years coaching, boxing background, formats mixed with competition levels and Strength & Conditioning, credentials, business size, gym, plan and trial, services, payouts, fighter invitations, coach data rules and a completion screen showing a trial, licence review, services, payouts and an invite link",
+      "sourceB": "SF-50 backend (ADR 0020): CoachProfile persists display_name, brand_name, country_code, city, bio, languages, coaching_formats (personal_training, group_coaching, online_coaching, fight_camps) and competition_levels (amateur, professional); completion needs display_name, country_code, city, at least one coaching format and the account registration. No verification, gym, billing, services, payouts, invitation or privacy-sharing domain exists",
+      "mismatch": "Two of the eleven mobile steps were partly backed; eight had no owning domain, and the completion screen showed records that do not exist.",
+      "impact": "Building OC3-OC10 or the old OC11 would fake persistence, verification, billing, relationships or consent.",
+      "resolution": "Claude Design 1791966129-8ecb (Version 89, SF-53) reconciles OC1 (coach name, brand, country, city, bio, coaching languages), OC2 (coaching formats; competition levels as a separate optional group) and OC11 (the saved profile only, and 'Coach tools are not available yet'); OC3-OC10 are FUTURE gallery rows with status DEFERRED and never part of the flow (a FUTURE ?step= resolves to the resume step). The route needs an authenticated session only (D-ONBOARDING-ENTRY-CAPABILITY); the Coach workspace (mobile.coach) renders only when the entry reports COACH. OC11 continues through the explicit Coach context choice and the entry (coach_home), never to an invented workspace.",
+      "decision": "Mobile Coach onboarding follows the SF-50 backend scope, as the web (D-WEB-COACH-ONBOARDING-FLOW); OC3-OC10 return with their owning domains.",
+      "decidedOn": "2026-10-14",
+      "status": "DEFERRED",
+      "routes": ["mobile.onboarding.coach"],
+      "screens": ["OC3", "OC4", "OC5", "OC6", "OC7", "OC8", "OC9", "OC10"]
+    },
+    {
       "id": "D-ENTRY-CONTEXT-SELECTION",
       "title": "The context_selection entry destination has no route yet",
       "sourceA": "simplefit-api SF-51 (ADR 0017 amendment): GET /api/v1/me/entry may answer context_selection (both profiles in progress, or both completed without a last explicit choice); PUT /api/v1/me/entry/context records an explicit choice between completed contexts",
       "sourceB": "Claude Design and the route registry: no context chooser screen on web or mobile. WA6 (web.app.onboarding.role) and O05 (mobile.onboarding.role) start a journey by intent; they do not choose between completed contexts",
       "mismatch": "A semantic destination without a canonical route on either platform.",
       "impact": "Mapping it to WA6 / O05 would present journey selection as a context switcher; mapping it to a home would guess the user's context.",
-      "resolution": "context_selection stays unmapped in guards.entryDestinations; both clients treat it as an unknown destination (a retryable failure). Unfinished journeys are entered with an explicit intent; completed contexts are chosen with the SF-51 choice endpoint (web WCR7 records the Coach context). A dual-profile user opens either workspace directly: workspace gates check the capability, not the last chosen context.",
+      "resolution": "context_selection stays unmapped in guards.entryDestinations; both clients treat it as an unknown destination (a retryable failure). Unfinished journeys are entered with an explicit intent; completed contexts are chosen with the SF-51 choice endpoint (web WCR7 and mobile OC11 record the Coach context). A dual-profile user opens either workspace directly: workspace gates check the capability, not the last chosen context.",
       "decision": "No context chooser is invented; it enters the registry once Claude Design adds it.",
       "decidedOn": "2026-10-13",
       "status": "DEFERRED",
