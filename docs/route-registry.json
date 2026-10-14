@@ -123,7 +123,7 @@
     "returnToParam": "returnTo",
     "intentParam": "intent",
     "entryDestinations": {
-      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied. coach_home (SF-51, SF-52, SF-53) opens the Coach home of each platform, today its canonical placeholder. context_selection (SF-54) opens WCX1 on the web (web.app.context); mobile has no chooser yet (null: the mobile client keeps it an unknown destination, a retryable failure), never role selection (WA6 / O05) or Fighter home (D-ENTRY-CONTEXT-SELECTION).",
+      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied. coach_home (SF-51, SF-52, SF-53) opens the Coach home of each platform, today its canonical placeholder. context_selection opens the context chooser of each platform: WCX1 on the web (web.app.context, SF-54) and A04 on mobile (mobile.workspaces, SF-55); never role selection (WA6 / O05) or a home (D-ENTRY-CONTEXT-SELECTION).",
       "account_registration": {
         "web": "web.app.onboarding.account",
         "mobile": "mobile.signup.consent"
@@ -150,7 +150,7 @@
       },
       "context_selection": {
         "web": "web.app.context",
-        "mobile": null
+        "mobile": "mobile.workspaces"
       },
       "gym_onboarding": {
         "web": "web.app.onboarding.gym",
@@ -162,7 +162,7 @@
       }
     },
     "workspaceSwitcher": {
-      "mobile": "Route mobile.workspaces (A04).",
+      "mobile": "A04 (SF-55): the 'One account, every role' sheet opened from the identity pill of the Fighter home (FR4) and Coach today (C01), with no route of its own; the same chooser is the screen at mobile.workspaces, where context_selection lands and where /workspaces opens. It records the SF-51 context choice (D-ENTRY-CONTEXT-SELECTION); Gym and Sponsor workspaces join it with their domains.",
       "web": "In-shell action in the web.app.fighter / web.app.coach / web.app.gym sidebars; no route. During sign-in, the workspace step of web.login (WA2) chooses the first workspace (D-WEB-WORKSPACE-SWITCHER)."
     },
     "defaultDestinationFallback": {
@@ -776,7 +776,7 @@
       "id": "mobile.coach",
       "platform": "mobile",
       "parent": "mobile.root",
-      "description": "Coach tab bar (Today, Fighters, Board, Requests, Inbox).",
+      "description": "Coach tab bar. Registry items: the Route Gallery's Today, Fighters, Board, Requests, Inbox; production shows the MVP Today, Fighters (Soon), Sessions (Soon), Settings (D-MOBILE-COACH-SHELL-MVP).",
       "design": "CoachTabs.dc.html",
       "status": "IMPLEMENTED",
       "production": {
@@ -1229,7 +1229,7 @@
       "platform": "mobile",
       "path": "/workspaces",
       "params": [],
-      "name": "Workspace switcher",
+      "name": "One account, every role",
       "surface": "SHARED",
       "shell": "mobile.shared",
       "parent": null,
@@ -1245,9 +1245,9 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(shared)/workspaces.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-55: A04 on the SF-51 entry (Claude Design 1791994719-673f). While GET /api/v1/me/entry answers context_selection it is the chooser of that answer, with no current context, no Back and Sign out: two completed contexts without a remembered choice (choose) or two journeys in progress (E11, setup). Opened in a context (the entry answers fighter_home or coach_home) it is the switcher with that context checked, closed with Back; any other answer continues to its destination. Completed contexts (the FIGHTER / COACH capabilities the entry reports) are opened by recording the choice (PUT /api/v1/me/entry/context) and resolving the entry again; unfinished journeys are continued with an explicit intent and never recorded. Nothing is kept on the device. The homes open the same chooser as a sheet from their identity pill."
       },
-      "discrepancies": ["D-MOBILE-SPONSOR-ADMIN"],
+      "discrepancies": ["D-ENTRY-CONTEXT-SELECTION", "D-MOBILE-SPONSOR-ADMIN"],
       "screens": ["A04"]
     },
     {
@@ -1618,9 +1618,10 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(coach)/(tabs)/(today)/coach/today.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-55: C01 Coach today as reduced in Claude Design 1791994719-673f: the identity pill (opens the A04 sheet), the real CoachProfile (name, brand, place, formats, competition levels, languages, bio), dashes, never zeros, for fighters, sessions and invitations, and the setup checklist with the completed profile and the steps whose domains do not exist yet marked not available. Behind CapabilityGate (COACH from the entry). The tab bar is the Coach MVP (D-MOBILE-COACH-SHELL-MVP). CR4, CR5 and CR6 are FUTURE."
       },
-      "screens": ["CR4", "CR5", "CR6", "C01"]
+      "screens": ["CR4", "CR5", "CR6", "C01"],
+      "discrepancies": ["D-MOBILE-COACH-SHELL-MVP"]
     },
     {
       "id": "web.app.onboarding.account",
@@ -8359,9 +8360,9 @@
     {
       "id": "A04",
       "code": "A04",
-      "name": "Workspace switcher",
+      "name": "One account, every role",
       "route": "mobile.workspaces",
-      "states": ["4 roles"],
+      "states": ["switch", "choose", "setup", "pending", "failed"],
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
@@ -9347,7 +9348,9 @@
         "step": "34.13",
         "tag": "MOBILE",
         "artboard": "FirstRunCToday.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-MOBILE-COACH-SHELL-MVP"]
     },
     {
       "id": "CR5",
@@ -9365,7 +9368,9 @@
         "step": "34.14",
         "tag": "MOBILE",
         "artboard": "FirstRunCSessionTip.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-MOBILE-COACH-SHELL-MVP"]
     },
     {
       "id": "CR6",
@@ -9383,7 +9388,9 @@
         "step": "34.15",
         "tag": "MOBILE",
         "artboard": "FirstRunCDone.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-MOBILE-COACH-SHELL-MVP"]
     },
     {
       "id": "WCR1",
@@ -16672,16 +16679,16 @@
     },
     {
       "id": "D-ENTRY-CONTEXT-SELECTION",
-      "title": "The context_selection entry destination has a web route only",
+      "title": "The context_selection entry destination has a chooser on each platform",
       "sourceA": "simplefit-api SF-51 (ADR 0017 amendment): GET /api/v1/me/entry may answer context_selection (both profiles in progress, or both completed without a last explicit choice); PUT /api/v1/me/entry/context records an explicit choice between completed contexts",
-      "sourceB": "Claude Design 1791982482-71e3 (SF-54): WCX1 Choose where to continue (web) and the context switcher in the Fighter and Coach sidebars; no mobile chooser. WA6 (web.app.onboarding.role) and O05 (mobile.onboarding.role) start a journey by intent; they do not choose between completed contexts",
-      "mismatch": "The destination has a web route but no mobile route.",
+      "sourceB": "Claude Design 1791982482-71e3 (SF-54): WCX1 Choose where to continue (web) and the context switcher in the Fighter and Coach sidebars. Claude Design 1791994719-673f (SF-55): A04 reconciled as 'One account, every role' (switch, choose and setup modes; pending and failed states). WA6 (web.app.onboarding.role) and O05 (mobile.onboarding.role) start a journey by intent; they do not choose between completed contexts",
+      "mismatch": "Before SF-55 the destination had a web route but no mobile route.",
       "impact": "Mapping it to WA6 / O05 would present journey selection as a context switcher; mapping it to a home would guess the user's context.",
-      "resolution": "context_selection maps to web.app.context (WCX1) on the web and to null on mobile, where it stays an unknown destination (a retryable failure). Completed contexts are opened by recording the SF-51 choice; unfinished journeys are continued with an explicit intent and never recorded. A user with both profiles opens either workspace directly: workspace gates check the capability, not the last chosen context.",
-      "decision": "The web chooser is WCX1 (SF-54); the mobile chooser waits for its design (A04 reconciliation).",
+      "resolution": "context_selection maps to web.app.context (WCX1) on the web and to mobile.workspaces (A04) on mobile. Completed contexts are opened by recording the SF-51 choice; unfinished journeys are continued with an explicit intent and never recorded. A user with both profiles opens either workspace directly: workspace gates check the capability, not the last chosen context. On mobile the same A04 chooser is a sheet from the Fighter and Coach home identity pills.",
+      "decision": "The web chooser is WCX1 (SF-54); the mobile chooser is A04 (SF-55).",
       "decidedOn": "2026-10-14",
-      "status": "DEFERRED",
-      "routes": ["web.app.context", "mobile.root"]
+      "status": "RESOLVED",
+      "routes": ["web.app.context", "mobile.workspaces"]
     },
     {
       "id": "D-WEB-COACH-HOME-MVP",
@@ -16696,6 +16703,20 @@
       "status": "DEFERRED",
       "routes": ["web.app.coach"],
       "screens": ["CRW1"]
+    },
+    {
+      "id": "D-MOBILE-COACH-SHELL-MVP",
+      "title": "Coach mobile shell and Today reduced to existing domains",
+      "sourceA": "Route Gallery and CoachTabs before SF-55: Today, Fighters, Board, Requests and Inbox; C01 with an AI summary, a roster, today's sessions and activity; CR4-CR6 with a licence review, a trial, invitations, a session tip and a first-fighters milestone",
+      "sourceB": "SF-50 / SF-51 backend: CoachProfile and the COACH capability only; no coaching relationship, invitation, training session, booking, messaging or AI-draft domain",
+      "mismatch": "The designed Coach app showed records that do not exist.",
+      "impact": "Building it would fake rosters, sessions, requests and invitations.",
+      "resolution": "Claude Design 1791994719-673f (SF-55): the production CoachTabs show Today and Settings (the shared ST1) and, marked Soon and disabled, Fighters and Sessions; the registry keeps the Route Gallery's five nav items and their placeholder routes. C01 shows the identity pill (the A04 sheet), the real CoachProfile, dashes for unavailable domains and a setup checklist. CR4, CR5 and CR6 are FUTURE (no Coach first-run experience, session or roster exists).",
+      "decision": "The Coach mobile workspace grows with its domains, as the web (D-WEB-COACH-HOME-MVP); nothing is shown before it is real.",
+      "decidedOn": "2026-10-14",
+      "status": "DEFERRED",
+      "routes": ["mobile.coach.today"],
+      "screens": ["CR4", "CR5", "CR6"]
     }
   ]
 }

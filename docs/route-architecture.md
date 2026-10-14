@@ -252,7 +252,8 @@ Backend-granted internal staff capability on the same User → ADMIN (D-ADMIN-ID
   (`/app/gym/members`, `/gym/pulse`), so the active workspace is session
   context held by the backend session. It is chosen at sign-in
   (`/login?step=workspace` on web), then switched with the in-shell switcher
-  of the web sidebars (an action, no route) or `/workspaces` on mobile. A
+  of the web sidebars (an action, no route) or, on mobile, the A04 sheet of
+  the Fighter and Coach homes (`/workspaces` is the same chooser as a screen). A
   resource that belongs to another workspace resolves as not found. Workspace
   ids may enter deep links later, only when an email or push feature needs
   cross-workspace links (`D-WORKSPACE-NOT-IN-URL`,
@@ -447,9 +448,10 @@ already complete. Otherwise a safe `returnTo` is used when its route needs no
 capability or one the backend reports (`capabilities`, a routing projection:
 today `FIGHTER` once Fighter onboarding is complete); the entry itself is
 never a `returnTo`. Nothing is stored server-side, so concurrent tabs and
-repeated calls converge on current state. Workspace choice (web WA2, mobile
-A04) takes no part until real multi-workspace data exists: no workspace is
-offered or inferred. A network or server failure while the session or the
+repeated calls converge on current state. Gym and Sponsor workspace choice
+takes no part until real multi-workspace data exists: no workspace is offered
+or inferred. The Fighter / Coach profile contexts are chosen with the SF-51
+context choice (WCX1 on the web, A04 on mobile). A network or server failure while the session or the
 entry is resolved is retryable and never a sign-out; only a rejected
 credential (401) is.
 
@@ -517,8 +519,25 @@ capabilities the entry reports) are opened by recording the SF-51 choice
 journeys are entered with an explicit intent and never recorded. Workspace
 gates check the capability, not the last chosen context, so a requested
 `/app/coach` or `/app/home` opens for anyone holding it. `context_selection`
-maps to `web.app.context` (WCX1) on the web and stays unmapped on mobile
-(`D-ENTRY-CONTEXT-SELECTION`); it is never WA6 / O05 or a home.
+maps to `web.app.context` (WCX1) on the web and to `mobile.workspaces` (A04)
+on mobile (`D-ENTRY-CONTEXT-SELECTION`); it is never WA6 / O05 or a home.
+
+**Coach mobile shell and context switching (SF-55).** `/coach/today` is C01,
+reduced in Claude Design `1791994719-673f` to the identity pill, the real
+CoachProfile, dashes (never zeros) for fighters, sessions and invitations and
+a setup checklist; CR4–CR6 are `DEFERRED`. The production CoachTabs show
+Today and Settings (the shared ST1, pushed above the tabs) and, marked Soon
+and disabled, Fighters and Sessions, while the registry keeps the Route
+Gallery's five items and their placeholders (`D-MOBILE-COACH-SHELL-MVP`). The
+identity pill of the Fighter home and of Coach today opens A04, "One account,
+every role": a sheet listing the completed contexts the entry reports (the
+current one checked) and the unfinished journeys, with the same rules as the
+web switcher (record the choice, then resolve the entry; journeys by intent
+only; nothing on the device). Opening another context replaces the current
+screen, so Back does not return to the profile left behind; a journey is
+pushed. `/workspaces` renders the same chooser as a screen: where
+`context_selection` lands (no current context, no Back, Sign out), the
+switcher when opened in a context, and otherwise the entry's destination.
 
 **Mobile Coach onboarding (SF-53).** `/onboarding/coach` follows the same
 rules on the same contracts: an authenticated session only, Coach intent as
@@ -919,8 +938,9 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-WA3-PREAUTH-CONSENT`            | RESOLVED | WA3 name and consents disabled, never sent; WA5 records consent (SF-36)                    |
 | `D-WEB-COACH-ONBOARDING-FLOW`      | DEFERRED | Web Coach onboarding: WCR1, WCR2, WCR7 current; WCR3–WCR6 future; session-only access      |
 | `D-MOBILE-COACH-ONBOARDING-FLOW`   | DEFERRED | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access      |
-| `D-ENTRY-CONTEXT-SELECTION`        | DEFERRED | `context_selection` opens WCX1 on the web; no mobile chooser yet; never WA6 / O05 or home  |
+| `D-ENTRY-CONTEXT-SELECTION`        | RESOLVED | `context_selection` opens WCX1 on the web and A04 on mobile; never WA6 / O05 or home       |
 | `D-WEB-COACH-HOME-MVP`             | DEFERRED | Coach web: real profile dashboard, MVP nav with Soon rows; CRW1 future                     |
+| `D-MOBILE-COACH-SHELL-MVP`         | DEFERRED | Coach mobile: real profile Today, MVP tabs with Soon items; CR4–CR6 future                 |
 
 Gallery rows dropped by a decision are listed in `excludedRows`, so every
 row stays accounted for:

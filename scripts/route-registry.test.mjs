@@ -619,18 +619,18 @@ describe("web Coach onboarding (SF-52, design 1791896379-65b7)", () => {
       expect(screen.discrepancies).toEqual(["D-WEB-COACH-ONBOARDING-FLOW"]);
   });
 
-  it("maps coach_home to each platform's Coach home and context_selection to the web chooser only", () => {
+  it("maps coach_home to each platform's Coach home and context_selection to each chooser", () => {
     expect(registry.guards.entryDestinations.coach_home).toEqual({
       web: "web.app.coach",
       mobile: "mobile.coach.today",
     });
-    // SF-54: WCX1 on the web; mobile has no chooser yet and keeps it unknown.
+    // SF-54: WCX1 on the web; SF-55: A04 on mobile.
     expect(registry.guards.entryDestinations.context_selection).toEqual({
       web: "web.app.context",
-      mobile: null,
+      mobile: "mobile.workspaces",
     });
-    const deferred = discrepancies.find((entry) => entry.id === "D-ENTRY-CONTEXT-SELECTION");
-    expect(deferred?.status).toBe("DEFERRED");
+    const resolved = discrepancies.find((entry) => entry.id === "D-ENTRY-CONTEXT-SELECTION");
+    expect(resolved?.status).toBe("RESOLVED");
   });
 });
 
@@ -647,7 +647,7 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
     "sponsor_application",
   ];
   /** Destinations with no route on a platform yet (they stay unknown there, never guessed). */
-  const UNROUTED = { context_selection: ["mobile"] };
+  const UNROUTED = {};
   const { entryDestinations } = registry.guards;
 
   it("carries intent as an ephemeral query parameter next to returnTo", () => {
@@ -736,8 +736,11 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
     expect(o05.screens).toEqual(["O05"]);
   });
 
-  it("never resolves to a workspace chooser", () => {
-    const targets = DESTINATIONS.flatMap((destination) =>
+  it("resolves to the mobile chooser (A04) only for context_selection", () => {
+    // SF-55: A04 is the Fighter / Coach context chooser; no other destination opens it.
+    const targets = DESTINATIONS.filter(
+      (destination) => destination !== "context_selection",
+    ).flatMap((destination) =>
       PLATFORMS.map((platform) => entryDestinations[destination][platform]),
     );
     expect(targets).not.toContain("web.login");
