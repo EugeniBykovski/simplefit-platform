@@ -619,12 +619,16 @@ describe("web Coach onboarding (SF-52, design 1791896379-65b7)", () => {
       expect(screen.discrepancies).toEqual(["D-WEB-COACH-ONBOARDING-FLOW"]);
   });
 
-  it("maps coach_home to each platform's Coach home and leaves context_selection unmapped", () => {
+  it("maps coach_home to each platform's Coach home and context_selection to the web chooser only", () => {
     expect(registry.guards.entryDestinations.coach_home).toEqual({
       web: "web.app.coach",
       mobile: "mobile.coach.today",
     });
-    expect(registry.guards.entryDestinations).not.toHaveProperty("context_selection");
+    // SF-54: WCX1 on the web; mobile has no chooser yet and keeps it unknown.
+    expect(registry.guards.entryDestinations.context_selection).toEqual({
+      web: "web.app.context",
+      mobile: null,
+    });
     const deferred = discrepancies.find((entry) => entry.id === "D-ENTRY-CONTEXT-SELECTION");
     expect(deferred?.status).toBe("DEFERRED");
   });
@@ -638,9 +642,12 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
     "fighter_home",
     "coach_onboarding",
     "coach_home",
+    "context_selection",
     "gym_onboarding",
     "sponsor_application",
   ];
+  /** Destinations with no route on a platform yet (they stay unknown there, never guessed). */
+  const UNROUTED = { context_selection: ["mobile"] };
   const { entryDestinations } = registry.guards;
 
   it("carries intent as an ephemeral query parameter next to returnTo", () => {
@@ -656,6 +663,7 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
     for (const destination of DESTINATIONS) {
       for (const platform of PLATFORMS) {
         const id = entryDestinations[destination][platform];
+        if (id === null && UNROUTED[destination]?.includes(platform)) continue;
         if (routeById.get(id)?.platform !== platform) {
           found.push(`${destination}.${platform}: ${id}`);
         }

@@ -67,6 +67,8 @@ export async function renderWebRoutes(registry) {
     entryDestinations: Object.fromEntries(
       Object.entries(registry.guards.entryDestinations)
         .filter(([key]) => !key.startsWith("$"))
+        // A destination without a route on this platform stays unknown here (never guessed).
+        .filter(([, target]) => target.web !== null)
         .map(([destination, target]) => [destination, target.web]),
     ),
   };

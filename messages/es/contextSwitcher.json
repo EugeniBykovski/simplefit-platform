@@ -1,0 +1,42 @@
+{
+  "trigger": "{name}, {context}. Cambiar de perfil",
+  "heading": "Tus perfiles",
+  "contexts": {
+    "fighter": "Boxeador",
+    "coach": "Entrenador"
+  },
+  "labels": {
+    "fighter": "Boxeador",
+    "coach": "Entrenador"
+  },
+  "initials": {
+    "fighter": "B",
+    "coach": "E"
+  },
+  "homes": {
+    "fighter": "Inicio de boxeador",
+    "coach": "Panel de entrenador"
+  },
+  "start": {
+    "fighter": "Crear un perfil de boxeador",
+    "coach": "Empezar como entrenador"
+  },
+  "startLines": {
+    "fighter": "Entrena y registra tu progreso",
+    "coach": "Crea tu perfil de entrenador"
+  },
+  "continue": {
+    "fighter": "Continuar el registro de boxeador",
+    "coach": "Continuar el registro de entrenador"
+  },
+  "continueLines": {
+    "fighter": "Tu perfil de boxeador no está terminado",
+    "coach": "Tu perfil de entrenador no está terminado"
+  },
+  "opening": "Abriendo…",
+  "failed": {
+    "title": "No pudimos cambiar.",
+    "body": "Sigues en tu perfil actual. Inténtalo de nuevo."
+  },
+  "footnote": "Una cuenta. La próxima vez abrimos tu última elección."
+}

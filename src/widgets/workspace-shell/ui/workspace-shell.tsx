@@ -2,6 +2,7 @@ import { MenuIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Suspense, type ReactNode } from "react";
 
+import { ContextSwitcher } from "@/features/session-gate";
 import { SessionControl } from "@/features/sign-out";
 import { LocaleSwitcher } from "@/features/switch-locale";
 import { ThemeSwitcher } from "@/features/switch-theme";
@@ -32,9 +33,9 @@ import { ShellNav, ShellNavLinks, type ShellNavSection } from "./shell-nav";
  * 240 px `surface` sidebar with 22/14 px padding; `<main>` has no padding of
  * its own, pages compose PageHeader and PageBody.
  *
- * Deliberately absent until their features exist: the workspace identity
- * card / switcher (an in-shell action, D-WEB-WORKSPACE-SWITCHER), item
- * badges and the "next session" card, which all need workspace data.
+ * The Fighter and Coach shells carry the profile context switcher (SF-54);
+ * item badges, the "next session" card and the Gym / Sponsor workspace
+ * identity stay absent until their data exists.
  */
 export function WorkspaceShell({
   shell,
@@ -63,6 +64,7 @@ export function WorkspaceShell({
         href: routeHref(item.route, {}, "query" in item ? item.query : {}),
         label: message(`${config.messages}.nav.${key}`),
         icon: <Icon aria-hidden className="size-4.5" />,
+        soon: config.soon?.includes(key) ? navigation("soon") : undefined,
       };
     }),
   }));
@@ -77,7 +79,11 @@ export function WorkspaceShell({
   return (
     <div data-shell={shell} className="flex min-h-dvh flex-col md:flex-row">
       <aside className="hidden w-60 shrink-0 flex-col gap-0.5 bg-surface px-3.5 py-5.5 md:sticky md:top-0 md:flex md:h-dvh">
-        <Brand name={name} internal={shell === "web.admin" ? t("admin.internal") : undefined} />
+        <Brand
+          name={name}
+          internal={shell === "web.admin" ? t("admin.internal") : undefined}
+          identity={config.context ? <ContextSwitcher context={config.context} /> : undefined}
+        />
         <div className="flex-1 overflow-y-auto">{nav(false)}</div>
         <div className="flex flex-col items-start gap-2 pt-2">
           <SessionControl />
@@ -106,6 +112,7 @@ export function WorkspaceShell({
                 <SheetDescription>{name}</SheetDescription>
               </SheetHeader>
               <div className="flex flex-col gap-4 px-4 pb-4">
+                {config.context ? <ContextSwitcher context={config.context} /> : null}
                 {nav(true)}
                 <div>
                   <SessionControl />
@@ -131,18 +138,38 @@ export function WorkspaceShell({
 }
 
 /**
- * Brand row (FighterWebNav): the 30 px tile and the wordmark, then the shell
- * name where the design shows the workspace identity card (deferred until
- * workspace data exists).
+ * Brand row (FighterWebNav, CoachWebNav): the 30 px tile and the wordmark,
+ * then the identity block: the profile context switcher in the Fighter and
+ * Coach shells (SF-54), the shell name in the others (their workspace
+ * identity waits for workspace data).
  */
-function Brand({ name, internal }: { name: string; internal?: string | undefined }) {
+function Brand({
+  name,
+  internal,
+  identity,
+}: {
+  name: string;
+  internal?: string | undefined;
+  identity?: ReactNode;
+}) {
+  const brand = (
+    <Link href={routeHref("web.root")} className="flex w-fit items-center gap-2.5 rounded-md">
+      <BrandTile size="sm" />
+      <span className="type-brand">{siteConfig.name.split(" ")[0]}</span>
+    </Link>
+  );
+  if (identity !== undefined) {
+    return (
+      <div className="flex flex-col gap-4 pb-2">
+        <div className="px-2">{brand}</div>
+        {/* The identity block: the Fighter web tour's step 9 anchors here (SF-40). */}
+        <div data-tour-target="workspace">{identity}</div>
+      </div>
+    );
+  }
   return (
-    // The workspace identity block: the Fighter web tour's step 9 anchors here (SF-40).
     <div data-tour-target="workspace" className="flex flex-col items-start gap-1 px-2 pb-4">
-      <Link href={routeHref("web.root")} className="flex items-center gap-2.5 rounded-md">
-        <BrandTile size="sm" />
-        <span className="type-brand">{siteConfig.name.split(" ")[0]}</span>
-      </Link>
+      {brand}
       <span className="type-label text-faint-foreground">{name}</span>
       {internal ? <Badge variant="warning">{internal}</Badge> : null}
     </div>

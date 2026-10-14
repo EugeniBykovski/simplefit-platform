@@ -1,0 +1,42 @@
+{
+  "trigger": "{name}, {context}. Profil wechseln",
+  "heading": "Deine Profile",
+  "contexts": {
+    "fighter": "Fighter",
+    "coach": "Coach"
+  },
+  "labels": {
+    "fighter": "Fighter",
+    "coach": "Coach"
+  },
+  "initials": {
+    "fighter": "F",
+    "coach": "C"
+  },
+  "homes": {
+    "fighter": "Fighter-Startseite",
+    "coach": "Coach-Dashboard"
+  },
+  "start": {
+    "fighter": "Fighter-Profil einrichten",
+    "coach": "Coaching einrichten"
+  },
+  "startLines": {
+    "fighter": "Als Fighter trainieren und festhalten",
+    "coach": "Dein Coach-Profil anlegen"
+  },
+  "continue": {
+    "fighter": "Fighter-Einrichtung fortsetzen",
+    "coach": "Coach-Einrichtung fortsetzen"
+  },
+  "continueLines": {
+    "fighter": "Dein Fighter-Profil ist noch nicht fertig",
+    "coach": "Dein Coach-Profil ist noch nicht fertig"
+  },
+  "opening": "Wird geöffnet…",
+  "failed": {
+    "title": "Wechseln hat nicht geklappt.",
+    "body": "Du bist weiter in deinem aktuellen Profil. Versuche es erneut."
+  },
+  "footnote": "Ein Konto. Beim nächsten Mal öffnen wir deine letzte Wahl."
+}

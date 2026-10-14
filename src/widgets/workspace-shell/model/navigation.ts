@@ -6,7 +6,6 @@ import {
   CalendarIcon,
   ChartColumnIcon,
   CircleCheckIcon,
-  CreditCardIcon,
   DumbbellIcon,
   FileTextIcon,
   FlagIcon,
@@ -21,7 +20,6 @@ import {
   MegaphoneIcon,
   MessageSquareIcon,
   NetworkIcon,
-  PackageIcon,
   PlugIcon,
   ReceiptIcon,
   SearchIcon,
@@ -59,11 +57,19 @@ type ShellNavigation = {
    */
   sections: readonly { key: string; items: readonly string[] }[];
   icons: Record<string, LucideIcon>;
+  /**
+   * Items shown but not available yet (their domain does not exist): a
+   * labelled, unlinked row marked "Soon", never a link to a placeholder.
+   */
+  soon?: readonly string[];
+  /** The profile context the shell belongs to: its sidebar carries the context switcher. */
+  context?: "fighter" | "coach";
 };
 
 export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
   "web.app.fighter": {
     messages: "fighter",
+    context: "fighter",
     sections: [
       { key: "training", items: ["home", "board", "training", "progress"] },
       { key: "social", items: ["community", "discover", "profile", "market"] },
@@ -83,28 +89,24 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
       settings: SlidersHorizontalIcon,
     },
   },
+  // The Coach MVP (Claude Design 1791982482-71e3, CR-16): the dashboard, and
+  // the sections whose domains do not exist yet marked Soon. The registry keeps
+  // the Route Gallery's twelve items and their placeholder routes
+  // (D-WEB-COACH-HOME-MVP).
   "web.app.coach": {
     messages: "coach",
+    context: "coach",
     sections: [
-      { key: "team", items: ["dashboard", "activity", "fighters", "board"] },
-      { key: "plan", items: ["programs", "sparring", "calendar"] },
-      { key: "business", items: ["services", "earnings", "billing"] },
-      { key: "comms", items: ["messages", "settings"] },
+      { key: "coaching", items: ["dashboard", "fighters", "programs"] },
+      { key: "account", items: ["settings"] },
     ],
     icons: {
       dashboard: HouseIcon,
-      activity: UsersIcon,
       fighters: UserIcon,
-      board: NetworkIcon,
-      programs: DumbbellIcon,
-      sparring: SwordsIcon,
-      calendar: CalendarIcon,
-      services: PackageIcon,
-      earnings: WalletIcon,
-      billing: CreditCardIcon,
-      messages: MessageSquareIcon,
+      programs: CalendarIcon,
       settings: SlidersHorizontalIcon,
     },
+    soon: ["fighters", "programs", "settings"],
   },
   "web.app.gym": {
     messages: "gym",

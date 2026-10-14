@@ -503,9 +503,22 @@ until their verification, gym and billing domains exist
 (`D-WEB-COACH-ONBOARDING-FLOW`). WCR7 continues through an explicit Coach
 context choice (`PUT /api/v1/me/entry/context`, SF-51) and the entry, which
 resolves `coach_home` to `/app/coach` (`mobile.coach.today` on mobile). The
-Coach area is gated on the COACH capability the entry reports; Coach Home
-itself is still the canonical placeholder. `context_selection` has no route on
-either platform (`D-ENTRY-CONTEXT-SELECTION`): it is never mapped to WA6 / O05.
+Coach area is gated on the COACH capability the entry reports.
+
+**Coach web workspace and context switching (SF-54).** `/app/coach` is WC1,
+reduced in Claude Design `1791982482-71e3` to the real CoachProfile, a setup
+checklist and dashes (never zeros) for domains that do not exist yet; the
+Coach sidebar shows Dashboard and, marked Soon and unlinked, Fighters,
+Sessions and Coach settings, while the registry keeps the Route Gallery's
+twelve items and their placeholders (`D-WEB-COACH-HOME-MVP`). The Fighter and
+Coach sidebars carry the profile context switcher: completed contexts (the
+capabilities the entry reports) are opened by recording the SF-51 choice
+(`PUT /api/v1/me/entry/context`) and resolving the entry again; unfinished
+journeys are entered with an explicit intent and never recorded. Workspace
+gates check the capability, not the last chosen context, so a requested
+`/app/coach` or `/app/home` opens for anyone holding it. `context_selection`
+maps to `web.app.context` (WCX1) on the web and stays unmapped on mobile
+(`D-ENTRY-CONTEXT-SELECTION`); it is never WA6 / O05 or a home.
 
 **Mobile Coach onboarding (SF-53).** `/onboarding/coach` follows the same
 rules on the same contracts: an authenticated session only, Coach intent as
@@ -746,8 +759,8 @@ src/app/
   GYM_WORKSPACE), phase, active workspace and restricted-account rules are
   **metadata only**: the API exposes no such viewer state yet, so none is
   invented, every signed-in user can open every shell's placeholders, and the
-  backend authorizes all data. The exception is the Coach shell, which checks
-  the COACH capability the entry reports (SF-53). The identity tickets add those checks on top
+  backend authorizes all data. The exception is the mobile Coach shell, which
+  checks the COACH capability the entry reports (SF-53). The identity tickets add those checks on top
   of `SessionGate` from the generated metadata.
 
 - **Placeholders.** A route whose screen belongs to a later ticket is the file
@@ -861,8 +874,8 @@ Every entry has a source A, a source B, the exact mismatch, its impact, a
 resolution and a status; the full text is in `discrepancies` of the registry.
 The 18 product decisions approved on 2026-10-06, the SF-27 decision of
 2026-10-07, the SF-45 decisions of 2026-10-08, the SF-52 decisions of
-2026-10-13 and the SF-53 decision of 2026-10-14 carry `decision` and
-`decidedOn`. No discrepancy awaits a product decision; nine are `DEFERRED`.
+2026-10-13 and the SF-53 and SF-54 decisions of 2026-10-14 carry `decision`
+and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 
 | Id                                 | Status   | Decision / summary                                                                         |
 | ---------------------------------- | -------- | ------------------------------------------------------------------------------------------ |
@@ -906,7 +919,8 @@ The 18 product decisions approved on 2026-10-06, the SF-27 decision of
 | `D-WA3-PREAUTH-CONSENT`            | RESOLVED | WA3 name and consents disabled, never sent; WA5 records consent (SF-36)                    |
 | `D-WEB-COACH-ONBOARDING-FLOW`      | DEFERRED | Web Coach onboarding: WCR1, WCR2, WCR7 current; WCR3–WCR6 future; session-only access      |
 | `D-MOBILE-COACH-ONBOARDING-FLOW`   | DEFERRED | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access      |
-| `D-ENTRY-CONTEXT-SELECTION`        | DEFERRED | `context_selection` has no route on either platform; never WA6 / O05 or a home             |
+| `D-ENTRY-CONTEXT-SELECTION`        | DEFERRED | `context_selection` opens WCX1 on the web; no mobile chooser yet; never WA6 / O05 or home  |
+| `D-WEB-COACH-HOME-MVP`             | DEFERRED | Coach web: real profile dashboard, MVP nav with Soon rows; CRW1 future                     |
 
 Gallery rows dropped by a decision are listed in `excludedRows`, so every
 row stays accounted for:

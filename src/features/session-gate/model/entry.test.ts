@@ -47,6 +47,7 @@ describe("destinationRoute", () => {
       fighter_home: "web.app.home",
       coach_onboarding: "web.app.onboarding.coach",
       coach_home: "web.app.coach",
+      context_selection: "web.app.context",
       gym_onboarding: "web.app.onboarding.gym",
       sponsor_application: "web.partners.apply",
     });
@@ -158,11 +159,14 @@ describe("SF-51 destinations (SF-52)", () => {
     capabilities: ["COACH"],
   });
 
-  it("maps Coach home, and keeps context_selection unknown: never role selection or Fighter home", () => {
+  it("maps Coach home, and context_selection to WCX1: never role selection or Fighter home (SF-54)", () => {
     expect(isKnownEntry(COACH_HOME)).toBe(true);
     expect(routeHref(destinationRoute("coach_home"))).toBe("/app/coach");
     const choice = { ...entry({}), destination: "context_selection" as const };
-    expect(isKnownEntry(choice)).toBe(false);
+    expect(isKnownEntry(choice)).toBe(true);
+    expect(routeHref(destinationRoute("context_selection"))).toBe("/app/context");
+    // A returnTo the entry's capabilities do not allow never wins over the chooser.
+    expect(entryHref(choice, { returnTo: "/app/home" })).toBe("/app/context");
     expect(isKnownEntry(entry({ destination: "coach_onboarding" }))).toBe(true);
   });
 

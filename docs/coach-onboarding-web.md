@@ -61,10 +61,10 @@ resolves to the resume step (`D-WEB-COACH-ONBOARDING-FLOW`).
 - **WCR7 → Coach home.** "Continue to coach home" records the explicit Coach
   context choice (`PUT /api/v1/me/entry/context`, SF-51) and goes through
   `/app`, where the entry resolver answers `coach_home` → `/app/coach`. A
-  failed choice keeps the visitor on WCR7 with Try again. Coach Home is not
-  built yet: `/app/coach` is the canonical "Planned" placeholder, and WCR7
-  says so ("Coach tools are not available yet.") instead of promising a
-  workspace.
+  failed choice keeps the visitor on WCR7 with Try again. `/app/coach` is the
+  Coach dashboard (SF-54, `docs/coach-home-web.md`), which shows the saved
+  profile; WCR7 says the coach tools are not available yet instead of
+  promising a workspace.
 - A completed Coach on this route (any `?step=`) leaves through
   `/app?intent=coach`, which resolves to Coach home whatever the last chosen
   context.
@@ -73,21 +73,17 @@ resolves to the resume step (`D-WEB-COACH-ONBOARDING-FLOW`).
   the Fighter area FIGHTER (`FighterGate`), so a user with both profiles
   opens either. WF6's "Go to my home" asks the entry with `intent=fighter`,
   so a Coach finishing Fighter onboarding lands on Fighter home.
-- `context_selection` has no route (`D-ENTRY-CONTEXT-SELECTION`): the web
-  treats it as an unknown destination (a retryable failure), never as WA6.
+- `context_selection` opens WCX1 (`/app/context`, SF-54), never WA6.
 
 ## Approved differences from the artboards
 
 1. **No email in the header.** WCR1/WCR2 draw the account email next to
    Save & exit; the session's viewer (`GET /api/me`) carries no email, so
    the header shows the badge and Save & exit only, as WF0/WF1 do.
-2. **WCR7 copy (pending design reconciliation).** Version 87 draws "Open
-   coach workspace". Production says "Continue to coach home" and adds the
-   neutral note "Coach tools are not available yet. Your coach home shows
-   what is planned. Your profile is ready for it.", and the failure title
-   "We couldn’t open your coach home.", because Coach Home does not exist
-   yet. The same change is prepared for the canonical artboard; publishing
-   it to Claude Design awaits approval.
+2. **WCR7 copy.** "Continue to coach home", the note "Coach tools are not
+   available yet. Your coach home shows what is planned. Your profile is
+   ready for it." and the failure title "We couldn’t open your coach home."
+   are the artboard's own since Version 89 (published with SF-53).
 3. **Save & exit** saves unsaved edits and goes to the public site, as in
    Fighter onboarding.
 4. **Step rows** are 40 px; **radii** follow §8.1: the step card's 24 px is

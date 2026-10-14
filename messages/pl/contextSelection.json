@@ -1,0 +1,22 @@
+{
+  "metaTitle": "Wybierz, gdzie kontynuować",
+  "signOut": "Wyloguj się",
+  "open": "Otwórz",
+  "continue": "Dalej",
+  "completed": {
+    "eyebrow": "Twoje profile",
+    "title": "Dokąd chcesz przejść?",
+    "lead": "Masz profil zawodnika i profil trenera na jednym koncie.",
+    "note": "Następnym razem otworzymy Twój ostatni wybór. Przełączaj się w każdej chwili u góry paska bocznego."
+  },
+  "setup": {
+    "eyebrow": "Twoja rejestracja",
+    "title": "Którą rejestrację chcesz dokończyć?",
+    "lead": "Zacząłeś więcej niż jedną. Wybierz jedną; druga na Ciebie poczeka.",
+    "note": "Nic nie przepada: każda rejestracja zachowuje to, co zapisałeś."
+  },
+  "failed": {
+    "title": "Nie udało się tego otworzyć.",
+    "body": "Nic się nie zmieniło. Spróbuj ponownie."
+  }
+}

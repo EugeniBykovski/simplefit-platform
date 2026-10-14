@@ -1,0 +1,56 @@
+{
+  "metaTitle": "Coach-Dashboard",
+  "eyebrow": "Coach · Dashboard",
+  "title": "Willkommen, {name}",
+  "profile": {
+    "title": "Dein Coach-Profil",
+    "complete": "Vollständig",
+    "formats": "Trainingsformen",
+    "competition": "Wettkampfniveau",
+    "languages": "Trainingssprachen",
+    "bio": "Bio",
+    "none": "—"
+  },
+  "fills": {
+    "title": "Was dieses Dashboard füllt",
+    "unavailable": "Noch nicht verfügbar",
+    "fighters": {
+      "label": "Fighter",
+      "when": "sobald Fighter dir beitreten können"
+    },
+    "sessions": {
+      "label": "Einheiten",
+      "when": "sobald du Einheiten planen kannst"
+    },
+    "invitations": {
+      "label": "Einladungen",
+      "when": "sobald du Fighter einladen kannst"
+    }
+  },
+  "setup": {
+    "eyebrow": "Coach-Einrichtung",
+    "title": "Mach deinen Coaching-Bereich bereit",
+    "done": "Erledigt",
+    "unavailable": "Noch nicht verfügbar",
+    "profile": {
+      "title": "Coach-Profil",
+      "line": "Gespeichert · du kannst es später ändern"
+    },
+    "invite": {
+      "title": "Lade deinen ersten Fighter ein",
+      "line": "Fighter kommen per Einladung zu dir"
+    },
+    "session": {
+      "title": "Plane deine erste Einheit",
+      "line": "Einheiten, die du mit deinen Fightern leitest"
+    },
+    "dataRules": {
+      "title": "Stimme den Coach-Datenregeln zu",
+      "line": "Was du mit Zustimmung eines Fighters sehen darfst"
+    }
+  },
+  "note": {
+    "title": "Coach-Werkzeuge kommen Schritt für Schritt.",
+    "body": "Fighter, Einheiten und Einladungen erscheinen hier, sobald sie verfügbar sind. Nichts wird gezeigt, bevor es echt ist."
+  }
+}

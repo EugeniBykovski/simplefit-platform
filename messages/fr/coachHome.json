@@ -1,0 +1,56 @@
+{
+  "metaTitle": "Tableau de bord coach",
+  "eyebrow": "Coach · Tableau de bord",
+  "title": "Bienvenue, {name}",
+  "profile": {
+    "title": "Ton profil de coach",
+    "complete": "Complet",
+    "formats": "Formats de coaching",
+    "competition": "Niveau de compétition",
+    "languages": "Langues de coaching",
+    "bio": "Bio",
+    "none": "—"
+  },
+  "fills": {
+    "title": "Ce qui remplira ce tableau de bord",
+    "unavailable": "Pas encore disponible",
+    "fighters": {
+      "label": "Boxeurs",
+      "when": "quand les boxeurs pourront te rejoindre"
+    },
+    "sessions": {
+      "label": "Séances",
+      "when": "quand tu pourras planifier des séances"
+    },
+    "invitations": {
+      "label": "Invitations",
+      "when": "quand tu pourras inviter des boxeurs"
+    }
+  },
+  "setup": {
+    "eyebrow": "Inscription coach",
+    "title": "Prépare ton espace de coaching",
+    "done": "Fait",
+    "unavailable": "Pas encore disponible",
+    "profile": {
+      "title": "Profil de coach",
+      "line": "Enregistré · tu peux le modifier plus tard"
+    },
+    "invite": {
+      "title": "Invite ton premier boxeur",
+      "line": "Les boxeurs te rejoignent sur invitation"
+    },
+    "session": {
+      "title": "Planifie ta première séance",
+      "line": "Les séances que tu mènes avec tes boxeurs"
+    },
+    "dataRules": {
+      "title": "Accepte les règles de données du coach",
+      "line": "Ce que tu peux voir avec le consentement d’un boxeur"
+    }
+  },
+  "note": {
+    "title": "Les outils de coach arrivent pas à pas.",
+    "body": "Boxeurs, séances et invitations apparaîtront ici dès qu’ils seront disponibles. Rien n’est affiché avant d’être réel."
+  }
+}

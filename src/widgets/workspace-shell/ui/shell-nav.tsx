@@ -10,7 +10,14 @@ import { SheetClose } from "@/shared/ui/sheet";
 
 import type { SidebarShellId } from "../model/navigation";
 
-export type ShellNavItem = { key: string; href: string; label: string; icon: ReactNode };
+export type ShellNavItem = {
+  key: string;
+  href: string;
+  label: string;
+  icon: ReactNode;
+  /** Not available yet: an unlinked row marked with `soon` (its label). */
+  soon?: string | undefined;
+};
 export type ShellNavSection = { key: string; label: string; items: ShellNavItem[] };
 
 type ShellNavProps = {
@@ -54,6 +61,23 @@ export function ShellNavLinks({
           <h2 className="px-2.5 pt-4 pb-1.5 type-label text-faint-foreground">{section.label}</h2>
           <ul className="flex flex-col gap-0.5">
             {section.items.map((item) => {
+              if (item.soon !== undefined) {
+                return (
+                  <li key={item.key}>
+                    <span
+                      data-nav-item={item.key}
+                      aria-disabled="true"
+                      className="flex h-9.5 items-center gap-2.5 rounded-md px-2.5 type-body-sm font-bold text-faint-foreground [&_svg]:text-faint-foreground"
+                    >
+                      {item.icon}
+                      <span className="flex-1">{item.label}</span>
+                      <span className="rounded-xs bg-muted px-1.5 py-0.5 type-micro font-mono text-faint-foreground">
+                        {item.soon}
+                      </span>
+                    </span>
+                  </li>
+                );
+              }
               const active = item.key === activeKey;
               const link = (
                 <Link

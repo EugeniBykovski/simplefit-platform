@@ -1,0 +1,42 @@
+{
+  "trigger": "{name}, {context}. Zmień profil",
+  "heading": "Twoje profile",
+  "contexts": {
+    "fighter": "Zawodnik",
+    "coach": "Trener"
+  },
+  "labels": {
+    "fighter": "Zawodnik",
+    "coach": "Trener"
+  },
+  "initials": {
+    "fighter": "Z",
+    "coach": "T"
+  },
+  "homes": {
+    "fighter": "Strona główna zawodnika",
+    "coach": "Panel trenera"
+  },
+  "start": {
+    "fighter": "Załóż profil zawodnika",
+    "coach": "Zacznij jako trener"
+  },
+  "startLines": {
+    "fighter": "Trenuj i śledź postępy",
+    "coach": "Utwórz profil trenera"
+  },
+  "continue": {
+    "fighter": "Dokończ rejestrację zawodnika",
+    "coach": "Dokończ rejestrację trenera"
+  },
+  "continueLines": {
+    "fighter": "Twój profil zawodnika nie jest gotowy",
+    "coach": "Twój profil trenera nie jest gotowy"
+  },
+  "opening": "Otwieranie…",
+  "failed": {
+    "title": "Nie udało się przełączyć.",
+    "body": "Nadal jesteś w obecnym profilu. Spróbuj ponownie."
+  },
+  "footnote": "Jedno konto. Następnym razem otworzymy Twój ostatni wybór."
+}

@@ -36,11 +36,13 @@ export async function fetchFighterProfile(signal?: AbortSignal): Promise<Fighter
 /**
  * The current profile. Refetched when the window regains focus, so a save from
  * another tab or the mobile app is reconciled instead of overwritten.
+ * `enabled: false` reads nothing (a profile the user may not have).
  */
-export function useFighterProfile() {
+export function useFighterProfile({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery({
     queryKey: fighterProfileQueryKey,
     queryFn: ({ signal }) => fetchFighterProfile(signal),
+    enabled,
     retry: false,
     staleTime: 0,
     refetchOnWindowFocus: true,
