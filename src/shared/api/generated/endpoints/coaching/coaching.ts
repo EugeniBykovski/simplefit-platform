@@ -20,19 +20,34 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  CoachDataRulesAcknowledgeRequest,
+  CoachDataRulesResponse,
   CoachFighterRelationshipList,
   CoachFighterRelationshipResponse,
+  CoachInvitationAcceptRequest,
+  CoachInvitationAcceptResponse,
+  CoachInvitationCreateRequest,
+  CoachInvitationList,
+  CoachInvitationPreview,
+  CoachInvitationResponse,
+  CoachInvitationTokenRequest,
+  ConflictResponse,
+  ErrorResponse,
   InternalErrorResponse,
+  InvitationRecipientMismatchResponse,
+  InvitationUnavailableResponse,
   ListMyCoachFightersParams,
+  ListMyCoachInvitationsParams,
   ListMyCoachesParams,
   MyCoachRelationshipList,
   NotFoundResponse,
+  ServiceUnavailableResponse,
   UnauthorizedResponse,
   ValidationErrorResponse
 } from '../../model';
 
 import { apiFetch } from '../../../http/api-fetch';
-import type { ErrorType } from '../../../http/api-fetch';
+import type { ErrorType , BodyType } from '../../../http/api-fetch';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -53,6 +68,597 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   }
   return result;
 };
+
+export const getPreviewCoachInvitationUrl = () => {
+
+
+
+
+  return `/api/v1/coach-invitations/preview`
+}
+
+/**
+ * No sign-in needed: the inviting coach's public identity and note, the expiry and the disclosure the recipient
+ * would accept. Reveals nothing about the recipient or any account. Every token that is not a current pending
+ * one (unknown, resent, accepted, declined, cancelled or expired) answers the same `410
+ * invitation_unavailable`.
+ *
+ * * `not_found` - Coach–Fighter sharing is not enabled.
+ * * `rate_limited` - 30 responses per 10 minutes per client, shared with accept and decline.
+ * @summary What an invitation link shows
+ */
+export const previewCoachInvitation = async (coachInvitationTokenRequest: CoachInvitationTokenRequest, options?: Parameters<typeof apiFetch>[1]): Promise<CoachInvitationPreview> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<CoachInvitationPreview>(getPreviewCoachInvitationUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(coachInvitationTokenRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewCoachInvitationQueryKey = (coachInvitationTokenRequest?: BodyType<CoachInvitationTokenRequest>,) => {
+    return [
+    'POST', `/api/v1/coach-invitations/preview`, coachInvitationTokenRequest
+    ] as const;
+    }
+
+
+export const getPreviewCoachInvitationQueryOptions = <TData = Awaited<ReturnType<typeof previewCoachInvitation>>, TError = ErrorType<NotFoundResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewCoachInvitationQueryKey(coachInvitationTokenRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewCoachInvitation>>> = ({ signal }) => previewCoachInvitation(coachInvitationTokenRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewCoachInvitationQueryResult = NonNullable<Awaited<ReturnType<typeof previewCoachInvitation>>>
+export type PreviewCoachInvitationQueryError = ErrorType<NotFoundResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function usePreviewCoachInvitation<TData = Awaited<ReturnType<typeof previewCoachInvitation>>, TError = ErrorType<NotFoundResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
+ coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof previewCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewCoachInvitation<TData = Awaited<ReturnType<typeof previewCoachInvitation>>, TError = ErrorType<NotFoundResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
+ coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof previewCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewCoachInvitation<TData = Awaited<ReturnType<typeof previewCoachInvitation>>, TError = ErrorType<NotFoundResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
+ coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary What an invitation link shows
+ */
+
+export function usePreviewCoachInvitation<TData = Awaited<ReturnType<typeof previewCoachInvitation>>, TError = ErrorType<NotFoundResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
+ coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewCoachInvitationQueryOptions(coachInvitationTokenRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getAcceptCoachInvitationUrl = () => {
+
+
+
+
+  return `/api/v1/me/coach-invitations/accept`
+}
+
+/**
+ * The explicit acceptance. The viewer must be signed in with the invited address (an email identity they
+ * verified), have completed account registration and a fighter profile, and echo exactly the disclosure version
+ * shown by `previewCoachInvitation`. In one transaction the invitation is consumed and the relationship becomes
+ * active with that disclosure; nothing changes if any step fails. A token works once: a repeated acceptance
+ * answers `410` (see `listMyCoaches`).
+ *
+ * * `invitation_unavailable` (410) - not a current pending invitation, or the viewer's own.
+ * * `invitation_recipient_mismatch` (403) - the viewer is not signed in with the invited address.
+ * * `validation_error` - `account_registration` or `fighter_profile` `required`, or `disclosure_version`
+ *   missing.
+ * * `conflict` - `disclosure_version` is not the current version (details `disclosure_version: stale`).
+ * * `not_found` - Coach–Fighter sharing is not enabled.
+ * * `rate_limited` - 30 per 10 minutes per client.
+ * @summary Accept an invitation
+ */
+export const acceptCoachInvitation = async (coachInvitationAcceptRequest: CoachInvitationAcceptRequest, options?: Parameters<typeof apiFetch>[1]): Promise<CoachInvitationAcceptResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<CoachInvitationAcceptResponse>(getAcceptCoachInvitationUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(coachInvitationAcceptRequest)
+  }
+);}
+
+
+
+
+
+export const getAcceptCoachInvitationQueryKey = (coachInvitationAcceptRequest?: BodyType<CoachInvitationAcceptRequest>,) => {
+    return [
+    'POST', `/api/v1/me/coach-invitations/accept`, coachInvitationAcceptRequest
+    ] as const;
+    }
+
+
+export const getAcceptCoachInvitationQueryOptions = <TData = Awaited<ReturnType<typeof acceptCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | NotFoundResponse | ConflictResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(coachInvitationAcceptRequest: BodyType<CoachInvitationAcceptRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAcceptCoachInvitationQueryKey(coachInvitationAcceptRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof acceptCoachInvitation>>> = ({ signal }) => acceptCoachInvitation(coachInvitationAcceptRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof acceptCoachInvitation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type AcceptCoachInvitationQueryResult = NonNullable<Awaited<ReturnType<typeof acceptCoachInvitation>>>
+export type AcceptCoachInvitationQueryError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | NotFoundResponse | ConflictResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function useAcceptCoachInvitation<TData = Awaited<ReturnType<typeof acceptCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | NotFoundResponse | ConflictResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ coachInvitationAcceptRequest: BodyType<CoachInvitationAcceptRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptCoachInvitation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof acceptCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof acceptCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAcceptCoachInvitation<TData = Awaited<ReturnType<typeof acceptCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | NotFoundResponse | ConflictResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ coachInvitationAcceptRequest: BodyType<CoachInvitationAcceptRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptCoachInvitation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof acceptCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof acceptCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAcceptCoachInvitation<TData = Awaited<ReturnType<typeof acceptCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | NotFoundResponse | ConflictResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ coachInvitationAcceptRequest: BodyType<CoachInvitationAcceptRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Accept an invitation
+ */
+
+export function useAcceptCoachInvitation<TData = Awaited<ReturnType<typeof acceptCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | NotFoundResponse | ConflictResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ coachInvitationAcceptRequest: BodyType<CoachInvitationAcceptRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getAcceptCoachInvitationQueryOptions(coachInvitationAcceptRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getDeclineCoachInvitationUrl = () => {
+
+
+
+
+  return `/api/v1/me/coach-invitations/decline`
+}
+
+/**
+ * The explicit decline: by the viewer signed in with the invited address and with a completed fighter profile.
+ * Creates nothing; the link stops working. Also available while Coach–Fighter sharing is not enabled.
+ *
+ * * `invitation_unavailable` (410), `invitation_recipient_mismatch` (403), `validation_error`
+ *   (`account_registration` / `fighter_profile` `required`) - as for `acceptCoachInvitation`.
+ * * `rate_limited` - 30 per 10 minutes per client.
+ * @summary Decline an invitation
+ */
+export const declineCoachInvitation = async (coachInvitationTokenRequest: CoachInvitationTokenRequest, options?: Parameters<typeof apiFetch>[1]): Promise<void> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<void>(getDeclineCoachInvitationUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(coachInvitationTokenRequest)
+  }
+);}
+
+
+
+
+
+export const getDeclineCoachInvitationQueryKey = (coachInvitationTokenRequest?: BodyType<CoachInvitationTokenRequest>,) => {
+    return [
+    'POST', `/api/v1/me/coach-invitations/decline`, coachInvitationTokenRequest
+    ] as const;
+    }
+
+
+export const getDeclineCoachInvitationQueryOptions = <TData = Awaited<ReturnType<typeof declineCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getDeclineCoachInvitationQueryKey(coachInvitationTokenRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof declineCoachInvitation>>> = ({ signal }) => declineCoachInvitation(coachInvitationTokenRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof declineCoachInvitation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type DeclineCoachInvitationQueryResult = NonNullable<Awaited<ReturnType<typeof declineCoachInvitation>>>
+export type DeclineCoachInvitationQueryError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function useDeclineCoachInvitation<TData = Awaited<ReturnType<typeof declineCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineCoachInvitation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof declineCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof declineCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDeclineCoachInvitation<TData = Awaited<ReturnType<typeof declineCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineCoachInvitation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof declineCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof declineCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDeclineCoachInvitation<TData = Awaited<ReturnType<typeof declineCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Decline an invitation
+ */
+
+export function useDeclineCoachInvitation<TData = Awaited<ReturnType<typeof declineCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getDeclineCoachInvitationQueryOptions(coachInvitationTokenRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetMyCoachDataRulesUrl = () => {
+
+
+
+
+  return `/api/v1/me/coach/data-rules`
+}
+
+/**
+ * The coach data-rules version the viewer must acknowledge before inviting, and when they did.
+ * `document_version` is `null` while no approved version is configured (inviting is then unavailable).
+ *
+ * * `not_found` - Coach–Fighter sharing is not enabled, or the viewer has no completed coach profile.
+ * @summary The coach data rules to acknowledge
+ */
+export const getMyCoachDataRules = async ( options?: Parameters<typeof apiFetch>[1]): Promise<CoachDataRulesResponse> => {
+
+  return apiFetch<CoachDataRulesResponse>(getGetMyCoachDataRulesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMyCoachDataRulesQueryKey = () => {
+    return [
+    `/api/v1/me/coach/data-rules`
+    ] as const;
+    }
+
+
+export const getGetMyCoachDataRulesQueryOptions = <TData = Awaited<ReturnType<typeof getMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMyCoachDataRulesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyCoachDataRules>>> = ({ signal }) => getMyCoachDataRules({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetMyCoachDataRulesQueryResult = NonNullable<Awaited<ReturnType<typeof getMyCoachDataRules>>>
+export type GetMyCoachDataRulesQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetMyCoachDataRules<TData = Awaited<ReturnType<typeof getMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMyCoachDataRules>>,
+          TError,
+          Awaited<ReturnType<typeof getMyCoachDataRules>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMyCoachDataRules<TData = Awaited<ReturnType<typeof getMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMyCoachDataRules>>,
+          TError,
+          Awaited<ReturnType<typeof getMyCoachDataRules>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMyCoachDataRules<TData = Awaited<ReturnType<typeof getMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary The coach data rules to acknowledge
+ */
+
+export function useGetMyCoachDataRules<TData = Awaited<ReturnType<typeof getMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetMyCoachDataRulesQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getAcknowledgeMyCoachDataRulesUrl = () => {
+
+
+
+
+  return `/api/v1/me/coach/data-rules/acknowledge`
+}
+
+/**
+ * Records that the viewer acknowledged the configured coach data-rules version (separate from account consents
+ * and the coach profile). Idempotent: the first acknowledgement's time is kept.
+ *
+ * * `conflict` - `document_version` is not the configured version (details `document_version: stale`).
+ * * `not_found` - sharing is not enabled, no version is configured, or no completed coach profile.
+ * @summary Acknowledge the coach data rules
+ */
+export const acknowledgeMyCoachDataRules = async (coachDataRulesAcknowledgeRequest: CoachDataRulesAcknowledgeRequest, options?: Parameters<typeof apiFetch>[1]): Promise<CoachDataRulesResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<CoachDataRulesResponse>(getAcknowledgeMyCoachDataRulesUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(coachDataRulesAcknowledgeRequest)
+  }
+);}
+
+
+
+
+
+export const getAcknowledgeMyCoachDataRulesQueryKey = (coachDataRulesAcknowledgeRequest?: BodyType<CoachDataRulesAcknowledgeRequest>,) => {
+    return [
+    'POST', `/api/v1/me/coach/data-rules/acknowledge`, coachDataRulesAcknowledgeRequest
+    ] as const;
+    }
+
+
+export const getAcknowledgeMyCoachDataRulesQueryOptions = <TData = Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(coachDataRulesAcknowledgeRequest: BodyType<CoachDataRulesAcknowledgeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAcknowledgeMyCoachDataRulesQueryKey(coachDataRulesAcknowledgeRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>> = ({ signal }) => acknowledgeMyCoachDataRules(coachDataRulesAcknowledgeRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type AcknowledgeMyCoachDataRulesQueryResult = NonNullable<Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>>
+export type AcknowledgeMyCoachDataRulesQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useAcknowledgeMyCoachDataRules<TData = Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ coachDataRulesAcknowledgeRequest: BodyType<CoachDataRulesAcknowledgeRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>,
+          TError,
+          Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAcknowledgeMyCoachDataRules<TData = Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ coachDataRulesAcknowledgeRequest: BodyType<CoachDataRulesAcknowledgeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>,
+          TError,
+          Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAcknowledgeMyCoachDataRules<TData = Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ coachDataRulesAcknowledgeRequest: BodyType<CoachDataRulesAcknowledgeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Acknowledge the coach data rules
+ */
+
+export function useAcknowledgeMyCoachDataRules<TData = Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ coachDataRulesAcknowledgeRequest: BodyType<CoachDataRulesAcknowledgeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acknowledgeMyCoachDataRules>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getAcknowledgeMyCoachDataRulesQueryOptions(coachDataRulesAcknowledgeRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
 
 export const getListMyCoachFightersUrl = (params?: ListMyCoachFightersParams,) => {
   const normalizedParams = new URLSearchParams();
@@ -365,6 +971,454 @@ export function useEndMyCoachFighterRelationship<TData = Awaited<ReturnType<type
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getEndMyCoachFighterRelationshipQueryOptions(relationshipId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getListMyCoachInvitationsUrl = (params?: ListMyCoachInvitationsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/me/coach/invitations?${stringifiedParams}` : `/api/v1/me/coach/invitations`
+}
+
+/**
+ * The viewer's invitations, newest first, with masked recipient addresses.
+ *
+ * * `not_found` - sharing is not enabled, or no completed coach profile.
+ * * `validation_error` - `limit` or `cursor` is invalid.
+ * @summary My invitations
+ */
+export const listMyCoachInvitations = async (params?: ListMyCoachInvitationsParams, options?: Parameters<typeof apiFetch>[1]): Promise<CoachInvitationList> => {
+
+  return apiFetch<CoachInvitationList>(getListMyCoachInvitationsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListMyCoachInvitationsQueryKey = (params?: ListMyCoachInvitationsParams,) => {
+    return [
+    `/api/v1/me/coach/invitations`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListMyCoachInvitationsQueryOptions = <TData = Awaited<ReturnType<typeof listMyCoachInvitations>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(params?: ListMyCoachInvitationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMyCoachInvitations>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListMyCoachInvitationsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMyCoachInvitations>>> = ({ signal }) => listMyCoachInvitations(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMyCoachInvitations>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListMyCoachInvitationsQueryResult = NonNullable<Awaited<ReturnType<typeof listMyCoachInvitations>>>
+export type ListMyCoachInvitationsQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useListMyCoachInvitations<TData = Awaited<ReturnType<typeof listMyCoachInvitations>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params: undefined |  ListMyCoachInvitationsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMyCoachInvitations>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listMyCoachInvitations>>,
+          TError,
+          Awaited<ReturnType<typeof listMyCoachInvitations>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListMyCoachInvitations<TData = Awaited<ReturnType<typeof listMyCoachInvitations>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListMyCoachInvitationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMyCoachInvitations>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listMyCoachInvitations>>,
+          TError,
+          Awaited<ReturnType<typeof listMyCoachInvitations>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListMyCoachInvitations<TData = Awaited<ReturnType<typeof listMyCoachInvitations>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListMyCoachInvitationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMyCoachInvitations>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary My invitations
+ */
+
+export function useListMyCoachInvitations<TData = Awaited<ReturnType<typeof listMyCoachInvitations>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListMyCoachInvitationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMyCoachInvitations>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getListMyCoachInvitationsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getCreateMyCoachInvitationUrl = () => {
+
+
+
+
+  return `/api/v1/me/coach/invitations`
+}
+
+/**
+ * Invites an email address to connect with the viewer as their coach and sends E08 with a one-time link
+ * (14 days). Creates no account, profile or relationship: only the recipient, signed in with that address,
+ * can accept. A pending invitation of the viewer to the same address is returned unchanged (`200`, no new
+ * email). Answers the same whether or not the address has an account.
+ *
+ * * `conflict` - the coach data rules are not acknowledged (`data_rules_acknowledgement: required`), or 50
+ *   invitations are pending (`pending_invitations: limit_reached`).
+ * * `not_found` - sharing is not enabled, no disclosure version is configured, or no completed coach profile.
+ * * `validation_error` - `email` missing, malformed or the viewer's own; `message` too long or not one plain
+ *   paragraph; any other field.
+ * * `rate_limited` - per coach (10/hour, 30/day), per recipient (3/day) or per client (20 per 10 minutes).
+ * @summary Invite someone to connect
+ */
+export const createMyCoachInvitation = async (coachInvitationCreateRequest: CoachInvitationCreateRequest, options?: Parameters<typeof apiFetch>[1]): Promise<CoachInvitationResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<CoachInvitationResponse>(getCreateMyCoachInvitationUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(coachInvitationCreateRequest)
+  }
+);}
+
+
+
+
+
+export const getCreateMyCoachInvitationQueryKey = (coachInvitationCreateRequest?: BodyType<CoachInvitationCreateRequest>,) => {
+    return [
+    'POST', `/api/v1/me/coach/invitations`, coachInvitationCreateRequest
+    ] as const;
+    }
+
+
+export const getCreateMyCoachInvitationQueryOptions = <TData = Awaited<ReturnType<typeof createMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(coachInvitationCreateRequest: BodyType<CoachInvitationCreateRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createMyCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getCreateMyCoachInvitationQueryKey(coachInvitationCreateRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof createMyCoachInvitation>>> = ({ signal }) => createMyCoachInvitation(coachInvitationCreateRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof createMyCoachInvitation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type CreateMyCoachInvitationQueryResult = NonNullable<Awaited<ReturnType<typeof createMyCoachInvitation>>>
+export type CreateMyCoachInvitationQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+export function useCreateMyCoachInvitation<TData = Awaited<ReturnType<typeof createMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ coachInvitationCreateRequest: BodyType<CoachInvitationCreateRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof createMyCoachInvitation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof createMyCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof createMyCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCreateMyCoachInvitation<TData = Awaited<ReturnType<typeof createMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ coachInvitationCreateRequest: BodyType<CoachInvitationCreateRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createMyCoachInvitation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof createMyCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof createMyCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCreateMyCoachInvitation<TData = Awaited<ReturnType<typeof createMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ coachInvitationCreateRequest: BodyType<CoachInvitationCreateRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createMyCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Invite someone to connect
+ */
+
+export function useCreateMyCoachInvitation<TData = Awaited<ReturnType<typeof createMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ coachInvitationCreateRequest: BodyType<CoachInvitationCreateRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createMyCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getCreateMyCoachInvitationQueryOptions(coachInvitationCreateRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getCancelMyCoachInvitationUrl = (invitationId: string,) => {
+
+
+
+
+  return `/api/v1/me/coach/invitations/${invitationId}/cancel`
+}
+
+/**
+ * Cancels a pending invitation: its link stops working. Idempotent for an invitation already cancelled or
+ * expired. Also available while Coach–Fighter sharing is not enabled.
+ *
+ * * `conflict` - already accepted or declined.
+ * * `not_found` - unknown or someone else's invitation, or no completed coach profile.
+ * @summary Cancel an invitation
+ */
+export const cancelMyCoachInvitation = async (invitationId: string, options?: Parameters<typeof apiFetch>[1]): Promise<void> => {
+
+  return apiFetch<void>(getCancelMyCoachInvitationUrl(invitationId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getCancelMyCoachInvitationQueryKey = (invitationId: string,) => {
+    return [
+    'POST', `/api/v1/me/coach/invitations/${invitationId}/cancel`
+    ] as const;
+    }
+
+
+export const getCancelMyCoachInvitationQueryOptions = <TData = Awaited<ReturnType<typeof cancelMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse>>(invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof cancelMyCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getCancelMyCoachInvitationQueryKey(invitationId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof cancelMyCoachInvitation>>> = ({ signal }) => cancelMyCoachInvitation(invitationId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: invitationId !== null && invitationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof cancelMyCoachInvitation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type CancelMyCoachInvitationQueryResult = NonNullable<Awaited<ReturnType<typeof cancelMyCoachInvitation>>>
+export type CancelMyCoachInvitationQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse>
+
+
+export function useCancelMyCoachInvitation<TData = Awaited<ReturnType<typeof cancelMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse>>(
+ invitationId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof cancelMyCoachInvitation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof cancelMyCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof cancelMyCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCancelMyCoachInvitation<TData = Awaited<ReturnType<typeof cancelMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse>>(
+ invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof cancelMyCoachInvitation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof cancelMyCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof cancelMyCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCancelMyCoachInvitation<TData = Awaited<ReturnType<typeof cancelMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse>>(
+ invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof cancelMyCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Cancel an invitation
+ */
+
+export function useCancelMyCoachInvitation<TData = Awaited<ReturnType<typeof cancelMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse>>(
+ invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof cancelMyCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getCancelMyCoachInvitationQueryOptions(invitationId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getResendMyCoachInvitationUrl = (invitationId: string,) => {
+
+
+
+
+  return `/api/v1/me/coach/invitations/${invitationId}/resend`
+}
+
+/**
+ * Sends a pending invitation again with a new one-time link and a new 14-day expiry; the previous link stops
+ * working at once. At most 3 resends, 60 seconds apart.
+ *
+ * * `conflict` - not pending (accepted, declined, cancelled or expired), or no resend left
+ *   (`resends: limit_reached`).
+ * * `rate_limited` - within 60 seconds of the last send, or the coach's hourly limit.
+ * * `not_found` - unknown or someone else's invitation, sharing not enabled, or no completed coach profile.
+ * @summary Send an invitation again
+ */
+export const resendMyCoachInvitation = async (invitationId: string, options?: Parameters<typeof apiFetch>[1]): Promise<CoachInvitationResponse> => {
+
+  return apiFetch<CoachInvitationResponse>(getResendMyCoachInvitationUrl(invitationId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getResendMyCoachInvitationQueryKey = (invitationId: string,) => {
+    return [
+    'POST', `/api/v1/me/coach/invitations/${invitationId}/resend`
+    ] as const;
+    }
+
+
+export const getResendMyCoachInvitationQueryOptions = <TData = Awaited<ReturnType<typeof resendMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof resendMyCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getResendMyCoachInvitationQueryKey(invitationId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof resendMyCoachInvitation>>> = ({ signal }) => resendMyCoachInvitation(invitationId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: invitationId !== null && invitationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof resendMyCoachInvitation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ResendMyCoachInvitationQueryResult = NonNullable<Awaited<ReturnType<typeof resendMyCoachInvitation>>>
+export type ResendMyCoachInvitationQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+export function useResendMyCoachInvitation<TData = Awaited<ReturnType<typeof resendMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ invitationId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof resendMyCoachInvitation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof resendMyCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof resendMyCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useResendMyCoachInvitation<TData = Awaited<ReturnType<typeof resendMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof resendMyCoachInvitation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof resendMyCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof resendMyCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useResendMyCoachInvitation<TData = Awaited<ReturnType<typeof resendMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof resendMyCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Send an invitation again
+ */
+
+export function useResendMyCoachInvitation<TData = Awaited<ReturnType<typeof resendMyCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof resendMyCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getResendMyCoachInvitationQueryOptions(invitationId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
