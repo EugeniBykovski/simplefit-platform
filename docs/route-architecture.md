@@ -512,7 +512,10 @@ reduced in Claude Design `1791982482-71e3` to the real CoachProfile, a setup
 checklist and dashes (never zeros) for domains that do not exist yet; the
 Coach sidebar shows Dashboard and, marked Soon and unlinked, Fighters,
 Sessions and Coach settings, while the registry keeps the Route Gallery's
-twelve items and their placeholders (`D-WEB-COACH-HOME-MVP`). The Fighter and
+twelve items and their placeholders (`D-WEB-COACH-HOME-MVP`). SF-58 links
+Fighters: `/app/coach/fighters` (WC7) is the SF-56 roster with the SF-57
+invitations and an in-page invite composer, `/app/coach/fighters/:fighterId`
+(WC4) one active relationship with End relationship. The Fighter and
 Coach sidebars carry the profile context switcher: completed contexts (the
 capabilities the entry reports) are opened by recording the SF-51 choice
 (`PUT /api/v1/me/entry/context`) and resolving the entry again; unfinished

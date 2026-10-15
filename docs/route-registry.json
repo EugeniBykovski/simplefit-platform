@@ -5191,7 +5191,7 @@
       "discrepancies": ["D-NAV-DETAIL-TARGETS"],
       "production": {
         "file": "src/app/[locale]/app/coach/fighters/[fighterId]/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-58: WC4 as reduced in Claude Design 1792056621-3707: one active relationship (the segment is the SF-56 relationship id), the C1+C2 fields the fighter disclosed (anything else Not shared), what is never shared, and End relationship with confirmation. Ended, foreign or unknown relationships and sharing switched off are one not-available state (404)."
       },
       "screens": ["WC4"]
     },
@@ -7835,7 +7835,7 @@
       "discrepancies": ["D-NAV-DETAIL-TARGETS", "D-WEB-COACH-FIGHTER-INVITE"],
       "production": {
         "file": "src/app/[locale]/app/coach/fighters/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-58: WC7 as reduced in Claude Design 1792056621-3707: the SF-56 roster (Active and, with ?view=ended, Ended; cursor pages; only the C1+C2 fields each fighter disclosed) and the SF-57 invitations section (masked recipient, status, resend and cancel with confirmation) with the invite composer as an in-page dialog, no route. Sharing not available (404) is a state of its own, never an empty roster; inviting is blocked until the coach data rules are published and acknowledged."
       },
       "screens": ["WC7"]
     },
@@ -16580,7 +16580,7 @@
       "sourceB": "Canvas target InviteCoach.dc.html: mobile INV1 'Invites · coach / gym / friend' at /invite/:code",
       "mismatch": "The web action targets a mobile artboard. It is not established that the Coach → Fighter invitation on web is the same flow as INV1, which a recipient uses to accept a coach, gym or friend invite.",
       "impact": "Building it from INV1 could merge two relationship directions (coach invites fighter vs fighter receives/uses a coach invite) into one route and screen.",
-      "resolution": "Recorded as GAP-WEB-COACH-FIGHTER-INVITE. No web invite route or screen is registered or inferred. Owner: future Coach ↔ Fighter relationship/invitation product work. Not blocking SF-19.",
+      "resolution": "Recorded as GAP-WEB-COACH-FIGHTER-INVITE. No web invite route or screen is registered or inferred. SF-58 (Claude Design 1792056621-3707) builds the coach's web invitation as an in-page composer dialog on WC7 over the SF-57 API; it is not INV1 and has no route. The recipient side (INV1 and the acceptance flow) stays with future Fighter work. Not blocking SF-19.",
       "status": "DEFERRED",
       "routes": ["web.app.coach.fighters"],
       "designGaps": ["GAP-WEB-COACH-FIGHTER-INVITE"]
@@ -16697,7 +16697,7 @@
       "sourceB": "SF-50 / SF-51 backend: CoachProfile and the COACH capability only; no coaching relationship, invitation, training session, services, payouts or billing domain",
       "mismatch": "The designed Coach workspace showed records that do not exist.",
       "impact": "Building it would fake rosters, sessions, revenue and requests.",
-      "resolution": "Claude Design 1791982482-71e3 (SF-54, CR-8 / CR-16): the production Coach sidebar shows Dashboard and, marked Soon and not linked, Fighters, Sessions and Coach settings; the registry keeps the twelve Route Gallery nav items and their placeholder routes. WC1 shows the real CoachProfile, a setup checklist and dashes for unavailable domains. CRW1 is FUTURE (no Coach first-run experience exists).",
+      "resolution": "Claude Design 1791982482-71e3 (SF-54, CR-8 / CR-16): the production Coach sidebar shows Dashboard and, marked Soon and not linked, Fighters, Sessions and Coach settings; the registry keeps the twelve Route Gallery nav items and their placeholder routes. WC1 shows the real CoachProfile, a setup checklist and dashes for unavailable domains. CRW1 is FUTURE (no Coach first-run experience exists). SF-58 (Claude Design 1792056621-3707) links Fighters: WC7 and WC4 are real; Sessions and Coach settings stay Soon.",
       "decision": "The Coach web workspace grows with its domains (SF-48 follow-ups); nothing is shown before it is real.",
       "decidedOn": "2026-10-14",
       "status": "DEFERRED",

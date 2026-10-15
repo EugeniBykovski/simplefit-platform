@@ -36,6 +36,9 @@ const REAL_SCREENS = [
   // SF-54: the Coach dashboard (WC1) and the context chooser (WCX1).
   "web.app.coach",
   "web.app.context",
+  // SF-58: the Coach fighters (WC7) and one fighter (WC4).
+  "web.app.coach.fighters",
+  "web.app.coach.fighters._fighter-id",
   // SF-40: the Fighter home, its first run and the nine-step tour (FRW1, FRW2).
   "web.app.home",
   // SF-46: account basics & consent (WA5).

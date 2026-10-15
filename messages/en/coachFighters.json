@@ -1,0 +1,176 @@
+{
+  "metaTitle": "Fighters",
+  "detailMetaTitle": "Fighter",
+  "eyebrow": "Coach · Fighters",
+  "title": "Fighters",
+  "roster": {
+    "heading": "Your fighters",
+    "views": "Relationships",
+    "tabs": {
+      "active": "Active",
+      "ended": "Ended"
+    },
+    "label": {
+      "active": "Active fighters",
+      "ended": "Ended relationships"
+    },
+    "columns": {
+      "fighter": "Fighter",
+      "place": "Place",
+      "level": "Level",
+      "stance": "Stance",
+      "bouts": "Bouts",
+      "since": "Since",
+      "started": "Started",
+      "ended": "Ended",
+      "endedBy": "Ended by"
+    },
+    "endedBy": {
+      "coach": "You",
+      "fighter": "Fighter"
+    },
+    "nameAtEnd": "Name when it ended",
+    "notShared": "Not shared",
+    "loading": "Loading your fighters",
+    "more": "Show more",
+    "loadingMore": "Loading more…"
+  },
+  "empty": {
+    "active": {
+      "title": "No fighters yet",
+      "body": "Fighters appear here after they accept your invitation. Invite a fighter by email to start."
+    },
+    "ended": {
+      "title": "No ended relationships",
+      "body": "Relationships you or a fighter end are listed here, with the dates only."
+    }
+  },
+  "unavailable": {
+    "title": "Fighters aren’t available yet",
+    "body": "Coaching fighters on SimpleFit opens once the coach data rules and what fighters agree to share are published. Nothing is hidden from you: there is simply nothing to show yet."
+  },
+  "failed": {
+    "title": "We couldn’t load your fighters.",
+    "body": "Check your connection and try again.",
+    "retry": "Try again"
+  },
+  "privacy": "You see only what each fighter agreed to share: name, username, place, level, stance and bouts. Never their weight, goals or account details.",
+  "invitations": {
+    "heading": "Invitations",
+    "empty": "No invitations yet.",
+    "unavailable": "Invitations open together with fighters.",
+    "failed": "We couldn’t load your invitations.",
+    "retry": "Try again",
+    "more": "Show more",
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    },
+    "line": {
+      "pending": "Sent {sent} · expires {expires}",
+      "accepted": "Accepted {date}",
+      "declined": "Declined {date}",
+      "cancelled": "Cancelled {date}",
+      "expired": "Expired {date} · invite again any time"
+    },
+    "resend": "Resend · {count} left",
+    "resendLabel": "Resend the invitation to {email}",
+    "resending": "Resending…",
+    "cancel": "Cancel",
+    "cancelLabel": "Cancel the invitation to {email}"
+  },
+  "invite": {
+    "open": "Invite fighter",
+    "title": "Invite a fighter",
+    "lead": "They get an email with a link. Only someone signed in with this email can accept, and nothing is shared until they do.",
+    "email": {
+      "label": "Email",
+      "invalid": "Enter a valid email address.",
+      "own": "You can’t invite your own address."
+    },
+    "note": {
+      "label": "Note · optional",
+      "help": "Up to 500 characters, shown in the email.",
+      "invalid": "Keep the note to one paragraph of up to 500 characters."
+    },
+    "cancel": "Cancel",
+    "submit": "Send invitation",
+    "sending": "Sending…",
+    "sent": {
+      "title": "Invitation created",
+      "body": "We’re emailing {email}. The link works for 14 days; you can resend or cancel it from Invitations.",
+      "done": "Done"
+    },
+    "existing": {
+      "title": "Already invited",
+      "body": "An invitation to {email} is still pending. You can resend it from Invitations."
+    },
+    "limited": "You’ve sent a lot of invitations. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+    "pendingLimit": "You have 50 pending invitations. Cancel some before inviting more.",
+    "failed": "We couldn’t send the invitation. Nothing was created. Try again.",
+    "blocked": {
+      "title": "Inviting isn’t available yet",
+      "body": "Inviting fighters needs the coach data rules, which aren’t published yet. You’ll be able to invite as soon as they are.",
+      "close": "Close"
+    },
+    "close": "Close"
+  },
+  "cancelInvitation": {
+    "title": "Cancel this invitation?",
+    "body": "The link in the email to {email} stops working. You can invite them again later.",
+    "keep": "Keep invitation",
+    "confirm": "Cancel invitation",
+    "pending": "Cancelling…",
+    "failed": "We couldn’t cancel the invitation. Try again."
+  },
+  "results": {
+    "resent": "Invitation sent again to {email}.",
+    "cancelled": "Invitation to {email} cancelled.",
+    "cooldown": "You can resend in {seconds, plural, one {# second} other {# seconds}}.",
+    "noResends": "No resends left for this invitation.",
+    "notPending": "This invitation was already answered or has expired.",
+    "failed": "That didn’t work. Try again."
+  },
+  "detail": {
+    "back": "Fighters",
+    "active": "Active · since {date}",
+    "shares": "What {name} shares with you",
+    "fields": {
+      "display_name": "Display name",
+      "username": "Username",
+      "country_code": "Country",
+      "city": "City",
+      "experience_level": "Experience level",
+      "stance": "Stance",
+      "amateur_bout_count": "Amateur bouts"
+    },
+    "never": {
+      "title": "Never shared with coaches",
+      "body": "Weight, height, goals and next fight\nAccount name, date of birth and email\nAnything shared with other coaches"
+    },
+    "later": {
+      "title": "Sessions and notes arrive later.",
+      "body": "Planning sessions with a fighter comes with its own feature."
+    },
+    "fallbackName": "This fighter",
+    "end": "End relationship",
+    "loading": "Loading the fighter",
+    "unavailable": {
+      "title": "This fighter isn’t available",
+      "body": "The relationship may have ended, or the link is not one of yours.",
+      "back": "Back to fighters"
+    }
+  },
+  "endDialog": {
+    "title": "End your relationship with {name}?",
+    "body": "You lose access to {name}’s profile at once. To work together again, {name} has to accept a new invitation.",
+    "keep": "Keep",
+    "confirm": "End relationship",
+    "pending": "Ending…",
+    "failed": "We couldn’t end the relationship. Nothing changed. Try again.",
+    "ended": "Your relationship with {name} has ended."
+  }
+}
