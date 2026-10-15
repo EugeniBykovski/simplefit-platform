@@ -16,22 +16,23 @@ import {
 import { Notice } from "@/shared/ui/notice";
 import { Spinner } from "@/shared/ui/spinner";
 
-import { useEndCoachRelationship } from "../model/end-relationship";
+import { useEndCoachRelationship, type EndOutcome } from "../model/end-relationship";
 
 /**
  * "End relationship" and its confirmation (WC4, Claude Design
  * 1792056621-3707). The relationship ends only when the coach confirms and
  * the backend has answered; while it runs the dialog cannot be dismissed or
- * submitted twice. A failure keeps the dialog open with the reason.
+ * submitted twice. A failure keeps the dialog open with the reason; either
+ * backend answer (ended, or no longer available) closes it and is passed on.
  */
 export function EndRelationshipDialog({
   relationshipId,
   name,
-  onEnded,
+  onDone,
 }: {
   relationshipId: string;
   name: string;
-  onEnded: () => void;
+  onDone: (outcome: EndOutcome) => void;
 }) {
   const t = useTranslations("coachFighters");
   const [open, setOpen] = useState(false);
@@ -70,9 +71,9 @@ export function EndRelationshipDialog({
             disabled={pending}
             onClick={() =>
               end.mutate(relationshipId, {
-                onSuccess: () => {
+                onSuccess: (outcome) => {
                   setOpen(false);
-                  onEnded();
+                  onDone(outcome);
                 },
               })
             }

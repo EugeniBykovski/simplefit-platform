@@ -99,14 +99,10 @@
     "cancel": "Annuler",
     "submit": "Envoyer l’invitation",
     "sending": "Envoi…",
-    "sent": {
-      "title": "Invitation créée",
-      "body": "Nous envoyons un e-mail à {email}. Le lien est valable 14 jours ; tu peux le renvoyer ou l’annuler depuis Invitations.",
+    "pending": {
+      "title": "Invitation en attente",
+      "body": "Une invitation à {email} est en attente jusqu’au {expires}. Rien n’est partagé tant qu’elle n’est pas acceptée. Tu peux la renvoyer ou l’annuler depuis Invitations.",
       "done": "Terminé"
-    },
-    "existing": {
-      "title": "Déjà invité",
-      "body": "Une invitation à {email} est toujours en attente. Tu peux la renvoyer depuis Invitations."
     },
     "limited": "Tu as envoyé beaucoup d’invitations. Réessaie dans {minutes, plural, one {# minute} other {# minutes}}.",
     "pendingLimit": "Tu as 50 invitations en attente. Annule-en quelques-unes avant d’en envoyer d’autres.",
@@ -171,6 +167,7 @@
     "confirm": "Mettre fin à la relation",
     "pending": "Fin en cours…",
     "failed": "Impossible de mettre fin à la relation. Rien n’a changé. Réessaie.",
-    "ended": "Ta relation avec {name} est terminée."
+    "ended": "Ta relation avec {name} est terminée.",
+    "unavailable": "Cette relation n’est plus disponible. Ta liste de boxeurs est à jour."
   }
 }

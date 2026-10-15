@@ -11,26 +11,34 @@ import {
 import { isApiError } from "@/shared/api/http/api-error";
 
 /**
- * Ends one of the coach's relationships (`POST …/end`, SF-56). The backend
- * is idempotent; a relationship already ended or no longer the coach's
- * (`404`) counts as ended too, so the coach never keeps seeing it. Only after
- * the backend has answered is the cached detail (the fighter's disclosed
- * fields) dropped and every roster list refetched: nothing is removed or
- * shown as ended before that.
+ * What the backend answered to ending a relationship (`POST …/end`, SF-56):
+ * `ended` is its `204`, the confirmation that the relationship is ended.
+ * `unavailable` is its `404`: the relationship is not one this coach can
+ * reach any more (already ended, by either side, or never theirs). It proves
+ * nothing about this request, so it is never reported as "ended".
+ */
+export type EndOutcome = "ended" | "unavailable";
+
+/**
+ * Ends one of the coach's relationships. Either answer means the coach must
+ * no longer see the fighter: only after the backend has answered is the
+ * cached detail (the fighter's disclosed fields) dropped and every roster
+ * list refetched. Nothing is removed or shown as ended before that.
  */
 export function useEndCoachRelationship() {
   const client = useQueryClient();
 
   return useMutation({
-    mutationFn: async (relationshipId: string) => {
+    mutationFn: async (relationshipId: string): Promise<EndOutcome> => {
       try {
         await callWithSession((init) => endMyCoachFighterRelationship(relationshipId, init));
+        return "ended";
       } catch (error) {
-        if (!(isApiError(error) && error.status === 404)) throw error;
+        if (isApiError(error) && error.status === 404) return "unavailable";
+        throw error;
       }
-      return relationshipId;
     },
-    onSuccess: async (relationshipId) => {
+    onSuccess: async (_outcome, relationshipId) => {
       client.removeQueries({ queryKey: getGetMyCoachFighterQueryKey(relationshipId) });
       await client.invalidateQueries({ queryKey: coachRelationshipsRootKey });
     },

@@ -154,8 +154,11 @@ export function CoachFighterDetail({ relationshipId }: { relationshipId: string 
             <EndRelationshipDialog
               relationshipId={relationship.relationship_id}
               name={name}
-              onEnded={() => {
-                toast.success(t("endDialog.ended", { name }));
+              onDone={(outcome) => {
+                // Only a confirmed end names the fighter; a relationship no
+                // longer available says nothing about who or why.
+                if (outcome === "ended") toast.success(t("endDialog.ended", { name }));
+                else toast(t("endDialog.unavailable"));
                 router.replace(routeHref("web.app.coach.fighters"));
               }}
             />

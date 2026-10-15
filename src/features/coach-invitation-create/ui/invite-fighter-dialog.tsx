@@ -1,8 +1,8 @@
 "use client";
 
-import { useMutation, useQueryClient, type InfiniteData } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PlusIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 import { useEffect, useId, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -14,7 +14,6 @@ import {
 } from "@/entities/coach-invitation";
 import { callWithSession } from "@/entities/session";
 import { createMyCoachInvitation } from "@/shared/api/generated/endpoints/coaching/coaching";
-import type { CoachInvitationList } from "@/shared/api/generated/model";
 import { isApiError } from "@/shared/api/http/api-error";
 import { Button } from "@/shared/ui/button";
 import {
@@ -35,9 +34,7 @@ import { Textarea } from "@/shared/ui/textarea";
 type Values = { email: string; message: string };
 
 type Outcome =
-  | { kind: "form" }
-  | { kind: "created" | "existing"; invitation: CoachInvitation }
-  | { kind: "blocked" };
+  { kind: "form" } | { kind: "pending"; invitation: CoachInvitation } | { kind: "blocked" };
 
 type Problem = "limited" | "pendingLimit" | "failed";
 
@@ -50,8 +47,11 @@ const ONE_PARAGRAPH = /^[^\r\n\t\u0000-\u001f]*$/;
  * an email and an optional note, sent to `createMyCoachInvitation` (SF-57).
  * The backend owns everything else: it rejects invalid input, enforces the
  * limits and the coach data rules, and answers the same whether or not the
- * address has an account. Success says the invitation was created and the
- * email is on its way, never that it was delivered. While inviting is not
+ * address has an account. The backend answers a new invitation (201, email
+ * queued) and one already pending to the address (200, no new email) with
+ * the same body, and the generated client exposes only the body: success
+ * therefore says only what both share, that an invitation to the address is
+ * pending until its expiry, never that an email was sent or delivered. While inviting is not
  * available (no published coach data rules, sharing off) the dialog says so
  * and offers no way to send.
  */
@@ -76,6 +76,7 @@ export function InviteFighterDialog({ disabled = false }: { disabled?: boolean }
 
 function Composer({ onClose }: { onClose: () => void }) {
   const t = useTranslations("coachFighters");
+  const format = useFormatter();
   const client = useQueryClient();
   const rules = useCoachDataRules();
   const ids = { email: useId(), note: useId() };
@@ -96,15 +97,8 @@ function Composer({ onClose }: { onClose: () => void }) {
         ),
       ),
     onSuccess: async (response) => {
-      // The backend returns an invitation already pending to this address
-      // unchanged (no new email): it is then one the coach's list already holds.
-      const known = client
-        .getQueryData<InfiniteData<CoachInvitationList>>(coachInvitationsKey)
-        ?.pages.some((page) =>
-          page.invitations.some((item) => item.invitation_id === response.invitation.invitation_id),
-        );
+      setOutcome({ kind: "pending", invitation: response.invitation });
       await client.invalidateQueries({ queryKey: coachInvitationsKey });
-      setOutcome({ kind: known ? "existing" : "created", invitation: response.invitation });
     },
     onError: (error) => {
       if (!isApiError(error)) return setProblem({ kind: "failed" });
@@ -168,20 +162,21 @@ function Composer({ onClose }: { onClose: () => void }) {
     );
   }
 
-  if (outcome.kind === "created" || outcome.kind === "existing") {
-    const email = outcome.invitation.recipient_email;
+  if (outcome.kind === "pending") {
+    const { recipient_email: email, expires_at: expires } = outcome.invitation;
     return (
       <>
         <DialogHeader>
-          <DialogTitle>
-            {t(`invite.${outcome.kind === "created" ? "sent" : "existing"}.title`)}
-          </DialogTitle>
+          <DialogTitle>{t("invite.pending.title")}</DialogTitle>
           <DialogDescription role="status">
-            {t(`invite.${outcome.kind === "created" ? "sent" : "existing"}.body`, { email })}
+            {t("invite.pending.body", {
+              email,
+              expires: format.dateTime(new Date(expires), "date"),
+            })}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={onClose}>{t("invite.sent.done")}</Button>
+          <Button onClick={onClose}>{t("invite.pending.done")}</Button>
         </DialogFooter>
       </>
     );

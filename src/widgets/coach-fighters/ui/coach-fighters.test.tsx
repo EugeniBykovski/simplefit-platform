@@ -29,11 +29,11 @@ vi.mock("@/shared/i18n/navigation", () => ({
   ),
 }));
 
-const toast = vi.hoisted(() => ({ success: vi.fn(), error: vi.fn() }));
+const toast = vi.hoisted(() => Object.assign(vi.fn(), { success: vi.fn(), error: vi.fn() }));
 vi.mock("sonner", () => ({ toast }));
 
 type Call = { method: string; path: string; query: URLSearchParams; body: unknown };
-type Reply = Response | ((call: Call) => Response);
+type Reply = Response | ((call: Call) => Response | Promise<Response>);
 
 /** A fetch stub routing `METHOD /path` to replies; every request is recorded. */
 function server(routes: Record<string, Reply>) {
@@ -148,6 +148,7 @@ const RULES_MISSING = jsonResponse({
 
 beforeEach(() => {
   replace.mockReset();
+  toast.mockReset();
   toast.success.mockReset();
   toast.error.mockReset();
 });
@@ -351,12 +352,67 @@ describe("CoachFighters (WC7) invite composer", () => {
     await userEvent.type(within(dialog).getByLabelText("Note · optional"), " See you at the gym ");
     await userEvent.click(within(dialog).getByRole("button", { name: "Send invitation" }));
 
-    expect(await screen.findByText("Invitation created")).toBeVisible();
-    expect(screen.getByText(/We’re emailing f•••@example\.com/)).toBeVisible();
+    expect(await screen.findByText("Invitation pending")).toBeVisible();
+    expect(screen.getByText(/An invitation to f•••@example\.com is pending until/)).toBeVisible();
     const post = calls.find((call) => call.method === "POST");
     expect(post?.body).toEqual({ email: "fighter@example.com", message: "See you at the gym" });
     // The browser never creates a token or a link.
     expect(JSON.stringify(post?.body)).not.toMatch(/token/i);
+  });
+
+  /*
+   * The backend answers a new invitation (201) and one already pending to the
+   * address (200) with the same body, and the generated client exposes only
+   * the body. Whatever the cached list holds, the composer says the same
+   * truthful thing and never claims an email was sent or an earlier invite.
+   */
+  it.each([
+    ["an empty cache, a new invitation (201)", [], [], 201],
+    ["a stale cache already holding the returned id, a new invitation (201)", [PENDING], [], 201],
+    [
+      "a partial cache (first page only) without the returned id, an existing invitation (200)",
+      [{ ...PENDING, invitation_id: "inv-other", recipient_email: "o•••@example.com" }],
+      ["c2"],
+      200,
+    ],
+  ] as const)("is neutral with %s", async (_case, cached, cursor, status) => {
+    const calls = await openComposer(RULES_PUBLISHED, {
+      [`GET ${INVITATIONS}`]: () =>
+        jsonResponse({ invitations: cached, next_cursor: cursor[0] ?? null }),
+      [`POST ${INVITATIONS}`]: jsonResponse({ invitation: PENDING }, { status }),
+    });
+    const dialog = await screen.findByRole("dialog", { name: "Invite a fighter" });
+    await userEvent.type(within(dialog).getByLabelText("Email"), "fighter@example.com");
+    const reads = () =>
+      calls.filter((call) => call.method === "GET" && call.path === INVITATIONS).length;
+    // The list has loaded once before sending.
+    await waitFor(() => expect(reads()).toBeGreaterThan(0));
+    const before = reads();
+    await userEvent.click(within(dialog).getByRole("button", { name: "Send invitation" }));
+
+    expect(await screen.findByText("Invitation pending")).toBeVisible();
+    expect(
+      screen.queryByText(/Invitation created|Already invited|emailing|sent again/i),
+    ).toBeNull();
+    // The list is refetched from the backend after the answer.
+    await waitFor(() => expect(reads()).toBeGreaterThan(before));
+  });
+
+  it("sends one request however often Send is pressed", async () => {
+    let answer: (response: Response) => void = () => undefined;
+    const calls = await openComposer(RULES_PUBLISHED, {
+      [`POST ${INVITATIONS}`]: () => new Promise<Response>((resolve) => (answer = resolve)),
+    });
+    const dialog = await screen.findByRole("dialog", { name: "Invite a fighter" });
+    await userEvent.type(within(dialog).getByLabelText("Email"), "fighter@example.com");
+    await userEvent.click(within(dialog).getByRole("button", { name: "Send invitation" }));
+    const sending = within(dialog).getByRole("button", { name: "Sending…" });
+    expect(sending).toBeDisabled();
+    await userEvent.click(sending);
+    await userEvent.keyboard("{Enter}");
+    answer(jsonResponse({ invitation: PENDING }, { status: 201 }));
+    expect(await screen.findByText("Invitation pending")).toBeVisible();
+    expect(calls.filter((call) => call.method === "POST")).toHaveLength(1);
   });
 
   it("validates the address before sending and maps the backend's own-address code", async () => {

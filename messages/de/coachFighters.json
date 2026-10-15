@@ -99,14 +99,10 @@
     "cancel": "Abbrechen",
     "submit": "Einladung senden",
     "sending": "Wird gesendet…",
-    "sent": {
-      "title": "Einladung erstellt",
-      "body": "Wir senden eine E-Mail an {email}. Der Link gilt 14 Tage; unter Einladungen kannst du ihn erneut senden oder zurückziehen.",
+    "pending": {
+      "title": "Einladung offen",
+      "body": "Eine Einladung an {email} ist bis {expires} offen. Bis zur Annahme wird nichts geteilt. Unter Einladungen kannst du sie erneut senden oder zurückziehen.",
       "done": "Fertig"
-    },
-    "existing": {
-      "title": "Bereits eingeladen",
-      "body": "Eine Einladung an {email} ist noch offen. Unter Einladungen kannst du sie erneut senden."
     },
     "limited": "Du hast viele Einladungen gesendet. Versuche es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
     "pendingLimit": "Du hast 50 offene Einladungen. Ziehe einige zurück, bevor du weitere sendest.",
@@ -171,6 +167,7 @@
     "confirm": "Beziehung beenden",
     "pending": "Wird beendet…",
     "failed": "Wir konnten die Beziehung nicht beenden. Es hat sich nichts geändert. Versuche es erneut.",
-    "ended": "Deine Beziehung mit {name} ist beendet."
+    "ended": "Deine Beziehung mit {name} ist beendet.",
+    "unavailable": "Diese Beziehung ist nicht mehr verfügbar. Deine Kämpferliste ist aktuell."
   }
 }

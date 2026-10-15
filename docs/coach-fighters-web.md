@@ -49,8 +49,16 @@ approval, SF-58 reconciled them in Claude Design (Version 98 published over
 - **Invite fighter** opens the composer (email and an optional one-paragraph
   note up to 500 characters). The browser sends only these. It creates no
   token, link or email, and validates only the address format and note
-  length for UX. An invitation already pending to the address is reported as
-  "Already invited".
+  length for UX. Send is disabled while a request runs.
+- **Success is neutral.** The backend answers a new invitation (`201`, email
+  queued) and one already pending to the address (`200`, no new email) with
+  the same body, and the generated client exposes only the body
+  (`apiFetch`, `includeHttpResponseReturnType: false`). The composer therefore
+  says only what both share, "an invitation to {address} is pending until
+  {expiry}", never that an email was sent, and refetches the list. It never
+  infers created vs existing from the cached list. **Contract dependency:**
+  an explicit outcome (a response field, or the status exposed by the client
+  transport) is needed before the UI can tell them apart.
 - **Coach data rules:** inviting needs a published, acknowledged data-rules
   version (`getMyCoachDataRules`). The API exposes no document to read or
   acknowledge yet, so while the rules are not published (or not
@@ -62,9 +70,12 @@ approval, SF-58 reconciled them in Claude Design (Version 98 published over
 
 - The disclosed C1+C2 fields, "Not shared" for the rest, what is never shared
   with coaches, and a note that sessions and notes come later.
-- **End relationship** asks for confirmation. The backend ends it (an
-  already ended one counts as ended). The cached fighter is dropped, and the
-  coach returns to the roster with a confirmation.
+- **End relationship** asks for confirmation. Only the backend's `204`
+  confirms the end and is reported as "ended". A `404` (already ended by
+  either side, or not reachable for this coach) proves nothing about this
+  request: the coach sees a neutral "no longer available" message without
+  the fighter's name. Either way the cached fighter is dropped, every roster
+  list is refetched and the coach returns to the roster.
 - Ended, foreign or unknown relationships, and sharing switched off, are one
   "not available" state (`404`), with no detail of which.
 

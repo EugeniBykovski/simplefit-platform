@@ -307,7 +307,7 @@ export const InviteComposer = story({
 });
 InviteComposer.name = "Invite · composer";
 
-export const InviteSent = story({
+export const InvitePending = story({
   extra: {
     "POST /api/v1/me/coach/invitations": ok(
       { invitation: invitation("inv-new", "n•••@example.com", "pending") },
@@ -319,10 +319,10 @@ export const InviteSent = story({
     const dialog = await body().findByRole("dialog", { name: "Invite a fighter" }, T);
     await userEvent.type(within(dialog).getByLabelText("Email"), "new.fighter@example.com");
     await userEvent.click(within(dialog).getByRole("button", { name: "Send invitation" }));
-    await body().findByText("Invitation created", {}, T);
+    await body().findByText("Invitation pending", {}, T);
   },
 });
-InviteSent.name = "Invite · created";
+InvitePending.name = "Invite · pending (created or already pending)";
 
 export const InviteInvalid = story({
   play: async ({ canvasElement }) => {
@@ -419,6 +419,19 @@ export const FighterUnavailable = story({
   },
 });
 FighterUnavailable.name = "WC4 · not available (404)";
+
+export const EndUnavailable = story({
+  screen: "detail",
+  extra: { "POST /api/v1/me/coach/fighters/rel-1/end": apiError(404, "not_found") },
+  play: async ({ canvasElement }) => {
+    await within(canvasElement).findByRole("heading", { level: 1, name: "Alex K." }, T);
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "End relationship" }));
+    const dialog = await body().findByRole("alertdialog", {}, T);
+    await userEvent.click(within(dialog).getByRole("button", { name: "End relationship" }));
+    await body().findByText(/This relationship is no longer available/, {}, T);
+  },
+});
+EndUnavailable.name = "WC4 · end answered 404 (no longer available)";
 
 /* ── Locale ─────────────────────────────────────────────────────────── */
 

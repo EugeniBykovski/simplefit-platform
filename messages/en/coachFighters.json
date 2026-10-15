@@ -99,14 +99,10 @@
     "cancel": "Cancel",
     "submit": "Send invitation",
     "sending": "Sending…",
-    "sent": {
-      "title": "Invitation created",
-      "body": "We’re emailing {email}. The link works for 14 days; you can resend or cancel it from Invitations.",
+    "pending": {
+      "title": "Invitation pending",
+      "body": "An invitation to {email} is pending until {expires}. Nothing is shared until they accept. You can resend or cancel it from Invitations.",
       "done": "Done"
-    },
-    "existing": {
-      "title": "Already invited",
-      "body": "An invitation to {email} is still pending. You can resend it from Invitations."
     },
     "limited": "You’ve sent a lot of invitations. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
     "pendingLimit": "You have 50 pending invitations. Cancel some before inviting more.",
@@ -171,6 +167,7 @@
     "confirm": "End relationship",
     "pending": "Ending…",
     "failed": "We couldn’t end the relationship. Nothing changed. Try again.",
-    "ended": "Your relationship with {name} has ended."
+    "ended": "Your relationship with {name} has ended.",
+    "unavailable": "This relationship is no longer available. Your fighters list is up to date."
   }
 }

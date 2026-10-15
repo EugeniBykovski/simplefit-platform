@@ -36,7 +36,7 @@ for (const [id, text] of [
   [`${ID}unavailable`, "Fighters aren’t available yet"],
   [`${ID}failure`, "We couldn’t load your fighters."],
   [`${ID}invite-composer`, "Invite a fighter"],
-  [`${ID}invite-sent`, "Invitation created"],
+  [`${ID}invite-pending`, "Invitation pending"],
   [`${ID}invite-invalid`, "Enter a valid email address."],
   [`${ID}invite-limited`, "Try again in 10 minutes."],
   [`${ID}invite-blocked`, "Inviting isn’t available yet"],
@@ -45,6 +45,7 @@ for (const [id, text] of [
   [`${ID}fighter-partly-shared`, "Not shared"],
   [`${ID}end-confirm`, "End your relationship with Alex K.?"],
   [`${ID}end-failed`, "Nothing changed."],
+  [`${ID}end-unavailable`, "This relationship is no longer available."],
   [`${ID}fighter-unavailable`, "This fighter isn’t available"],
   [`${ID}roster-german`, "Deine Kämpfer"],
 ] as const) {

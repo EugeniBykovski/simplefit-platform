@@ -99,14 +99,10 @@
     "cancel": "Anuluj",
     "submit": "Wyślij zaproszenie",
     "sending": "Wysyłanie…",
-    "sent": {
-      "title": "Zaproszenie utworzone",
-      "body": "Wysyłamy e-mail do {email}. Link działa przez 14 dni; możesz go wysłać ponownie lub anulować w sekcji Zaproszenia.",
+    "pending": {
+      "title": "Zaproszenie oczekuje",
+      "body": "Zaproszenie do {email} oczekuje do {expires}. Nic nie jest udostępniane, dopóki nie zostanie przyjęte. Możesz je wysłać ponownie lub anulować w sekcji Zaproszenia.",
       "done": "Gotowe"
-    },
-    "existing": {
-      "title": "Już zaproszono",
-      "body": "Zaproszenie do {email} wciąż oczekuje. Możesz je wysłać ponownie w sekcji Zaproszenia."
     },
     "limited": "Wysłano dużo zaproszeń. Spróbuj ponownie za {minutes, plural, one {# minutę} few {# minuty} many {# minut} other {# minuty}}.",
     "pendingLimit": "Masz 50 oczekujących zaproszeń. Anuluj część z nich, zanim zaprosisz kolejne osoby.",
@@ -171,6 +167,7 @@
     "confirm": "Zakończ relację",
     "pending": "Kończenie…",
     "failed": "Nie udało się zakończyć relacji. Nic się nie zmieniło. Spróbuj ponownie.",
-    "ended": "Twoja relacja z {name} została zakończona."
+    "ended": "Twoja relacja z {name} została zakończona.",
+    "unavailable": "Ta relacja nie jest już dostępna. Twoja lista zawodników jest aktualna."
   }
 }

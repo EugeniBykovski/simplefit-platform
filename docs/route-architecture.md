@@ -964,10 +964,10 @@ design discussion. A gap leaves the list only when Claude Design adds the
 Route Gallery rows; the registry then gains the route through §15. Status:
 `UNRESOLVED_DESIGN`.
 
-| Id                             | Platform | Missing designed surface                                                                                                                                                  | Nav items waiting for it                |
-| ------------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| `GAP-SPONSOR-ANALYTICS-INDEX`  | web      | Sponsor analytics index, only if the product needs one (the nav links SPX7, one campaign)                                                                                 | `web.sponsor#analytics`                 |
-| `GAP-WEB-COACH-FIGHTER-INVITE` | web      | Coach web "Invite fighters" (WC7 action) links the mobile `InviteCoach.dc.html` (INV1, `/invite/:code`); Coach → Fighter invitation semantics for web are not established | none: an in-page action, not a nav item |
+| Id                             | Platform | Missing designed surface                                                                                                                                                                                                     | Nav items waiting for it                |
+| ------------------------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| `GAP-SPONSOR-ANALYTICS-INDEX`  | web      | Sponsor analytics index, only if the product needs one (the nav links SPX7, one campaign)                                                                                                                                    | `web.sponsor#analytics`                 |
+| `GAP-WEB-COACH-FIGHTER-INVITE` | web      | Fighter acceptance of a coach invitation on web (the E08 review page); the coach's composer is built (SF-58), but WC7's "Invite fighters" still links the mobile `InviteCoach.dc.html` (INV1, `/invite/:code`) on the canvas | none: an in-page action, not a nav item |
 
 Design version `1791276973-ad1d` resolved the other nine gaps
 (`GAP-MOBILE-GYM-CLASSES`, `GAP-MOBILE-GYM-MEMBERS`, `GAP-WEB-COACH-FIGHTERS`,
@@ -980,11 +980,13 @@ designed: `/sponsor/analytics/:campaignId` stays the canonical analytics route.
 `GAP-WEB-COACH-FIGHTER-INVITE` records an in-page action, not a nav item: the
 "Invite fighters" action of `WebCoachFighters.dc.html` (WC7) links the mobile
 INV1 artboard. INV1 is where a recipient uses a coach, gym or friend invite;
-whether the coach's own web invitation of fighters is the same flow is not
-established, so no web invite route or screen exists and the action must not
-be treated as one (`source` records the artboard, the action and its canvas
-target). Owner: future Coach ↔ Fighter relationship/invitation product work.
-It does not block SF-19.
+the coach's own web invitation is a different flow: SF-58 builds it as an
+in-page composer dialog on WC7 (Claude Design `1792056621-3707`), with no
+route. What remains is the recipient's side: no web surface exists to review
+and accept or decline a coach invitation, so no web invite route or screen
+exists and the action must not be treated as one (`source` records the
+artboard, the action and its canvas target). Owner: future Fighter
+acceptance work. It does not block SF-19.
 The sponsor Challenges and Events items link `SponsorCampaigns.dc.html` on the
 canvas and open the query states `/sponsor/campaigns?type=challenge` and
 `?type=event` in production; they are not routes.

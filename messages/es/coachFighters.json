@@ -99,14 +99,10 @@
     "cancel": "Cancelar",
     "submit": "Enviar invitación",
     "sending": "Enviando…",
-    "sent": {
-      "title": "Invitación creada",
-      "body": "Estamos enviando un correo a {email}. El enlace funciona durante 14 días; puedes reenviarlo o cancelarlo desde Invitaciones.",
+    "pending": {
+      "title": "Invitación pendiente",
+      "body": "Hay una invitación a {email} pendiente hasta el {expires}. No se comparte nada hasta que la acepte. Puedes reenviarla o cancelarla desde Invitaciones.",
       "done": "Listo"
-    },
-    "existing": {
-      "title": "Ya invitado",
-      "body": "Una invitación a {email} sigue pendiente. Puedes reenviarla desde Invitaciones."
     },
     "limited": "Has enviado muchas invitaciones. Inténtalo de nuevo en {minutes, plural, one {# minuto} other {# minutos}}.",
     "pendingLimit": "Tienes 50 invitaciones pendientes. Cancela algunas antes de invitar a más.",
@@ -171,6 +167,7 @@
     "confirm": "Finalizar relación",
     "pending": "Finalizando…",
     "failed": "No pudimos finalizar la relación. No cambió nada. Inténtalo de nuevo.",
-    "ended": "Tu relación con {name} ha finalizado."
+    "ended": "Tu relación con {name} ha finalizado.",
+    "unavailable": "Esta relación ya no está disponible. Tu lista de boxeadores está actualizada."
   }
 }

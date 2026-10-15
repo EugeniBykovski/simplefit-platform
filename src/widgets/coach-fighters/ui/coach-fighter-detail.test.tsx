@@ -3,7 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getGetMyCoachFighterQueryKey } from "@/shared/api/generated/endpoints/coaching/coaching";
-import { jsonResponse, renderWithProviders } from "@/test/render";
+import { coachRelationshipsRootKey } from "@/entities/coach-relationship";
+import { jsonResponse, renderWithProviders, testQueryClient } from "@/test/render";
 
 import { CoachFighterDetail } from "./coach-fighter-detail";
 
@@ -29,7 +30,7 @@ vi.mock("@/shared/i18n/navigation", () => ({
   ),
 }));
 
-const toast = vi.hoisted(() => ({ success: vi.fn(), error: vi.fn() }));
+const toast = vi.hoisted(() => Object.assign(vi.fn(), { success: vi.fn(), error: vi.fn() }));
 vi.mock("sonner", () => ({ toast }));
 
 const RELATIONSHIP = {
@@ -55,7 +56,10 @@ const RELATIONSHIP = {
   fighter_display_name_at_end: null,
 };
 
-function server(end: () => Response, detail = () => jsonResponse({ relationship: RELATIONSHIP })) {
+function server(
+  end: () => Response,
+  detail: () => Response | Promise<Response> = () => jsonResponse({ relationship: RELATIONSHIP }),
+) {
   const calls: string[] = [];
   vi.stubGlobal(
     "fetch",
@@ -79,6 +83,7 @@ const notFound = () =>
 
 beforeEach(() => {
   replace.mockReset();
+  toast.mockReset();
   toast.success.mockReset();
 });
 afterEach(() => vi.unstubAllGlobals());
@@ -122,6 +127,52 @@ describe("CoachFighterDetail (WC4)", () => {
     expect(toast.success).toHaveBeenCalledWith("Your relationship with Alex Kowal has ended.");
     expect(calls).toContain("POST /api/v1/me/coach/fighters/rel-1/end");
     expect(queryClient.getQueryData(getGetMyCoachFighterQueryKey("rel-1"))).toBeUndefined();
+    expect(toast).not.toHaveBeenCalled();
+  });
+
+  /** Confirms ending in the open dialog. */
+  async function confirmEnd() {
+    await userEvent.click(await screen.findByRole("button", { name: "End relationship" }));
+    await userEvent.click(
+      within(screen.getByRole("alertdialog")).getByRole("button", { name: "End relationship" }),
+    );
+  }
+
+  it("never claims an end the backend did not confirm (404: already ended or not reachable)", async () => {
+    const calls = server(notFound);
+    const queryClient = testQueryClient();
+    const invalidate = vi.spyOn(queryClient, "invalidateQueries");
+    await renderWithProviders(<CoachFighterDetail relationshipId="rel-1" />, { queryClient });
+    await screen.findByRole("heading", { level: 1, name: "Alex Kowal" });
+    await confirmEnd();
+
+    await waitFor(() => expect(replace).toHaveBeenCalledWith("/app/coach/fighters"));
+    expect(calls).toContain("POST /api/v1/me/coach/fighters/rel-1/end");
+    // Neutral and privacy-safe: no name, no "ended".
+    expect(toast).toHaveBeenCalledWith(
+      "This relationship is no longer available. Your fighters list is up to date.",
+    );
+    expect(toast.success).not.toHaveBeenCalled();
+    // The private detail is gone and every roster list is refetched.
+    expect(queryClient.getQueryData(getGetMyCoachFighterQueryKey("rel-1"))).toBeUndefined();
+    expect(invalidate).toHaveBeenCalledWith({ queryKey: coachRelationshipsRootKey });
+  });
+
+  it("drops a stale cached detail when the backend no longer has the relationship", async () => {
+    // The cache still holds an older copy while the refetch is in flight.
+    server(notFound, () => new Promise<Response>(() => undefined));
+    const queryClient = testQueryClient();
+    queryClient.setQueryData(getGetMyCoachFighterQueryKey("rel-1"), {
+      ...RELATIONSHIP,
+      fighter: { ...RELATIONSHIP.fighter, display_name: "Old Name" },
+    });
+    await renderWithProviders(<CoachFighterDetail relationshipId="rel-1" />, { queryClient });
+    expect(await screen.findByRole("heading", { level: 1, name: "Old Name" })).toBeVisible();
+    await confirmEnd();
+
+    await waitFor(() => expect(replace).toHaveBeenCalledWith("/app/coach/fighters"));
+    expect(queryClient.getQueryData(getGetMyCoachFighterQueryKey("rel-1"))).toBeUndefined();
+    expect(toast.mock.calls.flat().join(" ")).not.toMatch(/Old Name|ended/);
   });
 
   it("keeps the relationship and says so when ending fails", async () => {
@@ -140,7 +191,8 @@ describe("CoachFighterDetail (WC4)", () => {
   });
 
   it("shows one not-available state for an ended, foreign or unknown relationship", async () => {
-    server(() => new Response(null, { status: 204 }), notFound);
+    // A foreign id is indistinguishable from an unknown one (SF-56): 404.
+    const calls = server(() => new Response(null, { status: 204 }), notFound);
     await renderWithProviders(<CoachFighterDetail relationshipId="rel-1" />);
     expect(
       await screen.findByRole("heading", { level: 1, name: "This fighter isn’t available" }),
@@ -150,5 +202,6 @@ describe("CoachFighterDetail (WC4)", () => {
       "/app/coach/fighters",
     );
     expect(screen.queryByRole("button", { name: "End relationship" })).toBeNull();
+    expect(calls.filter((call) => call.startsWith("POST "))).toEqual([]);
   });
 });

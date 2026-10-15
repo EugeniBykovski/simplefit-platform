@@ -100,10 +100,13 @@ const INVITATIONS = [
   },
 ];
 
-type Options = { sharing?: boolean; rules?: boolean };
+type Options = { sharing?: boolean; rules?: boolean; empty?: boolean };
 
 /** The SF-56 / SF-57 coach endpoints; every request is recorded. */
-async function coachingApi(page: Page, { sharing = true, rules = false }: Options = {}) {
+async function coachingApi(
+  page: Page,
+  { sharing = true, rules = false, empty = false }: Options = {},
+) {
   const requests: string[] = [];
   let ended = false;
   await page.route(
@@ -134,7 +137,7 @@ async function coachingApi(page: Page, { sharing = true, rules = false }: Option
       if (!sharing) return notFound();
       if (path === "fighters") {
         const status = url.searchParams.get("status");
-        const list = status === "ended" ? [ENDED] : ended ? ACTIVE.slice(1) : ACTIVE;
+        const list = empty ? [] : status === "ended" ? [ENDED] : ended ? ACTIVE.slice(1) : ACTIVE;
         return json(200, { relationships: list, next_cursor: null });
       }
       if (path === "fighters/rel-1")
@@ -143,7 +146,8 @@ async function coachingApi(page: Page, { sharing = true, rules = false }: Option
         ended = true;
         return route.fulfill({ status: 204 });
       }
-      if (path === "invitations") return json(200, { invitations: INVITATIONS, next_cursor: null });
+      if (path === "invitations")
+        return json(200, { invitations: empty ? [] : INVITATIONS, next_cursor: null });
       return notFound();
     },
   );
@@ -355,4 +359,61 @@ test("no secret or token travels in a URL", async ({ page }) => {
   await openRoster(page, { rules: true });
   await page.getByRole("table", { name: "Active fighters" }).waitFor();
   expect(urls.filter((url) => /[?&#](token|code|secret)=/i.test(url))).toEqual([]);
+});
+
+/*
+ * Design QA screenshots against Claude Design V98 (1792056621-3707), on the
+ * production build with the deterministic fixtures above (no real data):
+ * test-results/sf58-*.png, viewport in each file name.
+ */
+test.describe("Design QA screenshots (V98)", () => {
+  test.use({ viewport: { width: 1440, height: 900 } });
+  const shot = (page: Page, name: string) =>
+    page.screenshot({ path: `test-results/sf58-${name}.png` });
+  const settled = (page: Page) =>
+    page
+      .locator("[role=dialog], [role=alertdialog]")
+      .evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
+
+  test("WC7 and WC4 states", async ({ page }) => {
+    await openRoster(page, { empty: true });
+    await page.getByText("No fighters yet").waitFor();
+    await shot(page, "wc7-empty-1440x900");
+
+    await openRoster(page, { rules: true });
+    await page.getByRole("table", { name: "Active fighters" }).waitFor();
+    await shot(page, "wc7-active-1440x900");
+    await invitations(page).screenshot({
+      path: "test-results/sf58-wc7-pending-invitations-1440x900.png",
+    });
+
+    await page.getByRole("button", { name: "Invite fighter" }).click();
+    await page.getByRole("dialog", { name: "Invite a fighter" }).getByLabel("Email").waitFor();
+    await settled(page);
+    await shot(page, "composer-1440x900");
+
+    await openRoster(page, { sharing: false });
+    await page.getByText("Fighters aren’t available yet").waitFor();
+    await shot(page, "wc7-gate-off-1440x900");
+
+    await openRoster(page);
+    await page.goto("/en/app/coach/fighters/rel-1");
+    await page.getByRole("heading", { level: 1, name: "Alex K." }).waitFor();
+    await shot(page, "wc4-detail-1440x900");
+
+    await page.getByRole("button", { name: "End relationship" }).click();
+    await page.getByRole("alertdialog").waitFor();
+    await settled(page);
+    await shot(page, "wc4-end-confirm-1440x900");
+  });
+
+  test("390 px layout", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await openRoster(page);
+    await page.getByRole("table", { name: "Active fighters" }).waitFor();
+    await page.screenshot({ path: "test-results/sf58-wc7-390x844-full.png", fullPage: true });
+    await page.goto("/en/app/coach/fighters/rel-1");
+    await page.getByRole("heading", { level: 1, name: "Alex K." }).waitFor();
+    await page.screenshot({ path: "test-results/sf58-wc4-390x844-full.png", fullPage: true });
+  });
 });

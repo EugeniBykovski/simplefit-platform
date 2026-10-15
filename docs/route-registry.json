@@ -16078,7 +16078,7 @@
       "id": "GAP-WEB-COACH-FIGHTER-INVITE",
       "platform": "web",
       "status": "UNRESOLVED_DESIGN",
-      "description": "Coach web invitation of fighters: the 'Invite fighters' action on WebCoachFighters links the mobile INV1 artboard, and its Coach → Fighter semantics are not established for web",
+      "description": "Fighter acceptance of a coach invitation on web: the coach's side is built (SF-58, an in-page composer on WC7, no route), but the 'Invite fighters' action still links the mobile INV1 artboard on the canvas, and no web surface exists for the recipient to review and accept or decline (the E08 link's review page)",
       "candidatePath": null,
       "navItems": [],
       "source": {
