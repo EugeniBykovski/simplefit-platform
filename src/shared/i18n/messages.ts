@@ -3,6 +3,7 @@ import type actions from "../../../messages/en/actions.json";
 import type apiHealth from "../../../messages/en/apiHealth.json";
 import type app from "../../../messages/en/app.json";
 import type auth from "../../../messages/en/auth.json";
+import type coachFighters from "../../../messages/en/coachFighters.json";
 import type coachHome from "../../../messages/en/coachHome.json";
 import type coachOnboarding from "../../../messages/en/coachOnboarding.json";
 import type common from "../../../messages/en/common.json";
@@ -44,6 +45,7 @@ export const namespaces = [
   "roleSelection",
   "fighterHome",
   "coachHome",
+  "coachFighters",
   "contextSwitcher",
   "contextSelection",
   "site",
@@ -70,6 +72,7 @@ export type Messages = {
   roleSelection: typeof roleSelection;
   fighterHome: typeof fighterHome;
   coachHome: typeof coachHome;
+  coachFighters: typeof coachFighters;
   contextSwitcher: typeof contextSwitcher;
   contextSelection: typeof contextSelection;
   site: typeof site;

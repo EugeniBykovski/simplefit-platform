@@ -1,0 +1,173 @@
+{
+  "metaTitle": "Kämpfer",
+  "detailMetaTitle": "Kämpfer",
+  "eyebrow": "Coach · Kämpfer",
+  "title": "Kämpfer",
+  "roster": {
+    "heading": "Deine Kämpfer",
+    "views": "Beziehungen",
+    "tabs": {
+      "active": "Aktiv",
+      "ended": "Beendet"
+    },
+    "label": {
+      "active": "Aktive Kämpfer",
+      "ended": "Beendete Beziehungen"
+    },
+    "columns": {
+      "fighter": "Kämpfer",
+      "place": "Ort",
+      "level": "Level",
+      "stance": "Auslage",
+      "bouts": "Kämpfe",
+      "since": "Seit",
+      "started": "Begonnen",
+      "ended": "Beendet",
+      "endedBy": "Beendet von"
+    },
+    "endedBy": {
+      "coach": "Dir",
+      "fighter": "Kämpfer"
+    },
+    "nameAtEnd": "Name beim Ende",
+    "notShared": "Nicht geteilt",
+    "loading": "Deine Kämpfer werden geladen",
+    "more": "Mehr anzeigen",
+    "loadingMore": "Wird geladen…"
+  },
+  "empty": {
+    "active": {
+      "title": "Noch keine Kämpfer",
+      "body": "Kämpfer erscheinen hier, sobald sie deine Einladung annehmen. Lade einen Kämpfer per E-Mail ein, um zu starten."
+    },
+    "ended": {
+      "title": "Keine beendeten Beziehungen",
+      "body": "Beziehungen, die du oder ein Kämpfer beendet, stehen hier – nur mit den Daten."
+    }
+  },
+  "unavailable": {
+    "title": "Kämpfer sind noch nicht verfügbar",
+    "body": "Das Coaching von Kämpfern auf SimpleFit startet, sobald die Coach-Datenregeln und das, was Kämpfer teilen, veröffentlicht sind. Es wird dir nichts vorenthalten: Es gibt einfach noch nichts anzuzeigen."
+  },
+  "failed": {
+    "title": "Wir konnten deine Kämpfer nicht laden.",
+    "body": "Prüfe deine Verbindung und versuche es erneut.",
+    "retry": "Erneut versuchen"
+  },
+  "privacy": "Du siehst nur, was jeder Kämpfer zu teilen zugestimmt hat: Name, Benutzername, Ort, Level, Auslage und Kämpfe. Nie Gewicht, Ziele oder Kontodaten.",
+  "invitations": {
+    "heading": "Einladungen",
+    "empty": "Noch keine Einladungen.",
+    "unavailable": "Einladungen starten zusammen mit den Kämpfern.",
+    "failed": "Wir konnten deine Einladungen nicht laden.",
+    "retry": "Erneut versuchen",
+    "more": "Mehr anzeigen",
+    "status": {
+      "pending": "Offen",
+      "accepted": "Angenommen",
+      "declined": "Abgelehnt",
+      "cancelled": "Zurückgezogen",
+      "expired": "Abgelaufen"
+    },
+    "line": {
+      "pending": "Gesendet {sent} · läuft ab {expires}",
+      "accepted": "Angenommen {date}",
+      "declined": "Abgelehnt {date}",
+      "cancelled": "Zurückgezogen {date}",
+      "expired": "Abgelaufen {date} · du kannst jederzeit neu einladen"
+    },
+    "resend": "Erneut senden · noch {count}",
+    "resendLabel": "Einladung an {email} erneut senden",
+    "resending": "Wird gesendet…",
+    "cancel": "Zurückziehen",
+    "cancelLabel": "Einladung an {email} zurückziehen"
+  },
+  "invite": {
+    "open": "Kämpfer einladen",
+    "title": "Einen Kämpfer einladen",
+    "lead": "Er oder sie erhält eine E-Mail mit einem Link. Nur wer mit dieser E-Mail-Adresse angemeldet ist, kann annehmen, und bis dahin wird nichts geteilt.",
+    "email": {
+      "label": "E-Mail",
+      "invalid": "Gib eine gültige E-Mail-Adresse ein.",
+      "own": "Du kannst nicht deine eigene Adresse einladen."
+    },
+    "note": {
+      "label": "Nachricht · optional",
+      "help": "Bis zu 500 Zeichen, erscheint in der E-Mail.",
+      "invalid": "Halte die Nachricht bei einem Absatz mit höchstens 500 Zeichen."
+    },
+    "cancel": "Abbrechen",
+    "submit": "Einladung senden",
+    "sending": "Wird gesendet…",
+    "pending": {
+      "title": "Einladung offen",
+      "body": "Eine Einladung an {email} ist bis {expires} offen. Bis zur Annahme wird nichts geteilt. Unter Einladungen kannst du sie erneut senden oder zurückziehen.",
+      "done": "Fertig"
+    },
+    "limited": "Du hast viele Einladungen gesendet. Versuche es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
+    "pendingLimit": "Du hast 50 offene Einladungen. Ziehe einige zurück, bevor du weitere sendest.",
+    "failed": "Wir konnten die Einladung nicht senden. Es wurde nichts erstellt. Versuche es erneut.",
+    "blocked": {
+      "title": "Einladen ist noch nicht verfügbar",
+      "body": "Zum Einladen von Kämpfern braucht es die Coach-Datenregeln, die noch nicht veröffentlicht sind. Sobald sie es sind, kannst du einladen.",
+      "close": "Schließen"
+    },
+    "close": "Schließen"
+  },
+  "cancelInvitation": {
+    "title": "Diese Einladung zurückziehen?",
+    "body": "Der Link in der E-Mail an {email} funktioniert dann nicht mehr. Du kannst später erneut einladen.",
+    "keep": "Einladung behalten",
+    "confirm": "Einladung zurückziehen",
+    "pending": "Wird zurückgezogen…",
+    "failed": "Wir konnten die Einladung nicht zurückziehen. Versuche es erneut."
+  },
+  "results": {
+    "resent": "Einladung erneut an {email} gesendet.",
+    "cancelled": "Einladung an {email} zurückgezogen.",
+    "cooldown": "Du kannst in {seconds, plural, one {# Sekunde} other {# Sekunden}} erneut senden.",
+    "noResends": "Für diese Einladung sind keine weiteren Sendungen möglich.",
+    "notPending": "Diese Einladung wurde bereits beantwortet oder ist abgelaufen.",
+    "failed": "Das hat nicht geklappt. Versuche es erneut."
+  },
+  "detail": {
+    "back": "Kämpfer",
+    "active": "Aktive Beziehung · seit {date}",
+    "shares": "Was {name} mit dir teilt",
+    "fields": {
+      "display_name": "Anzeigename",
+      "username": "Benutzername",
+      "country_code": "Land",
+      "city": "Stadt",
+      "experience_level": "Erfahrung",
+      "stance": "Auslage",
+      "amateur_bout_count": "Amateurkämpfe"
+    },
+    "never": {
+      "title": "Nie mit Coaches geteilt",
+      "body": "Gewicht, Größe, Ziele und nächster Kampf\nKontoname, Geburtsdatum und E-Mail\nAlles, was mit anderen Coaches geteilt wird"
+    },
+    "later": {
+      "title": "Einheiten und Notizen folgen später.",
+      "body": "Das Planen von Einheiten mit einem Kämpfer kommt als eigene Funktion."
+    },
+    "fallbackName": "Dieser Kämpfer",
+    "end": "Beziehung beenden",
+    "loading": "Der Kämpfer wird geladen",
+    "unavailable": {
+      "title": "Dieser Kämpfer ist nicht verfügbar",
+      "body": "Die Beziehung wurde vielleicht beendet, oder der Link gehört nicht zu deinen.",
+      "back": "Zurück zu den Kämpfern"
+    }
+  },
+  "endDialog": {
+    "title": "Beziehung mit {name} beenden?",
+    "body": "Du verlierst sofort den Zugriff auf das Profil von {name}. Um wieder zusammenzuarbeiten, muss {name} eine neue Einladung annehmen.",
+    "keep": "Behalten",
+    "confirm": "Beziehung beenden",
+    "pending": "Wird beendet…",
+    "failed": "Wir konnten die Beziehung nicht beenden. Es hat sich nichts geändert. Versuche es erneut.",
+    "ended": "Deine Beziehung mit {name} ist beendet.",
+    "unavailable": "Diese Beziehung ist nicht mehr verfügbar. Deine Kämpferliste ist aktuell."
+  }
+}

@@ -51,7 +51,7 @@ describe("WorkspaceShell navigation config", () => {
     },
   );
 
-  it("web.app.coach shows the MVP subset of its registry items, the rest Soon (D-WEB-COACH-HOME-MVP)", () => {
+  it("web.app.coach shows the MVP subset of its registry items, the rest Soon (D-WEB-COACH-HOME-MVP, SF-58)", () => {
     const shell = "web.app.coach";
     const configured = shellNavigation[shell].sections.flatMap((section) => section.items);
     const routed = webShell(shell)
@@ -59,7 +59,7 @@ describe("WorkspaceShell navigation config", () => {
       .map((item) => item.key);
     expect(configured).toEqual(["dashboard", "fighters", "programs", "settings"]);
     for (const key of configured) expect(routed).toContain(key);
-    expect(shellNavigation[shell].soon).toEqual(["fighters", "programs", "settings"]);
+    expect(shellNavigation[shell].soon).toEqual(["programs", "settings"]);
     expect(new Set(configured).size).toBe(configured.length);
     for (const key of configured) expect(shellNavigation[shell].icons[key]).toBeDefined();
   });
@@ -100,13 +100,17 @@ describe("WorkspaceShell", () => {
     );
   });
 
-  it("shows the Coach MVP: Dashboard linked, the sections without a domain Soon and unlinked", async () => {
+  it("shows the Coach MVP: Dashboard and Fighters linked, the sections without a domain Soon and unlinked", async () => {
     const nav = await renderShell("web.app.coach", "/app/coach");
     expect(within(nav).getByRole("link", { name: "Dashboard" })).toHaveAttribute(
       "aria-current",
       "page",
     );
-    for (const name of ["Fighters", "Sessions", "Coach settings"]) {
+    // SF-58: Fighters is real (WC7).
+    const fighters = within(nav).getByRole("link", { name: "Fighters" });
+    expect(fighters).toHaveAttribute("href", "/en/app/coach/fighters");
+    expect(fighters).not.toHaveAttribute("aria-current");
+    for (const name of ["Sessions", "Coach settings"]) {
       expect(within(nav).queryByRole("link", { name: new RegExp(name) })).toBeNull();
       const row = within(nav).getByText(name).closest("[aria-disabled]");
       expect(row).toHaveTextContent("Soon");
@@ -114,6 +118,17 @@ describe("WorkspaceShell", () => {
     expect(within(nav).queryByText(/Earnings|Sparring|Team board|Messages/)).toBeNull();
     // The identity block is the profile context switcher (SF-54).
     expect(screen.getAllByText("switcher:coach").length).toBeGreaterThan(0);
+  });
+
+  it("marks Fighters current on the Coach fighters route", async () => {
+    const nav = await renderShell("web.app.coach", "/app/coach/fighters");
+    expect(within(nav).getByRole("link", { name: "Fighters" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+    expect(within(nav).getByRole("link", { name: "Dashboard" })).not.toHaveAttribute(
+      "aria-current",
+    );
   });
 
   it("gives the Fighter shell the context switcher and other shells none", async () => {
