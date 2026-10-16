@@ -17,7 +17,8 @@
       "market": "Marketplace",
       "calendar": "Calendar",
       "messages": "Messages",
-      "settings": "Privacy & settings"
+      "settings": "Privacy & settings",
+      "coaches": "Coaches"
     }
   },
   "coach": {

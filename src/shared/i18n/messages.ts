@@ -5,11 +5,13 @@ import type app from "../../../messages/en/app.json";
 import type auth from "../../../messages/en/auth.json";
 import type coachFighters from "../../../messages/en/coachFighters.json";
 import type coachHome from "../../../messages/en/coachHome.json";
+import type coachInvitation from "../../../messages/en/coachInvitation.json";
 import type coachOnboarding from "../../../messages/en/coachOnboarding.json";
 import type common from "../../../messages/en/common.json";
 import type contextSelection from "../../../messages/en/contextSelection.json";
 import type contextSwitcher from "../../../messages/en/contextSwitcher.json";
 import type errors from "../../../messages/en/errors.json";
+import type fighterCoaches from "../../../messages/en/fighterCoaches.json";
 import type fighterHome from "../../../messages/en/fighterHome.json";
 import type fighterOnboarding from "../../../messages/en/fighterOnboarding.json";
 import type navigation from "../../../messages/en/navigation.json";
@@ -46,6 +48,8 @@ export const namespaces = [
   "fighterHome",
   "coachHome",
   "coachFighters",
+  "coachInvitation",
+  "fighterCoaches",
   "contextSwitcher",
   "contextSelection",
   "site",
@@ -73,6 +77,8 @@ export type Messages = {
   fighterHome: typeof fighterHome;
   coachHome: typeof coachHome;
   coachFighters: typeof coachFighters;
+  coachInvitation: typeof coachInvitation;
+  fighterCoaches: typeof fighterCoaches;
   contextSwitcher: typeof contextSwitcher;
   contextSelection: typeof contextSelection;
   site: typeof site;

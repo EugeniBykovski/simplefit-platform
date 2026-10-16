@@ -1,0 +1,76 @@
+{
+  "metaTitle": "Trenerzy",
+  "eyebrow": "Zawodnik · Trenerzy",
+  "title": "Trenerzy",
+  "heading": "Twoi trenerzy",
+  "views": "Relacje",
+  "tabs": {
+    "active": "Aktywne",
+    "ended": "Zakończone"
+  },
+  "loading": "Wczytywanie trenerów",
+  "more": "Pokaż więcej",
+  "loadingMore": "Wczytywanie…",
+  "fallbackName": "Twój trener",
+  "row": {
+    "since": "Od {date}",
+    "brandSince": "{brand} · od {date}",
+    "show": "Co widzi",
+    "hide": "Ukryj",
+    "ended": "Zakończona {date} · {by}",
+    "endedBy": {
+      "fighter": "przez Ciebie",
+      "coach": "przez trenera"
+    }
+  },
+  "sees": "Co widzi {name}",
+  "nothing": "Obecnie nic z Twojego profilu.",
+  "fields": {
+    "display_name": "Wyświetlana nazwa",
+    "username": "Nazwa użytkownika",
+    "country_code": "Kraj",
+    "city": "Miasto",
+    "experience_level": "Poziom doświadczenia",
+    "stance": "Pozycja",
+    "amateur_bout_count": "Walki amatorskie"
+  },
+  "endedNote": "Zakończonej relacji nie można wznowić. Trener, z którym pracowałeś, zachowuje tylko daty i Twoje imię z chwili zakończenia.",
+  "empty": {
+    "active": {
+      "title": "Nie masz jeszcze trenerów",
+      "body": "Trener pojawi się tutaj, gdy przyjmiesz jego zaproszenie. Do tego czasu nic nie jest nikomu udostępniane."
+    },
+    "ended": {
+      "title": "Brak zakończonych relacji",
+      "body": "Tutaj znajdziesz relacje zakończone przez Ciebie lub trenera – tylko z datami."
+    }
+  },
+  "unavailable": {
+    "title": "Trenerzy nie są dostępni",
+    "body": "Uzupełnij profil zawodnika, aby zobaczyć trenerów, z którymi pracujesz."
+  },
+  "failed": {
+    "title": "Nie udało się wczytać trenerów.",
+    "body": "Sprawdź połączenie i spróbuj ponownie.",
+    "retry": "Spróbuj ponownie"
+  },
+  "never": {
+    "title": "Nigdy nie udostępniane trenerom",
+    "goals": "Cele i najbliższa walka",
+    "body": "Waga i wzrost",
+    "account": "Nazwa konta, data urodzenia i e-mail",
+    "others": "Wszystko, co udostępniasz innym trenerom"
+  },
+  "howTo": "Trenerzy łączą się przez zaproszenie: otwórz link z ich e-maila, aby je sprawdzić i przyjąć.",
+  "end": {
+    "action": "Zakończ relację",
+    "title": "Zakończyć relację z {name}?",
+    "body": "{name} od razu przestaje widzieć Twój profil. Aby znów współpracować, musi wysłać Ci nowe zaproszenie.",
+    "keep": "Zachowaj",
+    "confirm": "Zakończ relację",
+    "pending": "Kończenie…",
+    "failed": "Nie udało się zakończyć relacji. Nic się nie zmieniło. Spróbuj ponownie.",
+    "ended": "{name} nie widzi już Twojego profilu.",
+    "unavailable": "Ta relacja nie jest już dostępna. Twoja lista trenerów jest aktualna."
+  }
+}

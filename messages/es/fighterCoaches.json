@@ -1,0 +1,76 @@
+{
+  "metaTitle": "Entrenadores",
+  "eyebrow": "Boxeador · Entrenadores",
+  "title": "Entrenadores",
+  "heading": "Tus entrenadores",
+  "views": "Relaciones",
+  "tabs": {
+    "active": "Activos",
+    "ended": "Finalizadas"
+  },
+  "loading": "Cargando tus entrenadores",
+  "more": "Mostrar más",
+  "loadingMore": "Cargando más…",
+  "fallbackName": "Tu entrenador",
+  "row": {
+    "since": "Desde el {date}",
+    "brandSince": "{brand} · desde el {date}",
+    "show": "Lo que ve",
+    "hide": "Ocultar",
+    "ended": "Finalizada el {date} · {by}",
+    "endedBy": {
+      "fighter": "por ti",
+      "coach": "por el entrenador"
+    }
+  },
+  "sees": "Lo que ve {name}",
+  "nothing": "Nada de tu perfil por ahora.",
+  "fields": {
+    "display_name": "Nombre visible",
+    "username": "Usuario",
+    "country_code": "País",
+    "city": "Ciudad",
+    "experience_level": "Nivel de experiencia",
+    "stance": "Guardia",
+    "amateur_bout_count": "Combates amateur"
+  },
+  "endedNote": "Una relación finalizada no se puede reanudar. Un entrenador con el que trabajaste conserva solo las fechas y tu nombre al finalizar.",
+  "empty": {
+    "active": {
+      "title": "Aún no tienes entrenadores",
+      "body": "Un entrenador aparece aquí cuando aceptas su invitación. No se comparte nada con nadie hasta entonces."
+    },
+    "ended": {
+      "title": "No hay relaciones finalizadas",
+      "body": "Aquí aparecen las relaciones que finalicen tú o un entrenador, solo con las fechas."
+    }
+  },
+  "unavailable": {
+    "title": "Los entrenadores no están disponibles",
+    "body": "Completa tu perfil de boxeador para ver los entrenadores con los que trabajas."
+  },
+  "failed": {
+    "title": "No pudimos cargar tus entrenadores.",
+    "body": "Revisa tu conexión e inténtalo de nuevo.",
+    "retry": "Reintentar"
+  },
+  "never": {
+    "title": "Nunca se comparte con entrenadores",
+    "goals": "Objetivos y próximo combate",
+    "body": "Peso y altura",
+    "account": "Nombre de la cuenta, fecha de nacimiento y correo",
+    "others": "Todo lo que compartes con otros entrenadores"
+  },
+  "howTo": "Los entrenadores conectan por invitación: abre el enlace de su correo para revisarla y aceptarla.",
+  "end": {
+    "action": "Finalizar relación",
+    "title": "¿Finalizar tu relación con {name}?",
+    "body": "{name} deja de ver tu perfil de inmediato. Para volver a trabajar juntos, tendrá que enviarte una nueva invitación.",
+    "keep": "Mantener",
+    "confirm": "Finalizar relación",
+    "pending": "Finalizando…",
+    "failed": "No pudimos finalizar la relación. No cambió nada. Inténtalo de nuevo.",
+    "ended": "{name} ya no ve tu perfil.",
+    "unavailable": "Esta relación ya no está disponible. Tu lista de entrenadores está actualizada."
+  }
+}

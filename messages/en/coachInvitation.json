@@ -1,0 +1,103 @@
+{
+  "metaTitle": "Coach invitation",
+  "eyebrow": "Coach invitation",
+  "loading": "Loading the invitation",
+  "checking": "Checking your account",
+  "fallbackName": "Your coach",
+  "title": "{name} invited you to connect on SimpleFit.",
+  "expires": "Expires {date}",
+  "note": "“{note}” — {name}",
+  "sees": "If you accept, {name} sees",
+  "neverTitle": "Never shared",
+  "fields": {
+    "display_name": "Display name",
+    "username": "Username",
+    "country_code": "Country",
+    "city": "City",
+    "experience_level": "Experience level",
+    "stance": "Stance",
+    "amateur_bout_count": "Amateur bouts"
+  },
+  "never": {
+    "goals": "Goals",
+    "next_fight": "Next fight",
+    "weight": "Weight",
+    "height": "Height",
+    "account_name": "Account name",
+    "date_of_birth": "Date of birth",
+    "email": "Email address",
+    "other_coaches": "Anything you share with other coaches"
+  },
+  "signedOut": {
+    "body": "Nothing is shared until you accept. Sign in with the email address this invitation was sent to.",
+    "signIn": "Sign in to respond",
+    "signUp": "Create an account"
+  },
+  "consent": "I agree that {name} sees the fields above.",
+  "version": "Disclosure {version}",
+  "accept": "Accept invitation",
+  "accepting": "Accepting…",
+  "decline": "Decline",
+  "declining": "Declining…",
+  "acceptHint": "Accept stays off until you tick the box. You can end the relationship any time from Coaches.",
+  "continueSetup": "Continue setup",
+  "switchAccount": "Sign out and switch account",
+  "retry": "Try again",
+  "problems": {
+    "profile": {
+      "title": "Finish your profile to respond.",
+      "body": "Your account details and fighter profile come first. You return here afterwards; nothing is accepted on the way."
+    },
+    "mismatch": {
+      "title": "This invitation was sent to a different email address.",
+      "body": "Sign in with the address the invitation was sent to, then open the link from the email again. Nothing about this invitation is shared with this account."
+    },
+    "stale": {
+      "title": "What you would share has changed.",
+      "body": "Review what your coach would see and agree again. Nothing was shared."
+    },
+    "limited": {
+      "title": "Too many attempts.",
+      "body": "Try again in a few minutes."
+    },
+    "failed": {
+      "title": "That didn’t work.",
+      "body": "Nothing changed. Try again."
+    },
+    "previewFailed": {
+      "title": "We couldn’t load the invitation.",
+      "body": "Check your connection and try again."
+    },
+    "unavailable": {
+      "title": "This invitation isn’t available.",
+      "body": "Ask your coach to send a new one."
+    }
+  },
+  "missing": {
+    "title": "No invitation to show",
+    "body": "Open the invitation link from your email again. For your security it works only in the tab and for the account it was opened with.",
+    "action": "Go to SimpleFit"
+  },
+  "outcome": {
+    "accepted": {
+      "title": "You’re connected with {name}.",
+      "body": "{name} now sees the fields you agreed to share. You can end this any time from Coaches.",
+      "action": "Go to Coaches"
+    },
+    "already": {
+      "title": "You’re already connected with {name}.",
+      "body": "Nothing changed: {name} keeps seeing what you agreed to share before.",
+      "action": "Go to Coaches"
+    },
+    "declined": {
+      "title": "Invitation declined",
+      "body": "Nothing was shared with {name}, and the link no longer works.",
+      "action": "Go to SimpleFit"
+    },
+    "unavailable": {
+      "title": "This invitation isn’t available",
+      "body": "It may have expired, been answered or cancelled, or the link is no longer current. Ask your coach to send a new one.",
+      "action": "Go to SimpleFit"
+    }
+  }
+}

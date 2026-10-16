@@ -1,0 +1,103 @@
+{
+  "metaTitle": "Invitación de entrenador",
+  "eyebrow": "Invitación de entrenador",
+  "loading": "Cargando la invitación",
+  "checking": "Comprobando tu cuenta",
+  "fallbackName": "Tu entrenador",
+  "title": "{name} te ha invitado a conectar en SimpleFit.",
+  "expires": "Caduca el {date}",
+  "note": "«{note}» — {name}",
+  "sees": "Si aceptas, {name} ve",
+  "neverTitle": "Nunca se comparte",
+  "fields": {
+    "display_name": "Nombre visible",
+    "username": "Usuario",
+    "country_code": "País",
+    "city": "Ciudad",
+    "experience_level": "Nivel de experiencia",
+    "stance": "Guardia",
+    "amateur_bout_count": "Combates amateur"
+  },
+  "never": {
+    "goals": "Objetivos",
+    "next_fight": "Próximo combate",
+    "weight": "Peso",
+    "height": "Altura",
+    "account_name": "Nombre de la cuenta",
+    "date_of_birth": "Fecha de nacimiento",
+    "email": "Correo electrónico",
+    "other_coaches": "Todo lo que compartes con otros entrenadores"
+  },
+  "signedOut": {
+    "body": "No se comparte nada hasta que aceptes. Inicia sesión con el correo al que se envió esta invitación.",
+    "signIn": "Inicia sesión para responder",
+    "signUp": "Crear una cuenta"
+  },
+  "consent": "Acepto que {name} vea los datos de arriba.",
+  "version": "Divulgación {version}",
+  "accept": "Aceptar invitación",
+  "accepting": "Aceptando…",
+  "decline": "Rechazar",
+  "declining": "Rechazando…",
+  "acceptHint": "Aceptar sigue desactivado hasta que marques la casilla. Puedes finalizar la relación cuando quieras desde Entrenadores.",
+  "continueSetup": "Continuar configuración",
+  "switchAccount": "Cerrar sesión y cambiar de cuenta",
+  "retry": "Reintentar",
+  "problems": {
+    "profile": {
+      "title": "Completa tu perfil para responder.",
+      "body": "Primero van los datos de tu cuenta y tu perfil de boxeador. Después vuelves aquí; no se acepta nada por el camino."
+    },
+    "mismatch": {
+      "title": "Esta invitación se envió a otro correo electrónico.",
+      "body": "Inicia sesión con el correo al que se envió la invitación y vuelve a abrir el enlace del correo. Con esta cuenta no se comparte nada de esta invitación."
+    },
+    "stale": {
+      "title": "Lo que compartirías ha cambiado.",
+      "body": "Revisa lo que vería tu entrenador y vuelve a aceptar. No se compartió nada."
+    },
+    "limited": {
+      "title": "Demasiados intentos.",
+      "body": "Inténtalo de nuevo en unos minutos."
+    },
+    "failed": {
+      "title": "No funcionó.",
+      "body": "No cambió nada. Inténtalo de nuevo."
+    },
+    "previewFailed": {
+      "title": "No pudimos cargar la invitación.",
+      "body": "Revisa tu conexión e inténtalo de nuevo."
+    },
+    "unavailable": {
+      "title": "Esta invitación no está disponible.",
+      "body": "Pide a tu entrenador que te envíe una nueva."
+    }
+  },
+  "missing": {
+    "title": "No hay ninguna invitación que mostrar",
+    "body": "Vuelve a abrir el enlace de invitación de tu correo. Por seguridad, solo funciona en la pestaña y con la cuenta con la que se abrió.",
+    "action": "Ir a SimpleFit"
+  },
+  "outcome": {
+    "accepted": {
+      "title": "Estás conectado con {name}.",
+      "body": "{name} ve ahora los datos que aceptaste compartir. Puedes finalizarlo cuando quieras desde Entrenadores.",
+      "action": "Ir a Entrenadores"
+    },
+    "already": {
+      "title": "Ya estás conectado con {name}.",
+      "body": "No cambió nada: {name} sigue viendo lo que aceptaste compartir antes.",
+      "action": "Ir a Entrenadores"
+    },
+    "declined": {
+      "title": "Invitación rechazada",
+      "body": "No se compartió nada con {name} y el enlace ya no funciona.",
+      "action": "Ir a SimpleFit"
+    },
+    "unavailable": {
+      "title": "Esta invitación no está disponible",
+      "body": "Puede que haya caducado, se haya respondido o cancelado, o que el enlace ya no sea el actual. Pide a tu entrenador que te envíe una nueva.",
+      "action": "Ir a SimpleFit"
+    }
+  }
+}

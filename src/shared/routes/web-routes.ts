@@ -820,6 +820,18 @@ export const webRoutes = [
     phase: "ACTIVE",
   },
   {
+    id: "web.app.coaches",
+    path: "/app/coaches",
+    params: [],
+    shell: "web.app.fighter",
+    surface: "FIGHTER",
+    parent: "web.app",
+    nav: "NAV_ITEM",
+    session: "AUTHENTICATED",
+    capability: "FIGHTER",
+    phase: "ACTIVE",
+  },
+  {
     id: "web.app.community",
     path: "/app/community",
     params: [],
@@ -1468,6 +1480,18 @@ export const webRoutes = [
     phase: null,
   },
   {
+    id: "web.invite.coach",
+    path: "/invite/coach",
+    params: [],
+    shell: "web.minimal",
+    surface: "FIGHTER",
+    parent: null,
+    nav: "STANDALONE",
+    session: "PUBLIC",
+    capability: null,
+    phase: null,
+  },
+  {
     id: "web.login",
     path: "/login",
     params: [],
@@ -1800,6 +1824,10 @@ export const webShells = [
       {
         key: "progress",
         route: "web.app.progress",
+      },
+      {
+        key: "coaches",
+        route: "web.app.coaches",
       },
       {
         key: "community",

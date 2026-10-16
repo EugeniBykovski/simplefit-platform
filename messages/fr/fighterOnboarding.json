@@ -187,6 +187,7 @@
     "eyebrow": "Inscription boxeur · terminé",
     "title": "Vous êtes inscrit, {name}.",
     "lead": "Votre profil de boxeur est prêt. Vous pourrez tout modifier plus tard depuis votre profil.",
-    "home": "Aller à mon accueil"
+    "home": "Aller à mon accueil",
+    "continue": "Continuer"
   }
 }

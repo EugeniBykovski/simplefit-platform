@@ -1,0 +1,103 @@
+{
+  "metaTitle": "Zaproszenie od trenera",
+  "eyebrow": "Zaproszenie od trenera",
+  "loading": "Wczytywanie zaproszenia",
+  "checking": "Sprawdzanie Twojego konta",
+  "fallbackName": "Twój trener",
+  "title": "{name} zaprasza Cię do połączenia w SimpleFit.",
+  "expires": "Wygasa {date}",
+  "note": "„{note}” — {name}",
+  "sees": "Jeśli przyjmiesz, {name} zobaczy",
+  "neverTitle": "Nigdy nie udostępniane",
+  "fields": {
+    "display_name": "Wyświetlana nazwa",
+    "username": "Nazwa użytkownika",
+    "country_code": "Kraj",
+    "city": "Miasto",
+    "experience_level": "Poziom doświadczenia",
+    "stance": "Pozycja",
+    "amateur_bout_count": "Walki amatorskie"
+  },
+  "never": {
+    "goals": "Cele",
+    "next_fight": "Najbliższa walka",
+    "weight": "Waga",
+    "height": "Wzrost",
+    "account_name": "Nazwa konta",
+    "date_of_birth": "Data urodzenia",
+    "email": "Adres e-mail",
+    "other_coaches": "Wszystko, co udostępniasz innym trenerom"
+  },
+  "signedOut": {
+    "body": "Nic nie jest udostępniane, dopóki nie przyjmiesz zaproszenia. Zaloguj się adresem e-mail, na który wysłano to zaproszenie.",
+    "signIn": "Zaloguj się, aby odpowiedzieć",
+    "signUp": "Utwórz konto"
+  },
+  "consent": "Zgadzam się, aby {name} widział powyższe dane.",
+  "version": "Ujawnienie {version}",
+  "accept": "Przyjmij zaproszenie",
+  "accepting": "Przyjmowanie…",
+  "decline": "Odrzuć",
+  "declining": "Odrzucanie…",
+  "acceptHint": "Przyjęcie jest nieaktywne, dopóki nie zaznaczysz pola. Relację możesz zakończyć w każdej chwili w sekcji Trenerzy.",
+  "continueSetup": "Kontynuuj konfigurację",
+  "switchAccount": "Wyloguj się i zmień konto",
+  "retry": "Spróbuj ponownie",
+  "problems": {
+    "profile": {
+      "title": "Uzupełnij profil, aby odpowiedzieć.",
+      "body": "Najpierw dane konta i profil zawodnika. Potem wrócisz tutaj; po drodze nic nie zostanie przyjęte."
+    },
+    "mismatch": {
+      "title": "To zaproszenie wysłano na inny adres e-mail.",
+      "body": "Zaloguj się adresem, na który wysłano zaproszenie, i ponownie otwórz link z e-maila. Z tym kontem nic z tego zaproszenia nie jest udostępniane."
+    },
+    "stale": {
+      "title": "Zmieniło się to, co byś udostępniał.",
+      "body": "Sprawdź, co zobaczyłby trener, i zgódź się ponownie. Nic nie zostało udostępnione."
+    },
+    "limited": {
+      "title": "Zbyt wiele prób.",
+      "body": "Spróbuj ponownie za kilka minut."
+    },
+    "failed": {
+      "title": "Nie udało się.",
+      "body": "Nic się nie zmieniło. Spróbuj ponownie."
+    },
+    "previewFailed": {
+      "title": "Nie udało się wczytać zaproszenia.",
+      "body": "Sprawdź połączenie i spróbuj ponownie."
+    },
+    "unavailable": {
+      "title": "To zaproszenie jest niedostępne.",
+      "body": "Poproś trenera o wysłanie nowego."
+    }
+  },
+  "missing": {
+    "title": "Brak zaproszenia do wyświetlenia",
+    "body": "Otwórz ponownie link z zaproszeniem z e-maila. Ze względów bezpieczeństwa działa tylko w karcie i na koncie, na którym go otwarto.",
+    "action": "Przejdź do SimpleFit"
+  },
+  "outcome": {
+    "accepted": {
+      "title": "Masz połączenie z {name}.",
+      "body": "{name} widzi teraz dane, na których udostępnienie się zgodziłeś. Możesz to zakończyć w każdej chwili w sekcji Trenerzy.",
+      "action": "Przejdź do trenerów"
+    },
+    "already": {
+      "title": "Masz już połączenie z {name}.",
+      "body": "Nic się nie zmieniło: {name} nadal widzi to, na co zgodziłeś się wcześniej.",
+      "action": "Przejdź do trenerów"
+    },
+    "declined": {
+      "title": "Zaproszenie odrzucone",
+      "body": "Nic nie zostało udostępnione {name}, a link już nie działa.",
+      "action": "Przejdź do SimpleFit"
+    },
+    "unavailable": {
+      "title": "To zaproszenie jest niedostępne",
+      "body": "Mogło wygasnąć, zostać rozpatrzone lub anulowane albo link nie jest już aktualny. Poproś trenera o wysłanie nowego.",
+      "action": "Przejdź do SimpleFit"
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { useEffect, type ReactNode } from "react";
 
+import { pendingCoachInvitation } from "@/entities/pending-coach-invitation";
 import { onSessionBoundary } from "@/entities/session";
 import { getQueryClient } from "@/shared/api/query-client";
 import { TooltipProvider } from "@/shared/ui/tooltip";
@@ -44,6 +45,9 @@ export function Providers({ children }: { children: ReactNode }) {
       onSessionBoundary(() => {
         void queryClient.cancelQueries();
         queryClient.clear();
+        // A coach invitation taken by one signed-in person never passes to
+        // the next (SF-60): a token bound to an identity ends with it.
+        pendingCoachInvitation.crossBoundary();
       }),
     [queryClient],
   );

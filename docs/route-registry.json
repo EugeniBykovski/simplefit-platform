@@ -18,7 +18,8 @@
         "id": "gallery-2",
         "artboard": "GalleryIndex2.dc.html",
         "title": "route gallery 2 / 3 · coach & gym mobile, web app",
-        "rows": 122
+        "rows": 124,
+        "rowsNote": "122 Route Gallery rows + WFI1 and WFC1 (SF-60: added with their artboards WebFighterInvite.dc.html and WebFighterCoaches.dc.html, not yet listed in GalleryIndex2)"
       },
       {
         "id": "gallery-3",
@@ -278,6 +279,11 @@
           "key": "progress",
           "label": "Progress",
           "route": "web.app.progress"
+        },
+        {
+          "key": "coaches",
+          "label": "Coaches",
+          "route": "web.app.coaches"
         },
         {
           "key": "community",
@@ -5118,6 +5124,31 @@
       "screens": ["W07"]
     },
     {
+      "id": "web.app.coaches",
+      "platform": "web",
+      "path": "/app/coaches",
+      "params": [],
+      "name": "Coaches",
+      "surface": "FIGHTER",
+      "shell": "web.app.fighter",
+      "parent": "web.app",
+      "nav": {
+        "type": "NAV_ITEM",
+        "from": ["web.app.fighter#coaches"]
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "FIGHTER",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(fighter)/coaches/page.tsx",
+        "note": "SF-60: WFC1 (Claude Design 1792151007-1d70): the fighter's SF-56 relationships from listMyCoaches, Active and Ended (?view=ended), cursor pages; each active coach's public identity, start and, inline, what that coach sees with End relationship (endMyCoachRelationship: only 204 is reported as ended). No detail route: fighters have no single-relationship read (SF-74). Loading, empty, unavailable (404) and failure are separate states."
+      },
+      "screens": ["WFC1"]
+    },
+    {
       "id": "web.app.settings.security",
       "platform": "web",
       "path": "/app/settings/security",
@@ -8200,6 +8231,31 @@
         "note": "SF-24: WA4b, the E01 link (/verify-email#token=…): verifies the address only, never creates a session. SF-42: the web.minimal shell, as WebEmailVerified draws it (auth header, no site navigation or footer)."
       },
       "screens": ["WA4b"]
+    },
+    {
+      "id": "web.invite.coach",
+      "platform": "web",
+      "path": "/invite/coach",
+      "params": [],
+      "name": "Coach invitation",
+      "surface": "FIGHTER",
+      "shell": "web.minimal",
+      "parent": null,
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "PUBLIC",
+        "capability": null,
+        "phase": null
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(minimal)/invite/coach/page.tsx",
+        "note": "SF-60: WFI1 (Claude Design 1792151007-1d70), the E08 link (/invite/coach#token=…). The one-time token is read from the fragment in the browser only, the fragment removed, and the token kept in this tab's sessionStorage bound to the first signed-in viewer, never in a URL, returnTo or log. Anonymous preview (previewCoachInvitation); sign-in, WA5 and Fighter onboarding continue back here with the token-free returnTo /invite/coach; explicit unticked consent to the backend's disclosure version, then acceptCoachInvitation or declineCoachInvitation. Unavailable (404 / 410), recipient mismatch (403), profile required (422), stale disclosure (409) and rate limit (429) are their own states."
+      },
+      "screens": ["WFI1"]
     }
   ],
   "screens": [
@@ -11388,7 +11444,7 @@
         "section": "11 · Boxing timer · rounds, round time, rest",
         "step": "11.2",
         "tag": "MOBILE",
-        "artboard": "TimerReady.dc.html"
+        "artboard": "TimerLive.dc.html"
       }
     },
     {
@@ -11442,7 +11498,7 @@
         "section": "11 · Boxing timer · rounds, round time, rest",
         "step": "11.5",
         "tag": "MOBILE",
-        "artboard": "TimerRest.dc.html"
+        "artboard": "TimerLive.dc.html"
       }
     },
     {
@@ -12844,6 +12900,50 @@
         "step": "16.1",
         "tag": "WEB_APP",
         "artboard": "WebHome.dc.html"
+      }
+    },
+    {
+      "id": "WFI1",
+      "code": "WFI1",
+      "name": "Coach invitation",
+      "route": "web.invite.coach",
+      "states": [
+        "loading",
+        "preview",
+        "review",
+        "profile",
+        "mismatch",
+        "stale",
+        "unavailable",
+        "limited",
+        "error",
+        "accepted",
+        "declined"
+      ],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "16 · Fighter web · desktop",
+        "step": "16.13",
+        "tag": "WEB_APP",
+        "artboard": "WebFighterInvite.dc.html",
+        "addedIn": "1792151007-1d70"
+      }
+    },
+    {
+      "id": "WFC1",
+      "code": "WFC1",
+      "name": "My coaches",
+      "route": "web.app.coaches",
+      "states": ["active", "ended", "loading", "empty", "unavailable", "error"],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "16 · Fighter web · desktop",
+        "step": "16.14",
+        "tag": "WEB_APP",
+        "artboard": "WebFighterCoaches.dc.html",
+        "addedIn": "1792151007-1d70"
       }
     },
     {
@@ -16158,30 +16258,6 @@
       "navItems": ["web.sponsor#analytics"],
       "discrepancy": "D-SPONSOR-NAV",
       "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
-    },
-    {
-      "id": "GAP-WEB-COACH-FIGHTER-INVITE",
-      "platform": "web",
-      "status": "UNRESOLVED_DESIGN",
-      "description": "Fighter acceptance of a coach invitation on web: the coach's side is built (SF-58, an in-page composer on WC7, no route), but the 'Invite fighters' action still links the mobile INV1 artboard on the canvas, and no web surface exists for the recipient to review and accept or decline (the E08 link's review page)",
-      "candidatePath": null,
-      "navItems": [],
-      "source": {
-        "artboard": "WebCoachFighters.dc.html",
-        "screen": "WC7",
-        "route": "web.app.coach.fighters",
-        "action": "Invite fighters",
-        "canvasTarget": {
-          "artboard": "InviteCoach.dc.html",
-          "screen": "INV1",
-          "platform": "mobile",
-          "path": "/invite/:code"
-        }
-      },
-      "owner": "Future Coach ↔ Fighter relationship/invitation product work",
-      "blocking": [],
-      "discrepancy": "D-WEB-COACH-FIGHTER-INVITE",
-      "note": "Not a route. No canonical web invite route exists; the action is not a valid web route until Claude Design adds a Route Gallery row. Not blocking SF-19."
     }
   ],
   "discrepancies": [
@@ -16665,10 +16741,14 @@
       "sourceB": "Canvas target InviteCoach.dc.html: mobile INV1 'Invites · coach / gym / friend' at /invite/:code",
       "mismatch": "The web action targets a mobile artboard. It is not established that the Coach → Fighter invitation on web is the same flow as INV1, which a recipient uses to accept a coach, gym or friend invite.",
       "impact": "Building it from INV1 could merge two relationship directions (coach invites fighter vs fighter receives/uses a coach invite) into one route and screen.",
-      "resolution": "Recorded as GAP-WEB-COACH-FIGHTER-INVITE. No web invite route or screen is registered or inferred. SF-58 (Claude Design 1792056621-3707) builds the coach's web invitation as an in-page composer dialog on WC7 over the SF-57 API; it is not INV1 and has no route. The recipient side (INV1 and the acceptance flow) stays with future Fighter work. Not blocking SF-19.",
-      "status": "DEFERRED",
-      "routes": ["web.app.coach.fighters"],
-      "designGaps": ["GAP-WEB-COACH-FIGHTER-INVITE"]
+      "resolution": "Claude Design 1792151007-1d70 (SF-60) adds WFI1, the web page of the E08 link (/invite/coach#token=…): web.invite.coach, where the recipient reviews and accepts or declines over the SF-57 API. The coach's own invitation stays the in-page composer on WC7 (SF-58). INV1 is the mobile artboard and stays deferred (D-MOBILE-FIGHTER-COACH-INVITATIONS).",
+      "status": "RESOLVED",
+      "routes": ["web.app.coach.fighters", "web.invite.coach"],
+      "resolvedByDesign": {
+        "version": "1792151007-1d70",
+        "gaps": ["GAP-WEB-COACH-FIGHTER-INVITE"],
+        "routes": ["web.invite.coach"]
+      }
     },
     {
       "id": "D-WEB-FIGHTER-ONBOARDING-FLOW",
@@ -16810,7 +16890,7 @@
       "sourceB": "SF-57 API: anonymous previewCoachInvitation and signed-in accept / decline by the one-time token from the E08 link fragment (#token=, never in a URL), bound to a verified email identity, with the current disclosure version; no fighter-facing list of incoming invitations; the app has no verified Universal Links / App Links (only the simplefit scheme); Coach-Fighter sharing is off until the legal texts and versions exist",
       "mismatch": "The design auto-joins after sign-in and puts the invite in a route; the API needs an explicit, versioned acceptance of a token that must never reach a route, log or storage, and offers no inbox.",
       "impact": "Building INV1 or an inbox now would invent invitations, carry the token through an unsafe URL, or accept without consent.",
-      "resolution": "Claude Design 1792069267-b198 (SF-59) marks INV1 FUTURE and adds FC1 / FC2 (My coaches) on listMyCoaches and endMyCoachRelationship. No invitation screen exists in the app; the E08 link stays the web's (its review page is GAP-WEB-COACH-FIGHTER-INVITE). Needed first: a fighter invitation contract (an inbox endpoint), verified app links with an in-memory token handoff, and the approved legal texts.",
+      "resolution": "Claude Design 1792069267-b198 (SF-59) marks INV1 FUTURE and adds FC1 / FC2 (My coaches) on listMyCoaches and endMyCoachRelationship. No invitation screen exists in the app; the E08 link stays the web's (its review page is WFI1, web.invite.coach, SF-60). Needed first: a fighter invitation contract (an inbox endpoint), verified app links with an in-memory token handoff, and the approved legal texts.",
       "decision": "The app manages existing relationships only; invitations are reviewed and answered on the web until the native handoff, the contract and the legal texts exist.",
       "decidedOn": "2026-10-15",
       "status": "DEFERRED",

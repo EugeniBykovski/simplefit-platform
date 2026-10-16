@@ -1,0 +1,103 @@
+{
+  "metaTitle": "Invitation de coach",
+  "eyebrow": "Invitation de coach",
+  "loading": "Chargement de l’invitation",
+  "checking": "Vérification de ton compte",
+  "fallbackName": "Ton coach",
+  "title": "{name} t’invite à te connecter sur SimpleFit.",
+  "expires": "Expire le {date}",
+  "note": "« {note} » — {name}",
+  "sees": "Si tu acceptes, {name} voit",
+  "neverTitle": "Jamais partagé",
+  "fields": {
+    "display_name": "Nom affiché",
+    "username": "Nom d’utilisateur",
+    "country_code": "Pays",
+    "city": "Ville",
+    "experience_level": "Niveau d’expérience",
+    "stance": "Garde",
+    "amateur_bout_count": "Combats amateurs"
+  },
+  "never": {
+    "goals": "Objectifs",
+    "next_fight": "Prochain combat",
+    "weight": "Poids",
+    "height": "Taille",
+    "account_name": "Nom du compte",
+    "date_of_birth": "Date de naissance",
+    "email": "Adresse e-mail",
+    "other_coaches": "Tout ce que tu partages avec d’autres coachs"
+  },
+  "signedOut": {
+    "body": "Rien n’est partagé avant que tu acceptes. Connecte-toi avec l’adresse e-mail à laquelle cette invitation a été envoyée.",
+    "signIn": "Se connecter pour répondre",
+    "signUp": "Créer un compte"
+  },
+  "consent": "J’accepte que {name} voie les informations ci-dessus.",
+  "version": "Divulgation {version}",
+  "accept": "Accepter l’invitation",
+  "accepting": "Acceptation…",
+  "decline": "Refuser",
+  "declining": "Refus…",
+  "acceptHint": "Accepter reste désactivé tant que la case n’est pas cochée. Tu peux mettre fin à la relation à tout moment depuis Coachs.",
+  "continueSetup": "Poursuivre la configuration",
+  "switchAccount": "Se déconnecter et changer de compte",
+  "retry": "Réessayer",
+  "problems": {
+    "profile": {
+      "title": "Termine ton profil pour répondre.",
+      "body": "Les informations de ton compte et ton profil de boxeur passent d’abord. Tu reviens ici ensuite ; rien n’est accepté en chemin."
+    },
+    "mismatch": {
+      "title": "Cette invitation a été envoyée à une autre adresse e-mail.",
+      "body": "Connecte-toi avec l’adresse à laquelle l’invitation a été envoyée, puis rouvre le lien de l’e-mail. Rien de cette invitation n’est partagé avec ce compte."
+    },
+    "stale": {
+      "title": "Ce que tu partagerais a changé.",
+      "body": "Vérifie ce que ton coach verrait et accepte à nouveau. Rien n’a été partagé."
+    },
+    "limited": {
+      "title": "Trop de tentatives.",
+      "body": "Réessaie dans quelques minutes."
+    },
+    "failed": {
+      "title": "Ça n’a pas fonctionné.",
+      "body": "Rien n’a changé. Réessaie."
+    },
+    "previewFailed": {
+      "title": "Impossible de charger l’invitation.",
+      "body": "Vérifie ta connexion et réessaie."
+    },
+    "unavailable": {
+      "title": "Cette invitation n’est pas disponible.",
+      "body": "Demande à ton coach d’en envoyer une nouvelle."
+    }
+  },
+  "missing": {
+    "title": "Aucune invitation à afficher",
+    "body": "Rouvre le lien d’invitation de ton e-mail. Pour ta sécurité, il ne fonctionne que dans l’onglet et avec le compte avec lesquels il a été ouvert.",
+    "action": "Aller sur SimpleFit"
+  },
+  "outcome": {
+    "accepted": {
+      "title": "Tu es connecté avec {name}.",
+      "body": "{name} voit maintenant les informations que tu as accepté de partager. Tu peux y mettre fin à tout moment depuis Coachs.",
+      "action": "Aller aux coachs"
+    },
+    "already": {
+      "title": "Tu es déjà connecté avec {name}.",
+      "body": "Rien n’a changé : {name} continue de voir ce que tu avais accepté de partager.",
+      "action": "Aller aux coachs"
+    },
+    "declined": {
+      "title": "Invitation refusée",
+      "body": "Rien n’a été partagé avec {name}, et le lien ne fonctionne plus.",
+      "action": "Aller sur SimpleFit"
+    },
+    "unavailable": {
+      "title": "Cette invitation n’est pas disponible",
+      "body": "Elle a peut-être expiré, reçu une réponse ou été annulée, ou le lien n’est plus actuel. Demande à ton coach d’en envoyer une nouvelle.",
+      "action": "Aller sur SimpleFit"
+    }
+  }
+}

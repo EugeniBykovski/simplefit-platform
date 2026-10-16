@@ -187,6 +187,7 @@
     "eyebrow": "Fighter sign-up · complete",
     "title": "You’re in, {name}.",
     "lead": "Your fighter profile is ready. You can change any of it later from your profile.",
-    "home": "Go to my home"
+    "home": "Go to my home",
+    "continue": "Continue"
   }
 }
