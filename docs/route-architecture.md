@@ -542,6 +542,16 @@ pushed. `/workspaces` renders the same chooser as a screen: where
 `context_selection` lands (no current context, no Back, Sign out), the
 switcher when opened in a context, and otherwise the entry's destination.
 
+**Coach mobile fighters (SF-61).** `/coach/fighters` (C03, Claude Design
+`1792155768-3179`) is the live Fighters tab: the coach's SF-56 relationships
+from `listMyCoachFighters` (Active, Ended) and the SF-57 invitations as a third
+view (`?view=ended|invitations`); an invitation is never a fighter. The + button
+opens the invite sheet: the coach data rules first when the backend asks for
+them (an explicit acknowledgement of exactly the version it serves; no legal
+text is invented), then email and an optional note; success says only that an
+invitation is pending. `/coach/fighters/:fighterId` (C04) shows one active
+relationship from `getMyCoachFighter` and ends it with confirmation.
+
 **Fighter mobile coaches (SF-59).** `/profile/coaches` (FC1, Claude Design
 `1792069267-b198`) lists the fighter's SF-56 relationships from
 `listMyCoaches`: Active and, with `?view=ended`, Ended; it is reached from the
