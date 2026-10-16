@@ -4157,7 +4157,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(coach)/(tabs)/(fighters)/coach/fighters.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-61: C03 (Claude Design 1792155768-3179): the coach's SF-56 relationships from listMyCoachFighters, Active and Ended, and the SF-57 invitations (listMyCoachInvitations) as a third view (?view=ended|invitations); active rows show only the C1+C2 fields each fighter disclosed and open C04; an invitation is never a fighter. Loading, empty, unavailable (404: sharing off or no completed coach profile) and failure are separate states. The + button opens the invite sheet: the coach data rules first when the backend asks for them (explicit acknowledgement of exactly its version), then email and an optional note (createMyCoachInvitation); pending invitations can be resent or cancelled."
       },
       "screens": ["C03"]
     },
@@ -4182,7 +4182,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(coach)/coach/fighters/[fighterId]/index.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-61: C04 (Claude Design 1792155768-3179): one active relationship from getMyCoachFighter (the segment is the SF-56 relationship id): the C1+C2 fields the fighter disclosed (anything else Not shared), what is never shared, and End relationship with confirmation (only a 204 is reported as ended). Ended, foreign or unknown ids and sharing off are one not-available state. No notes, clips or session assignment: those domains do not exist yet."
       },
       "screens": ["C04"]
     },
@@ -16876,7 +16876,7 @@
       "sourceB": "SF-50 / SF-51 backend: CoachProfile and the COACH capability only; no coaching relationship, invitation, training session, booking, messaging or AI-draft domain",
       "mismatch": "The designed Coach app showed records that do not exist.",
       "impact": "Building it would fake rosters, sessions, requests and invitations.",
-      "resolution": "Claude Design 1791994719-673f (SF-55): the production CoachTabs show Today and Settings (the shared ST1) and, marked Soon and disabled, Fighters and Sessions; the registry keeps the Route Gallery's five nav items and their placeholder routes. C01 shows the identity pill (the A04 sheet), the real CoachProfile, dashes for unavailable domains and a setup checklist. CR4, CR5 and CR6 are FUTURE (no Coach first-run experience, session or roster exists).",
+      "resolution": "Claude Design 1791994719-673f (SF-55): the production CoachTabs show Today and Settings (the shared ST1) and, marked Soon and disabled, Fighters and Sessions; the registry keeps the Route Gallery's five nav items and their placeholder routes. C01 shows the identity pill (the A04 sheet), the real CoachProfile, dashes for unavailable domains and a setup checklist. CR4, CR5 and CR6 are FUTURE (no Coach first-run experience, session or roster exists). SF-61 (Claude Design 1792155768-3179) makes Fighters live (C03 roster and invitations, C04 one fighter) and lets C01's Fighters and Invites tiles and its first setup step open it; Sessions stays Soon.",
       "decision": "The Coach mobile workspace grows with its domains, as the web (D-WEB-COACH-HOME-MVP); nothing is shown before it is real.",
       "decidedOn": "2026-10-14",
       "status": "DEFERRED",
