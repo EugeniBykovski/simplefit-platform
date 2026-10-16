@@ -187,6 +187,7 @@
     "eyebrow": "Registro de boxeador · listo",
     "title": "Ya estás dentro, {name}.",
     "lead": "Tu perfil de boxeador está listo. Puedes cambiar cualquier dato luego desde tu perfil.",
-    "home": "Ir a mi inicio"
+    "home": "Ir a mi inicio",
+    "continue": "Continuar"
   }
 }

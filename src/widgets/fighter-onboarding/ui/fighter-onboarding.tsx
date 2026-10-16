@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useFighterProfile, useFighterProfileActions } from "@/entities/fighter-profile";
 import {
@@ -47,7 +47,7 @@ export function FighterOnboarding() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const requested = searchParams.get("step");
-  const continuation = continuationOf(searchParams);
+  const continuation = useMemo(() => continuationOf(searchParams), [searchParams]);
   const query = useFighterProfile();
   const { save, complete } = useFighterProfileActions();
   const [justCompleted, setJustCompleted] = useState(false);
@@ -75,9 +75,16 @@ export function FighterOnboarding() {
   // context); any other state shows the step the backend allows, with the URL
   // saying so.
   useEffect(() => {
-    if (decision?.kind === "exit") router.replace(routeHref("web.app", {}, { intent: "fighter" }));
-    else if (step !== undefined && step !== requested) router.replace(hrefFor(step));
-  }, [decision?.kind, step, requested, router, hrefFor]);
+    if (decision?.kind === "exit") {
+      router.replace(
+        routeHref(
+          "web.app",
+          {},
+          continuationQuery({ ...continuation, intent: continuation.intent ?? "fighter" }),
+        ),
+      );
+    } else if (step !== undefined && step !== requested) router.replace(hrefFor(step));
+  }, [decision?.kind, step, requested, router, hrefFor, continuation]);
 
   // After a step change, focus the new step's heading (not on the first load).
   const shown = useRef<Step | undefined>(undefined);
@@ -142,7 +149,7 @@ export function FighterOnboarding() {
       // WF6's 96 px top padding: the Container's 48 plus 48.
       <Container className="py-12">
         <div className="flex w-full justify-center pt-12">
-          <CompleteStep profile={query.data} />
+          <CompleteStep profile={query.data} continuation={continuation} />
         </div>
       </Container>
     );

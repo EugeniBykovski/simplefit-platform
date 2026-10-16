@@ -187,6 +187,7 @@
     "eyebrow": "Rejestracja zawodnika · gotowe",
     "title": "Jesteś z nami, {name}.",
     "lead": "Twój profil zawodnika jest gotowy. Wszystko zmienisz później w profilu.",
-    "home": "Przejdź do mojej strony głównej"
+    "home": "Przejdź do mojej strony głównej",
+    "continue": "Dalej"
   }
 }

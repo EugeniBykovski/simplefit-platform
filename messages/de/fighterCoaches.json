@@ -1,0 +1,76 @@
+{
+  "metaTitle": "Coaches",
+  "eyebrow": "Kämpfer · Coaches",
+  "title": "Coaches",
+  "heading": "Deine Coaches",
+  "views": "Beziehungen",
+  "tabs": {
+    "active": "Aktiv",
+    "ended": "Beendet"
+  },
+  "loading": "Deine Coaches werden geladen",
+  "more": "Mehr anzeigen",
+  "loadingMore": "Wird geladen…",
+  "fallbackName": "Dein Coach",
+  "row": {
+    "since": "Seit {date}",
+    "brandSince": "{brand} · seit {date}",
+    "show": "Was sie sehen",
+    "hide": "Ausblenden",
+    "ended": "Beendet am {date} · {by}",
+    "endedBy": {
+      "fighter": "von dir",
+      "coach": "vom Coach"
+    }
+  },
+  "sees": "Was {name} sieht",
+  "nothing": "Derzeit nichts aus deinem Profil.",
+  "fields": {
+    "display_name": "Anzeigename",
+    "username": "Benutzername",
+    "country_code": "Land",
+    "city": "Stadt",
+    "experience_level": "Erfahrung",
+    "stance": "Auslage",
+    "amateur_bout_count": "Amateurkämpfe"
+  },
+  "endedNote": "Eine beendete Beziehung kann nicht neu gestartet werden. Ein früherer Coach behält nur die Daten und deinen Namen zum Ende.",
+  "empty": {
+    "active": {
+      "title": "Noch keine Coaches",
+      "body": "Ein Coach erscheint hier, sobald du seine Einladung annimmst. Bis dahin wird mit niemandem etwas geteilt."
+    },
+    "ended": {
+      "title": "Keine beendeten Beziehungen",
+      "body": "Beziehungen, die du oder ein Coach beendet, stehen hier – nur mit den Daten."
+    }
+  },
+  "unavailable": {
+    "title": "Coaches sind nicht verfügbar",
+    "body": "Schließe dein Kämpferprofil ab, um die Coaches zu sehen, mit denen du arbeitest."
+  },
+  "failed": {
+    "title": "Wir konnten deine Coaches nicht laden.",
+    "body": "Prüfe deine Verbindung und versuche es erneut.",
+    "retry": "Erneut versuchen"
+  },
+  "never": {
+    "title": "Nie mit Coaches geteilt",
+    "goals": "Ziele und nächster Kampf",
+    "body": "Gewicht und Größe",
+    "account": "Kontoname, Geburtsdatum und E-Mail",
+    "others": "Alles, was du mit anderen Coaches teilst"
+  },
+  "howTo": "Coaches verbinden sich per Einladung: Öffne den Link in ihrer E-Mail, um sie zu prüfen und anzunehmen.",
+  "end": {
+    "action": "Beziehung beenden",
+    "title": "Beziehung mit {name} beenden?",
+    "body": "{name} sieht dein Profil sofort nicht mehr. Um wieder zusammenzuarbeiten, braucht es eine neue Einladung des Coaches.",
+    "keep": "Behalten",
+    "confirm": "Beziehung beenden",
+    "pending": "Wird beendet…",
+    "failed": "Wir konnten die Beziehung nicht beenden. Es hat sich nichts geändert. Versuche es erneut.",
+    "ended": "{name} sieht dein Profil nicht mehr.",
+    "unavailable": "Diese Beziehung ist nicht mehr verfügbar. Deine Coach-Liste ist aktuell."
+  }
+}

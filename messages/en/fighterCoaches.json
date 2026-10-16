@@ -1,0 +1,76 @@
+{
+  "metaTitle": "Coaches",
+  "eyebrow": "Fighter · Coaches",
+  "title": "Coaches",
+  "heading": "Your coaches",
+  "views": "Relationships",
+  "tabs": {
+    "active": "Active",
+    "ended": "Ended"
+  },
+  "loading": "Loading your coaches",
+  "more": "Show more",
+  "loadingMore": "Loading more…",
+  "fallbackName": "Your coach",
+  "row": {
+    "since": "Since {date}",
+    "brandSince": "{brand} · since {date}",
+    "show": "What they see",
+    "hide": "Hide",
+    "ended": "Ended {date} · {by}",
+    "endedBy": {
+      "fighter": "by you",
+      "coach": "by the coach"
+    }
+  },
+  "sees": "What {name} sees",
+  "nothing": "Nothing from your profile right now.",
+  "fields": {
+    "display_name": "Display name",
+    "username": "Username",
+    "country_code": "Country",
+    "city": "City",
+    "experience_level": "Experience level",
+    "stance": "Stance",
+    "amateur_bout_count": "Amateur bouts"
+  },
+  "endedNote": "An ended relationship can’t be restarted. A coach you worked with keeps only the dates and your name at the end.",
+  "empty": {
+    "active": {
+      "title": "No coaches yet",
+      "body": "A coach appears here once you accept their invitation. Nothing is shared with anyone until you do."
+    },
+    "ended": {
+      "title": "No ended relationships",
+      "body": "Relationships you or a coach end are listed here, with the dates only."
+    }
+  },
+  "unavailable": {
+    "title": "Coaches aren’t available",
+    "body": "Finish your fighter profile to see the coaches you work with."
+  },
+  "failed": {
+    "title": "We couldn’t load your coaches.",
+    "body": "Check your connection and try again.",
+    "retry": "Try again"
+  },
+  "never": {
+    "title": "Never shared with coaches",
+    "goals": "Goals and next fight",
+    "body": "Weight and height",
+    "account": "Account name, date of birth and email",
+    "others": "Anything you share with other coaches"
+  },
+  "howTo": "Coaches connect by invitation: open the link in their email to review and accept.",
+  "end": {
+    "action": "End relationship",
+    "title": "End your relationship with {name}?",
+    "body": "{name} stops seeing your profile at once. To work together again, they have to send you a new invitation.",
+    "keep": "Keep",
+    "confirm": "End relationship",
+    "pending": "Ending…",
+    "failed": "We couldn’t end the relationship. Nothing changed. Try again.",
+    "ended": "{name} no longer sees your profile.",
+    "unavailable": "This relationship is no longer available. Your coaches list is up to date."
+  }
+}

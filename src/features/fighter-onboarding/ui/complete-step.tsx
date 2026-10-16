@@ -6,7 +6,8 @@ import { useEffect, useRef } from "react";
 
 import type { FighterProfile } from "@/entities/fighter-profile";
 import { Link } from "@/shared/i18n/navigation";
-import { routeHref } from "@/shared/routes/routes";
+import { continuationQuery, type Continuation } from "@/shared/routes/continuation";
+import { routeHref, webGuards } from "@/shared/routes/routes";
 import { Button } from "@/shared/ui/button";
 
 import { basicsFrom, profileFrom } from "../model/form-values";
@@ -18,13 +19,22 @@ import { CompletedProfileCard } from "./profile-preview";
  * no email, coach, gym or session is claimed. "Go to my home" goes through
  * the application entry with the Fighter intent, so the backend resolver
  * (SF-45, SF-51) picks the destination: the Fighter home once onboarding is
- * complete, even for a Coach whose last chosen context is Coach.
+ * complete, even for a Coach whose last chosen context is Coach. The URL's
+ * continuation goes along (SF-45): a visitor sent here from a page (a coach
+ * invitation, SF-60) returns to it, and the action then says "Continue".
  */
-export function CompleteStep({ profile }: { profile: FighterProfile }) {
+export function CompleteStep({
+  profile,
+  continuation = {},
+}: {
+  profile: FighterProfile;
+  continuation?: Continuation;
+}) {
   const t = useTranslations("fighterOnboarding.done");
   const heading = useRef<HTMLHeadingElement>(null);
   const basics = basicsFrom(profile);
   const firstName = basics.display_name.trim().split(/\s+/)[0] ?? basics.display_name;
+  const query = continuationQuery({ ...continuation, intent: continuation.intent ?? "fighter" });
 
   // The step changed under the visitor's focus: move it to the new heading.
   useEffect(() => heading.current?.focus(), []);
@@ -44,7 +54,9 @@ export function CompleteStep({ profile }: { profile: FighterProfile }) {
       <p className="type-body-lg text-pretty text-muted-foreground">{t("lead")}</p>
       <CompletedProfileCard basics={basics} values={profileFrom(profile)} />
       <Button asChild size="xl" className="h-13 rounded-md-lg px-5.5 type-body">
-        <Link href={routeHref("web.app", {}, { intent: "fighter" })}>{t("home")}</Link>
+        <Link href={routeHref("web.app", {}, query)}>
+          {query[webGuards.returnToParam] === undefined ? t("home") : t("continue")}
+        </Link>
       </Button>
     </div>
   );

@@ -187,6 +187,7 @@
     "eyebrow": "Boxer-Registrierung · fertig",
     "title": "Du bist dabei, {name}.",
     "lead": "Dein Boxerprofil ist bereit. Du kannst alles später in deinem Profil ändern.",
-    "home": "Zu meiner Startseite"
+    "home": "Zu meiner Startseite",
+    "continue": "Weiter"
   }
 }

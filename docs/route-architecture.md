@@ -553,6 +553,21 @@ there is no fighter invitation inbox in the API, no verified app-link handoff
 for the one-time token and no approved legal text, so INV1 is `DEFERRED`
 (`D-MOBILE-FIGHTER-COACH-INVITATIONS`).
 
+**Fighter web coaches and invitation acceptance (SF-60).** `/invite/coach`
+(WFI1, Claude Design `1792151007-1d70`) is the page of the E08 link
+(`/invite/coach#token=…`). The one-time token lives only in the URL fragment:
+the page reads it in the browser, removes the fragment and keeps the token in
+this tab's `sessionStorage`, bound to the first signed-in viewer and dropped at
+any later session boundary or terminal outcome; it never enters a route, a
+query, `returnTo` or a log. The anonymous preview comes from
+`previewCoachInvitation`; sign-in, WA5 and Fighter onboarding continue back to
+the page through the ordinary token-free `returnTo=/invite/coach`; accepting
+needs an unticked, explicit consent to the backend's current disclosure
+version (`acceptCoachInvitation`), and declining is `declineCoachInvitation`.
+`/app/coaches` (WFC1), a Fighter sidebar item, lists the relationships from
+`listMyCoaches`, shows inline what each coach sees and ends one with
+`endMyCoachRelationship`; there is no detail route (SF-74).
+
 **Mobile Coach onboarding (SF-53).** `/onboarding/coach` follows the same
 rules on the same contracts: an authenticated session only, Coach intent as
 the ephemeral `intent=coach`, and `?step=` as navigation only. Its current
@@ -945,7 +960,7 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-PITCH-PAGE-AUTHORITY`             | RESOLVED | The Route Gallery is the IA source despite its reference-only page                                        |
 | `D-404-SCOPE`                        | RESOLVED | One web catch-all for every area                                                                          |
 | `D-CANVAS-GROWTH`                    | RESOLVED | Canvas grew from 456 (SF-16) to 473 artboards (`1791276973-ad1d`)                                         |
-| `D-WEB-COACH-FIGHTER-INVITE`         | DEFERRED | Coach web "Invite fighters" links the mobile INV1 artboard: design gap, no web route                      |
+| `D-WEB-COACH-FIGHTER-INVITE`         | RESOLVED | The E08 link opens WFI1 at `/invite/coach` (SF-60); the coach's composer is the WC7 dialog (SF-58)        |
 | `D-WEB-FIGHTER-ONBOARDING-FLOW`      | DEFERRED | Web Fighter onboarding: WF0, WF1, WF6 current; WF2–WF5 future; session-only access                        |
 | `D-ENTRY-RESOLUTION`                 | RESOLVED | Backend entry resolver; semantic destinations; WA5, WA6; ephemeral `intent`                               |
 | `D-ONBOARDING-ENTRY-CAPABILITY`      | RESOLVED | Onboarding entry routes need a session only, never the capability they create                             |
@@ -976,10 +991,9 @@ design discussion. A gap leaves the list only when Claude Design adds the
 Route Gallery rows; the registry then gains the route through §15. Status:
 `UNRESOLVED_DESIGN`.
 
-| Id                             | Platform | Missing designed surface                                                                                                                                                                                                     | Nav items waiting for it                |
-| ------------------------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| `GAP-SPONSOR-ANALYTICS-INDEX`  | web      | Sponsor analytics index, only if the product needs one (the nav links SPX7, one campaign)                                                                                                                                    | `web.sponsor#analytics`                 |
-| `GAP-WEB-COACH-FIGHTER-INVITE` | web      | Fighter acceptance of a coach invitation on web (the E08 review page); the coach's composer is built (SF-58), but WC7's "Invite fighters" still links the mobile `InviteCoach.dc.html` (INV1, `/invite/:code`) on the canvas | none: an in-page action, not a nav item |
+| Id                            | Platform | Missing designed surface                                                                  | Nav items waiting for it |
+| ----------------------------- | -------- | ----------------------------------------------------------------------------------------- | ------------------------ |
+| `GAP-SPONSOR-ANALYTICS-INDEX` | web      | Sponsor analytics index, only if the product needs one (the nav links SPX7, one campaign) | `web.sponsor#analytics`  |
 
 Design version `1791276973-ad1d` resolved the other nine gaps
 (`GAP-MOBILE-GYM-CLASSES`, `GAP-MOBILE-GYM-MEMBERS`, `GAP-WEB-COACH-FIGHTERS`,
@@ -989,16 +1003,9 @@ Route Gallery rows; they are routes now, and each affected discrepancy records
 it in `resolvedByDesign`. The sponsor analytics index was intentionally not
 designed: `/sponsor/analytics/:campaignId` stays the canonical analytics route.
 
-`GAP-WEB-COACH-FIGHTER-INVITE` records an in-page action, not a nav item: the
-"Invite fighters" action of `WebCoachFighters.dc.html` (WC7) links the mobile
-INV1 artboard. INV1 is where a recipient uses a coach, gym or friend invite;
-the coach's own web invitation is a different flow: SF-58 builds it as an
-in-page composer dialog on WC7 (Claude Design `1792056621-3707`), with no
-route. What remains is the recipient's side: no web surface exists to review
-and accept or decline a coach invitation, so no web invite route or screen
-exists and the action must not be treated as one (`source` records the
-artboard, the action and its canvas target). Owner: future Fighter
-acceptance work. It does not block SF-19.
+Design version `1792151007-1d70` (SF-60) resolved `GAP-WEB-COACH-FIGHTER-INVITE`
+with WFI1, the web page of the E08 link (`/invite/coach`, `web.invite.coach`);
+`D-WEB-COACH-FIGHTER-INVITE` records it in `resolvedByDesign`.
 The sponsor Challenges and Events items link `SponsorCampaigns.dc.html` on the
 canvas and open the query states `/sponsor/campaigns?type=challenge` and
 `?type=event` in production; they are not routes.

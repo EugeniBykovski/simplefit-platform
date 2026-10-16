@@ -481,33 +481,26 @@ describe("approved SF-31 decisions", () => {
     );
   });
 
-  it("keep exactly the two unresolved design gaps", () => {
-    expect([...gapIds].sort()).toEqual([
-      "GAP-SPONSOR-ANALYTICS-INDEX",
-      "GAP-WEB-COACH-FIGHTER-INVITE",
-    ]);
+  it("keep exactly the one unresolved design gap", () => {
+    expect([...gapIds].sort()).toEqual(["GAP-SPONSOR-ANALYTICS-INDEX"]);
   });
 
-  it("never treat the coach web invite action as a web route", () => {
-    const gap = designGaps.find(({ id }) => id === "GAP-WEB-COACH-FIGHTER-INVITE");
-    expect(gap).toMatchObject({
-      candidatePath: null,
-      source: {
-        artboard: "WebCoachFighters.dc.html",
-        route: "web.app.coach.fighters",
-        canvasTarget: { artboard: "InviteCoach.dc.html", screen: "INV1", platform: "mobile" },
-      },
-    });
-    const webRoutes = routes.filter((r) => r.platform === "web");
-    expect(webRoutes.filter((r) => /(^|\/)invite(s)?(\/|$)/.test(r.path)).map((r) => r.id)).toEqual(
-      [],
+  it("open the coach invitation link on its own web page, never the mobile INV1 artboard (SF-60)", () => {
+    const invite = routes.filter(
+      (r) => r.platform === "web" && /(^|\/)invite(s)?(\/|$)/.test(r.path),
     );
+    expect(invite.map((r) => [r.id, r.path, r.access.session])).toEqual([
+      ["web.invite.coach", "/invite/coach", "PUBLIC"],
+    ]);
+    expect(invite[0]?.params).toEqual([]);
     const webInviteScreens = screens.filter(
       (screen) =>
         screen.design.artboard === "InviteCoach.dc.html" &&
         routeById.get(screen.route)?.platform === "web",
     );
     expect(webInviteScreens.map((screen) => screen.id)).toEqual([]);
+    const resolved = discrepancies.find((entry) => entry.id === "D-WEB-COACH-FIGHTER-INVITE");
+    expect(resolved?.status).toBe("RESOLVED");
   });
 
   it("leave the sponsor analytics index as an unresolved design gap", () => {
