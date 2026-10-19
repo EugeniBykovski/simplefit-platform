@@ -145,6 +145,7 @@ export * from './myCoachRelationshipCoach';
 export * from './myCoachRelationshipDisclosedFieldsItem';
 export * from './myCoachRelationshipEndedBy';
 export * from './myCoachRelationshipList';
+export * from './myCoachRelationshipResponse';
 export * from './myCoachRelationshipStatus';
 export * from './notAcceptableResponse';
 export * from './notFoundResponse';

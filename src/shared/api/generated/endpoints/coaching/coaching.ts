@@ -43,6 +43,7 @@ import type {
   ListMyCoachesParams,
   ListMyIncomingCoachInvitationsParams,
   MyCoachRelationshipList,
+  MyCoachRelationshipResponse,
   NotFoundResponse,
   ServiceUnavailableResponse,
   UnauthorizedResponse,
@@ -2004,6 +2005,110 @@ export function useListMyCoaches<TData = Awaited<ReturnType<typeof listMyCoaches
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getListMyCoachesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetMyCoachRelationshipUrl = (relationshipId: string,) => {
+
+
+
+
+  return `/api/v1/me/coaches/${relationshipId}`
+}
+
+/**
+ * One of the viewer's relationships as fighter, active or ended, exactly as `listMyCoaches` shows it: the
+ * coach's public identity and the disclosed fields while `active`; the coach's name at the end, the dates and who
+ * ended it once `ended`. Someone else's relationship, an unknown or malformed id and a viewer without a completed
+ * fighter profile all answer `404 not_found`. Available whatever the Coach–Fighter sharing gate says.
+ * @summary One of my coaches
+ */
+export const getMyCoachRelationship = async (relationshipId: string, options?: Parameters<typeof apiFetch>[1]): Promise<MyCoachRelationshipResponse> => {
+
+  return apiFetch<MyCoachRelationshipResponse>(getGetMyCoachRelationshipUrl(relationshipId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMyCoachRelationshipQueryKey = (relationshipId: string,) => {
+    return [
+    `/api/v1/me/coaches/${relationshipId}`
+    ] as const;
+    }
+
+
+export const getGetMyCoachRelationshipQueryOptions = <TData = Awaited<ReturnType<typeof getMyCoachRelationship>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(relationshipId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachRelationship>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMyCoachRelationshipQueryKey(relationshipId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyCoachRelationship>>> = ({ signal }) => getMyCoachRelationship(relationshipId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: relationshipId !== null && relationshipId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMyCoachRelationship>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetMyCoachRelationshipQueryResult = NonNullable<Awaited<ReturnType<typeof getMyCoachRelationship>>>
+export type GetMyCoachRelationshipQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetMyCoachRelationship<TData = Awaited<ReturnType<typeof getMyCoachRelationship>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ relationshipId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachRelationship>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMyCoachRelationship>>,
+          TError,
+          Awaited<ReturnType<typeof getMyCoachRelationship>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMyCoachRelationship<TData = Awaited<ReturnType<typeof getMyCoachRelationship>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ relationshipId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachRelationship>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMyCoachRelationship>>,
+          TError,
+          Awaited<ReturnType<typeof getMyCoachRelationship>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMyCoachRelationship<TData = Awaited<ReturnType<typeof getMyCoachRelationship>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ relationshipId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachRelationship>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One of my coaches
+ */
+
+export function useGetMyCoachRelationship<TData = Awaited<ReturnType<typeof getMyCoachRelationship>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ relationshipId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachRelationship>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetMyCoachRelationshipQueryOptions(relationshipId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
