@@ -40,6 +40,8 @@ for (const [id, text] of [
   [`${ID}invite-invalid`, "Enter a valid email address."],
   [`${ID}invite-limited`, "Try again in 10 minutes."],
   [`${ID}invite-blocked`, "Inviting isn’t available yet"],
+  [`${ID}invite-rules`, "STORYBOOK FIXTURE: I will follow the rules (storybook-rules)."],
+  [`${ID}invite-rules-language`, "Approved languages: English, Polski."],
   [`${ID}cancel-invitation`, "Cancel this invitation?"],
   [`${ID}fighter`, "What Alex K. shares with you"],
   [`${ID}fighter-partly-shared`, "Not shared"],

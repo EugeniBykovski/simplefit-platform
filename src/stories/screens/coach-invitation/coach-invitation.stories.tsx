@@ -50,6 +50,23 @@ const PREVIEW = {
       "other_coaches",
     ],
   },
+  // The backend's approved text (SF-72): a Storybook fixture, never legal copy.
+  document: {
+    document_id: "fighter-coach-disclosure",
+    version: "storybook-disclosure",
+    status: "published",
+    effective_at: "2026-01-01T00:00:00Z",
+    published_at: "2026-01-01T00:00:00Z",
+    requested_language: "en",
+    language: "en",
+    available_languages: ["en", "pl"],
+    content_sha256: "c".repeat(64),
+    title: "Storybook fixture disclosure",
+    summary:
+      "STORYBOOK FIXTURE, not a legal text. If you accept, {coach} sees the seven profile items listed above.",
+    checkbox: "STORYBOOK FIXTURE: I agree that {coach} sees the information listed above.",
+    full: "# Storybook fixture disclosure\n\nSTORYBOOK FIXTURE, not a legal text.\n\n## What the coach sees\n\n- The seven items listed above\n- Nothing else",
+  } as Record<string, unknown> | null,
 };
 const entry = (fighter: "completed" | "in_progress") =>
   ok({
@@ -262,3 +279,44 @@ export const NoLink = story({
   },
 });
 NoLink.name = "WFI1 · no invitation in this tab";
+
+export const LanguageUnavailable = story({
+  preview: ok({
+    ...PREVIEW,
+    document: {
+      ...PREVIEW.document,
+      language: null,
+      title: null,
+      summary: null,
+      checkbox: null,
+      full: null,
+      content_sha256: null,
+      available_languages: ["pl"],
+    },
+  }),
+  play: async ({ canvasElement }) => {
+    await within(canvasElement).findByText(/isn’t available in your language yet/, {}, T);
+  },
+});
+LanguageUnavailable.name = "WFI1 · disclosure not in the page language";
+
+export const TooYoung = story({
+  accept: {
+    status: 422,
+    body: {
+      error: {
+        code: "validation_error",
+        message: "storybook",
+        details: { fields: { coaching_age: ["x"] }, field_codes: { coaching_age: ["too_young"] } },
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    await review(canvasElement);
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("checkbox"));
+    await userEvent.click(canvas.getByRole("button", { name: "Accept invitation" }));
+    await canvas.findByText(/aged 18 and over/, {}, T);
+  },
+});
+TooYoung.name = "WFI1 · under 18";

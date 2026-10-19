@@ -481,8 +481,9 @@ describe("approved SF-31 decisions", () => {
     );
   });
 
-  it("keep exactly the one unresolved design gap", () => {
-    expect([...gapIds].sort()).toEqual(["GAP-SPONSOR-ANALYTICS-INDEX"]);
+  it("keep exactly the recorded unresolved design gaps", () => {
+    // SF-72: the public legal pages wait for Claude Design (D-WEB-LEGAL-DOCUMENT-PAGES).
+    expect([...gapIds].sort()).toEqual(["GAP-SPONSOR-ANALYTICS-INDEX", "GAP-WEB-LEGAL-DOCUMENTS"]);
   });
 
   it("open the coach invitation link on its own web page, never the mobile INV1 artboard (SF-60)", () => {

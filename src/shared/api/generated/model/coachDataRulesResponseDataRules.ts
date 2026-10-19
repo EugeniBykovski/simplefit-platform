@@ -4,6 +4,7 @@
  * Regenerate with `pnpm api:generate`; verify with `pnpm api:check`.
  * SimpleFit API 0.1.0
  */
+import type { LegalDocumentRef } from './legalDocumentRef';
 
 export type CoachDataRulesResponseDataRules = {
   /**
@@ -11,6 +12,13 @@ export type CoachDataRulesResponseDataRules = {
      * @nullable
      */
   acknowledged_at: string | null;
+  /**
+     * The current data-rules text in the requested `language` (`null` while no version is published).
+     * Acknowledge with its `version` and `language`; no `language` (no approved variant in the requested
+     * language): acknowledging is not possible yet.
+     * @nullable
+     */
+  document: LegalDocumentRef | null;
   /**
      * The coach data-rules version to acknowledge before inviting; `null` while none is configured.
      * @nullable

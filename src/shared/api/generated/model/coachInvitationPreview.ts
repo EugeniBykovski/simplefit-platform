@@ -6,6 +6,7 @@
  */
 import type { CoachInvitationPreviewDisclosure } from './coachInvitationPreviewDisclosure';
 import type { CoachInvitationPreviewInvitation } from './coachInvitationPreviewInvitation';
+import type { LegalDocumentRef } from './legalDocumentRef';
 
 /**
  * The inviting coach's public identity, their note, the expiry and the disclosure the recipient would
@@ -13,5 +14,11 @@ import type { CoachInvitationPreviewInvitation } from './coachInvitationPreviewI
  */
 export interface CoachInvitationPreview {
   disclosure: CoachInvitationPreviewDisclosure;
+  /**
+     * The current disclosure's approved text in the requested `language` (metadata only when that language has
+     * no approved variant: then the fighter cannot accept in it). `null` while no disclosure is published.
+     * @nullable
+     */
+  document: LegalDocumentRef | null;
   invitation: CoachInvitationPreviewInvitation;
 }

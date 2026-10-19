@@ -112,7 +112,19 @@
       "body": "Para invitar boxeadores se necesitan las reglas de datos para entrenadores, que aún no se han publicado. Podrás invitar en cuanto lo estén.",
       "close": "Cerrar"
     },
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "rules": {
+      "title": "Reglas de datos para entrenadores",
+      "version": "Versión {version}",
+      "readFull": "Leer las reglas completas",
+      "hideFull": "Ocultar las reglas completas",
+      "acknowledge": "Confirmar",
+      "acknowledging": "Guardando…",
+      "later": "Ahora no",
+      "stale": "Las reglas cambiaron. Revisa la versión actual y confírmala de nuevo.",
+      "failed": "No pudimos guardarlo. No cambió nada. Inténtalo de nuevo.",
+      "language": "Las reglas de datos para entrenadores aún no están disponibles en tu idioma. Idiomas aprobados: {languages}. Cambia el idioma de la página para leerlas y confirmarlas."
+    }
   },
   "cancelInvitation": {
     "title": "¿Cancelar esta invitación?",

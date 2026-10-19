@@ -112,7 +112,19 @@
       "body": "Zum Einladen von Kämpfern braucht es die Coach-Datenregeln, die noch nicht veröffentlicht sind. Sobald sie es sind, kannst du einladen.",
       "close": "Schließen"
     },
-    "close": "Schließen"
+    "close": "Schließen",
+    "rules": {
+      "title": "Datenregeln für Coaches",
+      "version": "Version {version}",
+      "readFull": "Vollständige Regeln lesen",
+      "hideFull": "Vollständige Regeln ausblenden",
+      "acknowledge": "Bestätigen",
+      "acknowledging": "Wird gespeichert…",
+      "later": "Nicht jetzt",
+      "stale": "Die Datenregeln haben sich geändert. Lies die aktuelle Version und bestätige sie erneut.",
+      "failed": "Das konnten wir nicht speichern. Nichts wurde geändert. Versuch es noch einmal.",
+      "language": "Die Datenregeln für Coaches sind in deiner Sprache noch nicht verfügbar. Freigegebene Sprachen: {languages}. Wechsle die Sprache der Seite, um sie zu lesen und zu bestätigen."
+    }
   },
   "cancelInvitation": {
     "title": "Diese Einladung zurückziehen?",

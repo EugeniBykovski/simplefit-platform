@@ -1,6 +1,7 @@
 "use client";
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useLocale } from "next-intl";
 
 import { callWithSession } from "@/entities/session";
 import {
@@ -52,14 +53,17 @@ export function useCoachInvitations({ enabled = true }: { enabled?: boolean } = 
 }
 
 /**
- * The coach data-rules version and the coach's acknowledgement (SF-57).
- * Inviting needs a configured version that the coach acknowledged.
+ * The coach data-rules version, the coach's acknowledgement (SF-57) and the
+ * approved text in the page language (`document`, SF-72: no text when that
+ * language has no approved variant, never another language instead).
+ * Inviting needs a published version that the coach acknowledged.
  */
 export function useCoachDataRules({ enabled = true }: { enabled?: boolean } = {}) {
+  const language = useLocale();
   return useQuery({
-    queryKey: coachDataRulesKey,
+    queryKey: getGetMyCoachDataRulesQueryKey({ language }),
     queryFn: ({ signal }) =>
-      callWithSession((init) => getMyCoachDataRules({ ...init, signal })).then(
+      callWithSession((init) => getMyCoachDataRules({ language }, { ...init, signal })).then(
         (response) => response.data_rules,
       ),
     enabled,

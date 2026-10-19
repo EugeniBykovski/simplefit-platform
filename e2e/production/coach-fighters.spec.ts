@@ -100,15 +100,33 @@ const INVITATIONS = [
   },
 ];
 
-type Options = { sharing?: boolean; rules?: boolean; empty?: boolean };
+type Options = { sharing?: boolean; rules?: boolean; pendingRules?: boolean; empty?: boolean };
+
+// The backend's approved text (SF-72): an E2E fixture, never legal copy.
+const RULES_DOCUMENT = {
+  document_id: "coach-data-rules",
+  version: "e2e-rules",
+  status: "published",
+  effective_at: "2026-01-01T00:00:00Z",
+  published_at: "2026-01-01T00:00:00Z",
+  requested_language: "en",
+  language: "en",
+  available_languages: ["en"],
+  content_sha256: "e".repeat(64),
+  title: "E2E fixture rules",
+  summary: "E2E FIXTURE, not a legal text. Coaching purposes only.",
+  checkbox: "E2E FIXTURE: I will follow the rules ({version}).",
+  full: "# E2E fixture rules\n\nE2E FIXTURE, not a legal text.\n\n- Coaching purposes only",
+};
 
 /** The SF-56 / SF-57 coach endpoints; every request is recorded. */
 async function coachingApi(
   page: Page,
-  { sharing = true, rules = false, empty = false }: Options = {},
+  { sharing = true, rules = false, pendingRules = false, empty = false }: Options = {},
 ) {
   const requests: string[] = [];
   let ended = false;
+  let acknowledged = false;
   await page.route(
     (url) =>
       url.port !== "3100" &&
@@ -127,11 +145,17 @@ async function coachingApi(
         json(404, { error: { code: "not_found", message: "", details: {}, request_id: null } });
       const path = url.pathname.replace("/api/v1/me/coach/", "");
 
-      if (path === "data-rules") {
+      if (path === "data-rules/acknowledge") acknowledged = true;
+      if (path === "data-rules" || path === "data-rules/acknowledge") {
+        const published = rules || pendingRules;
         return json(200, {
-          data_rules: rules
-            ? { document_version: "e2e-rules", acknowledged_at: "2026-10-01T10:00:00Z" }
-            : { document_version: null, acknowledged_at: null },
+          data_rules: published
+            ? {
+                document_version: "e2e-rules",
+                acknowledged_at: rules || acknowledged ? "2026-10-01T10:00:00Z" : null,
+                document: RULES_DOCUMENT,
+              }
+            : { document_version: null, acknowledged_at: null, document: null },
         });
       }
       if (!sharing) return notFound();
@@ -260,6 +284,45 @@ test.describe("WC7 at the artboard size (1440 × 900)", () => {
     expect(area.y + area.height).toBeLessThanOrEqual(900);
     expect(await dialogViolations(page)).toEqual([]);
   });
+});
+
+test.describe("WC7 coach data rules (SF-72)", () => {
+  for (const { width, height } of [
+    { width: 1440, height: 900 },
+    { width: 390, height: 844 },
+  ]) {
+    test(`${width} px: read and acknowledge the approved rules with the keyboard, then invite`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height });
+      const requests = await openRoster(page, { pendingRules: true });
+      await page.getByRole("button", { name: "Invite fighter" }).click();
+      const dialog = page.getByRole("dialog", { name: "Coach data rules" });
+      await expect(
+        dialog.getByText("E2E FIXTURE, not a legal text. Coaching purposes only."),
+      ).toBeVisible();
+      await dialog.getByRole("button", { name: "Read the full rules" }).press("Enter");
+      await expect(dialog.getByRole("heading", { name: "E2E fixture rules" })).toBeVisible();
+      const consent = dialog.getByRole("checkbox", {
+        name: /I will follow the rules \(e2e-rules\)/,
+      });
+      await expect(consent).not.toBeChecked();
+      await expect(dialog.getByRole("button", { name: "Acknowledge" })).toBeDisabled();
+      await consent.focus();
+      await page.keyboard.press("Space");
+      await expect(consent).toBeChecked();
+      expect(await dialogViolations(page)).toEqual([]);
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth - window.innerWidth,
+      );
+      expect(overflow).toBeLessThanOrEqual(0);
+      await page.screenshot({ path: `test-results/sf72-wc7-rules-${width}.png` });
+      await dialog.getByRole("button", { name: "Acknowledge" }).press("Enter");
+      await expect(page.getByRole("dialog", { name: "Invite a fighter" })).toBeVisible();
+      expect(requests).toContain("GET /api/v1/me/coach/data-rules?language=en");
+      expect(requests).toContain("POST /api/v1/me/coach/data-rules/acknowledge");
+    });
+  }
 });
 
 test.describe("WC4 one fighter", () => {

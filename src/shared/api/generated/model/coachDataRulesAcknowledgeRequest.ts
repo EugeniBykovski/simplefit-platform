@@ -4,8 +4,11 @@
  * Regenerate with `pnpm api:generate`; verify with `pnpm api:check`.
  * SimpleFit API 0.1.0
  */
+import type { CoachDataRulesAcknowledgeRequestDocumentLanguage } from './coachDataRulesAcknowledgeRequestDocumentLanguage';
 
 export interface CoachDataRulesAcknowledgeRequest {
+  /** The `document.language` of the text the coach was shown (an approved variant). */
+  document_language: CoachDataRulesAcknowledgeRequestDocumentLanguage;
   /**
      * The version from `getMyCoachDataRules` that the coach was shown.
      * @minLength 1

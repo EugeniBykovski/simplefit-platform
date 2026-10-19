@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckIcon, MinusIcon } from "lucide-react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState } from "react";
 
 import {
@@ -17,11 +17,14 @@ import {
   type ResponseProblem,
 } from "@/features/coach-invitation-response";
 import { useEntry } from "@/features/session-gate";
+import { localeName, matchLocale } from "@/shared/i18n/routing";
 import { Link } from "@/shared/i18n/navigation";
+import { fillLegalPlaceholders } from "@/shared/lib/legal-text";
 import { withContinuation } from "@/shared/routes/continuation";
 import { routeHref, webGuards } from "@/shared/routes/routes";
 import { Button } from "@/shared/ui/button";
 import { Checkbox } from "@/shared/ui/checkbox";
+import { LegalText } from "@/shared/ui/legal-text";
 import { Notice } from "@/shared/ui/notice";
 import { Skeleton } from "@/shared/ui/skeleton";
 import { Spinner } from "@/shared/ui/spinner";
@@ -42,6 +45,12 @@ import { Spinner } from "@/shared/ui/spinner";
  *   the backend serves; nothing is ever accepted on the way through sign-in
  *   or onboarding, and nothing is shown as accepted or declined before the
  *   backend answers.
+ * - The disclosure text, its summary and the confirmation next to the box
+ *   are the backend's approved text in the page language (SF-72); the page
+ *   writes no legal text. Without an approved text in the page language the
+ *   fighter cannot accept here (never another language instead); declining
+ *   always works. Coach–Fighter connections need the fighter to be 18+: the
+ *   backend decides and the page only reports it.
  */
 
 const RETURN_TO = "/invite/coach";
@@ -173,7 +182,8 @@ function Invitation({
   onOutcome: (outcome: Outcome) => void;
 }) {
   const t = useTranslations("coachInvitation");
-  const preview = useInvitationPreview(token);
+  const locale = useLocale();
+  const preview = useInvitationPreview(token, locale);
 
   useEffect(() => {
     if (preview.isError && responseProblem(preview.error) === "unavailable") {
@@ -229,7 +239,9 @@ function Summary({ preview }: { preview: InvitationPreview }) {
   const format = useFormatter();
   const name = coachOf(preview, t("fallbackName"));
   const brand = preview.invitation.coach.display_name ? preview.invitation.coach.brand_name : null;
-  const ids = { sees: useId(), never: useId() };
+  const ids = { sees: useId(), never: useId(), full: useId() };
+  const [full, setFull] = useState(false);
+  const document = preview.document;
 
   return (
     <>
@@ -286,6 +298,27 @@ function Summary({ preview }: { preview: InvitationPreview }) {
           </ul>
         </section>
       </div>
+      {document?.summary != null && (
+        <div className="flex flex-col gap-3 rounded-3xl border bg-surface px-5 py-4">
+          <LegalText text={fillLegalPlaceholders(document.summary, { coach: name })} />
+          {document.full !== null && (
+            <>
+              <Button
+                variant="quiet"
+                className="self-start"
+                aria-expanded={full}
+                aria-controls={ids.full}
+                onClick={() => setFull((open) => !open)}
+              >
+                {full ? t("hideFull") : t("readFull")}
+              </Button>
+              <div id={ids.full} hidden={!full} className="border-t pt-3">
+                <LegalText text={fillLegalPlaceholders(document.full, { coach: name })} />
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </>
   );
 }
@@ -326,6 +359,9 @@ function Respond({
   const consent = useId();
   const name = coachOf(preview, t("fallbackName"));
   const pending = accept.isPending || decline.isPending;
+  const document = preview.document;
+  const presented = document?.language ?? null;
+  const checkbox = document?.checkbox ?? null;
 
   if (entry.isError) {
     return (
@@ -348,7 +384,7 @@ function Respond({
   const fail = (error: unknown) => {
     const next = responseProblem(error);
     if (next === "unavailable") return onOutcome({ kind: "unavailable" });
-    if (next === "stale") {
+    if (next === "stale" || next === "language") {
       setAgreed(false);
       void onStale();
     }
@@ -381,46 +417,78 @@ function Respond({
     );
   }
 
+  // No approved text to accept in this language (or none published): the
+  // fighter can still decline.
+  const blocked = document === null || presented === null || checkbox === null;
+  const languages = (document?.available_languages ?? [])
+    .map((code) => {
+      const known = matchLocale(code);
+      return known ? localeName(known) : code;
+    })
+    .join(", ");
+
   return (
     <div className="flex flex-col gap-3.5">
       {problem !== null && (
         <Notice tone={problem === "failed" ? "coral" : "amber"} role="alert">
-          <strong>{t(`problems.${problem}.title`)}</strong> {t(`problems.${problem}.body`)}
+          <strong>{t(`problems.${problem}.title`)}</strong>{" "}
+          {t(`problems.${problem}.body`, { languages })}
         </Notice>
       )}
-      <label
-        htmlFor={consent}
-        className="flex items-start gap-3 rounded-2xl border px-4 py-3.5 type-body-sm"
-      >
-        <Checkbox
-          id={consent}
-          className="mt-0.5"
-          checked={agreed}
-          disabled={pending}
-          onCheckedChange={(value) => setAgreed(value === true)}
-        />
-        <span className="flex flex-col gap-1">
-          <span>{t("consent", { name })}</span>
-          <span className="type-caption text-faint-foreground">
-            {t("version", { version: preview.disclosure.version })}
+      {blocked && problem === null && (
+        <Notice tone="amber" role="status">
+          <strong>
+            {t(document === null ? "problems.document.title" : "problems.language.title")}
+          </strong>{" "}
+          {t(document === null ? "problems.document.body" : "problems.language.body", {
+            languages,
+          })}
+        </Notice>
+      )}
+      {!blocked && (
+        <label
+          htmlFor={consent}
+          className="flex items-start gap-3 rounded-2xl border px-4 py-3.5 type-body-sm"
+        >
+          <Checkbox
+            id={consent}
+            className="mt-0.5"
+            checked={agreed}
+            disabled={pending}
+            onCheckedChange={(value) => setAgreed(value === true)}
+          />
+          <span className="flex flex-col gap-1">
+            <span>
+              {fillLegalPlaceholders(checkbox, {
+                coach: name,
+                version: preview.disclosure.version,
+              })}
+            </span>
+            <span className="type-caption text-faint-foreground">
+              {t("version", { version: preview.disclosure.version })}
+            </span>
           </span>
-        </span>
-      </label>
+        </label>
+      )}
       <div className="flex flex-wrap gap-2.5">
         <Button
           aria-busy={accept.isPending}
-          disabled={!agreed || pending}
+          disabled={!agreed || pending || blocked || problem === "tooYoung"}
           onClick={() => {
+            if (presented === null) return;
             setProblem(null);
-            accept.mutate(preview.disclosure.version, {
-              onSuccess: (response) =>
-                onOutcome({
-                  kind: "accepted",
-                  existing: response.outcome === "already_connected",
-                  coach: name,
-                }),
-              onError: fail,
-            });
+            accept.mutate(
+              { version: preview.disclosure.version, language: presented },
+              {
+                onSuccess: (response) =>
+                  onOutcome({
+                    kind: "accepted",
+                    existing: response.outcome === "already_connected",
+                    coach: name,
+                  }),
+                onError: fail,
+              },
+            );
           }}
         >
           {accept.isPending && <Spinner />}
