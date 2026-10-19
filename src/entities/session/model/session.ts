@@ -15,12 +15,18 @@ import { openTabChannel, withTabLock, type TabChannel } from "@/shared/lib/cross
  * - The refresh token is an `HttpOnly` cookie set by the API
  *   (`Path=/api/auth`). Scripts never see it; requests that use it send
  *   `credentials: "include"` and the `x-simplefit-csrf: 1` header.
- * - Refresh tokens are single use with no grace period: a second use revokes
- *   the session. Refreshes are therefore serialized across every tab of the
- *   origin with a Web Lock, and a tab that waited for the lock first checks
- *   whether another tab already refreshed (ADR 0010: "the web app
- *   coordinates across tabs"). Without Web Locks only in-tab coalescing
- *   applies.
+ * - Refresh tokens are single use: presenting one again after its successor
+ *   was used revokes the session. Refreshes are therefore serialized across
+ *   every tab of the origin with a Web Lock, and a tab that waited for the
+ *   lock first checks whether another tab already refreshed (ADR 0010: "the
+ *   web app coordinates across tabs"). Without Web Locks only in-tab
+ *   coalescing applies.
+ * - A page unloaded mid-refresh loses the answer and its new cookie (the lock
+ *   dies with the page; the next page cannot learn the new token). The API
+ *   recovers that lost response when the next page presents the old cookie
+ *   (ADR 0010, "Lost-response recovery", SF-75). The refresh request must
+ *   therefore never outlive its page (no `keepalive`): a late answer could
+ *   overwrite the newer cookie with a superseded one.
  * - Tabs broadcast new credentials and sign-out, so all tabs share one
  *   session state.
  * - A session is `authenticated` once `GET /api/me` resolved the viewer. A

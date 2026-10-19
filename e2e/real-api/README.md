@@ -13,10 +13,15 @@ WCR7) → the Coach context choice → the Coach dashboard (SF-54) → Fighter
 setup from the context switcher → switch back to Coach → sign out → email
 sign-in → Coach home (the remembered choice).
 
-`session-navigation-race.spec.ts` reproduces an open **release blocker**: a
-full page load during an in-flight session restore revokes the session
-(`docs/investigations/session-refresh-navigation-race.md`). It is marked as
-an expected failure in Chromium and WebKit until the fix lands.
+`session-navigation-race.spec.ts` (SF-75) loses a real refresh response: a
+local proxy (`lost-response.ts`) holds the API's answer, after the rotation
+committed, until the page has navigated away, so the browser never applies
+the new cookie. The session must survive through the API's lost-response
+recovery, and the spec asserts that the recovery really happened. It also
+covers rapid reloads, Back/Forward, two tabs, a sign-out during a lost
+refresh followed by another user, a network failure during the restore, and
+a replay of a copied cookie from an independent client
+(`docs/investigations/session-refresh-navigation-race.md`).
 
 This is a **local acceptance gate, not part of CI**. It needs an API on a
 **disposable** database. Never point it at `simple_fit_dev`: the spec refuses
