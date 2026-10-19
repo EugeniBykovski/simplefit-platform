@@ -16258,6 +16258,20 @@
       "navItems": ["web.sponsor#analytics"],
       "discrepancy": "D-SPONSOR-NAV",
       "note": "Not a route. Enters the registry only after Claude Design adds Route Gallery rows."
+    },
+    {
+      "id": "GAP-WEB-LEGAL-DOCUMENTS",
+      "platform": "web",
+      "status": "UNRESOLVED_DESIGN",
+      "description": "Public legal document pages, current and archived versions (SF-71 L-12; SF-72): /[locale]/legal/:documentId and /[locale]/legal/:documentId/:version, rendering getLegalDocument / getLegalDocumentVersion",
+      "candidatePath": "/legal/:documentId",
+      "navItems": [],
+      "source": {
+        "route": "web.invite.coach",
+        "action": "Link to the full approved disclosure; today the full text is shown in place"
+      },
+      "discrepancy": "D-WEB-LEGAL-DOCUMENT-PAGES",
+      "note": "Not a route. The backend endpoints exist (SF-72); the pages enter the registry after Claude Design adds Route Gallery rows. No document is published yet, so the pages could only show not-found."
     }
   ],
   "discrepancies": [
@@ -16896,6 +16910,18 @@
       "status": "DEFERRED",
       "routes": ["mobile.invite._code", "mobile.profile.coaches"],
       "screens": ["INV1"]
+    },
+    {
+      "id": "D-WEB-LEGAL-DOCUMENT-PAGES",
+      "title": "Public legal document pages without a Claude Design artboard",
+      "sourceA": "SF-71 L-12 (product-approved public, versioned legal URLs) and the SF-72 brief",
+      "sourceB": "Route Gallery 1-3 (no legal document page row)",
+      "mismatch": "The approved routes /[locale]/legal/:documentId[/:version] have no artboard, and every product route needs a screen.",
+      "impact": "The public pages are not built; the coach and fighter flows show the approved text in place (full text on demand).",
+      "resolution": "Design gap GAP-WEB-LEGAL-DOCUMENTS until Claude Design adds the pages (authorization required); the backend endpoints are ready.",
+      "status": "NEEDS_PRODUCT_DECISION",
+      "routes": ["web.invite.coach", "web.app.coach.fighters"],
+      "designGaps": ["GAP-WEB-LEGAL-DOCUMENTS"]
     }
   ]
 }

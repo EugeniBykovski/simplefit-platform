@@ -33,7 +33,6 @@
     "signIn": "Zaloguj się, aby odpowiedzieć",
     "signUp": "Utwórz konto"
   },
-  "consent": "Zgadzam się, aby {name} widział powyższe dane.",
   "version": "Ujawnienie {version}",
   "accept": "Przyjmij zaproszenie",
   "accepting": "Przyjmowanie…",
@@ -71,6 +70,18 @@
     "unavailable": {
       "title": "To zaproszenie jest niedostępne.",
       "body": "Poproś trenera o wysłanie nowego."
+    },
+    "tooYoung": {
+      "title": "Połączenia z trenerami są dla zawodników, którzy ukończyli 18 lat.",
+      "body": "Nie możesz przyjąć tego zaproszenia. Nic nie zostało udostępnione, a trener nie dowie się dlaczego."
+    },
+    "language": {
+      "title": "Ta informacja nie jest jeszcze dostępna w Twoim języku.",
+      "body": "Zatwierdzone języki: {languages}. Zmień język strony, aby ją przeczytać i zdecydować. Nadal możesz odrzucić zaproszenie."
+    },
+    "document": {
+      "title": "Przyjęcie nie jest jeszcze dostępne.",
+      "body": "Informacja o połączeniach z trenerami nie została jeszcze opublikowana. Nadal możesz odrzucić zaproszenie."
     }
   },
   "missing": {
@@ -99,5 +110,7 @@
       "body": "Mogło wygasnąć, zostać rozpatrzone lub anulowane albo link nie jest już aktualny. Poproś trenera o wysłanie nowego.",
       "action": "Przejdź do SimpleFit"
     }
-  }
+  },
+  "readFull": "Przeczytaj pełną informację",
+  "hideFull": "Ukryj pełną informację"
 }

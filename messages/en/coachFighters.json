@@ -112,7 +112,19 @@
       "body": "Inviting fighters needs the coach data rules, which aren’t published yet. You’ll be able to invite as soon as they are.",
       "close": "Close"
     },
-    "close": "Close"
+    "close": "Close",
+    "rules": {
+      "title": "Coach data rules",
+      "version": "Version {version}",
+      "readFull": "Read the full rules",
+      "hideFull": "Hide the full rules",
+      "acknowledge": "Acknowledge",
+      "acknowledging": "Saving…",
+      "later": "Not now",
+      "stale": "The coach data rules changed. Review the current version and acknowledge again.",
+      "failed": "We couldn’t save that. Nothing changed. Try again.",
+      "language": "The coach data rules aren’t available in your language yet. Approved languages: {languages}. Switch the page language to read and acknowledge them."
+    }
   },
   "cancelInvitation": {
     "title": "Cancel this invitation?",

@@ -8,6 +8,7 @@ import {
   previewCoachInvitation,
 } from "@/shared/api/generated/endpoints/coaching/coaching";
 import type {
+  CoachInvitationAcceptRequestDocumentLanguage,
   CoachInvitationAcceptResponse,
   CoachInvitationPreview,
 } from "@/shared/api/generated/model";
@@ -18,9 +19,11 @@ import { isApiError } from "@/shared/api/http/api-error";
  * backend owns every rule: whether the token is current, who may answer
  * (a verified email identity of the invited address), the prerequisites
  * (account registration, a completed fighter profile), the disclosure
- * version and the relationship it activates in one transaction. This client
- * only previews, submits the fighter's explicit choice and reports the
- * answer. The token travels only in request bodies.
+ * version and its language, the fighter's age (18+, SF-72) and the
+ * relationship it activates in one transaction. This client only previews
+ * (asking for the disclosure text in the page language), submits the
+ * fighter's explicit choice with the exact version and language shown, and
+ * reports the answer. The token travels only in request bodies.
  */
 export type InvitationPreview = CoachInvitationPreview;
 
@@ -31,29 +34,33 @@ export type InvitationPreview = CoachInvitationPreview;
  * page never reveals more than the API does.
  */
 export type ResponseProblem =
-  "unavailable" | "mismatch" | "profile" | "stale" | "limited" | "failed";
+  "unavailable" | "mismatch" | "profile" | "tooYoung" | "stale" | "language" | "limited" | "failed";
 
 export function responseProblem(error: unknown): ResponseProblem {
   if (!isApiError(error)) return "failed";
   if (error.status === 404 || error.status === 410) return "unavailable";
   if (error.status === 403 && error.code === "invitation_recipient_mismatch") return "mismatch";
   if (error.status === 409 && error.details["disclosure_version"] === "stale") return "stale";
+  if (error.status === 409 && error.details["document_language"] === "unavailable") {
+    return "language";
+  }
   if (error.status === 422) {
     const codes = error.fieldCodes;
     if (codes["account_registration"] || codes["fighter_profile"]) return "profile";
+    if (codes["coaching_age"]?.includes("too_young")) return "tooYoung";
   }
   if (error.status === 429) return "limited";
   return "failed";
 }
 
 /**
- * `POST /api/v1/coach-invitations/preview`: anonymous, read once per page.
- * The query key never contains the token.
+ * `POST /api/v1/coach-invitations/preview`: anonymous, read once per page and
+ * language. The query key never contains the token.
  */
-export function useInvitationPreview(token: string | undefined) {
+export function useInvitationPreview(token: string | undefined, language: string) {
   return useQuery({
-    queryKey: ["coach-invitation-preview"],
-    queryFn: ({ signal }) => previewCoachInvitation({ token: token ?? "" }, { signal }),
+    queryKey: ["coach-invitation-preview", language],
+    queryFn: ({ signal }) => previewCoachInvitation({ token: token ?? "", language }, { signal }),
     enabled: token !== undefined,
     retry: false,
     staleTime: Infinity,
@@ -71,9 +78,18 @@ export function useInvitationResponse(token: string | undefined) {
   const client = useQueryClient();
 
   const accept = useMutation({
-    mutationFn: (disclosureVersion: string): Promise<CoachInvitationAcceptResponse> =>
+    mutationFn: ({
+      version,
+      language,
+    }: {
+      version: string;
+      language: CoachInvitationAcceptRequestDocumentLanguage;
+    }): Promise<CoachInvitationAcceptResponse> =>
       callWithSession((init) =>
-        acceptCoachInvitation({ token: token ?? "", disclosure_version: disclosureVersion }, init),
+        acceptCoachInvitation(
+          { token: token ?? "", disclosure_version: version, document_language: language },
+          init,
+        ),
       ),
     onSuccess: () => client.invalidateQueries({ queryKey: myCoachesRootKey }),
   });

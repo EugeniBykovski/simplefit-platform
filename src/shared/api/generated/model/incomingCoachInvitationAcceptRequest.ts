@@ -4,6 +4,7 @@
  * Regenerate with `pnpm api:generate`; verify with `pnpm api:check`.
  * SimpleFit API 0.1.0
  */
+import type { IncomingCoachInvitationAcceptRequestDocumentLanguage } from './incomingCoachInvitationAcceptRequestDocumentLanguage';
 
 export interface IncomingCoachInvitationAcceptRequest {
   /**
@@ -12,4 +13,6 @@ export interface IncomingCoachInvitationAcceptRequest {
      * @maxLength 64
      */
   disclosure_version: string;
+  /** The `document.language` of the disclosure text the fighter was shown (an approved variant). */
+  document_language: IncomingCoachInvitationAcceptRequestDocumentLanguage;
 }

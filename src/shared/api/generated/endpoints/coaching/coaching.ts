@@ -29,10 +29,12 @@ import type {
   CoachInvitationCreateRequest,
   CoachInvitationList,
   CoachInvitationPreview,
+  CoachInvitationPreviewRequest,
   CoachInvitationResponse,
   CoachInvitationTokenRequest,
   ConflictResponse,
   ErrorResponse,
+  GetMyCoachDataRulesParams,
   IncomingCoachInvitationAcceptRequest,
   IncomingCoachInvitationList,
   InternalErrorResponse,
@@ -45,6 +47,7 @@ import type {
   MyCoachRelationshipList,
   MyCoachRelationshipResponse,
   NotFoundResponse,
+  PreviewMyIncomingCoachInvitationParams,
   ServiceUnavailableResponse,
   UnauthorizedResponse,
   ValidationErrorResponse
@@ -91,7 +94,7 @@ export const getPreviewCoachInvitationUrl = () => {
  * * `rate_limited` - 30 responses per 10 minutes per client, shared with accept and decline.
  * @summary What an invitation link shows
  */
-export const previewCoachInvitation = async (coachInvitationTokenRequest: CoachInvitationTokenRequest, options?: Parameters<typeof apiFetch>[1]): Promise<CoachInvitationPreview> => {
+export const previewCoachInvitation = async (coachInvitationPreviewRequest: CoachInvitationPreviewRequest, options?: Parameters<typeof apiFetch>[1]): Promise<CoachInvitationPreview> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -112,7 +115,7 @@ return apiFetch<CoachInvitationPreview>(getPreviewCoachInvitationUrl(),
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
-    body: JSON.stringify(coachInvitationTokenRequest)
+    body: JSON.stringify(coachInvitationPreviewRequest)
   }
 );}
 
@@ -120,23 +123,23 @@ return apiFetch<CoachInvitationPreview>(getPreviewCoachInvitationUrl(),
 
 
 
-export const getPreviewCoachInvitationQueryKey = (coachInvitationTokenRequest?: BodyType<CoachInvitationTokenRequest>,) => {
+export const getPreviewCoachInvitationQueryKey = (coachInvitationPreviewRequest?: BodyType<CoachInvitationPreviewRequest>,) => {
     return [
-    'POST', `/api/v1/coach-invitations/preview`, coachInvitationTokenRequest
+    'POST', `/api/v1/coach-invitations/preview`, coachInvitationPreviewRequest
     ] as const;
     }
 
 
-export const getPreviewCoachInvitationQueryOptions = <TData = Awaited<ReturnType<typeof previewCoachInvitation>>, TError = ErrorType<NotFoundResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+export const getPreviewCoachInvitationQueryOptions = <TData = Awaited<ReturnType<typeof previewCoachInvitation>>, TError = ErrorType<NotFoundResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(coachInvitationPreviewRequest: BodyType<CoachInvitationPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getPreviewCoachInvitationQueryKey(coachInvitationTokenRequest);
+  const queryKey =  queryOptions?.queryKey ?? getPreviewCoachInvitationQueryKey(coachInvitationPreviewRequest);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewCoachInvitation>>> = ({ signal }) => previewCoachInvitation(coachInvitationTokenRequest, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewCoachInvitation>>> = ({ signal }) => previewCoachInvitation(coachInvitationPreviewRequest, { signal, ...requestOptions });
 
 
 
@@ -150,7 +153,7 @@ export type PreviewCoachInvitationQueryError = ErrorType<NotFoundResponse | Invi
 
 
 export function usePreviewCoachInvitation<TData = Awaited<ReturnType<typeof previewCoachInvitation>>, TError = ErrorType<NotFoundResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
- coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>> & Pick<
+ coachInvitationPreviewRequest: BodyType<CoachInvitationPreviewRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof previewCoachInvitation>>,
           TError,
@@ -160,7 +163,7 @@ export function usePreviewCoachInvitation<TData = Awaited<ReturnType<typeof prev
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function usePreviewCoachInvitation<TData = Awaited<ReturnType<typeof previewCoachInvitation>>, TError = ErrorType<NotFoundResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
- coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>> & Pick<
+ coachInvitationPreviewRequest: BodyType<CoachInvitationPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof previewCoachInvitation>>,
           TError,
@@ -170,7 +173,7 @@ export function usePreviewCoachInvitation<TData = Awaited<ReturnType<typeof prev
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function usePreviewCoachInvitation<TData = Awaited<ReturnType<typeof previewCoachInvitation>>, TError = ErrorType<NotFoundResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
- coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ coachInvitationPreviewRequest: BodyType<CoachInvitationPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -178,11 +181,11 @@ export function usePreviewCoachInvitation<TData = Awaited<ReturnType<typeof prev
  */
 
 export function usePreviewCoachInvitation<TData = Awaited<ReturnType<typeof previewCoachInvitation>>, TError = ErrorType<NotFoundResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
- coachInvitationTokenRequest: BodyType<CoachInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ coachInvitationPreviewRequest: BodyType<CoachInvitationPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getPreviewCoachInvitationQueryOptions(coachInvitationTokenRequest,options)
+  const queryOptions = getPreviewCoachInvitationQueryOptions(coachInvitationPreviewRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -327,11 +330,16 @@ export const getAcceptCoachInvitationUrl = () => {
  *
  * * `invitation_unavailable` (410) - not a current pending invitation, or the viewer's own.
  * * `invitation_recipient_mismatch` (403) - the viewer is not signed in with the invited address.
- * * `validation_error` - `account_registration` or `fighter_profile` `required`, or `disclosure_version`
- *   missing.
- * * `conflict` - `disclosure_version` is not the current version (details `disclosure_version: stale`).
- * * `not_found` - Coach–Fighter sharing is not enabled.
+ * * `validation_error` - `account_registration` or `fighter_profile` `required`; `coaching_age` `too_young`
+ *   (Coach–Fighter connections need the fighter to be 18 or older; the coach is never told); or
+ *   `disclosure_version` / `document_language` missing.
+ * * `conflict` - `disclosure_version` is not the current version (details `disclosure_version: stale`), or
+ *   `document_language` has no approved disclosure text (`document_language: unavailable`).
+ * * `not_found` - Coach–Fighter sharing is not available (gate off or no published documents).
  * * `rate_limited` - 30 per 10 minutes per client.
+ *
+ * On success the relationship, the consumed invitation and the evidence of the acceptance (version, language,
+ * text hash) commit together.
  * @summary Accept an invitation
  */
 export const acceptCoachInvitation = async (coachInvitationAcceptRequest: CoachInvitationAcceptRequest, options?: Parameters<typeof apiFetch>[1]): Promise<CoachInvitationAcceptResponse> => {
@@ -574,10 +582,9 @@ export const getAcceptMyIncomingCoachInvitationUrl = (invitationId: string,) => 
  * `acceptCoachInvitation`: completed account registration and fighter profile, the exact current disclosure
  * version, then the relationship is activated and the invitation consumed together.
  *
- * * `not_found` - sharing is not enabled, or responding by id is not available yet.
- * * `validation_error` - `account_registration` or `fighter_profile` `required`, or `disclosure_version`
- *   missing.
- * * `conflict` - `disclosure_version` is not the current version (details `disclosure_version: stale`).
+ * * `not_found` - Coach–Fighter sharing is not available (gate off or no published documents).
+ * * `validation_error` - as for `acceptCoachInvitation` (`coaching_age` `too_young` included).
+ * * `conflict` - `disclosure_version: stale` or `document_language: unavailable`.
  * * `rate_limited` - 30 per 10 minutes per client.
  * @summary Accept an invitation addressed to me
  */
@@ -800,12 +807,20 @@ export function useDeclineMyIncomingCoachInvitation<TData = Awaited<ReturnType<t
 
 
 
-export const getPreviewMyIncomingCoachInvitationUrl = (invitationId: string,) => {
+export const getPreviewMyIncomingCoachInvitationUrl = (invitationId: string,
+    params?: PreviewMyIncomingCoachInvitationParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
 
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
 
+  const stringifiedParams = normalizedParams.toString();
 
-  return `/api/v1/me/coach-invitations/${invitationId}/preview`
+  return stringifiedParams.length > 0 ? `/api/v1/me/coach-invitations/${invitationId}/preview?${stringifiedParams}` : `/api/v1/me/coach-invitations/${invitationId}/preview`
 }
 
 /**
@@ -815,15 +830,15 @@ export const getPreviewMyIncomingCoachInvitationUrl = (invitationId: string,) =>
  *
  * The coach's public identity and note, the expiry and the disclosure to accept, as `previewCoachInvitation`.
  *
- * * `not_found` - Coach–Fighter sharing is not enabled, or responding by id is not available yet (it stays off
- *   until the 18+ and document-language checks exist).
+ * * `not_found` - Coach–Fighter sharing is not available (gate off or no published documents).
  * * `validation_error` - `account_registration` `required`.
  * * `rate_limited` - 30 per 10 minutes per client, shared with the other responses.
  * @summary Review an invitation addressed to me
  */
-export const previewMyIncomingCoachInvitation = async (invitationId: string, options?: Parameters<typeof apiFetch>[1]): Promise<CoachInvitationPreview> => {
+export const previewMyIncomingCoachInvitation = async (invitationId: string,
+    params?: PreviewMyIncomingCoachInvitationParams, options?: Parameters<typeof apiFetch>[1]): Promise<CoachInvitationPreview> => {
 
-  return apiFetch<CoachInvitationPreview>(getPreviewMyIncomingCoachInvitationUrl(invitationId),
+  return apiFetch<CoachInvitationPreview>(getPreviewMyIncomingCoachInvitationUrl(invitationId,params),
   {
     ...options,
     method: 'GET'
@@ -836,23 +851,25 @@ export const previewMyIncomingCoachInvitation = async (invitationId: string, opt
 
 
 
-export const getPreviewMyIncomingCoachInvitationQueryKey = (invitationId: string,) => {
+export const getPreviewMyIncomingCoachInvitationQueryKey = (invitationId: string,
+    params?: PreviewMyIncomingCoachInvitationParams,) => {
     return [
-    `/api/v1/me/coach-invitations/${invitationId}/preview`
+    `/api/v1/me/coach-invitations/${invitationId}/preview`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getPreviewMyIncomingCoachInvitationQueryOptions = <TData = Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+export const getPreviewMyIncomingCoachInvitationQueryOptions = <TData = Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(invitationId: string,
+    params?: PreviewMyIncomingCoachInvitationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getPreviewMyIncomingCoachInvitationQueryKey(invitationId);
+  const queryKey =  queryOptions?.queryKey ?? getPreviewMyIncomingCoachInvitationQueryKey(invitationId,params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>> = ({ signal }) => previewMyIncomingCoachInvitation(invitationId, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>> = ({ signal }) => previewMyIncomingCoachInvitation(invitationId,params, { signal, ...requestOptions });
 
 
 
@@ -866,7 +883,8 @@ export type PreviewMyIncomingCoachInvitationQueryError = ErrorType<UnauthorizedR
 
 
 export function usePreviewMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
- invitationId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>> & Pick<
+ invitationId: string,
+    params: undefined |  PreviewMyIncomingCoachInvitationParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>,
           TError,
@@ -876,7 +894,8 @@ export function usePreviewMyIncomingCoachInvitation<TData = Awaited<ReturnType<t
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function usePreviewMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
- invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>> & Pick<
+ invitationId: string,
+    params?: PreviewMyIncomingCoachInvitationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>,
           TError,
@@ -886,7 +905,8 @@ export function usePreviewMyIncomingCoachInvitation<TData = Awaited<ReturnType<t
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function usePreviewMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
- invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ invitationId: string,
+    params?: PreviewMyIncomingCoachInvitationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -894,11 +914,12 @@ export function usePreviewMyIncomingCoachInvitation<TData = Awaited<ReturnType<t
  */
 
 export function usePreviewMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
- invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ invitationId: string,
+    params?: PreviewMyIncomingCoachInvitationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getPreviewMyIncomingCoachInvitationQueryOptions(invitationId,options)
+  const queryOptions = getPreviewMyIncomingCoachInvitationQueryOptions(invitationId,params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -910,24 +931,32 @@ export function usePreviewMyIncomingCoachInvitation<TData = Awaited<ReturnType<t
 
 
 
-export const getGetMyCoachDataRulesUrl = () => {
+export const getGetMyCoachDataRulesUrl = (params?: GetMyCoachDataRulesParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
 
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
 
+  const stringifiedParams = normalizedParams.toString();
 
-  return `/api/v1/me/coach/data-rules`
+  return stringifiedParams.length > 0 ? `/api/v1/me/coach/data-rules?${stringifiedParams}` : `/api/v1/me/coach/data-rules`
 }
 
 /**
- * The coach data-rules version the viewer must acknowledge before inviting, and when they did.
- * `document_version` is `null` while no approved version is configured (inviting is then unavailable).
+ * The coach data-rules version the viewer must acknowledge before inviting, when they did, and its approved text
+ * in `language` (`document`). `document_version` is `null` while no approved version is published (inviting is
+ * then unavailable).
  *
- * * `not_found` - Coach–Fighter sharing is not enabled, or the viewer has no completed coach profile.
+ * * `not_found` - Coach–Fighter sharing is not available, or the viewer has no completed coach profile.
  * @summary The coach data rules to acknowledge
  */
-export const getMyCoachDataRules = async ( options?: Parameters<typeof apiFetch>[1]): Promise<CoachDataRulesResponse> => {
+export const getMyCoachDataRules = async (params?: GetMyCoachDataRulesParams, options?: Parameters<typeof apiFetch>[1]): Promise<CoachDataRulesResponse> => {
 
-  return apiFetch<CoachDataRulesResponse>(getGetMyCoachDataRulesUrl(),
+  return apiFetch<CoachDataRulesResponse>(getGetMyCoachDataRulesUrl(params),
   {
     ...options,
     method: 'GET'
@@ -940,23 +969,23 @@ export const getMyCoachDataRules = async ( options?: Parameters<typeof apiFetch>
 
 
 
-export const getGetMyCoachDataRulesQueryKey = () => {
+export const getGetMyCoachDataRulesQueryKey = (params?: GetMyCoachDataRulesParams,) => {
     return [
-    `/api/v1/me/coach/data-rules`
+    `/api/v1/me/coach/data-rules`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getGetMyCoachDataRulesQueryOptions = <TData = Awaited<ReturnType<typeof getMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+export const getGetMyCoachDataRulesQueryOptions = <TData = Awaited<ReturnType<typeof getMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(params?: GetMyCoachDataRulesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetMyCoachDataRulesQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetMyCoachDataRulesQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyCoachDataRules>>> = ({ signal }) => getMyCoachDataRules({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyCoachDataRules>>> = ({ signal }) => getMyCoachDataRules(params, { signal, ...requestOptions });
 
 
 
@@ -970,7 +999,7 @@ export type GetMyCoachDataRulesQueryError = ErrorType<UnauthorizedResponse | Not
 
 
 export function useGetMyCoachDataRules<TData = Awaited<ReturnType<typeof getMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>> & Pick<
+ params: undefined |  GetMyCoachDataRulesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMyCoachDataRules>>,
           TError,
@@ -980,7 +1009,7 @@ export function useGetMyCoachDataRules<TData = Awaited<ReturnType<typeof getMyCo
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetMyCoachDataRules<TData = Awaited<ReturnType<typeof getMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>> & Pick<
+ params?: GetMyCoachDataRulesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMyCoachDataRules>>,
           TError,
@@ -990,7 +1019,7 @@ export function useGetMyCoachDataRules<TData = Awaited<ReturnType<typeof getMyCo
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetMyCoachDataRules<TData = Awaited<ReturnType<typeof getMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ params?: GetMyCoachDataRulesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -998,11 +1027,11 @@ export function useGetMyCoachDataRules<TData = Awaited<ReturnType<typeof getMyCo
  */
 
 export function useGetMyCoachDataRules<TData = Awaited<ReturnType<typeof getMyCoachDataRules>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ params?: GetMyCoachDataRulesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyCoachDataRules>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetMyCoachDataRulesQueryOptions(options)
+  const queryOptions = getGetMyCoachDataRulesQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1023,10 +1052,13 @@ export const getAcknowledgeMyCoachDataRulesUrl = () => {
 }
 
 /**
- * Records that the viewer acknowledged the configured coach data-rules version (separate from account consents
- * and the coach profile). Idempotent: the first acknowledgement's time is kept.
+ * Records that the viewer acknowledged the published coach data-rules version in the language they were shown
+ * (separate from account consents and the coach profile), with its evidence. Idempotent: the first
+ * acknowledgement is kept.
  *
- * * `conflict` - `document_version` is not the configured version (details `document_version: stale`).
+ * * `conflict` - `document_version` is not the current version (details `document_version: stale`), or
+ *   `document_language` has no approved text (`document_language: unavailable`).
+ * * `validation_error` - `document_version` or `document_language` missing.
  * * `not_found` - sharing is not enabled, no version is configured, or no completed coach profile.
  * @summary Acknowledge the coach data rules
  */

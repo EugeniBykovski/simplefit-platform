@@ -4,6 +4,7 @@
  * Regenerate with `pnpm api:generate`; verify with `pnpm api:check`.
  * SimpleFit API 0.1.0
  */
+import type { CoachInvitationAcceptRequestDocumentLanguage } from './coachInvitationAcceptRequestDocumentLanguage';
 
 export interface CoachInvitationAcceptRequest {
   /**
@@ -12,6 +13,8 @@ export interface CoachInvitationAcceptRequest {
      * @maxLength 64
      */
   disclosure_version: string;
+  /** The `document.language` of the disclosure text the fighter was shown (an approved variant). */
+  document_language: CoachInvitationAcceptRequestDocumentLanguage;
   /**
      * The one-time invitation token from the E08 link fragment (`#token=…`). Send it only in request bodies,
      * never in a URL. Any value that is not a current token answers `410 invitation_unavailable`.

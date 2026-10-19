@@ -112,7 +112,19 @@
       "body": "Zapraszanie zawodników wymaga zasad danych dla trenerów, które nie zostały jeszcze opublikowane. Będziesz mógł zapraszać, gdy tylko się pojawią.",
       "close": "Zamknij"
     },
-    "close": "Zamknij"
+    "close": "Zamknij",
+    "rules": {
+      "title": "Zasady dotyczące danych dla trenerów",
+      "version": "Wersja {version}",
+      "readFull": "Przeczytaj pełne zasady",
+      "hideFull": "Ukryj pełne zasady",
+      "acknowledge": "Potwierdź",
+      "acknowledging": "Zapisywanie…",
+      "later": "Nie teraz",
+      "stale": "Zasady dotyczące danych zmieniły się. Przeczytaj aktualną wersję i potwierdź ją ponownie.",
+      "failed": "Nie udało się zapisać. Nic się nie zmieniło. Spróbuj ponownie.",
+      "language": "Zasady dotyczące danych dla trenerów nie są jeszcze dostępne w Twoim języku. Zatwierdzone języki: {languages}. Zmień język strony, aby je przeczytać i potwierdzić."
+    }
   },
   "cancelInvitation": {
     "title": "Anulować to zaproszenie?",

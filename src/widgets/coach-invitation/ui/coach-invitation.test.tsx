@@ -45,7 +45,24 @@ const PREVIEW = {
     fields: ["display_name", "username", "stance"],
     never_shared: ["goals", "weight", "email"],
   },
+  // The backend's approved text (SF-72): a test fixture, never legal copy.
+  document: {
+    document_id: "fighter-coach-disclosure",
+    version: "test-disclosure-v1",
+    status: "published",
+    effective_at: "2026-01-01T00:00:00Z",
+    published_at: "2026-01-01T00:00:00Z",
+    requested_language: "en",
+    language: "en",
+    available_languages: ["en", "pl"],
+    content_sha256: "a".repeat(64),
+    title: "Fixture disclosure",
+    summary: "Fixture summary: {coach} sees the listed fields.",
+    checkbox: "I agree that {coach} sees the fields above (fixture {version}).",
+    full: "# Fixture disclosure\n\nFull fixture text <script>alert(1)</script>.\n\n- Fixture item",
+  } as Record<string, unknown> | null,
 };
+const withDocument = (document: Record<string, unknown> | null) => ({ ...PREVIEW, document });
 const ENTRY = (fighter: string, account = "complete") => ({
   entry: {
     destination: fighter === "completed" ? "fighter_home" : "fighter_onboarding",
@@ -135,7 +152,8 @@ describe("Coach invitation (WFI1) signed out", () => {
     expect(calls.map((call) => `${call.method} ${new URL(call.url, "http://x").pathname}`)).toEqual(
       [PREVIEW_PATH],
     );
-    expect(calls[0]?.body).toEqual({ token: TOKEN });
+    expect(calls[0]?.body).toEqual({ token: TOKEN, language: "en" });
+    expect(screen.getByText("Fixture summary: Coach Marek sees the listed fields.")).toBeVisible();
     expect(tokenInUrls(calls)).toEqual([]);
     expect(document.body.textContent).not.toContain(TOKEN);
   });
@@ -190,7 +208,7 @@ describe("Coach invitation (WFI1) signed in", () => {
     await renderWithProviders(<CoachInvitation />);
     const accept = await screen.findByRole("button", { name: "Accept invitation" });
     const consent = screen.getByRole("checkbox", {
-      name: /I agree that Coach Marek sees the fields above\./,
+      name: /I agree that Coach Marek sees the fields above \(fixture test-disclosure-v1\)\./,
     });
     expect(consent).not.toBeChecked();
     expect(accept).toBeDisabled();
@@ -203,6 +221,7 @@ describe("Coach invitation (WFI1) signed in", () => {
     expect(calls.find((call) => call.url.includes("/accept"))?.body).toEqual({
       token: TOKEN,
       disclosure_version: "test-disclosure-v1",
+      document_language: "en",
     });
 
     await act(async () => answer(jsonResponse({ outcome: "created", relationship_id: "rel-1" })));
@@ -308,5 +327,110 @@ describe("Coach invitation (WFI1) signed in", () => {
     expect(await screen.findByRole("heading", { name: "Invitation declined" })).toBeVisible();
     expect(calls.some((call) => call.url.includes("/accept"))).toBe(false);
     expect(calls.find((call) => call.url.includes("/decline"))?.body).toEqual({ token: TOKEN });
+  });
+
+  it("shows the full approved text on request, as text, never as markup", async () => {
+    openLink();
+    signedIn();
+    server({
+      [PREVIEW_PATH]: jsonResponse(PREVIEW),
+      [ENTRY_PATH]: jsonResponse(ENTRY("completed")),
+    });
+    await renderWithProviders(<CoachInvitation />);
+    const toggle = await screen.findByRole("button", { name: "Read the full disclosure" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    await userEvent.click(toggle);
+    expect(screen.getByRole("heading", { name: "Fixture disclosure" })).toBeVisible();
+    expect(screen.getByText(/Full fixture text <script>alert\(1\)<\/script>\./)).toBeVisible();
+    expect(document.querySelector("script")).toBeNull();
+    expect(screen.getByRole("button", { name: "Hide the full disclosure" })).toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
+  });
+
+  it("never accepts a text in another language: unavailable, declining still works", async () => {
+    openLink();
+    signedIn();
+    const calls = server({
+      [PREVIEW_PATH]: jsonResponse(
+        withDocument({
+          ...PREVIEW.document,
+          requested_language: "en",
+          language: null,
+          summary: null,
+          checkbox: null,
+          full: null,
+          title: null,
+          content_sha256: null,
+          available_languages: ["pl"],
+        }),
+      ),
+      [ENTRY_PATH]: jsonResponse(ENTRY("completed")),
+    });
+    await renderWithProviders(<CoachInvitation />);
+    expect(
+      await screen.findByText(/This disclosure isn’t available in your language yet\./),
+    ).toBeVisible();
+    expect(screen.getByText(/Approved languages: Polski\./)).toBeVisible();
+    expect(screen.queryByRole("checkbox")).toBeNull();
+    expect(screen.getByRole("button", { name: "Accept invitation" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Decline" })).toBeEnabled();
+    expect(calls.some((call) => call.url.includes("/accept"))).toBe(false);
+  });
+
+  it("with no published disclosure, accepting is not available", async () => {
+    openLink();
+    signedIn();
+    server({
+      [PREVIEW_PATH]: jsonResponse(withDocument(null)),
+      [ENTRY_PATH]: jsonResponse(ENTRY("completed")),
+    });
+    await renderWithProviders(<CoachInvitation />);
+    expect(await screen.findByText(/Accepting isn’t available yet\./)).toBeVisible();
+    expect(screen.queryByRole("checkbox")).toBeNull();
+  });
+
+  it("reports the 18+ rule without details and keeps the invitation open for declining", async () => {
+    openLink();
+    signedIn();
+    server({
+      [PREVIEW_PATH]: jsonResponse(PREVIEW),
+      [ENTRY_PATH]: jsonResponse(ENTRY("completed")),
+      [ACCEPT_PATH]: error(422, "validation_error", {
+        fields: { coaching_age: ["must be at least 18 years"] },
+        field_codes: { coaching_age: ["too_young"] },
+      }),
+    });
+    await renderWithProviders(<CoachInvitation />);
+    await userEvent.click(await screen.findByRole("checkbox"));
+    await userEvent.click(screen.getByRole("button", { name: "Accept invitation" }));
+    expect(
+      await screen.findByText(/Coach connections are for fighters aged 18 and over\./),
+    ).toBeVisible();
+    expect(screen.getByRole("button", { name: "Accept invitation" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Decline" })).toBeEnabled();
+  });
+
+  it("asks again when the language was withdrawn (409 document_language)", async () => {
+    openLink();
+    signedIn();
+    let previews = 0;
+    server({
+      [PREVIEW_PATH]: () => {
+        previews += 1;
+        return jsonResponse(PREVIEW);
+      },
+      [ENTRY_PATH]: jsonResponse(ENTRY("completed")),
+      [ACCEPT_PATH]: error(409, "conflict", { document_language: "unavailable" }),
+    });
+    await renderWithProviders(<CoachInvitation />);
+    await userEvent.click(await screen.findByRole("checkbox"));
+    await userEvent.click(screen.getByRole("button", { name: "Accept invitation" }));
+    expect(
+      await screen.findByText(/This disclosure isn’t available in your language yet\./),
+    ).toBeVisible();
+    await waitFor(() => expect(previews).toBe(2));
+    expect(screen.getByRole("checkbox")).not.toBeChecked();
   });
 });

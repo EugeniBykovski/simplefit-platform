@@ -50,15 +50,21 @@ previews were removed (T02 / T05 now point at `TimerLive.dc.html` with their
   verified email identity of the invited address). Google- or Apple-only
   accounts get the recipient-mismatch state until verified-email linking
   exists (SF-77–79).
-- **Consent:** an unticked checkbox naming the coach and the backend's
-  disclosure version; Accept stays disabled until it is ticked, and submits
-  exactly that version. No legal prose is invented: the disclosure is the
-  backend's structured projection; a document link comes with SF-71/72.
+- **Consent (SF-72):** the preview asks for the page language
+  (`language`); the backend's approved text in that language (`document`:
+  summary, full text on demand, the confirmation label) is shown next to an
+  unticked checkbox, and Accept submits exactly the disclosure version and
+  `document_language`. The page writes no legal text (rendered from the
+  registry's Markdown subset as text, never HTML). Without an approved text
+  in the page language, or with no published disclosure, there is nothing to
+  accept here (never another language); declining still works.
 - **Outcomes:** accepted (or already connected), declined, recipient
   mismatch (`403`, nothing revealed; "Sign out and switch account"),
-  profile required (`422`), stale disclosure (`409`: the preview is
-  reloaded and consent cleared), not available (`404` / `410`), rate
-  limited (`429`), failure. One request at a time; the outcome heading takes
+  profile required (`422`), under 18 (`422 coaching_age: too_young`: Accept
+  stays off, the coach is not told), stale disclosure (`409`: the preview is
+  reloaded and consent cleared), language withdrawn (`409
+document_language: unavailable`: reloaded), not available (`404` /
+  `410`), rate limited (`429`), failure. One request at a time; the outcome heading takes
   focus. Closing the page declines nothing.
 
 ## My coaches (WFC1)

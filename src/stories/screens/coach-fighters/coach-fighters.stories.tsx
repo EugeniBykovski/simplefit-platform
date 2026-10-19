@@ -130,10 +130,52 @@ const INVITATIONS = [
   invitation("inv-3", "t•••@example.com", "expired", { expires_at: "2026-10-08T10:00:00Z" }),
 ];
 
-const RULES = ok({
-  data_rules: { document_version: "storybook-rules", acknowledged_at: "2026-10-01T10:00:00Z" },
+// The backend's approved text (SF-72): a Storybook fixture, never legal copy.
+const rulesDocument = (language: string | null) => ({
+  document_id: "coach-data-rules",
+  version: "storybook-rules",
+  status: "published",
+  effective_at: "2026-01-01T00:00:00Z",
+  published_at: "2026-01-01T00:00:00Z",
+  requested_language: "en",
+  language,
+  available_languages: ["en", "pl"],
+  content_sha256: language === null ? null : "d".repeat(64),
+  title: language === null ? null : "Storybook fixture rules",
+  summary:
+    language === null
+      ? null
+      : "STORYBOOK FIXTURE, not a legal text. You see only what each fighter agrees to share.",
+  checkbox: language === null ? null : "STORYBOOK FIXTURE: I will follow the rules ({version}).",
+  full:
+    language === null
+      ? null
+      : "# Storybook fixture rules\n\nSTORYBOOK FIXTURE, not a legal text.\n\n- Coaching purposes only\n- Never sell or publish",
 });
-const NO_RULES = ok({ data_rules: { document_version: null, acknowledged_at: null } });
+const RULES = ok({
+  data_rules: {
+    document_version: "storybook-rules",
+    acknowledged_at: "2026-10-01T10:00:00Z",
+    document: rulesDocument("en"),
+  },
+});
+const UNACKNOWLEDGED = ok({
+  data_rules: {
+    document_version: "storybook-rules",
+    acknowledged_at: null,
+    document: rulesDocument("en"),
+  },
+});
+const NOT_IN_LANGUAGE = ok({
+  data_rules: {
+    document_version: "storybook-rules",
+    acknowledged_at: null,
+    document: rulesDocument(null),
+  },
+});
+const NO_RULES = ok({
+  data_rules: { document_version: null, acknowledged_at: null, document: null },
+});
 
 function story({
   screen = "roster",
@@ -357,6 +399,25 @@ export const InviteBlocked = story({
   },
 });
 InviteBlocked.name = "Invite · blocked (data rules not published)";
+
+export const InviteRules = story({
+  rules: UNACKNOWLEDGED,
+  play: async ({ canvasElement }) => {
+    await openInvite(canvasElement);
+    const dialog = await body().findByRole("dialog", { name: "Coach data rules" }, T);
+    await expect(within(dialog).getByRole("checkbox")).not.toBeChecked();
+  },
+});
+InviteRules.name = "Invite · coach data rules (acknowledge)";
+
+export const InviteRulesLanguage = story({
+  rules: NOT_IN_LANGUAGE,
+  play: async ({ canvasElement }) => {
+    await openInvite(canvasElement);
+    await body().findByText(/Approved languages/, {}, T);
+  },
+});
+InviteRulesLanguage.name = "Invite · coach data rules not in the page language";
 
 export const CancelInvitation = story({
   play: async ({ canvasElement }) => {

@@ -33,7 +33,6 @@
     "signIn": "Sign in to respond",
     "signUp": "Create an account"
   },
-  "consent": "I agree that {name} sees the fields above.",
   "version": "Disclosure {version}",
   "accept": "Accept invitation",
   "accepting": "Accepting…",
@@ -71,6 +70,18 @@
     "unavailable": {
       "title": "This invitation isn’t available.",
       "body": "Ask your coach to send a new one."
+    },
+    "tooYoung": {
+      "title": "Coach connections are for fighters aged 18 and over.",
+      "body": "You can’t accept this invitation. Nothing was shared, and your coach isn’t told why."
+    },
+    "language": {
+      "title": "This disclosure isn’t available in your language yet.",
+      "body": "Approved languages: {languages}. Switch the page language to read it and decide. You can still decline."
+    },
+    "document": {
+      "title": "Accepting isn’t available yet.",
+      "body": "The disclosure for coach connections isn’t published yet. You can still decline."
     }
   },
   "missing": {
@@ -99,5 +110,7 @@
       "body": "It may have expired, been answered or cancelled, or the link is no longer current. Ask your coach to send a new one.",
       "action": "Go to SimpleFit"
     }
-  }
+  },
+  "readFull": "Read the full disclosure",
+  "hideFull": "Hide the full disclosure"
 }

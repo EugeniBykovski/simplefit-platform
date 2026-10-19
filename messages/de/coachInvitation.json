@@ -33,7 +33,6 @@
     "signIn": "Anmelden, um zu antworten",
     "signUp": "Konto erstellen"
   },
-  "consent": "Ich bin einverstanden, dass {name} die oben genannten Angaben sieht.",
   "version": "Offenlegung {version}",
   "accept": "Einladung annehmen",
   "accepting": "Wird angenommen…",
@@ -71,6 +70,18 @@
     "unavailable": {
       "title": "Diese Einladung ist nicht verfügbar.",
       "body": "Bitte deinen Coach, eine neue zu senden."
+    },
+    "tooYoung": {
+      "title": "Coach-Verbindungen sind für Fighter ab 18 Jahren.",
+      "body": "Du kannst diese Einladung nicht annehmen. Nichts wurde geteilt, und dein Coach erfährt den Grund nicht."
+    },
+    "language": {
+      "title": "Diese Information ist in deiner Sprache noch nicht verfügbar.",
+      "body": "Freigegebene Sprachen: {languages}. Wechsle die Sprache der Seite, um sie zu lesen und zu entscheiden. Ablehnen kannst du trotzdem."
+    },
+    "document": {
+      "title": "Annehmen ist noch nicht möglich.",
+      "body": "Die Information zu Coach-Verbindungen ist noch nicht veröffentlicht. Ablehnen kannst du trotzdem."
     }
   },
   "missing": {
@@ -99,5 +110,7 @@
       "body": "Sie ist vielleicht abgelaufen, wurde beantwortet oder zurückgezogen, oder der Link ist nicht mehr aktuell. Bitte deinen Coach, eine neue zu senden.",
       "action": "Zu SimpleFit"
     }
-  }
+  },
+  "readFull": "Vollständige Information lesen",
+  "hideFull": "Vollständige Information ausblenden"
 }

@@ -59,12 +59,19 @@ approval, SF-58 reconciled them in Claude Design (Version 98 published over
   infers created vs existing from the cached list. **Contract dependency:**
   an explicit outcome (a response field, or the status exposed by the client
   transport) is needed before the UI can tell them apart.
-- **Coach data rules:** inviting needs a published, acknowledged data-rules
-  version (`getMyCoachDataRules`). The API exposes no document to read or
-  acknowledge yet, so while the rules are not published (or not
-  acknowledged) the composer shows a truthful blocked state, with no checkbox
-  and no invented legal text or version. **Backend/legal dependency:** the
-  document reference (URL or text) for the coach data rules.
+- **Coach data rules (SF-72):** inviting needs a published, acknowledged
+  data-rules version. `getMyCoachDataRules?language=<page language>` returns
+  the backend's approved text (`document`: summary, full text, checkbox
+  label, version, language). The composer shows the summary, the full text on
+  demand and the approved confirmation next to an unticked box, then
+  `acknowledgeMyCoachDataRules` with exactly that version and
+  `document_language`; `409 stale` (or `document_language: unavailable`)
+  reloads and asks again, and `409 data_rules_acknowledgement: required` on
+  sending returns to the rules. Without an approved text in the page language
+  there is nothing to acknowledge (never another language). While no version
+  is published, or sharing is off, the composer is truthfully blocked. No
+  document is approved yet (SF-71): in production the composer stays
+  blocked. Public legal pages: design gap `GAP-WEB-LEGAL-DOCUMENTS`.
 
 ## One fighter (WC4)
 

@@ -33,7 +33,6 @@
     "signIn": "Inicia sesión para responder",
     "signUp": "Crear una cuenta"
   },
-  "consent": "Acepto que {name} vea los datos de arriba.",
   "version": "Divulgación {version}",
   "accept": "Aceptar invitación",
   "accepting": "Aceptando…",
@@ -71,6 +70,18 @@
     "unavailable": {
       "title": "Esta invitación no está disponible.",
       "body": "Pide a tu entrenador que te envíe una nueva."
+    },
+    "tooYoung": {
+      "title": "Las conexiones con entrenadores son para peleadores de 18 años o más.",
+      "body": "No puedes aceptar esta invitación. No se compartió nada y tu entrenador no sabrá el motivo."
+    },
+    "language": {
+      "title": "Esta información aún no está disponible en tu idioma.",
+      "body": "Idiomas aprobados: {languages}. Cambia el idioma de la página para leerla y decidir. Aun así puedes rechazar."
+    },
+    "document": {
+      "title": "Todavía no se puede aceptar.",
+      "body": "La información sobre las conexiones con entrenadores aún no está publicada. Aun así puedes rechazar."
     }
   },
   "missing": {
@@ -99,5 +110,7 @@
       "body": "Puede que haya caducado, se haya respondido o cancelado, o que el enlace ya no sea el actual. Pide a tu entrenador que te envíe una nueva.",
       "action": "Ir a SimpleFit"
     }
-  }
+  },
+  "readFull": "Leer la información completa",
+  "hideFull": "Ocultar la información completa"
 }

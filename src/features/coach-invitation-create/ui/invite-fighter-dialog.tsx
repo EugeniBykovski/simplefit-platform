@@ -7,15 +7,24 @@ import { useEffect, useId, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
+  coachDataRulesKey,
   coachInvitationsKey,
   dataRulesAllowInviting,
   useCoachDataRules,
+  type CoachDataRules,
   type CoachInvitation,
 } from "@/entities/coach-invitation";
 import { callWithSession } from "@/entities/session";
-import { createMyCoachInvitation } from "@/shared/api/generated/endpoints/coaching/coaching";
+import {
+  acknowledgeMyCoachDataRules,
+  createMyCoachInvitation,
+} from "@/shared/api/generated/endpoints/coaching/coaching";
+import type { CoachDataRulesAcknowledgeRequestDocumentLanguage } from "@/shared/api/generated/model";
 import { isApiError } from "@/shared/api/http/api-error";
+import { localeName, matchLocale } from "@/shared/i18n/routing";
+import { fillLegalPlaceholders } from "@/shared/lib/legal-text";
 import { Button } from "@/shared/ui/button";
+import { Checkbox } from "@/shared/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -27,6 +36,7 @@ import {
 } from "@/shared/ui/dialog";
 import { describedBy, FormField } from "@/shared/ui/form-field";
 import { Input } from "@/shared/ui/input";
+import { LegalText } from "@/shared/ui/legal-text";
 import { Notice } from "@/shared/ui/notice";
 import { Spinner } from "@/shared/ui/spinner";
 import { Textarea } from "@/shared/ui/textarea";
@@ -53,7 +63,11 @@ const ONE_PARAGRAPH = /^[^\r\n\t\u0000-\u001f]*$/;
  * therefore says only what both share, that an invitation to the address is
  * pending until its expiry, never that an email was sent or delivered. While inviting is not
  * available (no published coach data rules, sharing off) the dialog says so
- * and offers no way to send.
+ * and offers no way to send. Before the first invitation under a data-rules
+ * version, the coach reads the backend's approved text of exactly that
+ * version in the page language and acknowledges it with an unticked box
+ * (SF-72); without an approved text in the page language there is nothing
+ * to acknowledge here (never another language instead).
  */
 export function InviteFighterDialog({ disabled = false }: { disabled?: boolean }) {
   const t = useTranslations("coachFighters");
@@ -126,7 +140,12 @@ function Composer({ onClose }: { onClose: () => void }) {
       if (error.code === "conflict" && error.details["pending_invitations"] === "limit_reached") {
         return setProblem({ kind: "pendingLimit" });
       }
-      // Data rules not acknowledged or not published, or sharing off.
+      // A newer data-rules version to acknowledge: show it (SF-72).
+      if (error.code === "conflict" && error.details["data_rules_acknowledgement"] === "required") {
+        void client.invalidateQueries({ queryKey: coachDataRulesKey });
+        return;
+      }
+      // Data rules not published, or sharing off.
       if (error.code === "conflict" || error.status === 404) return setOutcome({ kind: "blocked" });
       setProblem({ kind: "failed" });
     },
@@ -145,6 +164,22 @@ function Composer({ onClose }: { onClose: () => void }) {
       <div className="flex justify-center py-8">
         <Spinner label={t("invite.title")} />
       </div>
+    );
+  }
+
+  if (
+    outcome.kind === "form" &&
+    rules.data?.document_version != null &&
+    rules.data.document !== null &&
+    rules.data.acknowledged_at === null
+  ) {
+    return (
+      <Rules
+        rules={rules.data}
+        onChanged={() => void rules.refetch()}
+        onBlocked={() => setOutcome({ kind: "blocked" })}
+        onClose={onClose}
+      />
     );
   }
 
@@ -244,5 +279,170 @@ function Composer({ onClose }: { onClose: () => void }) {
         </Button>
       </DialogFooter>
     </form>
+  );
+}
+
+type AcknowledgeOutcome = "acknowledged" | "stale" | "language" | "blocked";
+
+/**
+ * The coach data rules of the version the backend serves (SF-72): the
+ * approved summary, the full text on demand and the approved confirmation
+ * next to an unticked box. Acknowledging sends exactly that version and the
+ * language of the text shown; a newer version or a withdrawn language asks
+ * again.
+ */
+function Rules({
+  rules,
+  onChanged,
+  onBlocked,
+  onClose,
+}: {
+  rules: CoachDataRules;
+  onChanged: () => void;
+  onBlocked: () => void;
+  onClose: () => void;
+}) {
+  const t = useTranslations("coachFighters.invite.rules");
+  const client = useQueryClient();
+  const ids = { consent: useId(), full: useId() };
+  const [agreed, setAgreed] = useState(false);
+  const [full, setFull] = useState(false);
+  const [notice, setNotice] = useState<"stale" | "failed" | null>(null);
+  const document = rules.document;
+
+  const acknowledge = useMutation({
+    mutationFn: async ({
+      version,
+      language,
+    }: {
+      version: string;
+      language: CoachDataRulesAcknowledgeRequestDocumentLanguage;
+    }): Promise<AcknowledgeOutcome> => {
+      try {
+        await callWithSession((init) =>
+          acknowledgeMyCoachDataRules(
+            { document_version: version, document_language: language },
+            init,
+          ),
+        );
+        return "acknowledged";
+      } catch (error) {
+        if (isApiError(error) && error.status === 409) {
+          return error.details["document_language"] === "unavailable" ? "language" : "stale";
+        }
+        if (isApiError(error) && error.status === 404) return "blocked";
+        throw error;
+      }
+    },
+    onSettled: () => client.invalidateQueries({ queryKey: coachDataRulesKey }),
+  });
+
+  if (document === null) return null;
+  const { language, summary, checkbox } = document;
+
+  if (language === null || summary === null || checkbox === null) {
+    const languages = document.available_languages
+      .map((code) => {
+        const known = matchLocale(code);
+        return known ? localeName(known) : code;
+      })
+      .join(", ");
+    return (
+      <>
+        <DialogHeader>
+          <DialogTitle>{t("title")}</DialogTitle>
+          <DialogDescription>{t("language", { languages })}</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button onClick={onClose}>{t("later")}</Button>
+        </DialogFooter>
+      </>
+    );
+  }
+
+  const pending = acknowledge.isPending;
+
+  return (
+    <div className="grid gap-4" data-testid="invite-rules">
+      <DialogHeader>
+        <DialogTitle>{t("title")}</DialogTitle>
+        <DialogDescription className="sr-only">
+          {t("version", { version: document.version })}
+        </DialogDescription>
+      </DialogHeader>
+      <div className="max-h-80 overflow-y-auto rounded-2xl border px-4 py-3">
+        <LegalText text={summary} headingLevel={3} />
+        {document.full !== null && (
+          <div id={ids.full} hidden={!full} className="mt-3 border-t pt-3">
+            <LegalText text={document.full} headingLevel={3} />
+          </div>
+        )}
+      </div>
+      {document.full !== null && (
+        <Button
+          type="button"
+          variant="quiet"
+          className="justify-self-start"
+          aria-expanded={full}
+          aria-controls={ids.full}
+          onClick={() => setFull((open) => !open)}
+        >
+          {full ? t("hideFull") : t("readFull")}
+        </Button>
+      )}
+      {notice && (
+        <Notice tone={notice === "failed" ? "coral" : "amber"} role="alert">
+          {t(notice)}
+        </Notice>
+      )}
+      <label
+        htmlFor={ids.consent}
+        className="flex items-start gap-3 rounded-2xl border px-4 py-3.5 type-body-sm"
+      >
+        <Checkbox
+          id={ids.consent}
+          className="mt-0.5"
+          checked={agreed}
+          disabled={pending}
+          onCheckedChange={(value) => setAgreed(value === true)}
+        />
+        <span className="flex flex-col gap-1">
+          <span>{fillLegalPlaceholders(checkbox, { version: document.version })}</span>
+          <span className="type-caption text-faint-foreground">
+            {t("version", { version: document.version })}
+          </span>
+        </span>
+      </label>
+      <DialogFooter>
+        <Button type="button" variant="outline" disabled={pending} onClick={onClose}>
+          {t("later")}
+        </Button>
+        <Button
+          type="button"
+          aria-busy={pending}
+          disabled={!agreed || pending}
+          onClick={() => {
+            setNotice(null);
+            acknowledge.mutate(
+              { version: document.version, language },
+              {
+                onSuccess: (outcome) => {
+                  if (outcome === "blocked") onBlocked();
+                  if (outcome === "stale" || outcome === "language") {
+                    setAgreed(false);
+                    setNotice("stale");
+                    onChanged();
+                  }
+                },
+                onError: () => setNotice("failed"),
+              },
+            );
+          }}
+        >
+          {pending && <Spinner />}
+          {pending ? t("acknowledging") : t("acknowledge")}
+        </Button>
+      </DialogFooter>
+    </div>
   );
 }

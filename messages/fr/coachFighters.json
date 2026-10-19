@@ -112,7 +112,19 @@
       "body": "Inviter des boxeurs nécessite les règles de données des coachs, qui ne sont pas encore publiées. Tu pourras inviter dès qu’elles le seront.",
       "close": "Fermer"
     },
-    "close": "Fermer"
+    "close": "Fermer",
+    "rules": {
+      "title": "Règles relatives aux données pour les coachs",
+      "version": "Version {version}",
+      "readFull": "Lire les règles complètes",
+      "hideFull": "Masquer les règles complètes",
+      "acknowledge": "Confirmer",
+      "acknowledging": "Enregistrement…",
+      "later": "Pas maintenant",
+      "stale": "Les règles ont changé. Lis la version actuelle et confirme-la à nouveau.",
+      "failed": "Impossible d’enregistrer. Rien n’a changé. Réessaie.",
+      "language": "Les règles relatives aux données pour les coachs ne sont pas encore disponibles dans ta langue. Langues approuvées : {languages}. Change la langue de la page pour les lire et les confirmer."
+    }
   },
   "cancelInvitation": {
     "title": "Annuler cette invitation ?",

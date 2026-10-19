@@ -41,6 +41,22 @@ const PREVIEW = {
       "email",
     ],
   },
+  // The backend's approved text (SF-72): an E2E fixture, never legal copy.
+  document: {
+    document_id: "fighter-coach-disclosure",
+    version: "e2e-disclosure-v1",
+    status: "published",
+    effective_at: "2026-01-01T00:00:00Z",
+    published_at: "2026-01-01T00:00:00Z",
+    requested_language: "en",
+    language: "en",
+    available_languages: ["en"],
+    content_sha256: "f".repeat(64),
+    title: "E2E fixture disclosure",
+    summary: "E2E FIXTURE, not a legal text. {coach} sees the items listed above.",
+    checkbox: "E2E FIXTURE: I agree that {coach} sees the information listed above.",
+    full: "# E2E fixture disclosure\n\nE2E FIXTURE, not a legal text.",
+  } as Record<string, unknown> | null,
 };
 const coach = (id: string, name: string, brand: string | null) => ({
   relationship_id: id,
@@ -54,12 +70,17 @@ const coach = (id: string, name: string, brand: string | null) => ({
   coach_display_name_at_end: null,
 });
 
-type Options = { coaches?: unknown[]; preview?: number; accept?: number };
+type Options = {
+  coaches?: unknown[];
+  preview?: number;
+  accept?: number;
+  document?: Record<string, unknown> | null;
+};
 
 /** The SF-56 / SF-57 endpoints; every request is recorded (URL and body). */
 async function coachingApi(
   page: Page,
-  { coaches = [], preview = 200, accept = 200 }: Options = {},
+  { coaches = [], preview = 200, accept = 200, document = PREVIEW.document }: Options = {},
 ) {
   const requests: { url: string; body: string | null }[] = [];
   await page.route(
@@ -82,7 +103,7 @@ async function coachingApi(
         return json(200, { relationships: coaches, next_cursor: null });
       if (path === "/api/v1/coach-invitations/preview")
         return preview === 200
-          ? json(200, PREVIEW)
+          ? json(200, { ...PREVIEW, document })
           : err(preview, preview === 404 ? "not_found" : "invitation_unavailable");
       if (path === "/api/v1/me/coach-invitations/accept")
         return accept === 200
@@ -167,6 +188,7 @@ test.describe("WFI1 coach invitation", () => {
     expect(JSON.parse(accepted[0]?.body ?? "{}")).toEqual({
       token: TOKEN,
       disclosure_version: "e2e-disclosure-v1",
+      document_language: "en",
     });
     expect(
       await page.evaluate(() => window.sessionStorage.getItem("simplefit.coach-invitation")),
@@ -174,6 +196,55 @@ test.describe("WFI1 coach invitation", () => {
     noTokenInRequests(requests);
     expect(await axeViolations(page)).toEqual([]);
     await page.screenshot({ path: "test-results/sf60-wfi1-accepted-1440x900.png" });
+  });
+
+  test("the approved disclosure text, consent by keyboard (SF-72)", async ({ page }) => {
+    const requests = await openInvite(page, true);
+    await expect(
+      page.getByText("E2E FIXTURE, not a legal text. Coach Marek sees the items listed above."),
+    ).toBeVisible();
+    const consent = page.getByRole("checkbox", {
+      name: /E2E FIXTURE: I agree that Coach Marek sees the information listed above\./,
+    });
+    await consent.focus();
+    await page.keyboard.press("Space");
+    await expect(consent).toBeChecked();
+    await page.getByRole("button", { name: "Accept invitation" }).press("Enter");
+    await expect(
+      page.getByRole("heading", { level: 1, name: "You’re connected with Coach Marek." }),
+    ).toBeFocused();
+    expect(requests.find((request) => request.url.endsWith("/preview"))?.body).toContain(
+      '"language":"en"',
+    );
+  });
+
+  test("no approved text in the page language: nothing to accept, declining works", async ({
+    page,
+  }) => {
+    const requests = await openInvite(page, true, {
+      document: {
+        ...PREVIEW.document,
+        language: null,
+        title: null,
+        summary: null,
+        checkbox: null,
+        full: null,
+        content_sha256: null,
+        available_languages: ["pl"],
+      },
+    });
+    await expect(
+      page.getByText("This disclosure isn’t available in your language yet."),
+    ).toBeVisible();
+    await expect(page.getByRole("checkbox")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Accept invitation" })).toBeDisabled();
+    expect(await axeViolations(page)).toEqual([]);
+    await page.screenshot({ path: "test-results/sf72-wfi1-language-1440x900.png" });
+    await page.getByRole("button", { name: "Decline" }).click();
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Invitation declined" }),
+    ).toBeVisible();
+    expect(requests.some((request) => request.url.endsWith("/accept"))).toBe(false);
   });
 
   test("a different recipient: privacy-safe message, nothing accepted", async ({ page }) => {

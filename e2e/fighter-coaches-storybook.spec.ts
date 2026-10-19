@@ -31,7 +31,12 @@ const COACHES = "fighter-coaches-my-coaches--";
 
 for (const [id, text] of [
   [`${INVITE}signed-out`, "Sign in to respond"],
-  [`${INVITE}review`, "I agree that Coach Marek sees the fields above."],
+  [
+    `${INVITE}review`,
+    "STORYBOOK FIXTURE: I agree that Coach Marek sees the information listed above.",
+  ],
+  [`${INVITE}language-unavailable`, "This disclosure isn’t available in your language yet."],
+  [`${INVITE}too-young`, "Coach connections are for fighters aged 18 and over."],
   [`${INVITE}profile-needed`, "Continue setup"],
   [`${INVITE}accept-pending`, "Accepting…"],
   [`${INVITE}accepted`, "You’re connected with Coach Marek."],

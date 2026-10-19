@@ -136,15 +136,36 @@ const ACCEPTED = {
 const page = (relationships: unknown[], next_cursor: string | null = null) =>
   jsonResponse({ relationships, next_cursor });
 const invitations = (items: unknown[]) => jsonResponse({ invitations: items, next_cursor: null });
-const RULES_PUBLISHED = jsonResponse({
-  data_rules: {
-    document_version: "coach-data-rules-2026-10",
-    acknowledged_at: "2026-10-01T10:00:00Z",
-  },
+// The backend's approved text (SF-72): a test fixture, never legal copy.
+const rulesDocument = (version: string, language: string | null = "en") => ({
+  document_id: "coach-data-rules",
+  version,
+  status: "published",
+  effective_at: "2026-01-01T00:00:00Z",
+  published_at: "2026-01-01T00:00:00Z",
+  requested_language: "en",
+  language,
+  available_languages: ["en", "pl"],
+  content_sha256: language === null ? null : "b".repeat(64),
+  title: language === null ? null : "Fixture rules",
+  summary: language === null ? null : "Fixture rules summary.",
+  checkbox: language === null ? null : "I will follow fixture rules {version}.",
+  full: language === null ? null : "# Fixture rules\n\nFull fixture rules text.",
 });
-const RULES_MISSING = jsonResponse({
-  data_rules: { document_version: null, acknowledged_at: null },
-});
+const rulesReply = (
+  version: string | null,
+  acknowledged: boolean,
+  language: string | null = "en",
+) =>
+  jsonResponse({
+    data_rules: {
+      document_version: version,
+      acknowledged_at: acknowledged ? "2026-10-01T10:00:00Z" : null,
+      document: version === null ? null : rulesDocument(version, language),
+    },
+  });
+const RULES_PUBLISHED = rulesReply("coach-data-rules-2026-10", true);
+const RULES_MISSING = rulesReply(null, false);
 
 beforeEach(() => {
   replace.mockReset();
@@ -436,9 +457,75 @@ describe("CoachFighters (WC7) invite composer", () => {
     expect(email).toHaveAttribute("aria-invalid", "true");
   });
 
-  it("shows the backend's pending limit and turns an unacknowledged conflict into the blocked state", async () => {
+  it("asks for an explicit acknowledgement of the backend's approved text, then the form", async () => {
+    let acknowledged = false;
+    const calls = server({
+      [`GET ${FIGHTERS}`]: page([]),
+      [`GET ${INVITATIONS}`]: invitations([]),
+      [`GET ${DATA_RULES}`]: () => rulesReply("coach-data-rules-test-1", acknowledged),
+      [`POST ${DATA_RULES}/acknowledge`]: () => {
+        acknowledged = true;
+        return rulesReply("coach-data-rules-test-1", true);
+      },
+    });
+    await renderWithProviders(<CoachFighters />);
+    await userEvent.click(await screen.findByRole("button", { name: "Invite fighter" }));
+    const dialog = await screen.findByRole("dialog", { name: "Coach data rules" });
+    expect(within(dialog).getByText("Fixture rules summary.")).toBeVisible();
+    await userEvent.click(within(dialog).getByRole("button", { name: "Read the full rules" }));
+    expect(within(dialog).getByText("Full fixture rules text.")).toBeVisible();
+    const consent = within(dialog).getByRole("checkbox", {
+      name: /I will follow fixture rules coach-data-rules-test-1\./,
+    });
+    expect(consent).not.toBeChecked();
+    const acknowledge = within(dialog).getByRole("button", { name: "Acknowledge" });
+    expect(acknowledge).toBeDisabled();
+    await userEvent.click(consent);
+    await userEvent.click(acknowledge);
+    expect(await screen.findByRole("dialog", { name: "Invite a fighter" })).toBeVisible();
+    expect(calls.find((call) => call.path === `${DATA_RULES}/acknowledge`)?.body).toEqual({
+      document_version: "coach-data-rules-test-1",
+      document_language: "en",
+    });
+    const get = calls.find((call) => call.method === "GET" && call.path === DATA_RULES);
+    expect(get?.query.get("language")).toBe("en");
+  });
+
+  it("never acknowledges a text in another language", async () => {
+    const calls = await openComposer(rulesReply("coach-data-rules-test-1", false, null));
+    const dialog = await screen.findByRole("dialog", { name: "Coach data rules" });
+    expect(within(dialog).getByText(/Approved languages: English, Polski\./)).toBeVisible();
+    expect(within(dialog).queryByRole("checkbox")).toBeNull();
+    expect(calls.some((call) => call.method === "POST")).toBe(false);
+  });
+
+  it("asks again when the version changed (409 stale), with the box cleared", async () => {
+    await openComposer(rulesReply("coach-data-rules-test-1", false), {
+      [`POST ${DATA_RULES}/acknowledge`]: error(409, "conflict", { document_version: "stale" }),
+    });
+    const dialog = await screen.findByRole("dialog", { name: "Coach data rules" });
+    await userEvent.click(within(dialog).getByRole("checkbox"));
+    await userEvent.click(within(dialog).getByRole("button", { name: "Acknowledge" }));
+    expect(await within(dialog).findByRole("alert")).toHaveTextContent(
+      "The coach data rules changed.",
+    );
+    expect(within(dialog).getByRole("checkbox")).not.toBeChecked();
+  });
+
+  it("shows the backend's pending limit and returns to the data rules when they are required again", async () => {
     let reply = error(409, "conflict", { pending_invitations: "limit_reached" });
-    await openComposer(RULES_PUBLISHED, { [`POST ${INVITATIONS}`]: () => reply });
+    let rulesCalls = 0;
+    server({
+      [`GET ${FIGHTERS}`]: page([]),
+      [`GET ${INVITATIONS}`]: invitations([]),
+      [`GET ${DATA_RULES}`]: () => {
+        rulesCalls += 1;
+        return rulesReply("coach-data-rules-2026-10", rulesCalls === 1);
+      },
+      [`POST ${INVITATIONS}`]: () => reply,
+    });
+    await renderWithProviders(<CoachFighters />);
+    await userEvent.click(await screen.findByRole("button", { name: "Invite fighter" }));
     const dialog = await screen.findByRole("dialog", { name: "Invite a fighter" });
     await userEvent.type(within(dialog).getByLabelText("Email"), "fighter@example.com");
     await userEvent.click(within(dialog).getByRole("button", { name: "Send invitation" }));
@@ -448,8 +535,6 @@ describe("CoachFighters (WC7) invite composer", () => {
 
     reply = error(409, "conflict", { data_rules_acknowledgement: "required" });
     await userEvent.click(within(dialog).getByRole("button", { name: "Send invitation" }));
-    expect(
-      await screen.findByRole("dialog", { name: "Inviting isn’t available yet" }),
-    ).toBeVisible();
+    expect(await screen.findByRole("dialog", { name: "Coach data rules" })).toBeVisible();
   });
 });
