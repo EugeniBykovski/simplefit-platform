@@ -126,6 +126,7 @@ export * from './healthResponse';
 export * from './healthResponseService';
 export * from './healthResponseStatus';
 export * from './incomingCoachInvitation';
+export * from './incomingCoachInvitationAcceptRequest';
 export * from './incomingCoachInvitationCoach';
 export * from './incomingCoachInvitationList';
 export * from './incomingCoachInvitationStatus';

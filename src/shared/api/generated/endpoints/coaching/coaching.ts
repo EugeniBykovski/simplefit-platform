@@ -33,6 +33,7 @@ import type {
   CoachInvitationTokenRequest,
   ConflictResponse,
   ErrorResponse,
+  IncomingCoachInvitationAcceptRequest,
   IncomingCoachInvitationList,
   InternalErrorResponse,
   InvitationRecipientMismatchResponse,
@@ -211,8 +212,9 @@ export const getListMyIncomingCoachInvitationsUrl = (params?: ListMyIncomingCoac
  * The invitations sent to any email identity the viewer verified with a code, newest first, with the coach's
  * public identity and note and the effective status. Matched on the server from the session's user: no
  * address, user id or provider email is accepted, and Google or Apple sign-ins without an email identity have
- * an empty inbox. Nothing here is a relationship (see `listMyCoaches`); responding still uses the invitation
- * link (`acceptCoachInvitation`, `declineCoachInvitation`). Other query parameters are ignored.
+ * an empty inbox. Nothing here is a relationship (see `listMyCoaches`); respond with the invitation link
+ * (`acceptCoachInvitation`, `declineCoachInvitation`) or by id (`acceptMyIncomingCoachInvitation`,
+ * `declineMyIncomingCoachInvitation`). Other query parameters are ignored.
  *
  * * `not_found` - Coach–Fighter sharing is not enabled (distinct from an empty inbox).
  * * `validation_error` - `account_registration` `required`, or `limit`, `cursor` or `status` invalid.
@@ -543,6 +545,359 @@ export function useDeclineCoachInvitation<TData = Awaited<ReturnType<typeof decl
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getDeclineCoachInvitationQueryOptions(coachInvitationTokenRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getAcceptMyIncomingCoachInvitationUrl = (invitationId: string,) => {
+
+
+
+
+  return `/api/v1/me/coach-invitations/${invitationId}/accept`
+}
+
+/**
+ * Located by id among the invitations addressed to the viewer's verified email identities (no token: possession
+ * of the E08 email is not required, so a valid session is enough; see ADR 0021, SF-73 amendment). A foreign,
+ * unknown, malformed or no longer pending id answers `410 invitation_unavailable`, the same for all.
+ *
+ * The explicit acceptance, with the same prerequisites and the same single transaction as
+ * `acceptCoachInvitation`: completed account registration and fighter profile, the exact current disclosure
+ * version, then the relationship is activated and the invitation consumed together.
+ *
+ * * `not_found` - sharing is not enabled, or responding by id is not available yet.
+ * * `validation_error` - `account_registration` or `fighter_profile` `required`, or `disclosure_version`
+ *   missing.
+ * * `conflict` - `disclosure_version` is not the current version (details `disclosure_version: stale`).
+ * * `rate_limited` - 30 per 10 minutes per client.
+ * @summary Accept an invitation addressed to me
+ */
+export const acceptMyIncomingCoachInvitation = async (invitationId: string,
+    incomingCoachInvitationAcceptRequest: IncomingCoachInvitationAcceptRequest, options?: Parameters<typeof apiFetch>[1]): Promise<CoachInvitationAcceptResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<CoachInvitationAcceptResponse>(getAcceptMyIncomingCoachInvitationUrl(invitationId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(incomingCoachInvitationAcceptRequest)
+  }
+);}
+
+
+
+
+
+export const getAcceptMyIncomingCoachInvitationQueryKey = (invitationId: string,
+    incomingCoachInvitationAcceptRequest?: BodyType<IncomingCoachInvitationAcceptRequest>,) => {
+    return [
+    'POST', `/api/v1/me/coach-invitations/${invitationId}/accept`, incomingCoachInvitationAcceptRequest
+    ] as const;
+    }
+
+
+export const getAcceptMyIncomingCoachInvitationQueryOptions = <TData = Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(invitationId: string,
+    incomingCoachInvitationAcceptRequest: BodyType<IncomingCoachInvitationAcceptRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAcceptMyIncomingCoachInvitationQueryKey(invitationId,incomingCoachInvitationAcceptRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>> = ({ signal }) => acceptMyIncomingCoachInvitation(invitationId,incomingCoachInvitationAcceptRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: invitationId !== null && invitationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type AcceptMyIncomingCoachInvitationQueryResult = NonNullable<Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>>
+export type AcceptMyIncomingCoachInvitationQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function useAcceptMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ invitationId: string,
+    incomingCoachInvitationAcceptRequest: BodyType<IncomingCoachInvitationAcceptRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAcceptMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ invitationId: string,
+    incomingCoachInvitationAcceptRequest: BodyType<IncomingCoachInvitationAcceptRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAcceptMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ invitationId: string,
+    incomingCoachInvitationAcceptRequest: BodyType<IncomingCoachInvitationAcceptRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Accept an invitation addressed to me
+ */
+
+export function useAcceptMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ invitationId: string,
+    incomingCoachInvitationAcceptRequest: BodyType<IncomingCoachInvitationAcceptRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getAcceptMyIncomingCoachInvitationQueryOptions(invitationId,incomingCoachInvitationAcceptRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getDeclineMyIncomingCoachInvitationUrl = (invitationId: string,) => {
+
+
+
+
+  return `/api/v1/me/coach-invitations/${invitationId}/decline`
+}
+
+/**
+ * Located by id among the invitations addressed to the viewer's verified email identities (no token: possession
+ * of the E08 email is not required, so a valid session is enough; see ADR 0021, SF-73 amendment). A foreign,
+ * unknown, malformed or no longer pending id answers `410 invitation_unavailable`, the same for all.
+ *
+ * The explicit decline, as `declineCoachInvitation`: a completed fighter profile is required, nothing is
+ * created, and it also works while Coach–Fighter sharing is not enabled.
+ *
+ * * `validation_error` - `account_registration` or `fighter_profile` `required`.
+ * * `rate_limited` - 30 per 10 minutes per client.
+ * @summary Decline an invitation addressed to me
+ */
+export const declineMyIncomingCoachInvitation = async (invitationId: string, options?: Parameters<typeof apiFetch>[1]): Promise<void> => {
+
+  return apiFetch<void>(getDeclineMyIncomingCoachInvitationUrl(invitationId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeclineMyIncomingCoachInvitationQueryKey = (invitationId: string,) => {
+    return [
+    'POST', `/api/v1/me/coach-invitations/${invitationId}/decline`
+    ] as const;
+    }
+
+
+export const getDeclineMyIncomingCoachInvitationQueryOptions = <TData = Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getDeclineMyIncomingCoachInvitationQueryKey(invitationId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>> = ({ signal }) => declineMyIncomingCoachInvitation(invitationId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: invitationId !== null && invitationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type DeclineMyIncomingCoachInvitationQueryResult = NonNullable<Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>>
+export type DeclineMyIncomingCoachInvitationQueryError = ErrorType<UnauthorizedResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function useDeclineMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ invitationId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDeclineMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDeclineMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Decline an invitation addressed to me
+ */
+
+export function useDeclineMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getDeclineMyIncomingCoachInvitationQueryOptions(invitationId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewMyIncomingCoachInvitationUrl = (invitationId: string,) => {
+
+
+
+
+  return `/api/v1/me/coach-invitations/${invitationId}/preview`
+}
+
+/**
+ * Located by id among the invitations addressed to the viewer's verified email identities (no token: possession
+ * of the E08 email is not required, so a valid session is enough; see ADR 0021, SF-73 amendment). A foreign,
+ * unknown, malformed or no longer pending id answers `410 invitation_unavailable`, the same for all.
+ *
+ * The coach's public identity and note, the expiry and the disclosure to accept, as `previewCoachInvitation`.
+ *
+ * * `not_found` - Coach–Fighter sharing is not enabled, or responding by id is not available yet (it stays off
+ *   until the 18+ and document-language checks exist).
+ * * `validation_error` - `account_registration` `required`.
+ * * `rate_limited` - 30 per 10 minutes per client, shared with the other responses.
+ * @summary Review an invitation addressed to me
+ */
+export const previewMyIncomingCoachInvitation = async (invitationId: string, options?: Parameters<typeof apiFetch>[1]): Promise<CoachInvitationPreview> => {
+
+  return apiFetch<CoachInvitationPreview>(getPreviewMyIncomingCoachInvitationUrl(invitationId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPreviewMyIncomingCoachInvitationQueryKey = (invitationId: string,) => {
+    return [
+    `/api/v1/me/coach-invitations/${invitationId}/preview`
+    ] as const;
+    }
+
+
+export const getPreviewMyIncomingCoachInvitationQueryOptions = <TData = Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewMyIncomingCoachInvitationQueryKey(invitationId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>> = ({ signal }) => previewMyIncomingCoachInvitation(invitationId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: invitationId !== null && invitationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewMyIncomingCoachInvitationQueryResult = NonNullable<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>>
+export type PreviewMyIncomingCoachInvitationQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function usePreviewMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ invitationId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Review an invitation addressed to me
+ */
+
+export function usePreviewMyIncomingCoachInvitation<TData = Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InvitationUnavailableResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ invitationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewMyIncomingCoachInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewMyIncomingCoachInvitationQueryOptions(invitationId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
