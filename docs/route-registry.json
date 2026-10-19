@@ -11,8 +11,8 @@
         "id": "gallery-1",
         "artboard": "GalleryIndex.dc.html",
         "title": "route gallery 1 / 3 · onboarding & fighter mobile",
-        "rows": 245,
-        "rowsNote": "242 Route Gallery rows + WCX1 (SF-54: added with its artboard WebContextSelect.dc.html, not yet listed in GalleryIndex) + FC1 and FC2 (SF-59: added with their artboard FighterCoaches.dc.html, not yet listed in GalleryIndex)"
+        "rows": 247,
+        "rowsNote": "242 Route Gallery rows + WCX1 (SF-54: added with its artboard WebContextSelect.dc.html, not yet listed in GalleryIndex) + FC1 and FC2 (SF-59: added with their artboard FighterCoaches.dc.html, not yet listed in GalleryIndex) + FCI1 and FCI2 (SF-76: added to FighterCoaches.dc.html, not yet listed in GalleryIndex)"
       },
       {
         "id": "gallery-2",
@@ -2412,7 +2412,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(fighter)/(tabs)/(profile)/profile/coaches/index.tsx",
-        "note": "SF-59: FC1 (Claude Design 1792069267-b198): the fighter's SF-56 relationships from listMyCoaches, Active and Ended (?view=ended), cursor pages; each active coach's public identity (display and brand name) and start; ended rows only the coach's name at the end, the date and who ended it. Loading, empty, unavailable (404: no completed fighter profile) and failure are separate states. No invitation inbox: the API has none (D-MOBILE-FIGHTER-COACH-INVITATIONS)."
+        "note": "SF-59, SF-76: FC1 (Claude Design 1792432236-08da): the fighter's SF-56 relationships from listMyCoaches, Active and Ended (?view=ended), cursor pages; each active coach's public identity (display and brand name) and start; ended rows only the coach's name at the end, the date and who ended it. Loading, empty, unavailable (404: no completed fighter profile) and failure are separate states. The Invitations row opens FCI1 (SF-76)."
       },
       "discrepancies": ["D-MOBILE-FIGHTER-COACH-INVITATIONS"],
       "screens": ["FC1"]
@@ -2438,9 +2438,59 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(fighter)/(tabs)/(profile)/profile/coaches/[relationshipId].tsx",
-        "note": "SF-59: FC2 (Claude Design 1792069267-b198): one active relationship, resolved from listMyCoaches (the API has no single-relationship read for fighters); the coach's public identity, what the coach sees (disclosed_fields) and what is never shared; End relationship with confirmation (endMyCoachRelationship, 204). Ended, foreign or unknown ids are one not-available state."
+        "note": "SF-59, SF-76: FC2 (Claude Design 1792432236-08da): one of the fighter's own relationships read directly with getMyCoachRelationship (SF-74), active or ended; ids that are not UUIDs are never sent. Active: the coach's public identity, what the coach sees (disclosed_fields) and what is never shared, End relationship with confirmation (endMyCoachRelationship, 204). Ended: the not-available card with the FC1 ended row (state=ended), no disclosure and no end. Foreign, unknown or malformed ids are one not-available state."
       },
       "screens": ["FC2"]
+    },
+    {
+      "id": "mobile.profile.coaches.invitations",
+      "platform": "mobile",
+      "path": "/profile/coaches/invitations",
+      "params": [],
+      "name": "Coach invitations",
+      "surface": "FIGHTER",
+      "shell": "mobile.fighter",
+      "parent": "mobile.profile.coaches",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "FIGHTER",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/(fighter)/(tabs)/(profile)/profile/coaches/invitations/index.tsx",
+        "note": "SF-76: FCI1 (Claude Design 1792432236-08da): the invitations addressed to the fighter's verified email identities from listMyIncomingCoachInvitations (SF-73), newest first, cursor pages, with the backend's effective status; only pending ones open FCI2. Loading, empty, unavailable (404: Coach-Fighter sharing is off, never empty), account registration first (422) and failure are separate states. Never a token, address or digest."
+      },
+      "screens": ["FCI1"]
+    },
+    {
+      "id": "mobile.profile.coaches.invitations._invitation-id",
+      "platform": "mobile",
+      "path": "/profile/coaches/invitations/:invitationId",
+      "params": ["invitationId"],
+      "name": "Coach invitation",
+      "surface": "FIGHTER",
+      "shell": "mobile.fighter",
+      "parent": "mobile.profile.coaches.invitations",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "FIGHTER",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/(fighter)/(tabs)/(profile)/profile/coaches/invitations/[invitationId].tsx",
+        "note": "SF-76: FCI2 (Claude Design 1792432236-08da): previewMyIncomingCoachInvitation in the app language (the SF-73 id, never a token; non-UUID ids are never sent); the coach's public identity, note, expiry, the disclosed and never-shared fields and the approved disclosure (title, version, language, summary, full text in a sheet). Accept only after ticking the approved confirmation (acceptMyIncomingCoachInvitation with the exact disclosure_version and document_language shown); decline after confirmation (declineMyIncomingCoachInvitation, also while sharing is off). Sharing off (404), not available (410), stale (409), language (409, never another language), under 18 and profile (422), rate limit (429) and failure are their own states; outcomes only from the backend."
+      },
+      "screens": ["FCI2"]
     },
     {
       "id": "mobile.progress",
@@ -10546,7 +10596,7 @@
       "code": "FC2",
       "name": "Coach relationship",
       "route": "mobile.profile.coaches._relationship-id",
-      "states": ["ready", "unavailable", "confirm", "pending", "failed"],
+      "states": ["ready", "ended", "unavailable", "confirm", "pending", "failed"],
       "design": {
         "gallery": "gallery-1",
         "page": "fighter-mobile",
@@ -10555,6 +10605,54 @@
         "tag": "MOBILE",
         "artboard": "FighterCoaches.dc.html",
         "addedIn": "1792069267-b198"
+      }
+    },
+    {
+      "id": "FCI1",
+      "code": "FCI1",
+      "name": "Coach invitations",
+      "route": "mobile.profile.coaches.invitations",
+      "states": ["ready", "loading", "empty", "unavailable", "profile", "error"],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "fighter-mobile",
+        "section": "7 · Fighter app · progress, schedule, messages, account",
+        "step": "7.15",
+        "tag": "MOBILE",
+        "artboard": "FighterCoaches.dc.html",
+        "addedIn": "1792432236-08da"
+      }
+    },
+    {
+      "id": "FCI2",
+      "code": "FCI2",
+      "name": "Coach invitation",
+      "route": "mobile.profile.coaches.invitations._invitation-id",
+      "states": [
+        "loading",
+        "review",
+        "language",
+        "document",
+        "stale",
+        "tooYoung",
+        "profile",
+        "limited",
+        "failed",
+        "sharing",
+        "unavailable",
+        "error",
+        "accepted",
+        "already",
+        "declined"
+      ],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "fighter-mobile",
+        "section": "7 · Fighter app · progress, schedule, messages, account",
+        "step": "7.16",
+        "tag": "MOBILE",
+        "artboard": "FighterCoaches.dc.html",
+        "addedIn": "1792432236-08da"
       }
     },
     {
@@ -16899,13 +16997,13 @@
     },
     {
       "id": "D-MOBILE-FIGHTER-COACH-INVITATIONS",
-      "title": "Fighter mobile coach invitations: no inbox, no secure app handoff",
+      "title": "Fighter mobile coach invitations: inbox in the app, no secure app link handoff",
       "sourceA": "INV1 InviteCoach.dc.html (/invite/:code): a coach invite reached by a code or link, joining the coach's team straight after sign-in, with team stats; SF-59 brief: an incoming invitation list, review, explicit consent, accept and decline in the app",
       "sourceB": "SF-57 API: anonymous previewCoachInvitation and signed-in accept / decline by the one-time token from the E08 link fragment (#token=, never in a URL), bound to a verified email identity, with the current disclosure version; no fighter-facing list of incoming invitations; the app has no verified Universal Links / App Links (only the simplefit scheme); Coach-Fighter sharing is off until the legal texts and versions exist",
       "mismatch": "The design auto-joins after sign-in and puts the invite in a route; the API needs an explicit, versioned acceptance of a token that must never reach a route, log or storage, and offers no inbox.",
       "impact": "Building INV1 or an inbox now would invent invitations, carry the token through an unsafe URL, or accept without consent.",
-      "resolution": "Claude Design 1792069267-b198 (SF-59) marks INV1 FUTURE and adds FC1 / FC2 (My coaches) on listMyCoaches and endMyCoachRelationship. No invitation screen exists in the app; the E08 link stays the web's (its review page is WFI1, web.invite.coach, SF-60). Needed first: a fighter invitation contract (an inbox endpoint), verified app links with an in-memory token handoff, and the approved legal texts.",
-      "decision": "The app manages existing relationships only; invitations are reviewed and answered on the web until the native handoff, the contract and the legal texts exist.",
+      "resolution": "Claude Design 1792069267-b198 (SF-59) marks INV1 FUTURE and adds FC1 / FC2 (My coaches). Claude Design 1792432236-08da (SF-76) adds FCI1 / FCI2 on the SF-73 id-based endpoints (listMyIncomingCoachInvitations, preview / accept / declineMyIncomingCoachInvitation, SF-72 acceptance policy): the signed-in fighter reviews and answers in the app by invitation id, never by token. The E08 link (/invite/coach#token=…) stays the web's (WFI1, web.invite.coach); INV1 and any native token handoff stay FUTURE until verified Universal Links / Android App Links with an in-memory handoff exist.",
+      "decision": "The app answers invitations from its inbox by id (SF-76); the email link opens the web page until a verified native link handoff exists. No token ever enters an app route, log or storage.",
       "decidedOn": "2026-10-15",
       "status": "DEFERRED",
       "routes": ["mobile.invite._code", "mobile.profile.coaches"],
