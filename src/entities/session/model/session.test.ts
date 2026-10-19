@@ -98,6 +98,21 @@ describe("restore", () => {
     expect(meCall && header(meCall, "authorization")).toBe("Bearer sfa_restored");
   });
 
+  it("never lets a refresh outlive its page (SF-75: no keepalive)", async () => {
+    const fetchMock = api({
+      "/api/auth/session/refresh": [() => tokens("sfa_restored")],
+      "/api/me": [viewer],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await session.restoreSession();
+
+    // A late answer after unload could overwrite a newer cookie with a
+    // superseded one; a lost answer is recovered by the API instead.
+    const [refreshCall] = calls(fetchMock);
+    expect(refreshCall?.[1].keepalive).not.toBe(true);
+  });
+
   it("exposes the viewer from /api/me and nothing else", async () => {
     vi.stubGlobal(
       "fetch",

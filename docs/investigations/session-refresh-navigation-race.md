@@ -1,9 +1,31 @@
 # Investigation: session revoked by a page load during a session restore
 
-**Status: RELEASE BLOCKER — untriaged.** Found during SF-54 (2026-10-14).
-Owner area: SF-28 session lifecycle (web) and ADR 0010 (simplefit-api).
-Not introduced by SF-54: it reproduces identically on clean `main`
-(`a77c604`).
+**Status: RESOLVED in SF-75 (2026-10-19)** by a backend lost-response
+recovery (simplefit-api ADR 0010, "Lost-response recovery (SF-75)", and
+`docs/architecture/proposals/SF-75-refresh-lost-response-recovery.md`, which
+holds the threat model). Found during SF-54 (2026-10-14). Owner area: SF-28
+session lifecycle (web) and ADR 0010 (simplefit-api). Not introduced by
+SF-54: it reproduced identically on clean `main` (`a77c604`).
+
+## Resolution (SF-75)
+
+- **Fix:** the API recovers a lost response. A consumed refresh token
+  presented again while none of its children was ever presented (so nothing
+  proves the answer arrived) is accepted within 60 s and at most 10 times; it
+  supersedes the unused child. Any other consumed token is still reuse and
+  revokes the session; two holders of one token always collide on the next
+  refresh. No client protocol change: the SF-28 coordinator stays the only
+  refresh manager; the refresh deliberately has no `keepalive`.
+- **Reproduction, 2026-10-19:** production build, real Phoenix and
+  PostgreSQL, and a proxy holding the refresh answer after the commit (no
+  Playwright interception). Before the fix, the after-commit navigation, the
+  Coach Home reload and the invitation-page reload revoked the session in
+  Chromium, Firefox and WebKit; Back/Forward (Chromium) and ten rapid reloads
+  (WebKit) did so without the proxy. After the fix, none did.
+- **Why the old spec "passed" in WebKit:** it held the answer with
+  `route.fetch()`, whose response cookies some engines store before the hold;
+  that was not a lost response. The spec now uses a real proxy and asserts
+  that the API recorded a recovery.
 
 ## Summary
 
