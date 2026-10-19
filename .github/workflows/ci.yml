@@ -72,13 +72,15 @@ jobs:
         run: pnpm api:check
 
       - name: Production build
-        run: pnpm build
+        run: node scripts/font-fetch-retry.mjs pnpm build
         env:
           NEXT_PUBLIC_API_URL: http://localhost:4000
 
       - name: Storybook build
         # The component workshop must keep compiling with the real primitives.
-        run: pnpm storybook:build
+        # Both builds download the brand fonts from Google Fonts; the wrapper
+        # retries only that download's failure (scripts/font-fetch-retry.mjs).
+        run: node scripts/font-fetch-retry.mjs pnpm storybook:build
 
   browsers:
     # SF-34: canonical layout and system-state geometry on the static
@@ -117,7 +119,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Production build
-        run: pnpm build
+        run: node scripts/font-fetch-retry.mjs pnpm build
         env:
           NEXT_PUBLIC_API_URL: http://localhost:4000
           # Public fixture IDs (never deployed): the build renders the Google and
@@ -129,7 +131,7 @@ jobs:
           NEXT_PUBLIC_APPLE_REDIRECT_URI: https://localhost/login
 
       - name: Storybook build
-        run: pnpm storybook:build
+        run: node scripts/font-fetch-retry.mjs pnpm storybook:build
 
       - name: Geometry, functional and portability QA (Playwright)
         run: pnpm test:geometry
