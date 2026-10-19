@@ -13,13 +13,13 @@ artifact was at its 511-file limit, so the frozen `TimerReady` / `TimerRest`
 previews were removed (T02 / T05 now point at `TimerLive.dc.html` with their
 `phase`, as the registry's queries already said).
 
-| Artboard                  | Source                      | Route                          | Production        | Status          |
-| ------------------------- | --------------------------- | ------------------------------ | ----------------- | --------------- |
-| WFI1 Coach invitation     | `WebFighterInvite.dc.html`  | `/invite/coach` (`#token=…`)   | `CoachInvitation` | current         |
-| WFC1 My coaches           | `WebFighterCoaches.dc.html` | `/app/coaches` (`?view=ended`) | `FighterCoaches`  | current         |
-| FighterWebNav · Coaches   | `FighterWebNav.dc.html`     | `web.app.fighter#coaches`      | `WorkspaceShell`  | current         |
-| Incoming invitation inbox | —                           | —                              | —                 | blocked (SF-73) |
-| Coach relationship detail | —                           | —                              | —                 | blocked (SF-74) |
+| Artboard                  | Source                      | Route                          | Production        | Status                                                                |
+| ------------------------- | --------------------------- | ------------------------------ | ----------------- | --------------------------------------------------------------------- |
+| WFI1 Coach invitation     | `WebFighterInvite.dc.html`  | `/invite/coach` (`#token=…`)   | `CoachInvitation` | current                                                               |
+| WFC1 My coaches           | `WebFighterCoaches.dc.html` | `/app/coaches` (`?view=ended`) | `FighterCoaches`  | current                                                               |
+| FighterWebNav · Coaches   | `FighterWebNav.dc.html`     | `web.app.fighter#coaches`      | `WorkspaceShell`  | current                                                               |
+| Incoming invitation inbox | —                           | —                              | —                 | API read-only (SF-73: `listMyIncomingCoachInvitations`); UI not built |
+| Coach relationship detail | —                           | —                              | —                 | blocked (SF-74)                                                       |
 
 ## The invitation link (WFI1)
 
