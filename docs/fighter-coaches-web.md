@@ -19,7 +19,7 @@ previews were removed (T02 / T05 now point at `TimerLive.dc.html` with their
 | WFC1 My coaches           | `WebFighterCoaches.dc.html` | `/app/coaches` (`?view=ended`) | `FighterCoaches`  | current                                                                                                                                                                                                     |
 | FighterWebNav · Coaches   | `FighterWebNav.dc.html`     | `web.app.fighter#coaches`      | `WorkspaceShell`  | current                                                                                                                                                                                                     |
 | Incoming invitation inbox | —                           | —                              | —                 | API: read (SF-73 `listMyIncomingCoachInvitations`); respond by id (`previewMyIncomingCoachInvitation`, `acceptMyIncomingCoachInvitation`, `declineMyIncomingCoachInvitation`) off until SF-72; UI not built |
-| Coach relationship detail | —                           | —                              | —                 | blocked (SF-74)                                                                                                                                                                                             |
+| Coach relationship detail | —                           | —                              | —                 | API ready (SF-74 `getMyCoachRelationship`); UI not built                                                                                                                                                    |
 
 ## The invitation link (WFI1)
 
@@ -67,8 +67,10 @@ previews were removed (T02 / T05 now point at `TimerLive.dc.html` with their
   Active rows show the coach's display name or brand and start; expanding a
   row shows what that coach sees (`disclosed_fields`) and End relationship.
   Ended rows show only the name at the end, the date and who ended it.
-- No detail route: fighters have no single-relationship read (SF-74), and the
-  page never scans pages to fake one.
+- No detail route yet: SF-74 added the single-relationship read
+  `getMyCoachRelationship` (`GET /api/v1/me/coaches/{relationship_id}`,
+  active or ended, `404` for foreign or unknown ids); the page never scans
+  pages to fake one.
 - End relationship: confirmation, one request, only the backend's `204` is
   reported as ended; a `404` gets a neutral message without the name. Either
   answer refetches the lists; other coaches are untouched.
