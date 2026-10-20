@@ -1,0 +1,220 @@
+{
+  "meta": {
+    "title": "Sesiones",
+    "description": "Las sesiones de entrenamiento que planificas para tus boxeadores.",
+    "newTitle": "Nueva sesión",
+    "newDescription": "Planifica una sesión de entrenamiento para uno de tus boxeadores.",
+    "sessionTitle": "Sesión",
+    "sessionDescription": "Una sesión de entrenamiento que planificaste.",
+    "editTitle": "Editar sesión",
+    "editDescription": "Cambia una sesión de entrenamiento planificada."
+  },
+  "eyebrow": "Entrenador · Sesiones",
+  "sessionEyebrow": "Entrenador · Sesión",
+  "title": "Sesiones",
+  "new": "Nueva sesión",
+  "back": "Volver a las sesiones",
+  "planner": {
+    "views": "Sesiones",
+    "tabs": {
+      "upcoming": "Próximas",
+      "history": "Historial"
+    },
+    "heading": {
+      "upcoming": "Próximas",
+      "history": "Historial"
+    },
+    "filter": "Mostrar",
+    "filters": {
+      "all": "Todas",
+      "completed": "Completadas",
+      "cancelled": "Canceladas"
+    },
+    "loading": "Cargando tus sesiones",
+    "more": "Mostrar más",
+    "loadingMore": "Cargando…",
+    "list": "Sesiones por día",
+    "minutes": "{minutes} min",
+    "fighterNotShared": "Boxeador no compartido",
+    "aside": "Cada sesión se planifica para un boxeador al que entrenas. El boxeador confirma cuando la hizo; ves el resultado aquí. Las horas se muestran en la zona horaria de la sesión."
+  },
+  "empty": {
+    "upcoming": {
+      "title": "No hay sesiones próximas",
+      "body": "Planifica una sesión para uno de tus boxeadores. Aparece aquí y en su entrenamiento."
+    },
+    "history": {
+      "title": "Aún no hay sesiones pasadas",
+      "body": "Aquí aparecen las sesiones completadas, canceladas y pasadas."
+    },
+    "completed": {
+      "title": "Aún no hay sesiones completadas",
+      "body": "Aquí aparecen las sesiones que tus boxeadores confirmaron."
+    },
+    "cancelled": {
+      "title": "No hay sesiones canceladas",
+      "body": "Aquí aparecen las sesiones que tú o el sistema cancelaron."
+    }
+  },
+  "unavailable": {
+    "title": "Las sesiones aún no están disponibles",
+    "body": "La planificación de entrenamientos se abre junto con el coaching de boxeadores, cuando se publiquen las reglas de datos para entrenadores y lo que los boxeadores aceptan compartir. No se te oculta nada: simplemente aún no hay nada que mostrar."
+  },
+  "failed": {
+    "title": "No pudimos cargar tus sesiones.",
+    "body": "Comprueba tu conexión e inténtalo de nuevo.",
+    "retry": "Intentar de nuevo"
+  },
+  "status": {
+    "planned": "Planificada",
+    "completed": "Completada",
+    "cancelled": "Cancelada"
+  },
+  "types": {
+    "technical": "Técnica",
+    "sparring": "Sparring",
+    "pads": "Manoplas",
+    "strength_conditioning": "Fuerza y acond.",
+    "roadwork": "Carrera"
+  },
+  "form": {
+    "newTitle": "Nueva sesión",
+    "editTitle": "Editar sesión",
+    "fighter": {
+      "label": "Boxeador",
+      "placeholder": "Elige un boxeador",
+      "search": "Buscar boxeadores",
+      "empty": "Ningún boxeador coincide.",
+      "hint": "Boxeadores que aceptaron tu invitación.",
+      "fixed": "El boxeador de una sesión no se puede cambiar.",
+      "required": "Elige un boxeador.",
+      "notShared": "Boxeador (nombre no compartido) · desde {date}"
+    },
+    "title": {
+      "label": "Título",
+      "invalid": "Escribe un título de hasta 80 caracteres."
+    },
+    "type": {
+      "label": "Tipo de entrenamiento",
+      "required": "Elige un tipo de entrenamiento."
+    },
+    "date": {
+      "label": "Fecha",
+      "required": "Elige una fecha."
+    },
+    "time": {
+      "label": "Hora de inicio",
+      "required": "Elige una hora de inicio.",
+      "window": "Elige un inicio entre ayer y dentro de un año.",
+      "invalid": "No se puede usar esta hora de inicio. Revisa la fecha, la hora y la zona horaria."
+    },
+    "zone": {
+      "label": "Zona horaria",
+      "search": "Buscar zonas horarias",
+      "empty": "Ninguna zona horaria coincide.",
+      "required": "Elige una zona horaria.",
+      "invalid": "Esta zona horaria no es compatible. Elige otra."
+    },
+    "duration": {
+      "label": "Duración",
+      "unit": "minutos",
+      "hint": "De 5 a 600 minutos.",
+      "invalid": "Escribe un número entero de minutos entre 5 y 600."
+    },
+    "notes": {
+      "label": "Notas para el boxeador · opcional",
+      "hint": "Hasta 2000 caracteres. El boxeador las ve.",
+      "invalid": "Las notas no pueden superar los 2000 caracteres."
+    },
+    "gap": {
+      "title": "Esta hora no existe ese día.",
+      "body": "Los relojes en {zone} se saltan esta hora cuando empieza el horario de verano. Elige otra hora de inicio."
+    },
+    "overlap": {
+      "title": "Esta hora ocurre dos veces ese día.",
+      "body": "Los relojes en {zone} se atrasan y la repiten. Elige qué {time}:",
+      "first": "Primera · UTC{offset}",
+      "second": "Segunda · UTC{offset}",
+      "required": "Elige a cuál de las dos horas te refieres."
+    },
+    "notices": {
+      "failed": {
+        "title": "No pudimos guardar la sesión.",
+        "create": "No cambió nada. Comprueba tu conexión e inténtalo de nuevo; volver a intentarlo nunca crea una segunda sesión.",
+        "edit": "No cambió nada. Comprueba tu conexión e inténtalo de nuevo."
+      },
+      "conflict": {
+        "title": "Esta sesión ya no se puede cambiar.",
+        "body": "El boxeador la completó o se canceló. Tus cambios no se guardaron."
+      },
+      "unavailable": {
+        "title": "Ya no puedes planificar para este boxeador.",
+        "body": "La relación de coaching terminó o no está disponible. No se guardó nada."
+      }
+    },
+    "noFighters": {
+      "title": "Aún no hay boxeadores para planificar",
+      "body": "Puedes planificar sesiones para boxeadores que aceptaron tu invitación. Primero invita a un boxeador desde Boxeadores.",
+      "action": "Ir a Boxeadores"
+    },
+    "loading": "Cargando el formulario",
+    "cancel": "Cancelar",
+    "create": "Asignar sesión",
+    "save": "Guardar cambios",
+    "saving": "Guardando…",
+    "aside": "El inicio se guarda como un momento exacto en la zona horaria que elijas, así sigue siendo correcto con los cambios de horario y para un boxeador en otro país.",
+    "saved": {
+      "created": "Sesión planificada.",
+      "updated": "Cambios guardados."
+    }
+  },
+  "detail": {
+    "heading": "Sesión",
+    "loading": "Cargando la sesión",
+    "edit": "Editar",
+    "cancel": "Cancelar sesión",
+    "facts": {
+      "fighter": "Boxeador",
+      "type": "Tipo de entrenamiento",
+      "starts": "Empieza",
+      "yourTime": "Tu hora",
+      "duration": "Duración",
+      "notes": "Notas",
+      "completed": "Completada",
+      "cancelled": "Cancelada"
+    },
+    "startsValue": "{when} · {zone} (UTC{offset})",
+    "sameZone": "{time} · misma zona horaria",
+    "otherZone": "{when} · {zone}",
+    "minutes": "{minutes, plural, one {# minuto} other {# minutos}}",
+    "noNotes": "Sin notas",
+    "cancelledByCoach": "{when} · por ti",
+    "cancelledBySystem": "{when} · la relación de coaching terminó",
+    "aside": {
+      "planned": "Las sesiones planificadas se pueden editar o cancelar hasta que el boxeador las complete.",
+      "completed": "El boxeador confirmó esta sesión. Las sesiones completadas no se pueden editar ni cancelar.",
+      "cancelled": "Las sesiones canceladas quedan en el historial. Para volver a entrenar, crea una sesión nueva."
+    },
+    "missing": {
+      "title": "Esta sesión no está disponible",
+      "body": "Puede pertenecer a un boxeador al que ya no entrenas, o el enlace es incorrecto.",
+      "aside": "No se muestran las sesiones de boxeadores a los que ya no entrenas."
+    },
+    "failed": {
+      "title": "No pudimos cargar esta sesión.",
+      "body": "Comprueba tu conexión e inténtalo de nuevo."
+    }
+  },
+  "cancelDialog": {
+    "title": "¿Cancelar esta sesión?",
+    "body": "{name} la verá como cancelada. Una sesión cancelada no se puede volver a planificar; crea una nueva en su lugar.",
+    "bodyUnnamed": "El boxeador la verá como cancelada. Una sesión cancelada no se puede volver a planificar; crea una nueva en su lugar.",
+    "failed": "No pudimos cancelar la sesión. No cambió nada. Inténtalo de nuevo.",
+    "keep": "Mantener sesión",
+    "confirm": "Cancelar sesión",
+    "pending": "Cancelando…",
+    "cancelled": "La sesión está cancelada.",
+    "changed": "Esta sesión ya no se puede cancelar: el boxeador la completó.",
+    "unavailable": "Esta sesión ya no está disponible."
+  }
+}

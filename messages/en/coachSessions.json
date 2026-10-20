@@ -1,0 +1,220 @@
+{
+  "meta": {
+    "title": "Sessions",
+    "description": "The training sessions you plan for your fighters.",
+    "newTitle": "New session",
+    "newDescription": "Plan a training session for one of your fighters.",
+    "sessionTitle": "Session",
+    "sessionDescription": "One training session you planned.",
+    "editTitle": "Edit session",
+    "editDescription": "Change a planned training session."
+  },
+  "eyebrow": "Coach · Sessions",
+  "sessionEyebrow": "Coach · Session",
+  "title": "Sessions",
+  "new": "New session",
+  "back": "Back to sessions",
+  "planner": {
+    "views": "Sessions",
+    "tabs": {
+      "upcoming": "Upcoming",
+      "history": "History"
+    },
+    "heading": {
+      "upcoming": "Upcoming",
+      "history": "History"
+    },
+    "filter": "Show",
+    "filters": {
+      "all": "All",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "loading": "Loading your sessions",
+    "more": "Show more",
+    "loadingMore": "Loading more…",
+    "list": "Sessions by day",
+    "minutes": "{minutes} min",
+    "fighterNotShared": "Fighter not shared",
+    "aside": "One session is planned for one fighter you coach. The fighter confirms when they did it; you see the result here. Times show in the session’s time zone."
+  },
+  "empty": {
+    "upcoming": {
+      "title": "No upcoming sessions",
+      "body": "Plan a session for one of your fighters. It appears here and in their training."
+    },
+    "history": {
+      "title": "No past sessions yet",
+      "body": "Completed, cancelled and past sessions appear here."
+    },
+    "completed": {
+      "title": "No completed sessions yet",
+      "body": "Sessions your fighters confirmed appear here."
+    },
+    "cancelled": {
+      "title": "No cancelled sessions",
+      "body": "Sessions you or the system cancelled appear here."
+    }
+  },
+  "unavailable": {
+    "title": "Sessions aren’t available yet",
+    "body": "Planning training opens together with coaching fighters, once the coach data rules and what fighters agree to share are published. Nothing is hidden from you: there is simply nothing to show yet."
+  },
+  "failed": {
+    "title": "We couldn’t load your sessions.",
+    "body": "Check your connection and try again.",
+    "retry": "Try again"
+  },
+  "status": {
+    "planned": "Planned",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "types": {
+    "technical": "Technical",
+    "sparring": "Sparring",
+    "pads": "Pads",
+    "strength_conditioning": "S&C",
+    "roadwork": "Roadwork"
+  },
+  "form": {
+    "newTitle": "New session",
+    "editTitle": "Edit session",
+    "fighter": {
+      "label": "Fighter",
+      "placeholder": "Choose a fighter",
+      "search": "Search fighters",
+      "empty": "No fighter matches.",
+      "hint": "Fighters who accepted your invitation.",
+      "fixed": "The fighter of a session can’t change.",
+      "required": "Choose a fighter.",
+      "notShared": "Fighter (name not shared) · since {date}"
+    },
+    "title": {
+      "label": "Title",
+      "invalid": "Enter a title of up to 80 characters."
+    },
+    "type": {
+      "label": "Training type",
+      "required": "Choose a training type."
+    },
+    "date": {
+      "label": "Date",
+      "required": "Choose a date."
+    },
+    "time": {
+      "label": "Start time",
+      "required": "Choose a start time.",
+      "window": "Choose a start between yesterday and one year from now.",
+      "invalid": "This start time can’t be used. Check the date, time and time zone."
+    },
+    "zone": {
+      "label": "Time zone",
+      "search": "Search time zones",
+      "empty": "No time zone matches.",
+      "required": "Choose a time zone.",
+      "invalid": "This time zone isn’t supported. Choose another one."
+    },
+    "duration": {
+      "label": "Duration",
+      "unit": "minutes",
+      "hint": "5 to 600 minutes.",
+      "invalid": "Enter a whole number of minutes from 5 to 600."
+    },
+    "notes": {
+      "label": "Notes for the fighter · optional",
+      "hint": "Up to 2,000 characters. The fighter sees them.",
+      "invalid": "Keep notes to 2,000 characters."
+    },
+    "gap": {
+      "title": "This time doesn’t exist on that day.",
+      "body": "The clocks in {zone} skip this time when daylight saving starts. Choose another start time."
+    },
+    "overlap": {
+      "title": "This time happens twice on that day.",
+      "body": "The clocks in {zone} go back and repeat it. Choose which {time}:",
+      "first": "First · UTC{offset}",
+      "second": "Second · UTC{offset}",
+      "required": "Choose which of the two times you mean."
+    },
+    "notices": {
+      "failed": {
+        "title": "We couldn’t save the session.",
+        "create": "Nothing changed. Check your connection and try again; trying again never creates a second session.",
+        "edit": "Nothing changed. Check your connection and try again."
+      },
+      "conflict": {
+        "title": "This session can’t be changed any more.",
+        "body": "The fighter completed it, or it was cancelled. Your changes were not saved."
+      },
+      "unavailable": {
+        "title": "You can’t plan for this fighter any more.",
+        "body": "The coaching relationship ended or isn’t available. Nothing was saved."
+      }
+    },
+    "noFighters": {
+      "title": "No fighters to plan for yet",
+      "body": "You can plan sessions for fighters who accepted your invitation. Invite a fighter from Fighters first.",
+      "action": "Go to Fighters"
+    },
+    "loading": "Loading the form",
+    "cancel": "Cancel",
+    "create": "Assign session",
+    "save": "Save changes",
+    "saving": "Saving…",
+    "aside": "The start is saved as an exact moment in the time zone you choose, so it stays right across daylight-saving changes and for a fighter in another country.",
+    "saved": {
+      "created": "Session planned.",
+      "updated": "Changes saved."
+    }
+  },
+  "detail": {
+    "heading": "Session",
+    "loading": "Loading the session",
+    "edit": "Edit",
+    "cancel": "Cancel session",
+    "facts": {
+      "fighter": "Fighter",
+      "type": "Training type",
+      "starts": "Starts",
+      "yourTime": "Your time",
+      "duration": "Duration",
+      "notes": "Notes",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "startsValue": "{when} · {zone} (UTC{offset})",
+    "sameZone": "{time} · same time zone",
+    "otherZone": "{when} · {zone}",
+    "minutes": "{minutes, plural, one {# minute} other {# minutes}}",
+    "noNotes": "No notes",
+    "cancelledByCoach": "{when} · by you",
+    "cancelledBySystem": "{when} · the coaching relationship ended",
+    "aside": {
+      "planned": "Planned sessions can be edited or cancelled until the fighter completes them.",
+      "completed": "The fighter confirmed this session. Completed sessions can’t be edited or cancelled.",
+      "cancelled": "Cancelled sessions stay in history. To train again, create a new session."
+    },
+    "missing": {
+      "title": "This session isn’t available",
+      "body": "It may belong to a fighter you no longer coach, or the link is wrong.",
+      "aside": "Sessions of fighters you no longer coach are not shown."
+    },
+    "failed": {
+      "title": "We couldn’t load this session.",
+      "body": "Check your connection and try again."
+    }
+  },
+  "cancelDialog": {
+    "title": "Cancel this session?",
+    "body": "{name} sees it as cancelled. A cancelled session can’t be planned again; create a new one instead.",
+    "bodyUnnamed": "The fighter sees it as cancelled. A cancelled session can’t be planned again; create a new one instead.",
+    "failed": "We couldn’t cancel the session. Nothing changed. Try again.",
+    "keep": "Keep session",
+    "confirm": "Cancel session",
+    "pending": "Cancelling…",
+    "cancelled": "The session is cancelled.",
+    "changed": "This session can’t be cancelled any more: the fighter completed it.",
+    "unavailable": "This session isn’t available any more."
+  }
+}

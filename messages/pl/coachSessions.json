@@ -1,0 +1,220 @@
+{
+  "meta": {
+    "title": "Treningi",
+    "description": "Treningi, które planujesz dla swoich zawodników.",
+    "newTitle": "Nowy trening",
+    "newDescription": "Zaplanuj trening dla jednego ze swoich zawodników.",
+    "sessionTitle": "Trening",
+    "sessionDescription": "Jeden zaplanowany przez ciebie trening.",
+    "editTitle": "Edytuj trening",
+    "editDescription": "Zmień zaplanowany trening."
+  },
+  "eyebrow": "Trener · Treningi",
+  "sessionEyebrow": "Trener · Trening",
+  "title": "Treningi",
+  "new": "Nowy trening",
+  "back": "Wróć do treningów",
+  "planner": {
+    "views": "Treningi",
+    "tabs": {
+      "upcoming": "Nadchodzące",
+      "history": "Historia"
+    },
+    "heading": {
+      "upcoming": "Nadchodzące",
+      "history": "Historia"
+    },
+    "filter": "Pokaż",
+    "filters": {
+      "all": "Wszystkie",
+      "completed": "Wykonane",
+      "cancelled": "Odwołane"
+    },
+    "loading": "Wczytywanie twoich treningów",
+    "more": "Pokaż więcej",
+    "loadingMore": "Wczytywanie…",
+    "list": "Treningi według dni",
+    "minutes": "{minutes} min",
+    "fighterNotShared": "Zawodnik nieudostępniony",
+    "aside": "Każdy trening planujesz dla jednego zawodnika, którego trenujesz. Zawodnik potwierdza, kiedy go wykonał; wynik widzisz tutaj. Godziny są pokazane w strefie czasowej treningu."
+  },
+  "empty": {
+    "upcoming": {
+      "title": "Brak nadchodzących treningów",
+      "body": "Zaplanuj trening dla jednego ze swoich zawodników. Pojawi się tutaj i w jego treningach."
+    },
+    "history": {
+      "title": "Brak minionych treningów",
+      "body": "Tutaj pojawiają się treningi wykonane, odwołane i minione."
+    },
+    "completed": {
+      "title": "Brak wykonanych treningów",
+      "body": "Tutaj pojawiają się treningi potwierdzone przez zawodników."
+    },
+    "cancelled": {
+      "title": "Brak odwołanych treningów",
+      "body": "Tutaj pojawiają się treningi odwołane przez ciebie lub system."
+    }
+  },
+  "unavailable": {
+    "title": "Treningi nie są jeszcze dostępne",
+    "body": "Planowanie treningów ruszy razem z prowadzeniem zawodników, gdy zostaną opublikowane zasady danych dla trenerów i to, co zawodnicy zgadzają się udostępniać. Nic nie jest przed tobą ukryte: po prostu nie ma jeszcze nic do pokazania."
+  },
+  "failed": {
+    "title": "Nie udało się wczytać twoich treningów.",
+    "body": "Sprawdź połączenie i spróbuj ponownie.",
+    "retry": "Spróbuj ponownie"
+  },
+  "status": {
+    "planned": "Zaplanowany",
+    "completed": "Wykonany",
+    "cancelled": "Odwołany"
+  },
+  "types": {
+    "technical": "Technika",
+    "sparring": "Sparing",
+    "pads": "Tarcze",
+    "strength_conditioning": "Siła i kondycja",
+    "roadwork": "Bieganie"
+  },
+  "form": {
+    "newTitle": "Nowy trening",
+    "editTitle": "Edytuj trening",
+    "fighter": {
+      "label": "Zawodnik",
+      "placeholder": "Wybierz zawodnika",
+      "search": "Szukaj zawodników",
+      "empty": "Brak pasujących zawodników.",
+      "hint": "Zawodnicy, którzy przyjęli twoje zaproszenie.",
+      "fixed": "Zawodnika treningu nie można zmienić.",
+      "required": "Wybierz zawodnika.",
+      "notShared": "Zawodnik (imię nieudostępnione) · od {date}"
+    },
+    "title": {
+      "label": "Tytuł",
+      "invalid": "Wpisz tytuł do 80 znaków."
+    },
+    "type": {
+      "label": "Rodzaj treningu",
+      "required": "Wybierz rodzaj treningu."
+    },
+    "date": {
+      "label": "Data",
+      "required": "Wybierz datę."
+    },
+    "time": {
+      "label": "Godzina rozpoczęcia",
+      "required": "Wybierz godzinę rozpoczęcia.",
+      "window": "Wybierz początek między wczoraj a rokiem od dziś.",
+      "invalid": "Tej godziny rozpoczęcia nie można użyć. Sprawdź datę, godzinę i strefę czasową."
+    },
+    "zone": {
+      "label": "Strefa czasowa",
+      "search": "Szukaj stref czasowych",
+      "empty": "Brak pasującej strefy czasowej.",
+      "required": "Wybierz strefę czasową.",
+      "invalid": "Ta strefa czasowa nie jest obsługiwana. Wybierz inną."
+    },
+    "duration": {
+      "label": "Czas trwania",
+      "unit": "minut",
+      "hint": "Od 5 do 600 minut.",
+      "invalid": "Wpisz pełną liczbę minut od 5 do 600."
+    },
+    "notes": {
+      "label": "Notatki dla zawodnika · opcjonalnie",
+      "hint": "Do 2000 znaków. Zawodnik je widzi.",
+      "invalid": "Notatki mogą mieć najwyżej 2000 znaków."
+    },
+    "gap": {
+      "title": "Ta godzina nie istnieje tego dnia.",
+      "body": "Zegary w {zone} pomijają tę godzinę przy zmianie na czas letni. Wybierz inną godzinę rozpoczęcia."
+    },
+    "overlap": {
+      "title": "Ta godzina występuje tego dnia dwa razy.",
+      "body": "Zegary w {zone} są cofane i ją powtarzają. Wybierz, którą {time}:",
+      "first": "Pierwsza · UTC{offset}",
+      "second": "Druga · UTC{offset}",
+      "required": "Wybierz, o którą z dwóch godzin chodzi."
+    },
+    "notices": {
+      "failed": {
+        "title": "Nie udało się zapisać treningu.",
+        "create": "Nic się nie zmieniło. Sprawdź połączenie i spróbuj ponownie; ponowna próba nigdy nie tworzy drugiego treningu.",
+        "edit": "Nic się nie zmieniło. Sprawdź połączenie i spróbuj ponownie."
+      },
+      "conflict": {
+        "title": "Tego treningu nie można już zmienić.",
+        "body": "Zawodnik go wykonał albo został odwołany. Twoje zmiany nie zostały zapisane."
+      },
+      "unavailable": {
+        "title": "Nie możesz już planować dla tego zawodnika.",
+        "body": "Współpraca trenerska została zakończona lub jest niedostępna. Nic nie zostało zapisane."
+      }
+    },
+    "noFighters": {
+      "title": "Brak zawodników do planowania",
+      "body": "Możesz planować treningi dla zawodników, którzy przyjęli twoje zaproszenie. Najpierw zaproś zawodnika w sekcji Zawodnicy.",
+      "action": "Przejdź do Zawodników"
+    },
+    "loading": "Wczytywanie formularza",
+    "cancel": "Anuluj",
+    "create": "Przypisz trening",
+    "save": "Zapisz zmiany",
+    "saving": "Zapisywanie…",
+    "aside": "Początek jest zapisywany jako dokładny moment w wybranej strefie czasowej, więc pozostaje poprawny przy zmianie czasu i dla zawodnika w innym kraju.",
+    "saved": {
+      "created": "Trening zaplanowany.",
+      "updated": "Zmiany zapisane."
+    }
+  },
+  "detail": {
+    "heading": "Trening",
+    "loading": "Wczytywanie treningu",
+    "edit": "Edytuj",
+    "cancel": "Odwołaj trening",
+    "facts": {
+      "fighter": "Zawodnik",
+      "type": "Rodzaj treningu",
+      "starts": "Początek",
+      "yourTime": "Twój czas",
+      "duration": "Czas trwania",
+      "notes": "Notatki",
+      "completed": "Wykonany",
+      "cancelled": "Odwołany"
+    },
+    "startsValue": "{when} · {zone} (UTC{offset})",
+    "sameZone": "{time} · ta sama strefa czasowa",
+    "otherZone": "{when} · {zone}",
+    "minutes": "{minutes, plural, one {# minuta} few {# minuty} many {# minut} other {# minuty}}",
+    "noNotes": "Brak notatek",
+    "cancelledByCoach": "{when} · przez ciebie",
+    "cancelledBySystem": "{when} · współpraca trenerska zakończyła się",
+    "aside": {
+      "planned": "Zaplanowane treningi można edytować lub odwołać, dopóki zawodnik ich nie wykona.",
+      "completed": "Zawodnik potwierdził ten trening. Wykonanych treningów nie można edytować ani odwołać.",
+      "cancelled": "Odwołane treningi zostają w historii. Aby znów trenować, utwórz nowy trening."
+    },
+    "missing": {
+      "title": "Ten trening jest niedostępny",
+      "body": "Może należeć do zawodnika, którego już nie trenujesz, albo link jest błędny.",
+      "aside": "Treningi zawodników, których już nie trenujesz, nie są pokazywane."
+    },
+    "failed": {
+      "title": "Nie udało się wczytać tego treningu.",
+      "body": "Sprawdź połączenie i spróbuj ponownie."
+    }
+  },
+  "cancelDialog": {
+    "title": "Odwołać ten trening?",
+    "body": "{name} zobaczy go jako odwołany. Odwołanego treningu nie można zaplanować ponownie; zamiast tego utwórz nowy.",
+    "bodyUnnamed": "Zawodnik zobaczy go jako odwołany. Odwołanego treningu nie można zaplanować ponownie; zamiast tego utwórz nowy.",
+    "failed": "Nie udało się odwołać treningu. Nic się nie zmieniło. Spróbuj ponownie.",
+    "keep": "Zostaw trening",
+    "confirm": "Odwołaj trening",
+    "pending": "Odwoływanie…",
+    "cancelled": "Trening został odwołany.",
+    "changed": "Tego treningu nie można już odwołać: zawodnik go wykonał.",
+    "unavailable": "Ten trening nie jest już dostępny."
+  }
+}

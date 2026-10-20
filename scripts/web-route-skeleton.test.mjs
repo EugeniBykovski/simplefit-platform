@@ -39,6 +39,11 @@ const REAL_SCREENS = [
   // SF-58: the Coach fighters (WC7) and one fighter (WC4).
   "web.app.coach.fighters",
   "web.app.coach.fighters._fighter-id",
+  // SF-64: the Coach sessions planner (WCT1), creator (WC3), one session (WCT2) and its edit (WCT3).
+  "web.app.coach.sessions",
+  "web.app.coach.sessions.new",
+  "web.app.coach.sessions._session-id",
+  "web.app.coach.sessions._session-id.edit",
   // SF-60: the coach invitation page (WFI1) and the fighter's coaches (WFC1).
   "web.invite.coach",
   "web.app.coaches",

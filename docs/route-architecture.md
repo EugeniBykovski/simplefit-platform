@@ -515,7 +515,12 @@ Sessions and Coach settings, while the registry keeps the Route Gallery's
 twelve items and their placeholders (`D-WEB-COACH-HOME-MVP`). SF-58 links
 Fighters: `/app/coach/fighters` (WC7) is the SF-56 roster with the SF-57
 invitations and an in-page invite composer, `/app/coach/fighters/:fighterId`
-(WC4) one active relationship with End relationship. The Fighter and
+(WC4) one active relationship with End relationship. SF-64 links Sessions
+(`D-WEB-COACH-SESSIONS-PLANNER`, Claude Design `1792490047-d551`):
+`/app/coach/sessions` (WCT1) is the agenda of the SF-62/SF-63 training
+sessions, `/app/coach/sessions/new` (WC3) creates one session,
+`/app/coach/sessions/:sessionId` (WCT2) shows and cancels it and
+`…/edit` (WCT3) edits it. The Fighter and
 Coach sidebars carry the profile context switcher: completed contexts (the
 capabilities the entry reports) are opened by recording the SF-51 choice
 (`PUT /api/v1/me/entry/context`) and resolving the entry again; unfinished
@@ -985,7 +990,8 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-WEB-COACH-ONBOARDING-FLOW`        | DEFERRED               | Web Coach onboarding: WCR1, WCR2, WCR7 current; WCR3–WCR6 future; session-only access                |
 | `D-MOBILE-COACH-ONBOARDING-FLOW`     | DEFERRED               | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access                |
 | `D-ENTRY-CONTEXT-SELECTION`          | RESOLVED               | `context_selection` opens WCX1 on the web and A04 on mobile; never WA6 / O05 or home                 |
-| `D-WEB-COACH-HOME-MVP`               | DEFERRED               | Coach web: real profile dashboard, MVP nav with Soon rows; CRW1 future                               |
+| `D-WEB-COACH-HOME-MVP`               | DEFERRED               | Coach web: real profile dashboard, MVP nav with Soon rows; CRW1, CRW2 future                         |
+| `D-WEB-COACH-SESSIONS-PLANNER`       | RESOLVED               | Program builder reduced to a one-session planner: WCT1, WC3, WCT2, WCT3 (SF-64); agenda, no grid     |
 | `D-MOBILE-COACH-SHELL-MVP`           | DEFERRED               | Coach mobile: real profile Today, MVP tabs with Soon items; CR4–CR6 future                           |
 | `D-MOBILE-FIGHTER-COACH-INVITATIONS` | DEFERRED               | Fighter mobile: inbox and review by invitation id (SF-76); INV1 and an app-link token handoff future |
 | `D-WEB-LEGAL-DOCUMENT-PAGES`         | NEEDS_PRODUCT_DECISION | Public legal pages (SF-71 L-12) have no artboard: gap; flows show the approved text in place (SF-72) |

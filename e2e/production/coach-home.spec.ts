@@ -66,8 +66,8 @@ test.describe("A · a completed Coach", () => {
     await expect(fills.getByText("—")).toHaveCount(3);
     await expect(page.locator("main")).not.toContainText(/€|booked|attendance|rounds/i);
 
-    // The MVP sidebar: Dashboard and (SF-58) Fighters linked; Sessions and
-    // Coach settings Soon.
+    // The MVP sidebar: Dashboard, (SF-58) Fighters and (SF-64) Sessions
+    // linked; Coach settings Soon.
     const sidebar = page.getByRole("complementary");
     await expect(sidebar.getByRole("link", { name: "Dashboard" })).toHaveAttribute(
       "aria-current",
@@ -77,12 +77,14 @@ test.describe("A · a completed Coach", () => {
       "href",
       "/en/app/coach/fighters",
     );
-    for (const name of ["Sessions", "Coach settings"]) {
-      await expect(sidebar.getByRole("link", { name })).toHaveCount(0);
-      await expect(
-        sidebar.locator('[data-nav-item][aria-disabled="true"]', { hasText: name }),
-      ).toContainText("Soon");
-    }
+    await expect(sidebar.getByRole("link", { name: "Sessions" })).toHaveAttribute(
+      "href",
+      "/en/app/coach/sessions",
+    );
+    await expect(sidebar.getByRole("link", { name: "Coach settings" })).toHaveCount(0);
+    await expect(
+      sidebar.locator('[data-nav-item][aria-disabled="true"]', { hasText: "Coach settings" }),
+    ).toContainText("Soon");
     await expect(sidebar).not.toContainText(/Earnings|Sparring|Team board|Messages/);
     // Reading the dashboard writes nothing.
     expect(writes(api)).toEqual([]);
