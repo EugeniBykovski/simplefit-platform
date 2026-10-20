@@ -7,7 +7,7 @@
 
 /**
  * `planned` until it ends: `cancelled` (by the coach, or by the system when the relationship ends) or
- * `completed` (confirmed by the fighter, a later operation). Both are final.
+ * `completed` (confirmed by the fighter, `completeMyTrainingSession`). Both are final.
  */
 export type CoachTrainingSessionStatus = typeof CoachTrainingSessionStatus[keyof typeof CoachTrainingSessionStatus];
 
