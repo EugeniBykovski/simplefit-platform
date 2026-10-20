@@ -36,7 +36,10 @@ export interface MyTrainingSession {
      * @nullable
      */
   coach_display_name_at_end: string | null;
-  /** @nullable */
+  /**
+     * When the fighter confirmed the session (set by the server, UTC, never changes); `null` unless completed.
+     * @nullable
+     */
   completed_at: string | null;
   /**
      * @minimum 5
@@ -64,7 +67,7 @@ export interface MyTrainingSession {
   starts_at: string;
   /**
      * `planned` until it ends: `cancelled` (by the coach, or by the system when the relationship ends) or
-     * `completed` (confirmed by the fighter, a later operation). Both are final.
+     * `completed` (confirmed by the fighter, `completeMyTrainingSession`). Both are final.
      */
   status: MyTrainingSessionStatus;
   /**

@@ -5,8 +5,15 @@
  * SimpleFit API 0.1.0
  */
 import type { ListMyCoachTrainingSessionsStatus } from './listMyCoachTrainingSessionsStatus';
+import type { ListMyCoachTrainingSessionsView } from './listMyCoachTrainingSessionsView';
 
 export type ListMyCoachTrainingSessionsParams = {
+/**
+ * A projection computed with the server's clock: `upcoming` - planned sessions not yet over
+ * (`starts_at` + `duration_minutes` after now), earliest first; `history` - completed, cancelled and past-due
+ * planned sessions, newest first. Without it: every session, earliest first.
+ */
+view?: ListMyCoachTrainingSessionsView;
 /**
  * Only sessions in this status.
  */
@@ -30,7 +37,7 @@ relationship_id?: string;
  */
 limit?: number;
 /**
- * `next_cursor` of the previous page, with the same filters.
+ * `next_cursor` of the previous page, with the same `view` and filters.
  */
 cursor?: string;
 };

@@ -74,8 +74,10 @@ export const getListMyCoachTrainingSessionsUrl = (params?: ListMyCoachTrainingSe
 }
 
 /**
- * The sessions of the viewer's active relationships, by start (earliest first, then by id). Sessions of ended
- * relationships are not listed. Filters: `status`, `from` / `to` (start instants), `relationship_id`.
+ * The sessions of the viewer's active relationships, by start (earliest first, then by id), with their current
+ * status and, once the fighter confirmed them, `completed_at`. Sessions of ended relationships are not listed.
+ * `view=upcoming` / `view=history` select the server-computed projections. Filters: `status`, `from` / `to`
+ * (start instants), `relationship_id`.
  *
  * * `not_found` - Coach–Fighter sharing is not enabled, or no completed coach profile.
  * * `validation_error` - a filter, `limit` or `cursor` is invalid.
@@ -657,7 +659,8 @@ export const getListMyTrainingSessionsUrl = (params?: ListMyTrainingSessionsPara
 
 /**
  * The sessions assigned to the viewer, by start (earliest first, then by id), including those of ended
- * relationships (with the coach's name at the end) and cancelled ones. Filters: `status`, `from` / `to`.
+ * relationships (with the coach's name at the end) and cancelled ones. `view=upcoming` / `view=history` select
+ * the server-computed projections. Filters: `status`, `from` / `to`.
  *
  * * `not_found` - the viewer has no completed fighter profile.
  * * `validation_error` - a filter, `limit` or `cursor` is invalid.
@@ -843,6 +846,115 @@ export function useGetMyTrainingSession<TData = Awaited<ReturnType<typeof getMyT
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetMyTrainingSessionQueryOptions(sessionId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getCompleteMyTrainingSessionUrl = (sessionId: string,) => {
+
+
+
+
+  return `/api/v1/me/training-sessions/${sessionId}/complete`
+}
+
+/**
+ * Confirms that the viewer did one of their planned sessions. No request body: the server records the
+ * completion time (`completed_at`, UTC); a client cannot choose it. Allowed from the session's start onwards with
+ * no deadline, also after the coaching relationship has ended (a session that had already started then stays
+ * planned) and whatever the Coach–Fighter sharing gate says. Repeating it returns the completed session unchanged.
+ *
+ * * `not_found` - someone else's session, an unknown or malformed id, or no completed fighter profile.
+ * * `conflict` - the session is cancelled (`details.status: "cancelled"`) or has not started yet
+ *   (`details.starts_at: "not_started"`).
+ * * `validation_error` - the request sent a field (none is accepted).
+ * @summary Complete one of my training sessions
+ */
+export const completeMyTrainingSession = async (sessionId: string, options?: Parameters<typeof apiFetch>[1]): Promise<MyTrainingSessionResponse> => {
+
+  return apiFetch<MyTrainingSessionResponse>(getCompleteMyTrainingSessionUrl(sessionId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getCompleteMyTrainingSessionQueryKey = (sessionId: string,) => {
+    return [
+    'POST', `/api/v1/me/training-sessions/${sessionId}/complete`
+    ] as const;
+    }
+
+
+export const getCompleteMyTrainingSessionQueryOptions = <TData = Awaited<ReturnType<typeof completeMyTrainingSession>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(sessionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeMyTrainingSession>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getCompleteMyTrainingSessionQueryKey(sessionId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof completeMyTrainingSession>>> = ({ signal }) => completeMyTrainingSession(sessionId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sessionId !== null && sessionId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof completeMyTrainingSession>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type CompleteMyTrainingSessionQueryResult = NonNullable<Awaited<ReturnType<typeof completeMyTrainingSession>>>
+export type CompleteMyTrainingSessionQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useCompleteMyTrainingSession<TData = Awaited<ReturnType<typeof completeMyTrainingSession>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sessionId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeMyTrainingSession>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof completeMyTrainingSession>>,
+          TError,
+          Awaited<ReturnType<typeof completeMyTrainingSession>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCompleteMyTrainingSession<TData = Awaited<ReturnType<typeof completeMyTrainingSession>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sessionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeMyTrainingSession>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof completeMyTrainingSession>>,
+          TError,
+          Awaited<ReturnType<typeof completeMyTrainingSession>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCompleteMyTrainingSession<TData = Awaited<ReturnType<typeof completeMyTrainingSession>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sessionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeMyTrainingSession>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Complete one of my training sessions
+ */
+
+export function useCompleteMyTrainingSession<TData = Awaited<ReturnType<typeof completeMyTrainingSession>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sessionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeMyTrainingSession>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getCompleteMyTrainingSessionQueryOptions(sessionId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
