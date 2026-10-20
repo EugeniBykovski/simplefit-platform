@@ -1,0 +1,220 @@
+{
+  "meta": {
+    "title": "Einheiten",
+    "description": "Die Trainingseinheiten, die du für deine Athleten planst.",
+    "newTitle": "Neue Einheit",
+    "newDescription": "Plane eine Trainingseinheit für einen deiner Athleten.",
+    "sessionTitle": "Einheit",
+    "sessionDescription": "Eine Trainingseinheit, die du geplant hast.",
+    "editTitle": "Einheit bearbeiten",
+    "editDescription": "Eine geplante Trainingseinheit ändern."
+  },
+  "eyebrow": "Coach · Einheiten",
+  "sessionEyebrow": "Coach · Einheit",
+  "title": "Einheiten",
+  "new": "Neue Einheit",
+  "back": "Zurück zu den Einheiten",
+  "planner": {
+    "views": "Einheiten",
+    "tabs": {
+      "upcoming": "Anstehend",
+      "history": "Verlauf"
+    },
+    "heading": {
+      "upcoming": "Anstehend",
+      "history": "Verlauf"
+    },
+    "filter": "Anzeigen",
+    "filters": {
+      "all": "Alle",
+      "completed": "Erledigt",
+      "cancelled": "Abgesagt"
+    },
+    "loading": "Deine Einheiten werden geladen",
+    "more": "Mehr anzeigen",
+    "loadingMore": "Wird geladen…",
+    "list": "Einheiten nach Tag",
+    "minutes": "{minutes} Min.",
+    "fighterNotShared": "Athlet nicht geteilt",
+    "aside": "Eine Einheit wird für einen Athleten geplant, den du trainierst. Der Athlet bestätigt, wenn er sie absolviert hat; das Ergebnis siehst du hier. Zeiten erscheinen in der Zeitzone der Einheit."
+  },
+  "empty": {
+    "upcoming": {
+      "title": "Keine anstehenden Einheiten",
+      "body": "Plane eine Einheit für einen deiner Athleten. Sie erscheint hier und in seinem Training."
+    },
+    "history": {
+      "title": "Noch keine vergangenen Einheiten",
+      "body": "Erledigte, abgesagte und vergangene Einheiten erscheinen hier."
+    },
+    "completed": {
+      "title": "Noch keine erledigten Einheiten",
+      "body": "Einheiten, die deine Athleten bestätigt haben, erscheinen hier."
+    },
+    "cancelled": {
+      "title": "Keine abgesagten Einheiten",
+      "body": "Einheiten, die du oder das System abgesagt habt, erscheinen hier."
+    }
+  },
+  "unavailable": {
+    "title": "Einheiten sind noch nicht verfügbar",
+    "body": "Das Planen von Training startet zusammen mit dem Coaching von Athleten, sobald die Datenregeln für Coaches und das, was Athleten teilen, veröffentlicht sind. Nichts wird vor dir verborgen: Es gibt einfach noch nichts anzuzeigen."
+  },
+  "failed": {
+    "title": "Wir konnten deine Einheiten nicht laden.",
+    "body": "Prüfe deine Verbindung und versuche es erneut.",
+    "retry": "Erneut versuchen"
+  },
+  "status": {
+    "planned": "Geplant",
+    "completed": "Erledigt",
+    "cancelled": "Abgesagt"
+  },
+  "types": {
+    "technical": "Technik",
+    "sparring": "Sparring",
+    "pads": "Pratzen",
+    "strength_conditioning": "Kraft & Kondition",
+    "roadwork": "Laufen"
+  },
+  "form": {
+    "newTitle": "Neue Einheit",
+    "editTitle": "Einheit bearbeiten",
+    "fighter": {
+      "label": "Athlet",
+      "placeholder": "Athlet auswählen",
+      "search": "Athleten suchen",
+      "empty": "Kein Athlet gefunden.",
+      "hint": "Athleten, die deine Einladung angenommen haben.",
+      "fixed": "Der Athlet einer Einheit kann nicht geändert werden.",
+      "required": "Wähle einen Athleten.",
+      "notShared": "Athlet (Name nicht geteilt) · seit {date}"
+    },
+    "title": {
+      "label": "Titel",
+      "invalid": "Gib einen Titel mit bis zu 80 Zeichen ein."
+    },
+    "type": {
+      "label": "Trainingsart",
+      "required": "Wähle eine Trainingsart."
+    },
+    "date": {
+      "label": "Datum",
+      "required": "Wähle ein Datum."
+    },
+    "time": {
+      "label": "Beginn",
+      "required": "Wähle eine Startzeit.",
+      "window": "Wähle einen Beginn zwischen gestern und einem Jahr ab heute.",
+      "invalid": "Diese Startzeit kann nicht verwendet werden. Prüfe Datum, Uhrzeit und Zeitzone."
+    },
+    "zone": {
+      "label": "Zeitzone",
+      "search": "Zeitzonen suchen",
+      "empty": "Keine Zeitzone gefunden.",
+      "required": "Wähle eine Zeitzone.",
+      "invalid": "Diese Zeitzone wird nicht unterstützt. Wähle eine andere."
+    },
+    "duration": {
+      "label": "Dauer",
+      "unit": "Minuten",
+      "hint": "5 bis 600 Minuten.",
+      "invalid": "Gib eine ganze Zahl von 5 bis 600 Minuten ein."
+    },
+    "notes": {
+      "label": "Notizen für den Athleten · optional",
+      "hint": "Bis zu 2.000 Zeichen. Der Athlet sieht sie.",
+      "invalid": "Notizen dürfen höchstens 2.000 Zeichen haben."
+    },
+    "gap": {
+      "title": "Diese Uhrzeit gibt es an diesem Tag nicht.",
+      "body": "Die Uhren in {zone} überspringen diese Zeit, wenn die Sommerzeit beginnt. Wähle eine andere Startzeit."
+    },
+    "overlap": {
+      "title": "Diese Uhrzeit gibt es an diesem Tag zweimal.",
+      "body": "Die Uhren in {zone} werden zurückgestellt und wiederholen sie. Wähle, welches {time} du meinst:",
+      "first": "Erstes · UTC{offset}",
+      "second": "Zweites · UTC{offset}",
+      "required": "Wähle, welche der beiden Zeiten du meinst."
+    },
+    "notices": {
+      "failed": {
+        "title": "Wir konnten die Einheit nicht speichern.",
+        "create": "Nichts wurde geändert. Prüfe deine Verbindung und versuche es erneut; ein erneuter Versuch legt nie eine zweite Einheit an.",
+        "edit": "Nichts wurde geändert. Prüfe deine Verbindung und versuche es erneut."
+      },
+      "conflict": {
+        "title": "Diese Einheit kann nicht mehr geändert werden.",
+        "body": "Der Athlet hat sie erledigt oder sie wurde abgesagt. Deine Änderungen wurden nicht gespeichert."
+      },
+      "unavailable": {
+        "title": "Du kannst für diesen Athleten nicht mehr planen.",
+        "body": "Die Coaching-Beziehung ist beendet oder nicht verfügbar. Nichts wurde gespeichert."
+      }
+    },
+    "noFighters": {
+      "title": "Noch keine Athleten zum Planen",
+      "body": "Du kannst Einheiten für Athleten planen, die deine Einladung angenommen haben. Lade zuerst unter Athleten jemanden ein.",
+      "action": "Zu den Athleten"
+    },
+    "loading": "Formular wird geladen",
+    "cancel": "Abbrechen",
+    "create": "Einheit zuweisen",
+    "save": "Änderungen speichern",
+    "saving": "Wird gespeichert…",
+    "aside": "Der Beginn wird als genauer Zeitpunkt in der gewählten Zeitzone gespeichert. So bleibt er auch bei Zeitumstellungen und für Athleten in einem anderen Land richtig.",
+    "saved": {
+      "created": "Einheit geplant.",
+      "updated": "Änderungen gespeichert."
+    }
+  },
+  "detail": {
+    "heading": "Einheit",
+    "loading": "Einheit wird geladen",
+    "edit": "Bearbeiten",
+    "cancel": "Einheit absagen",
+    "facts": {
+      "fighter": "Athlet",
+      "type": "Trainingsart",
+      "starts": "Beginn",
+      "yourTime": "Deine Zeit",
+      "duration": "Dauer",
+      "notes": "Notizen",
+      "completed": "Erledigt",
+      "cancelled": "Abgesagt"
+    },
+    "startsValue": "{when} · {zone} (UTC{offset})",
+    "sameZone": "{time} · gleiche Zeitzone",
+    "otherZone": "{when} · {zone}",
+    "minutes": "{minutes, plural, one {# Minute} other {# Minuten}}",
+    "noNotes": "Keine Notizen",
+    "cancelledByCoach": "{when} · von dir",
+    "cancelledBySystem": "{when} · die Coaching-Beziehung wurde beendet",
+    "aside": {
+      "planned": "Geplante Einheiten können bearbeitet oder abgesagt werden, bis der Athlet sie erledigt.",
+      "completed": "Der Athlet hat diese Einheit bestätigt. Erledigte Einheiten können nicht bearbeitet oder abgesagt werden.",
+      "cancelled": "Abgesagte Einheiten bleiben im Verlauf. Um wieder zu trainieren, lege eine neue Einheit an."
+    },
+    "missing": {
+      "title": "Diese Einheit ist nicht verfügbar",
+      "body": "Sie gehört vielleicht zu einem Athleten, den du nicht mehr trainierst, oder der Link ist falsch.",
+      "aside": "Einheiten von Athleten, die du nicht mehr trainierst, werden nicht angezeigt."
+    },
+    "failed": {
+      "title": "Wir konnten diese Einheit nicht laden.",
+      "body": "Prüfe deine Verbindung und versuche es erneut."
+    }
+  },
+  "cancelDialog": {
+    "title": "Diese Einheit absagen?",
+    "body": "{name} sieht sie als abgesagt. Eine abgesagte Einheit kann nicht erneut geplant werden; lege stattdessen eine neue an.",
+    "bodyUnnamed": "Der Athlet sieht sie als abgesagt. Eine abgesagte Einheit kann nicht erneut geplant werden; lege stattdessen eine neue an.",
+    "failed": "Wir konnten die Einheit nicht absagen. Nichts wurde geändert. Versuche es erneut.",
+    "keep": "Einheit behalten",
+    "confirm": "Einheit absagen",
+    "pending": "Wird abgesagt…",
+    "cancelled": "Die Einheit ist abgesagt.",
+    "changed": "Diese Einheit kann nicht mehr abgesagt werden: Der Athlet hat sie erledigt.",
+    "unavailable": "Diese Einheit ist nicht mehr verfügbar."
+  }
+}

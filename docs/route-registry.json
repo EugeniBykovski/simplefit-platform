@@ -18,8 +18,8 @@
         "id": "gallery-2",
         "artboard": "GalleryIndex2.dc.html",
         "title": "route gallery 2 / 3 · coach & gym mobile, web app",
-        "rows": 124,
-        "rowsNote": "122 Route Gallery rows + WFI1 and WFC1 (SF-60: added with their artboards WebFighterInvite.dc.html and WebFighterCoaches.dc.html, not yet listed in GalleryIndex2)"
+        "rows": 127,
+        "rowsNote": "122 Route Gallery rows + WFI1 and WFC1 (SF-60: added with their artboards WebFighterInvite.dc.html and WebFighterCoaches.dc.html, not yet listed in GalleryIndex2) + WCT1, WCT2 and WCT3 (SF-64: added to WebProgramBuilder.dc.html in 1792490047-d551, not yet listed in GalleryIndex2)"
       },
       {
         "id": "gallery-3",
@@ -356,7 +356,7 @@
         {
           "key": "programs",
           "label": "Programs & sessions",
-          "route": "web.app.coach.sessions.new"
+          "route": "web.app.coach.sessions"
         },
         {
           "key": "sparring",
@@ -5276,11 +5276,11 @@
       "screens": ["WC2"]
     },
     {
-      "id": "web.app.coach.sessions.new",
+      "id": "web.app.coach.sessions",
       "platform": "web",
-      "path": "/app/coach/sessions/new",
+      "path": "/app/coach/sessions",
       "params": [],
-      "name": "Shared Session Creator",
+      "name": "Sessions",
       "surface": "COACH",
       "shell": "web.app.coach",
       "parent": "web.app.coach",
@@ -5294,12 +5294,94 @@
         "phase": "ACTIVE"
       },
       "status": "IMPLEMENTED",
-      "discrepancies": ["D-NAV-DETAIL-TARGETS", "D-PROGRAM-BUILDER-PATHS"],
+      "discrepancies": ["D-WEB-COACH-SESSIONS-PLANNER"],
+      "production": {
+        "file": "src/app/[locale]/app/coach/sessions/page.tsx",
+        "note": "SF-64: WCT1 (Claude Design 1792490047-d551): the coach's SF-62/SF-63 training sessions from listMyCoachTrainingSessions as an agenda list grouped by day, Upcoming and, with ?view=history, History (All / Completed / Cancelled via ?status=); cursor pages; times in the coach's local time with the planned zone. Loading, empty, sharing not available (404) and failure are separate states. No calendar grid (W08 stays FUTURE)."
+      },
+      "screens": ["WCT1"]
+    },
+    {
+      "id": "web.app.coach.sessions.new",
+      "platform": "web",
+      "path": "/app/coach/sessions/new",
+      "params": [],
+      "name": "Shared Session Creator",
+      "surface": "COACH",
+      "shell": "web.app.coach",
+      "parent": "web.app.coach.sessions",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "COACH",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "discrepancies": [
+        "D-NAV-DETAIL-TARGETS",
+        "D-PROGRAM-BUILDER-PATHS",
+        "D-WEB-COACH-SESSIONS-PLANNER"
+      ],
       "production": {
         "file": "src/app/[locale]/app/coach/sessions/new/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-64: WC3 as reconciled in Claude Design 1792490047-d551: one training session for one fighter of an active relationship (fighter, title, training type, date, start time, IANA time zone, duration, optional notes) created with createMyCoachTrainingSession; one client_request_id per create attempt, reused on retry. Times that do not exist (gap) are refused and repeated times (overlap) need an explicit choice before anything is sent. No fighters is its own state; sharing not available (404) is never an empty form. The block builder and shared assignment are FUTURE; CRW2 (?tour=2) is deferred with the Coach first run."
       },
       "screens": ["WC3", "CRW2"]
+    },
+    {
+      "id": "web.app.coach.sessions._session-id",
+      "platform": "web",
+      "path": "/app/coach/sessions/:sessionId",
+      "params": ["sessionId"],
+      "name": "Session",
+      "surface": "COACH",
+      "shell": "web.app.coach",
+      "parent": "web.app.coach.sessions",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "COACH",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "discrepancies": ["D-WEB-COACH-SESSIONS-PLANNER"],
+      "production": {
+        "file": "src/app/[locale]/app/coach/sessions/[sessionId]/page.tsx",
+        "note": "SF-64: WCT2 (Claude Design 1792490047-d551): one session from getMyCoachTrainingSession with its planned and local time, status and, once terminal, completion or cancellation facts; Edit and Cancel session (confirmation, cancelMyCoachTrainingSession) only while planned. Foreign, unknown or ended-relationship sessions and sharing switched off are one not-available state (404)."
+      },
+      "screens": ["WCT2"]
+    },
+    {
+      "id": "web.app.coach.sessions._session-id.edit",
+      "platform": "web",
+      "path": "/app/coach/sessions/:sessionId/edit",
+      "params": ["sessionId"],
+      "name": "Edit session",
+      "surface": "COACH",
+      "shell": "web.app.coach",
+      "parent": "web.app.coach.sessions._session-id",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "COACH",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "discrepancies": ["D-WEB-COACH-SESSIONS-PLANNER"],
+      "production": {
+        "file": "src/app/[locale]/app/coach/sessions/[sessionId]/edit/page.tsx",
+        "note": "SF-64: WCT3 (Claude Design 1792490047-d551): the WC3 form prefilled from getMyCoachTrainingSession, sending only the changed fields with updateMyCoachTrainingSession; a completed or cancelled session (409) and a not-available one (404) are their own states."
+      },
+      "screens": ["WCT3"]
     },
     {
       "id": "web.app.coach.fighters._fighter-id",
@@ -9715,7 +9797,9 @@
         "tag": "WEB_APP",
         "artboard": "FirstRunWebCTour.dc.html",
         "galleryPath": "/app/coach/programs/new?tour=2"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-COACH-HOME-MVP"]
     },
     {
       "id": "OS1",
@@ -13207,19 +13291,101 @@
     {
       "id": "WC3",
       "code": "WC3",
-      "name": "Shared Session Creator",
+      "name": "New session",
       "route": "web.app.coach.sessions.new",
-      "query": {
-        "assign": "shared"
-      },
-      "states": ["shared"],
+      "states": [
+        "ready",
+        "saving",
+        "invalid",
+        "gap",
+        "overlap",
+        "noFighters",
+        "failed",
+        "conflict",
+        "unavailable"
+      ],
       "design": {
         "gallery": "gallery-2",
         "page": "desktop-web",
         "section": "17 · Coach web · desktop",
         "step": "17.3",
         "tag": "WEB_APP",
-        "artboard": "WebProgramBuilder.dc.html"
+        "artboard": "WebProgramBuilder.dc.html",
+        "reconciledIn": "1792490047-d551"
+      }
+    },
+    {
+      "id": "WCT1",
+      "code": "WCT1",
+      "name": "Sessions planner",
+      "route": "web.app.coach.sessions",
+      "states": [
+        "upcoming",
+        "history",
+        "completed",
+        "cancelled",
+        "loading",
+        "empty",
+        "unavailable",
+        "error"
+      ],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "17 · Coach web · desktop",
+        "step": "17.3",
+        "tag": "WEB_APP",
+        "artboard": "WebProgramBuilder.dc.html",
+        "addedIn": "1792490047-d551"
+      }
+    },
+    {
+      "id": "WCT2",
+      "code": "WCT2",
+      "name": "Session",
+      "route": "web.app.coach.sessions._session-id",
+      "states": [
+        "planned",
+        "completed",
+        "cancelled",
+        "missing",
+        "confirm cancel",
+        "cancelling",
+        "cancel failed"
+      ],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "17 · Coach web · desktop",
+        "step": "17.3",
+        "tag": "WEB_APP",
+        "artboard": "WebProgramBuilder.dc.html",
+        "addedIn": "1792490047-d551"
+      }
+    },
+    {
+      "id": "WCT3",
+      "code": "WCT3",
+      "name": "Edit session",
+      "route": "web.app.coach.sessions._session-id.edit",
+      "states": [
+        "ready",
+        "saving",
+        "invalid",
+        "gap",
+        "overlap",
+        "failed",
+        "conflict",
+        "unavailable"
+      ],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "17 · Coach web · desktop",
+        "step": "17.3",
+        "tag": "WEB_APP",
+        "artboard": "WebProgramBuilder.dc.html",
+        "addedIn": "1792490047-d551"
       }
     },
     {
@@ -16974,12 +17140,30 @@
       "sourceB": "SF-50 / SF-51 backend: CoachProfile and the COACH capability only; no coaching relationship, invitation, training session, services, payouts or billing domain",
       "mismatch": "The designed Coach workspace showed records that do not exist.",
       "impact": "Building it would fake rosters, sessions, revenue and requests.",
-      "resolution": "Claude Design 1791982482-71e3 (SF-54, CR-8 / CR-16): the production Coach sidebar shows Dashboard and, marked Soon and not linked, Fighters, Sessions and Coach settings; the registry keeps the twelve Route Gallery nav items and their placeholder routes. WC1 shows the real CoachProfile, a setup checklist and dashes for unavailable domains. CRW1 is FUTURE (no Coach first-run experience exists). SF-58 (Claude Design 1792056621-3707) links Fighters: WC7 and WC4 are real; Sessions and Coach settings stay Soon.",
+      "resolution": "Claude Design 1791982482-71e3 (SF-54, CR-8 / CR-16): the production Coach sidebar shows Dashboard and, marked Soon and not linked, Fighters, Sessions and Coach settings; the registry keeps the twelve Route Gallery nav items and their placeholder routes. WC1 shows the real CoachProfile, a setup checklist and dashes for unavailable domains. CRW1 is FUTURE (no Coach first-run experience exists). SF-58 (Claude Design 1792056621-3707) links Fighters: WC7 and WC4 are real; Sessions and Coach settings stay Soon. SF-64 (Claude Design 1792490047-d551) links Sessions to the WCT1 planner; Coach settings stays Soon. CRW2, the first-run product tour on the session creator, is deferred with CRW1.",
       "decision": "The Coach web workspace grows with its domains (SF-48 follow-ups); nothing is shown before it is real.",
       "decidedOn": "2026-10-14",
       "status": "DEFERRED",
       "routes": ["web.app.coach"],
-      "screens": ["CRW1"]
+      "screens": ["CRW1", "CRW2"]
+    },
+    {
+      "id": "D-WEB-COACH-SESSIONS-PLANNER",
+      "title": "Program builder reduced to single training sessions",
+      "sourceA": "Route Gallery 2/3 · WC3 Shared Session Creator · /app/coach/sessions/new?assign=shared (WebProgramBuilder.dc.html): a multi-week block builder assigned to several fighters; CoachWebNav 'Programs & sessions' opens the creator; W08 shows sessions on a week / month calendar",
+      "sourceB": "SF-62 / SF-63 API: one TrainingSession for one fighter of one active relationship (title, training type, start instant with its IANA zone, duration, notes), planned then completed by the fighter or cancelled; no programs, blocks, groups, recurrence or calendar feed",
+      "mismatch": "The design builds programs for many fighters and opens on a creator; the API plans one session at a time and has a list, a detail, an edit and a cancel.",
+      "impact": "Building WC3 as drawn would invent programs and group assignment, and the coach would have no list of what was planned.",
+      "resolution": "Claude Design 1792490047-d551 (SF-64) reconciles WebProgramBuilder: WCT1 is the planner at /app/coach/sessions (an agenda list, Upcoming and History), WC3 the one-session form at /app/coach/sessions/new, WCT2 the session at /app/coach/sessions/:sessionId with cancel, WCT3 its edit form. CoachWebNav 'Sessions' opens WCT1. The block builder stays on the artboard as FUTURE; W08 stays FUTURE.",
+      "decision": "An agenda list, not a calendar grid; the creator is reached from the planner, which is the nav target.",
+      "decidedOn": "2026-10-20",
+      "status": "RESOLVED",
+      "routes": [
+        "web.app.coach.sessions",
+        "web.app.coach.sessions.new",
+        "web.app.coach.sessions._session-id",
+        "web.app.coach.sessions._session-id.edit"
+      ]
     },
     {
       "id": "D-MOBILE-COACH-SHELL-MVP",

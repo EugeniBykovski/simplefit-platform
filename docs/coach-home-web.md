@@ -46,7 +46,7 @@ FUTURE, no plan / checkout branch), WA2 as sign-in → entry and WCX1
 ## Coach sidebar (CoachWebNav MVP)
 
 Dashboard (linked), then Fighters, Sessions and Coach settings as unlinked
-rows marked Soon. SF-58 links Fighters (`docs/coach-fighters-web.md`). The registry keeps the Route Gallery's twelve nav items and
+rows marked Soon. SF-58 links Fighters (`docs/coach-fighters-web.md`), SF-64 links Sessions (`docs/coach-sessions-web.md`). The registry keeps the Route Gallery's twelve nav items and
 their placeholder routes; production shows the MVP subset
 (`D-WEB-COACH-HOME-MVP`).
 

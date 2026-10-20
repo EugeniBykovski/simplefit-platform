@@ -92,7 +92,8 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
     },
   },
   // The Coach MVP (Claude Design 1791982482-71e3, CR-16; Fighters linked by
-  // SF-58, 1792056621-3707): the dashboard and Fighters, and the sections
+  // SF-58, 1792056621-3707; SF-64, 1792490047-d551): the dashboard, Fighters
+  // and Sessions, and the sections
   // whose domains do not exist yet marked Soon. The registry keeps
   // the Route Gallery's twelve items and their placeholder routes
   // (D-WEB-COACH-HOME-MVP).
@@ -109,7 +110,7 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
       programs: CalendarIcon,
       settings: SlidersHorizontalIcon,
     },
-    soon: ["programs", "settings"],
+    soon: ["settings"],
   },
   "web.app.gym": {
     messages: "gym",
