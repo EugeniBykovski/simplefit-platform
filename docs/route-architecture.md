@@ -536,7 +536,9 @@ CoachProfile, dashes (never zeros) for fighters, sessions and invitations and
 a setup checklist; CR4–CR6 are `DEFERRED`. The production CoachTabs show
 Today and Settings (the shared ST1, pushed above the tabs) and, marked Soon
 and disabled, Fighters and Sessions, while the registry keeps the Route
-Gallery's five items and their placeholders (`D-MOBILE-COACH-SHELL-MVP`). The
+Gallery's five items and their placeholders (`D-MOBILE-COACH-SHELL-MVP`);
+SF-61 and SF-65 make Fighters and Sessions live (the registry adds the
+Sessions item). The
 identity pill of the Fighter home and of Coach today opens A04, "One account,
 every role": a sheet listing the completed contexts the entry reports (the
 current one checked) and the unfinished journeys, with the same rules as the
@@ -556,6 +558,19 @@ them (an explicit acknowledgement of exactly the version it serves; no legal
 text is invented), then email and an optional note; success says only that an
 invitation is pending. `/coach/fighters/:fighterId` (C04) shows one active
 relationship from `getMyCoachFighter` and ends it with confirmation.
+
+**Coach mobile sessions (SF-65).** `/coach/sessions` (CT1, Claude Design
+`1792504884-2e4e`, `SessionControl.dc.html` screen=planner) is the live
+Sessions tab (`D-MOBILE-COACH-SESSIONS-PLANNER`): the coach's SF-62/SF-63
+training sessions from `listMyCoachTrainingSessions` as an agenda list grouped
+by day, Upcoming and History (`?view=history`, narrowed by
+`?status=completed|cancelled`). `/coach/sessions/new` (CT2) creates one session
+for one active fighter with the native date and time pickers and an IANA time
+zone; `/coach/sessions/:sessionId` (CT3) shows it and cancels it with
+confirmation; `…/edit` (CT4) sends only the changed fields. C01's Sessions tile
+and Plan your first session step open the tab. C02 and C05 stay future (C05
+is `SessionControl.dc.html` screen=control). The same records as the web
+planner (SF-64).
 
 **Fighter mobile coaches (SF-59, SF-76).** `/profile/coaches` (FC1, Claude
 Design `1792432236-08da`) lists the fighter's SF-56 relationships from
@@ -993,6 +1008,7 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-WEB-COACH-HOME-MVP`               | DEFERRED               | Coach web: real profile dashboard, MVP nav with Soon rows; CRW1, CRW2 future                         |
 | `D-WEB-COACH-SESSIONS-PLANNER`       | RESOLVED               | Program builder reduced to a one-session planner: WCT1, WC3, WCT2, WCT3 (SF-64); agenda, no grid     |
 | `D-MOBILE-COACH-SHELL-MVP`           | DEFERRED               | Coach mobile: real profile Today, MVP tabs with Soon items; CR4–CR6 future                           |
+| `D-MOBILE-COACH-SESSIONS-PLANNER`    | RESOLVED               | Coach mobile Sessions: CT1, CT2, CT3, CT4 on the SF-62/SF-63 API (SF-65); agenda, native pickers     |
 | `D-MOBILE-FIGHTER-COACH-INVITATIONS` | DEFERRED               | Fighter mobile: inbox and review by invitation id (SF-76); INV1 and an app-link token handoff future |
 | `D-WEB-LEGAL-DOCUMENT-PAGES`         | NEEDS_PRODUCT_DECISION | Public legal pages (SF-71 L-12) have no artboard: gap; flows show the approved text in place (SF-72) |
 

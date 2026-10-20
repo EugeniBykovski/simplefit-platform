@@ -18,8 +18,8 @@
         "id": "gallery-2",
         "artboard": "GalleryIndex2.dc.html",
         "title": "route gallery 2 / 3 · coach & gym mobile, web app",
-        "rows": 127,
-        "rowsNote": "122 Route Gallery rows + WFI1 and WFC1 (SF-60: added with their artboards WebFighterInvite.dc.html and WebFighterCoaches.dc.html, not yet listed in GalleryIndex2) + WCT1, WCT2 and WCT3 (SF-64: added to WebProgramBuilder.dc.html in 1792490047-d551, not yet listed in GalleryIndex2)"
+        "rows": 131,
+        "rowsNote": "122 Route Gallery rows + WFI1 and WFC1 (SF-60: added with their artboards WebFighterInvite.dc.html and WebFighterCoaches.dc.html, not yet listed in GalleryIndex2) + WCT1, WCT2 and WCT3 (SF-64: added to WebProgramBuilder.dc.html in 1792490047-d551, not yet listed in GalleryIndex2) + CT1, CT2, CT3 and CT4 (SF-65: added to SessionControl.dc.html in 1792504884-2e4e, not yet listed in GalleryIndex2)"
       },
       {
         "id": "gallery-3",
@@ -782,7 +782,7 @@
       "id": "mobile.coach",
       "platform": "mobile",
       "parent": "mobile.root",
-      "description": "Coach tab bar. Registry items: the Route Gallery's Today, Fighters, Board, Requests, Inbox; production shows the MVP Today, Fighters (Soon), Sessions (Soon), Settings (D-MOBILE-COACH-SHELL-MVP).",
+      "description": "Coach tab bar. Registry items: the Route Gallery's Today, Fighters, Board, Requests, Inbox and Sessions (SF-65, CoachTabs in Claude Design 1792504884-2e4e); production shows the MVP Today, Fighters, Sessions and Settings (D-MOBILE-COACH-SHELL-MVP).",
       "design": "CoachTabs.dc.html",
       "status": "IMPLEMENTED",
       "production": {
@@ -798,6 +798,11 @@
           "key": "fighters",
           "label": "Fighters",
           "route": "mobile.coach.fighters"
+        },
+        {
+          "key": "sessions",
+          "label": "Sessions",
+          "route": "mobile.coach.sessions"
         },
         {
           "key": "board",
@@ -1624,7 +1629,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(coach)/(tabs)/(today)/coach/today.tsx",
-        "note": "SF-55: C01 Coach today as reduced in Claude Design 1791994719-673f: the identity pill (opens the A04 sheet), the real CoachProfile (name, brand, place, formats, competition levels, languages, bio), dashes, never zeros, for fighters, sessions and invitations, and the setup checklist with the completed profile and the steps whose domains do not exist yet marked not available. Behind CapabilityGate (COACH from the entry). The tab bar is the Coach MVP (D-MOBILE-COACH-SHELL-MVP). CR4, CR5 and CR6 are FUTURE."
+        "note": "SF-55: C01 Coach today as reduced in Claude Design 1791994719-673f: the identity pill (opens the A04 sheet), the real CoachProfile (name, brand, place, formats, competition levels, languages, bio), Fighters, Sessions (SF-65) and Invitations open their tabs without counts, and the setup checklist with the completed profile, Invite your first fighter (C03) and Plan your first session (CT1, SF-65). Behind CapabilityGate (COACH from the entry). The tab bar is the Coach MVP (D-MOBILE-COACH-SHELL-MVP). CR4, CR5 and CR6 are FUTURE."
       },
       "screens": ["CR4", "CR5", "CR6", "C01"],
       "discrepancies": ["D-MOBILE-COACH-SHELL-MVP"]
@@ -4310,6 +4315,110 @@
         "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
       },
       "screens": ["C07"]
+    },
+    {
+      "id": "mobile.coach.sessions",
+      "platform": "mobile",
+      "path": "/coach/sessions",
+      "params": [],
+      "name": "Sessions",
+      "surface": "COACH",
+      "shell": "mobile.coach",
+      "parent": null,
+      "nav": {
+        "type": "NAV_ITEM",
+        "from": ["mobile.coach#sessions"]
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "COACH",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/(coach)/(tabs)/(sessions)/coach/sessions.tsx",
+        "note": "SF-65: CT1 (Claude Design 1792504884-2e4e, SessionControl.dc.html screen=planner): the Coach app's Sessions tab. The coach's SF-62/SF-63 training sessions from listMyCoachTrainingSessions as an agenda list grouped by day in each session's time zone, Upcoming and, with ?view=history, History (All / Completed / Cancelled via ?status=); cursor pages, pull to refresh, refetched on focus. Loading, empty, sharing not available (404) and failure are separate states. No calendar grid."
+      },
+      "screens": ["CT1"],
+      "discrepancies": ["D-MOBILE-COACH-SESSIONS-PLANNER"]
+    },
+    {
+      "id": "mobile.coach.sessions.new",
+      "platform": "mobile",
+      "path": "/coach/sessions/new",
+      "params": [],
+      "name": "New session",
+      "surface": "COACH",
+      "shell": "mobile.coach",
+      "parent": "mobile.coach.sessions",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "COACH",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/(coach)/coach/sessions/new.tsx",
+        "note": "SF-65: CT2 (Claude Design 1792504884-2e4e): one training session for one fighter of an active relationship (listMyCoachFighters, every page) with createMyCoachTrainingSession: title, the five training types, a native date and time picker, an IANA time zone, duration and optional notes. One client_request_id per request body, reused on retry. A wall time that does not exist (DST gap) is refused and a repeated one (overlap) needs an explicit choice before anything is sent. No fighters is its own state; sharing not available (404) is never an empty form."
+      },
+      "screens": ["CT2"],
+      "discrepancies": ["D-MOBILE-COACH-SESSIONS-PLANNER"]
+    },
+    {
+      "id": "mobile.coach.sessions._session-id",
+      "platform": "mobile",
+      "path": "/coach/sessions/:sessionId",
+      "params": ["sessionId"],
+      "name": "Session",
+      "surface": "COACH",
+      "shell": "mobile.coach",
+      "parent": "mobile.coach.sessions",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "COACH",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/(coach)/coach/sessions/[sessionId]/index.tsx",
+        "note": "SF-65: CT3 (Claude Design 1792504884-2e4e): one session from getMyCoachTrainingSession with its backend status, the start in its time zone and the viewer's, completion or cancellation, and, while planned, Edit and Cancel session behind a confirmation sheet (cancelMyCoachTrainingSession; only the backend's 200 is shown as cancelled). Unknown, foreign and ended sessions are one not-available state."
+      },
+      "screens": ["CT3"],
+      "discrepancies": ["D-MOBILE-COACH-SESSIONS-PLANNER"]
+    },
+    {
+      "id": "mobile.coach.sessions._session-id.edit",
+      "platform": "mobile",
+      "path": "/coach/sessions/:sessionId/edit",
+      "params": ["sessionId"],
+      "name": "Edit session",
+      "surface": "COACH",
+      "shell": "mobile.coach",
+      "parent": "mobile.coach.sessions._session-id",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "COACH",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/(coach)/coach/sessions/[sessionId]/edit.tsx",
+        "note": "SF-65: CT4 (Claude Design 1792504884-2e4e): the CT2 form prefilled from getMyCoachTrainingSession, sending only the changed fields with updateMyCoachTrainingSession; the fighter is fixed. A completed or cancelled session (409) and a not-available one (404) are their own notices; a terminal session gets no form."
+      },
+      "screens": ["CT4"],
+      "discrepancies": ["D-MOBILE-COACH-SESSIONS-PLANNER"]
     },
     {
       "id": "mobile.coach.sparring._sparring-id.video",
@@ -12499,7 +12608,104 @@
         "step": "12.5",
         "tag": "MOBILE",
         "artboard": "SessionControl.dc.html",
-        "galleryPath": "/coach/sessions/:id/live"
+        "galleryPath": "/coach/sessions/:id/live",
+        "note": "SessionControl.dc.html screen=control (FUTURE) since 1792504884-2e4e; its other screens are CT1–CT4 (SF-65)."
+      }
+    },
+    {
+      "id": "CT1",
+      "code": "CT1",
+      "name": "Sessions",
+      "route": "mobile.coach.sessions",
+      "states": [
+        "upcoming",
+        "history",
+        "completed",
+        "cancelled",
+        "loading",
+        "empty",
+        "unavailable",
+        "error",
+        "more"
+      ],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "coach-mobile",
+        "section": "12 · Coach app · team, sessions, sparring",
+        "step": "12.16",
+        "tag": "MOBILE",
+        "artboard": "SessionControl.dc.html",
+        "addedIn": "1792504884-2e4e"
+      }
+    },
+    {
+      "id": "CT2",
+      "code": "CT2",
+      "name": "New session",
+      "route": "mobile.coach.sessions.new",
+      "states": [
+        "ready",
+        "invalid",
+        "gap",
+        "overlap",
+        "saving",
+        "failed",
+        "gone",
+        "no fighters",
+        "choose fighter",
+        "choose time zone"
+      ],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "coach-mobile",
+        "section": "12 · Coach app · team, sessions, sparring",
+        "step": "12.16",
+        "tag": "MOBILE",
+        "artboard": "SessionControl.dc.html",
+        "addedIn": "1792504884-2e4e"
+      }
+    },
+    {
+      "id": "CT3",
+      "code": "CT3",
+      "name": "Session",
+      "route": "mobile.coach.sessions._session-id",
+      "states": [
+        "planned",
+        "completed",
+        "cancelled",
+        "cancelled by the system",
+        "loading",
+        "unavailable",
+        "error",
+        "confirm cancel",
+        "cancelling",
+        "cancel failed"
+      ],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "coach-mobile",
+        "section": "12 · Coach app · team, sessions, sparring",
+        "step": "12.16",
+        "tag": "MOBILE",
+        "artboard": "SessionControl.dc.html",
+        "addedIn": "1792504884-2e4e"
+      }
+    },
+    {
+      "id": "CT4",
+      "code": "CT4",
+      "name": "Edit session",
+      "route": "mobile.coach.sessions._session-id.edit",
+      "states": ["ready", "invalid", "gap", "overlap", "saving", "failed", "conflict", "gone"],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "coach-mobile",
+        "section": "12 · Coach app · team, sessions, sparring",
+        "step": "12.16",
+        "tag": "MOBILE",
+        "artboard": "SessionControl.dc.html",
+        "addedIn": "1792504884-2e4e"
       }
     },
     {
@@ -17166,13 +17372,32 @@
       ]
     },
     {
+      "id": "D-MOBILE-COACH-SESSIONS-PLANNER",
+      "title": "Coach mobile sessions designed as one-session planning",
+      "sourceA": "Coach Mobile design before SF-65: CoachTabs shows Sessions as Soon; C02 Roster & attendance and C05 Session control draw a live group class (attendance, group timer, broadcast); no artboard lists, creates or edits a coach's sessions",
+      "sourceB": "SF-62 / SF-63 API: one TrainingSession for one fighter of one active relationship (title, training type, start instant with its IANA zone, duration, notes), planned then completed by the fighter or cancelled; upcoming and history projections; no groups, attendance, live control or calendar feed",
+      "mismatch": "The Coach app had no screen for the sessions the API plans, and its session artboards show group classes the API does not have.",
+      "impact": "Building C02 or C05 would fake attendance and live group control; keeping Sessions Soon would hide real sessions the coach plans on the web.",
+      "resolution": "Claude Design 1792504884-2e4e (SF-65) adds CT1 Sessions (agenda list, Upcoming and History), CT2 New session, CT3 Session with a cancel confirmation sheet and CT4 Edit session as screens of SessionControl.dc.html (the artifact is at its file limit); C05 stays there as screen=control, FUTURE, with C02. CoachTabs makes Sessions a live item and C01's Sessions tile and setup step open CT1. The same records as the web planner (D-WEB-COACH-SESSIONS-PLANNER).",
+      "decision": "An agenda list, not a calendar grid; one session for one fighter; the native date and time pickers; nothing of the group class until its domain exists.",
+      "decidedOn": "2026-10-20",
+      "status": "RESOLVED",
+      "routes": [
+        "mobile.coach.sessions",
+        "mobile.coach.sessions.new",
+        "mobile.coach.sessions._session-id",
+        "mobile.coach.sessions._session-id.edit"
+      ],
+      "screens": ["CT1", "CT2", "CT3", "CT4"]
+    },
+    {
       "id": "D-MOBILE-COACH-SHELL-MVP",
       "title": "Coach mobile shell and Today reduced to existing domains",
       "sourceA": "Route Gallery and CoachTabs before SF-55: Today, Fighters, Board, Requests and Inbox; C01 with an AI summary, a roster, today's sessions and activity; CR4-CR6 with a licence review, a trial, invitations, a session tip and a first-fighters milestone",
       "sourceB": "SF-50 / SF-51 backend: CoachProfile and the COACH capability only; no coaching relationship, invitation, training session, booking, messaging or AI-draft domain",
       "mismatch": "The designed Coach app showed records that do not exist.",
       "impact": "Building it would fake rosters, sessions, requests and invitations.",
-      "resolution": "Claude Design 1791994719-673f (SF-55): the production CoachTabs show Today and Settings (the shared ST1) and, marked Soon and disabled, Fighters and Sessions; the registry keeps the Route Gallery's five nav items and their placeholder routes. C01 shows the identity pill (the A04 sheet), the real CoachProfile, dashes for unavailable domains and a setup checklist. CR4, CR5 and CR6 are FUTURE (no Coach first-run experience, session or roster exists). SF-61 (Claude Design 1792155768-3179) makes Fighters live (C03 roster and invitations, C04 one fighter) and lets C01's Fighters and Invites tiles and its first setup step open it; Sessions stays Soon.",
+      "resolution": "Claude Design 1791994719-673f (SF-55): the production CoachTabs show Today and Settings (the shared ST1) and, marked Soon and disabled, Fighters and Sessions; the registry keeps the Route Gallery's five nav items and their placeholder routes. C01 shows the identity pill (the A04 sheet), the real CoachProfile, dashes for unavailable domains and a setup checklist. CR4, CR5 and CR6 are FUTURE (no Coach first-run experience, session or roster exists). SF-61 (Claude Design 1792155768-3179) makes Fighters live (C03 roster and invitations, C04 one fighter) and lets C01's Fighters and Invites tiles and its first setup step open it; Sessions stays Soon. SF-65 (Claude Design 1792504884-2e4e) makes Sessions live: the CoachTabs Sessions item opens CT1 (D-MOBILE-COACH-SESSIONS-PLANNER), and C01's Sessions tile and Plan your first session step open it.",
       "decision": "The Coach mobile workspace grows with its domains, as the web (D-WEB-COACH-HOME-MVP); nothing is shown before it is real.",
       "decidedOn": "2026-10-14",
       "status": "DEFERRED",
