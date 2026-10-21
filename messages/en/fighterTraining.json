@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "title": "Training",
+    "description": "The training sessions your coaches plan for you.",
+    "sessionTitle": "Session",
+    "sessionDescription": "One of your training sessions."
+  },
+  "eyebrow": "Fighter · Training",
+  "title": "Training",
+  "back": "Back to training",
+  "list": {
+    "views": "Training",
+    "tabs": {
+      "upcoming": "Upcoming",
+      "history": "History"
+    },
+    "filter": "Show",
+    "filters": {
+      "all": "All",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "loading": "Loading your training",
+    "more": "Show more",
+    "loadingMore": "Loading more…",
+    "minutes": "{minutes} min",
+    "note": "Sessions your coaches plan for you. Times show in each session’s time zone. You mark a session completed once it has started.",
+    "heading": {
+      "upcoming": "Upcoming",
+      "history": "History"
+    }
+  },
+  "empty": {
+    "upcoming": {
+      "title": "No upcoming training",
+      "body": "Sessions your coaches plan for you appear here."
+    },
+    "history": {
+      "title": "No past training yet",
+      "body": "Completed, cancelled and past sessions appear here."
+    },
+    "completed": {
+      "title": "No completed training yet",
+      "body": "Sessions you mark completed appear here."
+    },
+    "cancelled": {
+      "title": "No cancelled training",
+      "body": "Sessions a coach cancelled, or that ended with a coaching relationship, appear here."
+    }
+  },
+  "unavailable": {
+    "title": "Training isn’t available",
+    "body": "Your training appears here once your fighter profile is complete."
+  },
+  "failed": {
+    "title": "We couldn’t load your training.",
+    "body": "Check your connection and try again.",
+    "retry": "Try again",
+    "more": "We couldn’t load more sessions. Try again."
+  },
+  "status": {
+    "planned": "Planned",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "types": {
+    "technical": "Technical",
+    "sparring": "Sparring",
+    "pads": "Pads",
+    "strength_conditioning": "S&C",
+    "roadwork": "Roadwork"
+  },
+  "coach": {
+    "notShared": "Coach not shared",
+    "former": "Former coach · {name}",
+    "withBrand": "{name} · {brand}"
+  },
+  "detail": {
+    "loading": "Loading the session",
+    "facts": {
+      "coach": "Coach",
+      "type": "Training type",
+      "starts": "Starts",
+      "yourTime": "Your time",
+      "duration": "Duration",
+      "notes": "Notes from your coach",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "startsValue": "{when} · {zone} (UTC{offset})",
+    "sameZone": "{time} · same time zone",
+    "otherZone": "{when} · {zone}",
+    "noNotes": "No notes",
+    "cancelledByCoach": "{when} · by your coach",
+    "cancelledBySystem": "{when} · the coaching relationship ended",
+    "aside": {
+      "planned": "Mark it completed once you have done it. You can do that from its start time on, also later.",
+      "ended": "The coaching relationship ended. This session had already started, so you can still mark it completed.",
+      "completed": "You confirmed this session. Completed sessions can’t be changed.",
+      "cancelled": "Cancelled sessions stay in your history and can’t be completed."
+    },
+    "missing": {
+      "title": "This session isn’t available",
+      "body": "It isn’t one of your sessions, or the link is wrong.",
+      "aside": "Your sessions are the ones your coaches planned for you."
+    },
+    "failed": {
+      "title": "We couldn’t load this session.",
+      "body": "Check your connection and try again."
+    },
+    "heading": "Session"
+  },
+  "complete": {
+    "action": "Mark as completed",
+    "title": "Mark this session completed?",
+    "body": "{name} sees it as completed, with the time you confirm it. A completed session can’t be changed.",
+    "bodyUnnamed": "Your coach sees it as completed, with the time you confirm it. A completed session can’t be changed.",
+    "confirm": "Mark as completed",
+    "pending": "Saving…",
+    "keep": "Not yet",
+    "failed": "We couldn’t reach SimpleFit. It may already be saved: the session shows what was stored. Try again; it is never completed twice.",
+    "done": "Session marked as completed.",
+    "unavailable": "This session isn’t available any more.",
+    "refused": {
+      "notStarted": {
+        "title": "This session hasn’t started yet.",
+        "body": "You can mark it completed from its start time on. Nothing was saved."
+      },
+      "cancelled": {
+        "title": "This session was cancelled.",
+        "body": "It can’t be completed any more. Nothing was saved."
+      }
+    }
+  }
+}

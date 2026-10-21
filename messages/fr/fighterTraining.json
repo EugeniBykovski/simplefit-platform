@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "title": "Entraînement",
+    "description": "Les séances d’entraînement que vos coachs planifient pour vous.",
+    "sessionTitle": "Séance",
+    "sessionDescription": "Une de vos séances d’entraînement."
+  },
+  "eyebrow": "Boxeur · Entraînement",
+  "title": "Entraînement",
+  "back": "Retour à l’entraînement",
+  "list": {
+    "views": "Entraînement",
+    "tabs": {
+      "upcoming": "À venir",
+      "history": "Historique"
+    },
+    "filter": "Afficher",
+    "filters": {
+      "all": "Toutes",
+      "completed": "Terminées",
+      "cancelled": "Annulées"
+    },
+    "loading": "Chargement de ton entraînement",
+    "more": "Afficher plus",
+    "loadingMore": "Chargement…",
+    "minutes": "{minutes} min",
+    "note": "Les séances que tes coachs planifient pour toi. Les heures sont affichées dans le fuseau horaire de chaque séance. Tu marques une séance comme terminée une fois qu’elle a commencé.",
+    "heading": {
+      "upcoming": "À venir",
+      "history": "Historique"
+    }
+  },
+  "empty": {
+    "upcoming": {
+      "title": "Aucun entraînement à venir",
+      "body": "Les séances que tes coachs planifient pour toi apparaissent ici."
+    },
+    "history": {
+      "title": "Pas encore d’entraînement passé",
+      "body": "Les séances terminées, annulées et passées apparaissent ici."
+    },
+    "completed": {
+      "title": "Pas encore d’entraînement terminé",
+      "body": "Les séances que tu marques comme terminées apparaissent ici."
+    },
+    "cancelled": {
+      "title": "Aucun entraînement annulé",
+      "body": "Les séances annulées par un coach, ou à la fin d’une relation d’accompagnement, apparaissent ici."
+    }
+  },
+  "unavailable": {
+    "title": "L’entraînement n’est pas disponible",
+    "body": "Ton entraînement apparaît ici une fois ton profil de boxeur complété."
+  },
+  "failed": {
+    "title": "Impossible de charger ton entraînement.",
+    "body": "Vérifie ta connexion et réessaie.",
+    "retry": "Réessayer",
+    "more": "Impossible de charger plus de séances. Réessaie."
+  },
+  "status": {
+    "planned": "Planifiée",
+    "completed": "Terminée",
+    "cancelled": "Annulée"
+  },
+  "types": {
+    "technical": "Technique",
+    "sparring": "Sparring",
+    "pads": "Pattes d’ours",
+    "strength_conditioning": "Physique",
+    "roadwork": "Course"
+  },
+  "coach": {
+    "notShared": "Coach non partagé",
+    "former": "Ancien coach · {name}",
+    "withBrand": "{name} · {brand}"
+  },
+  "detail": {
+    "loading": "Chargement de la séance",
+    "facts": {
+      "coach": "Coach",
+      "type": "Type d’entraînement",
+      "starts": "Début",
+      "yourTime": "Ton heure",
+      "duration": "Durée",
+      "notes": "Notes de ton coach",
+      "completed": "Terminée",
+      "cancelled": "Annulée"
+    },
+    "startsValue": "{when} · {zone} (UTC{offset})",
+    "sameZone": "{time} · même fuseau horaire",
+    "otherZone": "{when} · {zone}",
+    "noNotes": "Aucune note",
+    "cancelledByCoach": "{when} · par ton coach",
+    "cancelledBySystem": "{when} · la relation d’accompagnement a pris fin",
+    "aside": {
+      "planned": "Marque-la comme terminée une fois faite. Tu peux le faire à partir de son heure de début, même plus tard.",
+      "ended": "La relation d’accompagnement a pris fin. Cette séance avait déjà commencé : tu peux encore la marquer comme terminée.",
+      "completed": "Tu as confirmé cette séance. Les séances terminées ne peuvent pas être modifiées.",
+      "cancelled": "Les séances annulées restent dans ton historique et ne peuvent pas être terminées."
+    },
+    "missing": {
+      "title": "Cette séance n’est pas disponible",
+      "body": "Ce n’est pas une de tes séances, ou le lien est incorrect.",
+      "aside": "Seules les séances que vos coachs ont planifiées pour vous apparaissent ici."
+    },
+    "failed": {
+      "title": "Impossible de charger cette séance.",
+      "body": "Vérifie ta connexion et réessaie."
+    },
+    "heading": "Séance"
+  },
+  "complete": {
+    "action": "Marquer comme terminée",
+    "title": "Marquer cette séance comme terminée ?",
+    "body": "{name} la verra comme terminée, avec l’heure de ta confirmation. Une séance terminée ne peut pas être modifiée.",
+    "bodyUnnamed": "Ton coach la verra comme terminée, avec l’heure de ta confirmation. Une séance terminée ne peut pas être modifiée.",
+    "confirm": "Marquer comme terminée",
+    "pending": "Enregistrement…",
+    "keep": "Pas encore",
+    "failed": "Impossible de joindre SimpleFit. C’est peut-être déjà enregistré : la séance affiche ce qui est enregistré. Réessaie ; elle n’est jamais terminée deux fois.",
+    "done": "Séance marquée comme terminée.",
+    "unavailable": "Cette séance n’est plus disponible.",
+    "refused": {
+      "notStarted": {
+        "title": "Cette séance n’a pas encore commencé.",
+        "body": "Tu peux la marquer comme terminée à partir de son heure de début. Rien n’a été enregistré."
+      },
+      "cancelled": {
+        "title": "Cette séance a été annulée.",
+        "body": "Elle ne peut plus être terminée. Rien n’a été enregistré."
+      }
+    }
+  }
+}

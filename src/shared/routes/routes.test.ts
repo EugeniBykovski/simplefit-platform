@@ -55,7 +55,7 @@ describe("matchWebRoute", () => {
 describe("navKeyForRoute", () => {
   it.each([
     ["web.app.fighter", "web.app.home", "home"],
-    ["web.app.fighter", "web.app.camp.board", "training"],
+    ["web.app.fighter", "web.app.training._session-id", "training"],
     ["web.app.coach", "web.app.coach.fighters._fighter-id", "fighters"],
     ["web.app.coach", "web.app.coach.earnings.transactions", "earnings"],
     ["web.app.gym", "web.app.gym.settings.danger", "settings"],

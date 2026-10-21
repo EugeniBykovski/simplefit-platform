@@ -47,6 +47,9 @@ const REAL_SCREENS = [
   // SF-60: the coach invitation page (WFI1) and the fighter's coaches (WFC1).
   "web.invite.coach",
   "web.app.coaches",
+  // SF-67: the fighter's Training (WFT1) and one session (WFT2).
+  "web.app.training",
+  "web.app.training._session-id",
   // SF-40: the Fighter home, its first run and the nine-step tour (FRW1, FRW2).
   "web.app.home",
   // SF-46: account basics & consent (WA5).

@@ -583,6 +583,15 @@ backend decides whether it has started and sets `completed_at`. The F24 hub,
 the F04 block plan, F05 Live training, F06 Training complete
 (`/sessions/:sessionId/complete`) and F12 Calendar stay future.
 
+**Fighter web training (SF-67).** `/app/training` (WFT1, Claude Design
+`1792573853-9116`, `WebCampBoard.dc.html` screen=training) is the Fighter web
+sidebar's Training item (`D-WEB-FIGHTER-TRAINING`): the same sessions as FT1
+from `listMyTrainingSessions`, Upcoming and History (`?view=history`, narrowed
+by `?status=completed|cancelled`). `/app/training/:sessionId` (WFT2) shows one
+session from `getMyTrainingSession` and completes it with
+`completeMyTrainingSession` after a confirmation dialog. W06 Fight camp board
+(`/app/camp/board`) stays a placeholder outside the nav, FUTURE in the design.
+
 **Fighter mobile coaches (SF-59, SF-76).** `/profile/coaches` (FC1, Claude
 Design `1792432236-08da`) lists the fighter's SF-56 relationships from
 `listMyCoaches`: Active and, with `?view=ended`, Ended; it is reached from the
@@ -1022,6 +1031,7 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-MOBILE-COACH-SHELL-MVP`           | DEFERRED               | Coach mobile: real profile Today, MVP tabs with Soon items; CR4–CR6 future                             |
 | `D-MOBILE-COACH-SESSIONS-PLANNER`    | RESOLVED               | Coach mobile Sessions: CT1, CT2, CT3, CT4 on the SF-62/SF-63 API (SF-65); agenda, native pickers       |
 | `D-MOBILE-FIGHTER-TRAINING`          | RESOLVED               | Fighter mobile Training: FT1, FT2 on the SF-62/SF-63 API (SF-66); explicit completion, no timer or log |
+| `D-WEB-FIGHTER-TRAINING`             | RESOLVED               | Fighter web Training: WFT1, WFT2 replace the Fight camp nav item (SF-67); W06 board future             |
 | `D-MOBILE-FIGHTER-COACH-INVITATIONS` | DEFERRED               | Fighter mobile: inbox and review by invitation id (SF-76); INV1 and an app-link token handoff future   |
 | `D-WEB-LEGAL-DOCUMENT-PAGES`         | NEEDS_PRODUCT_DECISION | Public legal pages (SF-71 L-12) have no artboard: gap; flows show the approved text in place (SF-72)   |
 
