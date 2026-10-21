@@ -919,9 +919,10 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(fighter)/(tabs)/(home)/home.tsx",
-        "note": "SF-41: the Fighter home (FR4) with the FR5 tour. The backend decides: while the fighter_mobile_first_run experience is pending the introduction opens first (mobile.welcome.tour); once completed or dismissed (any device) this home shows; unavailable (Fighter onboarding not complete) goes to the entry. Only real data: display name and the day since onboarding completed. The checklist steps (gym, classes, round timer, training log, partners) belong to domains that do not exist yet: none is ticked or linked, each says not available yet. The Live Board card is empty. The tour points at the real header, checklist and tab bar, is replayable from Help (?) and records nothing. FR7 (first-training milestone) waits for the training log."
+        "note": "SF-41: the Fighter home (FR4) with the FR5 tour. The backend decides: while the fighter_mobile_first_run experience is pending the introduction opens first (mobile.welcome.tour); once completed or dismissed (any device) this home shows; unavailable (Fighter onboarding not complete) goes to the entry. Only real data: display name and the day since onboarding completed. The checklist steps (gym, classes, round timer, training log, partners) belong to domains that do not exist yet: none is ticked or linked, each says not available yet. The Live Board card is empty. The tour points at the real header, checklist and tab bar, is replayable from Help (?) and records nothing. FR7 (first-training milestone) waits for the training log. SF-69 (Claude Design 1792580627-132e): a Training card under the Live Board card shows the backend's first upcoming session (listMyTrainingSessions view=upcoming) and the latest three completed (view=history&status=completed), from the same queries and cache as the Training tab; no counts. Each projection loads and fails on its own; the first-run record and checklist are unchanged."
       },
-      "screens": ["LD2", "FR4", "FR5", "FR7", "F01", "F01b"]
+      "screens": ["LD2", "FR4", "FR5", "FR7", "F01", "F01b"],
+      "discrepancies": ["D-MOBILE-FIGHTER-HOME-TRAINING"]
     },
     {
       "id": "mobile.not-found",
@@ -9235,14 +9236,26 @@
       "query": {
         "state": "first-run"
       },
-      "states": ["1 / 5", "hidden"],
+      "states": [
+        "1 / 5",
+        "hidden",
+        "training: next",
+        "training: nothing scheduled",
+        "training: loading",
+        "training: failed",
+        "training: not available",
+        "completed: ready",
+        "completed: none",
+        "completed: failed"
+      ],
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
         "section": "FIGHTER · 34a · Onboarding · mobile first run",
         "step": "34.4",
         "tag": "MOBILE",
-        "artboard": "FirstRunFHome.dc.html"
+        "artboard": "FirstRunFHome.dc.html",
+        "note": "Since 1792580627-132e (SF-69) FirstRunFHome.dc.html also draws the Training card (training=… recent=…), 390 × 1300."
       }
     },
     {
@@ -10674,7 +10687,8 @@
         "section": "6 · Fighter app · home, training, camp",
         "step": "6.1",
         "tag": "MOBILE",
-        "artboard": "Main.dc.html"
+        "artboard": "Main.dc.html",
+        "note": "Main.dc.html is FUTURE since 1792580627-132e (gyms, camp, weight, coach notes); the MVP home is FR4 with its Training card (SF-69)."
       }
     },
     {
@@ -17624,6 +17638,20 @@
       "status": "RESOLVED",
       "routes": ["web.app.home"],
       "screens": ["FRW1", "W01"]
+    },
+    {
+      "id": "D-MOBILE-FIGHTER-HOME-TRAINING",
+      "title": "Fighter mobile Home shows real training, not F01's booked class",
+      "sourceA": "F01 Main.dc.html: a NEXT hero (gym, ring, address, arrival, gear), fight camp, weight and a coach note; FR4 FirstRunFHome.dc.html with no training at all; FR7 a first-training milestone from the round timer (rounds, time, RPE)",
+      "sourceB": "SF-62 / SF-63 API: the fighter's own TrainingSessions in the upcoming and history projections (title, type, start with its IANA zone, duration, coach identity, status, completed_at), cursor pages, no totals; no gyms, bookings, camp, weight, coach notes, timer or training log",
+      "mismatch": "The designed mobile Home shows a booked class and metrics that do not exist, and none of the fighter's real assigned sessions.",
+      "impact": "Building F01 as drawn would fake a booked class and progress; leaving Home as it was would hide the next real session.",
+      "resolution": "Claude Design 1792580627-132e (SF-69) adds a Training card to FR4 under the Live Board card (training=next|empty|loading|error|unavailable, recent=ready|empty|error): the backend's first upcoming session and the latest three completed, opening FT2, with All training to FT1. No SF-41 section moves. F01 is marked FUTURE; FR7 stays deferred: completing an assigned session is not logging training, so the checklist is unchanged.",
+      "decision": "Mobile Home previews the fighter's real schedule from the SF-63 projections, as the web home (SF-68); the full lists stay on the Training tab.",
+      "decidedOn": "2026-10-21",
+      "status": "RESOLVED",
+      "routes": ["mobile.home"],
+      "screens": ["FR4", "F01", "FR7"]
     },
     {
       "id": "D-MOBILE-COACH-SHELL-MVP",
