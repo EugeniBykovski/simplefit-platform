@@ -14,6 +14,11 @@ vi.mock("@/entities/session", () => ({
 vi.mock("@/shared/i18n/navigation", () => ({
   usePathname: () => "/app/home",
   useRouter: () => ({ replace: vi.fn(), push: vi.fn() }),
+  Link: ({ href, children, ...props }: { href: string; children: React.ReactNode }) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  ),
 }));
 
 afterEach(() => {
@@ -64,6 +69,10 @@ function stubApi({
       if (path === "/api/v1/me/fighter-profile") return Promise.resolve(jsonResponse(PROFILE));
       if (path === "/api/v1/me/first-run") {
         return Promise.resolve(jsonResponse({ experiences: [tour(status)] }));
+      }
+      // SF-68: the Training card's projections (an empty schedule here).
+      if (path === "/api/v1/me/training-sessions") {
+        return Promise.resolve(jsonResponse({ training_sessions: [], next_cursor: null }));
       }
       if (path === "/api/v1/me/first-run/fighter_web_tour" && method === "PUT") {
         const { outcome } = JSON.parse(String(init.body)) as { outcome: string };

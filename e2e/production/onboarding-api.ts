@@ -674,6 +674,11 @@ export async function onboardingApi(
           error: { code: "not_found", message: "", details: {}, request_id: null },
         });
       }
+      // SF-68: the Home's Training card reads the fighter's projections; by
+      // default nothing is assigned (`trainingApi` registers real answers).
+      if (url.pathname === "/api/v1/me/training-sessions" && !write) {
+        return json(200, { training_sessions: [], next_cursor: null });
+      }
       return unauthorized();
     },
   );

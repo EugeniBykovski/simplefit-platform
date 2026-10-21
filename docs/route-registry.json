@@ -994,10 +994,10 @@
         "phase": "ACTIVE"
       },
       "status": "IMPLEMENTED",
-      "discrepancies": ["D-WEB-DEFAULT-WORKSPACE"],
+      "discrepancies": ["D-WEB-DEFAULT-WORKSPACE", "D-WEB-FIGHTER-HOME-TRAINING"],
       "production": {
         "file": "src/app/[locale]/app/(fighter)/home/page.tsx",
-        "note": "SF-40: the Fighter home behind the Fighter gate (every web.app.fighter page renders only when GET /api/v1/me/entry answers fighter_home; anyone else goes where it says, with the page as returnTo). FRW1 while the first-run record (GET /api/v1/me/first-run, simplefit-api ADR 0018) says the Fighter web tour is pending. FRW2 is the nine-step tour: coach marks on real production elements (the checklist, the sidebar nav items, and the shell identity block where the unbuilt workspace switcher will sit), then the completion card on the Take the tour button. Only End tour / Escape (dismissed) and Finish on step 9 (completed) are recorded (PUT /api/v1/me/first-run/fighter_web_tour). Afterwards the home shows the greeting, and Take the tour replays the tour without recording anything. The screens' tour queries are design-gallery states only: nothing about the first run is in the URL or in browser storage. Only real data is shown (the FighterProfile display name and completion). The checklist's steps are not available until their domains exist, and the tour copy says what each section is for without claiming unbuilt features work."
+        "note": "SF-40: the Fighter home behind the Fighter gate (every web.app.fighter page renders only when GET /api/v1/me/entry answers fighter_home; anyone else goes where it says, with the page as returnTo). FRW1 while the first-run record (GET /api/v1/me/first-run, simplefit-api ADR 0018) says the Fighter web tour is pending. FRW2 is the nine-step tour: coach marks on real production elements (the checklist, the sidebar nav items, and the shell identity block where the unbuilt workspace switcher will sit), then the completion card on the Take the tour button. Only End tour / Escape (dismissed) and Finish on step 9 (completed) are recorded (PUT /api/v1/me/first-run/fighter_web_tour). Afterwards the home shows the greeting, and Take the tour replays the tour without recording anything. The screens' tour queries are design-gallery states only: nothing about the first run is in the URL or in browser storage. Only real data is shown (the FighterProfile display name and completion). The checklist's steps are not available until their domains exist, and the tour copy says what each section is for without claiming unbuilt features work. SF-68 (Claude Design 1792578392-00ac): a Training card under the Pro note shows the backend's first upcoming session (listMyTrainingSessions view=upcoming) and the latest three completed (view=history&status=completed), from the same queries and cache as /app/training; no counts or aggregates. Each projection loads and fails on its own; a training failure never takes the rest of Home or the first-run record with it."
       },
       "screens": ["LD4", "FRW1", "FRW2", "W01"]
     },
@@ -9434,14 +9434,25 @@
       "query": {
         "state": "first-run"
       },
-      "states": ["2 / 6"],
+      "states": [
+        "2 / 6",
+        "training: next",
+        "training: nothing scheduled",
+        "training: loading",
+        "training: failed",
+        "training: not available",
+        "completed: ready",
+        "completed: none",
+        "completed: failed"
+      ],
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
         "section": "FIGHTER · 34b · Onboarding · web first run · checklist + 9-step tour",
         "step": "34.8",
         "tag": "WEB_APP",
-        "artboard": "FirstRunWebF.dc.html"
+        "artboard": "FirstRunWebF.dc.html",
+        "note": "Since 1792578392-00ac (SF-68) FirstRunWebF.dc.html also draws the Training card (training=… recent=…), which the home keeps after the first run."
       }
     },
     {
@@ -13403,7 +13414,8 @@
         "section": "16 · Fighter web · desktop",
         "step": "16.1",
         "tag": "WEB_APP",
-        "artboard": "WebHome.dc.html"
+        "artboard": "WebHome.dc.html",
+        "note": "WebHome.dc.html is FUTURE since 1792578392-00ac (bookings, gyms, camp, challenges, social); the MVP home is FRW1 with its Training card (SF-68)."
       }
     },
     {
@@ -17598,6 +17610,20 @@
       "status": "RESOLVED",
       "routes": ["web.app.training", "web.app.training._session-id", "web.app.camp.board"],
       "screens": ["WFT1", "WFT2", "W06"]
+    },
+    {
+      "id": "D-WEB-FIGHTER-HOME-TRAINING",
+      "title": "Fighter web Home shows real training, not W01's booked class",
+      "sourceA": "W01 WebHome.dc.html: a NEXT hero (gym, ring, address, gear, arrival, timer, training partners), This week (5 of 6 planned · 74 rounds), Fight camp, gym challenge and friends; FighterWebNav's sidebar card NEXT · IN 2 H 14 MIN with a gym and ring",
+      "sourceB": "SF-62 / SF-63 API: the fighter's own TrainingSessions in the upcoming and history projections (title, type, start with its IANA zone, duration, coach identity, status, completed_at), cursor pages, no totals; no bookings, gyms, camp, challenges, social, rounds or training log",
+      "mismatch": "The designed Home and sidebar show bookings, counts and places that do not exist, and none of the fighter's real assigned sessions.",
+      "impact": "Building them as drawn would fake a booked class and progress; leaving Home as it was would hide the next real session.",
+      "resolution": "Claude Design 1792578392-00ac (SF-68) adds a Training card to FRW1 (FirstRunWebF.dc.html, under the Pro note; training=next|empty|loading|error|unavailable, recent=ready|empty|error): the backend's first upcoming session and the latest three completed, linked to WFT2, with All training to WFT1. Production keeps the SF-40 layout: no existing card moves. The sidebar Next card is removed from FighterWebNav; W01 is marked FUTURE. The checklist is unchanged: Log your first training needs a training log, which completing an assigned session is not.",
+      "decision": "Home previews the fighter's real schedule from the SF-63 projections, with no counts; the full lists stay on Training.",
+      "decidedOn": "2026-10-21",
+      "status": "RESOLVED",
+      "routes": ["web.app.home"],
+      "screens": ["FRW1", "W01"]
     },
     {
       "id": "D-MOBILE-COACH-SHELL-MVP",

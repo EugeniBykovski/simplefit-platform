@@ -64,6 +64,23 @@ for (const [id, shown] of [
   ["replay", heading(/^Good /)],
   ["missing-target", tourStep("Your Live Board")],
   ["longer-labels", text("Richte deine Ecke ein")],
+  // SF-68: the Training card under the Pro note.
+  ["training-empty", text("No training scheduled yet")],
+  ["training-next", text("Technical boxing")],
+  ["training-recent", text("Roadwork intervals")],
+  ["training-multiple", text("Technical boxing")],
+  [
+    "training-loading",
+    (page: Page) => page.getByRole("status", { name: "Loading your training" }).first(),
+  ],
+  [
+    "training-upcoming-error",
+    text("We couldn’t load your training. Check your connection and try again."),
+  ],
+  ["training-history-error", text("We couldn’t load your completed sessions.")],
+  ["training-unavailable", text("Training isn’t available")],
+  ["training-first-run", heading("Welcome to SimpleFit, Yauheni B.")],
+  ["training-german", text("Als Nächstes")],
 ] as const satisfies readonly (readonly [string, (page: Page) => Locator])[]) {
   test(id, async ({ page }) => {
     const outside = await story(page, id);

@@ -33,7 +33,9 @@ export const apiError = (
 
 /**
  * Installs `routes` as `fetch`: a key is a path, or `"METHOD /path"` when one
- * path answers differently per method (it wins over the bare path);
+ * path answers differently per method (it wins over the bare path), or
+ * `"/path?name=value"` when it answers differently per query (it wins when
+ * the request carries every parameter it names);
  * `"pending"` never settles; `"offline"` fails as a dropped connection does.
  * A list answers its calls in order, its last answer repeating. Returns the
  * cleanup.
@@ -42,13 +44,21 @@ export function installApi(routes: Record<string, Answer | Answer[]>) {
   const original = window.fetch;
   const calls = new Map<string, number>();
   window.fetch = async (input, init) => {
-    const path = new URL(
+    const url = new URL(
       typeof input === "string" ? input : input instanceof URL ? input.href : input.url,
-    ).pathname;
+    );
+    const path = url.pathname;
     const method = (
       init?.method ?? (input instanceof Request ? input.method : "GET")
     ).toUpperCase();
-    const key = routes[`${method} ${path}`] === undefined ? path : `${method} ${path}`;
+    const byQuery = Object.keys(routes).find((candidate) => {
+      const [route, query] = candidate.split("?");
+      if (query === undefined || route !== path) return false;
+      return [...new URLSearchParams(query)].every(
+        ([name, value]) => url.searchParams.get(name) === value,
+      );
+    });
+    const key = byQuery ?? (routes[`${method} ${path}`] === undefined ? path : `${method} ${path}`);
     const entry = routes[key] ?? apiError(404, "not_found");
     const call = calls.get(key) ?? 0;
     calls.set(key, call + 1);

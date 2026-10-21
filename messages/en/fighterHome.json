@@ -117,5 +117,27 @@
         "body": "Replay the tour any time from Take the tour. Your setup steps open as their features arrive."
       }
     }
+  },
+  "training": {
+    "title": "Training",
+    "all": "All training →",
+    "next": "Next",
+    "when": "{date} · {zone}",
+    "empty": {
+      "title": "No training scheduled yet",
+      "body": "Sessions your coaches plan for you appear here."
+    },
+    "recent": "Latest completed",
+    "recentEmpty": "No completed sessions yet.",
+    "loading": "Loading your training",
+    "failed": {
+      "upcoming": "We couldn’t load your training. Check your connection and try again.",
+      "recent": "We couldn’t load your completed sessions."
+    },
+    "retry": "Try again",
+    "unavailable": {
+      "title": "Training isn’t available",
+      "body": "Your training appears here once your fighter profile is complete."
+    }
   }
 }

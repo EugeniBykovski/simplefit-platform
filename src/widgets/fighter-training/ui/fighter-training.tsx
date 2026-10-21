@@ -5,6 +5,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import {
+  useCoachLine,
   useMyTrainingSessions,
   type MyTrainingSession,
   type TrainingSessionFilter,
@@ -20,7 +21,7 @@ import { Notice } from "@/shared/ui/notice";
 import { Skeleton } from "@/shared/ui/skeleton";
 import { Spinner } from "@/shared/ui/spinner";
 
-import { Card, StateMessage, StatusBadge, TrainingPage, useCoachLine } from "./parts";
+import { Card, StateMessage, StatusBadge, TrainingPage } from "./parts";
 
 /*
  * The fighter's Training (`web.app.training`, WFT1; Claude Design

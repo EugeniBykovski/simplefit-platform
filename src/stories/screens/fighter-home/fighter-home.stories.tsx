@@ -19,6 +19,7 @@ import { EntryFailure, LaunchScreen, SessionFailure } from "@/widgets/system-sta
 import { WorkspaceShell } from "@/widgets/workspace-shell";
 
 import deFighterHome from "../../../../messages/de/fighterHome.json";
+import deFighterTraining from "../../../../messages/de/fighterTraining.json";
 
 /*
  * The Fighter web home and its first run (SF-40; Claude Design 34b FRW1 /
@@ -58,13 +59,71 @@ const tour = (status: string, recorded_at: string | null = null) => ({
 });
 const recorded = (outcome: string) => ok({ experience: tour(outcome, new Date().toISOString()) });
 
+/** One of the fighter's sessions as the SF-63 projections return it (Storybook fixture). */
+const session = (overrides: Record<string, unknown> = {}) => ({
+  id: "ses-1",
+  relationship_id: "rel-1",
+  coach: { display_name: "Coach Marek", brand_name: "Marek Boxing" },
+  coach_display_name_at_end: null,
+  title: "Technical boxing",
+  training_type: "technical",
+  starts_at: "2026-10-21T16:00:00Z",
+  time_zone: "Europe/Warsaw",
+  duration_minutes: 60,
+  notes: null,
+  status: "planned",
+  completed_at: null,
+  cancelled_at: null,
+  cancelled_by: null,
+  cancel_reason: null,
+  inserted_at: "2026-10-20T10:00:00Z",
+  updated_at: "2026-10-20T10:00:00Z",
+  ...overrides,
+});
+const list = (training_sessions: unknown[], next_cursor: string | null = null) =>
+  ok({ training_sessions, next_cursor });
+const NONE = list([]);
+const COMPLETED = [
+  session({
+    id: "c1",
+    title: "Roadwork intervals",
+    training_type: "roadwork",
+    starts_at: "2026-10-18T08:00:00Z",
+    status: "completed",
+    completed_at: "2026-10-18T09:05:00Z",
+  }),
+  session({
+    id: "c2",
+    title: "Pads with coach",
+    training_type: "pads",
+    starts_at: "2026-10-16T16:00:00Z",
+    status: "completed",
+    completed_at: "2026-10-16T17:10:00Z",
+    coach: null,
+    coach_display_name_at_end: "Coach Olga",
+  }),
+  session({
+    id: "c3",
+    title: "S&C circuit",
+    training_type: "strength_conditioning",
+    starts_at: "2026-10-14T15:00:00Z",
+    status: "completed",
+    completed_at: "2026-10-14T16:00:00Z",
+  }),
+];
+
 function story({
   firstRun = ok({ experiences: [tour("pending")] }),
   record = recorded("completed"),
+  upcoming = NONE,
+  completed = NONE,
   play,
 }: {
   firstRun?: Answer | Answer[];
   record?: Answer | Answer[];
+  /** SF-68: the Training card's projections (an empty schedule by default). */
+  upcoming?: Answer | Answer[];
+  completed?: Answer | Answer[];
   play?: StoryObj["play"];
 } = {}): StoryObj {
   return {
@@ -86,6 +145,8 @@ function story({
         "/api/v1/me/fighter-profile": ok(PROFILE),
         "/api/v1/me/first-run": firstRun,
         "PUT /api/v1/me/first-run/fighter_web_tour": record,
+        "/api/v1/me/training-sessions?view=upcoming": upcoming,
+        "/api/v1/me/training-sessions?view=history&status=completed": completed,
       }),
     render: () => (
       <RequireSession
@@ -117,7 +178,7 @@ function German({ children }: { children: ReactNode }) {
     <NextIntlClientProvider
       locale="de"
       timeZone="UTC"
-      messages={{ ...messages, fighterHome: deFighterHome }}
+      messages={{ ...messages, fighterHome: deFighterHome, fighterTraining: deFighterTraining }}
     >
       {children}
     </NextIntlClientProvider>
@@ -358,3 +419,125 @@ export const LongerLabels: StoryObj = {
   ],
 };
 LongerLabels.name = "Longer translated labels (de)";
+
+/* ── SF-68 · the Training card (returning Fighter) ─────────────────── */
+
+const RETURNING = ok({ experiences: [tour("completed", new Date().toISOString())] });
+const T = { timeout: 5000 };
+const trainingCard = (canvasElement: HTMLElement) =>
+  within(canvasElement).findByRole("region", { name: "Training" }, T);
+
+export const TrainingEmpty = story({
+  firstRun: RETURNING,
+  play: async ({ canvasElement }) => {
+    const card = await trainingCard(canvasElement);
+    await within(card).findByText("No training scheduled yet", {}, T);
+    await within(card).findByText("No completed sessions yet.", {}, T);
+  },
+});
+TrainingEmpty.name = "Training · nothing assigned";
+
+export const TrainingNext = story({
+  firstRun: RETURNING,
+  upcoming: list([session()]),
+  play: async ({ canvasElement }) => {
+    const card = await trainingCard(canvasElement);
+    await within(card).findByRole("link", { name: /Technical boxing/ }, T);
+  },
+});
+TrainingNext.name = "Training · next session";
+
+export const TrainingRecent = story({
+  firstRun: RETURNING,
+  completed: list(COMPLETED),
+  play: async ({ canvasElement }) => {
+    const card = await trainingCard(canvasElement);
+    await within(card).findByRole("link", { name: /Roadwork intervals/ }, T);
+  },
+});
+TrainingRecent.name = "Training · recently completed";
+
+export const TrainingMultiple = story({
+  firstRun: RETURNING,
+  upcoming: list(
+    [
+      session(),
+      session({ id: "ses-2", title: "Pads with coach", starts_at: "2026-10-23T15:30:00Z" }),
+    ],
+    "more",
+  ),
+  completed: list([...COMPLETED, session({ id: "c4", title: "Older", status: "completed" })]),
+  play: async ({ canvasElement }) => {
+    const card = await trainingCard(canvasElement);
+    await within(card).findByRole("link", { name: /Technical boxing/ }, T);
+    await expect(within(card).queryByText("Pads with coach")).toBeNull();
+  },
+});
+TrainingMultiple.name = "Training · several sessions (next and the latest 3, no counts)";
+
+export const TrainingLoading = story({
+  firstRun: RETURNING,
+  upcoming: "pending",
+  completed: "pending",
+});
+TrainingLoading.name = "Training · loading";
+
+export const TrainingUpcomingError = story({
+  firstRun: RETURNING,
+  upcoming: apiError(503, "service_unavailable"),
+  completed: list(COMPLETED),
+  play: async ({ canvasElement }) => {
+    const card = await trainingCard(canvasElement);
+    await within(card).findByText(/We couldn’t load your training/, {}, T);
+    await within(card).findByRole("link", { name: /Roadwork intervals/ }, T);
+  },
+});
+TrainingUpcomingError.name = "Training · upcoming failed (completed kept)";
+
+export const TrainingHistoryError = story({
+  firstRun: RETURNING,
+  upcoming: list([session()]),
+  completed: apiError(503, "service_unavailable"),
+  play: async ({ canvasElement }) => {
+    const card = await trainingCard(canvasElement);
+    await within(card).findByText("We couldn’t load your completed sessions.", {}, T);
+  },
+});
+TrainingHistoryError.name = "Training · completed failed (next kept)";
+
+export const TrainingUnavailable = story({
+  firstRun: RETURNING,
+  upcoming: apiError(404, "not_found"),
+  completed: apiError(404, "not_found"),
+  play: async ({ canvasElement }) => {
+    const card = await trainingCard(canvasElement);
+    await within(card).findByText("Training isn’t available", {}, T);
+  },
+});
+TrainingUnavailable.name = "Training · not available (404)";
+
+export const TrainingFirstRun = story({
+  upcoming: list([session()]),
+  completed: list(COMPLETED.slice(0, 1)),
+  play: async ({ canvasElement }) => {
+    await within(canvasElement).findByRole(
+      "heading",
+      { level: 1, name: /Welcome to SimpleFit/ },
+      T,
+    );
+    await trainingCard(canvasElement);
+  },
+});
+TrainingFirstRun.name = "Training · during the first run (checklist unchanged)";
+
+export const TrainingGerman: StoryObj = {
+  ...story({ firstRun: RETURNING, upcoming: list([session()]), completed: list(COMPLETED) }),
+  decorators: [
+    (Story) => (
+      <German>
+        <Story />
+      </German>
+    ),
+  ],
+};
+TrainingGerman.name = "Training · German (longest labels)";

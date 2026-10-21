@@ -21,3 +21,4 @@ export {
   useMyTrainingSessions,
   type MyTrainingSession,
 } from "./model/my-training-session";
+export { useCoachLine } from "./ui/use-coach-line";

@@ -117,5 +117,27 @@
         "body": "Starte die Tour jederzeit erneut über „Tour starten“. Deine Einrichtungsschritte öffnen sich, sobald ihre Funktionen da sind."
       }
     }
+  },
+  "training": {
+    "title": "Training",
+    "all": "Alle Einheiten →",
+    "next": "Als Nächstes",
+    "when": "{date} · {zone}",
+    "empty": {
+      "title": "Noch kein Training geplant",
+      "body": "Einheiten, die deine Coaches für dich planen, erscheinen hier."
+    },
+    "recent": "Zuletzt erledigt",
+    "recentEmpty": "Noch keine erledigten Einheiten.",
+    "loading": "Dein Training wird geladen",
+    "failed": {
+      "upcoming": "Wir konnten dein Training nicht laden. Prüfe deine Verbindung und versuche es erneut.",
+      "recent": "Wir konnten deine erledigten Einheiten nicht laden."
+    },
+    "retry": "Erneut versuchen",
+    "unavailable": {
+      "title": "Training ist nicht verfügbar",
+      "body": "Dein Training erscheint hier, sobald dein Kämpferprofil vollständig ist."
+    }
   }
 }
