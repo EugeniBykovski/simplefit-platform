@@ -1,9 +1,9 @@
-import { screen, waitFor, within } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
 import type * as TimeZone from "@/shared/lib/time-zone";
-import { jsonResponse, renderWithProviders } from "@/test/render";
+import { jsonResponse, renderWithProviders, testQueryClient } from "@/test/render";
 
 import { CoachSessionDetail } from "./coach-session-detail";
 import { CoachSessions } from "./coach-sessions";
@@ -200,6 +200,31 @@ describe("CoachSessions (WCT1)", () => {
 });
 
 describe("CoachSessionDetail (WCT2)", () => {
+  it("keeps a shown session when reading it again fails, and replaces it only on 404 (SF-70)", async () => {
+    let reads = 0;
+    server({
+      [`GET ${SESSIONS}/ses-1`]: () => {
+        reads += 1;
+        if (reads === 1) return jsonResponse({ training_session: session() });
+        return reads === 2 ? error(503, "internal_error") : error(404, "not_found");
+      },
+    });
+    const queryClient = testQueryClient();
+    await renderWithProviders(<CoachSessionDetail sessionId="ses-1" />, { queryClient });
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "Technical boxing" }),
+    ).toBeVisible();
+
+    await act(() => queryClient.refetchQueries({ queryKey: [`${SESSIONS}/ses-1`] }));
+    expect(queryClient.getQueryState([`${SESSIONS}/ses-1`])?.status).toBe("error");
+    expect(reads).toBe(2);
+    expect(screen.getByRole("heading", { level: 1, name: "Technical boxing" })).toBeVisible();
+    expect(screen.queryByText("We couldn’t load this session.")).toBeNull();
+
+    await act(() => queryClient.refetchQueries({ queryKey: [`${SESSIONS}/ses-1`] }));
+    expect(await screen.findByText("This session isn’t available")).toBeVisible();
+  });
+
   it("shows the plan in the session's zone and the coach's own, with Edit and Cancel while planned", async () => {
     server({ [`GET ${SESSIONS}/ses-1`]: jsonResponse({ training_session: session() }) });
     await renderWithProviders(<CoachSessionDetail sessionId="ses-1" />);
