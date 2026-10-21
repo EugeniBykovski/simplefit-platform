@@ -3,9 +3,10 @@
 **Date:** 2026-10-21. **Repos:** simplefit-api, simplefit-platform,
 simplefit-mobile, branch `SF-70-coach-fighter-training-e2e-hardening`, from
 `main` at API `22c6888`, platform `55d0854`, mobile `ba4a1f2`.
-**Verdicts:** Engineering **BLOCKED** by one open P1 (D1, iOS token
-caching), which predates SF-70; the SF-70 changes themselves are ready for
-review. Native **PARTIAL**. Public **NO-GO**.
+**Verdicts:** Engineering **BLOCKED** by one P1 (D1, iOS token caching),
+which predates SF-70: the fix is implemented and proven natively on the
+simulator, but not yet in a build of the app, which needs a new dev build
+(see "D1 remediation"). Native **PARTIAL**. Public **NO-GO**.
 
 This is the durable record of the SF-70 run. The API's ADR 0010 and the mobile
 `docs/investigations/` point here. Evidence such as screenshots, probe JSON and
@@ -68,23 +69,123 @@ below comes from a command that was actually run.
 | Session lifecycle: logout revokes, forged and absent tokens 401, SF-75 race                                                  | PASS    | PASS                                              | PASS                                                       | NOT VERIFIED |
 | Gate off (configuration A): FirstRun unchanged                                                                               | PASS    | PASS                                              | PASS                                                       | NOT VERIFIED |
 | Concurrency: 8 accepts → 1 relationship and 1 evidence row; 8 completes → 1 stamp                                            | PASS    | n/a                                               | n/a                                                        | n/a          |
-| Privacy: logs, URLs, telemetry                                                                                               | PASS    | PASS                                              | **FAIL** (D1)                                              | NOT VERIFIED |
+| Privacy: logs, URLs, telemetry                                                                                               | PASS    | PASS                                              | fix proven on simulator; app build pending (D1)            | NOT VERIFIED |
 | Viewports and themes                                                                                                         | n/a     | PASS (1440, 1280, 1920, 412, 390; dark and light) | PASS 375, 390, 430; dark; XL text PASS after relaunch (D5) | NOT VERIFIED |
 | VoiceOver / TalkBack, manual                                                                                                 | n/a     | n/a                                               | NOT VERIFIED (automated audits only)                       | NOT VERIFIED |
 
 ## Defects
 
-| ID  | Sev | Status                      | Summary                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| --- | --- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| D1  | P1  | **OPEN**, needs approval    | On iOS, the access and refresh tokens persist in the HTTP cache: `Library/Caches/com.simplefit.boxing/Cache.db`, which is NSURLCache. This is outside SecureStore and breaks mobile rule 11. Authenticated GET responses are cached as well. React Native's `RCTNetworking` uses the default `NSURLSession`, so the shared `NSURLCache` stored the `/api/auth/email/sign-in/verify` response. SF-70 changed the API to send `Cache-Control: no-store` on every credential response (ADR 0010). With that header live, a clean device still cached the response, so the header is necessary but not sufficient. The refresh endpoint was not observed separately. Proposed fix (native, so it needs approval and a new dev build): give React Native a non-persistent session configuration through a config plugin (`RCTSetCustomNSURLSessionConfigurationProvider` with an ephemeral configuration, or `URLCache = nil`), and purge the existing `Cache.db` on first launch after the update. Android OkHttp honours `no-store`; that is not verified on a device. |
-| D2  | —   | **BLOCKED** (environment)   | The only installed iOS dev build is an EAS build made before SF-65. It has no `RNDateTimePicker` native code, so the Date and Start-time sheets render empty and Done keeps the default value. The backend time-zone path was verified with the coach's mobile form: 16:00 Europe/Warsaw (CEST) was stored as 14:00 UTC and shown correctly on a second device. The native picker interaction itself was never exercised. A new dev build needs Xcode 26+ (this machine has 16.4) or EAS credits, and both need approval. Follow-up, P2: fail loudly when a required native view is missing, rather than silently committing a default.                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| D3  | P2  | **FIXED** in SF-70 (mobile) | SF-61: Hermes has no `Intl.PluralRules`, so ICU `plural` crashes. The invitation cooldown and limit messages used `plural` in 7 catalogs. The copy was rewritten without plurals, and `hermes-plural.test.ts` now fails any catalog that uses `plural` or `selectordinal`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| D4  | P3  | follow-up                   | SF-66: `CapabilityGate` keeps its children mounted under a cover, so a capability query can fire before the gate resolves. The backend answers 404 and nothing is exposed. Fixing it is an architectural change.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| D5  | P3  | follow-up                   | iOS: when the text size is changed to accessibility XL while the app is open, Training keeps stale heights. The title disappears, the "Upcoming" and "History" segments are cut to "Up" and "Hi", and the date headers are clipped. After a relaunch at XL the screen renders correctly.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| D6  | P3  | follow-up                   | Fighter Home greeting reads "Welcome in, Eli K.." when the display name ends with a period.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| D7  | P3  | follow-up                   | Web Fighter Training at 390 px truncates session titles to roughly 12 characters next to the time column. This happens in both themes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| D8  | P3  | product decision            | WCR7 copy "Coach tools are not available yet." while the gate is off. It is accurate today.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| D9  | P3  | follow-up (ADR 0021)        | SF-74: a relationship can end while a list is open. Clients read `coach?.`, so there is no crash and no exposure.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ID  | Sev | Status                                 | Summary                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| --- | --- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D1  | P1  | **FIXED, awaiting build verification** | On iOS, API responses were stored in the HTTP disk cache, `Library/Caches/com.simplefit.boxing/Cache.db`. That included the refresh response, holding a valid access token and the current refresh token, so the refresh token lived outside SecureStore and broke mobile rule 11. See "D1 remediation" for cause, fix and evidence.                                                                                                                                                                                                                                                                                                    |
+| D2  | —   | **BLOCKED** (environment)              | The only installed iOS dev build is an EAS build made before SF-65. It has no `RNDateTimePicker` native code, so the Date and Start-time sheets render empty and Done keeps the default value. The backend time-zone path was verified with the coach's mobile form: 16:00 Europe/Warsaw (CEST) was stored as 14:00 UTC and shown correctly on a second device. The native picker interaction itself was never exercised. A new dev build needs Xcode 26+ (this machine has 16.4) or EAS credits, and both need approval. Follow-up, P2: fail loudly when a required native view is missing, rather than silently committing a default. |
+| D3  | P2  | **FIXED** in SF-70 (mobile)            | SF-61: Hermes has no `Intl.PluralRules`, so ICU `plural` crashes. The invitation cooldown and limit messages used `plural` in 7 catalogs. The copy was rewritten without plurals, and `hermes-plural.test.ts` now fails any catalog that uses `plural` or `selectordinal`.                                                                                                                                                                                                                                                                                                                                                              |
+| D4  | P3  | follow-up                              | SF-66: `CapabilityGate` keeps its children mounted under a cover, so a capability query can fire before the gate resolves. The backend answers 404 and nothing is exposed. Fixing it is an architectural change.                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| D5  | P3  | follow-up                              | iOS: when the text size is changed to accessibility XL while the app is open, Training keeps stale heights. The title disappears, the "Upcoming" and "History" segments are cut to "Up" and "Hi", and the date headers are clipped. After a relaunch at XL the screen renders correctly.                                                                                                                                                                                                                                                                                                                                                |
+| D6  | P3  | follow-up                              | Fighter Home greeting reads "Welcome in, Eli K.." when the display name ends with a period.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| D7  | P3  | follow-up                              | Web Fighter Training at 390 px truncates session titles to roughly 12 characters next to the time column. This happens in both themes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| D8  | P3  | product decision                       | WCR7 copy "Coach tools are not available yet." while the gate is off. It is accurate today.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| D9  | P3  | follow-up (ADR 0021)                   | SF-74: a relationship can end while a list is open. Clients read `coach?.`, so there is no crash and no exposure.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+
+## D1 remediation
+
+**Cause, traced in source and reproduced.**
+
+- Expo SDK 57 installs `expo/fetch` as the global `fetch`; the bundle and the
+  installed binary both confirm it.
+- Its iOS session, `ExpoFetchModule.createURLSession`, uses
+  `URLSessionConfiguration.default`, and so `URLCache.shared`.
+- A per-request policy is impossible: `expo/fetch` passes no `cache` option to
+  native code.
+
+The disk cache is filled through two layers:
+
+1. **Release and dev builds.** `URLCache.shared` stores `private, max-age=0`
+   answers: before SF-70 that included the credential responses, and still
+   includes `/api/me` and profiles.
+2. **Debug dev-client builds only.** The network inspector
+   (`#if DEBUG && EX_DEV_CLIENT_NETWORK_INSPECTOR`) swizzles
+   `URLSessionConfiguration.default` to add a `URLProtocol`. That protocol
+   reports every response with `cacheStoragePolicy: .allowed`, so
+   `no-store` answers were stored too: refresh, training sessions, first-run.
+
+**Reproduced in the installed dev build (cold start, restore, Training, a
+session).** Nine responses were cached, each with `storage_policy` 0:
+
+- `/api/auth/session/refresh`, with both tokens;
+- `/api/me`, `entry`, `fighter-profile`, `first-run`;
+- three training-session reads.
+
+Several of them were marked `no-store`. Earlier the email sign-in
+verification, `coach-profile` and the coach session reads were cached the same
+way. Google and Apple sign-in, logout and every other call use the same
+transport.
+
+**Fix.**
+
+- **Mobile, local Expo module `modules/sensitive-http-cache`.** Its
+  `ExpoAppDelegateSubscriber` runs in `willFinishLaunching`, before React
+  Native starts. It installs an `expo/fetch` session configuration through
+  Expo's supported `EXFetchCustomExtension`:
+  - based on `.ephemeral`, which the inspector does not swizzle, keeping the
+    shared cookie store and Expo's Wi-Fi-only setting;
+  - with a zero-capacity `URLCache`.
+
+  Images keep their own caches. No fork, no config plugin, no JS change. In
+  debug dev-client builds the network inspector no longer shows `fetch`
+  traffic.
+
+- **Mobile, one-time purge in the same hook.**
+  - It runs `URLCache.shared.removeAllCachedResponses()` behind a versioned
+    marker (`SimpleFitSensitiveHTTPCachePurgeVersion`).
+  - A sentinel entry proves the removal. The marker is written only once the
+    removal is proven, so an interrupted or failed purge runs again.
+  - It touches only the HTTP cache. Remote images cached there are fetched
+    again once: `URLCache` cannot remove one origin's entries, and editing
+    its SQLite store is not supported.
+- **API.** Every route of the `:authenticated` pipeline answers
+  `Cache-Control: no-store`, which plain iOS sessions, OkHttp and browsers
+  honour (ADR 0010).
+
+**Native evidence (iOS 18.5 simulator; the module's exact
+`SensitiveHTTPCache.swift` compiled into an XCTest probe; real refresh,
+`/api/me`, training and profile calls).**
+
+| Scenario                                                     | Result                                                                                                                                                                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Old configuration, API without the route-wide `no-store`     | `/api/me` and profile cached; `sfa_` bytes on disk                                                                                                                                                           |
+| Old configuration under the dev-launcher swizzle             | `/api/me`, training and profile cached; `sfa_`, `sfr_` and titles on disk                                                                                                                                    |
+| Fixed configuration, plain and under the swizzle, 3 rounds   | 0 entries; 0 token or title bytes in `Cache.db`, WAL or `fsCachedData`; all calls 200                                                                                                                        |
+| Fixed configuration, stale entry planted in the shared cache | never served                                                                                                                                                                                                 |
+| Purge                                                        | `purged` with marker 1; then `alreadyDone`; a cache whose removal does nothing → `failed` and no marker; no token bytes left on disk                                                                         |
+| Purge, preservation                                          | other user defaults and files beside the cache and in Documents kept. The Keychain could not be exercised (the unsigned XCTest runner gets `errSecMissingEntitlement`); the purge calls only `URLCache` APIs |
+
+The subscriber and module type-check in Swift 5 and Swift 6 strict mode
+against the Expo declarations. They have **not** been compiled with Expo
+itself: SDK 57 needs Xcode 26 (Swift 6.2) and this machine has Xcode 16.4.
+
+**Still to verify in a new dev build** (EAS `development-simulator`, one iOS
+simulator build, approval required):
+
+- email sign-in, refresh, lost-response recovery, logout, revoked session,
+  cold restart, rapid navigation, account switch, offline retry;
+- the coach and fighter screens;
+- upgrade over the old build: install the new build over an affected install,
+  launch, then inspect `Cache.db`.
+
+After each scenario, scan the app container. D2, the native date and time
+pickers, is verified in the same build:
+`@react-native-community/datetimepicker` 9.1.0 is the SDK 57 version and is
+autolinked.
+
+**Android (assessment only, no SDK).** `expo/fetch` uses
+`OkHttpClientProvider.createClient(context)`, which adds a 10 MB OkHttp disk
+cache in `cacheDir/http-cache`. OkHttp honours `no-store`, which every
+authenticated answer now carries. Responses of unauthenticated routes are not
+personal. Plan: on an emulator or device with a debug build, run the same
+scenarios, then `adb shell run-as com.simplefit.boxing ls -R cache/http-cache`
+and search the `.0` and `.1` files for `sfa_`, `sfr_`, emails and titles. If
+anything is stored, set an `OkHttpClientFactory` without a cache.
 
 ## Known regression backlog
 
@@ -105,7 +206,8 @@ below comes from a command that was actually run.
 
 ## Why Public is NO-GO
 
-1. **D1.** Session tokens persist outside the keychain on iOS.
+1. **D1.** The fix is not yet verified in a build of the app (needs a new
+   dev build).
 2. **No approved legal text.** The coaching gate cannot be enabled until counsel
    approves the disclosure and data-rules texts. Every gate-on result here used
    test fixtures.
