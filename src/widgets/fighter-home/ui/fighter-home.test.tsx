@@ -115,7 +115,7 @@ describe("FighterHome", () => {
     const titles = [
       "Start here",
       "Your Live Board",
-      "Fight camp, week by week",
+      "Your training",
       "See your progress",
       "Your people",
       "Coaches, gyms and programs",

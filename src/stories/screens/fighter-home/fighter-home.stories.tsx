@@ -185,7 +185,7 @@ Failure.name = "Backend failure (recoverable)";
 const STEP_NAMES = [
   "Home checklist",
   "Live Board",
-  "Fight camp",
+  "Training",
   "Progress",
   "Community · Discover · My profile",
   "Marketplace",

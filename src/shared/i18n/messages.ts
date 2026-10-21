@@ -15,6 +15,7 @@ import type errors from "../../../messages/en/errors.json";
 import type fighterCoaches from "../../../messages/en/fighterCoaches.json";
 import type fighterHome from "../../../messages/en/fighterHome.json";
 import type fighterOnboarding from "../../../messages/en/fighterOnboarding.json";
+import type fighterTraining from "../../../messages/en/fighterTraining.json";
 import type navigation from "../../../messages/en/navigation.json";
 import type roleSelection from "../../../messages/en/roleSelection.json";
 import type routes from "../../../messages/en/routes.json";
@@ -52,6 +53,7 @@ export const namespaces = [
   "coachInvitation",
   "coachSessions",
   "fighterCoaches",
+  "fighterTraining",
   "contextSwitcher",
   "contextSelection",
   "site",
@@ -82,6 +84,7 @@ export type Messages = {
   coachInvitation: typeof coachInvitation;
   coachSessions: typeof coachSessions;
   fighterCoaches: typeof fighterCoaches;
+  fighterTraining: typeof fighterTraining;
   contextSwitcher: typeof contextSwitcher;
   contextSelection: typeof contextSelection;
   site: typeof site;

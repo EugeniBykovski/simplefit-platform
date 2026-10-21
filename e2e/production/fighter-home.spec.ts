@@ -28,7 +28,7 @@ const button = (page: Page, name: string) =>
 const STEPS = [
   ["Start here", ["[data-tour-target=checklist]"], 6, 7],
   ["Your Live Board", ["aside [data-nav-item=board]"], 4, 4],
-  ["Fight camp, week by week", ["aside [data-nav-item=training]"], 4, 4],
+  ["Your training", ["aside [data-nav-item=training]"], 4, 4],
   ["See your progress", ["aside [data-nav-item=progress]"], 4, 4],
   [
     "Your people",
@@ -284,7 +284,7 @@ test.describe("FRW2 · the tour", () => {
     await expect(dialog(page).getByText("Tour · 2 of 9", { exact: true })).toBeVisible();
     await expect(dialog(page).locator("[data-tour-progress] > span.bg-highlight")).toHaveCount(2);
     await button(page, "Next").click();
-    await expect(dialog(page)).toHaveAccessibleName("Fight camp, week by week");
+    await expect(dialog(page)).toHaveAccessibleName("Your training");
   });
 
   test("replay after the first run: from step 1 again, nothing recorded", async ({ page }) => {

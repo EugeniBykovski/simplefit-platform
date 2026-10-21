@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "title": "Trening",
+    "description": "Treningi, które planują dla ciebie trenerzy.",
+    "sessionTitle": "Sesja",
+    "sessionDescription": "Jedna z twoich sesji treningowych."
+  },
+  "eyebrow": "Zawodnik · Trening",
+  "title": "Trening",
+  "back": "Wróć do treningu",
+  "list": {
+    "views": "Trening",
+    "tabs": {
+      "upcoming": "Nadchodzące",
+      "history": "Historia"
+    },
+    "filter": "Pokaż",
+    "filters": {
+      "all": "Wszystkie",
+      "completed": "Wykonane",
+      "cancelled": "Odwołane"
+    },
+    "loading": "Wczytywanie Twoich treningów",
+    "more": "Pokaż więcej",
+    "loadingMore": "Wczytywanie…",
+    "minutes": "{minutes} min",
+    "note": "Sesje, które planują dla Ciebie trenerzy. Godziny są podane w strefie czasowej każdej sesji. Oznaczasz sesję jako wykonaną, gdy już się zaczęła.",
+    "heading": {
+      "upcoming": "Nadchodzące",
+      "history": "Historia"
+    }
+  },
+  "empty": {
+    "upcoming": {
+      "title": "Brak nadchodzących treningów",
+      "body": "Tutaj pojawią się sesje, które planują dla Ciebie trenerzy."
+    },
+    "history": {
+      "title": "Brak minionych treningów",
+      "body": "Tutaj pojawią się sesje wykonane, odwołane i minione."
+    },
+    "completed": {
+      "title": "Brak wykonanych treningów",
+      "body": "Tutaj pojawią się sesje, które oznaczysz jako wykonane."
+    },
+    "cancelled": {
+      "title": "Brak odwołanych treningów",
+      "body": "Tutaj pojawią się sesje odwołane przez trenera lub zakończone wraz z relacją trenerską."
+    }
+  },
+  "unavailable": {
+    "title": "Trening nie jest dostępny",
+    "body": "Twoje treningi pojawią się tutaj, gdy Twój profil zawodnika będzie kompletny."
+  },
+  "failed": {
+    "title": "Nie udało się wczytać Twoich treningów.",
+    "body": "Sprawdź połączenie i spróbuj ponownie.",
+    "retry": "Spróbuj ponownie",
+    "more": "Nie udało się wczytać kolejnych sesji. Spróbuj ponownie."
+  },
+  "status": {
+    "planned": "Zaplanowana",
+    "completed": "Wykonana",
+    "cancelled": "Odwołana"
+  },
+  "types": {
+    "technical": "Technika",
+    "sparring": "Sparing",
+    "pads": "Tarcze",
+    "strength_conditioning": "Siła i kondycja",
+    "roadwork": "Bieganie"
+  },
+  "coach": {
+    "notShared": "Trener nieudostępniony",
+    "former": "Były trener · {name}",
+    "withBrand": "{name} · {brand}"
+  },
+  "detail": {
+    "loading": "Wczytywanie sesji",
+    "facts": {
+      "coach": "Trener",
+      "type": "Rodzaj treningu",
+      "starts": "Początek",
+      "yourTime": "Twój czas",
+      "duration": "Czas trwania",
+      "notes": "Notatki od trenera",
+      "completed": "Wykonana",
+      "cancelled": "Odwołana"
+    },
+    "startsValue": "{when} · {zone} (UTC{offset})",
+    "sameZone": "{time} · ta sama strefa czasowa",
+    "otherZone": "{when} · {zone}",
+    "noNotes": "Brak notatek",
+    "cancelledByCoach": "{when} · przez Twojego trenera",
+    "cancelledBySystem": "{when} · relacja trenerska się zakończyła",
+    "aside": {
+      "planned": "Oznacz ją jako wykonaną, gdy ją zrobisz. Możesz to zrobić od godziny rozpoczęcia, także później.",
+      "ended": "Relacja trenerska się zakończyła. Ta sesja już się zaczęła, więc nadal możesz oznaczyć ją jako wykonaną.",
+      "completed": "Ta sesja jest potwierdzona. Wykonanych sesji nie można zmienić.",
+      "cancelled": "Odwołane sesje zostają w Twojej historii i nie można ich wykonać."
+    },
+    "missing": {
+      "title": "Ta sesja jest niedostępna",
+      "body": "To nie jest jedna z Twoich sesji albo link jest błędny.",
+      "aside": "Tu widać tylko sesje, które zaplanowali dla ciebie twoi trenerzy."
+    },
+    "failed": {
+      "title": "Nie udało się wczytać tej sesji.",
+      "body": "Sprawdź połączenie i spróbuj ponownie."
+    },
+    "heading": "Sesja"
+  },
+  "complete": {
+    "action": "Oznacz jako wykonaną",
+    "title": "Oznaczyć tę sesję jako wykonaną?",
+    "body": "{name} zobaczy ją jako wykonaną, z godziną Twojego potwierdzenia. Wykonanej sesji nie można zmienić.",
+    "bodyUnnamed": "Twój trener zobaczy ją jako wykonaną, z godziną Twojego potwierdzenia. Wykonanej sesji nie można zmienić.",
+    "confirm": "Oznacz jako wykonaną",
+    "pending": "Zapisywanie…",
+    "keep": "Jeszcze nie",
+    "failed": "Nie udało się połączyć z SimpleFit. Może już zostało zapisane: sesja pokazuje zapisany stan. Spróbuj ponownie; nigdy nie zostanie wykonana dwa razy.",
+    "done": "Sesja oznaczona jako wykonana.",
+    "unavailable": "Ta sesja nie jest już dostępna.",
+    "refused": {
+      "notStarted": {
+        "title": "Ta sesja jeszcze się nie zaczęła.",
+        "body": "Możesz oznaczyć ją jako wykonaną od godziny rozpoczęcia. Nic nie zostało zapisane."
+      },
+      "cancelled": {
+        "title": "Ta sesja została odwołana.",
+        "body": "Nie można jej już wykonać. Nic nie zostało zapisane."
+      }
+    }
+  }
+}

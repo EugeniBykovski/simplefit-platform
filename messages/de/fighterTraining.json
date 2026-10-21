@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "title": "Training",
+    "description": "Die Trainingseinheiten, die deine Coaches für dich planen.",
+    "sessionTitle": "Einheit",
+    "sessionDescription": "Eine deiner Trainingseinheiten."
+  },
+  "eyebrow": "Kämpfer · Training",
+  "title": "Training",
+  "back": "Zurück zum Training",
+  "list": {
+    "views": "Training",
+    "tabs": {
+      "upcoming": "Anstehend",
+      "history": "Verlauf"
+    },
+    "filter": "Anzeigen",
+    "filters": {
+      "all": "Alle",
+      "completed": "Erledigt",
+      "cancelled": "Abgesagt"
+    },
+    "loading": "Dein Training wird geladen",
+    "more": "Mehr anzeigen",
+    "loadingMore": "Mehr wird geladen…",
+    "minutes": "{minutes} Min.",
+    "note": "Einheiten, die deine Coaches für dich planen. Zeiten stehen in der Zeitzone der jeweiligen Einheit. Du markierst eine Einheit als erledigt, sobald sie begonnen hat.",
+    "heading": {
+      "upcoming": "Anstehend",
+      "history": "Verlauf"
+    }
+  },
+  "empty": {
+    "upcoming": {
+      "title": "Kein anstehendes Training",
+      "body": "Einheiten, die deine Coaches für dich planen, erscheinen hier."
+    },
+    "history": {
+      "title": "Noch kein vergangenes Training",
+      "body": "Erledigte, abgesagte und vergangene Einheiten erscheinen hier."
+    },
+    "completed": {
+      "title": "Noch kein erledigtes Training",
+      "body": "Einheiten, die du als erledigt markierst, erscheinen hier."
+    },
+    "cancelled": {
+      "title": "Kein abgesagtes Training",
+      "body": "Einheiten, die ein Coach abgesagt hat oder die mit einer Coaching-Beziehung endeten, erscheinen hier."
+    }
+  },
+  "unavailable": {
+    "title": "Training ist nicht verfügbar",
+    "body": "Dein Training erscheint hier, sobald dein Kämpferprofil vollständig ist."
+  },
+  "failed": {
+    "title": "Wir konnten dein Training nicht laden.",
+    "body": "Prüfe deine Verbindung und versuche es erneut.",
+    "retry": "Erneut versuchen",
+    "more": "Wir konnten keine weiteren Einheiten laden. Versuche es erneut."
+  },
+  "status": {
+    "planned": "Geplant",
+    "completed": "Erledigt",
+    "cancelled": "Abgesagt"
+  },
+  "types": {
+    "technical": "Technik",
+    "sparring": "Sparring",
+    "pads": "Pratzen",
+    "strength_conditioning": "Kraft & Kondition",
+    "roadwork": "Laufen"
+  },
+  "coach": {
+    "notShared": "Coach nicht geteilt",
+    "former": "Ehemaliger Coach · {name}",
+    "withBrand": "{name} · {brand}"
+  },
+  "detail": {
+    "loading": "Einheit wird geladen",
+    "facts": {
+      "coach": "Coach",
+      "type": "Trainingsart",
+      "starts": "Beginn",
+      "yourTime": "Deine Zeit",
+      "duration": "Dauer",
+      "notes": "Notizen deines Coaches",
+      "completed": "Erledigt",
+      "cancelled": "Abgesagt"
+    },
+    "startsValue": "{when} · {zone} (UTC{offset})",
+    "sameZone": "{time} · gleiche Zeitzone",
+    "otherZone": "{when} · {zone}",
+    "noNotes": "Keine Notizen",
+    "cancelledByCoach": "{when} · von deinem Coach",
+    "cancelledBySystem": "{when} · die Coaching-Beziehung wurde beendet",
+    "aside": {
+      "planned": "Markiere sie als erledigt, wenn du sie gemacht hast. Das geht ab ihrem Beginn, auch später.",
+      "ended": "Die Coaching-Beziehung wurde beendet. Diese Einheit hatte schon begonnen, du kannst sie also noch als erledigt markieren.",
+      "completed": "Du hast diese Einheit bestätigt. Erledigte Einheiten können nicht geändert werden.",
+      "cancelled": "Abgesagte Einheiten bleiben in deinem Verlauf und können nicht erledigt werden."
+    },
+    "missing": {
+      "title": "Diese Einheit ist nicht verfügbar",
+      "body": "Sie ist keine deiner Einheiten, oder der Link ist falsch.",
+      "aside": "Hier stehen nur Einheiten, die deine Coaches für dich geplant haben."
+    },
+    "failed": {
+      "title": "Wir konnten diese Einheit nicht laden.",
+      "body": "Prüfe deine Verbindung und versuche es erneut."
+    },
+    "heading": "Einheit"
+  },
+  "complete": {
+    "action": "Als erledigt markieren",
+    "title": "Diese Einheit als erledigt markieren?",
+    "body": "{name} sieht sie als erledigt, mit dem Zeitpunkt deiner Bestätigung. Eine erledigte Einheit kann nicht geändert werden.",
+    "bodyUnnamed": "Dein Coach sieht sie als erledigt, mit dem Zeitpunkt deiner Bestätigung. Eine erledigte Einheit kann nicht geändert werden.",
+    "confirm": "Als erledigt markieren",
+    "pending": "Wird gespeichert…",
+    "keep": "Noch nicht",
+    "failed": "Wir konnten SimpleFit nicht erreichen. Vielleicht ist es schon gespeichert: Die Einheit zeigt den gespeicherten Stand. Versuche es erneut; sie wird nie doppelt erledigt.",
+    "done": "Einheit als erledigt markiert.",
+    "unavailable": "Diese Einheit ist nicht mehr verfügbar.",
+    "refused": {
+      "notStarted": {
+        "title": "Diese Einheit hat noch nicht begonnen.",
+        "body": "Du kannst sie ab ihrem Beginn als erledigt markieren. Es wurde nichts gespeichert."
+      },
+      "cancelled": {
+        "title": "Diese Einheit wurde abgesagt.",
+        "body": "Sie kann nicht mehr erledigt werden. Es wurde nichts gespeichert."
+      }
+    }
+  }
+}

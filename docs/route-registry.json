@@ -18,8 +18,8 @@
         "id": "gallery-2",
         "artboard": "GalleryIndex2.dc.html",
         "title": "route gallery 2 / 3 · coach & gym mobile, web app",
-        "rows": 131,
-        "rowsNote": "122 Route Gallery rows + WFI1 and WFC1 (SF-60: added with their artboards WebFighterInvite.dc.html and WebFighterCoaches.dc.html, not yet listed in GalleryIndex2) + WCT1, WCT2 and WCT3 (SF-64: added to WebProgramBuilder.dc.html in 1792490047-d551, not yet listed in GalleryIndex2) + CT1, CT2, CT3 and CT4 (SF-65: added to SessionControl.dc.html in 1792504884-2e4e, not yet listed in GalleryIndex2)"
+        "rows": 133,
+        "rowsNote": "122 Route Gallery rows + WFI1 and WFC1 (SF-60: added with their artboards WebFighterInvite.dc.html and WebFighterCoaches.dc.html, not yet listed in GalleryIndex2) + WCT1, WCT2 and WCT3 (SF-64: added to WebProgramBuilder.dc.html in 1792490047-d551, not yet listed in GalleryIndex2) + CT1, CT2, CT3 and CT4 (SF-65: added to SessionControl.dc.html in 1792504884-2e4e, not yet listed in GalleryIndex2) + WFT1 and WFT2 (SF-67: added to WebCampBoard.dc.html in 1792573853-9116, not yet listed in GalleryIndex2)"
       },
       {
         "id": "gallery-3",
@@ -272,8 +272,8 @@
         },
         {
           "key": "training",
-          "label": "Fight camp",
-          "route": "web.app.camp.board"
+          "label": "Training",
+          "route": "web.app.training"
         },
         {
           "key": "progress",
@@ -5216,6 +5216,32 @@
       "shell": "web.app.fighter",
       "parent": "web.app.camp",
       "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "FIGHTER",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "discrepancies": ["D-CAMP-DUPLICATE", "D-WEB-FIGHTER-TRAINING"],
+      "production": {
+        "file": "src/app/[locale]/app/(fighter)/camp/board/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. Since SF-67 the sidebar's Training item opens web.app.training; W06 is WebCampBoard.dc.html screen=camp (FUTURE)."
+      },
+      "screens": ["W06"]
+    },
+    {
+      "id": "web.app.training",
+      "platform": "web",
+      "path": "/app/training",
+      "params": [],
+      "name": "Training",
+      "surface": "FIGHTER",
+      "shell": "web.app.fighter",
+      "parent": "web.app",
+      "nav": {
         "type": "NAV_ITEM",
         "from": ["web.app.fighter#training"]
       },
@@ -5225,12 +5251,38 @@
         "phase": "ACTIVE"
       },
       "status": "IMPLEMENTED",
-      "discrepancies": ["D-CAMP-DUPLICATE"],
+      "discrepancies": ["D-WEB-FIGHTER-TRAINING"],
       "production": {
-        "file": "src/app/[locale]/app/(fighter)/camp/board/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/[locale]/app/(fighter)/training/page.tsx",
+        "note": "SF-67: WFT1 (Claude Design 1792573853-9116, WebCampBoard.dc.html screen=training): the fighter's assigned training sessions from listMyTrainingSessions, Upcoming and, with ?view=history, History (All / Completed / Cancelled via ?status=), from every coach and also after a relationship ended; grouped by day in each session's time zone; cursor pages, refetched on focus. Loading, empty, not available (404) and failure are separate states. W06 Fight camp board stays FUTURE."
       },
-      "screens": ["W06"]
+      "screens": ["WFT1"]
+    },
+    {
+      "id": "web.app.training._session-id",
+      "platform": "web",
+      "path": "/app/training/:sessionId",
+      "params": ["sessionId"],
+      "name": "Session",
+      "surface": "FIGHTER",
+      "shell": "web.app.fighter",
+      "parent": "web.app.training",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "FIGHTER",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "discrepancies": ["D-WEB-FIGHTER-TRAINING"],
+      "production": {
+        "file": "src/app/[locale]/app/(fighter)/training/[sessionId]/page.tsx",
+        "note": "SF-67: WFT2 (Claude Design 1792573853-9116, WebCampBoard.dc.html screen=session): one of the fighter's own sessions from getMyTrainingSession (coach's public identity or the name at the end, type, start in its zone and the viewer's, duration, notes, backend status, completion or cancellation) and Mark as completed behind a confirmation dialog (completeMyTrainingSession; the backend decides the start and sets completed_at; a repeat returns the same session). Not started yet and cancelled meanwhile are notices; completed and cancelled sessions are read-only; unknown and someone else's sessions are one not-available state (404)."
+      },
+      "screens": ["WFT2"]
     },
     {
       "id": "web.app.camp",
@@ -13477,6 +13529,65 @@
         "section": "16 · Fighter web · desktop",
         "step": "16.6",
         "tag": "WEB_APP",
+        "artboard": "WebCampBoard.dc.html",
+        "note": "WebCampBoard.dc.html screen=camp (FUTURE) since 1792573853-9116; its default screen is WFT1 (SF-67)."
+      }
+    },
+    {
+      "id": "WFT1",
+      "code": "WFT1",
+      "name": "Training",
+      "route": "web.app.training",
+      "states": [
+        "upcoming",
+        "history",
+        "completed",
+        "cancelled",
+        "loading",
+        "empty",
+        "unavailable",
+        "error",
+        "more",
+        "more failed"
+      ],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "16 · Fighter web · desktop",
+        "step": "16.6",
+        "tag": "WEB_APP",
+        "addedIn": "1792573853-9116",
+        "artboard": "WebCampBoard.dc.html"
+      }
+    },
+    {
+      "id": "WFT2",
+      "code": "WFT2",
+      "name": "Session",
+      "route": "web.app.training._session-id",
+      "states": [
+        "planned",
+        "planned after the relationship ended",
+        "completed",
+        "cancelled",
+        "cancelled by the system",
+        "loading",
+        "unavailable",
+        "error",
+        "confirm completion",
+        "completing",
+        "completion failed",
+        "not started yet",
+        "cancelled meanwhile",
+        "completed now"
+      ],
+      "design": {
+        "gallery": "gallery-2",
+        "page": "desktop-web",
+        "section": "16 · Fighter web · desktop",
+        "step": "16.6",
+        "tag": "WEB_APP",
+        "addedIn": "1792573853-9116",
         "artboard": "WebCampBoard.dc.html"
       }
     },
@@ -17473,6 +17584,20 @@
         "mobile.calendar"
       ],
       "screens": ["FT1", "FT2", "F24", "F04", "F05", "F06", "F12"]
+    },
+    {
+      "id": "D-WEB-FIGHTER-TRAINING",
+      "title": "Fighter web Training replaces the Fight camp nav item",
+      "sourceA": "Fighter Web design before SF-67: FighterWebNav 'Fight camp' opens W06 Fight camp board (/app/camp/board: camp phases, weekly blocks, rounds, sparring counts, weight corridor, coach focus); no web screen lists or completes the fighter's training sessions",
+      "sourceB": "SF-62 / SF-63 API: the fighter's own TrainingSessions (title, training type, start with its IANA zone, duration, coach notes, coach public identity or name at the end), upcoming and history projections, and completeMyTrainingSession (planned and started only; the server sets completed_at); no fight camp, fight, weigh-in, rounds or load domain",
+      "mismatch": "The Fighter web sidebar opens a camp board built on domains that do not exist, and the real sessions have no web screen.",
+      "impact": "Building W06 as drawn would fake camps, rounds and weight; leaving it would hide the fighter's sessions on the web.",
+      "resolution": "Claude Design 1792573853-9116 (SF-67) adds WFT1 Training (agenda list, Upcoming and History) as WebCampBoard.dc.html screen=training at /app/training and WFT2 Session (facts, Mark as completed with a confirmation dialog, read-only terminal states) as screen=session at /app/training/:sessionId. FighterWebNav 'training' becomes 'Training' and opens WFT1. W06 stays in the file as screen=camp, FUTURE; /app/camp/board stays a placeholder route outside the nav. W01 Home and the sidebar Next card are unchanged (SF-68).",
+      "decision": "The Fighter web sidebar's Training item opens the agenda of assigned sessions; completion is explicit on the session.",
+      "decidedOn": "2026-10-21",
+      "status": "RESOLVED",
+      "routes": ["web.app.training", "web.app.training._session-id", "web.app.camp.board"],
+      "screens": ["WFT1", "WFT2", "W06"]
     },
     {
       "id": "D-MOBILE-COACH-SHELL-MVP",
