@@ -600,6 +600,13 @@ same queries as `/app/training`, linked to WFT2 and WFT1. No counts; the
 first-run record and checklist are unchanged; W01 and the sidebar Next card
 stay future.
 
+**Fighter mobile Home training (SF-69).** `/home` (FR4) keeps the SF-41
+layout and adds a Training card under the Live Board card
+(`D-MOBILE-FIGHTER-HOME-TRAINING`, Claude Design `1792580627-132e`): the
+backend's first upcoming session and the latest three completed, from the
+same queries as the Training tab, opening FT2 and FT1. No counts; the
+first-run record and checklist are unchanged; F01 is future.
+
 **Fighter mobile coaches (SF-59, SF-76).** `/profile/coaches` (FC1, Claude
 Design `1792432236-08da`) lists the fighter's SF-56 relationships from
 `listMyCoaches`: Active and, with `?view=ended`, Ended; it is reached from the
@@ -1041,6 +1048,7 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-MOBILE-FIGHTER-TRAINING`          | RESOLVED               | Fighter mobile Training: FT1, FT2 on the SF-62/SF-63 API (SF-66); explicit completion, no timer or log |
 | `D-WEB-FIGHTER-TRAINING`             | RESOLVED               | Fighter web Training: WFT1, WFT2 replace the Fight camp nav item (SF-67); W06 board future             |
 | `D-WEB-FIGHTER-HOME-TRAINING`        | RESOLVED               | Fighter web Home: Training card (next session, latest completed) under the Pro note (SF-68); no counts |
+| `D-MOBILE-FIGHTER-HOME-TRAINING`     | RESOLVED               | Fighter mobile Home: Training card under the Live Board (SF-69); FR4 unchanged otherwise; no counts    |
 | `D-MOBILE-FIGHTER-COACH-INVITATIONS` | DEFERRED               | Fighter mobile: inbox and review by invitation id (SF-76); INV1 and an app-link token handoff future   |
 | `D-WEB-LEGAL-DOCUMENT-PAGES`         | NEEDS_PRODUCT_DECISION | Public legal pages (SF-71 L-12) have no artboard: gap; flows show the approved text in place (SF-72)   |
 
