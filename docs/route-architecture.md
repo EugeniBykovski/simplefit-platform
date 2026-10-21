@@ -592,6 +592,14 @@ session from `getMyTrainingSession` and completes it with
 `completeMyTrainingSession` after a confirmation dialog. W06 Fight camp board
 (`/app/camp/board`) stays a placeholder outside the nav, FUTURE in the design.
 
+**Fighter web Home training (SF-68).** `/app/home` keeps the SF-40 layout and
+adds a Training card under the Pro note (`D-WEB-FIGHTER-HOME-TRAINING`,
+Claude Design `1792578392-00ac`, `FirstRunWebF.dc.html` training=…): the
+backend's first upcoming session and the latest three completed, from the
+same queries as `/app/training`, linked to WFT2 and WFT1. No counts; the
+first-run record and checklist are unchanged; W01 and the sidebar Next card
+stay future.
+
 **Fighter mobile coaches (SF-59, SF-76).** `/profile/coaches` (FC1, Claude
 Design `1792432236-08da`) lists the fighter's SF-56 relationships from
 `listMyCoaches`: Active and, with `?view=ended`, Ended; it is reached from the
@@ -1032,6 +1040,7 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-MOBILE-COACH-SESSIONS-PLANNER`    | RESOLVED               | Coach mobile Sessions: CT1, CT2, CT3, CT4 on the SF-62/SF-63 API (SF-65); agenda, native pickers       |
 | `D-MOBILE-FIGHTER-TRAINING`          | RESOLVED               | Fighter mobile Training: FT1, FT2 on the SF-62/SF-63 API (SF-66); explicit completion, no timer or log |
 | `D-WEB-FIGHTER-TRAINING`             | RESOLVED               | Fighter web Training: WFT1, WFT2 replace the Fight camp nav item (SF-67); W06 board future             |
+| `D-WEB-FIGHTER-HOME-TRAINING`        | RESOLVED               | Fighter web Home: Training card (next session, latest completed) under the Pro note (SF-68); no counts |
 | `D-MOBILE-FIGHTER-COACH-INVITATIONS` | DEFERRED               | Fighter mobile: inbox and review by invitation id (SF-76); INV1 and an app-link token handoff future   |
 | `D-WEB-LEGAL-DOCUMENT-PAGES`         | NEEDS_PRODUCT_DECISION | Public legal pages (SF-71 L-12) have no artboard: gap; flows show the approved text in place (SF-72)   |
 

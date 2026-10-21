@@ -14,6 +14,7 @@ import { ApplicationSkeleton, FailureView } from "@/widgets/system-states";
 
 import { dayWithSimpleFit, headerDate, partOfDay } from "../model/home-date";
 import { HomeTour } from "./home-tour";
+import { HomeTraining } from "./home-training";
 import { SetupChecklist } from "./setup-checklist";
 
 /**
@@ -31,9 +32,12 @@ import { SetupChecklist } from "./setup-checklist";
  *   which records nothing.
  *
  * Only real data is shown: the Fighter's display name and onboarding
- * completion (FighterProfile). Everything the artboard fills from domains
- * that do not exist yet (gym, bookings, the next class, training, the store
- * links) is left out or shown as not available; nothing is invented.
+ * completion (FighterProfile) and, since SF-68, the Training card (the next
+ * assigned session and the latest completed, from the SF-63 projections).
+ * Everything the artboard fills from domains that do not exist yet (gym,
+ * bookings, classes, training logs, the store links) is left out or shown as
+ * not available; nothing is invented. Training never touches the first-run
+ * record: the tour and the checklist stay as they were.
  */
 export function FighterHome() {
   const profile = useFighterProfile();
@@ -164,6 +168,7 @@ export function HomeView({
           <Notice tone="olive" icon={ShieldIcon} className="rounded-lg">
             {t("plan")}
           </Notice>
+          <HomeTraining />
         </div>
       </PageBody>
       {/* Mounted in both states: the completion card shows after the outcome is kept. */}

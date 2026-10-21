@@ -5,7 +5,11 @@ import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { useMyTrainingSession, type MyTrainingSession } from "@/entities/training-session";
+import {
+  useCoachLine,
+  useMyTrainingSession,
+  type MyTrainingSession,
+} from "@/entities/training-session";
 import { CompleteSessionDialog, type CompleteOutcome } from "@/features/training-session-complete";
 import { isApiError } from "@/shared/api/http/api-error";
 import { Link } from "@/shared/i18n/navigation";
@@ -15,7 +19,7 @@ import { Button } from "@/shared/ui/button";
 import { Notice } from "@/shared/ui/notice";
 import { Skeleton } from "@/shared/ui/skeleton";
 
-import { Card, StateMessage, StatusBadge, TrainingPage, useCoachLine } from "./parts";
+import { Card, StateMessage, StatusBadge, TrainingPage } from "./parts";
 
 /*
  * One of the fighter's own sessions (`web.app.training._session-id`, WFT2;

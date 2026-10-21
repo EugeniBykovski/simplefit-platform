@@ -117,5 +117,27 @@
         "body": "Repite el recorrido cuando quieras desde Hacer el recorrido. Tus pasos de configuración se abrirán a medida que lleguen sus funciones."
       }
     }
+  },
+  "training": {
+    "title": "Entrenamiento",
+    "all": "Todo el entrenamiento →",
+    "next": "Próxima",
+    "when": "{date} · {zone}",
+    "empty": {
+      "title": "Aún no tienes entrenamientos programados",
+      "body": "Aquí aparecerán las sesiones que tus entrenadores planean para ti."
+    },
+    "recent": "Últimas completadas",
+    "recentEmpty": "Aún no tienes sesiones completadas.",
+    "loading": "Cargando tu entrenamiento",
+    "failed": {
+      "upcoming": "No pudimos cargar tu entrenamiento. Revisa tu conexión e inténtalo de nuevo.",
+      "recent": "No pudimos cargar tus sesiones completadas."
+    },
+    "retry": "Reintentar",
+    "unavailable": {
+      "title": "El entrenamiento no está disponible",
+      "body": "Tu entrenamiento aparecerá aquí cuando completes tu perfil de boxeador."
+    }
   }
 }

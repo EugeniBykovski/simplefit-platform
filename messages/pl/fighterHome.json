@@ -117,5 +117,27 @@
         "body": "Przewodnik możesz zobaczyć ponownie w każdej chwili przez „Zobacz przewodnik”. Kroki konfiguracji otworzą się wraz z ich funkcjami."
       }
     }
+  },
+  "training": {
+    "title": "Trening",
+    "all": "Cały trening →",
+    "next": "Następna",
+    "when": "{date} · {zone}",
+    "empty": {
+      "title": "Nie masz jeszcze zaplanowanych treningów",
+      "body": "Tu pojawią się sesje, które planują dla ciebie trenerzy."
+    },
+    "recent": "Ostatnio ukończone",
+    "recentEmpty": "Nie masz jeszcze ukończonych sesji.",
+    "loading": "Wczytujemy twój trening",
+    "failed": {
+      "upcoming": "Nie udało się wczytać treningu. Sprawdź połączenie i spróbuj ponownie.",
+      "recent": "Nie udało się wczytać ukończonych sesji."
+    },
+    "retry": "Spróbuj ponownie",
+    "unavailable": {
+      "title": "Trening nie jest dostępny",
+      "body": "Twój trening pojawi się tutaj, gdy uzupełnisz profil zawodnika."
+    }
   }
 }

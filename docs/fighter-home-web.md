@@ -100,6 +100,7 @@ one.
 | "Day N"                            | Real (FighterProfile)      | Days since `onboarding.completed_at`, in the browser's time zone; first run only |
 | Date                               | Real (the browser's clock) | Weekday and date in the locale                                                   |
 | Checklist (6 steps)                | Needs domains              | 0 / 6; every step "Not available yet", no links, no ticks                        |
+| Training card (SF-68)              | Real (SF-63 projections)   | Next upcoming session and the latest three completed; no counts (below)          |
 | "Book a class", "Your first class" | Needs bookings / gyms      | Not rendered                                                                     |
 | Get the app: QR code               | Needs a published app      | Not rendered; the card says store links come with the release                    |
 | Your Live Board                    | Approved empty state       | "Empty" and the first-node line                                                  |
@@ -128,6 +129,36 @@ decision). These need design reconciliation:
 | 8    | …connected apps all live here                                                                      | …will be managed here (weight and coach notes private by default kept)                  | Settings are a placeholder    |
 | 9    | "…switch here — no second sign-in…"                                                                | Your personal fighter space on one account; joining a team never needs a second sign-in | No workspace switcher         |
 | Done | "Next on your checklist: get the app on your phone." and a "Book a class" link                     | "Your setup steps open as their features arrive."; no "Book a class"                    | No published app; no bookings |
+
+## Training card (SF-68)
+
+Claude Design `1792578392-00ac` adds a Training card to FRW1 under the Pro
+note (`D-WEB-FIGHTER-HOME-TRAINING`); the home keeps it after the first run.
+No SF-40 card moves or resizes.
+
+- **Next:** the first session of `listMyTrainingSessions?view=upcoming`, the
+  backend's own order (earliest first). Start time and day in the session's
+  zone, the zone, type, coach (as on Training: name and brand, "Former
+  coach · name" or "Coach not shared") and duration; it opens WFT2. Nothing
+  scheduled is its own state, never a sample session.
+- **Latest completed:** the first three of
+  `view=history&status=completed` (newest first), each opening WFT2. No
+  count, total or progress is derived from a page.
+- **All training →** opens WFT1.
+- **Same queries, same cache** as `/app/training` (`useMyTrainingSessions`):
+  a completion there invalidates both lists, so Home reads them again when
+  shown. The session boundary clears the cache, and late answers from a
+  previous session are discarded (SF-28).
+- **States per projection:** loading, ready, empty, failed (retry, never an
+  empty schedule) and not available (`404`, one message). A failure stays in
+  the card; the greeting, checklist, Live Board, app card and tour keep
+  working.
+- **First run untouched:** the card reads only. It never writes the
+  first-run record, never opens the tour, and the checklist stays as it
+  was. "Log your first training" needs a training log, which completing an
+  assigned session is not, so it stays "Not available yet".
+- **Sidebar:** no Next card (removed from FighterWebNav in the same
+  version); the next session lives on Home.
 
 ## Measurements (1440 × 900)
 
@@ -180,7 +211,8 @@ card 256 (+8).
    checklist label gap is 4 px (drawn 5), and the progress dashes are 4 px
    apart (drawn 3).
 7. **The Fighter shell is unchanged.** It has no identity card and no "next
-   session" card (SF-34, D-WEB-WORKSPACE-SWITCHER).
+   session" card (SF-34, D-WEB-WORKSPACE-SWITCHER; since SF-68 the design
+   has none either).
 8. **Below `md`** the sidebar is a menu, so the tour card is centred over the
    dimmed page without a spotlight; so is any step whose target is hidden or
    leaves no room for the card. Below `sm` each step's status sits under
@@ -188,9 +220,9 @@ card 256 (+8).
 
 ## Downstream
 
-- **Home after the first run** shows the greeting, the date and the same
-  truthful cards. W01's next session, week, camp, challenge and friends need
-  their domains.
+- **Home after the first run** shows the greeting, the date, the same
+  truthful cards and the Training card (SF-68). W01's week, camp, challenge
+  and friends need their domains.
 - **Live Board** (`/app/board`) is a placeholder. The home only introduces
   it.
 - **SF-41 (mobile first run)** reads the same record. Mobile adds its own

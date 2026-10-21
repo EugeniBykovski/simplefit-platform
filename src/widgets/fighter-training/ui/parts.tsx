@@ -4,11 +4,7 @@ import { ChevronLeftIcon, InfoIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import {
-  coachIdentity,
-  type MyTrainingSession,
-  type TrainingSessionStatus,
-} from "@/entities/training-session";
+import type { TrainingSessionStatus } from "@/entities/training-session";
 import { Link } from "@/shared/i18n/navigation";
 import { routeHref } from "@/shared/routes/routes";
 import { Badge } from "@/shared/ui/badge";
@@ -29,21 +25,6 @@ export function StatusBadge({ status }: { status: TrainingSessionStatus }) {
       {t(`status.${status}`)}
     </Badge>
   );
-}
-
-/**
- * The coach line of a session: the display name (and brand) while the
- * relationship is active, "Former coach · name" after it ended, or "Coach not
- * shared" when no name was disclosed. `name` is what the confirmation names.
- */
-export function useCoachLine() {
-  const t = useTranslations("fighterTraining.coach");
-  return (session: Pick<MyTrainingSession, "coach" | "coach_display_name_at_end">) => {
-    const { name, brand, former } = coachIdentity(session);
-    if (name === null) return { line: t("notShared"), name: null, faint: true };
-    if (former) return { line: t("former", { name }), name, faint: true };
-    return { line: brand ? t("withBrand", { name, brand }) : name, name, faint: false };
-  };
 }
 
 /**
