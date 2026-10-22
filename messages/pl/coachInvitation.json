@@ -49,7 +49,7 @@
     },
     "mismatch": {
       "title": "To zaproszenie wysłano na inny adres e-mail.",
-      "body": "Zaloguj się adresem, na który wysłano zaproszenie, i ponownie otwórz link z e-maila. Z tym kontem nic z tego zaproszenia nie jest udostępniane."
+      "body": "Jeśli wysłano je na inny Twój adres, potwierdź go, aby dodać go do tego konta, albo zaloguj się nim. Z tym kontem nic z tego zaproszenia nie jest udostępniane."
     },
     "stale": {
       "title": "Zmieniło się to, co byś udostępniał.",
@@ -112,5 +112,8 @@
     }
   },
   "readFull": "Przeczytaj pełną informację",
-  "hideFull": "Ukryj pełną informację"
+  "hideFull": "Ukryj pełną informację",
+  "verifyEmail": "Potwierdź zaproszony e-mail",
+  "backToInvitation": "Wróć do zaproszenia",
+  "linkDoneHint": "Przejrzyj zaproszenie i zdecyduj, czy je zaakceptować."
 }

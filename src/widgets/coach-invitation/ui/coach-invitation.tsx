@@ -16,9 +16,10 @@ import {
   type InvitationPreview,
   type ResponseProblem,
 } from "@/features/coach-invitation-response";
+import { EmailIdentityLinkFlow } from "@/features/email-identity-link";
 import { useEntry } from "@/features/session-gate";
 import { localeName, matchLocale } from "@/shared/i18n/routing";
-import { Link } from "@/shared/i18n/navigation";
+import { Link, useRouter } from "@/shared/i18n/navigation";
 import { fillLegalPlaceholders } from "@/shared/lib/legal-text";
 import { withContinuation } from "@/shared/routes/continuation";
 import { routeHref, webGuards } from "@/shared/routes/routes";
@@ -184,6 +185,7 @@ function Invitation({
   const t = useTranslations("coachInvitation");
   const locale = useLocale();
   const preview = useInvitationPreview(token, locale);
+  const [linking, setLinking] = useState(false);
 
   useEffect(() => {
     if (preview.isError && responseProblem(preview.error) === "unavailable") {
@@ -214,25 +216,48 @@ function Invitation({
   return (
     <Column>
       <Eyebrow />
-      <Summary preview={preview.data} />
-      {signedIn ? (
+      <Summary preview={preview.data} compact={linking} />
+      {!signedIn ? (
+        <SignedOut />
+      ) : linking ? (
+        <VerifyInvitedEmail onBack={() => setLinking(false)} />
+      ) : (
         <Respond
           token={token}
           preview={preview.data}
           onStale={() => preview.refetch()}
           onOutcome={onOutcome}
+          onVerifyEmail={() => setLinking(true)}
         />
-      ) : (
-        <SignedOut />
       )}
     </Column>
+  );
+}
+
+/**
+ * The SF-78 flow on this page. Back (after verifying or not) returns to the
+ * review with nothing ticked; sign-in after an ended session continues back
+ * here through the token-free `returnTo`, like every other way in.
+ */
+function VerifyInvitedEmail({ onBack }: { onBack: () => void }) {
+  const t = useTranslations("coachInvitation");
+  const router = useRouter();
+  return (
+    <EmailIdentityLinkFlow
+      backLabel={t("backToInvitation")}
+      doneHint={t("linkDoneHint")}
+      onDone={onBack}
+      onCancel={onBack}
+      onSwitchAccount={() => void signOut()}
+      onSignIn={() => router.push(withContinuation("web.login", CONTINUATION))}
+    />
   );
 }
 
 const coachOf = (preview: InvitationPreview, fallback: string) =>
   preview.invitation.coach.display_name ?? preview.invitation.coach.brand_name ?? fallback;
 
-function Summary({ preview }: { preview: InvitationPreview }) {
+function Summary({ preview, compact = false }: { preview: InvitationPreview; compact?: boolean }) {
   const t = useTranslations("coachInvitation");
   const fields = useTranslations("coachInvitation.fields");
   const never = useTranslations("coachInvitation.never");
@@ -270,35 +295,38 @@ function Summary({ preview }: { preview: InvitationPreview }) {
           </p>
         )}
       </div>
-      <div className="grid gap-5 rounded-3xl border bg-surface px-5 py-4 sm:grid-cols-2">
-        <section aria-labelledby={ids.sees} className="flex flex-col gap-2">
-          <h2 id={ids.sees} className="type-label text-faint-foreground">
-            {t("sees", { name })}
-          </h2>
-          <ul className="flex flex-col gap-1 type-body-sm">
-            {preview.disclosure.fields.map((field) => (
-              <li key={field} className="flex items-center gap-2">
-                <CheckIcon aria-hidden className="size-4 text-highlight" />
-                {fields(field)}
-              </li>
-            ))}
-          </ul>
-        </section>
-        <section aria-labelledby={ids.never} className="flex flex-col gap-2">
-          <h2 id={ids.never} className="type-label text-faint-foreground">
-            {t("neverTitle")}
-          </h2>
-          <ul className="flex flex-col gap-1 type-body-sm text-muted-foreground">
-            {preview.disclosure.never_shared.map((item) => (
-              <li key={item} className="flex items-center gap-2">
-                <MinusIcon aria-hidden className="size-4" />
-                {never(item)}
-              </li>
-            ))}
-          </ul>
-        </section>
-      </div>
-      {document?.summary != null && (
+      {/* While the invited email is verified, only who invited stays in view (WFI1 link-*). */}
+      {!compact && (
+        <div className="grid gap-5 rounded-3xl border bg-surface px-5 py-4 sm:grid-cols-2">
+          <section aria-labelledby={ids.sees} className="flex flex-col gap-2">
+            <h2 id={ids.sees} className="type-label text-faint-foreground">
+              {t("sees", { name })}
+            </h2>
+            <ul className="flex flex-col gap-1 type-body-sm">
+              {preview.disclosure.fields.map((field) => (
+                <li key={field} className="flex items-center gap-2">
+                  <CheckIcon aria-hidden className="size-4 text-highlight" />
+                  {fields(field)}
+                </li>
+              ))}
+            </ul>
+          </section>
+          <section aria-labelledby={ids.never} className="flex flex-col gap-2">
+            <h2 id={ids.never} className="type-label text-faint-foreground">
+              {t("neverTitle")}
+            </h2>
+            <ul className="flex flex-col gap-1 type-body-sm text-muted-foreground">
+              {preview.disclosure.never_shared.map((item) => (
+                <li key={item} className="flex items-center gap-2">
+                  <MinusIcon aria-hidden className="size-4" />
+                  {never(item)}
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      )}
+      {!compact && document?.summary != null && (
         <div className="flex flex-col gap-3 rounded-3xl border bg-surface px-5 py-4">
           <LegalText text={fillLegalPlaceholders(document.summary, { coach: name })} />
           {document.full !== null && (
@@ -345,11 +373,13 @@ function Respond({
   preview,
   onStale,
   onOutcome,
+  onVerifyEmail,
 }: {
   token: string;
   preview: InvitationPreview;
   onStale: () => Promise<unknown>;
   onOutcome: (outcome: Outcome) => void;
+  onVerifyEmail: () => void;
 }) {
   const t = useTranslations("coachInvitation");
   const entry = useEntry({ intent: "fighter" });
@@ -410,9 +440,15 @@ function Respond({
         <Notice tone="coral" role="alert">
           <strong>{t("problems.mismatch.title")}</strong> {t("problems.mismatch.body")}
         </Notice>
-        <Button variant="quiet" onClick={() => void signOut()}>
-          {t("switchAccount")}
-        </Button>
+        {/* Never started without the fighter's choice (SF-78). */}
+        <div className="flex flex-wrap gap-2.5">
+          <Button size="lg" onClick={onVerifyEmail}>
+            {t("verifyEmail")}
+          </Button>
+          <Button size="lg" variant="quiet" onClick={() => void signOut()}>
+            {t("switchAccount")}
+          </Button>
+        </div>
       </div>
     );
   }

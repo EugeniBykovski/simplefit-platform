@@ -1,0 +1,52 @@
+{
+  "eyebrow": "Potwierdź zaproszony e-mail",
+  "email": {
+    "title": "Dodaj zaproszony e-mail do tego konta",
+    "body": "Cały czas korzystasz z tego samego konta. Wyślemy 6-cyfrowy kod na ten adres, aby potwierdzić, że skrzynka należy do Ciebie. Po potwierdzeniu możesz też logować się nim kodem z e-maila.",
+    "label": "Adres e-mail",
+    "placeholder": "Adres, na który wysłano zaproszenie",
+    "invalid": "Wpisz prawidłowy adres e-mail.",
+    "limited": "Zbyt wiele prób. Spróbuj za chwilę.",
+    "error": "Coś poszło nie tak. Sprawdź połączenie i spróbuj ponownie.",
+    "send": "Wyślij kod",
+    "sending": "Wysyłanie…",
+    "note": "Po drodze nic nie jest akceptowane ani udostępniane. Potem ponownie przejrzysz zaproszenie."
+  },
+  "code": {
+    "title": "Wpisz kod",
+    "body": "Wysłaliśmy 6-cyfrowy kod na <b>{email}</b>. Wygasa po {minutes, plural, one {# minucie} other {# minutach}}.",
+    "label": "6-cyfrowy kod",
+    "submit": "Potwierdź e-mail",
+    "submitting": "Potwierdzanie…",
+    "sendNewCode": "Wyślij nowy kod",
+    "tryAgain": "Spróbuj ponownie",
+    "didntGetIt": "Nie dotarł?",
+    "resendIn": "Wyślij ponownie za {time}",
+    "resendUnavailable": "Ponowne wysłanie chwilowo niedostępne",
+    "wrongEmail": "Zły adres? <link>Użyj innego adresu e-mail</link>",
+    "neverShare": "Nigdy nie udostępniaj tego kodu. Pracownicy SimpleFit nigdy o niego nie poproszą.",
+    "switchAccount": "Wyloguj się i zmień konto",
+    "signIn": "Zaloguj się ponownie",
+    "notices": {
+      "sent": "Kod wysłany. Sprawdź spam, jeśli go nie widzisz.",
+      "resent": "Wysłaliśmy nowy kod. Wcześniejsze kody już nie działają.",
+      "invalid": "Ten kod jest nieprawidłowy. Sprawdź cyfry i spróbuj ponownie.",
+      "expired": "Ten kod już nie działa. Wyślij nowy.",
+      "throttled": "Zbyt wiele prób. Spróbuj za chwilę.",
+      "conflict": "Nie można dodać tego adresu: należy do innego konta SimpleFit. Konta nigdy nie są łączone. Aby odpowiedzieć z tym adresem, wyloguj się i zaloguj nim.",
+      "session": "Twoja sesja wygasła. Zaloguj się ponownie i poproś o nowy kod.",
+      "error": "Nie udało się potwierdzić kodu. Sprawdź połączenie i spróbuj ponownie."
+    }
+  },
+  "linked": {
+    "eyebrow": "E-mail potwierdzony",
+    "new": {
+      "title": "E-mail potwierdzony",
+      "body": "<b>{email}</b> jest teraz adresem tego konta. Możesz też logować się nim kodem z e-maila."
+    },
+    "already": {
+      "title": "Ten e-mail jest już na Twoim koncie",
+      "body": "<b>{email}</b> był już potwierdzony dla tego konta. Nic się nie zmieniło."
+    }
+  }
+}

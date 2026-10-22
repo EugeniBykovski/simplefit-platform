@@ -1,0 +1,52 @@
+{
+  "eyebrow": "Verify the invited email",
+  "email": {
+    "title": "Add the invited email to this account",
+    "body": "You stay signed in to this same account. We send a 6-digit code to the address to prove the inbox is yours. Once it’s verified, you can also sign in with it using an email code.",
+    "label": "Email address",
+    "placeholder": "The address the invitation was sent to",
+    "invalid": "Enter a valid email address.",
+    "limited": "Too many attempts. Try again shortly.",
+    "error": "Something went wrong. Check your connection and try again.",
+    "send": "Send code",
+    "sending": "Sending…",
+    "note": "Nothing is accepted or shared on the way. You review the invitation again afterwards."
+  },
+  "code": {
+    "title": "Enter the code",
+    "body": "We sent a 6-digit code to <b>{email}</b>. It expires in {minutes, plural, one {# minute} other {# minutes}}.",
+    "label": "6-digit code",
+    "submit": "Verify email",
+    "submitting": "Verifying…",
+    "sendNewCode": "Send a new code",
+    "tryAgain": "Try again",
+    "didntGetIt": "Didn’t get it?",
+    "resendIn": "Resend in {time}",
+    "resendUnavailable": "Resend unavailable for now",
+    "wrongEmail": "Wrong address? <link>Use a different email</link>",
+    "neverShare": "Never share this code. SimpleFit staff will never ask you for it.",
+    "switchAccount": "Sign out and switch account",
+    "signIn": "Sign in again",
+    "notices": {
+      "sent": "Code sent. Check spam if you don’t see it.",
+      "resent": "We sent a new code. Earlier codes no longer work.",
+      "invalid": "That code isn’t right. Check the digits and try again.",
+      "expired": "This code no longer works. Send a new one.",
+      "throttled": "Too many attempts. Try again shortly.",
+      "conflict": "This email can’t be added: it belongs to another SimpleFit account. Accounts are never merged. To respond with that email, sign out and sign in with it.",
+      "session": "Your session ended. Sign in again, then request a new code.",
+      "error": "We couldn’t confirm the code. Check your connection and try again."
+    }
+  },
+  "linked": {
+    "eyebrow": "Email verified",
+    "new": {
+      "title": "Email verified",
+      "body": "<b>{email}</b> is now an email of this account. You can also sign in with it using an email code."
+    },
+    "already": {
+      "title": "This email is already on your account",
+      "body": "<b>{email}</b> was already verified for this account. Nothing changed."
+    }
+  }
+}

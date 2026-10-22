@@ -1,0 +1,52 @@
+{
+  "eyebrow": "Vérifier l’e-mail invité",
+  "email": {
+    "title": "Ajouter l’e-mail invité à ce compte",
+    "body": "Vous restez connecté à ce même compte. Nous envoyons un code à 6 chiffres à l’adresse pour prouver que la boîte vous appartient. Une fois vérifiée, vous pourrez aussi vous connecter avec elle grâce à un code par e-mail.",
+    "label": "Adresse e-mail",
+    "placeholder": "L’adresse à laquelle l’invitation a été envoyée",
+    "invalid": "Saisissez une adresse e-mail valide.",
+    "limited": "Trop de tentatives. Réessayez dans un instant.",
+    "error": "Un problème est survenu. Vérifiez votre connexion et réessayez.",
+    "send": "Envoyer le code",
+    "sending": "Envoi…",
+    "note": "Rien n’est accepté ni partagé en chemin. Vous revoyez l’invitation ensuite."
+  },
+  "code": {
+    "title": "Saisissez le code",
+    "body": "Nous avons envoyé un code à 6 chiffres à <b>{email}</b>. Il expire dans {minutes, plural, one {# minute} other {# minutes}}.",
+    "label": "Code à 6 chiffres",
+    "submit": "Vérifier l’e-mail",
+    "submitting": "Vérification…",
+    "sendNewCode": "Envoyer un nouveau code",
+    "tryAgain": "Réessayer",
+    "didntGetIt": "Pas reçu ?",
+    "resendIn": "Renvoyer dans {time}",
+    "resendUnavailable": "Renvoi indisponible pour le moment",
+    "wrongEmail": "Mauvaise adresse ? <link>Utiliser un autre e-mail</link>",
+    "neverShare": "Ne communiquez jamais ce code. L’équipe SimpleFit ne vous le demandera jamais.",
+    "switchAccount": "Se déconnecter et changer de compte",
+    "signIn": "Se reconnecter",
+    "notices": {
+      "sent": "Code envoyé. Vérifiez vos spams si vous ne le voyez pas.",
+      "resent": "Nous avons envoyé un nouveau code. Les codes précédents ne fonctionnent plus.",
+      "invalid": "Ce code est incorrect. Vérifiez les chiffres et réessayez.",
+      "expired": "Ce code ne fonctionne plus. Demandez-en un nouveau.",
+      "throttled": "Trop de tentatives. Réessayez dans un instant.",
+      "conflict": "Cet e-mail ne peut pas être ajouté : il appartient à un autre compte SimpleFit. Les comptes ne sont jamais fusionnés. Pour répondre avec cet e-mail, déconnectez-vous et connectez-vous avec lui.",
+      "session": "Votre session est terminée. Reconnectez-vous, puis demandez un nouveau code.",
+      "error": "Nous n’avons pas pu confirmer le code. Vérifiez votre connexion et réessayez."
+    }
+  },
+  "linked": {
+    "eyebrow": "E-mail vérifié",
+    "new": {
+      "title": "E-mail vérifié",
+      "body": "<b>{email}</b> est désormais un e-mail de ce compte. Vous pouvez aussi vous connecter avec lui grâce à un code par e-mail."
+    },
+    "already": {
+      "title": "Cet e-mail est déjà sur votre compte",
+      "body": "<b>{email}</b> était déjà vérifié pour ce compte. Rien n’a changé."
+    }
+  }
+}

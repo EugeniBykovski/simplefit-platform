@@ -49,7 +49,7 @@
     },
     "mismatch": {
       "title": "Esta invitación se envió a otro correo electrónico.",
-      "body": "Inicia sesión con el correo al que se envió la invitación y vuelve a abrir el enlace del correo. Con esta cuenta no se comparte nada de esta invitación."
+      "body": "Si se envió a otra dirección tuya, verifícala para añadirla a esta cuenta o inicia sesión con ella. Con esta cuenta no se comparte nada de esta invitación."
     },
     "stale": {
       "title": "Lo que compartirías ha cambiado.",
@@ -112,5 +112,8 @@
     }
   },
   "readFull": "Leer la información completa",
-  "hideFull": "Ocultar la información completa"
+  "hideFull": "Ocultar la información completa",
+  "verifyEmail": "Verificar el correo de la invitación",
+  "backToInvitation": "Volver a la invitación",
+  "linkDoneHint": "Revisa la invitación y decide si la aceptas."
 }

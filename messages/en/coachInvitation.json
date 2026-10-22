@@ -49,7 +49,7 @@
     },
     "mismatch": {
       "title": "This invitation was sent to a different email address.",
-      "body": "Sign in with the address the invitation was sent to, then open the link from the email again. Nothing about this invitation is shared with this account."
+      "body": "If it was sent to another address of yours, verify that address to add it to this account, or sign in with it instead. Nothing about this invitation is shared with this account."
     },
     "stale": {
       "title": "What you would share has changed.",
@@ -112,5 +112,8 @@
     }
   },
   "readFull": "Read the full disclosure",
-  "hideFull": "Hide the full disclosure"
+  "hideFull": "Hide the full disclosure",
+  "verifyEmail": "Verify the invited email",
+  "backToInvitation": "Back to the invitation",
+  "linkDoneHint": "Review the invitation and choose whether to accept."
 }
