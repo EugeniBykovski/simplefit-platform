@@ -49,7 +49,7 @@
     },
     "mismatch": {
       "title": "Diese Einladung ging an eine andere E-Mail-Adresse.",
-      "body": "Melde dich mit der Adresse an, an die die Einladung ging, und öffne den Link aus der E-Mail erneut. Mit diesem Konto wird nichts von dieser Einladung geteilt."
+      "body": "Wenn sie an eine andere Adresse von dir ging, bestätige diese, um sie zu diesem Konto hinzuzufügen, oder melde dich mit ihr an. Mit diesem Konto wird nichts von dieser Einladung geteilt."
     },
     "stale": {
       "title": "Was du teilen würdest, hat sich geändert.",
@@ -112,5 +112,8 @@
     }
   },
   "readFull": "Vollständige Information lesen",
-  "hideFull": "Vollständige Information ausblenden"
+  "hideFull": "Vollständige Information ausblenden",
+  "verifyEmail": "Eingeladene E-Mail bestätigen",
+  "backToInvitation": "Zurück zur Einladung",
+  "linkDoneHint": "Sieh dir die Einladung an und entscheide, ob du sie annimmst."
 }

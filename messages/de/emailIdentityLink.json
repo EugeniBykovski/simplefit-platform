@@ -1,0 +1,52 @@
+{
+  "eyebrow": "Eingeladene E-Mail bestätigen",
+  "email": {
+    "title": "Eingeladene E-Mail zu diesem Konto hinzufügen",
+    "body": "Du bleibst in genau diesem Konto angemeldet. Wir senden einen 6-stelligen Code an die Adresse, um zu bestätigen, dass das Postfach dir gehört. Danach kannst du dich damit auch per E-Mail-Code anmelden.",
+    "label": "E-Mail-Adresse",
+    "placeholder": "Die Adresse, an die die Einladung ging",
+    "invalid": "Gib eine gültige E-Mail-Adresse ein.",
+    "limited": "Zu viele Versuche. Versuch es gleich noch einmal.",
+    "error": "Etwas ist schiefgelaufen. Prüf deine Verbindung und versuch es noch einmal.",
+    "send": "Code senden",
+    "sending": "Wird gesendet…",
+    "note": "Unterwegs wird nichts angenommen oder geteilt. Danach siehst du dir die Einladung noch einmal an."
+  },
+  "code": {
+    "title": "Code eingeben",
+    "body": "Wir haben einen 6-stelligen Code an <b>{email}</b> gesendet. Er läuft nach {minutes, plural, one {# Minute} other {# Minuten}} ab.",
+    "label": "6-stelliger Code",
+    "submit": "E-Mail bestätigen",
+    "submitting": "Wird geprüft…",
+    "sendNewCode": "Neuen Code senden",
+    "tryAgain": "Erneut versuchen",
+    "didntGetIt": "Nicht angekommen?",
+    "resendIn": "Erneut senden in {time}",
+    "resendUnavailable": "Erneutes Senden gerade nicht möglich",
+    "wrongEmail": "Falsche Adresse? <link>Andere E-Mail verwenden</link>",
+    "neverShare": "Gib diesen Code niemals weiter. Das SimpleFit-Team fragt nie danach.",
+    "switchAccount": "Abmelden und Konto wechseln",
+    "signIn": "Erneut anmelden",
+    "notices": {
+      "sent": "Code gesendet. Sieh auch im Spam nach.",
+      "resent": "Wir haben einen neuen Code gesendet. Frühere Codes funktionieren nicht mehr.",
+      "invalid": "Dieser Code stimmt nicht. Prüf die Ziffern und versuch es noch einmal.",
+      "expired": "Dieser Code funktioniert nicht mehr. Fordere einen neuen an.",
+      "throttled": "Zu viele Versuche. Versuch es gleich noch einmal.",
+      "conflict": "Diese E-Mail kann nicht hinzugefügt werden: Sie gehört zu einem anderen SimpleFit-Konto. Konten werden nie zusammengeführt. Um mit dieser E-Mail zu antworten, melde dich ab und mit ihr an.",
+      "session": "Deine Sitzung ist beendet. Melde dich erneut an und fordere dann einen neuen Code an.",
+      "error": "Wir konnten den Code nicht bestätigen. Prüf deine Verbindung und versuch es noch einmal."
+    }
+  },
+  "linked": {
+    "eyebrow": "E-Mail bestätigt",
+    "new": {
+      "title": "E-Mail bestätigt",
+      "body": "<b>{email}</b> gehört jetzt zu diesem Konto. Du kannst dich damit auch per E-Mail-Code anmelden."
+    },
+    "already": {
+      "title": "Diese E-Mail ist schon in deinem Konto",
+      "body": "<b>{email}</b> war für dieses Konto bereits bestätigt. Nichts hat sich geändert."
+    }
+  }
+}

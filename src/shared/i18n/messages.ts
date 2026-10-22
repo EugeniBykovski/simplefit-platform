@@ -6,6 +6,7 @@ import type auth from "../../../messages/en/auth.json";
 import type coachFighters from "../../../messages/en/coachFighters.json";
 import type coachHome from "../../../messages/en/coachHome.json";
 import type coachInvitation from "../../../messages/en/coachInvitation.json";
+import type emailIdentityLink from "../../../messages/en/emailIdentityLink.json";
 import type coachOnboarding from "../../../messages/en/coachOnboarding.json";
 import type coachSessions from "../../../messages/en/coachSessions.json";
 import type common from "../../../messages/en/common.json";
@@ -51,6 +52,7 @@ export const namespaces = [
   "coachHome",
   "coachFighters",
   "coachInvitation",
+  "emailIdentityLink",
   "coachSessions",
   "fighterCoaches",
   "fighterTraining",
@@ -82,6 +84,7 @@ export type Messages = {
   coachHome: typeof coachHome;
   coachFighters: typeof coachFighters;
   coachInvitation: typeof coachInvitation;
+  emailIdentityLink: typeof emailIdentityLink;
   coachSessions: typeof coachSessions;
   fighterCoaches: typeof fighterCoaches;
   fighterTraining: typeof fighterTraining;

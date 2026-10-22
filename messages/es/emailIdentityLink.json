@@ -1,0 +1,52 @@
+{
+  "eyebrow": "Verifica el correo de la invitación",
+  "email": {
+    "title": "Añade el correo de la invitación a esta cuenta",
+    "body": "Sigues con la sesión iniciada en esta misma cuenta. Enviamos un código de 6 dígitos a la dirección para comprobar que el buzón es tuyo. Una vez verificado, también podrás iniciar sesión con él mediante un código por correo.",
+    "label": "Correo electrónico",
+    "placeholder": "La dirección a la que se envió la invitación",
+    "invalid": "Introduce un correo electrónico válido.",
+    "limited": "Demasiados intentos. Vuelve a intentarlo en un momento.",
+    "error": "Algo ha salido mal. Revisa tu conexión e inténtalo de nuevo.",
+    "send": "Enviar código",
+    "sending": "Enviando…",
+    "note": "Por el camino no se acepta ni se comparte nada. Después vuelves a revisar la invitación."
+  },
+  "code": {
+    "title": "Introduce el código",
+    "body": "Hemos enviado un código de 6 dígitos a <b>{email}</b>. Caduca en {minutes, plural, one {# minuto} other {# minutos}}.",
+    "label": "Código de 6 dígitos",
+    "submit": "Verificar correo",
+    "submitting": "Verificando…",
+    "sendNewCode": "Enviar un código nuevo",
+    "tryAgain": "Reintentar",
+    "didntGetIt": "¿No te ha llegado?",
+    "resendIn": "Reenviar en {time}",
+    "resendUnavailable": "Reenvío no disponible por ahora",
+    "wrongEmail": "¿Dirección equivocada? <link>Usa otro correo</link>",
+    "neverShare": "No compartas nunca este código. El equipo de SimpleFit nunca te lo pedirá.",
+    "switchAccount": "Cerrar sesión y cambiar de cuenta",
+    "signIn": "Volver a iniciar sesión",
+    "notices": {
+      "sent": "Código enviado. Revisa el spam si no lo ves.",
+      "resent": "Te hemos enviado un código nuevo. Los anteriores ya no funcionan.",
+      "invalid": "Ese código no es correcto. Revisa los dígitos e inténtalo de nuevo.",
+      "expired": "Este código ya no funciona. Envía uno nuevo.",
+      "throttled": "Demasiados intentos. Vuelve a intentarlo en un momento.",
+      "conflict": "No se puede añadir este correo: pertenece a otra cuenta de SimpleFit. Las cuentas nunca se fusionan. Para responder con ese correo, cierra sesión e inicia sesión con él.",
+      "session": "Tu sesión ha terminado. Vuelve a iniciar sesión y pide un código nuevo.",
+      "error": "No hemos podido confirmar el código. Revisa tu conexión e inténtalo de nuevo."
+    }
+  },
+  "linked": {
+    "eyebrow": "Correo verificado",
+    "new": {
+      "title": "Correo verificado",
+      "body": "<b>{email}</b> ya es un correo de esta cuenta. También puedes iniciar sesión con él mediante un código por correo."
+    },
+    "already": {
+      "title": "Este correo ya está en tu cuenta",
+      "body": "<b>{email}</b> ya estaba verificado para esta cuenta. No ha cambiado nada."
+    }
+  }
+}

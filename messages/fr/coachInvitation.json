@@ -49,7 +49,7 @@
     },
     "mismatch": {
       "title": "Cette invitation a été envoyée à une autre adresse e-mail.",
-      "body": "Connecte-toi avec l’adresse à laquelle l’invitation a été envoyée, puis rouvre le lien de l’e-mail. Rien de cette invitation n’est partagé avec ce compte."
+      "body": "Si elle a été envoyée à une autre de tes adresses, vérifie-la pour l’ajouter à ce compte, ou connecte-toi avec elle. Rien de cette invitation n’est partagé avec ce compte."
     },
     "stale": {
       "title": "Ce que tu partagerais a changé.",
@@ -112,5 +112,8 @@
     }
   },
   "readFull": "Lire l’information complète",
-  "hideFull": "Masquer l’information complète"
+  "hideFull": "Masquer l’information complète",
+  "verifyEmail": "Vérifier l’e-mail invité",
+  "backToInvitation": "Retour à l’invitation",
+  "linkDoneHint": "Consulte l’invitation et choisis de l’accepter ou non."
 }

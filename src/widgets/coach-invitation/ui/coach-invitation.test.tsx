@@ -22,6 +22,8 @@ vi.mock("@/entities/session", () => ({
   callWithSession: <T,>(call: (init: RequestInit) => Promise<T>) =>
     call({ headers: { Authorization: "Bearer test" } }),
   signOut: session.signOut,
+  onSessionBoundary: () => () => undefined,
+  SessionChangedError: class extends Error {},
 }));
 vi.mock("@/shared/i18n/navigation", () => ({
   Link: ({ href, children, ...props }: { href: string; children: React.ReactNode }) => (
@@ -268,8 +270,76 @@ describe("Coach invitation (WFI1) signed in", () => {
       await screen.findByText(/This invitation was sent to a different email address\./),
     ).toBeVisible();
     expect(screen.queryByText(/@/)).toBeNull();
+    expect(screen.getByRole("button", { name: "Verify the invited email" })).toBeVisible();
     await userEvent.click(screen.getByRole("button", { name: "Sign out and switch account" }));
     expect(session.signOut).toHaveBeenCalled();
+  });
+
+  it("M/N/O (SF-78): verifies the invited email in place, then reviews again; nothing is auto-accepted", async () => {
+    openLink();
+    signedIn();
+    const CODE = "730419";
+    let mismatch = true;
+    const calls = server({
+      [PREVIEW_PATH]: jsonResponse(PREVIEW),
+      [ENTRY_PATH]: jsonResponse(ENTRY("completed")),
+      [ACCEPT_PATH]: () =>
+        mismatch
+          ? error(403, "invitation_recipient_mismatch")
+          : jsonResponse({ outcome: "created", relationship_id: "rel-1" }),
+      "POST /api/v1/me/email-identities/link-challenge": jsonResponse(
+        { expires_in_seconds: 600, resend_after_seconds: 60 },
+        { status: 202 },
+      ),
+      "POST /api/v1/me/email-identities/confirm-link": () => {
+        mismatch = false;
+        return jsonResponse({
+          outcome: "linked",
+          email_identity: { email: "fighter@example.com", linked_at: "2026-10-22T10:00:00Z" },
+        });
+      },
+    });
+    await renderWithProviders(<CoachInvitation />);
+    await userEvent.click(await screen.findByRole("checkbox"));
+    await userEvent.click(screen.getByRole("button", { name: "Accept invitation" }));
+    // N: the backend refused the recipient; linking starts only on request.
+    await userEvent.click(await screen.findByRole("button", { name: "Verify the invited email" }));
+    expect(calls.some((call) => call.url.includes("email-identities"))).toBe(false);
+    // While verifying, the disclosure lists step aside; who invited stays.
+    expect(screen.queryByText("Never shared")).toBeNull();
+    expect(screen.getByText("Coach Marek", { selector: "span" })).toBeVisible();
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Email address" }),
+      "fighter@example.com",
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Send code" }));
+    await userEvent.click(await screen.findByRole("textbox", { name: "6-digit code" }));
+    await userEvent.paste(CODE);
+    expect(await screen.findByRole("heading", { name: "Email verified" })).toBeVisible();
+    expect(screen.getByText(/Review the invitation and choose whether to accept\./)).toBeVisible();
+    // O: linking accepted nothing.
+    expect(calls.filter((call) => call.url.includes("/accept"))).toHaveLength(1);
+
+    await userEvent.click(screen.getByRole("button", { name: "Back to the invitation" }));
+    const consent = await screen.findByRole("checkbox");
+    expect(consent).not.toBeChecked();
+    expect(screen.getByRole("button", { name: "Accept invitation" })).toBeDisabled();
+    await userEvent.click(consent);
+    await userEvent.click(screen.getByRole("button", { name: "Accept invitation" }));
+    expect(
+      await screen.findByRole("heading", { name: "You’re connected with Coach Marek." }),
+    ).toBeVisible();
+
+    // The token only ever in SF-57 bodies; never sent to the linking API; the code never with the token.
+    expect(tokenInUrls(calls)).toEqual([]);
+    for (const call of calls.filter((call) => call.url.includes("email-identities"))) {
+      expect(JSON.stringify(call.body ?? {})).not.toContain(TOKEN);
+    }
+    for (const call of calls.filter((call) => call.url.includes("coach-invitations"))) {
+      expect(JSON.stringify(call.body ?? {})).not.toContain(CODE);
+    }
+    expect(calls.filter((call) => call.url.includes("/accept"))).toHaveLength(2);
   });
 
   it("asks again after a stale disclosure, with the consent cleared", async () => {
