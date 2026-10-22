@@ -126,7 +126,9 @@ async function openMismatch(page: Page, confirm?: Confirm[]) {
 
 async function toCode(page: Page) {
   await page.getByRole("button", { name: "Verify the invited email" }).click();
-  await page.getByRole("textbox", { name: "Email address" }).fill(EMAIL);
+  const email = page.getByRole("textbox", { name: "Email address" });
+  await email.fill(EMAIL);
+  await expect(email).toHaveValue(EMAIL);
   await page.getByRole("button", { name: "Send code" }).click();
   const code = page.getByRole("textbox", { name: "6-digit code" });
   await code.waitFor();

@@ -98,30 +98,39 @@ export function useEmailIdentityLink() {
     setCode("");
   }, []);
 
-  const request = useCallback(async () => {
-    if (busy.current) return;
-    const address = email.trim();
-    if (!looksLikeEmail(address)) {
-      setState({ step: "email", status: "invalid" });
-      return;
-    }
-    busy.current = true;
-    setState({ step: "email", status: "sending" });
-    try {
-      await sendCode(address);
-      setState({ step: "code", status: "sent" });
-    } catch (error) {
-      if (error instanceof SessionChangedError) return;
-      const { failure } = requestFailureOf(error);
-      setState(
-        failure === "session"
-          ? { step: "code", status: "session" }
-          : { step: "email", status: failure },
-      );
-    } finally {
-      busy.current = false;
-    }
-  }, [email, sendCode]);
+  /**
+   * Sends the first code. `submitted` is the field's value at submission (the
+   * form passes it): what the user sees is what is sent, even when the last
+   * keystroke or a browser autofill has not reached `email` yet.
+   */
+  const request = useCallback(
+    async (submitted?: string) => {
+      if (busy.current) return;
+      if (submitted !== undefined && submitted !== email) setEmail(submitted);
+      const address = (submitted ?? email).trim();
+      if (!looksLikeEmail(address)) {
+        setState({ step: "email", status: "invalid" });
+        return;
+      }
+      busy.current = true;
+      setState({ step: "email", status: "sending" });
+      try {
+        await sendCode(address);
+        setState({ step: "code", status: "sent" });
+      } catch (error) {
+        if (error instanceof SessionChangedError) return;
+        const { failure } = requestFailureOf(error);
+        setState(
+          failure === "session"
+            ? { step: "code", status: "session" }
+            : { step: "email", status: failure },
+        );
+      } finally {
+        busy.current = false;
+      }
+    },
+    [email, sendCode],
+  );
 
   const resend = useCallback(async () => {
     if (busy.current) return;
