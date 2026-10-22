@@ -144,7 +144,8 @@ function EmailStep({
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    void link.request();
+    const value = new FormData(event.currentTarget).get("email");
+    void link.request(typeof value === "string" ? value : undefined);
   }
 
   return (

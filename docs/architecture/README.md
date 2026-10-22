@@ -442,20 +442,25 @@ domains, so local testing needs an HTTPS host (see `.env.example`).
 
 ## Environment
 
-| Variable                         | Scope  | Purpose                                                                                                         |
-| -------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_API_URL`            | public | Base URL of the SimpleFit API, no trailing slash                                                                |
-| `NEXT_PUBLIC_GOOGLE_CLIENT_ID`   | public | Google OAuth **Web** client ID (optional; without it Google sign-in shows as unavailable)                       |
-| `NEXT_PUBLIC_APPLE_SERVICES_ID`  | public | Sign in with Apple web Services ID (optional, with the next)                                                    |
-| `NEXT_PUBLIC_APPLE_REDIRECT_URI` | public | The HTTPS Return URL registered on that Services ID (optional; without both Apple sign-in shows as unavailable) |
+| Variable                         | Scope  | Purpose                                                                                                            |
+| -------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------ |
+| `NEXT_PUBLIC_API_URL`            | public | Base URL of the SimpleFit API, no trailing slash                                                                   |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID`   | public | Google OAuth **Web** client ID (optional; without it Google sign-in shows as unavailable)                          |
+| `NEXT_PUBLIC_APPLE_SERVICES_ID`  | public | Sign in with Apple web Services ID (optional, with the next)                                                       |
+| `NEXT_PUBLIC_APPLE_REDIRECT_URI` | public | The HTTPS Return URL registered on that Services ID (optional; without both Apple sign-in shows as unavailable)    |
+| `APP_LINKS_APPLE_TEAM_ID`        | server | Apple Team ID for `/.well-known/apple-app-site-association` (SF-80; optional, unset → 404)                         |
+| `APP_LINKS_ANDROID_CERT_SHA256`  | server | Android signing-certificate SHA-256 fingerprints for `/.well-known/assetlinks.json` (SF-80; optional, unset → 404) |
 
 - `NEXT_PUBLIC_*` values are **inlined into the browser bundle at build
   time** and readable by anyone. Never put secrets there.
 - Public variables are validated with Zod in `shared/config/env.ts`; read them
   as literal `process.env.NEXT_PUBLIC_X` so Next.js can inline them.
-- Server-only variables (none yet) belong in a module that starts with
+- Server-only secrets belong in a module that starts with
   `import "server-only"` (add the `server-only` package with the first one),
   are read only by server code, and are set in the deployment environment.
+  The `APP_LINKS_*` values are public identifiers (the association files
+  publish them), read per request by the `/.well-known` route handlers through
+  `shared/config/app-links.ts`, so they need no `server-only` guard.
 - `.env.example` documents every variable with a safe placeholder;
   `.env.local` and all other `.env*` files are git-ignored.
 

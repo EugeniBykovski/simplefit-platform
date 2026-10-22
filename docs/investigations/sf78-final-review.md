@@ -87,6 +87,9 @@ they are fixed.
 
 ### FD-3 · WC7 "Ended" view: axe contrast failure during the segment transition
 
+- **Resolved (SF-80):** `axeViolations` (`e2e/production/harness.ts`) now waits
+  for finite transitions and animations to finish before measuring.
+
 - **Severity:** Low. The settled screen passes; the failure is a 150 ms
   colour transition, and the production spec measures inside it.
 - **Route / component:** `/en/app/coach/fighters?view=ended`, the

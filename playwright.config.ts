@@ -62,6 +62,18 @@ export default defineConfig({
       ],
       use: { ...device, baseURL: "http://127.0.0.1:3100", viewport: { width: 1440, height: 900 } },
     })),
+    // SF-80: the emailed invitation link and the association files on the
+    // production routes, in Firefox and WebKit as well (Chromium runs above).
+    ...(
+      [
+        ["firefox", devices["Desktop Firefox"]],
+        ["webkit", devices["Desktop Safari"]],
+      ] as const
+    ).map(([engine, device]) => ({
+      name: `sf80-${engine}`,
+      testMatch: "production/app-links.spec.ts",
+      use: { ...device, baseURL: "http://127.0.0.1:3100", viewport: { width: 1440, height: 900 } },
+    })),
     // SF-38, SF-46: browser-engine portability of production behaviour that
     // rests on the engine (the country list comes from each engine's region
     // names; the date of birth from each engine's date input).

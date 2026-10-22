@@ -145,6 +145,21 @@ describe("email identity link flow (SF-78)", () => {
     expect(props.onDone).toHaveBeenCalledTimes(1);
   });
 
+  it("sends the address that is in the field when the form is submitted", async () => {
+    // A browser autofill (or a keystroke not yet rendered) sets the field
+    // without React seeing an input event before the submission.
+    const calls = server({ [REQUEST]: ACCEPTED() });
+    await render();
+    const field = await screen.findByRole("textbox", { name: "Email address" });
+    const setValue = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+    setValue?.call(field, EMAIL);
+    await userEvent.click(screen.getByRole("button", { name: "Send code" }));
+    expect(await screen.findByRole("textbox", { name: "6-digit code" })).toBeInTheDocument();
+    expect(calls.find((call) => call.url.includes("link-challenge"))?.body).toEqual({
+      email: EMAIL,
+    });
+  });
+
   it("C: an address already on the account is reported as such, with nothing changed", async () => {
     server({ [REQUEST]: ACCEPTED(), [CONFIRM]: LINKED("already_linked") });
     await render();
