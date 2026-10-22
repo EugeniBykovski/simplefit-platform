@@ -22,6 +22,14 @@ import type {
 import type {
   AccountProfileResponse,
   AccountProfileUpdateRequest,
+  CodeInvalidResponse,
+  ConflictResponse,
+  EmailIdentityLinkAccepted,
+  EmailIdentityLinkConfirmRequest,
+  EmailIdentityLinkRequest,
+  EmailIdentityLinkResult,
+  EmailIdentityList,
+  ErrorResponse,
   InternalErrorResponse,
   UnauthorizedResponse,
   ValidationErrorResponse
@@ -366,6 +374,358 @@ export function useCompleteAccountRegistration<TData = Awaited<ReturnType<typeof
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getCompleteAccountRegistrationQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getListMyEmailIdentitiesUrl = () => {
+
+
+
+
+  return `/api/v1/me/email-identities`
+}
+
+/**
+ * The viewer's email identities, oldest first: addresses whose ownership was proven with a code (at email
+ * registration, or linked with `requestMyEmailIdentityLink` and `confirmMyEmailIdentityLink`). Coach invitations
+ * sent to these addresses reach the viewer (`listMyIncomingCoachInvitations`). Google and Apple sign-ins are
+ * not listed; an email a provider reported is never an identity.
+ * @summary My email identities
+ */
+export const listMyEmailIdentities = async ( options?: Parameters<typeof apiFetch>[1]): Promise<EmailIdentityList> => {
+
+  return apiFetch<EmailIdentityList>(getListMyEmailIdentitiesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListMyEmailIdentitiesQueryKey = () => {
+    return [
+    `/api/v1/me/email-identities`
+    ] as const;
+    }
+
+
+export const getListMyEmailIdentitiesQueryOptions = <TData = Awaited<ReturnType<typeof listMyEmailIdentities>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMyEmailIdentities>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListMyEmailIdentitiesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listMyEmailIdentities>>> = ({ signal }) => listMyEmailIdentities({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listMyEmailIdentities>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListMyEmailIdentitiesQueryResult = NonNullable<Awaited<ReturnType<typeof listMyEmailIdentities>>>
+export type ListMyEmailIdentitiesQueryError = ErrorType<UnauthorizedResponse | InternalErrorResponse>
+
+
+export function useListMyEmailIdentities<TData = Awaited<ReturnType<typeof listMyEmailIdentities>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMyEmailIdentities>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listMyEmailIdentities>>,
+          TError,
+          Awaited<ReturnType<typeof listMyEmailIdentities>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListMyEmailIdentities<TData = Awaited<ReturnType<typeof listMyEmailIdentities>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMyEmailIdentities>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listMyEmailIdentities>>,
+          TError,
+          Awaited<ReturnType<typeof listMyEmailIdentities>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListMyEmailIdentities<TData = Awaited<ReturnType<typeof listMyEmailIdentities>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMyEmailIdentities>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary My email identities
+ */
+
+export function useListMyEmailIdentities<TData = Awaited<ReturnType<typeof listMyEmailIdentities>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listMyEmailIdentities>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getListMyEmailIdentitiesQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getConfirmMyEmailIdentityLinkUrl = () => {
+
+
+
+
+  return `/api/v1/me/email-identities/confirm-link`
+}
+
+/**
+ * Adds `email` as an email identity of the signed-in account once the 6-digit code sent to it by
+ * `requestMyEmailIdentityLink` is entered, in the same session. Nothing else changes: no account is created or
+ * merged, no session is issued, existing Google and Apple sign-ins stay as they are, and coach invitations to the
+ * address become visible but still need an explicit response with every usual requirement.
+ *
+ * * `code_invalid` - wrong code (or a code for another address). After 5 wrong codes the code stops working.
+ * * `code_expired` - the code expired, was replaced, was already used, stopped working, or was requested in
+ *   another session: request a new one.
+ * * `conflict` - the address is an identity of another account. It is never moved; only reachable with the
+ *   correct code.
+ * * `unauthorized` - the session is no longer valid (signed out or revoked).
+ * @summary Link an email address to my account with its code
+ */
+export const confirmMyEmailIdentityLink = async (emailIdentityLinkConfirmRequest: EmailIdentityLinkConfirmRequest, options?: Parameters<typeof apiFetch>[1]): Promise<EmailIdentityLinkResult> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<EmailIdentityLinkResult>(getConfirmMyEmailIdentityLinkUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(emailIdentityLinkConfirmRequest)
+  }
+);}
+
+
+
+
+
+export const getConfirmMyEmailIdentityLinkQueryKey = (emailIdentityLinkConfirmRequest?: BodyType<EmailIdentityLinkConfirmRequest>,) => {
+    return [
+    'POST', `/api/v1/me/email-identities/confirm-link`, emailIdentityLinkConfirmRequest
+    ] as const;
+    }
+
+
+export const getConfirmMyEmailIdentityLinkQueryOptions = <TData = Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>, TError = ErrorType<UnauthorizedResponse | ConflictResponse | CodeInvalidResponse | ErrorResponse | InternalErrorResponse>>(emailIdentityLinkConfirmRequest: BodyType<EmailIdentityLinkConfirmRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getConfirmMyEmailIdentityLinkQueryKey(emailIdentityLinkConfirmRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>> = ({ signal }) => confirmMyEmailIdentityLink(emailIdentityLinkConfirmRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ConfirmMyEmailIdentityLinkQueryResult = NonNullable<Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>>
+export type ConfirmMyEmailIdentityLinkQueryError = ErrorType<UnauthorizedResponse | ConflictResponse | CodeInvalidResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function useConfirmMyEmailIdentityLink<TData = Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>, TError = ErrorType<UnauthorizedResponse | ConflictResponse | CodeInvalidResponse | ErrorResponse | InternalErrorResponse>>(
+ emailIdentityLinkConfirmRequest: BodyType<EmailIdentityLinkConfirmRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>,
+          TError,
+          Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useConfirmMyEmailIdentityLink<TData = Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>, TError = ErrorType<UnauthorizedResponse | ConflictResponse | CodeInvalidResponse | ErrorResponse | InternalErrorResponse>>(
+ emailIdentityLinkConfirmRequest: BodyType<EmailIdentityLinkConfirmRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>,
+          TError,
+          Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useConfirmMyEmailIdentityLink<TData = Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>, TError = ErrorType<UnauthorizedResponse | ConflictResponse | CodeInvalidResponse | ErrorResponse | InternalErrorResponse>>(
+ emailIdentityLinkConfirmRequest: BodyType<EmailIdentityLinkConfirmRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Link an email address to my account with its code
+ */
+
+export function useConfirmMyEmailIdentityLink<TData = Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>, TError = ErrorType<UnauthorizedResponse | ConflictResponse | CodeInvalidResponse | ErrorResponse | InternalErrorResponse>>(
+ emailIdentityLinkConfirmRequest: BodyType<EmailIdentityLinkConfirmRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMyEmailIdentityLink>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getConfirmMyEmailIdentityLinkQueryOptions(emailIdentityLinkConfirmRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getRequestMyEmailIdentityLinkUrl = () => {
+
+
+
+
+  return `/api/v1/me/email-identities/link-challenge`
+}
+
+/**
+ * Starts adding `email` as an email identity of the signed-in account (for example to a Google or Apple
+ * account) by sending a 6-digit code to it. The code only works in this account and this session, for this
+ * address; it never signs anyone in and is not an email sign-in or registration code.
+ *
+ * The response is the same for every well-formed address, including one that already belongs to this or
+ * another account: whether the address can be linked is only answered after the code proves the mailbox
+ * (`confirmMyEmailIdentityLink`). Requesting again (for any address) replaces the previous code.
+ *
+ * * `rate_limited` - per address, per account and per client limits (with `retry-after`).
+ * @summary Send a code to link an email address to my account
+ */
+export const requestMyEmailIdentityLink = async (emailIdentityLinkRequest: EmailIdentityLinkRequest, options?: Parameters<typeof apiFetch>[1]): Promise<EmailIdentityLinkAccepted> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<EmailIdentityLinkAccepted>(getRequestMyEmailIdentityLinkUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(emailIdentityLinkRequest)
+  }
+);}
+
+
+
+
+
+export const getRequestMyEmailIdentityLinkQueryKey = (emailIdentityLinkRequest?: BodyType<EmailIdentityLinkRequest>,) => {
+    return [
+    'POST', `/api/v1/me/email-identities/link-challenge`, emailIdentityLinkRequest
+    ] as const;
+    }
+
+
+export const getRequestMyEmailIdentityLinkQueryOptions = <TData = Awaited<ReturnType<typeof requestMyEmailIdentityLink>>, TError = ErrorType<UnauthorizedResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(emailIdentityLinkRequest: BodyType<EmailIdentityLinkRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestMyEmailIdentityLink>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getRequestMyEmailIdentityLinkQueryKey(emailIdentityLinkRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof requestMyEmailIdentityLink>>> = ({ signal }) => requestMyEmailIdentityLink(emailIdentityLinkRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof requestMyEmailIdentityLink>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type RequestMyEmailIdentityLinkQueryResult = NonNullable<Awaited<ReturnType<typeof requestMyEmailIdentityLink>>>
+export type RequestMyEmailIdentityLinkQueryError = ErrorType<UnauthorizedResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function useRequestMyEmailIdentityLink<TData = Awaited<ReturnType<typeof requestMyEmailIdentityLink>>, TError = ErrorType<UnauthorizedResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ emailIdentityLinkRequest: BodyType<EmailIdentityLinkRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestMyEmailIdentityLink>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof requestMyEmailIdentityLink>>,
+          TError,
+          Awaited<ReturnType<typeof requestMyEmailIdentityLink>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRequestMyEmailIdentityLink<TData = Awaited<ReturnType<typeof requestMyEmailIdentityLink>>, TError = ErrorType<UnauthorizedResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ emailIdentityLinkRequest: BodyType<EmailIdentityLinkRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestMyEmailIdentityLink>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof requestMyEmailIdentityLink>>,
+          TError,
+          Awaited<ReturnType<typeof requestMyEmailIdentityLink>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRequestMyEmailIdentityLink<TData = Awaited<ReturnType<typeof requestMyEmailIdentityLink>>, TError = ErrorType<UnauthorizedResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ emailIdentityLinkRequest: BodyType<EmailIdentityLinkRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestMyEmailIdentityLink>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Send a code to link an email address to my account
+ */
+
+export function useRequestMyEmailIdentityLink<TData = Awaited<ReturnType<typeof requestMyEmailIdentityLink>>, TError = ErrorType<UnauthorizedResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ emailIdentityLinkRequest: BodyType<EmailIdentityLinkRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestMyEmailIdentityLink>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getRequestMyEmailIdentityLinkQueryOptions(emailIdentityLinkRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
