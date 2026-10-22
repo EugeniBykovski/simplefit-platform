@@ -9,6 +9,8 @@ import { expect, test, type Page } from "@playwright/test";
  */
 
 const require = createRequire(import.meta.url);
+// Absolute: the cross-engine SF-78 projects use the production base URL.
+const STORYBOOK = "http://127.0.0.1:6007";
 
 async function story(page: Page, id: string) {
   const outside: string[] = [];
@@ -18,7 +20,7 @@ async function story(page: Page, id: string) {
       if (!url.hostname.endsWith("fonts.gstatic.com")) outside.push(request.url());
     }
   });
-  await page.goto(`/iframe.html?id=${id}&viewMode=story&globals=theme:Dark`);
+  await page.goto(`${STORYBOOK}/iframe.html?id=${id}&viewMode=story&globals=theme:Dark`);
   await page.waitForFunction(() =>
     ["sb-show-main", "sb-show-errordisplay"].some((name) => document.body.classList.contains(name)),
   );

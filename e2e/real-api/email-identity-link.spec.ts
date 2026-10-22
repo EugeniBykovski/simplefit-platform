@@ -319,6 +319,22 @@ test.describe("SF-78 verify the invited email, real API", () => {
     // The session is gone: the bound invitation goes with it, nothing links.
     await expect(page.getByRole("heading", { name: "No invitation to show" })).toBeVisible();
     expect(ownerOf(email)).toBe("");
+    expect(
+      await page.evaluate(() => window.sessionStorage.getItem("simplefit.coach-invitation")),
+    ).toBeNull();
+    await expect(page.getByRole("textbox", { name: "6-digit code" })).toHaveCount(0);
+
+    // Another account signs in to this tab: nothing of the previous one survives.
+    const switched = seed("user", "google", `${subject}-switched`, "fighter").REFRESH;
+    await signInAs(context, switched);
+    await page.reload();
+    await expect(page.getByRole("heading", { name: "No invitation to show" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Verify the invited email" })).toHaveCount(0);
+    expect(
+      await page.evaluate(() =>
+        JSON.stringify({ ...window.sessionStorage, ...window.localStorage }),
+      ),
+    ).not.toContain(code);
 
     // A new session of the same user, and another user, cannot use the old code.
     const again = seed("session", "google", subject).REFRESH;
@@ -402,6 +418,84 @@ test.describe("SF-78 verify the invited email, real API", () => {
     await expect(page.getByRole("heading", { name: "Email verified" })).toBeVisible();
     expect(confirmations).toBe(1);
   });
+});
+
+test.describe("SF-78 invitation changed during verification, real API", () => {
+  test.skip(SHARING !== "on", "these journeys need sharing on");
+
+  /** An access token of a new session of the user, from the API itself. */
+  async function bearer(refresh: string | undefined) {
+    const response = await fetch(`${API_URL}/api/auth/session/refresh`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ refresh_token: refresh }),
+    });
+    const { access_token } = (await response.json()) as { access_token: string };
+    return { "content-type": "application/json", authorization: `Bearer ${access_token}` };
+  }
+
+  for (const change of ["expired", "cancelled", "consumed"] as const) {
+    test(`Journey 8 (${change}): linking succeeds; the answer is the backend's, never an acceptance`, async ({
+      page,
+      context,
+    }) => {
+      const since = sql("SELECT now()");
+      const email = address(change);
+      const subject = `sf78-${change}-${test.info().project.name}-${Date.now()}`;
+      const { INVITE } = seed("invite", email);
+      const { REFRESH } = seed("user", "google", subject, "fighter");
+      const userId = userIdOf("google", subject);
+      const invitation = sql(`SELECT id FROM coach_invitations WHERE inserted_at >= '${since}'`);
+      const relationships = sql("SELECT count(*) FROM coach_fighter_relationships");
+
+      await signInAs(context, REFRESH);
+      await openInvitation(page, INVITE);
+      await toMismatch(page);
+      const field = await sendCode(page, email);
+      await field.fill(emailedCode(email));
+      await expect(page.getByRole("heading", { name: "Email verified" })).toBeVisible();
+      expect(ownerOf(email)).toBe(userId);
+
+      // Meanwhile the invitation stops being pending.
+      if (change === "expired") {
+        sql(
+          `UPDATE coach_invitations SET expires_at = inserted_at + interval '1 millisecond' WHERE id='${invitation}'`,
+        );
+      } else if (change === "cancelled") {
+        sql(
+          `UPDATE coach_invitations SET status='cancelled', responded_at=now() WHERE id='${invitation}'`,
+        );
+      } else {
+        // Answered elsewhere by the same, now verified, recipient.
+        resetRateLimits();
+        const declined = await fetch(`${API_URL}/api/v1/me/coach-invitations/decline`, {
+          method: "POST",
+          headers: await bearer(seed("session", "google", subject).REFRESH),
+          body: JSON.stringify({ token: INVITE }),
+        });
+        expect(declined.status).toBe(204);
+      }
+      const status = sql(`SELECT status FROM coach_invitations WHERE id='${invitation}'`);
+
+      await page.getByRole("button", { name: "Back to the invitation" }).click();
+      const consent = page.getByRole("checkbox");
+      await expect(consent).not.toBeChecked();
+      resetRateLimits();
+      await consent.click();
+      await page.getByRole("button", { name: "Accept invitation" }).click();
+      await expect(
+        page.getByRole("heading", { level: 1, name: "This invitation isn’t available" }),
+      ).toBeVisible();
+
+      expect(sql(`SELECT status FROM coach_invitations WHERE id='${invitation}'`)).toBe(status);
+      expect(sql("SELECT count(*) FROM coach_fighter_relationships")).toBe(relationships);
+      expect(
+        await page.evaluate(() => window.sessionStorage.getItem("simplefit.coach-invitation")),
+      ).toBeNull();
+      // Still one user, with both identities.
+      expect(providersOf(userId)).toBe("email,google");
+    });
+  }
 });
 
 test.describe("SF-78 with sharing off, real API", () => {

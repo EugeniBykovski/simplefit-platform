@@ -277,7 +277,12 @@ test.describe("SF-78 verify the invited email (WFI1)", () => {
     await expectNoLeaks(page, requests, console);
   });
 
-  test("keyboard only: tab to the action, type the address and the code", async ({ page }) => {
+  test("keyboard only: tab to the action, type the address and the code", async ({
+    page,
+    browserName,
+  }) => {
+    // Safari's default moves Tab through fields only; Option+Tab reaches buttons and links.
+    const tab = browserName === "webkit" ? "Alt+Tab" : "Tab";
     await openMismatch(page);
     await page.getByRole("button", { name: "Verify the invited email" }).focus();
     await page.keyboard.press("Enter");
@@ -286,7 +291,7 @@ test.describe("SF-78 verify the invited email (WFI1)", () => {
     await expect(page.getByRole("textbox", { name: "6-digit code" })).toBeFocused();
     await page.keyboard.type(CODE);
     await expect(page.getByRole("heading", { name: "Email verified" })).toBeFocused();
-    await page.keyboard.press("Tab");
+    await page.keyboard.press(tab);
     await expect(page.getByRole("button", { name: "Back to the invitation" })).toBeFocused();
   });
 
