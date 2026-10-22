@@ -11,8 +11,8 @@
         "id": "gallery-1",
         "artboard": "GalleryIndex.dc.html",
         "title": "route gallery 1 / 3 · onboarding & fighter mobile",
-        "rows": 249,
-        "rowsNote": "242 Route Gallery rows + WCX1 (SF-54: added with its artboard WebContextSelect.dc.html, not yet listed in GalleryIndex) + FC1 and FC2 (SF-59: added with their artboard FighterCoaches.dc.html, not yet listed in GalleryIndex) + FCI1 and FCI2 (SF-76: added to FighterCoaches.dc.html, not yet listed in GalleryIndex) + FT1 and FT2 (SF-66: added to TrainingHub.dc.html and SessionDetail.dc.html in 1792569354-73b2, not yet listed in GalleryIndex)"
+        "rows": 250,
+        "rowsNote": "242 Route Gallery rows + WCX1 (SF-54: added with its artboard WebContextSelect.dc.html, not yet listed in GalleryIndex) + FC1 and FC2 (SF-59: added with their artboard FighterCoaches.dc.html, not yet listed in GalleryIndex) + FCI1 and FCI2 (SF-76: added to FighterCoaches.dc.html, not yet listed in GalleryIndex) + FT1 and FT2 (SF-66: added to TrainingHub.dc.html and SessionDetail.dc.html in 1792569354-73b2, not yet listed in GalleryIndex) + FCI3 (SF-79: added to FighterCoaches.dc.html in 1792675284-1046, not yet listed in GalleryIndex)"
       },
       {
         "id": "gallery-2",
@@ -2501,6 +2501,31 @@
         "note": "SF-76: FCI2 (Claude Design 1792432236-08da): previewMyIncomingCoachInvitation in the app language (the SF-73 id, never a token; non-UUID ids are never sent); the coach's public identity, note, expiry, the disclosed and never-shared fields and the approved disclosure (title, version, language, summary, full text in a sheet). Accept only after ticking the approved confirmation (acceptMyIncomingCoachInvitation with the exact disclosure_version and document_language shown); decline after confirmation (declineMyIncomingCoachInvitation, also while sharing is off). Sharing off (404), not available (410), stale (409), language (409, never another language), under 18 and profile (422), rate limit (429) and failure are their own states; outcomes only from the backend."
       },
       "screens": ["FCI2"]
+    },
+    {
+      "id": "mobile.profile.coaches.invitations.verify-email",
+      "platform": "mobile",
+      "path": "/profile/coaches/invitations/verify-email",
+      "params": [],
+      "name": "Verify an email",
+      "surface": "FIGHTER",
+      "shell": "mobile.fighter",
+      "parent": "mobile.profile.coaches.invitations",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "FIGHTER",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/(fighter)/(tabs)/(profile)/profile/coaches/invitations/verify-email.tsx",
+        "note": "SF-79: FCI3 (Claude Design 1792675284-1046, FighterCoaches screen=verify), pushed from FCI1's \"Missing an invitation?\": the signed-in fighter adds an email identity to this same account with an SF-77 code (requestMyEmailIdentityLink, confirmMyEmailIdentityLink; a lost answer is reconciled with listMyEmailIdentities). Back on FCI1 the inbox is read again and an invitation to the address is answered explicitly in FCI2. No token, address or code in the route; the code stays in component state and every session boundary clears it."
+      },
+      "screens": ["FCI3"]
     },
     {
       "id": "mobile.progress",
@@ -10987,6 +11012,39 @@
         "tag": "MOBILE",
         "artboard": "FighterCoaches.dc.html",
         "addedIn": "1792432236-08da"
+      }
+    },
+    {
+      "id": "FCI3",
+      "code": "FCI3",
+      "name": "Verify an email",
+      "route": "mobile.profile.coaches.invitations.verify-email",
+      "states": [
+        "email",
+        "emailInvalid",
+        "sending",
+        "emailLimited",
+        "emailError",
+        "code",
+        "resent",
+        "invalid",
+        "expired",
+        "submitting",
+        "throttled",
+        "conflict",
+        "session",
+        "codeError",
+        "linked",
+        "already"
+      ],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "fighter-mobile",
+        "section": "7 · Fighter app · progress, schedule, messages, account",
+        "step": "7.17",
+        "tag": "MOBILE",
+        "artboard": "FighterCoaches.dc.html",
+        "addedIn": "1792675284-1046"
       }
     },
     {
