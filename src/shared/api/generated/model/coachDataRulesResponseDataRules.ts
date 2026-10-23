@@ -4,6 +4,7 @@
  * Regenerate with `pnpm api:generate`; verify with `pnpm api:check`.
  * SimpleFit API 0.1.0
  */
+import type { CoachDataRulesResponseDataRulesLegalMode } from './coachDataRulesResponseDataRulesLegalMode';
 import type { LegalDocumentRef } from './legalDocumentRef';
 
 export type CoachDataRulesResponseDataRules = {
@@ -24,4 +25,10 @@ export type CoachDataRulesResponseDataRules = {
      * @nullable
      */
   document_version: string | null;
+  /**
+     * `approved`: the normal regime (approved legal texts). `local_development`: this API runs in LOCAL
+     * DEVELOPMENT coaching mode (ADR 0025): there is no legal text, nothing to acknowledge and nothing to
+     * tick; the fighter still accepts explicitly. Never served by a production API.
+     */
+  legal_mode: CoachDataRulesResponseDataRulesLegalMode;
 };

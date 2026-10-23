@@ -6,6 +6,7 @@
  */
 import type { CoachInvitationPreviewDisclosure } from './coachInvitationPreviewDisclosure';
 import type { CoachInvitationPreviewInvitation } from './coachInvitationPreviewInvitation';
+import type { CoachInvitationPreviewLegalMode } from './coachInvitationPreviewLegalMode';
 import type { LegalDocumentRef } from './legalDocumentRef';
 
 /**
@@ -21,4 +22,10 @@ export interface CoachInvitationPreview {
      */
   document: LegalDocumentRef | null;
   invitation: CoachInvitationPreviewInvitation;
+  /**
+     * `approved`: the normal regime (approved legal texts). `local_development`: this API runs in LOCAL
+     * DEVELOPMENT coaching mode (ADR 0025): there is no legal text, nothing to acknowledge and nothing to
+     * tick; the fighter still accepts explicitly. Never served by a production API.
+     */
+  legal_mode: CoachInvitationPreviewLegalMode;
 }

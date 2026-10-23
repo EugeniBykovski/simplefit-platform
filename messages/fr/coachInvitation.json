@@ -115,5 +115,10 @@
   "hideFull": "Masquer l’information complète",
   "verifyEmail": "Vérifier l’e-mail invité",
   "backToInvitation": "Retour à l’invitation",
-  "linkDoneHint": "Consulte l’invitation et choisis de l’accepter ou non."
+  "linkDoneHint": "Consulte l’invitation et choisis de l’accepter ou non.",
+  "localDevelopment": {
+    "title": "Mode développement.",
+    "body": "Ce serveur local n’a aucun document juridique : il n’y a rien à lire ni à cocher. Tu n’es connecté qu’en cliquant sur « Accepter l’invitation ».",
+    "hint": "Rien n’est partagé tant que tu ne cliques pas sur « Accepter l’invitation ». Tu peux mettre fin à la relation à tout moment depuis Coachs."
+  }
 }

@@ -124,7 +124,8 @@
       "stale": "The coach data rules changed. Review the current version and acknowledge again.",
       "failed": "We couldn’t save that. Nothing changed. Try again.",
       "language": "The coach data rules aren’t available in your language yet. Approved languages: {languages}. Switch the page language to read and acknowledge them."
-    }
+    },
+    "localDevelopment": "Development mode: this local server has no legal documents, so there are no coach data rules to acknowledge."
   },
   "cancelInvitation": {
     "title": "Cancel this invitation?",

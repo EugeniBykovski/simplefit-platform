@@ -115,5 +115,10 @@
   "hideFull": "Ocultar la información completa",
   "verifyEmail": "Verificar el correo de la invitación",
   "backToInvitation": "Volver a la invitación",
-  "linkDoneHint": "Revisa la invitación y decide si la aceptas."
+  "linkDoneHint": "Revisa la invitación y decide si la aceptas.",
+  "localDevelopment": {
+    "title": "Modo de desarrollo.",
+    "body": "Este servidor local no tiene documentos legales, así que no hay nada que leer ni marcar. Solo te conectas si pulsas «Aceptar invitación».",
+    "hint": "No se comparte nada hasta que pulses «Aceptar invitación». Puedes finalizar la relación cuando quieras desde Entrenadores."
+  }
 }

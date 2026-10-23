@@ -124,7 +124,8 @@
       "stale": "Les règles ont changé. Lis la version actuelle et confirme-la à nouveau.",
       "failed": "Impossible d’enregistrer. Rien n’a changé. Réessaie.",
       "language": "Les règles relatives aux données pour les coachs ne sont pas encore disponibles dans ta langue. Langues approuvées : {languages}. Change la langue de la page pour les lire et les confirmer."
-    }
+    },
+    "localDevelopment": "Mode développement : ce serveur local n’a aucun document juridique, il n’y a donc pas de règles de données du coach à reconnaître."
   },
   "cancelInvitation": {
     "title": "Annuler cette invitation ?",

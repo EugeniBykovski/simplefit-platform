@@ -129,7 +129,11 @@ async function toCode(page: Page) {
   const email = page.getByRole("textbox", { name: "Email address" });
   await email.fill(EMAIL);
   await expect(email).toHaveValue(EMAIL);
-  await page.getByRole("button", { name: "Send code" }).click();
+  // Submitted from the field (implicit submission, as Enter does for a user).
+  // Under CI load Firefox occasionally loses a pointer click that Playwright
+  // reports as done: the form is never submitted and no request leaves (seen
+  // in a trace). The button itself stays covered by the tests that click it.
+  await email.press("Enter");
   const code = page.getByRole("textbox", { name: "6-digit code" });
   await code.waitFor();
   return code;

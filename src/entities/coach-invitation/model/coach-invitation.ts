@@ -71,7 +71,17 @@ export function useCoachDataRules({ enabled = true }: { enabled?: boolean } = {}
   });
 }
 
+/**
+ * Whether the API runs in LOCAL DEVELOPMENT coaching mode (simplefit-api
+ * ADR 0025): no legal documents exist, so there is nothing to show,
+ * acknowledge or tick. The backend decides; production never says so.
+ */
+export function isLocalDevelopment(rules: CoachDataRules | undefined): boolean {
+  return rules?.legal_mode === "local_development";
+}
+
 /** Whether the coach may invite now as far as the data rules go. */
 export function dataRulesAllowInviting(rules: CoachDataRules | undefined): boolean {
+  if (isLocalDevelopment(rules)) return true;
   return rules?.document_version != null && rules.acknowledged_at != null;
 }

@@ -162,8 +162,18 @@ const rulesReply = (
       document_version: version,
       acknowledged_at: acknowledged ? "2026-10-01T10:00:00Z" : null,
       document: version === null ? null : rulesDocument(version, language),
+      legal_mode: "approved",
     },
   });
+// simplefit-api ADR 0025: a LOCAL DEVELOPMENT API has no legal documents.
+const RULES_LOCAL_DEVELOPMENT = jsonResponse({
+  data_rules: {
+    document_version: null,
+    acknowledged_at: null,
+    document: null,
+    legal_mode: "local_development",
+  },
+});
 const RULES_PUBLISHED = rulesReply("coach-data-rules-2026-10", true);
 const RULES_MISSING = rulesReply(null, false);
 
@@ -359,6 +369,32 @@ describe("CoachFighters (WC7) invite composer", () => {
     expect(within(dialog).queryByRole("checkbox")).toBeNull();
     expect(within(dialog).queryByRole("textbox")).toBeNull();
     expect(calls.some((call) => call.method === "POST")).toBe(false);
+  });
+
+  it("local development mode: the form opens at once, says so, and asks for no acknowledgement", async () => {
+    const calls = await openComposer(RULES_LOCAL_DEVELOPMENT, {
+      [`POST ${INVITATIONS}`]: jsonResponse(
+        { invitation: { ...PENDING, invitation_id: "inv-dev" } },
+        { status: 201 },
+      ),
+    });
+    const dialog = await screen.findByRole("dialog", { name: "Invite a fighter" });
+    expect(
+      within(dialog).getByText(/Development mode: this local server has no legal documents/),
+    ).toBeVisible();
+    // No legal text, version or checkbox is shown or invented.
+    expect(within(dialog).queryByRole("checkbox")).toBeNull();
+    expect(within(dialog).queryByText(/Coach data rules|Version/)).toBeNull();
+    await userEvent.type(within(dialog).getByLabelText("Email"), "fighter@example.com");
+    await userEvent.click(within(dialog).getByRole("button", { name: "Send invitation" }));
+    expect(await screen.findByText("Invitation pending")).toBeVisible();
+    expect(calls.some((call) => call.path.endsWith("/acknowledge"))).toBe(false);
+  });
+
+  it("approved mode shows no development-mode note", async () => {
+    await openComposer(RULES_PUBLISHED);
+    const dialog = await screen.findByRole("dialog", { name: "Invite a fighter" });
+    expect(within(dialog).queryByText(/Development mode/)).toBeNull();
   });
 
   it("sends the trimmed address and note, and shows what the backend created", async () => {

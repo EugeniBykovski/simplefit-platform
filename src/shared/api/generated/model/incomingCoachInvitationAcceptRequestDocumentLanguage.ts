@@ -6,7 +6,8 @@
  */
 
 /**
- * The `document.language` of the disclosure text the fighter was shown (an approved variant).
+ * The `document.language` of the disclosure text the fighter was shown (an approved variant). Required
+ * whenever a text was shown (`legal_mode` `approved`); `local_development` shows none.
  */
 export type IncomingCoachInvitationAcceptRequestDocumentLanguage = typeof IncomingCoachInvitationAcceptRequestDocumentLanguage[keyof typeof IncomingCoachInvitationAcceptRequestDocumentLanguage];
 

@@ -63,8 +63,16 @@ const PREVIEW = {
     checkbox: "I agree that {coach} sees the fields above (fixture {version}).",
     full: "# Fixture disclosure\n\nFull fixture text <script>alert(1)</script>.\n\n- Fixture item",
   } as Record<string, unknown> | null,
+  legal_mode: "approved",
 };
 const withDocument = (document: Record<string, unknown> | null) => ({ ...PREVIEW, document });
+// simplefit-api ADR 0025: a LOCAL DEVELOPMENT API has no legal text at all.
+const LOCAL_PREVIEW = {
+  ...PREVIEW,
+  disclosure: { ...PREVIEW.disclosure, version: "local-development-no-legal-text" },
+  document: null,
+  legal_mode: "local_development",
+};
 const ENTRY = (fighter: string, account = "complete") => ({
   entry: {
     destination: fighter === "completed" ? "fighter_home" : "fighter_onboarding",
@@ -447,6 +455,53 @@ describe("Coach invitation (WFI1) signed in", () => {
     expect(screen.getByRole("button", { name: "Accept invitation" })).toBeDisabled();
     expect(screen.getByRole("button", { name: "Decline" })).toBeEnabled();
     expect(calls.some((call) => call.url.includes("/accept"))).toBe(false);
+  });
+
+  it("local development mode: no legal text or box, yet acceptance is an explicit click", async () => {
+    openLink();
+    signedIn();
+    let answer: (response: Response) => void = () => undefined;
+    const calls = server({
+      [PREVIEW_PATH]: jsonResponse(LOCAL_PREVIEW),
+      [ENTRY_PATH]: jsonResponse(ENTRY("completed")),
+      [ACCEPT_PATH]: () => new Promise<Response>((resolve) => (answer = resolve)),
+    });
+    await renderWithProviders(<CoachInvitation />);
+    const accept = await screen.findByRole("button", { name: "Accept invitation" });
+    expect(screen.getByText("Development mode.")).toBeVisible();
+    expect(screen.getByText(/This local server has no legal documents/)).toBeVisible();
+    expect(screen.queryByRole("checkbox")).toBeNull();
+    expect(screen.queryByText(/Accepting isn’t available yet\./)).toBeNull();
+    // The fields the backend says would be shared are still listed.
+    expect(screen.getByText("Display name")).toBeVisible();
+    // Nothing happens until the fighter clicks.
+    expect(calls.some((call) => call.url.includes("/accept"))).toBe(false);
+    expect(accept).toBeEnabled();
+
+    await userEvent.click(accept);
+    await userEvent.click(screen.getByRole("button", { name: "Accepting…" }));
+    expect(calls.filter((call) => call.url.includes("/accept"))).toHaveLength(1);
+    expect(calls.find((call) => call.url.includes("/accept"))?.body).toEqual({
+      token: TOKEN,
+      disclosure_version: "local-development-no-legal-text",
+    });
+    await act(async () => answer(jsonResponse({ outcome: "created", relationship_id: "rel-1" })));
+    expect(
+      await screen.findByRole("heading", { name: "You’re connected with Coach Marek." }),
+    ).toBeVisible();
+  });
+
+  it("an approved preview without a text is never treated as development mode", async () => {
+    openLink();
+    signedIn();
+    server({
+      [PREVIEW_PATH]: jsonResponse({ ...withDocument(null), legal_mode: "approved" }),
+      [ENTRY_PATH]: jsonResponse(ENTRY("completed")),
+    });
+    await renderWithProviders(<CoachInvitation />);
+    expect(await screen.findByText(/Accepting isn’t available yet\./)).toBeVisible();
+    expect(screen.queryByText("Development mode.")).toBeNull();
+    expect(screen.getByRole("button", { name: "Accept invitation" })).toBeDisabled();
   });
 
   it("with no published disclosure, accepting is not available", async () => {

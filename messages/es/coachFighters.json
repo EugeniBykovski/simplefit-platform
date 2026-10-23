@@ -124,7 +124,8 @@
       "stale": "Las reglas cambiaron. Revisa la versión actual y confírmala de nuevo.",
       "failed": "No pudimos guardarlo. No cambió nada. Inténtalo de nuevo.",
       "language": "Las reglas de datos para entrenadores aún no están disponibles en tu idioma. Idiomas aprobados: {languages}. Cambia el idioma de la página para leerlas y confirmarlas."
-    }
+    },
+    "localDevelopment": "Modo de desarrollo: este servidor local no tiene documentos legales, así que no hay reglas de datos del entrenador que aceptar."
   },
   "cancelInvitation": {
     "title": "¿Cancelar esta invitación?",

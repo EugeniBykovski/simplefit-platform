@@ -124,7 +124,8 @@
       "stale": "Zasady dotyczące danych zmieniły się. Przeczytaj aktualną wersję i potwierdź ją ponownie.",
       "failed": "Nie udało się zapisać. Nic się nie zmieniło. Spróbuj ponownie.",
       "language": "Zasady dotyczące danych dla trenerów nie są jeszcze dostępne w Twoim języku. Zatwierdzone języki: {languages}. Zmień język strony, aby je przeczytać i potwierdzić."
-    }
+    },
+    "localDevelopment": "Tryb deweloperski: ten lokalny serwer nie ma dokumentów prawnych, więc nie ma zasad danych trenera do potwierdzenia."
   },
   "cancelInvitation": {
     "title": "Anulować to zaproszenie?",
