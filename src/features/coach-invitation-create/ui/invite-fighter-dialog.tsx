@@ -10,6 +10,7 @@ import {
   coachDataRulesKey,
   coachInvitationsKey,
   dataRulesAllowInviting,
+  isLocalDevelopment,
   useCoachDataRules,
   type CoachDataRules,
   type CoachInvitation,
@@ -229,6 +230,9 @@ function Composer({ onClose }: { onClose: () => void }) {
         <DialogTitle>{t("invite.title")}</DialogTitle>
         <DialogDescription>{t("invite.lead")}</DialogDescription>
       </DialogHeader>
+      {isLocalDevelopment(rules.data) && (
+        <Notice tone="amber">{t("invite.localDevelopment")}</Notice>
+      )}
       <FormField id={ids.email} label={t("invite.email.label")} error={errors.email?.message}>
         <Input
           id={ids.email}

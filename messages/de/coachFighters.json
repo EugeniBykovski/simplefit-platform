@@ -124,7 +124,8 @@
       "stale": "Die Datenregeln haben sich geändert. Lies die aktuelle Version und bestätige sie erneut.",
       "failed": "Das konnten wir nicht speichern. Nichts wurde geändert. Versuch es noch einmal.",
       "language": "Die Datenregeln für Coaches sind in deiner Sprache noch nicht verfügbar. Freigegebene Sprachen: {languages}. Wechsle die Sprache der Seite, um sie zu lesen und zu bestätigen."
-    }
+    },
+    "localDevelopment": "Entwicklungsmodus: Dieser lokale Server hat keine Rechtsdokumente, daher gibt es keine Trainer-Datenregeln zu bestätigen."
   },
   "cancelInvitation": {
     "title": "Diese Einladung zurückziehen?",

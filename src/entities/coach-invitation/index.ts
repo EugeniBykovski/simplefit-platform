@@ -2,6 +2,7 @@ export {
   coachDataRulesKey,
   coachInvitationsKey,
   dataRulesAllowInviting,
+  isLocalDevelopment,
   useCoachDataRules,
   useCoachInvitations,
   type CoachDataRules,

@@ -115,5 +115,10 @@
   "hideFull": "Hide the full disclosure",
   "verifyEmail": "Verify the invited email",
   "backToInvitation": "Back to the invitation",
-  "linkDoneHint": "Review the invitation and choose whether to accept."
+  "linkDoneHint": "Review the invitation and choose whether to accept.",
+  "localDevelopment": {
+    "title": "Development mode.",
+    "body": "This local server has no legal documents, so there is no disclosure to read or tick. You still connect only by clicking “Accept invitation”.",
+    "hint": "Nothing is shared until you click “Accept invitation”. You can end the relationship any time from Coaches."
+  }
 }

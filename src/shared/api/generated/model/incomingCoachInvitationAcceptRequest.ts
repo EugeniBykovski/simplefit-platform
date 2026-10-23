@@ -13,6 +13,9 @@ export interface IncomingCoachInvitationAcceptRequest {
      * @maxLength 64
      */
   disclosure_version: string;
-  /** The `document.language` of the disclosure text the fighter was shown (an approved variant). */
-  document_language: IncomingCoachInvitationAcceptRequestDocumentLanguage;
+  /**
+     * The `document.language` of the disclosure text the fighter was shown (an approved variant). Required
+     * whenever a text was shown (`legal_mode` `approved`); `local_development` shows none.
+     */
+  document_language?: IncomingCoachInvitationAcceptRequestDocumentLanguage;
 }

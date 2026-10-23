@@ -45,7 +45,9 @@ import { Spinner } from "@/shared/ui/spinner";
  * - Accepting needs an explicit, unticked consent to the disclosure version
  *   the backend serves; nothing is ever accepted on the way through sign-in
  *   or onboarding, and nothing is shown as accepted or declined before the
- *   backend answers.
+ *   backend answers. In LOCAL DEVELOPMENT coaching mode (`legal_mode`, ADR
+ *   0025 in simplefit-api) the backend has no legal text: the page says so
+ *   and there is no box to tick, but Accept is still an explicit click.
  * - The disclosure text, its summary and the confirmation next to the box
  *   are the backend's approved text in the page language (SF-72); the page
  *   writes no legal text. Without an approved text in the page language the
@@ -392,6 +394,10 @@ function Respond({
   const document = preview.document;
   const presented = document?.language ?? null;
   const checkbox = document?.checkbox ?? null;
+  // LOCAL DEVELOPMENT coaching mode (simplefit-api ADR 0025): the backend has
+  // no legal text, so there is none to show or tick. Accepting stays an
+  // explicit click; production never answers this way.
+  const local = preview.legal_mode === "local_development";
 
   if (entry.isError) {
     return (
@@ -455,7 +461,7 @@ function Respond({
 
   // No approved text to accept in this language (or none published): the
   // fighter can still decline.
-  const blocked = document === null || presented === null || checkbox === null;
+  const blocked = !local && (document === null || presented === null || checkbox === null);
   const languages = (document?.available_languages ?? [])
     .map((code) => {
       const known = matchLocale(code);
@@ -481,7 +487,12 @@ function Respond({
           })}
         </Notice>
       )}
-      {!blocked && (
+      {local && (
+        <Notice tone="amber" role="status">
+          <strong>{t("localDevelopment.title")}</strong> {t("localDevelopment.body")}
+        </Notice>
+      )}
+      {!blocked && !local && checkbox !== null && (
         <label
           htmlFor={consent}
           className="flex items-start gap-3 rounded-2xl border px-4 py-3.5 type-body-sm"
@@ -509,12 +520,15 @@ function Respond({
       <div className="flex flex-wrap gap-2.5">
         <Button
           aria-busy={accept.isPending}
-          disabled={!agreed || pending || blocked || problem === "tooYoung"}
+          disabled={(!local && !agreed) || pending || blocked || problem === "tooYoung"}
           onClick={() => {
-            if (presented === null) return;
+            if (!local && presented === null) return;
             setProblem(null);
             accept.mutate(
-              { version: preview.disclosure.version, language: presented },
+              {
+                version: preview.disclosure.version,
+                language: local ? undefined : (presented ?? undefined),
+              },
               {
                 onSuccess: (response) =>
                   onOutcome({
@@ -546,7 +560,9 @@ function Respond({
           {decline.isPending ? t("declining") : t("decline")}
         </Button>
       </div>
-      <p className="type-caption text-faint-foreground">{t("acceptHint")}</p>
+      <p className="type-caption text-faint-foreground">
+        {t(local ? "localDevelopment.hint" : "acceptHint")}
+      </p>
     </div>
   );
 }

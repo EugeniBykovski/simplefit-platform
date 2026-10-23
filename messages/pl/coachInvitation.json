@@ -115,5 +115,10 @@
   "hideFull": "Ukryj pełną informację",
   "verifyEmail": "Potwierdź zaproszony e-mail",
   "backToInvitation": "Wróć do zaproszenia",
-  "linkDoneHint": "Przejrzyj zaproszenie i zdecyduj, czy je zaakceptować."
+  "linkDoneHint": "Przejrzyj zaproszenie i zdecyduj, czy je zaakceptować.",
+  "localDevelopment": {
+    "title": "Tryb deweloperski.",
+    "body": "Ten lokalny serwer nie ma dokumentów prawnych, więc nie ma klauzuli do przeczytania ani zaznaczenia. Połączenie nadal powstaje tylko po kliknięciu „Przyjmij zaproszenie”.",
+    "hint": "Nic nie jest udostępniane, dopóki nie klikniesz „Przyjmij zaproszenie”. Relację możesz zakończyć w każdej chwili w sekcji Trenerzy."
+  }
 }

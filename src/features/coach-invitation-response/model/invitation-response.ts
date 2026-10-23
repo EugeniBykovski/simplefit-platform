@@ -83,11 +83,16 @@ export function useInvitationResponse(token: string | undefined) {
       language,
     }: {
       version: string;
-      language: CoachInvitationAcceptRequestDocumentLanguage;
+      /** The language of the legal text shown; none in local development mode (ADR 0025). */
+      language: CoachInvitationAcceptRequestDocumentLanguage | undefined;
     }): Promise<CoachInvitationAcceptResponse> =>
       callWithSession((init) =>
         acceptCoachInvitation(
-          { token: token ?? "", disclosure_version: version, document_language: language },
+          {
+            token: token ?? "",
+            disclosure_version: version,
+            ...(language === undefined ? {} : { document_language: language }),
+          },
           init,
         ),
       ),

@@ -115,5 +115,10 @@
   "hideFull": "Vollständige Information ausblenden",
   "verifyEmail": "Eingeladene E-Mail bestätigen",
   "backToInvitation": "Zurück zur Einladung",
-  "linkDoneHint": "Sieh dir die Einladung an und entscheide, ob du sie annimmst."
+  "linkDoneHint": "Sieh dir die Einladung an und entscheide, ob du sie annimmst.",
+  "localDevelopment": {
+    "title": "Entwicklungsmodus.",
+    "body": "Dieser lokale Server hat keine Rechtsdokumente, daher gibt es nichts zu lesen oder anzukreuzen. Verbunden wirst du trotzdem nur, wenn du auf „Einladung annehmen“ klickst.",
+    "hint": "Nichts wird geteilt, bevor du auf „Einladung annehmen“ klickst. Unter Coaches kannst du die Beziehung jederzeit beenden."
+  }
 }
