@@ -45,3 +45,22 @@ their tickets (SF-83 onwards) are approved.
 The per-screen design inventory (116 boards, classification, required states
 and truthfulness) is `proposals/SF-82-gym/06-claude-design-inventory.md` in
 the API repository.
+
+## SF-83: generated API client (no screens yet)
+
+The generated client now includes the Gym tenant operations from
+simplefit-api (ADR 0026, SF-83 amendment):
+
+- `createGym` (`POST /api/v1/gyms`): creates a draft gym with the viewer as
+  owner. It is idempotent per `client_request_id`. While the viewer has an
+  open draft, it returns that draft with `200`. It answers `429` with
+  `retry-after` after 5 creations per user, or 20 per client, in any rolling
+  24 hours.
+- `listMyGyms` (`GET /api/v1/me/gyms`): the viewer's active staff
+  memberships, paginated.
+- `getGym` (`GET /api/v1/gyms/{gym_id}`): one gym for its staff, with the
+  viewer's `role` and a read-only `permissions` list for display. A `404`
+  means the gym is not available to the viewer.
+
+No route, screen or registry entry changes in SF-83. The owner setup flow and
+entry projection (`GYM_WORKSPACE`) come with SF-84/SF-85.

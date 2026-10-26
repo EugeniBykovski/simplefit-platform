@@ -5,6 +5,7 @@ export * from './coaching/coaching';
 export * from './entry/entry';
 export * from './fighter-profile/fighter-profile';
 export * from './first-run/first-run';
+export * from './gyms/gyms';
 export * from './legal/legal';
 export * from './system/system';
 export * from './training/training';
