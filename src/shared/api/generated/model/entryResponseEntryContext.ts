@@ -6,8 +6,9 @@
  */
 
 /**
- * The requested `context` when it was applied (a completed profile, no `intent`, registration
- * complete); otherwise `null`. Never stored.
+ * The requested `context` when it was applied (a completed profile, or `gym` with the `gym_id` of a
+ * completed gym where the user is active staff; no `intent`; registration complete); otherwise `null`.
+ * Never stored.
  * @nullable
  */
 export type EntryResponseEntryContext = typeof EntryResponseEntryContext[keyof typeof EntryResponseEntryContext] | null;
@@ -16,4 +17,5 @@ export type EntryResponseEntryContext = typeof EntryResponseEntryContext[keyof t
 export const EntryResponseEntryContext = {
   fighter: 'fighter',
   coach: 'coach',
+  gym: 'gym',
 } as const;

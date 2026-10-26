@@ -124,7 +124,7 @@
     "returnToParam": "returnTo",
     "intentParam": "intent",
     "entryDestinations": {
-      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied. coach_home (SF-51, SF-52, SF-53) opens the Coach home of each platform, today its canonical placeholder. context_selection opens the context chooser of each platform: WCX1 on the web (web.app.context, SF-54) and A04 on mobile (mobile.workspaces, SF-55); never role selection (WA6 / O05) or a home (D-ENTRY-CONTEXT-SELECTION).",
+      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied. coach_home (SF-51, SF-52, SF-53) opens the Coach home of each platform, today its canonical placeholder. context_selection opens the context chooser of each platform: WCX1 on the web (web.app.context, SF-54) and A04 on mobile (mobile.workspaces, SF-55); never role selection (WA6 / O05) or a home (D-ENTRY-CONTEXT-SELECTION). gym_home (SF-84) opens the GYM_WORKSPACE home of each platform (web.app.gym, mobile.gym.pulse), today their canonical placeholders; the entry answer carries gym_id, and id-based gym routes (ADR 0026 D-G23) come with the gym UI tickets. gym_selection (SF-84) opens the same workspace choosers as context_selection (WCX1 on the web, A04 on mobile), listing the entry answer's gym_workspaces; never a gym home. gym_onboarding starts Gym setup, or resumes the owned draft named by gym_id.",
       "account_registration": {
         "web": "web.app.onboarding.account",
         "mobile": "mobile.signup.consent"
@@ -156,6 +156,14 @@
       "gym_onboarding": {
         "web": "web.app.onboarding.gym",
         "mobile": "mobile.onboarding.gym"
+      },
+      "gym_home": {
+        "web": "web.app.gym",
+        "mobile": "mobile.gym.pulse"
+      },
+      "gym_selection": {
+        "web": "web.app.context",
+        "mobile": "mobile.workspaces"
       },
       "sponsor_application": {
         "web": "web.partners.apply",

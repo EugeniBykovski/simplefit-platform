@@ -4,6 +4,7 @@
  * Regenerate with `pnpm api:generate`; verify with `pnpm api:check`.
  * SimpleFit API 0.1.0
  */
+import type { EntryGymWorkspace } from './entryGymWorkspace';
 import type { EntryResponseEntryAccountRegistration } from './entryResponseEntryAccountRegistration';
 import type { EntryResponseEntryCapabilitiesItem } from './entryResponseEntryCapabilitiesItem';
 import type { EntryResponseEntryCoachProfile } from './entryResponseEntryCoachProfile';
@@ -18,16 +19,18 @@ export type EntryResponseEntry = {
   account_registration: EntryResponseEntryAccountRegistration;
   /**
      * Capabilities derived from real backend state, in the client route registry's vocabulary
-     * (`FIGHTER` once Fighter onboarding is complete, `COACH` once Coach onboarding is complete; both can
-     * be held at once). A routing projection, not an authorization grant: `COACH` opens the user's own
-     * Coach application only.
+     * (`FIGHTER` once Fighter onboarding is complete, `COACH` once Coach onboarding is complete,
+     * `GYM_WORKSPACE` while the viewer is active staff at a gym with a completed setup; any combination can
+     * be held). A routing projection, not an authorization grant: `COACH` opens the user's own Coach
+     * application only, and gym access is decided per gym by its path.
      */
   capabilities: EntryResponseEntryCapabilitiesItem[];
   /** Coach onboarding status (see `getMyCoachProfile`). */
   coach_profile: EntryResponseEntryCoachProfile;
   /**
-     * The requested `context` when it was applied (a completed profile, no `intent`, registration
-     * complete); otherwise `null`. Never stored.
+     * The requested `context` when it was applied (a completed profile, or `gym` with the `gym_id` of a
+     * completed gym where the user is active staff; no `intent`; registration complete); otherwise `null`.
+     * Never stored.
      * @nullable
      */
   context: EntryResponseEntryContext;
@@ -36,12 +39,33 @@ export type EntryResponseEntry = {
      * a journey to start. `context_selection`: the user chooses between their profile contexts (both
      * completed without a remembered choice, or both onboardings in progress). `fighter_onboarding` /
      * `fighter_home` and `coach_onboarding` / `coach_home`: a profile's onboarding, or its application
-     * once completed. `gym_onboarding`, `sponsor_application`: those journeys' entry points; nothing is
-     * created for them. A client that does not know a destination must fail visibly, never guess.
+     * once completed. `gym_onboarding`: start Gym setup (`gym_id` null; nothing is created) or resume the
+     * draft gym the user owns (`gym_id`). `gym_home`: the gym workspace `gym_id` (a completed gym where the
+     * user is active staff). `gym_selection`: the user chooses among their gym workspaces
+     * (`gym_workspaces`). `sponsor_application`: that journey's entry point; nothing is created. A client
+     * that does not know a destination must fail visibly, never guess.
      */
   destination: EntryResponseEntryDestination;
   /** Fighter onboarding status (see `getMyFighterProfile`). */
   fighter_profile: EntryResponseEntryFighterProfile;
+  /**
+     * The gym `destination` refers to (`gym_home`, or `gym_onboarding` resuming a draft); otherwise `null`.
+     * Navigation only: every gym operation authorizes the gym id in its own path (`/api/v1/gyms/{gym_id}`).
+     * @nullable
+     */
+  gym_id: string | null;
+  /**
+     * How many active gym staff memberships the viewer holds (drafts included).
+     * @minimum 0
+     */
+  gym_workspace_count: number;
+  /**
+     * The viewer's gym workspaces (active staff memberships), at most 25: the draft the viewer owns first,
+     * then newest membership first. `gym_workspace_count` is the total; read the rest with `listMyGyms`.
+     * Re-read on every resolution, so a revoked membership is gone from the next answer.
+     * @maxItems 25
+     */
+  gym_workspaces: EntryGymWorkspace[];
   /**
      * The validated intent of this request, echoed; never stored.
      * @nullable

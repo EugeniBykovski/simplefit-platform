@@ -11,4 +11,5 @@ export type EntryResponseEntryCapabilitiesItem = typeof EntryResponseEntryCapabi
 export const EntryResponseEntryCapabilitiesItem = {
   FIGHTER: 'FIGHTER',
   COACH: 'COACH',
+  GYM_WORKSPACE: 'GYM_WORKSPACE',
 } as const;

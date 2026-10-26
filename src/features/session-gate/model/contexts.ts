@@ -8,7 +8,9 @@ import type { Capability, Entry } from "./entry";
  * when the entry reports its capability, and a journey is unfinished when its
  * profile is `in_progress`. Nothing here grants, stores or guesses one.
  */
-export type ProfileContext = EntryContextChoiceRequestContext;
+// The API's context choice also accepts `gym` (with a gym id, SF-84); gym
+// workspaces are listed from the entry's `gym_workspaces`, not as profiles.
+export type ProfileContext = Exclude<EntryContextChoiceRequestContext, "gym">;
 
 /** The contexts in the order every chooser lists them. */
 export const PROFILE_CONTEXTS: readonly ProfileContext[] = ["fighter", "coach"];

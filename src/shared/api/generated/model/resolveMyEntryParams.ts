@@ -17,4 +17,8 @@ intent?: ResolveMyEntryIntent;
  * starts onboarding); ignored when `intent` is present. Never stored: see `chooseMyEntryContext`.
  */
 context?: ResolveMyEntryContext;
+/**
+ * With `context=gym`: the gym workspace to open. Ignored unless the viewer is active staff there.
+ */
+gym_id?: string;
 };

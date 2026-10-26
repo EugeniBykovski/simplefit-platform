@@ -11,4 +11,5 @@ export type ResolveMyEntryContext = typeof ResolveMyEntryContext[keyof typeof Re
 export const ResolveMyEntryContext = {
   fighter: 'fighter',
   coach: 'coach',
+  gym: 'gym',
 } as const;
