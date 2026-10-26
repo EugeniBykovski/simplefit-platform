@@ -64,3 +64,27 @@ simplefit-api (ADR 0026, SF-83 amendment):
 
 No route, screen or registry entry changes in SF-83. The owner setup flow and
 entry projection (`GYM_WORKSPACE`) come with SF-84/SF-85.
+
+## SF-84: gym entry (no screens yet)
+
+`GET /api/v1/me/entry` (ADR 0017, SF-84 amendment) now resolves gyms:
+
+- `intent=gym` → `gym_onboarding` (start setup, `gym_id: null`; or resume
+  the owned draft, `gym_id`), `gym_home` (one completed gym, `gym_id`), or
+  `gym_selection` (several workspaces). It never creates a gym.
+- `capabilities` may include `GYM_WORKSPACE`, granted by an active staff
+  membership at a gym with a completed setup. A draft grants nothing.
+- `gym_workspaces` (at most 25, with `gym_workspace_count`) lists the
+  viewer's gyms with `role`, `setup_status`, `available_actions` (`enter`,
+  `continue_setup`) and `selected`. Branch on `available_actions`; never
+  infer eligibility from labels.
+- `PUT /api/v1/me/entry/context` accepts `{ context: "gym", gym_id }` to
+  remember a completed gym (404 outside the tenancy, 409 for a draft). It is
+  a per-account preference; every gym request still names its gym in the
+  path.
+
+Registry: `gym_home` maps to the `GYM_WORKSPACE` home placeholder, and
+`gym_selection` to the workspace chooser, as for `context_selection` (route
+architecture rule 7). Client code keeps its profile-context type to
+`fighter` / `coach`. Rendering gym rows in the choosers and the id-based gym
+routes (D-G23) belong to the gym UI tickets.

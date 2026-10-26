@@ -16,6 +16,9 @@ const entry = (overrides: Partial<KnownEntry>): KnownEntry => ({
   fighter_profile: "not_started",
   coach_profile: "not_started",
   capabilities: [],
+  gym_id: null,
+  gym_workspaces: [],
+  gym_workspace_count: 0,
   ...overrides,
 });
 
@@ -49,6 +52,8 @@ describe("destinationRoute", () => {
       coach_home: "web.app.coach",
       context_selection: "web.app.context",
       gym_onboarding: "web.app.onboarding.gym",
+      gym_home: "web.app.gym",
+      gym_selection: "web.app.context",
       sponsor_application: "web.partners.apply",
     });
     expect(routeHref(destinationRoute("account_registration"))).toBe("/app/onboarding/account");

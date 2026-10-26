@@ -638,6 +638,8 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
     "coach_home",
     "context_selection",
     "gym_onboarding",
+    "gym_home",
+    "gym_selection",
     "sponsor_application",
   ];
   /** Destinations with no route on a platform yet (they stay unknown there, never guessed). */
@@ -668,6 +670,10 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
       web: "web.app.onboarding.account",
       mobile: "mobile.signup.consent",
     });
+    // SF-84: the gym home is the GYM_WORKSPACE home; the gym chooser is the
+    // workspace chooser (route-architecture rule 7), as for context_selection.
+    expect(entryDestinations.gym_home).toEqual({ web: "web.app.gym", mobile: "mobile.gym.pulse" });
+    expect(entryDestinations.gym_selection).toEqual(entryDestinations.context_selection);
     expect(entryDestinations.role_selection).toEqual({
       web: "web.app.onboarding.role",
       mobile: "mobile.onboarding.role",
@@ -730,10 +736,12 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
     expect(o05.screens).toEqual(["O05"]);
   });
 
-  it("resolves to the mobile chooser (A04) only for context_selection", () => {
+  it("resolves to the mobile chooser (A04) only for context_selection and gym_selection", () => {
     // SF-55: A04 is the Fighter / Coach context chooser; no other destination opens it.
+    // SF-84: gym_selection is the workspace chooser of route-architecture rule 7
+    // (several gym workspaces); every other destination stays out of it.
     const targets = DESTINATIONS.filter(
-      (destination) => destination !== "context_selection",
+      (destination) => destination !== "context_selection" && destination !== "gym_selection",
     ).flatMap((destination) =>
       PLATFORMS.map((platform) => entryDestinations[destination][platform]),
     );

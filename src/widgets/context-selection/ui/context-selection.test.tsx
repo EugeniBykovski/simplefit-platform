@@ -35,6 +35,9 @@ const entry = (overrides: Partial<EntryResponseEntry>): EntryResponseEntry => ({
   fighter_profile: "completed",
   coach_profile: "completed",
   capabilities: ["FIGHTER", "COACH"],
+  gym_id: null,
+  gym_workspaces: [],
+  gym_workspace_count: 0,
   ...overrides,
 });
 const E11 = entry({

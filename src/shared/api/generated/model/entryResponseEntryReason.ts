@@ -27,4 +27,8 @@ export const EntryResponseEntryReason = {
   coach_intent: 'coach_intent',
   gym_intent: 'gym_intent',
   sponsor_intent: 'sponsor_intent',
+  gym_setup_not_started: 'gym_setup_not_started',
+  gym_setup_in_progress: 'gym_setup_in_progress',
+  gym_workspace_completed: 'gym_workspace_completed',
+  gym_choice_required: 'gym_choice_required',
 } as const;

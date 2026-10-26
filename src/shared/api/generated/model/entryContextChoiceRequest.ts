@@ -7,9 +7,12 @@
 import type { EntryContextChoiceRequestContext } from './entryContextChoiceRequestContext';
 
 /**
- * The profile context the viewer chose. Must be a completed profile.
+ * The context the viewer chose: a completed profile, or a gym workspace (with `gym_id`) with a completed setup
+ * where the viewer is active staff.
  */
 export interface EntryContextChoiceRequest {
-  /** `fighter` or `coach`. Profile contexts only; gym workspaces are chosen elsewhere. */
+  /** `fighter`, `coach` or `gym` (with `gym_id`). */
   context: EntryContextChoiceRequestContext;
+  /** Required with `context: gym`, rejected otherwise. */
+  gym_id?: string;
 }

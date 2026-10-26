@@ -6,7 +6,7 @@
  */
 
 /**
- * `fighter` or `coach`. Profile contexts only; gym workspaces are chosen elsewhere.
+ * `fighter`, `coach` or `gym` (with `gym_id`).
  */
 export type EntryContextChoiceRequestContext = typeof EntryContextChoiceRequestContext[keyof typeof EntryContextChoiceRequestContext];
 
@@ -14,4 +14,5 @@ export type EntryContextChoiceRequestContext = typeof EntryContextChoiceRequestC
 export const EntryContextChoiceRequestContext = {
   fighter: 'fighter',
   coach: 'coach',
+  gym: 'gym',
 } as const;

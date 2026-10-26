@@ -10,8 +10,11 @@
  * a journey to start. `context_selection`: the user chooses between their profile contexts (both
  * completed without a remembered choice, or both onboardings in progress). `fighter_onboarding` /
  * `fighter_home` and `coach_onboarding` / `coach_home`: a profile's onboarding, or its application
- * once completed. `gym_onboarding`, `sponsor_application`: those journeys' entry points; nothing is
- * created for them. A client that does not know a destination must fail visibly, never guess.
+ * once completed. `gym_onboarding`: start Gym setup (`gym_id` null; nothing is created) or resume the
+ * draft gym the user owns (`gym_id`). `gym_home`: the gym workspace `gym_id` (a completed gym where the
+ * user is active staff). `gym_selection`: the user chooses among their gym workspaces
+ * (`gym_workspaces`). `sponsor_application`: that journey's entry point; nothing is created. A client
+ * that does not know a destination must fail visibly, never guess.
  */
 export type EntryResponseEntryDestination = typeof EntryResponseEntryDestination[keyof typeof EntryResponseEntryDestination];
 
@@ -25,5 +28,7 @@ export const EntryResponseEntryDestination = {
   coach_onboarding: 'coach_onboarding',
   coach_home: 'coach_home',
   gym_onboarding: 'gym_onboarding',
+  gym_home: 'gym_home',
+  gym_selection: 'gym_selection',
   sponsor_application: 'sponsor_application',
 } as const;

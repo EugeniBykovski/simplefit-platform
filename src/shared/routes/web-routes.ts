@@ -2228,6 +2228,8 @@ export const webGuards = {
     coach_home: "web.app.coach",
     context_selection: "web.app.context",
     gym_onboarding: "web.app.onboarding.gym",
+    gym_home: "web.app.gym",
+    gym_selection: "web.app.context",
     sponsor_application: "web.partners.apply",
   },
 } as const;
