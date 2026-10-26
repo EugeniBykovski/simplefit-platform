@@ -105,8 +105,12 @@ amendment):
   each one under `details.field_codes`.
 - `discardGymDraft` (`DELETE /gyms/{gym_id}`) is owner-only and works on
   drafts only.
-- Writes may send `expected_revision`; a stale one answers `409`
-  (`revision: stale`).
+- `updateGymSetup` and `setGymPrimaryLocation` require `expected_revision`
+  (the last `revision` read). A stale value answers `409` (`revision:
+stale`); reread and retry. Completion and discard take no revision.
+- A `client_request_id` is spent once used: after its draft is discarded,
+  replaying it answers `409` (`client_request_id: discarded`). Send a new
+  key to create again.
 
 Not in the contract yet: gym size and features (OG4/OG5, future with plans)
 and logo/cover uploads (waiting for a storage attachment mechanism).

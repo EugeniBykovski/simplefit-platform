@@ -31,11 +31,11 @@ export interface GymPrimaryLocationRequest {
      */
   entrance_note?: string | null;
   /**
-     * Optional: the `revision` the client last read. When it is no longer current the write changes nothing and
-     * answers `409 conflict` (`details.revision: "stale"`).
+     * Required: the `revision` the client last read (from `getGymSetup` or the previous write). When it is no longer
+     * current the write changes nothing and answers `409 conflict` (`details.revision: "stale"`).
      * @minimum 1
      */
-  expected_revision?: number;
+  expected_revision: number;
   /**
      * @maxLength 80
      * @nullable

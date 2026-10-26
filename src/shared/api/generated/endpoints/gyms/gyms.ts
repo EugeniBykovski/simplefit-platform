@@ -79,7 +79,8 @@ export const getCreateGymUrl = () => {
  * * `validation_error` - a field is missing, invalid or unknown (owners, roles and statuses are never
  *   accepted), or account registration is incomplete (`account_registration: required`).
  * * `conflict` - `client_request_id` names a gym where the viewer is no longer staff
- *   (`details.client_request_id: "reused"`).
+ *   (`details.client_request_id: "reused"`), or a gym that was discarded (`"discarded"`): a key, once used,
+ *   never creates a gym.
  * * `rate_limited` - more than 5 gym creations per user, or 20 per client, in any rolling 24 hours;
  *   `retry-after` is when the oldest counted creation leaves the window. Replays, resumed drafts and refused
  *   attempts are not counted.
@@ -199,7 +200,8 @@ export const getDiscardGymDraftUrl = (gymId: string,) => {
 /**
  * Deletes a draft gym (owner only) with its owner membership, locations and any remembered entry choice naming
  * it; a minimal audit event is kept. A completed gym is never deleted here. Discarding frees the owner's draft
- * slot but does not refund the creation rate limit.
+ * slot but does not refund the creation rate limit, and the `client_request_id` that created the draft stays
+ * spent (`createGym` answers `409`, `client_request_id: discarded`).
  *
  * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never revealed).
  *
@@ -413,7 +415,7 @@ export const getCompleteGymSetupUrl = (gymId: string,) => {
  * an active primary location with a complete address, and exactly one active owner. The gym then becomes an
  * operational workspace (`GYM_WORKSPACE`, `gym_home` in `resolveMyEntry`). Completion is final and requires
  * nothing commercial (no plan, trial, payment, verification or publication). Completing a completed gym returns
- * it unchanged.
+ * it unchanged. Takes no revision: it changes no setup field and re-validates the persisted state.
  *
  * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never revealed).
  *
@@ -624,16 +626,17 @@ export const getUpdateGymSetupUrl = (gymId: string,) => {
 
 /**
  * Saves any subset of the profile (`name`, `gym_type`, `phone`, `website`) and text branding (`tagline`,
- * `accent_color`), in a draft or a completed gym. An omitted field is unchanged; `null` or a blank string clears
- * an optional field; nothing is rounded or truncated. An empty body changes nothing (and creates nothing).
+ * `accent_color`), in a draft or a completed gym. A conditional write: `expected_revision` is required and must
+ * be the current `revision`. An omitted field is unchanged; `null` or a blank string clears an optional field;
+ * nothing is rounded or truncated. A body with only `expected_revision` changes nothing (and creates nothing).
  * Requires the `edit_gym` permission (owner, manager).
  *
  * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never revealed).
  *
  * * `forbidden` - the viewer's role cannot edit the gym.
  * * `conflict` - `expected_revision` is stale (`details.revision: "stale"`); nothing is saved.
- * * `validation_error` - a field is invalid or cannot be cleared, or the body names an unknown or read-only
- *   field.
+ * * `validation_error` - `expected_revision` is missing, a field is invalid or cannot be cleared, or the body
+ *   names an unknown or read-only field.
  * @summary Save part of a gym's setup
  */
 export const updateGymSetup = async (gymId: string,
@@ -756,15 +759,16 @@ export const getSetGymPrimaryLocationUrl = (gymId: string,) => {
 
 /**
  * Sets the gym's primary address (OG2: address only). The first call creates the primary location; later calls
- * replace its fields in place, so there is never a second primary location. An identical address changes
- * nothing. Requires the `manage_locations` permission (owner, manager).
+ * replace its fields in place, so there is never a second primary location. A conditional write:
+ * `expected_revision` is required and must be the current `revision`. An identical address changes nothing.
+ * Requires the `manage_locations` permission (owner, manager).
  *
  * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never revealed).
  *
  * * `forbidden` - the viewer's role cannot manage locations.
  * * `conflict` - `expected_revision` is stale (`details.revision: "stale"`); nothing is saved.
- * * `validation_error` - a field is missing or invalid (`country_code` must be an ISO 3166-1 alpha-2 code), or
- *   an unknown field is sent.
+ * * `validation_error` - a field (including `expected_revision`) is missing or invalid (`country_code` must be
+ *   an ISO 3166-1 alpha-2 code), or an unknown field is sent.
  * @summary Set a gym's primary location
  */
 export const setGymPrimaryLocation = async (gymId: string,
