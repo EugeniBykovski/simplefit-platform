@@ -22,9 +22,13 @@ import type {
 import type {
   ConflictResponse,
   ErrorResponse,
+  ForbiddenResponse,
   GymCreateRequest,
   GymList,
+  GymPrimaryLocationRequest,
   GymResponse,
+  GymSetupResponse,
+  GymSetupUpdateRequest,
   InternalErrorResponse,
   ListMyGymsParams,
   NotFoundResponse,
@@ -184,6 +188,114 @@ export function useCreateGym<TData = Awaited<ReturnType<typeof createGym>>, TErr
 
 
 
+export const getDiscardGymDraftUrl = (gymId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}`
+}
+
+/**
+ * Deletes a draft gym (owner only) with its owner membership, locations and any remembered entry choice naming
+ * it; a minimal audit event is kept. A completed gym is never deleted here. Discarding frees the owner's draft
+ * slot but does not refund the creation rate limit.
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never revealed).
+ *
+ * * `forbidden` - only the owner discards the draft.
+ * * `conflict` - the gym's setup is completed (`details.setup_status: "completed"`).
+ * @summary Discard a draft gym
+ */
+export const discardGymDraft = async (gymId: string, options?: Parameters<typeof apiFetch>[1]): Promise<void> => {
+
+  return apiFetch<void>(getDiscardGymDraftUrl(gymId),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDiscardGymDraftQueryKey = (gymId: string,) => {
+    return [
+    'DELETE', `/api/v1/gyms/${gymId}`
+    ] as const;
+    }
+
+
+export const getDiscardGymDraftQueryOptions = <TData = Awaited<ReturnType<typeof discardGymDraft>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse>>(gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof discardGymDraft>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getDiscardGymDraftQueryKey(gymId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof discardGymDraft>>> = ({ signal }) => discardGymDraft(gymId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof discardGymDraft>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type DiscardGymDraftQueryResult = NonNullable<Awaited<ReturnType<typeof discardGymDraft>>>
+export type DiscardGymDraftQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse>
+
+
+export function useDiscardGymDraft<TData = Awaited<ReturnType<typeof discardGymDraft>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse>>(
+ gymId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof discardGymDraft>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof discardGymDraft>>,
+          TError,
+          Awaited<ReturnType<typeof discardGymDraft>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDiscardGymDraft<TData = Awaited<ReturnType<typeof discardGymDraft>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof discardGymDraft>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof discardGymDraft>>,
+          TError,
+          Awaited<ReturnType<typeof discardGymDraft>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDiscardGymDraft<TData = Awaited<ReturnType<typeof discardGymDraft>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof discardGymDraft>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Discard a draft gym
+ */
+
+export function useDiscardGymDraft<TData = Awaited<ReturnType<typeof discardGymDraft>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof discardGymDraft>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getDiscardGymDraftQueryOptions(gymId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
 export const getGetGymUrl = (gymId: string,) => {
 
 
@@ -277,6 +389,483 @@ export function useGetGym<TData = Awaited<ReturnType<typeof getGym>>, TError = E
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetGymQueryOptions(gymId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getCompleteGymSetupUrl = (gymId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}/complete-setup`
+}
+
+/**
+ * Completes the setup of a draft (owner only), after re-validating the persisted state: a valid name and type,
+ * an active primary location with a complete address, and exactly one active owner. The gym then becomes an
+ * operational workspace (`GYM_WORKSPACE`, `gym_home` in `resolveMyEntry`). Completion is final and requires
+ * nothing commercial (no plan, trial, payment, verification or publication). Completing a completed gym returns
+ * it unchanged.
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never revealed).
+ *
+ * * `forbidden` - only the owner completes setup.
+ * * `validation_error` - requirements are missing; each is named under `details.fields` with `required`.
+ * @summary Complete a gym's setup
+ */
+export const completeGymSetup = async (gymId: string, options?: Parameters<typeof apiFetch>[1]): Promise<GymSetupResponse> => {
+
+  return apiFetch<GymSetupResponse>(getCompleteGymSetupUrl(gymId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getCompleteGymSetupQueryKey = (gymId: string,) => {
+    return [
+    'POST', `/api/v1/gyms/${gymId}/complete-setup`
+    ] as const;
+    }
+
+
+export const getCompleteGymSetupQueryOptions = <TData = Awaited<ReturnType<typeof completeGymSetup>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeGymSetup>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getCompleteGymSetupQueryKey(gymId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof completeGymSetup>>> = ({ signal }) => completeGymSetup(gymId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof completeGymSetup>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type CompleteGymSetupQueryResult = NonNullable<Awaited<ReturnType<typeof completeGymSetup>>>
+export type CompleteGymSetupQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useCompleteGymSetup<TData = Awaited<ReturnType<typeof completeGymSetup>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeGymSetup>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof completeGymSetup>>,
+          TError,
+          Awaited<ReturnType<typeof completeGymSetup>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCompleteGymSetup<TData = Awaited<ReturnType<typeof completeGymSetup>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeGymSetup>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof completeGymSetup>>,
+          TError,
+          Awaited<ReturnType<typeof completeGymSetup>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCompleteGymSetup<TData = Awaited<ReturnType<typeof completeGymSetup>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeGymSetup>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Complete a gym's setup
+ */
+
+export function useCompleteGymSetup<TData = Awaited<ReturnType<typeof completeGymSetup>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeGymSetup>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getCompleteGymSetupQueryOptions(gymId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetGymSetupUrl = (gymId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}/setup`
+}
+
+/**
+ * The persisted setup of a gym and what a draft still needs before completion (`missing_requirements`). Any
+ * active staff member may read it; a draft's owner needs no `GYM_WORKSPACE` capability.
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never revealed).
+ * @summary A gym's setup
+ */
+export const getGymSetup = async (gymId: string, options?: Parameters<typeof apiFetch>[1]): Promise<GymSetupResponse> => {
+
+  return apiFetch<GymSetupResponse>(getGetGymSetupUrl(gymId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetGymSetupQueryKey = (gymId: string,) => {
+    return [
+    `/api/v1/gyms/${gymId}/setup`
+    ] as const;
+    }
+
+
+export const getGetGymSetupQueryOptions = <TData = Awaited<ReturnType<typeof getGymSetup>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymSetup>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetGymSetupQueryKey(gymId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getGymSetup>>> = ({ signal }) => getGymSetup(gymId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getGymSetup>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetGymSetupQueryResult = NonNullable<Awaited<ReturnType<typeof getGymSetup>>>
+export type GetGymSetupQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetGymSetup<TData = Awaited<ReturnType<typeof getGymSetup>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymSetup>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getGymSetup>>,
+          TError,
+          Awaited<ReturnType<typeof getGymSetup>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetGymSetup<TData = Awaited<ReturnType<typeof getGymSetup>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymSetup>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getGymSetup>>,
+          TError,
+          Awaited<ReturnType<typeof getGymSetup>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetGymSetup<TData = Awaited<ReturnType<typeof getGymSetup>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymSetup>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary A gym's setup
+ */
+
+export function useGetGymSetup<TData = Awaited<ReturnType<typeof getGymSetup>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymSetup>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetGymSetupQueryOptions(gymId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getUpdateGymSetupUrl = (gymId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}/setup`
+}
+
+/**
+ * Saves any subset of the profile (`name`, `gym_type`, `phone`, `website`) and text branding (`tagline`,
+ * `accent_color`), in a draft or a completed gym. An omitted field is unchanged; `null` or a blank string clears
+ * an optional field; nothing is rounded or truncated. An empty body changes nothing (and creates nothing).
+ * Requires the `edit_gym` permission (owner, manager).
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never revealed).
+ *
+ * * `forbidden` - the viewer's role cannot edit the gym.
+ * * `conflict` - `expected_revision` is stale (`details.revision: "stale"`); nothing is saved.
+ * * `validation_error` - a field is invalid or cannot be cleared, or the body names an unknown or read-only
+ *   field.
+ * @summary Save part of a gym's setup
+ */
+export const updateGymSetup = async (gymId: string,
+    gymSetupUpdateRequest: GymSetupUpdateRequest, options?: Parameters<typeof apiFetch>[1]): Promise<GymSetupResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<GymSetupResponse>(getUpdateGymSetupUrl(gymId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(gymSetupUpdateRequest)
+  }
+);}
+
+
+
+
+
+export const getUpdateGymSetupQueryKey = (gymId: string,
+    gymSetupUpdateRequest?: BodyType<GymSetupUpdateRequest>,) => {
+    return [
+    'PATCH', `/api/v1/gyms/${gymId}/setup`, gymSetupUpdateRequest
+    ] as const;
+    }
+
+
+export const getUpdateGymSetupQueryOptions = <TData = Awaited<ReturnType<typeof updateGymSetup>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(gymId: string,
+    gymSetupUpdateRequest: BodyType<GymSetupUpdateRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateGymSetup>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getUpdateGymSetupQueryKey(gymId,gymSetupUpdateRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof updateGymSetup>>> = ({ signal }) => updateGymSetup(gymId,gymSetupUpdateRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof updateGymSetup>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UpdateGymSetupQueryResult = NonNullable<Awaited<ReturnType<typeof updateGymSetup>>>
+export type UpdateGymSetupQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useUpdateGymSetup<TData = Awaited<ReturnType<typeof updateGymSetup>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymSetupUpdateRequest: BodyType<GymSetupUpdateRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateGymSetup>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof updateGymSetup>>,
+          TError,
+          Awaited<ReturnType<typeof updateGymSetup>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUpdateGymSetup<TData = Awaited<ReturnType<typeof updateGymSetup>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymSetupUpdateRequest: BodyType<GymSetupUpdateRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateGymSetup>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof updateGymSetup>>,
+          TError,
+          Awaited<ReturnType<typeof updateGymSetup>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUpdateGymSetup<TData = Awaited<ReturnType<typeof updateGymSetup>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymSetupUpdateRequest: BodyType<GymSetupUpdateRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateGymSetup>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Save part of a gym's setup
+ */
+
+export function useUpdateGymSetup<TData = Awaited<ReturnType<typeof updateGymSetup>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymSetupUpdateRequest: BodyType<GymSetupUpdateRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateGymSetup>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getUpdateGymSetupQueryOptions(gymId,gymSetupUpdateRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getSetGymPrimaryLocationUrl = (gymId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}/setup/primary-location`
+}
+
+/**
+ * Sets the gym's primary address (OG2: address only). The first call creates the primary location; later calls
+ * replace its fields in place, so there is never a second primary location. An identical address changes
+ * nothing. Requires the `manage_locations` permission (owner, manager).
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never revealed).
+ *
+ * * `forbidden` - the viewer's role cannot manage locations.
+ * * `conflict` - `expected_revision` is stale (`details.revision: "stale"`); nothing is saved.
+ * * `validation_error` - a field is missing or invalid (`country_code` must be an ISO 3166-1 alpha-2 code), or
+ *   an unknown field is sent.
+ * @summary Set a gym's primary location
+ */
+export const setGymPrimaryLocation = async (gymId: string,
+    gymPrimaryLocationRequest: GymPrimaryLocationRequest, options?: Parameters<typeof apiFetch>[1]): Promise<GymSetupResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<GymSetupResponse>(getSetGymPrimaryLocationUrl(gymId),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(gymPrimaryLocationRequest)
+  }
+);}
+
+
+
+
+
+export const getSetGymPrimaryLocationQueryKey = (gymId: string,
+    gymPrimaryLocationRequest?: BodyType<GymPrimaryLocationRequest>,) => {
+    return [
+    'PUT', `/api/v1/gyms/${gymId}/setup/primary-location`, gymPrimaryLocationRequest
+    ] as const;
+    }
+
+
+export const getSetGymPrimaryLocationQueryOptions = <TData = Awaited<ReturnType<typeof setGymPrimaryLocation>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(gymId: string,
+    gymPrimaryLocationRequest: BodyType<GymPrimaryLocationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof setGymPrimaryLocation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSetGymPrimaryLocationQueryKey(gymId,gymPrimaryLocationRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof setGymPrimaryLocation>>> = ({ signal }) => setGymPrimaryLocation(gymId,gymPrimaryLocationRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof setGymPrimaryLocation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type SetGymPrimaryLocationQueryResult = NonNullable<Awaited<ReturnType<typeof setGymPrimaryLocation>>>
+export type SetGymPrimaryLocationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useSetGymPrimaryLocation<TData = Awaited<ReturnType<typeof setGymPrimaryLocation>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymPrimaryLocationRequest: BodyType<GymPrimaryLocationRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof setGymPrimaryLocation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof setGymPrimaryLocation>>,
+          TError,
+          Awaited<ReturnType<typeof setGymPrimaryLocation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSetGymPrimaryLocation<TData = Awaited<ReturnType<typeof setGymPrimaryLocation>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymPrimaryLocationRequest: BodyType<GymPrimaryLocationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof setGymPrimaryLocation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof setGymPrimaryLocation>>,
+          TError,
+          Awaited<ReturnType<typeof setGymPrimaryLocation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSetGymPrimaryLocation<TData = Awaited<ReturnType<typeof setGymPrimaryLocation>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymPrimaryLocationRequest: BodyType<GymPrimaryLocationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof setGymPrimaryLocation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Set a gym's primary location
+ */
+
+export function useSetGymPrimaryLocation<TData = Awaited<ReturnType<typeof setGymPrimaryLocation>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymPrimaryLocationRequest: BodyType<GymPrimaryLocationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof setGymPrimaryLocation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getSetGymPrimaryLocationQueryOptions(gymId,gymPrimaryLocationRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

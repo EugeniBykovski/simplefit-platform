@@ -15,6 +15,7 @@ export const GymViewerPermissionsItem = {
   change_staff_role: 'change_staff_role',
   close_gym: 'close_gym',
   complete_setup: 'complete_setup',
+  discard_draft: 'discard_draft',
   edit_gym: 'edit_gym',
   invite_manager: 'invite_manager',
   invite_staff: 'invite_staff',

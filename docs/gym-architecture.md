@@ -88,3 +88,25 @@ Registry: `gym_home` maps to the `GYM_WORKSPACE` home placeholder, and
 architecture rule 7). Client code keeps its profile-context type to
 `fighter` / `coach`. Rendering gym rows in the choosers and the id-based gym
 routes (D-G23) belong to the gym UI tickets.
+
+## SF-85: gym setup API (no screens yet)
+
+The generated client adds the owner setup operations (ADR 0026, SF-85
+amendment):
+
+- `getGymSetup` returns the setup, `revision` and `missing_requirements`. A
+  draft's owner needs no `GYM_WORKSPACE`.
+- `updateGymSetup` is a partial update of the profile and text branding
+  (`name`, `gym_type`, `phone`, `website`, `tagline`, `accent_color` from
+  the six OG3 swatches). An omitted field is unchanged; `null` clears an
+  optional field.
+- `setGymPrimaryLocation` sets the whole primary address (OG2).
+- `completeGymSetup` is owner-only. Missing requirements answer `422`, with
+  each one under `details.field_codes`.
+- `discardGymDraft` (`DELETE /gyms/{gym_id}`) is owner-only and works on
+  drafts only.
+- Writes may send `expected_revision`; a stale one answers `409`
+  (`revision: stale`).
+
+Not in the contract yet: gym size and features (OG4/OG5, future with plans)
+and logo/cover uploads (waiting for a storage attachment mechanism).
