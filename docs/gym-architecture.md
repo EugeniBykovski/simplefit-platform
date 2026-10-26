@@ -54,7 +54,8 @@ simplefit-api (ADR 0026, SF-83 amendment):
 - `createGym` (`POST /api/v1/gyms`): creates a draft gym with the viewer as
   owner. It is idempotent per `client_request_id`. While the viewer has an
   open draft, it returns that draft with `200`. It answers `429` with
-  `retry-after` once the window is spent.
+  `retry-after` after 5 creations per user, or 20 per client, in any rolling
+  24 hours.
 - `listMyGyms` (`GET /api/v1/me/gyms`): the viewer's active staff
   memberships, paginated.
 - `getGym` (`GET /api/v1/gyms/{gym_id}`): one gym for its staff, with the

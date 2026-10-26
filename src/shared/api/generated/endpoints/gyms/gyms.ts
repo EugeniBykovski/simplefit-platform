@@ -76,8 +76,9 @@ export const getCreateGymUrl = () => {
  *   accepted), or account registration is incomplete (`account_registration: required`).
  * * `conflict` - `client_request_id` names a gym where the viewer is no longer staff
  *   (`details.client_request_id: "reused"`).
- * * `rate_limited` - 5 gym creations per user or 20 per client in a 24-hour window. Replays and resumed drafts
- *   are not counted.
+ * * `rate_limited` - more than 5 gym creations per user, or 20 per client, in any rolling 24 hours;
+ *   `retry-after` is when the oldest counted creation leaves the window. Replays, resumed drafts and refused
+ *   attempts are not counted.
  * @summary Create a draft gym
  */
 export const createGym = async (gymCreateRequest: GymCreateRequest, options?: Parameters<typeof apiFetch>[1]): Promise<GymResponse> => {
