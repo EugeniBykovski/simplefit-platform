@@ -131,7 +131,7 @@ function Switcher({ current, entry }: { current: SwitcherCurrent; entry: KnownEn
       <DropdownMenuContent
         align="start"
         sideOffset={8}
-        className="max-h-[min(32rem,var(--radix-dropdown-menu-content-available-height))] w-64 overflow-y-auto rounded-2xl p-1.5"
+        className="max-h-[min(32rem,var(--radix-dropdown-menu-content-available-height))] w-53 overflow-y-auto rounded-2xl p-1.5"
       >
         {hasGyms && (
           <>
