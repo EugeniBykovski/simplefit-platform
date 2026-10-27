@@ -1877,7 +1877,7 @@
       "platform": "mobile",
       "path": "/onboarding/gym",
       "params": [],
-      "name": "Owner handoff",
+      "name": "Gym owner registration",
       "surface": "ONBOARDING",
       "shell": "mobile.onboarding",
       "parent": null,
@@ -1893,10 +1893,10 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(onboarding)/onboarding/gym.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-87: Gym owner mobile registration, the SF-86 web steps natively: OG1 Gym name & type (?step=type), OG2 Location (?step=location), OG3 Branding (?step=branding) and OG6b Gym created (?step=complete) on the SF-83/SF-84/SF-85 APIs, on the approved mobile onboarding frame (COACH 3) without mobile OG artboards; the OG0 web handoff is superseded (D-MOBILE-GYM-ONBOARDING-FLOW)."
       },
       "screens": ["OG0"],
-      "discrepancies": ["D-ONBOARDING-ENTRY-CAPABILITY"]
+      "discrepancies": ["D-ONBOARDING-ENTRY-CAPABILITY", "D-MOBILE-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "mobile.gym.pulse",
@@ -10097,7 +10097,9 @@
         "step": "4.5",
         "tag": "MOBILE",
         "artboard": "OnbGHandoff.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-MOBILE-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "GR1",
@@ -17614,6 +17616,20 @@
       "status": "DEFERRED",
       "routes": ["web.app.onboarding.gym"],
       "screens": ["OG4", "OG5", "OG6", "OG7", "OG8", "OG9", "OG10", "OG11", "OG12", "OG13", "OG14"]
+    },
+    {
+      "id": "D-MOBILE-GYM-ONBOARDING-FLOW",
+      "title": "Mobile Gym owner registration built natively without mobile artboards",
+      "sourceA": "Claude Design 1792675284-1046 (GYM 4): mobile owner onboarding is only OG0 'Gym owner · continue on web' (OnbGHandoff), a handoff with an emailed setup link and code; SF-82 (03-registration-workspace-lifecycle §4, 07-routing) planned owner creation on the web only",
+      "sourceB": "SF-87 (approved 2026-10-27): native Gym owner registration on mobile on the same SF-83/SF-84/SF-85 contract as the web (SF-86); the API is client-agnostic (ADR 0026)",
+      "mismatch": "No mobile OG1-OG3/OG6b artboards exist, and OG0 describes a handoff that SF-87 replaces; OG0's link and code would be a new sign-in credential (ADR 0012).",
+      "impact": "Without a decision the mobile route would stay a placeholder or show a handoff the product no longer wants.",
+      "resolution": "Approved SF-87 differences: OG1 -> OG2 -> OG3 -> OG6b built natively on the approved mobile onboarding frame (Claude Design COACH 3, 390 x 844: back button, 'Step n of 3', segmented progress, heading, scrolling body, pinned actions) with the web OG content and every SF-86 approved difference (three steps, OG4-OG14 never shown, no handle or public URL, one location, Logo and Cover not available yet, no verified, trial or plan copy, 'Create gym' and 'Skip for now' on OG3, OG6b 'Gym created' and 'Go to gym' through the SF-84 entry). Save & exit saves and returns through the entry, or to Settings when the draft is the only context. OG0 is superseded and stays a DEFERRED gallery row. The route needs an authenticated session only (D-ONBOARDING-ENTRY-CAPABILITY). Mobile OG artboards are added to Claude Design separately (the canvas is at its file limit).",
+      "decision": "Owners can register a gym on mobile with the web's steps; Claude Design gains the mobile artboards later.",
+      "decidedOn": "2026-10-27",
+      "status": "DEFERRED",
+      "routes": ["mobile.onboarding.gym"],
+      "screens": ["OG0"]
     },
     {
       "id": "D-MOBILE-COACH-ONBOARDING-FLOW",
