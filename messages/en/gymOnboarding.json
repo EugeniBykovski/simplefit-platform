@@ -1,0 +1,324 @@
+{
+  "metaTitle": "Gym registration",
+  "loading": "Loading your gym setup…",
+  "loadFailure": {
+    "title": "We couldn’t load your gym setup.",
+    "body": "Check your connection and try again.",
+    "retry": "Try again"
+  },
+  "gone": {
+    "title": "This gym draft is no longer available.",
+    "body": "It was discarded or you no longer manage it. You can start a new gym.",
+    "restart": "Start a new gym"
+  },
+  "frame": {
+    "saveExit": "Save & exit"
+  },
+  "continue": "Continue",
+  "back": "Back",
+  "saving": "Saving…",
+  "status": {
+    "saved": "Saved",
+    "unsaved": "Unsaved changes"
+  },
+  "rail": {
+    "title": "Gym setup",
+    "newGym": "New gym",
+    "label": "Gym setup steps",
+    "progress": "Step {step} of {total}",
+    "progressDone": "Gym created",
+    "groupCreate": "Create your gym",
+    "groupLater": "Coming later",
+    "steps": {
+      "type": {
+        "title": "Gym name & type",
+        "sub": "Create your gym"
+      },
+      "location": {
+        "title": "Location",
+        "sub": "Address"
+      },
+      "branding": {
+        "title": "Branding",
+        "sub": "Colour & tagline"
+      }
+    },
+    "hints": {
+      "current": "current step",
+      "done": "done",
+      "todo": "not done yet",
+      "locked": "available after you create the gym",
+      "later": "coming later, not available yet"
+    },
+    "later": {
+      "size": "Gym size",
+      "features": "Features",
+      "plan": "Plan",
+      "verify": "Verify business",
+      "memberships": "Memberships",
+      "payments": "Payments",
+      "timetable": "Timetable",
+      "team": "Coaches & staff",
+      "import": "Import members",
+      "community": "Community defaults",
+      "launch": "Go live"
+    },
+    "laterCount": "{count, plural, one {# more step comes later} other {# more steps come later}}"
+  },
+  "notices": {
+    "unconfirmed": {
+      "create": "We couldn’t confirm your gym was created.",
+      "createBody": "Nothing you typed is lost. Retry is safe: it never creates a second gym.",
+      "save": "We couldn’t confirm your changes were saved.",
+      "saveBody": "Nothing you typed is lost. Retry is safe: if the save went through, you’ll see the latest version.",
+      "finish": "We couldn’t confirm your gym was created.",
+      "finishBody": "Check your connection, then try again. Trying again is safe.",
+      "retry": "Retry"
+    },
+    "invalid": {
+      "title": "Check the highlighted fields.",
+      "body": "Fix them to save this step."
+    },
+    "rejected": {
+      "title": "Your gym is missing details.",
+      "body": "Add {fields} to create it.",
+      "fields": {
+        "name": "a gym name",
+        "gym_type": "a gym type",
+        "primary_location": "a location"
+      },
+      "goTo": {
+        "name": "Go to Gym name & type",
+        "gym_type": "Go to Gym name & type",
+        "primary_location": "Go to Location"
+      }
+    },
+    "account": {
+      "title": "Finish your account basics first.",
+      "body": "Your name, date of birth and agreements come before your gym.",
+      "action": "Go to Account basics"
+    },
+    "stale": {
+      "title": "This gym changed on another device or tab.",
+      "body": "We loaded the latest saved version and kept what you typed. Check it, then save your changes again.",
+      "reapply": "Save my changes"
+    },
+    "resumed": {
+      "title": "You already have a gym in progress.",
+      "body": "We opened it with its saved details and kept what you typed. Continue to save your changes to it."
+    },
+    "discarded": {
+      "title": "That gym draft was discarded.",
+      "body": "What you typed is still here. Continue to create a new gym with it."
+    },
+    "reused": {
+      "title": "That gym draft is no longer yours to set up.",
+      "body": "What you typed is still here. Continue to create a new gym with it."
+    },
+    "rateLimited": {
+      "title": "You’ve started several gyms today.",
+      "body": "Try again later. What you typed is kept.",
+      "bodyAfter": "Try again {time}. What you typed is kept."
+    },
+    "forbidden": {
+      "title": "Only the gym’s owner can change its setup.",
+      "body": "Ask the owner to make this change."
+    },
+    "gone": {
+      "title": "This gym draft is no longer available.",
+      "body": "It was discarded or you no longer manage it.",
+      "restart": "Start a new gym"
+    },
+    "session": {
+      "title": "Your session ended.",
+      "body": "Sign in again to continue. Your saved steps are kept.",
+      "action": "Sign in"
+    },
+    "conflict": {
+      "title": "We couldn’t save this right now.",
+      "body": "Something else changed this gym at the same time. Try again."
+    }
+  },
+  "errors": {
+    "required": {
+      "name": "Enter your gym’s name.",
+      "gym_type": "Choose a gym type.",
+      "country_code": "Choose a country.",
+      "city": "Enter the city.",
+      "address_line": "Enter the street address."
+    },
+    "tooLong": "This is too long.",
+    "invalidChoice": "Choose one of the options.",
+    "invalidFormat": "This doesn’t look right. Check the format.",
+    "invalid": "Check this value."
+  },
+  "gymTypes": {
+    "boxing_gym": "Boxing gym",
+    "boxing_club": "Boxing club",
+    "amateur_club": "Amateur club",
+    "professional_team": "Professional team",
+    "combat_sports_gym": "Combat sports gym",
+    "fitness_boxing_studio": "Fitness boxing studio"
+  },
+  "preview": {
+    "label": "Preview",
+    "private": "Members can’t see your gym yet. It stays private while you set it up.",
+    "namePlaceholder": "Your gym name"
+  },
+  "type": {
+    "eyebrow": "Step 1 of 3 · Create your gym",
+    "title": "Gym name & type",
+    "lead": "Tell fighters who you are. You can change everything later.",
+    "another": {
+      "title": "You already have a gym in SimpleFit.",
+      "body": "Continuing creates another, separate gym. Your existing gym stays as it is.",
+      "action": "Go to my gym"
+    },
+    "count": "{count}/{max}",
+    "name": {
+      "label": "Gym name",
+      "placeholder": "Your gym’s name",
+      "help": "Up to 80 characters."
+    },
+    "gymType": {
+      "label": "Type"
+    },
+    "phone": {
+      "label": "Phone · optional",
+      "placeholder": "+48 22 000 00 00",
+      "help": "Digits, spaces, brackets and dashes; may start with +."
+    },
+    "website": {
+      "label": "Website · optional",
+      "placeholder": "yourgym.com",
+      "help": "We add https:// if you leave it out."
+    },
+    "account": "This gym belongs to the account you’re signed in with · one account for every role.",
+    "note": "~2 min · nothing here is public",
+    "creating": "Creating…"
+  },
+  "location": {
+    "eyebrow": "Step 2 of 3 · Create your gym",
+    "title": "Location",
+    "lead": "Where members find you. Your gym has one location for now.",
+    "country": {
+      "label": "Country",
+      "placeholder": "Select a country",
+      "search": "Search countries",
+      "searchPlaceholder": "Search",
+      "empty": "No country matches."
+    },
+    "city": {
+      "label": "City",
+      "placeholder": "Your city"
+    },
+    "address": {
+      "label": "Address",
+      "placeholder": "Street, number, postcode"
+    },
+    "entrance": {
+      "label": "Entrance note · optional",
+      "placeholder": "Entrance from the courtyard, 1st floor",
+      "help": "Helps people find the door. Up to 200 characters."
+    },
+    "more": "Adding more locations isn’t available yet.",
+    "note": "Address only · SimpleFit never uses members’ location",
+    "preview": {
+      "label": "Address preview",
+      "note": "No maps and no location tracking: people see the address and your entrance note.",
+      "empty": "Add the address"
+    },
+    "list": {
+      "label": "Locations",
+      "note": "One location for now.",
+      "unnamed": "Main location",
+      "main": "Main"
+    }
+  },
+  "branding": {
+    "eyebrow": "Step 3 of 3 · Create your gym",
+    "title": "Branding",
+    "lead": "Optional. Pick your colour and a tagline, or skip and add them later.",
+    "logo": {
+      "label": "Logo",
+      "unavailable": "Logo upload isn’t available yet. Your initials are used."
+    },
+    "accent": {
+      "label": "Accent colour",
+      "help": "Each colour is contrast-checked for light and dark themes.",
+      "clear": "No colour",
+      "colors": {
+        "olive": "Olive",
+        "amber": "Amber",
+        "coral": "Coral",
+        "sky": "Sky",
+        "bone": "Bone",
+        "moss": "Moss"
+      }
+    },
+    "tagline": {
+      "label": "Tagline · optional",
+      "placeholder": "Boxing for everyone. Fighters welcome.",
+      "help": "One line, up to 120 characters."
+    },
+    "cover": {
+      "label": "Cover photo",
+      "unavailable": "Cover photo upload isn’t available yet."
+    },
+    "preview": {
+      "label": "Live preview"
+    },
+    "note": "Everything here is optional",
+    "skip": "Skip for now",
+    "create": "Create gym",
+    "creating": "Creating gym…"
+  },
+  "done": {
+    "eyebrow": "Gym created",
+    "title": "{name} is created.",
+    "lead": "Your gym is set up in SimpleFit. It stays private: nothing is published and members can’t find it yet.",
+    "pendingTitle": "Gym tools are on their way",
+    "pendingBody": "Members, classes, payments and publishing aren’t available yet. They’ll arrive in later updates.",
+    "retry": "Try again",
+    "failureTitle": "We couldn’t open your gym.",
+    "failureBody": "Your gym is created. Check your connection and try again.",
+    "opening": "Opening…",
+    "continue": "Go to gym",
+    "laterTitle": "Get ready to open · coming later",
+    "laterBadge": "Later",
+    "later": {
+      "verify": {
+        "title": "Verify business",
+        "sub": "Company & owner"
+      },
+      "memberships": {
+        "title": "Memberships",
+        "sub": "What members buy"
+      },
+      "payments": {
+        "title": "Payments",
+        "sub": "Payout account & methods"
+      },
+      "timetable": {
+        "title": "Timetable",
+        "sub": "Classes per week"
+      },
+      "team": {
+        "title": "Coaches & staff",
+        "sub": "Invites & roles"
+      },
+      "import": {
+        "title": "Import members",
+        "sub": "CSV & invites"
+      },
+      "community": {
+        "title": "Community defaults",
+        "sub": "Privacy-safe"
+      },
+      "launch": {
+        "title": "Go live",
+        "sub": "Review & publish"
+      }
+    }
+  }
+}

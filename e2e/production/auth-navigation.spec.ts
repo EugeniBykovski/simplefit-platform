@@ -1,5 +1,6 @@
 import { expect, test, type Page, type Request } from "@playwright/test";
 
+import { gymApi } from "./gym-api";
 import { apiError, expectProviderControls, open, seedPending } from "./harness";
 
 /*
@@ -246,6 +247,8 @@ test("Apple: the popup's identity token → POST /api/auth/apple → entry with 
         account_registration: "complete",
         mandatory: false,
       });
+      // The Gym registration reads the viewer's gyms (SF-86).
+      await gymApi(page, { entry: false });
     },
   );
   await expectProviderControls(page);
@@ -260,7 +263,8 @@ test("Apple: the popup's identity token → POST /api/auth/apple → entry with 
       });
   });
   await page.getByRole("button", { name: "Continue with Apple" }).click();
-  await page.waitForURL("**/en/app/onboarding/gym?intent=gym");
+  await page.waitForURL((url) => url.pathname === "/en/app/onboarding/gym");
+  expect(new URL(page.url()).searchParams.get("intent")).toBe("gym");
   expect(exchanges).toHaveLength(1);
   expect(exchanges[0]).toMatchObject({
     id_token: "fixture-apple-id-token",
@@ -269,7 +273,7 @@ test("Apple: the popup's identity token → POST /api/auth/apple → entry with 
   // The raw nonce goes to the API; Apple only ever saw its SHA-256.
   expect((exchanges[0] as { nonce: string }).nonce).toMatch(/^[A-Za-z0-9_-]{40,}$/);
   expect(resolutions[0]).toBe("gym");
-  await expect(page.getByRole("heading", { level: 1, name: "Gym setup" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Gym name & type" })).toBeVisible();
 });
 
 test("Apple cancelled: the popup closes, nothing is sent, the control is ready again", async ({

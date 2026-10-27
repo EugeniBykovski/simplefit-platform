@@ -10,9 +10,9 @@ import { EntryFailure, LaunchScreen } from "@/widgets/system-states";
  * comes first (SF-45, `OnboardingGate`); its pending and failure states are
  * full-viewport system screens; role choice (WA6) shows only when the
  * resolver answers `role_selection`. Each step brings its frame: account
- * basics (WA5, SF-46), role choice (WA6, SF-47) and the Fighter registration
- * (SF-38) the designed onboarding frame, the other steps `AppFrame` (the
- * `(app-frame)` group).
+ * basics (WA5, SF-46), role choice (WA6, SF-47), the Fighter (SF-38) and
+ * Coach (SF-52) registrations the designed onboarding frame, the Gym owner
+ * registration (SF-86) its setup frame (GymSetupSteps).
  */
 export default async function OnboardingLayout({
   children,

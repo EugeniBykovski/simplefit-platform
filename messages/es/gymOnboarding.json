@@ -1,0 +1,324 @@
+{
+  "metaTitle": "Registro del gimnasio",
+  "loading": "Cargando la configuración de tu gimnasio…",
+  "loadFailure": {
+    "title": "No pudimos cargar la configuración de tu gimnasio.",
+    "body": "Revisa tu conexión e inténtalo de nuevo.",
+    "retry": "Reintentar"
+  },
+  "gone": {
+    "title": "Este borrador de gimnasio ya no está disponible.",
+    "body": "Se descartó o ya no lo gestionas. Puedes crear un gimnasio nuevo.",
+    "restart": "Crear un gimnasio nuevo"
+  },
+  "frame": {
+    "saveExit": "Guardar y salir"
+  },
+  "continue": "Continuar",
+  "back": "Atrás",
+  "saving": "Guardando…",
+  "status": {
+    "saved": "Guardado",
+    "unsaved": "Cambios sin guardar"
+  },
+  "rail": {
+    "title": "Configuración del gimnasio",
+    "newGym": "Gimnasio nuevo",
+    "label": "Pasos de configuración del gimnasio",
+    "progress": "Paso {step} de {total}",
+    "progressDone": "Gimnasio creado",
+    "groupCreate": "Crea tu gimnasio",
+    "groupLater": "Próximamente",
+    "steps": {
+      "type": {
+        "title": "Nombre y tipo",
+        "sub": "Crea tu gimnasio"
+      },
+      "location": {
+        "title": "Ubicación",
+        "sub": "Dirección"
+      },
+      "branding": {
+        "title": "Marca",
+        "sub": "Color y eslogan"
+      }
+    },
+    "hints": {
+      "current": "paso actual",
+      "done": "hecho",
+      "todo": "pendiente",
+      "locked": "disponible cuando crees el gimnasio",
+      "later": "próximamente, aún no disponible"
+    },
+    "later": {
+      "size": "Tamaño del gimnasio",
+      "features": "Funciones",
+      "plan": "Plan",
+      "verify": "Verificar negocio",
+      "memberships": "Membresías",
+      "payments": "Pagos",
+      "timetable": "Horario",
+      "team": "Entrenadores y personal",
+      "import": "Importar miembros",
+      "community": "Ajustes de comunidad",
+      "launch": "Publicar"
+    },
+    "laterCount": "{count, plural, one {# paso más llegará después} other {# pasos más llegarán después}}"
+  },
+  "notices": {
+    "unconfirmed": {
+      "create": "No pudimos confirmar que se creara tu gimnasio.",
+      "createBody": "No se pierde nada de lo que escribiste. Reintentar es seguro: nunca crea un segundo gimnasio.",
+      "save": "No pudimos confirmar que se guardaran tus cambios.",
+      "saveBody": "No se pierde nada de lo que escribiste. Reintentar es seguro: si se guardó, verás la versión más reciente.",
+      "finish": "No pudimos confirmar que se creara tu gimnasio.",
+      "finishBody": "Revisa tu conexión e inténtalo de nuevo. Reintentar es seguro.",
+      "retry": "Reintentar"
+    },
+    "invalid": {
+      "title": "Revisa los campos marcados.",
+      "body": "Corrígelos para guardar este paso."
+    },
+    "rejected": {
+      "title": "A tu gimnasio le faltan datos.",
+      "body": "Añade {fields} para crearlo.",
+      "fields": {
+        "name": "un nombre",
+        "gym_type": "un tipo de gimnasio",
+        "primary_location": "una ubicación"
+      },
+      "goTo": {
+        "name": "Ir a Nombre y tipo",
+        "gym_type": "Ir a Nombre y tipo",
+        "primary_location": "Ir a Ubicación"
+      }
+    },
+    "account": {
+      "title": "Primero completa los datos de tu cuenta.",
+      "body": "Tu nombre, fecha de nacimiento y consentimientos van antes que tu gimnasio.",
+      "action": "Ir a datos de la cuenta"
+    },
+    "stale": {
+      "title": "Este gimnasio cambió en otro dispositivo o pestaña.",
+      "body": "Cargamos la última versión guardada y conservamos lo que escribiste. Revísalo y vuelve a guardar tus cambios.",
+      "reapply": "Guardar mis cambios"
+    },
+    "resumed": {
+      "title": "Ya tienes un gimnasio en curso.",
+      "body": "Lo abrimos con sus datos guardados y conservamos lo que escribiste. Continúa para guardar tus cambios en él."
+    },
+    "discarded": {
+      "title": "Ese borrador de gimnasio se descartó.",
+      "body": "Lo que escribiste sigue aquí. Continúa para crear un gimnasio nuevo con ello."
+    },
+    "reused": {
+      "title": "Ya no puedes configurar ese borrador de gimnasio.",
+      "body": "Lo que escribiste sigue aquí. Continúa para crear un gimnasio nuevo con ello."
+    },
+    "rateLimited": {
+      "title": "Hoy ya has empezado varios gimnasios.",
+      "body": "Inténtalo más tarde. Lo que escribiste se conserva.",
+      "bodyAfter": "Inténtalo de nuevo {time}. Lo que escribiste se conserva."
+    },
+    "forbidden": {
+      "title": "Solo la persona propietaria puede cambiar la configuración.",
+      "body": "Pídele a la persona propietaria que haga este cambio."
+    },
+    "gone": {
+      "title": "Este borrador de gimnasio ya no está disponible.",
+      "body": "Se descartó o ya no lo gestionas.",
+      "restart": "Crear un gimnasio nuevo"
+    },
+    "session": {
+      "title": "Tu sesión terminó.",
+      "body": "Vuelve a iniciar sesión para continuar. Los pasos guardados se conservan.",
+      "action": "Iniciar sesión"
+    },
+    "conflict": {
+      "title": "No pudimos guardar esto ahora.",
+      "body": "Algo más cambió este gimnasio al mismo tiempo. Inténtalo de nuevo."
+    }
+  },
+  "errors": {
+    "required": {
+      "name": "Escribe el nombre de tu gimnasio.",
+      "gym_type": "Elige un tipo de gimnasio.",
+      "country_code": "Elige un país.",
+      "city": "Escribe la ciudad.",
+      "address_line": "Escribe la dirección."
+    },
+    "tooLong": "Es demasiado largo.",
+    "invalidChoice": "Elige una de las opciones.",
+    "invalidFormat": "Esto no parece correcto. Revisa el formato.",
+    "invalid": "Revisa este valor."
+  },
+  "gymTypes": {
+    "boxing_gym": "Gimnasio de boxeo",
+    "boxing_club": "Club de boxeo",
+    "amateur_club": "Club amateur",
+    "professional_team": "Equipo profesional",
+    "combat_sports_gym": "Gimnasio de deportes de combate",
+    "fitness_boxing_studio": "Estudio de fitness boxing"
+  },
+  "preview": {
+    "label": "Vista previa",
+    "private": "Los miembros aún no pueden ver tu gimnasio. Sigue siendo privado mientras lo configuras.",
+    "namePlaceholder": "Nombre de tu gimnasio"
+  },
+  "type": {
+    "eyebrow": "Paso 1 de 3 · Crea tu gimnasio",
+    "title": "Nombre y tipo de gimnasio",
+    "lead": "Cuéntales a los fighters quién eres. Puedes cambiarlo todo más tarde.",
+    "another": {
+      "title": "Ya tienes un gimnasio en SimpleFit.",
+      "body": "Si continúas, crearás otro gimnasio independiente. Tu gimnasio actual no cambia.",
+      "action": "Ir a mi gimnasio"
+    },
+    "count": "{count}/{max}",
+    "name": {
+      "label": "Nombre del gimnasio",
+      "placeholder": "Nombre de tu gimnasio",
+      "help": "Hasta 80 caracteres."
+    },
+    "gymType": {
+      "label": "Tipo"
+    },
+    "phone": {
+      "label": "Teléfono · opcional",
+      "placeholder": "+34 910 000 000",
+      "help": "Dígitos, espacios, paréntesis y guiones; puede empezar por +."
+    },
+    "website": {
+      "label": "Sitio web · opcional",
+      "placeholder": "tugimnasio.es",
+      "help": "Si no lo incluyes, añadimos https://."
+    },
+    "account": "Este gimnasio pertenece a la cuenta con la que iniciaste sesión · una cuenta para todos los roles.",
+    "note": "~2 min · nada de esto es público",
+    "creating": "Creando…"
+  },
+  "location": {
+    "eyebrow": "Paso 2 de 3 · Crea tu gimnasio",
+    "title": "Ubicación",
+    "lead": "Dónde te encuentran los miembros. Por ahora tu gimnasio tiene una ubicación.",
+    "country": {
+      "label": "País",
+      "placeholder": "Selecciona un país",
+      "search": "Buscar países",
+      "searchPlaceholder": "Buscar",
+      "empty": "Ningún país coincide."
+    },
+    "city": {
+      "label": "Ciudad",
+      "placeholder": "Tu ciudad"
+    },
+    "address": {
+      "label": "Dirección",
+      "placeholder": "Calle, número, código postal"
+    },
+    "entrance": {
+      "label": "Nota de acceso · opcional",
+      "placeholder": "Entrada por el patio, 1.er piso",
+      "help": "Ayuda a encontrar la puerta. Hasta 200 caracteres."
+    },
+    "more": "Aún no se pueden añadir más ubicaciones.",
+    "note": "Solo la dirección · SimpleFit nunca usa la ubicación de los miembros",
+    "preview": {
+      "label": "Vista previa de la dirección",
+      "note": "Sin mapas ni seguimiento de ubicación: se ve la dirección y tu nota de acceso.",
+      "empty": "Añade la dirección"
+    },
+    "list": {
+      "label": "Ubicaciones",
+      "note": "Una ubicación por ahora.",
+      "unnamed": "Ubicación principal",
+      "main": "Principal"
+    }
+  },
+  "branding": {
+    "eyebrow": "Paso 3 de 3 · Crea tu gimnasio",
+    "title": "Marca",
+    "lead": "Opcional. Elige tu color y un eslogan, u omite este paso y añádelos después.",
+    "logo": {
+      "label": "Logotipo",
+      "unavailable": "Aún no se puede subir un logotipo. Se usan tus iniciales."
+    },
+    "accent": {
+      "label": "Color de acento",
+      "help": "Cada color está comprobado en contraste para los temas claro y oscuro.",
+      "clear": "Sin color",
+      "colors": {
+        "olive": "Oliva",
+        "amber": "Ámbar",
+        "coral": "Coral",
+        "sky": "Cielo",
+        "bone": "Hueso",
+        "moss": "Musgo"
+      }
+    },
+    "tagline": {
+      "label": "Eslogan · opcional",
+      "placeholder": "Boxeo para todos. Fighters bienvenidos.",
+      "help": "Una línea, hasta 120 caracteres."
+    },
+    "cover": {
+      "label": "Foto de portada",
+      "unavailable": "Aún no se puede subir una foto de portada."
+    },
+    "preview": {
+      "label": "Vista previa en vivo"
+    },
+    "note": "Todo aquí es opcional",
+    "skip": "Omitir por ahora",
+    "create": "Crear gimnasio",
+    "creating": "Creando gimnasio…"
+  },
+  "done": {
+    "eyebrow": "Gimnasio creado",
+    "title": "{name} está creado.",
+    "lead": "Tu gimnasio está configurado en SimpleFit. Sigue siendo privado: no hay nada publicado y los miembros aún no pueden encontrarlo.",
+    "pendingTitle": "Las herramientas del gimnasio están en camino",
+    "pendingBody": "Miembros, clases, pagos y publicación aún no están disponibles. Llegarán en próximas actualizaciones.",
+    "retry": "Reintentar",
+    "failureTitle": "No pudimos abrir tu gimnasio.",
+    "failureBody": "Tu gimnasio está creado. Revisa tu conexión e inténtalo de nuevo.",
+    "opening": "Abriendo…",
+    "continue": "Ir al gimnasio",
+    "laterTitle": "Prepárate para abrir · próximamente",
+    "laterBadge": "Después",
+    "later": {
+      "verify": {
+        "title": "Verificar negocio",
+        "sub": "Empresa y titular"
+      },
+      "memberships": {
+        "title": "Membresías",
+        "sub": "Lo que compran los miembros"
+      },
+      "payments": {
+        "title": "Pagos",
+        "sub": "Cuenta de cobro y métodos"
+      },
+      "timetable": {
+        "title": "Horario",
+        "sub": "Clases por semana"
+      },
+      "team": {
+        "title": "Entrenadores y personal",
+        "sub": "Invitaciones y roles"
+      },
+      "import": {
+        "title": "Importar miembros",
+        "sub": "CSV e invitaciones"
+      },
+      "community": {
+        "title": "Ajustes de comunidad",
+        "sub": "Respetuosos con la privacidad"
+      },
+      "launch": {
+        "title": "Publicar",
+        "sub": "Revisar y publicar"
+      }
+    }
+  }
+}

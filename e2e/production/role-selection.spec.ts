@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { axeViolations, box, expectBox, expectProviderControls, open, overflow } from "./harness";
+import { gymApi } from "./gym-api";
 import { onboardingApi, type OnboardingApi, type OnboardingApiOptions } from "./onboarding-api";
 
 /*
@@ -136,7 +137,7 @@ test.describe("choosing a journey", () => {
   for (const [intent, path, title] of [
     ["fighter", "/en/app/onboarding/fighter", "Your fighter profile"],
     ["coach", "/en/app/onboarding/coach", "Your coach profile"],
-    ["gym", "/en/app/onboarding/gym", "Gym setup"],
+    ["gym", "/en/app/onboarding/gym", "Gym name & type"],
     // SPX2, the public sponsor page (SF-43).
     ["sponsor", "/en/partners/apply", "Apply in 5 minutes. No account needed to start."],
   ] as const) {
@@ -144,6 +145,8 @@ test.describe("choosing a journey", () => {
       page,
     }) => {
       const api = await openWa6(page);
+      // The Gym registration reads the viewer's gyms (SF-86); the entry stays the WA6 double's.
+      if (intent === "gym") await gymApi(page, { entry: false });
       await pick(page, intent);
       await expect(journey(page, CARD[intent])).toBeChecked();
       const label = {
@@ -157,7 +160,7 @@ test.describe("choosing a journey", () => {
       await cta(page).click();
       await page.waitForURL((url) => url.pathname === path);
       expect(resolutions(api).slice(before)[0]).toBe(`?intent=${intent}`);
-      // The journey's own page (Fighter or Coach onboarding, or the truthful placeholder).
+      // The journey's own page (Fighter, Coach or Gym registration, or the sponsor page).
       await expect(page.getByRole("heading", { level: 1, name: title })).toBeVisible();
       if (intent === "sponsor") {
         // A public application: no intent carried, never the workspace chooser (WA2).

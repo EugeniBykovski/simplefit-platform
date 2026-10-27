@@ -507,6 +507,22 @@ context choice (`PUT /api/v1/me/entry/context`, SF-51) and the entry, which
 resolves `coach_home` to `/app/coach` (`mobile.coach.today` on mobile). The
 Coach area is gated on the COACH capability the entry reports.
 
+**Web Gym owner registration (SF-86).** `/app/onboarding/gym` follows the
+same rules: an authenticated session only (completing it grants
+GYM_WORKSPACE), Gym intent as the ephemeral `intent=gym`, and the step query
+as navigation only. Its current steps are OG1 (`?step=type`), OG2
+(`?step=location`), OG3 (`?step=branding`) and OG6b (`?step=complete`). The
+draft to resume comes from `GET /api/v1/me/gyms` (the viewer's owned draft),
+its fields, resume step and completion state from
+`GET /api/v1/gyms/{gym_id}/setup` (SF-85); OG1 creates the draft
+(`POST /api/v1/gyms`, idempotent per client key) and OG3's "Create gym"
+completes it only through `POST /api/v1/gyms/{gym_id}/complete-setup`.
+OG4–OG6 and OG7–OG14 are `DEFERRED` until their sizing, entitlement, billing,
+verification, staff, member, timetable and publishing domains exist
+(`D-WEB-GYM-ONBOARDING-FLOW`). OG6b continues through an explicit Gym
+context choice (`PUT /api/v1/me/entry/context` with `gym_id`, SF-84) and the
+entry, which resolves `gym_home` to `/app/gym`.
+
 **Coach web workspace and context switching (SF-54).** `/app/coach` is WC1,
 reduced in Claude Design `1791982482-71e3` to the real CoachProfile, a setup
 checklist and dashes (never zeros) for domains that do not exist yet; the
@@ -710,7 +726,8 @@ marks future gets `status: "DEFERRED"` and the discrepancy that explains it;
 clients never build or route to it. Since `1791399145-48dd` that is WF2–WF5
 of web Fighter onboarding (`D-WEB-FIGHTER-ONBOARDING-FLOW`); since
 `1791896379-65b7` also WCR3–WCR6 of web Coach onboarding
-(`D-WEB-COACH-ONBOARDING-FLOW`).
+(`D-WEB-COACH-ONBOARDING-FLOW`); since SF-86 also OG4–OG14 of web Gym owner
+registration (`D-WEB-GYM-ONBOARDING-FLOW`).
 
 A screen's visual fidelity is not tracked here. It is delivered by the feature
 ticket that implements the screen from its artboard.
@@ -1039,6 +1056,7 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-ONBOARDING-ENTRY-CAPABILITY`      | RESOLVED               | Onboarding entry routes need a session only, never the capability they create                          |
 | `D-WA3-PREAUTH-CONSENT`              | RESOLVED               | WA3 name and consents disabled, never sent; WA5 records consent (SF-36)                                |
 | `D-WEB-COACH-ONBOARDING-FLOW`        | DEFERRED               | Web Coach onboarding: WCR1, WCR2, WCR7 current; WCR3–WCR6 future; session-only access                  |
+| `D-WEB-GYM-ONBOARDING-FLOW`          | DEFERRED               | Web Gym owner registration: OG1, OG2, OG3, OG6b current; OG4–OG14 future; session-only access          |
 | `D-MOBILE-COACH-ONBOARDING-FLOW`     | DEFERRED               | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access                  |
 | `D-ENTRY-CONTEXT-SELECTION`          | RESOLVED               | `context_selection` opens WCX1 on the web and A04 on mobile; never WA6 / O05 or home                   |
 | `D-WEB-COACH-HOME-MVP`               | DEFERRED               | Coach web: real profile dashboard, MVP nav with Soon rows; CRW1, CRW2 future                           |

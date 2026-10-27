@@ -33,6 +33,8 @@ const REAL_SCREENS = [
   "web.app.onboarding.fighter",
   // SF-52: Coach web registration (WCR1, WCR2, WCR7).
   "web.app.onboarding.coach",
+  // SF-86: Gym owner web registration (OG1, OG2, OG3, OG6b).
+  "web.app.onboarding.gym",
   // SF-54: the Coach dashboard (WC1) and the context chooser (WCX1).
   "web.app.coach",
   "web.app.context",

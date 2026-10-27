@@ -1,0 +1,324 @@
+{
+  "metaTitle": "Rejestracja klubu",
+  "loading": "Wczytywanie konfiguracji klubu…",
+  "loadFailure": {
+    "title": "Nie udało się wczytać konfiguracji klubu.",
+    "body": "Sprawdź połączenie i spróbuj ponownie.",
+    "retry": "Spróbuj ponownie"
+  },
+  "gone": {
+    "title": "Ten szkic klubu nie jest już dostępny.",
+    "body": "Został odrzucony albo nie zarządzasz już nim. Możesz założyć nowy klub.",
+    "restart": "Załóż nowy klub"
+  },
+  "frame": {
+    "saveExit": "Zapisz i wyjdź"
+  },
+  "continue": "Dalej",
+  "back": "Wstecz",
+  "saving": "Zapisywanie…",
+  "status": {
+    "saved": "Zapisano",
+    "unsaved": "Niezapisane zmiany"
+  },
+  "rail": {
+    "title": "Konfiguracja klubu",
+    "newGym": "Nowy klub",
+    "label": "Kroki konfiguracji klubu",
+    "progress": "Krok {step} z {total}",
+    "progressDone": "Klub utworzony",
+    "groupCreate": "Załóż klub",
+    "groupLater": "Wkrótce",
+    "steps": {
+      "type": {
+        "title": "Nazwa i typ",
+        "sub": "Załóż klub"
+      },
+      "location": {
+        "title": "Lokalizacja",
+        "sub": "Adres"
+      },
+      "branding": {
+        "title": "Wygląd marki",
+        "sub": "Kolor i hasło"
+      }
+    },
+    "hints": {
+      "current": "bieżący krok",
+      "done": "gotowe",
+      "todo": "do zrobienia",
+      "locked": "dostępne po założeniu klubu",
+      "later": "wkrótce, jeszcze niedostępne"
+    },
+    "later": {
+      "size": "Wielkość klubu",
+      "features": "Funkcje",
+      "plan": "Plan",
+      "verify": "Weryfikacja firmy",
+      "memberships": "Karnety",
+      "payments": "Płatności",
+      "timetable": "Grafik",
+      "team": "Trenerzy i personel",
+      "import": "Import członków",
+      "community": "Ustawienia społeczności",
+      "launch": "Publikacja"
+    },
+    "laterCount": "{count, plural, one {# kolejny krok pojawi się później} few {# kolejne kroki pojawią się później} many {# kolejnych kroków pojawi się później} other {# kolejnego kroku pojawi się później}}"
+  },
+  "notices": {
+    "unconfirmed": {
+      "create": "Nie udało się potwierdzić, że klub został założony.",
+      "createBody": "Nic z wpisanych danych nie przepadło. Ponowienie jest bezpieczne: nigdy nie utworzy drugiego klubu.",
+      "save": "Nie udało się potwierdzić zapisania zmian.",
+      "saveBody": "Nic z wpisanych danych nie przepadło. Ponowienie jest bezpieczne: jeśli zapis się udał, zobaczysz najnowszą wersję.",
+      "finish": "Nie udało się potwierdzić utworzenia klubu.",
+      "finishBody": "Sprawdź połączenie i spróbuj ponownie. Ponowienie jest bezpieczne.",
+      "retry": "Ponów"
+    },
+    "invalid": {
+      "title": "Sprawdź zaznaczone pola.",
+      "body": "Popraw je, aby zapisać ten krok."
+    },
+    "rejected": {
+      "title": "W klubie brakuje danych.",
+      "body": "Dodaj {fields}, aby go utworzyć.",
+      "fields": {
+        "name": "nazwę klubu",
+        "gym_type": "typ klubu",
+        "primary_location": "lokalizację"
+      },
+      "goTo": {
+        "name": "Przejdź do nazwy i typu",
+        "gym_type": "Przejdź do nazwy i typu",
+        "primary_location": "Przejdź do lokalizacji"
+      }
+    },
+    "account": {
+      "title": "Najpierw uzupełnij dane konta.",
+      "body": "Imię i nazwisko, data urodzenia i zgody są przed klubem.",
+      "action": "Przejdź do danych konta"
+    },
+    "stale": {
+      "title": "Ten klub zmieniono na innym urządzeniu lub w innej karcie.",
+      "body": "Wczytaliśmy najnowszą zapisaną wersję i zachowaliśmy to, co wpisano. Sprawdź i zapisz zmiany ponownie.",
+      "reapply": "Zapisz moje zmiany"
+    },
+    "resumed": {
+      "title": "Masz już klub w trakcie konfiguracji.",
+      "body": "Otworzyliśmy go z zapisanymi danymi i zachowaliśmy to, co wpisano. Kliknij Dalej, aby zapisać w nim zmiany."
+    },
+    "discarded": {
+      "title": "Ten szkic klubu został odrzucony.",
+      "body": "Wpisane dane nadal tu są. Kliknij Dalej, aby założyć z nimi nowy klub."
+    },
+    "reused": {
+      "title": "Nie możesz już konfigurować tego szkicu klubu.",
+      "body": "Wpisane dane nadal tu są. Kliknij Dalej, aby założyć z nimi nowy klub."
+    },
+    "rateLimited": {
+      "title": "Dziś założono już kilka klubów.",
+      "body": "Spróbuj później. Wpisane dane zostają.",
+      "bodyAfter": "Spróbuj ponownie {time}. Wpisane dane zostają."
+    },
+    "forbidden": {
+      "title": "Tylko właściciel klubu może zmienić konfigurację.",
+      "body": "Poproś właściciela o tę zmianę."
+    },
+    "gone": {
+      "title": "Ten szkic klubu nie jest już dostępny.",
+      "body": "Został odrzucony albo nie zarządzasz już nim.",
+      "restart": "Załóż nowy klub"
+    },
+    "session": {
+      "title": "Sesja wygasła.",
+      "body": "Zaloguj się ponownie, aby kontynuować. Zapisane kroki zostają.",
+      "action": "Zaloguj się"
+    },
+    "conflict": {
+      "title": "Nie udało się teraz zapisać.",
+      "body": "W tym samym czasie coś innego zmieniło ten klub. Spróbuj ponownie."
+    }
+  },
+  "errors": {
+    "required": {
+      "name": "Wpisz nazwę klubu.",
+      "gym_type": "Wybierz typ klubu.",
+      "country_code": "Wybierz kraj.",
+      "city": "Wpisz miasto.",
+      "address_line": "Wpisz adres."
+    },
+    "tooLong": "To jest za długie.",
+    "invalidChoice": "Wybierz jedną z opcji.",
+    "invalidFormat": "To nie wygląda poprawnie. Sprawdź format.",
+    "invalid": "Sprawdź tę wartość."
+  },
+  "gymTypes": {
+    "boxing_gym": "Siłownia bokserska",
+    "boxing_club": "Klub bokserski",
+    "amateur_club": "Klub amatorski",
+    "professional_team": "Drużyna zawodowa",
+    "combat_sports_gym": "Klub sportów walki",
+    "fitness_boxing_studio": "Studio fitness boxingu"
+  },
+  "preview": {
+    "label": "Podgląd",
+    "private": "Członkowie jeszcze nie widzą klubu. Pozostaje prywatny podczas konfiguracji.",
+    "namePlaceholder": "Nazwa klubu"
+  },
+  "type": {
+    "eyebrow": "Krok 1 z 3 · Załóż klub",
+    "title": "Nazwa i typ klubu",
+    "lead": "Powiedz zawodnikom, kim jesteś. Wszystko możesz później zmienić.",
+    "another": {
+      "title": "Masz już klub w SimpleFit.",
+      "body": "Kontynuując, założysz kolejny, osobny klub. Istniejący klub pozostanie bez zmian.",
+      "action": "Przejdź do mojego klubu"
+    },
+    "count": "{count}/{max}",
+    "name": {
+      "label": "Nazwa klubu",
+      "placeholder": "Nazwa klubu",
+      "help": "Do 80 znaków."
+    },
+    "gymType": {
+      "label": "Typ"
+    },
+    "phone": {
+      "label": "Telefon · opcjonalnie",
+      "placeholder": "+48 22 000 00 00",
+      "help": "Cyfry, spacje, nawiasy i myślniki; może zaczynać się od +."
+    },
+    "website": {
+      "label": "Strona www · opcjonalnie",
+      "placeholder": "twojklub.pl",
+      "help": "Jeśli pominiesz https://, dodamy je."
+    },
+    "account": "Ten klub należy do konta, na którym jesteś zalogowany · jedno konto do wszystkich ról.",
+    "note": "~2 min · nic tu nie jest publiczne",
+    "creating": "Zakładanie…"
+  },
+  "location": {
+    "eyebrow": "Krok 2 z 3 · Załóż klub",
+    "title": "Lokalizacja",
+    "lead": "Gdzie członkowie cię znajdą. Na razie klub ma jedną lokalizację.",
+    "country": {
+      "label": "Kraj",
+      "placeholder": "Wybierz kraj",
+      "search": "Szukaj kraju",
+      "searchPlaceholder": "Szukaj",
+      "empty": "Brak pasującego kraju."
+    },
+    "city": {
+      "label": "Miasto",
+      "placeholder": "Twoje miasto"
+    },
+    "address": {
+      "label": "Adres",
+      "placeholder": "Ulica, numer, kod pocztowy"
+    },
+    "entrance": {
+      "label": "Wskazówka dojścia · opcjonalnie",
+      "placeholder": "Wejście od podwórza, 1. piętro",
+      "help": "Pomaga znaleźć drzwi. Do 200 znaków."
+    },
+    "more": "Dodawanie kolejnych lokalizacji nie jest jeszcze dostępne.",
+    "note": "Tylko adres · SimpleFit nigdy nie używa lokalizacji członków",
+    "preview": {
+      "label": "Podgląd adresu",
+      "note": "Bez map i śledzenia lokalizacji: widać adres i wskazówkę dojścia.",
+      "empty": "Dodaj adres"
+    },
+    "list": {
+      "label": "Lokalizacje",
+      "note": "Na razie jedna lokalizacja.",
+      "unnamed": "Główna lokalizacja",
+      "main": "Główna"
+    }
+  },
+  "branding": {
+    "eyebrow": "Krok 3 z 3 · Załóż klub",
+    "title": "Wygląd marki",
+    "lead": "Opcjonalnie. Wybierz kolor i hasło albo pomiń ten krok i dodaj je później.",
+    "logo": {
+      "label": "Logo",
+      "unavailable": "Przesyłanie logo nie jest jeszcze dostępne. Używamy inicjałów."
+    },
+    "accent": {
+      "label": "Kolor akcentu",
+      "help": "Każdy kolor ma sprawdzony kontrast w jasnym i ciemnym motywie.",
+      "clear": "Bez koloru",
+      "colors": {
+        "olive": "Oliwkowy",
+        "amber": "Bursztynowy",
+        "coral": "Koralowy",
+        "sky": "Błękitny",
+        "bone": "Kość słoniowa",
+        "moss": "Mchowy"
+      }
+    },
+    "tagline": {
+      "label": "Hasło · opcjonalnie",
+      "placeholder": "Boks dla każdego. Zawodnicy mile widziani.",
+      "help": "Jedna linia, do 120 znaków."
+    },
+    "cover": {
+      "label": "Zdjęcie w tle",
+      "unavailable": "Przesyłanie zdjęcia w tle nie jest jeszcze dostępne."
+    },
+    "preview": {
+      "label": "Podgląd na żywo"
+    },
+    "note": "Wszystko tutaj jest opcjonalne",
+    "skip": "Pomiń na razie",
+    "create": "Utwórz klub",
+    "creating": "Tworzenie klubu…"
+  },
+  "done": {
+    "eyebrow": "Klub utworzony",
+    "title": "{name} – klub utworzony.",
+    "lead": "Twój klub jest skonfigurowany w SimpleFit. Pozostaje prywatny: nic nie jest opublikowane i członkowie nie mogą go jeszcze znaleźć.",
+    "pendingTitle": "Narzędzia klubu są w drodze",
+    "pendingBody": "Członkowie, zajęcia, płatności i publikacja nie są jeszcze dostępne. Pojawią się w kolejnych aktualizacjach.",
+    "retry": "Spróbuj ponownie",
+    "failureTitle": "Nie udało się otworzyć klubu.",
+    "failureBody": "Klub jest utworzony. Sprawdź połączenie i spróbuj ponownie.",
+    "opening": "Otwieranie…",
+    "continue": "Przejdź do klubu",
+    "laterTitle": "Przygotowanie do otwarcia · wkrótce",
+    "laterBadge": "Później",
+    "later": {
+      "verify": {
+        "title": "Weryfikacja firmy",
+        "sub": "Firma i właściciel"
+      },
+      "memberships": {
+        "title": "Karnety",
+        "sub": "Co kupują członkowie"
+      },
+      "payments": {
+        "title": "Płatności",
+        "sub": "Konto wypłat i metody"
+      },
+      "timetable": {
+        "title": "Grafik",
+        "sub": "Zajęcia w tygodniu"
+      },
+      "team": {
+        "title": "Trenerzy i personel",
+        "sub": "Zaproszenia i role"
+      },
+      "import": {
+        "title": "Import członków",
+        "sub": "CSV i zaproszenia"
+      },
+      "community": {
+        "title": "Ustawienia społeczności",
+        "sub": "Z poszanowaniem prywatności"
+      },
+      "launch": {
+        "title": "Publikacja",
+        "sub": "Przegląd i publikacja"
+      }
+    }
+  }
+}

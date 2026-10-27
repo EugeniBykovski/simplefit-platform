@@ -1944,8 +1944,8 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/app/onboarding/(app-frame)/gym/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/[locale]/app/onboarding/gym/page.tsx",
+        "note": "SF-86: Gym owner web registration (Claude Design GYM 5e, 1792675284-1046, with the approved SF-86 differences): OG1 Gym name & type, OG2 Location, OG3 Branding, OG6b Gym created on the SF-85 gym setup; OG4-OG6 and OG7-OG14 are FUTURE (D-WEB-GYM-ONBOARDING-FLOW)."
       },
       "screens": [
         "OG1",
@@ -1964,7 +1964,7 @@
         "OG13",
         "OG14"
       ],
-      "discrepancies": ["D-ONBOARDING-ENTRY-CAPABILITY"]
+      "discrepancies": ["D-ONBOARDING-ENTRY-CAPABILITY", "D-WEB-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "web.app.gym",
@@ -10205,7 +10205,9 @@
         "step": "5.33",
         "tag": "WEB_APP",
         "artboard": "WebSetupSize.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "OG5",
@@ -10223,7 +10225,9 @@
         "step": "5.34",
         "tag": "WEB_APP",
         "artboard": "WebSetupFeatures.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "OG6",
@@ -10241,7 +10245,9 @@
         "step": "5.35",
         "tag": "WEB_APP",
         "artboard": "WebSetupPlan.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "OG6b",
@@ -10277,7 +10283,9 @@
         "step": "5.37",
         "tag": "WEB_APP",
         "artboard": "WebSetupVerify.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "OG8",
@@ -10295,7 +10303,9 @@
         "step": "5.38",
         "tag": "WEB_APP",
         "artboard": "WebSetupPlans.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "OG9",
@@ -10313,7 +10323,9 @@
         "step": "5.39",
         "tag": "WEB_APP",
         "artboard": "WebSetupPayments.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "OG10",
@@ -10331,7 +10343,9 @@
         "step": "5.40",
         "tag": "WEB_APP",
         "artboard": "WebSetupTimetable.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "OG11",
@@ -10349,7 +10363,9 @@
         "step": "5.41",
         "tag": "WEB_APP",
         "artboard": "WebSetupTeam.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "OG12",
@@ -10367,7 +10383,9 @@
         "step": "5.42",
         "tag": "WEB_APP",
         "artboard": "WebSetupImport.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "OG13",
@@ -10385,7 +10403,9 @@
         "step": "5.43",
         "tag": "WEB_APP",
         "artboard": "WebSetupCommunity.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "OG14",
@@ -10403,7 +10423,9 @@
         "step": "5.44",
         "tag": "WEB_APP",
         "artboard": "WebSetupLaunch.dc.html"
-      }
+      },
+      "status": "DEFERRED",
+      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
     },
     {
       "id": "GRW1",
@@ -17578,6 +17600,20 @@
       "status": "DEFERRED",
       "routes": ["web.app.onboarding.coach"],
       "screens": ["WCR3", "WCR4", "WCR5", "WCR6"]
+    },
+    {
+      "id": "D-WEB-GYM-ONBOARDING-FLOW",
+      "title": "Web Gym owner registration reduced to the backend-supported steps",
+      "sourceA": "Claude Design 1792675284-1046 (GYM 5e): a 14-step setup (OG1 Gym name & type with a public handle, OG2 several locations, OG3 Branding with logo, cover, public URL and a verified badge, OG4 Gym size, OG5 Features, OG6 Plan and trial, OG6b Registration complete with an active trial, OG7-OG14 verification, memberships, payments, timetable, team, import, community and publishing)",
+      "sourceB": "SF-83/SF-84/SF-85 backend (ADR 0026): createGym (name, gym_type, idempotent client_request_id), getGymSetup / updateGymSetup (name, gym_type, phone, website, tagline, accent_color; required expected_revision), setGymPrimaryLocation (one primary location; required expected_revision) and completeGymSetup (name, gym_type and a primary location; account registration). No handle, media, sizing, entitlement, billing, verification, staff invitation, member, timetable or publishing domain exists",
+      "mismatch": "Three of the fourteen steps are backed (partly: no handle, single location, no media); eleven have no owning domain, and OG6b claimed a trial and a plan.",
+      "impact": "Building OG4-OG14, the handle, extra locations or uploads would fake persistence, billing, verification or publication.",
+      "resolution": "Approved SF-86 differences: a three-step progress (Gym name & type, Location, Branding) with OG4-OG14 shown as coming later, never links; no public handle or URL; one location; OG3 Logo and Cover shown as not available yet (no fake upload) and a real Skip; no verified, trial or plan copy; OG3's primary action 'Create gym' calls completeGymSetup; OG6b says 'Gym created' and continues with 'Go to gym' through an explicit Gym context choice (PUT /api/v1/me/entry/context with gym_id) and the entry resolver (gym_home). The step query is navigation only: the draft comes from GET /api/v1/me/gyms, resume and completion from the gym setup. The route needs an authenticated session only (D-ONBOARDING-ENTRY-CAPABILITY). Claude Design keeps the 14-step artboards and is reconciled separately.",
+      "decision": "Web Gym owner registration follows the SF-83-SF-85 backend scope; OG4-OG14 return with their owning domains.",
+      "decidedOn": "2026-10-27",
+      "status": "DEFERRED",
+      "routes": ["web.app.onboarding.gym"],
+      "screens": ["OG4", "OG5", "OG6", "OG7", "OG8", "OG9", "OG10", "OG11", "OG12", "OG13", "OG14"]
     },
     {
       "id": "D-MOBILE-COACH-ONBOARDING-FLOW",
