@@ -13,6 +13,22 @@ WCR7) → the Coach context choice → the Coach dashboard (SF-54) → Fighter
 setup from the context switcher → switch back to Coach → sign out → email
 sign-in → Coach home (the remembered choice).
 
+`gym-journey.spec.ts` (SF-86) drives the Gym owner registration, journeys
+A–P of the ticket: Gym intent → email registration → WA5 → OG1 (nothing
+created by choosing Gym) → one draft with one owner membership → a refused
+completion without a location → OG2 → OG3 → reload, sign out and in, and a
+second device all resuming the same draft → a stale revision from the other
+device (nothing overwritten, an explicit reapply) → completion → OG6b → the
+SF-84 `gym_home` with GYM_WORKSPACE → a completed gym refusing discard → a
+stranger getting 404 on every gym operation; then a second gym with a lost
+create response (no duplicate) kept isolated from the first; a create key
+replayed after its draft was discarded (409, no gym); and a Coach-and-Fighter
+account gaining a gym with every context kept. Backend checks read the
+disposable database (psql) or call the API with the page's own session.
+Journey Q (SF-105) is the API started with `SIMPLEFIT_LOCAL_DEV_COACHING=enabled`
+on the disposable database: the mode refuses itself (`database_not_approved`)
+and the gym flow needs no bypass.
+
 `session-navigation-race.spec.ts` (SF-75) loses a real refresh response: a
 local proxy (`lost-response.ts`) holds the API's answer, after the rotation
 committed, until the page has navigated away, so the browser never applies

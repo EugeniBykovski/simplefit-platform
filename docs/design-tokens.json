@@ -684,7 +684,7 @@
       }
     },
     "onboardingRoles": {
-      "$comment": "SF-38: Fighter web registration typography (Claude Design onboarding page, FIGHTER 5c: WF0 Profile basics, WF1 Boxing profile, WF6 Complete). onboarding-title is the 32 px step heading on the font's natural line; onboarding-done is the 40 px completion headline (line-height 1.1). Web only: the mobile Fighter registration uses its own artboards. Use only in the Fighter onboarding screens. SF-47: label-tight is the WA6 journey card note (mono 10 px, 0.08 em, uppercase), tighter than label (0.14 em); use only in the web account onboarding screens.",
+      "$comment": "SF-38: Fighter web registration typography (Claude Design onboarding page, FIGHTER 5c: WF0 Profile basics, WF1 Boxing profile, WF6 Complete). onboarding-title is the 32 px step heading on the font's natural line; onboarding-done is the 40 px completion headline (line-height 1.1). Web only: the mobile Fighter registration uses its own artboards. Use only in the Fighter onboarding screens. SF-47: label-tight is the WA6 journey card note (mono 10 px, 0.08 em, uppercase), tighter than label (0.14 em); use only in the web account onboarding screens. SF-86: setup-title is the 30 px step heading of the Gym owner setup (GYM 5e: OG1 Gym name & type, OG2 Location, OG3 Branding); use only in the Gym onboarding screens.",
       "web": {
         "onboarding-title": {
           "family": "display",
@@ -707,6 +707,13 @@
           "weight": 400,
           "tracking": 0.08,
           "uppercase": true
+        },
+        "setup-title": {
+          "family": "display",
+          "size": 30,
+          "lineHeight": 38,
+          "weight": 600,
+          "tracking": -0.02
         }
       }
     }

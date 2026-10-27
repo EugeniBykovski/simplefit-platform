@@ -1,0 +1,324 @@
+{
+  "metaTitle": "Inscription de la salle",
+  "loading": "Chargement de la configuration de votre salle…",
+  "loadFailure": {
+    "title": "Impossible de charger la configuration de votre salle.",
+    "body": "Vérifiez votre connexion et réessayez.",
+    "retry": "Réessayer"
+  },
+  "gone": {
+    "title": "Ce brouillon de salle n’est plus disponible.",
+    "body": "Il a été abandonné ou vous ne le gérez plus. Vous pouvez créer une nouvelle salle.",
+    "restart": "Créer une nouvelle salle"
+  },
+  "frame": {
+    "saveExit": "Enregistrer et quitter"
+  },
+  "continue": "Continuer",
+  "back": "Retour",
+  "saving": "Enregistrement…",
+  "status": {
+    "saved": "Enregistré",
+    "unsaved": "Modifications non enregistrées"
+  },
+  "rail": {
+    "title": "Configuration de la salle",
+    "newGym": "Nouvelle salle",
+    "label": "Étapes de configuration de la salle",
+    "progress": "Étape {step} sur {total}",
+    "progressDone": "Salle créée",
+    "groupCreate": "Créez votre salle",
+    "groupLater": "Plus tard",
+    "steps": {
+      "type": {
+        "title": "Nom et type",
+        "sub": "Créez votre salle"
+      },
+      "location": {
+        "title": "Adresse",
+        "sub": "Lieu"
+      },
+      "branding": {
+        "title": "Image de marque",
+        "sub": "Couleur et slogan"
+      }
+    },
+    "hints": {
+      "current": "étape en cours",
+      "done": "terminée",
+      "todo": "à faire",
+      "locked": "disponible une fois la salle créée",
+      "later": "plus tard, pas encore disponible"
+    },
+    "later": {
+      "size": "Taille de la salle",
+      "features": "Fonctionnalités",
+      "plan": "Formule",
+      "verify": "Vérifier l’entreprise",
+      "memberships": "Abonnements",
+      "payments": "Paiements",
+      "timetable": "Planning",
+      "team": "Coachs et équipe",
+      "import": "Importer des membres",
+      "community": "Règles de la communauté",
+      "launch": "Mise en ligne"
+    },
+    "laterCount": "{count, plural, one {# autre étape arrivera plus tard} other {# autres étapes arriveront plus tard}}"
+  },
+  "notices": {
+    "unconfirmed": {
+      "create": "Nous n’avons pas pu confirmer la création de votre salle.",
+      "createBody": "Rien de ce que vous avez saisi n’est perdu. Réessayer est sans risque : cela ne crée jamais une deuxième salle.",
+      "save": "Nous n’avons pas pu confirmer l’enregistrement de vos modifications.",
+      "saveBody": "Rien de ce que vous avez saisi n’est perdu. Réessayer est sans risque : si c’est enregistré, vous verrez la dernière version.",
+      "finish": "Nous n’avons pas pu confirmer la création de votre salle.",
+      "finishBody": "Vérifiez votre connexion, puis réessayez. Réessayer est sans risque.",
+      "retry": "Réessayer"
+    },
+    "invalid": {
+      "title": "Vérifiez les champs signalés.",
+      "body": "Corrigez-les pour enregistrer cette étape."
+    },
+    "rejected": {
+      "title": "Il manque des informations à votre salle.",
+      "body": "Ajoutez {fields} pour la créer.",
+      "fields": {
+        "name": "un nom de salle",
+        "gym_type": "un type de salle",
+        "primary_location": "une adresse"
+      },
+      "goTo": {
+        "name": "Aller à Nom et type",
+        "gym_type": "Aller à Nom et type",
+        "primary_location": "Aller à l’adresse"
+      }
+    },
+    "account": {
+      "title": "Complétez d’abord les infos de votre compte.",
+      "body": "Votre nom, votre date de naissance et vos accords passent avant votre salle.",
+      "action": "Aller aux infos du compte"
+    },
+    "stale": {
+      "title": "Cette salle a été modifiée sur un autre appareil ou onglet.",
+      "body": "Nous avons chargé la dernière version enregistrée et gardé votre saisie. Vérifiez-la, puis enregistrez à nouveau vos modifications.",
+      "reapply": "Enregistrer mes modifications"
+    },
+    "resumed": {
+      "title": "Vous avez déjà une salle en cours.",
+      "body": "Nous l’avons ouverte avec ses informations enregistrées et gardé votre saisie. Continuez pour y enregistrer vos modifications."
+    },
+    "discarded": {
+      "title": "Ce brouillon de salle a été abandonné.",
+      "body": "Votre saisie est toujours là. Continuez pour créer une nouvelle salle avec."
+    },
+    "reused": {
+      "title": "Vous ne pouvez plus configurer ce brouillon de salle.",
+      "body": "Votre saisie est toujours là. Continuez pour créer une nouvelle salle avec."
+    },
+    "rateLimited": {
+      "title": "Vous avez déjà commencé plusieurs salles aujourd’hui.",
+      "body": "Réessayez plus tard. Votre saisie est conservée.",
+      "bodyAfter": "Réessayez {time}. Votre saisie est conservée."
+    },
+    "forbidden": {
+      "title": "Seul·e le ou la propriétaire peut modifier la configuration.",
+      "body": "Demandez ce changement au ou à la propriétaire."
+    },
+    "gone": {
+      "title": "Ce brouillon de salle n’est plus disponible.",
+      "body": "Il a été abandonné ou vous ne le gérez plus.",
+      "restart": "Créer une nouvelle salle"
+    },
+    "session": {
+      "title": "Votre session a expiré.",
+      "body": "Reconnectez-vous pour continuer. Les étapes enregistrées sont conservées.",
+      "action": "Se connecter"
+    },
+    "conflict": {
+      "title": "Impossible d’enregistrer pour le moment.",
+      "body": "Autre chose a modifié cette salle en même temps. Réessayez."
+    }
+  },
+  "errors": {
+    "required": {
+      "name": "Saisissez le nom de votre salle.",
+      "gym_type": "Choisissez un type de salle.",
+      "country_code": "Choisissez un pays.",
+      "city": "Saisissez la ville.",
+      "address_line": "Saisissez l’adresse."
+    },
+    "tooLong": "C’est trop long.",
+    "invalidChoice": "Choisissez l’une des options.",
+    "invalidFormat": "Cela ne semble pas correct. Vérifiez le format.",
+    "invalid": "Vérifiez cette valeur."
+  },
+  "gymTypes": {
+    "boxing_gym": "Salle de boxe",
+    "boxing_club": "Club de boxe",
+    "amateur_club": "Club amateur",
+    "professional_team": "Équipe professionnelle",
+    "combat_sports_gym": "Salle de sports de combat",
+    "fitness_boxing_studio": "Studio de boxe fitness"
+  },
+  "preview": {
+    "label": "Aperçu",
+    "private": "Les membres ne voient pas encore votre salle. Elle reste privée pendant la configuration.",
+    "namePlaceholder": "Nom de votre salle"
+  },
+  "type": {
+    "eyebrow": "Étape 1 sur 3 · Créez votre salle",
+    "title": "Nom et type de salle",
+    "lead": "Dites aux fighters qui vous êtes. Vous pourrez tout modifier plus tard.",
+    "another": {
+      "title": "Vous avez déjà une salle dans SimpleFit.",
+      "body": "Continuer crée une autre salle, distincte. Votre salle existante reste inchangée.",
+      "action": "Aller à ma salle"
+    },
+    "count": "{count}/{max}",
+    "name": {
+      "label": "Nom de la salle",
+      "placeholder": "Nom de votre salle",
+      "help": "Jusqu’à 80 caractères."
+    },
+    "gymType": {
+      "label": "Type"
+    },
+    "phone": {
+      "label": "Téléphone · facultatif",
+      "placeholder": "+33 1 00 00 00 00",
+      "help": "Chiffres, espaces, parenthèses et tirets ; peut commencer par +."
+    },
+    "website": {
+      "label": "Site web · facultatif",
+      "placeholder": "votresalle.fr",
+      "help": "Nous ajoutons https:// si vous l’omettez."
+    },
+    "account": "Cette salle appartient au compte avec lequel vous êtes connecté·e · un seul compte pour tous les rôles.",
+    "note": "~2 min · rien n’est public ici",
+    "creating": "Création…"
+  },
+  "location": {
+    "eyebrow": "Étape 2 sur 3 · Créez votre salle",
+    "title": "Adresse",
+    "lead": "Là où les membres vous trouvent. Votre salle a une adresse pour l’instant.",
+    "country": {
+      "label": "Pays",
+      "placeholder": "Choisir un pays",
+      "search": "Rechercher un pays",
+      "searchPlaceholder": "Rechercher",
+      "empty": "Aucun pays ne correspond."
+    },
+    "city": {
+      "label": "Ville",
+      "placeholder": "Votre ville"
+    },
+    "address": {
+      "label": "Adresse",
+      "placeholder": "Rue, numéro, code postal"
+    },
+    "entrance": {
+      "label": "Indication d’accès · facultatif",
+      "placeholder": "Entrée par la cour, 1er étage",
+      "help": "Aide à trouver la porte. Jusqu’à 200 caractères."
+    },
+    "more": "L’ajout d’autres adresses n’est pas encore disponible.",
+    "note": "Adresse uniquement · SimpleFit n’utilise jamais la position des membres",
+    "preview": {
+      "label": "Aperçu de l’adresse",
+      "note": "Pas de carte ni de suivi de position : on voit l’adresse et votre indication d’accès.",
+      "empty": "Ajoutez l’adresse"
+    },
+    "list": {
+      "label": "Adresses",
+      "note": "Une adresse pour l’instant.",
+      "unnamed": "Adresse principale",
+      "main": "Principale"
+    }
+  },
+  "branding": {
+    "eyebrow": "Étape 3 sur 3 · Créez votre salle",
+    "title": "Image de marque",
+    "lead": "Facultatif. Choisissez votre couleur et un slogan, ou passez cette étape et ajoutez-les plus tard.",
+    "logo": {
+      "label": "Logo",
+      "unavailable": "L’envoi d’un logo n’est pas encore disponible. Vos initiales sont utilisées."
+    },
+    "accent": {
+      "label": "Couleur d’accent",
+      "help": "Chaque couleur est vérifiée en contraste pour les thèmes clair et sombre.",
+      "clear": "Aucune couleur",
+      "colors": {
+        "olive": "Olive",
+        "amber": "Ambre",
+        "coral": "Corail",
+        "sky": "Ciel",
+        "bone": "Os",
+        "moss": "Mousse"
+      }
+    },
+    "tagline": {
+      "label": "Slogan · facultatif",
+      "placeholder": "La boxe pour tous. Fighters bienvenus.",
+      "help": "Une ligne, jusqu’à 120 caractères."
+    },
+    "cover": {
+      "label": "Photo de couverture",
+      "unavailable": "L’envoi d’une photo de couverture n’est pas encore disponible."
+    },
+    "preview": {
+      "label": "Aperçu en direct"
+    },
+    "note": "Tout ici est facultatif",
+    "skip": "Passer pour l’instant",
+    "create": "Créer la salle",
+    "creating": "Création de la salle…"
+  },
+  "done": {
+    "eyebrow": "Salle créée",
+    "title": "{name} est créée.",
+    "lead": "Votre salle est configurée dans SimpleFit. Elle reste privée : rien n’est publié et les membres ne peuvent pas encore la trouver.",
+    "pendingTitle": "Les outils de la salle arrivent",
+    "pendingBody": "Membres, cours, paiements et publication ne sont pas encore disponibles. Ils arriveront dans de prochaines mises à jour.",
+    "retry": "Réessayer",
+    "failureTitle": "Impossible d’ouvrir votre salle.",
+    "failureBody": "Votre salle est créée. Vérifiez votre connexion et réessayez.",
+    "opening": "Ouverture…",
+    "continue": "Aller à la salle",
+    "laterTitle": "Préparer l’ouverture · plus tard",
+    "laterBadge": "Plus tard",
+    "later": {
+      "verify": {
+        "title": "Vérifier l’entreprise",
+        "sub": "Société et propriétaire"
+      },
+      "memberships": {
+        "title": "Abonnements",
+        "sub": "Ce que les membres achètent"
+      },
+      "payments": {
+        "title": "Paiements",
+        "sub": "Compte de versement et moyens"
+      },
+      "timetable": {
+        "title": "Planning",
+        "sub": "Cours par semaine"
+      },
+      "team": {
+        "title": "Coachs et équipe",
+        "sub": "Invitations et rôles"
+      },
+      "import": {
+        "title": "Importer des membres",
+        "sub": "CSV et invitations"
+      },
+      "community": {
+        "title": "Règles de la communauté",
+        "sub": "Respectueuses de la vie privée"
+      },
+      "launch": {
+        "title": "Mise en ligne",
+        "sub": "Vérifier et publier"
+      }
+    }
+  }
+}

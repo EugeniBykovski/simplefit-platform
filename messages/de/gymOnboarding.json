@@ -1,0 +1,324 @@
+{
+  "metaTitle": "Gym-Registrierung",
+  "loading": "Deine Gym-Einrichtung wird geladen…",
+  "loadFailure": {
+    "title": "Wir konnten deine Gym-Einrichtung nicht laden.",
+    "body": "Prüfe deine Verbindung und versuche es erneut.",
+    "retry": "Erneut versuchen"
+  },
+  "gone": {
+    "title": "Dieser Gym-Entwurf ist nicht mehr verfügbar.",
+    "body": "Er wurde verworfen oder du verwaltest ihn nicht mehr. Du kannst ein neues Gym anlegen.",
+    "restart": "Neues Gym anlegen"
+  },
+  "frame": {
+    "saveExit": "Speichern & beenden"
+  },
+  "continue": "Weiter",
+  "back": "Zurück",
+  "saving": "Wird gespeichert…",
+  "status": {
+    "saved": "Gespeichert",
+    "unsaved": "Ungespeicherte Änderungen"
+  },
+  "rail": {
+    "title": "Gym-Einrichtung",
+    "newGym": "Neues Gym",
+    "label": "Schritte der Gym-Einrichtung",
+    "progress": "Schritt {step} von {total}",
+    "progressDone": "Gym erstellt",
+    "groupCreate": "Dein Gym anlegen",
+    "groupLater": "Kommt später",
+    "steps": {
+      "type": {
+        "title": "Name & Art",
+        "sub": "Gym anlegen"
+      },
+      "location": {
+        "title": "Standort",
+        "sub": "Adresse"
+      },
+      "branding": {
+        "title": "Branding",
+        "sub": "Farbe & Slogan"
+      }
+    },
+    "hints": {
+      "current": "aktueller Schritt",
+      "done": "erledigt",
+      "todo": "noch offen",
+      "locked": "verfügbar, sobald dein Gym angelegt ist",
+      "later": "kommt später, noch nicht verfügbar"
+    },
+    "later": {
+      "size": "Gym-Größe",
+      "features": "Funktionen",
+      "plan": "Tarif",
+      "verify": "Unternehmen verifizieren",
+      "memberships": "Mitgliedschaften",
+      "payments": "Zahlungen",
+      "timetable": "Stundenplan",
+      "team": "Coaches & Team",
+      "import": "Mitglieder importieren",
+      "community": "Community-Standards",
+      "launch": "Live gehen"
+    },
+    "laterCount": "{count, plural, one {# weiterer Schritt kommt später} other {# weitere Schritte kommen später}}"
+  },
+  "notices": {
+    "unconfirmed": {
+      "create": "Wir konnten nicht bestätigen, dass dein Gym angelegt wurde.",
+      "createBody": "Nichts von deinen Eingaben geht verloren. Erneut versuchen ist sicher: Es entsteht nie ein zweites Gym.",
+      "save": "Wir konnten nicht bestätigen, dass deine Änderungen gespeichert wurden.",
+      "saveBody": "Nichts von deinen Eingaben geht verloren. Erneut versuchen ist sicher: Falls gespeichert wurde, siehst du den neuesten Stand.",
+      "finish": "Wir konnten nicht bestätigen, dass dein Gym erstellt wurde.",
+      "finishBody": "Prüfe deine Verbindung und versuche es erneut. Erneut versuchen ist sicher.",
+      "retry": "Erneut"
+    },
+    "invalid": {
+      "title": "Prüfe die markierten Felder.",
+      "body": "Korrigiere sie, um diesen Schritt zu speichern."
+    },
+    "rejected": {
+      "title": "Deinem Gym fehlen noch Angaben.",
+      "body": "Ergänze {fields}, um es zu erstellen.",
+      "fields": {
+        "name": "einen Gym-Namen",
+        "gym_type": "eine Gym-Art",
+        "primary_location": "einen Standort"
+      },
+      "goTo": {
+        "name": "Zu Name & Art",
+        "gym_type": "Zu Name & Art",
+        "primary_location": "Zum Standort"
+      }
+    },
+    "account": {
+      "title": "Schließe zuerst deine Kontodaten ab.",
+      "body": "Name, Geburtsdatum und Zustimmungen kommen vor deinem Gym.",
+      "action": "Zu den Kontodaten"
+    },
+    "stale": {
+      "title": "Dieses Gym wurde auf einem anderen Gerät oder Tab geändert.",
+      "body": "Wir haben den neuesten gespeicherten Stand geladen und deine Eingaben behalten. Prüfe sie und speichere deine Änderungen erneut.",
+      "reapply": "Meine Änderungen speichern"
+    },
+    "resumed": {
+      "title": "Du hast bereits ein Gym in Arbeit.",
+      "body": "Wir haben es mit seinen gespeicherten Angaben geöffnet und deine Eingaben behalten. Mit „Weiter“ speicherst du deine Änderungen dort."
+    },
+    "discarded": {
+      "title": "Dieser Gym-Entwurf wurde verworfen.",
+      "body": "Deine Eingaben sind noch da. Mit „Weiter“ legst du damit ein neues Gym an."
+    },
+    "reused": {
+      "title": "Diesen Gym-Entwurf kannst du nicht mehr einrichten.",
+      "body": "Deine Eingaben sind noch da. Mit „Weiter“ legst du damit ein neues Gym an."
+    },
+    "rateLimited": {
+      "title": "Du hast heute schon mehrere Gyms angelegt.",
+      "body": "Versuche es später erneut. Deine Eingaben bleiben erhalten.",
+      "bodyAfter": "Versuche es {time} erneut. Deine Eingaben bleiben erhalten."
+    },
+    "forbidden": {
+      "title": "Nur die Inhaberin oder der Inhaber kann die Einrichtung ändern.",
+      "body": "Bitte die Inhaberin oder den Inhaber um diese Änderung."
+    },
+    "gone": {
+      "title": "Dieser Gym-Entwurf ist nicht mehr verfügbar.",
+      "body": "Er wurde verworfen oder du verwaltest ihn nicht mehr.",
+      "restart": "Neues Gym anlegen"
+    },
+    "session": {
+      "title": "Deine Sitzung ist abgelaufen.",
+      "body": "Melde dich erneut an, um weiterzumachen. Gespeicherte Schritte bleiben erhalten.",
+      "action": "Anmelden"
+    },
+    "conflict": {
+      "title": "Das konnten wir gerade nicht speichern.",
+      "body": "Gleichzeitig wurde etwas anderes an diesem Gym geändert. Versuche es erneut."
+    }
+  },
+  "errors": {
+    "required": {
+      "name": "Gib den Namen deines Gyms ein.",
+      "gym_type": "Wähle eine Gym-Art.",
+      "country_code": "Wähle ein Land.",
+      "city": "Gib die Stadt ein.",
+      "address_line": "Gib die Straße und Hausnummer ein."
+    },
+    "tooLong": "Das ist zu lang.",
+    "invalidChoice": "Wähle eine der Optionen.",
+    "invalidFormat": "Das sieht nicht richtig aus. Prüfe das Format.",
+    "invalid": "Prüfe diesen Wert."
+  },
+  "gymTypes": {
+    "boxing_gym": "Box-Gym",
+    "boxing_club": "Boxclub",
+    "amateur_club": "Amateurverein",
+    "professional_team": "Profi-Team",
+    "combat_sports_gym": "Kampfsport-Gym",
+    "fitness_boxing_studio": "Fitnessbox-Studio"
+  },
+  "preview": {
+    "label": "Vorschau",
+    "private": "Mitglieder sehen dein Gym noch nicht. Es bleibt privat, während du es einrichtest.",
+    "namePlaceholder": "Name deines Gyms"
+  },
+  "type": {
+    "eyebrow": "Schritt 1 von 3 · Dein Gym anlegen",
+    "title": "Name & Art des Gyms",
+    "lead": "Sag Fightern, wer du bist. Du kannst alles später ändern.",
+    "another": {
+      "title": "Du hast bereits ein Gym in SimpleFit.",
+      "body": "Wenn du weitermachst, legst du ein weiteres, separates Gym an. Dein bestehendes Gym bleibt unverändert.",
+      "action": "Zu meinem Gym"
+    },
+    "count": "{count}/{max}",
+    "name": {
+      "label": "Gym-Name",
+      "placeholder": "Name deines Gyms",
+      "help": "Bis zu 80 Zeichen."
+    },
+    "gymType": {
+      "label": "Art"
+    },
+    "phone": {
+      "label": "Telefon · optional",
+      "placeholder": "+49 30 000 00 00",
+      "help": "Ziffern, Leerzeichen, Klammern und Bindestriche; darf mit + beginnen."
+    },
+    "website": {
+      "label": "Website · optional",
+      "placeholder": "deingym.de",
+      "help": "Ohne https:// ergänzen wir es."
+    },
+    "account": "Dieses Gym gehört zu dem Konto, mit dem du angemeldet bist · ein Konto für alle Rollen.",
+    "note": "~2 Min. · hier ist nichts öffentlich",
+    "creating": "Wird angelegt…"
+  },
+  "location": {
+    "eyebrow": "Schritt 2 von 3 · Dein Gym anlegen",
+    "title": "Standort",
+    "lead": "Wo Mitglieder dich finden. Dein Gym hat vorerst einen Standort.",
+    "country": {
+      "label": "Land",
+      "placeholder": "Land auswählen",
+      "search": "Länder durchsuchen",
+      "searchPlaceholder": "Suchen",
+      "empty": "Kein passendes Land."
+    },
+    "city": {
+      "label": "Stadt",
+      "placeholder": "Deine Stadt"
+    },
+    "address": {
+      "label": "Adresse",
+      "placeholder": "Straße, Hausnummer, PLZ"
+    },
+    "entrance": {
+      "label": "Eingangshinweis · optional",
+      "placeholder": "Eingang über den Hof, 1. Stock",
+      "help": "Hilft, die Tür zu finden. Bis zu 200 Zeichen."
+    },
+    "more": "Weitere Standorte hinzuzufügen ist noch nicht möglich.",
+    "note": "Nur die Adresse · SimpleFit nutzt nie den Standort von Mitgliedern",
+    "preview": {
+      "label": "Adressvorschau",
+      "note": "Keine Karten, kein Standort-Tracking: Man sieht die Adresse und deinen Eingangshinweis.",
+      "empty": "Adresse ergänzen"
+    },
+    "list": {
+      "label": "Standorte",
+      "note": "Vorerst ein Standort.",
+      "unnamed": "Hauptstandort",
+      "main": "Haupt"
+    }
+  },
+  "branding": {
+    "eyebrow": "Schritt 3 von 3 · Dein Gym anlegen",
+    "title": "Branding",
+    "lead": "Optional. Wähle deine Farbe und einen Slogan oder überspringe den Schritt und ergänze sie später.",
+    "logo": {
+      "label": "Logo",
+      "unavailable": "Logo-Upload ist noch nicht verfügbar. Deine Initialen werden verwendet."
+    },
+    "accent": {
+      "label": "Akzentfarbe",
+      "help": "Jede Farbe ist für helles und dunkles Design kontrastgeprüft.",
+      "clear": "Keine Farbe",
+      "colors": {
+        "olive": "Oliv",
+        "amber": "Bernstein",
+        "coral": "Koralle",
+        "sky": "Himmelblau",
+        "bone": "Knochenweiß",
+        "moss": "Moos"
+      }
+    },
+    "tagline": {
+      "label": "Slogan · optional",
+      "placeholder": "Boxen für alle. Fighter willkommen.",
+      "help": "Eine Zeile, bis zu 120 Zeichen."
+    },
+    "cover": {
+      "label": "Titelbild",
+      "unavailable": "Titelbild-Upload ist noch nicht verfügbar."
+    },
+    "preview": {
+      "label": "Live-Vorschau"
+    },
+    "note": "Alles hier ist optional",
+    "skip": "Vorerst überspringen",
+    "create": "Gym erstellen",
+    "creating": "Gym wird erstellt…"
+  },
+  "done": {
+    "eyebrow": "Gym erstellt",
+    "title": "{name} ist erstellt.",
+    "lead": "Dein Gym ist in SimpleFit eingerichtet. Es bleibt privat: Nichts ist veröffentlicht und Mitglieder können es noch nicht finden.",
+    "pendingTitle": "Gym-Werkzeuge sind unterwegs",
+    "pendingBody": "Mitglieder, Kurse, Zahlungen und Veröffentlichung sind noch nicht verfügbar. Sie kommen mit späteren Updates.",
+    "retry": "Erneut versuchen",
+    "failureTitle": "Wir konnten dein Gym nicht öffnen.",
+    "failureBody": "Dein Gym ist erstellt. Prüfe deine Verbindung und versuche es erneut.",
+    "opening": "Wird geöffnet…",
+    "continue": "Zum Gym",
+    "laterTitle": "Bereit für die Eröffnung · kommt später",
+    "laterBadge": "Später",
+    "later": {
+      "verify": {
+        "title": "Unternehmen verifizieren",
+        "sub": "Firma & Inhaber"
+      },
+      "memberships": {
+        "title": "Mitgliedschaften",
+        "sub": "Was Mitglieder kaufen"
+      },
+      "payments": {
+        "title": "Zahlungen",
+        "sub": "Auszahlungskonto & Zahlarten"
+      },
+      "timetable": {
+        "title": "Stundenplan",
+        "sub": "Kurse pro Woche"
+      },
+      "team": {
+        "title": "Coaches & Team",
+        "sub": "Einladungen & Rollen"
+      },
+      "import": {
+        "title": "Mitglieder importieren",
+        "sub": "CSV & Einladungen"
+      },
+      "community": {
+        "title": "Community-Standards",
+        "sub": "Datenschutzfreundlich"
+      },
+      "launch": {
+        "title": "Live gehen",
+        "sub": "Prüfen & veröffentlichen"
+      }
+    }
+  }
+}
