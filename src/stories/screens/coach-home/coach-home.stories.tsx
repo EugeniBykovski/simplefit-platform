@@ -78,6 +78,9 @@ const entryFor = (profiles: Profiles, destination = "coach_home") => ({
     account_registration: "complete",
     fighter_profile: profiles === "coach" ? "not_started" : "completed",
     coach_profile: profiles === "fighter" ? "in_progress" : "completed",
+    gym_id: null,
+    gym_workspaces: [],
+    gym_workspace_count: 0,
     capabilities:
       profiles === "both" ? ["FIGHTER", "COACH"] : profiles === "coach" ? ["COACH"] : ["FIGHTER"],
   },

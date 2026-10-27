@@ -274,7 +274,7 @@ test("A–I, L, O, P: a new owner registers, creates, resumes on two devices and
     "Boxing for everyone.|completed",
   );
   await page.getByRole("button", { name: "Go to gym" }).click();
-  await page.waitForURL((url) => url.pathname === "/en/app/gym");
+  await page.waitForURL((url) => /^\/en\/app\/gyms\/[0-9a-f-]+$/.test(url.pathname));
   const entry = await call(request, bearer(), "GET", "/api/v1/me/entry?intent=gym");
   expect(entry.status).toBe(200);
   expect(entry.body.entry).toMatchObject({ destination: "gym_home", gym_id: gym?.id });
@@ -283,7 +283,7 @@ test("A–I, L, O, P: a new owner registers, creates, resumes on two devices and
   await other.reload();
   await expect(other.getByText("You already have a gym in SimpleFit.")).toBeVisible();
   await other.getByRole("link", { name: "Go to my gym" }).click();
-  await other.waitForURL((url) => url.pathname === "/en/app/gym");
+  await other.waitForURL((url) => /^\/en\/app\/gyms\/[0-9a-f-]+$/.test(url.pathname));
 
   // O · a completed gym cannot be discarded as a draft.
   const discard = await call(request, bearer(), "DELETE", `/api/v1/gyms/${gym?.id}`);
@@ -333,7 +333,7 @@ test("K, M: a second gym — a lost create response makes no duplicate; the two 
   const page = await newPage(browser);
   const bearer = sessionOf(page);
   await signIn(page, owner.email);
-  await page.waitForURL((url) => url.pathname === "/en/app/gym");
+  await page.waitForURL((url) => /^\/en\/app\/gyms\/[0-9a-f-]+$/.test(url.pathname));
 
   // An owner of a completed gym deliberately starts another (no draft exists).
   await page.goto("/en/app/onboarding/gym?intent=gym");
@@ -364,7 +364,7 @@ test("K, M: a second gym — a lost create response makes no duplicate; the two 
   await page.getByRole("button", { name: "Skip for now" }).click();
   await expect(heading(page, "Wola Boxing is created.")).toBeVisible();
   await page.getByRole("button", { name: "Go to gym" }).click();
-  await page.waitForURL((url) => url.pathname === "/en/app/gym");
+  await page.waitForURL((url) => /^\/en\/app\/gyms\/[0-9a-f-]+$/.test(url.pathname));
 
   // K · two owned gyms, each with its own data; the entry follows the explicit choice.
   const first = await call(request, bearer(), "GET", `/api/v1/gyms/${owner.gym}/setup`);
@@ -489,7 +489,7 @@ test("J: a Coach who is also a Fighter gains Gym ownership and keeps both contex
   await page.getByRole("button", { name: "Skip for now" }).click();
   await expect(heading(page, "Coach Alex Gym is created.")).toBeVisible();
   await page.getByRole("button", { name: "Go to gym" }).click();
-  await page.waitForURL((url) => url.pathname === "/en/app/gym");
+  await page.waitForURL((url) => /^\/en\/app\/gyms\/[0-9a-f-]+$/.test(url.pathname));
 
   const entry = await call(request, bearer(), "GET", "/api/v1/me/entry");
   expect((entry.body.entry as { capabilities: string[] }).capabilities).toEqual(

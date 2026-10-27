@@ -141,7 +141,10 @@ test("a new owner: OG1 → OG2 → OG3 → Create gym → OG6b → Go to gym, ev
 
   // Go to gym: the explicit Gym context choice, then the entry resolver.
   await page.getByRole("button", { name: "Go to gym" }).click();
-  await page.waitForURL("**/en/app/gym");
+  // SF-88: the entry opens the console of exactly this gym, which shows it.
+  await page.waitForURL(`**/en/app/gyms/${gym?.id}`);
+  await expect(heading(page, "Dashboard")).toBeVisible();
+  await expect(page.locator("[data-gym-name]")).toHaveText("Simple Boxing Gym");
   expect(api.lastGym()).toBe(gym?.id);
   expect(api.requests.find((request) => request.path === "/api/v1/me/entry/context")?.body).toEqual(
     { context: "gym", gym_id: gym?.id },
@@ -351,7 +354,7 @@ test("multi-gym: an owner of a completed gym creates a second, and Go to gym ope
   await page.getByRole("button", { name: "Create gym" }).click();
   await expect(heading(page, "Second Gym is created.")).toBeVisible();
   await page.getByRole("button", { name: "Go to gym" }).click();
-  await page.waitForURL("**/en/app/gym");
+  await page.waitForURL(/\/en\/app\/gyms\/[0-9a-f-]+$/);
   const second = api.gyms().find((gym) => gym.name === "Second Gym");
   expect(api.lastGym()).toBe(second?.id);
   expect(api.gyms().find((gym) => gym.name === "First Gym")?.name).toBe("First Gym");
@@ -478,7 +481,7 @@ test("a draft completed on another device: a reload explains it and leads to the
   await expect(heading(page, "Gym name & type")).toBeVisible();
   await expect(page.getByText("You already have a gym in SimpleFit.")).toBeVisible();
   await page.getByRole("link", { name: "Go to my gym" }).click();
-  await page.waitForURL("**/en/app/gym");
+  await page.waitForURL(/\/en\/app\/gyms\/[0-9a-f-]+$/);
   expect(api.gyms()).toHaveLength(1);
 });
 
@@ -493,5 +496,5 @@ test("a draft completed on another device while this tab is open leaves through 
   await page.evaluate(() =>
     document.dispatchEvent(new Event("visibilitychange", { bubbles: true })),
   );
-  await page.waitForURL("**/en/app/gym");
+  await page.waitForURL(/\/en\/app\/gyms\/[0-9a-f-]+$/);
 });

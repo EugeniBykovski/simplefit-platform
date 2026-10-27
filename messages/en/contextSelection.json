@@ -7,16 +7,21 @@
     "eyebrow": "Your profiles",
     "title": "Where do you want to go?",
     "lead": "You have a fighter and a coach profile on one account.",
-    "note": "We open your last choice next time. Switch any time from the top of the sidebar."
+    "note": "We open your last choice next time. Switch any time from the top of the sidebar.",
+    "leadMixed": "Your profiles and gyms live on one account."
   },
   "setup": {
     "eyebrow": "Your setup",
     "title": "Which setup do you want to continue?",
     "lead": "You started more than one. Pick one; the other waits for you.",
-    "note": "Nothing is lost: each setup keeps what you saved."
+    "note": "Nothing is lost: each setup keeps what you saved.",
+    "leadMixed": "Pick one; everything else waits for you."
   },
   "failed": {
     "title": "We couldn’t open that.",
     "body": "Nothing changed. Try again."
-  }
+  },
+  "gymLine": "{role} · gym console",
+  "gymSetup": "Continue gym setup",
+  "allGyms": "All gyms ({count})"
 }

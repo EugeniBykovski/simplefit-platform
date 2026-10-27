@@ -7,7 +7,7 @@ import type { EntryResponseEntry } from "@/shared/api/generated/model";
 import { jsonResponse, renderWithProviders } from "@/test/render";
 
 import { ContextSwitcher } from "./context-switcher";
-import { CoachGate, FighterGate } from "./workspace-gate";
+import { CoachGate, FighterGate, GymGate } from "./workspace-gate";
 
 /*
  * The Fighter / Coach context switcher (SF-54) inside a real workspace gate,
@@ -27,6 +27,11 @@ const navigation = vi.hoisted(() => ({ replace: vi.fn(), push: vi.fn(), pathname
 vi.mock("@/shared/i18n/navigation", () => ({
   usePathname: () => navigation.pathname,
   useRouter: () => ({ replace: navigation.replace, push: navigation.push }),
+  Link: ({ href, children, ...props }: React.ComponentProps<"a">) => (
+    <a href={`/en${href}`} {...props}>
+      {children}
+    </a>
+  ),
 }));
 vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams() }));
 
@@ -207,6 +212,120 @@ describe("ContextSwitcher (SF-54)", () => {
     expect(within(menu).getByRole("menuitemradio", { name: /Fighter/ })).toHaveAttribute(
       "aria-checked",
       "true",
+    );
+  });
+});
+
+describe("gym workspaces in the switcher (SF-88)", () => {
+  const RING = "3d0a7f52-1c8e-4b6a-9f20-5e7d1b3c9a64";
+  const ANNEX = "9b4e2d61-7a3c-4f85-8e1d-6c2a0b5f3d97";
+  const DRAFT = "c5a1e8f3-4d29-4b7e-a6c0-1f8d3e5b7a22";
+  const gym = (
+    gym_id: string,
+    name: string,
+    role: "owner" | "manager" | "coach" | "front_desk",
+    actions: ("enter" | "continue_setup")[],
+  ) => ({
+    gym_id,
+    name,
+    role,
+    setup_status: actions.includes("enter") ? ("completed" as const) : ("draft" as const),
+    available_actions: actions,
+    selected: false,
+  });
+  const MIXED = entry({
+    capabilities: ["COACH", "GYM_WORKSPACE"],
+    gym_workspaces: [
+      gym(DRAFT, "Draft Hall", "owner", ["continue_setup"]),
+      gym(RING, "Ring One", "owner", ["enter"]),
+      gym(ANNEX, "Annex Club", "manager", ["enter"]),
+    ],
+    gym_workspace_count: 3,
+  });
+
+  it("lists the gyms the backend lets the user enter, with their roles, in the Coach shell", async () => {
+    api({ initial: MIXED });
+    const menu = await renderCoach();
+    expect(within(menu).getByRole("menuitemradio", { name: /Ring One.*Owner/ })).toHaveAttribute(
+      "aria-checked",
+      "false",
+    );
+    expect(within(menu).getByRole("menuitemradio", { name: /Annex Club.*Manager/ })).toBeVisible();
+    // The draft is never an operational gym: only its setup continues.
+    expect(within(menu).queryByRole("menuitemradio", { name: /Draft Hall/ })).toBeNull();
+    expect(
+      within(menu).getByRole("menuitem", { name: /Continue gym setup.*Draft Hall/ }),
+    ).toBeVisible();
+  });
+
+  it("records the gym choice, then opens the console that names the gym", async () => {
+    const calls = api({ initial: MIXED });
+    const menu = await renderCoach();
+    await user.click(within(menu).getByRole("menuitemradio", { name: /Annex Club/ }));
+    await waitFor(() =>
+      expect(navigation.push).toHaveBeenCalledExactlyOnceWith(`/app/gyms/${ANNEX}`),
+    );
+    expect(calls.writes()).toEqual([
+      {
+        method: "PUT",
+        path: "/api/v1/me/entry/context",
+        body: { context: "gym", gym_id: ANNEX },
+      },
+    ]);
+  });
+
+  it("continues the user's draft in Gym setup without recording anything", async () => {
+    const calls = api({ initial: MIXED });
+    const menu = await renderCoach();
+    await user.click(within(menu).getByRole("menuitem", { name: /Continue gym setup/ }));
+    await waitFor(() =>
+      expect(navigation.push).toHaveBeenCalledExactlyOnceWith("/app/onboarding/gym?intent=gym"),
+    );
+    expect(calls.writes()).toEqual([]);
+  });
+
+  it("keeps the user here and re-reads the entry when the gym was revoked meanwhile (404)", async () => {
+    const calls = api({ initial: MIXED, choice: [{ status: 404 }] });
+    const menu = await renderCoach();
+    const before = calls.entryReads().length;
+    await user.click(within(menu).getByRole("menuitemradio", { name: /Annex Club/ }));
+    expect(await within(menu).findByRole("alert")).toHaveTextContent("We couldn’t switch.");
+    expect(navigation.push).not.toHaveBeenCalled();
+    await waitFor(() => expect(calls.entryReads().length).toBeGreaterThan(before));
+  });
+
+  it("is the gym console's identity block: the gym, the viewer's role and its locations", async () => {
+    navigation.pathname = `/app/gyms/${RING}`;
+    const calls = api({ initial: { ...MIXED, destination: "gym_home", gym_id: RING } });
+    await renderWithProviders(
+      <GymGate pending={<p>pending</p>} failure={<p>failure</p>}>
+        <ContextSwitcher gym={{ id: RING, name: "Ring One", role: "owner", locations: 1 }} />
+      </GymGate>,
+    );
+    const trigger = await screen.findByRole("button", {
+      name: "Ring One, Owner. Switch gym or profile",
+    });
+    expect(trigger).toHaveTextContent("Owner · 1 location");
+    await user.click(trigger);
+    const menu = await screen.findByRole("menu");
+    const current = within(menu).getByRole("menuitemradio", { name: /Ring One/ });
+    expect(current).toHaveAttribute("aria-checked", "true");
+    await user.click(current);
+    expect(calls.writes()).toEqual([]);
+    expect(navigation.push).not.toHaveBeenCalled();
+    // The completed Coach profile stays reachable from the gym console.
+    expect(within(menu).getByRole("menuitemradio", { name: /Coach/ })).toHaveAttribute(
+      "aria-checked",
+      "false",
+    );
+  });
+
+  it("links to every gym when the entry lists fewer than the user has", async () => {
+    api({ initial: { ...MIXED, gym_workspace_count: 40 } });
+    const menu = await renderCoach();
+    expect(within(menu).getByRole("menuitem", { name: "All gyms (40)" })).toHaveAttribute(
+      "href",
+      "/en/app/gyms",
     );
   });
 });

@@ -1,0 +1,118 @@
+{
+  "announcement": "Konsola klubu {name}",
+  "switcher": {
+    "trigger": "{name}, {role}. Zmień klub lub profil",
+    "identity": "{role} · {count, plural, one {# lokalizacja} few {# lokalizacje} many {# lokalizacji} other {# lokalizacji}}",
+    "heading": "Twoje kluby",
+    "continueSetup": "Dokończ konfigurację klubu",
+    "allGyms": "Wszystkie kluby ({count})",
+    "roles": {
+      "owner": "Właściciel",
+      "manager": "Menedżer",
+      "coach": "Trener",
+      "front_desk": "Recepcja"
+    }
+  },
+  "chooser": {
+    "metaTitle": "Wybierz klub",
+    "eyebrow": "Twoje kluby",
+    "title": "Który klub chcesz otworzyć?",
+    "lead": "Każdy klub, w którym pracujesz, na jednym koncie. Każdy ma własną konsolę.",
+    "gyms": "Kluby",
+    "setup": "Konfiguracja w toku",
+    "draftLine": "Jeszcze nieskonfigurowany · można tylko dokończyć konfigurację",
+    "open": "Otwórz",
+    "continue": "Kontynuuj",
+    "more": "Pokaż więcej klubów (łącznie {count})",
+    "moreFailed": "Nie udało się wczytać kolejnych klubów. Spróbuj ponownie.",
+    "note": "Następnym razem otworzymy Twój ostatni wybór. Zmienisz go w każdej chwili u góry paska bocznego.",
+    "signOut": "Wyloguj się",
+    "empty": {
+      "title": "Nie pracujesz jeszcze w żadnym klubie",
+      "lead": "Zarejestruj swój klub, aby otworzyć jego konsolę. Kluby, do których zostaniesz zaproszony, pojawią się tutaj.",
+      "action": "Zarejestruj klub"
+    },
+    "failed": {
+      "title": "Nie udało się otworzyć tego klubu.",
+      "body": "Nic się nie zmieniło. Spróbuj ponownie."
+    }
+  },
+  "states": {
+    "eyebrow": "Konsola klubu",
+    "notAvailable": {
+      "heading": "Klub niedostępny",
+      "title": "Ten klub jest niedostępny",
+      "body": "Nie istnieje albo w nim nie pracujesz. Otwórz jeden ze swoich klubów.",
+      "action": "Twoje kluby"
+    },
+    "restricted": {
+      "heading": "Niedostępne dla Twojej roli",
+      "title": "Twoja rola tego nie obejmuje",
+      "body": "Pracujesz w tym klubie, ale ta część konsoli nie należy do Twojej roli. Jeśli jej potrzebujesz, zapytaj właściciela klubu.",
+      "action": "Wróć do panelu"
+    },
+    "draft": {
+      "title": "Ten klub nie jest jeszcze skonfigurowany",
+      "body": "Jego konsola otworzy się po zakończeniu konfiguracji. Kontynuuj tam, gdzie skończyłeś.",
+      "bodyStaff": "Jego konsola otworzy się, gdy właściciel zakończy konfigurację.",
+      "action": "Kontynuuj konfigurację"
+    }
+  },
+  "dashboard": {
+    "metaTitle": "Panel klubu",
+    "title": "Panel",
+    "eyebrow": "{date} · {where}",
+    "allLocations": "Wszystkie lokalizacje",
+    "summary": {
+      "title": "Twój klub",
+      "completed": "Konfiguracja zakończona"
+    },
+    "details": {
+      "title": "Dane klubu",
+      "address": "Adres",
+      "phone": "Telefon",
+      "website": "Strona internetowa",
+      "tagline": "Hasło",
+      "accent": "Kolor akcentu",
+      "none": "Nie dodano",
+      "loading": "Wczytywanie danych klubu",
+      "failed": "Nie udało się wczytać danych klubu. Reszta strony jest aktualna.",
+      "restricted": "Twoja rola nie obejmuje danych klubu.",
+      "retry": "Spróbuj ponownie"
+    },
+    "access": {
+      "title": "Twój dostęp",
+      "note": "SimpleFit sprawdza każde działanie dla tego klubu. Żadna rola w klubie nie odczytuje prywatnych danych treningowych.",
+      "roles": {
+        "owner": "Jesteś właścicielem tego klubu: jego danych, konfiguracji, a później także zespołu i członków.",
+        "manager": "Pomagasz prowadzić ten klub: jego dane, lokalizacje, zespół i członków.",
+        "coach": "Trenujesz w tym klubie: swoje zajęcia i ich listy uczestników.",
+        "front_desk": "Prowadzisz recepcję: wejścia, rezerwacje i członków przy recepcji."
+      }
+    },
+    "limited": {
+      "title": "Twój panel",
+      "body": "Panel dla roli {role} nie jest jeszcze dostępny. Możesz otworzyć ten klub; jego narzędzia pojawią się wraz z ich funkcjami."
+    },
+    "later": {
+      "title": "Wkrótce w Twojej konsoli",
+      "badge": "Później",
+      "members": {
+        "title": "Członkowie",
+        "body": "Zapraszaj członków i sprawdzaj, kto tu trenuje."
+      },
+      "schedule": {
+        "title": "Zajęcia i grafik",
+        "body": "Planuj zajęcia na cały tydzień."
+      },
+      "attendance": {
+        "title": "Rezerwacje i wejścia",
+        "body": "Rezerwacje i wejścia na każde zajęcia."
+      },
+      "staff": {
+        "title": "Trenerzy i personel",
+        "body": "Zaproś zespół i nadaj każdemu rolę."
+      }
+    }
+  }
+}

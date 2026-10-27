@@ -34,6 +34,9 @@ const entry = (destination: string, intent: string | null = null) =>
   ok({
     entry: {
       account_registration: "complete",
+      gym_id: null,
+      gym_workspaces: [],
+      gym_workspace_count: 0,
       capabilities: [],
       destination,
       fighter_profile: "not_started",

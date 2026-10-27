@@ -79,6 +79,9 @@ const entry = (fighter: "completed" | "in_progress") =>
       account_registration: "complete",
       fighter_profile: fighter,
       coach_profile: "not_started",
+      gym_id: null,
+      gym_workspaces: [],
+      gym_workspace_count: 0,
       capabilities: fighter === "completed" ? ["FIGHTER"] : [],
     },
   });

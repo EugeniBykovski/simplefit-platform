@@ -523,6 +523,9 @@ export async function onboardingApi(
     return {
       entry: {
         account_registration: accountView().registration.status,
+        gym_id: null,
+        gym_workspaces: [],
+        gym_workspace_count: 0,
         capabilities: completed.map((role) => role.toUpperCase()),
         coach_profile: coachStatus,
         context,

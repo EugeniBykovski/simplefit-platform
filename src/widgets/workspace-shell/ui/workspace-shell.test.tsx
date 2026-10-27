@@ -23,12 +23,16 @@ vi.mock("@/features/switch-locale", () => ({ LocaleSwitcher: () => null }));
 vi.mock("@/features/switch-theme", () => ({ ThemeSwitcher: () => null }));
 
 const SHELLS = Object.keys(shellNavigation) as SidebarShellId[];
+const GYM_ID = "6f1d2c4e-9a51-4b3e-8c0d-2b6a7e19f3a4";
+/** The gym console's links name its gym (SF-88). */
+const paramsOf = (shell: SidebarShellId): Record<string, string> =>
+  shell === "web.app.gym" ? { gymId: GYM_ID } : {};
 
 async function renderShell(shell: SidebarShellId, pathname: string, search = "") {
   location.pathname = `/en${pathname}`;
   location.search = search;
   await renderWithProviders(
-    <WorkspaceShell shell={shell}>
+    <WorkspaceShell shell={shell} params={paramsOf(shell)}>
       <p>content</p>
     </WorkspaceShell>,
   );
@@ -90,14 +94,38 @@ describe("WorkspaceShell", () => {
   });
 
   it("marks the current route's item, keeping parents active on nested routes", async () => {
-    const nav = await renderShell("web.app.gym", "/app/gym/members/m-42");
-    expect(within(nav).getByRole("link", { name: "Members" })).toHaveAttribute(
+    const nav = await renderShell("web.app.coach", "/app/coach/fighters/f-42");
+    expect(within(nav).getByRole("link", { name: "Fighters" })).toHaveAttribute(
       "aria-current",
       "page",
     );
     expect(within(nav).getByRole("link", { name: "Dashboard" })).not.toHaveAttribute(
       "aria-current",
     );
+  });
+
+  it("shows the gym console MVP: Dashboard of the gym in the path, every other item Soon (SF-88)", async () => {
+    const nav = await renderShell("web.app.gym", `/app/gyms/${GYM_ID}/members/m-42`);
+    const links = within(nav).getAllByRole("link");
+    expect(links).toHaveLength(1);
+    expect(within(nav).getByRole("link", { name: "Dashboard" })).toHaveAttribute(
+      "href",
+      `/en/app/gyms/${GYM_ID}`,
+    );
+    for (const label of ["Members", "Timetable", "Revenue & payouts", "Gym settings & plan"]) {
+      expect(within(nav).queryByRole("link", { name: label })).toBeNull();
+      expect(within(nav).getByText(label).closest("[aria-disabled]")).toHaveTextContent("Soon");
+    }
+  });
+
+  it("puts a supplied identity block above the navigation", async () => {
+    location.pathname = `/en/app/gyms/${GYM_ID}`;
+    await renderWithProviders(
+      <WorkspaceShell shell="web.app.gym" params={{ gymId: GYM_ID }} identity={<p>gym-switcher</p>}>
+        <p>content</p>
+      </WorkspaceShell>,
+    );
+    expect(screen.getAllByText("gym-switcher").length).toBeGreaterThan(0);
   });
 
   it("shows the Coach MVP: Dashboard, Fighters and Sessions linked, Coach settings Soon and unlinked", async () => {
@@ -155,10 +183,10 @@ describe("WorkspaceShell", () => {
   });
 
   it("renders the design's sections, the content and a translated shell", async () => {
-    location.pathname = "/pl/app/gym";
+    location.pathname = `/pl/app/gyms/${GYM_ID}`;
     location.search = "";
     await renderWithProviders(
-      <WorkspaceShell shell="web.app.gym">
+      <WorkspaceShell shell="web.app.gym" params={{ gymId: GYM_ID }}>
         <p>content</p>
       </WorkspaceShell>,
       { locale: "pl" },

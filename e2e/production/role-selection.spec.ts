@@ -239,6 +239,9 @@ test.describe("choosing a journey", () => {
           json: {
             entry: {
               account_registration: "complete",
+              gym_id: null,
+              gym_workspaces: [],
+              gym_workspace_count: 0,
               capabilities: [],
               destination: "coach_workspace",
               fighter_profile: "not_started",

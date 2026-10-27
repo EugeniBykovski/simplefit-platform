@@ -28,6 +28,13 @@ import type { BrowserContext, Request } from "@playwright/test";
  *   draft → `gym_onboarding` with its id; one completed gym → `gym_home`;
  *   otherwise the remembered gym or `gym_selection`. `PUT /me/entry/context`
  *   with `context: gym` accepts a completed gym only.
+ * - SF-88 (`console: true`): `GET /api/v1/gyms/{id}` (the gym, its locations
+ *   and the viewer's role with the SF-83 permission projection; `404` for a
+ *   gym the viewer does not staff), `GET /me/gyms` paged (`limit`, `cursor`),
+ *   and every entry resolution: the gym facts (`GYM_WORKSPACE`, at most 25
+ *   `gym_workspaces`, draft first, with their `available_actions`) and the
+ *   defaults over the completed contexts (a completed Fighter profile and
+ *   each completed gym), as the SF-84 resolver applies them.
  */
 
 const GYM_TYPES = [
@@ -54,7 +61,7 @@ export type Gym = {
   location: Record<string, unknown> | null;
   revision: number;
   status: "draft" | "completed";
-  role: "owner" | "manager" | "coach";
+  role: "owner" | "manager" | "coach" | "front_desk";
   /** The viewer's membership was removed: the gym is invisible (404). */
   hidden?: boolean;
 };
@@ -66,6 +73,13 @@ export type GymApiOptions = {
   limit?: number;
   /** Leave `GET /me/entry` to the double underneath (its own resolution counts). */
   entry?: boolean;
+  /**
+   * SF-88: this double resolves every entry (not only `intent=gym`), lists
+   * the gym workspaces and answers `GET /api/v1/gyms/{id}`.
+   */
+  console?: boolean;
+  /** SF-88: the account also holds a completed Fighter profile. */
+  fighter?: boolean;
 };
 
 export type GymApi = {
@@ -83,6 +97,83 @@ export type GymApi = {
   lastGym: () => string | undefined;
   /** The session ends: every gym call answers 401 (pair with `onboardingApi().expire()`). */
   expire: () => void;
+  /** SF-88: the viewer's membership ends; the gym answers 404 from now on. */
+  revoke: (id: string) => void;
+  /** SF-88: holds the next reads of one gym until the returned function releases them. */
+  hold: (id: string) => () => void;
+  /** SF-88: the next N gym reads fail as a dropped connection. */
+  failReads: (count: number) => void;
+};
+
+/** The SF-83 matrix, as `GET /api/v1/gyms/{id}` projects it for each role. */
+const PERMISSIONS: Record<Gym["role"], string[]> = {
+  owner: [
+    "book_for_member",
+    "cancel_occurrence",
+    "change_member_status",
+    "change_staff_role",
+    "close_gym",
+    "complete_setup",
+    "discard_draft",
+    "edit_gym",
+    "invite_manager",
+    "invite_staff",
+    "manage_billing",
+    "manage_locations",
+    "manage_member_enrollment",
+    "manage_timetable",
+    "record_check_in",
+    "remove_staff",
+    "transfer_ownership",
+    "view_attendance",
+    "view_member_contact",
+    "view_members",
+    "view_rosters",
+    "view_staff",
+    "view_workspace",
+  ],
+  manager: [
+    "book_for_member",
+    "cancel_occurrence",
+    "change_member_status",
+    "change_staff_role",
+    "edit_gym",
+    "invite_staff",
+    "leave_gym",
+    "manage_locations",
+    "manage_member_enrollment",
+    "manage_timetable",
+    "record_check_in",
+    "remove_staff",
+    "view_attendance",
+    "view_member_contact",
+    "view_members",
+    "view_rosters",
+    "view_staff",
+    "view_workspace",
+  ],
+  coach: [
+    "cancel_occurrence",
+    "leave_gym",
+    "record_check_in",
+    "view_attendance",
+    "view_members",
+    "view_rosters",
+    "view_staff",
+    "view_workspace",
+  ],
+  front_desk: [
+    "book_for_member",
+    "leave_gym",
+    "manage_member_enrollment",
+    "record_check_in",
+    "view_attendance",
+    "view_member_contact",
+    "view_members",
+    "view_rosters",
+    "view_staff",
+    "view_workspace",
+  ],
 };
 
 const error = (status: number, code: string, details: Record<string, unknown> = {}) => ({
@@ -123,6 +214,9 @@ export async function gymApi(
   let losses = 0;
   let lastGym: string | undefined;
   let expired = false;
+  let readFailures = 0;
+  let lastFighter = false;
+  const held = new Map<string, Promise<void>>();
   const requests: GymApi["requests"] = [];
 
   const visible = () => gyms.filter((gym) => !gym.hidden && !discarded.has(gym.id));
@@ -131,7 +225,7 @@ export async function gymApi(
     gym.status === "completed" ? [] : gym.location === null ? ["primary_location"] : [];
   const viewer = (gym: Gym) => ({
     role: gym.role,
-    permissions: gym.role === "owner" ? ["gym.settings.manage"] : [],
+    permissions: PERMISSIONS[gym.role],
     staff_membership_id: VIEWER_MEMBERSHIP,
   });
   const setupView = (gym: Gym) => ({
@@ -304,35 +398,78 @@ export async function gymApi(
     return { status: 200, json: setupView(gym) };
   }
 
+  const workspaces = () => {
+    const mine = visible();
+    const draft = mine.filter((gym) => gym.status === "draft");
+    const completed = mine.filter((gym) => gym.status === "completed").reverse();
+    return [...draft, ...completed].map((gym) => ({
+      gym_id: gym.id,
+      name: gym.name,
+      role: gym.role,
+      setup_status: gym.status,
+      available_actions:
+        gym.status === "completed" ? ["enter"] : gym.role === "owner" ? ["continue_setup"] : [],
+      selected: gym.status === "completed" && gym.id === lastGym,
+    }));
+  };
+
   const entry = (intent: string | null) => {
     const mine = visible();
     const completed = mine.filter((gym) => gym.status === "completed");
     const draft = mine.find((gym) => gym.status === "draft" && gym.role === "owner");
+    const fighter = options.fighter === true;
     let destination: string;
     let gymId: string | null = null;
-    if (completed.length === 0) {
-      destination = "gym_onboarding";
-      gymId = draft?.id ?? null;
-    } else if (completed.length === 1 && !draft) {
-      destination = "gym_home";
-      gymId = completed[0]?.id ?? null;
-    } else if (!draft && lastGym && completed.some((gym) => gym.id === lastGym)) {
-      destination = "gym_home";
-      gymId = lastGym;
+    const remembered = lastGym !== undefined && completed.some((gym) => gym.id === lastGym);
+    if (intent === "gym") {
+      if (completed.length === 0) {
+        destination = "gym_onboarding";
+        gymId = draft?.id ?? null;
+      } else if (completed.length === 1 && !draft) {
+        destination = "gym_home";
+        gymId = completed[0]?.id ?? null;
+      } else if (!draft && remembered) {
+        destination = "gym_home";
+        gymId = lastGym ?? null;
+      } else {
+        destination = "gym_selection";
+      }
     } else {
-      destination = "gym_selection";
+      // The SF-84 defaults over the completed contexts.
+      const contexts = completed.length + (fighter ? 1 : 0);
+      if (contexts === 0) {
+        destination = draft ? "gym_onboarding" : "role_selection";
+        gymId = draft?.id ?? null;
+      } else if (contexts === 1) {
+        if (fighter) destination = "fighter_home";
+        else {
+          destination = "gym_home";
+          gymId = completed[0]?.id ?? null;
+        }
+      } else if (remembered) {
+        destination = "gym_home";
+        gymId = lastGym ?? null;
+      } else if (fighter && lastFighter) {
+        destination = "fighter_home";
+      } else {
+        destination = "context_selection";
+      }
     }
+    const capabilities = [
+      ...(fighter ? ["FIGHTER"] : []),
+      ...(completed.length > 0 ? ["GYM_WORKSPACE"] : []),
+    ];
     return {
       entry: {
         account_registration: "complete",
-        capabilities: completed.length > 0 ? ["GYM_WORKSPACE"] : [],
+        capabilities,
         coach_profile: "not_started",
-        fighter_profile: "not_started",
+        fighter_profile: fighter ? "completed" : "not_started",
         context: null,
         destination,
         gym_id: gymId,
         gym_workspace_count: mine.length,
-        gym_workspaces: [],
+        gym_workspaces: options.console ? workspaces().slice(0, 25) : [],
         intent,
         mandatory: false,
         reason: "fixture",
@@ -366,7 +503,9 @@ export async function gymApi(
         const intent = url.searchParams.get("intent");
         if (
           options.entry !== false &&
-          (intent === "gym" || (intent === null && lastGym !== undefined))
+          (options.console === true ||
+            intent === "gym" ||
+            (intent === null && lastGym !== undefined))
         ) {
           requests.push({ method, path: url.pathname, body: url.search });
           return json({ status: 200, json: entry(intent) });
@@ -374,6 +513,12 @@ export async function gymApi(
         return call.fallback();
       }
       if (url.pathname === "/api/v1/me/entry/context") {
+        if (options.console === true && body.context === "fighter" && options.fighter === true) {
+          requests.push({ method, path: url.pathname, body });
+          lastFighter = true;
+          lastGym = undefined;
+          return json({ status: 204 });
+        }
         if (body.context !== "gym") return call.fallback();
         requests.push({ method, path: url.pathname, body });
         const gym = typeof body.gym_id === "string" ? find(body.gym_id) : undefined;
@@ -381,6 +526,7 @@ export async function gymApi(
         if (gym.status !== "completed")
           return json(error(409, "conflict", { setup_status: "draft" }));
         lastGym = gym.id;
+        lastFighter = false;
         return json({ status: 204 });
       }
 
@@ -390,13 +536,27 @@ export async function gymApi(
         failures -= 1;
         return call.abort("internetdisconnected");
       }
+      if (!write && readFailures > 0 && url.pathname.startsWith("/api/v1/gyms/")) {
+        readFailures -= 1;
+        return call.abort("internetdisconnected");
+      }
+      const holding = held.get(/^\/api\/v1\/gyms\/([^/]+)$/.exec(url.pathname)?.[1] ?? "");
+      if (!write && holding) await holding;
 
       let result: { status: number; json?: unknown; headers?: Record<string, string> };
       if (url.pathname === "/api/v1/me/gyms" && !write) {
+        const limit = Number(url.searchParams.get("limit") ?? "100");
+        const offset = Number(url.searchParams.get("cursor") ?? "0");
+        const all = [
+          ...visible().filter((gym) => gym.status === "draft"),
+          ...visible()
+            .filter((gym) => gym.status === "completed")
+            .reverse(),
+        ];
         result = {
           status: 200,
           json: {
-            gyms: visible().map((gym) => ({
+            gyms: all.slice(offset, offset + limit).map((gym) => ({
               id: gym.id,
               name: gym.name,
               gym_type: gym.gym_type,
@@ -405,7 +565,7 @@ export async function gymApi(
               updated_at: NOW,
               viewer: viewer(gym),
             })),
-            next_cursor: null,
+            next_cursor: offset + limit < all.length ? String(offset + limit) : null,
           },
         };
       } else if (url.pathname === "/api/v1/gyms" && method === "POST") {
@@ -415,6 +575,7 @@ export async function gymApi(
         const gym = match ? find(match[1] ?? "") : undefined;
         const rest = match?.[2] ?? "";
         if (!gym) result = error(404, "not_found");
+        else if (rest === "" && method === "GET") result = { status: 200, json: gymView(gym) };
         else if (rest === "/setup" && method === "GET")
           result = { status: 200, json: setupView(gym) };
         else if (gym.role !== "owner" && write) result = error(403, "forbidden");
@@ -461,6 +622,26 @@ export async function gymApi(
     lastGym: () => lastGym,
     expire: () => {
       expired = true;
+    },
+    revoke: (id) => {
+      const gym = gyms.find((candidate) => candidate.id === id);
+      if (gym) gym.hidden = true;
+    },
+    hold: (id) => {
+      let release: () => void = () => undefined;
+      held.set(
+        id,
+        new Promise<void>((resolve) => {
+          release = () => {
+            held.delete(id);
+            resolve();
+          };
+        }),
+      );
+      return () => release();
+    },
+    failReads: (count) => {
+      readFailures = count;
     },
   };
 }

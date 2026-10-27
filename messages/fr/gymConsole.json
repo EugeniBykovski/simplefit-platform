@@ -1,0 +1,118 @@
+{
+  "announcement": "Console de la salle {name}",
+  "switcher": {
+    "trigger": "{name}, {role}. Changer de salle ou de profil",
+    "identity": "{role} · {count, plural, one {# site} other {# sites}}",
+    "heading": "Tes salles",
+    "continueSetup": "Reprendre la configuration de la salle",
+    "allGyms": "Toutes les salles ({count})",
+    "roles": {
+      "owner": "Propriétaire",
+      "manager": "Manager",
+      "coach": "Coach",
+      "front_desk": "Accueil"
+    }
+  },
+  "chooser": {
+    "metaTitle": "Choisir une salle",
+    "eyebrow": "Tes salles",
+    "title": "Quelle salle veux-tu ouvrir ?",
+    "lead": "Toutes les salles où tu travailles, sur un seul compte. Chacune ouvre sa propre console.",
+    "gyms": "Salles",
+    "setup": "Configuration en cours",
+    "draftLine": "Pas encore configurée · seule la configuration continue",
+    "open": "Ouvrir",
+    "continue": "Continuer",
+    "more": "Afficher plus de salles ({count} au total)",
+    "moreFailed": "Impossible de charger d’autres salles. Réessaie.",
+    "note": "La prochaine fois, on ouvre ton dernier choix. Change à tout moment depuis le haut de la barre latérale.",
+    "signOut": "Se déconnecter",
+    "empty": {
+      "title": "Tu ne travailles encore dans aucune salle",
+      "lead": "Inscris ta salle pour ouvrir sa console. Les salles qui t’invitent apparaîtront ici.",
+      "action": "Inscrire ma salle"
+    },
+    "failed": {
+      "title": "Impossible d’ouvrir cette salle.",
+      "body": "Rien n’a changé. Réessaie."
+    }
+  },
+  "states": {
+    "eyebrow": "Console de la salle",
+    "notAvailable": {
+      "heading": "Salle indisponible",
+      "title": "Cette salle n’est pas disponible",
+      "body": "Elle n’existe pas, ou tu n’y travailles pas. Ouvre plutôt l’une de tes salles.",
+      "action": "Tes salles"
+    },
+    "restricted": {
+      "heading": "Indisponible pour ton rôle",
+      "title": "Ton rôle ne comprend pas cela",
+      "body": "Tu travailles dans cette salle, mais cette partie de la console ne fait pas partie de ton rôle. Demande au propriétaire de la salle si tu en as besoin.",
+      "action": "Retour au tableau de bord"
+    },
+    "draft": {
+      "title": "Cette salle n’est pas encore configurée",
+      "body": "Sa console s’ouvre une fois la configuration terminée. Reprends là où tu t’es arrêté.",
+      "bodyStaff": "Sa console s’ouvre une fois que le propriétaire a terminé la configuration.",
+      "action": "Reprendre la configuration"
+    }
+  },
+  "dashboard": {
+    "metaTitle": "Tableau de bord de la salle",
+    "title": "Tableau de bord",
+    "eyebrow": "{date} · {where}",
+    "allLocations": "Tous les sites",
+    "summary": {
+      "title": "Ta salle",
+      "completed": "Configuration terminée"
+    },
+    "details": {
+      "title": "Infos de la salle",
+      "address": "Adresse",
+      "phone": "Téléphone",
+      "website": "Site web",
+      "tagline": "Slogan",
+      "accent": "Couleur d’accent",
+      "none": "Non renseigné",
+      "loading": "Chargement des infos de la salle",
+      "failed": "Impossible de charger les infos de la salle. Le reste de la page est à jour.",
+      "restricted": "Ton rôle ne comprend pas les infos de la salle.",
+      "retry": "Réessayer"
+    },
+    "access": {
+      "title": "Ton accès",
+      "note": "SimpleFit vérifie chaque action pour cette salle. Aucun rôle de salle ne lit les données d’entraînement privées.",
+      "roles": {
+        "owner": "Cette salle t’appartient : ses infos, sa configuration et, plus tard, son équipe et ses membres.",
+        "manager": "Tu aides à gérer cette salle : ses infos, ses sites, son équipe et ses membres.",
+        "coach": "Tu coaches dans cette salle : tes cours et leurs listes de participants.",
+        "front_desk": "Tu tiens l’accueil : les check-ins, les réservations et les membres à l’accueil."
+      }
+    },
+    "limited": {
+      "title": "Ton tableau de bord",
+      "body": "Le tableau de bord du rôle {role} n’est pas encore disponible. Tu peux ouvrir cette salle ; ses outils arrivent avec leurs fonctionnalités."
+    },
+    "later": {
+      "title": "Bientôt dans ta console",
+      "badge": "Plus tard",
+      "members": {
+        "title": "Membres",
+        "body": "Invite des membres et vois qui s’entraîne ici."
+      },
+      "schedule": {
+        "title": "Cours et planning",
+        "body": "Planifie les cours de ta semaine."
+      },
+      "attendance": {
+        "title": "Réservations et check-ins",
+        "body": "Réservations et check-ins de chaque cours."
+      },
+      "staff": {
+        "title": "Coachs et équipe",
+        "body": "Invite ton équipe et donne un rôle à chacun."
+      }
+    }
+  }
+}

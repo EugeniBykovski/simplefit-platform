@@ -74,6 +74,9 @@ const entry = (destination: string) =>
   ok({
     entry: {
       account_registration: destination === "account_registration" ? "in_progress" : "complete",
+      gym_id: null,
+      gym_workspaces: [],
+      gym_workspace_count: 0,
       capabilities: [],
       destination,
       fighter_profile: "not_started",
