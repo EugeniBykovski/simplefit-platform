@@ -523,6 +523,19 @@ verification, staff, member, timetable and publishing domains exist
 context choice (`PUT /api/v1/me/entry/context` with `gym_id`, SF-84) and the
 entry, which resolves `gym_home` to `/app/gym`.
 
+**Mobile Gym owner registration (SF-87).** `/onboarding/gym` runs the same
+steps natively (`?step=type|location|branding|complete`) on the same
+contract, with an authenticated session only and the Gym intent as the
+ephemeral `intent=gym`. Claude Design has no mobile OG1–OG3/OG6b artboards
+and its OG0 is a web handoff; with approval the flow uses the approved
+mobile onboarding frame (COACH 3) and the SF-86 differences, and OG0 is a
+`DEFERRED`, superseded gallery row (`D-MOBILE-GYM-ONBOARDING-FLOW`). The
+draft comes from `GET /api/v1/me/gyms` on every screen entry, the setup is
+re-read when the app returns to the foreground, and nothing is stored on the
+device. Save & exit saves, then follows the entry, or opens Settings when the
+draft is the person's only context. OG6b continues through the Gym context
+choice and the entry, which resolves `gym_home` to `/gym/pulse`.
+
 **Coach web workspace and context switching (SF-54).** `/app/coach` is WC1,
 reduced in Claude Design `1791982482-71e3` to the real CoachProfile, a setup
 checklist and dashes (never zeros) for domains that do not exist yet; the
@@ -727,7 +740,8 @@ clients never build or route to it. Since `1791399145-48dd` that is WF2–WF5
 of web Fighter onboarding (`D-WEB-FIGHTER-ONBOARDING-FLOW`); since
 `1791896379-65b7` also WCR3–WCR6 of web Coach onboarding
 (`D-WEB-COACH-ONBOARDING-FLOW`); since SF-86 also OG4–OG14 of web Gym owner
-registration (`D-WEB-GYM-ONBOARDING-FLOW`).
+registration (`D-WEB-GYM-ONBOARDING-FLOW`); since SF-87 also OG0, the mobile
+owner handoff (`D-MOBILE-GYM-ONBOARDING-FLOW`).
 
 A screen's visual fidelity is not tracked here. It is delivered by the feature
 ticket that implements the screen from its artboard.
@@ -1057,6 +1071,7 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-WA3-PREAUTH-CONSENT`              | RESOLVED               | WA3 name and consents disabled, never sent; WA5 records consent (SF-36)                                |
 | `D-WEB-COACH-ONBOARDING-FLOW`        | DEFERRED               | Web Coach onboarding: WCR1, WCR2, WCR7 current; WCR3–WCR6 future; session-only access                  |
 | `D-WEB-GYM-ONBOARDING-FLOW`          | DEFERRED               | Web Gym owner registration: OG1, OG2, OG3, OG6b current; OG4–OG14 future; session-only access          |
+| `D-MOBILE-GYM-ONBOARDING-FLOW`       | DEFERRED               | Mobile Gym owner registration: the web steps natively, no mobile artboards; OG0 handoff superseded     |
 | `D-MOBILE-COACH-ONBOARDING-FLOW`     | DEFERRED               | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access                  |
 | `D-ENTRY-CONTEXT-SELECTION`          | RESOLVED               | `context_selection` opens WCX1 on the web and A04 on mobile; never WA6 / O05 or home                   |
 | `D-WEB-COACH-HOME-MVP`               | DEFERRED               | Coach web: real profile dashboard, MVP nav with Soon rows; CRW1, CRW2 future                           |
