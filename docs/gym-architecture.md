@@ -115,3 +115,27 @@ stale`); reread and retry. Completion and discard take no revision.
 
 Not in the contract yet: gym size and features (OG4/OG5, future with plans)
 and logo/cover uploads (waiting for a storage attachment mechanism).
+
+## SF-90: gym first run and setup checklist API (no screens yet)
+
+The generated client adds the owner's gym first run (ADR 0026, SF-90
+amendment). There are no screens yet; GRW1/GR1 and the GRW2/GR2 tours are
+SF-101.
+
+- `getGymFirstRun` returns the introduction's `status` (`unavailable` for a
+  draft, then `not_started`, `in_progress`, `completed`, `dismissed`), its
+  timestamps and the derived `checklist`.
+- `startGymFirstRun`, `completeGymFirstRun` and `dismissGymFirstRun` take an
+  empty body. A repeat returns the same state. The other outcome, or a start
+  after one, answers `409` (`details.first_run`); a draft answers `409`
+  (`details.setup_status: draft`).
+- One state per gym and owner, the same on web and mobile: start on one
+  device, resume or finish on the other. Managers, coaches and front desk get
+  `403` (`manage_first_run` is the owner's).
+- Checklist keys, in order: `create_gym`, `add_class`, `invite_staff`,
+  `invite_members`, `first_check_in`. Statuses are `completed`, `available`
+  and `coming_later`. Only `create_gym` is real today; show the others as
+  "coming later", never as missing or clickable. Neither outcome of the
+  introduction changes any item.
+- Tour steps, highlights and replays stay in the client. Never send them to
+  the API, and never block the gym shell on the first run.

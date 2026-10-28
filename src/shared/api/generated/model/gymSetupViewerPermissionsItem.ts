@@ -21,6 +21,7 @@ export const GymSetupViewerPermissionsItem = {
   invite_staff: 'invite_staff',
   leave_gym: 'leave_gym',
   manage_billing: 'manage_billing',
+  manage_first_run: 'manage_first_run',
   manage_locations: 'manage_locations',
   manage_member_enrollment: 'manage_member_enrollment',
   manage_timetable: 'manage_timetable',
