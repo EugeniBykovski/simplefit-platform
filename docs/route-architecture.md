@@ -249,15 +249,17 @@ Backend-granted internal staff capability on the same User → ADMIN (D-ADMIN-ID
   `capabilities` in the registry lists what grants each one and its home and
   onboarding routes.
 - **Active workspace.** Workspace paths carry no workspace id
-  (`/gym/pulse`, `/sponsor/*`), so the active workspace is session
-  context held by the backend session. The web gym console is the exception
-  (SF-88, ADR 0026 D-G23): `/app/gyms/:gymId/**` names its gym, the id is only
-  a lookup key that the backend authorizes on every request, and tabs on
-  different gyms stay independent; the gym the user last chose is a landing
-  preference of the entry, never authority. It is chosen at sign-in
+  (`/sponsor/*`), so the active workspace is session context held by the
+  backend session. The gym consoles are the exception (ADR 0026 D-G23): the
+  web `/app/gyms/:gymId/**` (SF-88) and the mobile gym tabs
+  `/gyms/:gymId/**` (SF-89) name their gym, the id is only a lookup key that
+  the backend authorizes on every request, and tabs on different gyms stay
+  independent; the gym the user last chose is a landing preference of the
+  entry, never authority. It is chosen at sign-in
   (`/login?step=workspace` on web), then switched with the in-shell switcher
   of the web sidebars (an action, no route) or, on mobile, the A04 sheet of
-  the Fighter and Coach homes (`/workspaces` is the same chooser as a screen). A
+  the Fighter and Coach homes and the Gym pulse (`/workspaces` is the same
+  chooser as a screen). A
   resource that belongs to another workspace resolves as not found. Workspace
   ids may enter deep links later, only when an email or push feature needs
   cross-workspace links (`D-WORKSPACE-NOT-IN-URL`,
@@ -302,7 +304,7 @@ mobile.root  root Stack (IMPLEMENTED)
 ├── mobile.onboarding   wizards and first-run intros (no tabs)
 ├── mobile.fighter      tabs: home · training · board · community · profile   FighterTabs
 ├── mobile.coach        tabs: today · fighters · board · requests · inbox    CoachTabs
-├── mobile.gym          tabs: pulse · classes · check-in · members · staff   GymTabs
+├── mobile.gym          tabs: pulse · classes · check-in · members · staff   GymTabs  (/gyms/:gymId)
 └── mobile.shared       account screens pushed above the active role's tabs
 ```
 
@@ -556,7 +558,32 @@ draft comes from `GET /api/v1/me/gyms` on every screen entry, the setup is
 re-read when the app returns to the foreground, and nothing is stored on the
 device. Save & exit saves, then follows the entry, or opens Settings when the
 draft is the person's only context. OG6b continues through the Gym context
-choice and the entry, which resolves `gym_home` to `/gym/pulse`.
+choice and the entry, which resolves `gym_home` to the Gym pulse of that
+gym (`/gyms/:gymId/pulse`, SF-89).
+
+**Mobile gym shell, chooser and switcher (SF-89).** The gym tabs are
+id-based: `/gyms/:gymId/pulse` (G01), `/gyms/:gymId/classes`,
+`/gyms/:gymId/check-in`, `/gyms/:gymId/members`, `/gyms/:gymId/staff/on-shift`
+and the pushed `/gyms/:gymId/incidents/new` and `/gyms/:gymId/announcements/new`
+(`D-MOBILE-GYM-SHELL-MVP`); the member side keeps `/gym/:gymId/**` until
+SF-91. The `(gym)` layout needs GYM_WORKSPACE (CapabilityGate) and then the
+gym gate reads `GET /api/v1/gyms/{gym_id}` for the gym in the route; the
+shell is uncovered only with that answer (unknown, foreign or revoked: not
+available; 403: role-restricted; a draft: continue setup; offline or 5xx: a
+retry). The read waits for the restored session, is keyed by the gym id and
+re-runs when the app returns to the foreground, so a membership revoked
+while open is noticed on the next read. The entry maps `gym_home` with its
+`gym_id` and `gym_selection` to the gym chooser `/gyms` (MGC1, the A04 row
+composition), which lists the entry's gym workspaces and pages the rest from
+`GET /api/v1/me/gyms`. A04 (sheet and `/workspaces`) lists the account's gym
+workspaces under the profiles: a completed gym opens its Gym pulse after the
+gym choice is recorded (`PUT /api/v1/me/entry/context`), the owner's draft
+continues setup by intent, and "All gyms" opens `/gyms` when the entry lists
+fewer than `gym_workspace_count`. Claude Design has no MVP cockpit: G01
+keeps its identity pill (the A04 sheet), eyebrow and title and shows the
+real gym, the owner's setup, the viewer's role and the areas coming later,
+every R5 tile hidden; its header actions give way to Settings; the tab bar
+links Pulse only, the other items Soon.
 
 **Coach web workspace and context switching (SF-54).** `/app/coach` is WC1,
 reduced in Claude Design `1791982482-71e3` to the real CoachProfile, a setup
@@ -886,7 +913,7 @@ src/app/
 ├── (coach)/_layout.tsx        mobile.coach       Stack over (tabs)
 │   └── (tabs)/_layout.tsx                        Tabs: (today) (fighters) (board) (requests); Inbox → /messages
 ├── (gym)/_layout.tsx          mobile.gym         Stack over (tabs)
-│   └── (tabs)/_layout.tsx                        Tabs: (pulse) (classes) (checkin) (members) (staff)
+│   └── (tabs)/_layout.tsx                        Tabs: (pulse) (classes) (checkin) (members) (staff), each rooted at gyms/[gymId]/…
 └── (shared)/_layout.tsx       mobile.shared      Stack pushed above the active role's tabs
 ```
 
@@ -898,8 +925,8 @@ src/app/
   `/calendar`), Community (`/discover`, `/friends`, `/following`,
   `/challenges`, `/marketplace`) and Profile (`/progress`, `/achievements`);
   coach Today (`/coach/activity`, `/coach/challenge/:challengeId`) and
-  Requests (`/coach/sparring`); gym Classes (`/gym/classes/:classId/roster`)
-  and Members (`/gym/members/:memberId`). Every other route of the shell is
+  Requests (`/coach/sparring`); gym Classes (`/gyms/:gymId/classes/:classId/roster`)
+  and Members (`/gyms/:gymId/members/:memberId`). Every other route of the shell is
   pushed above the tabs by the shell's stack, and a deep link to such a route
   keeps the tabs underneath (`initialRouteName: "(tabs)"`). `ShellTabBar`
   renders the items and targets of `navItems`, the icons and raised centre
@@ -912,9 +939,10 @@ src/app/
 - **Guards attach to route groups, never to a URL prefix.** `/gym/*` and
   `/coach/*` serve both fighters (`/gym/:gymId/store`,
   `/coach/:coachId/services/:serviceId`) and the gym/coach workspace
-  (`/gym/pulse`, `/coach/today`). They live in different groups
-  (`(fighter)/gym/[gymId]/…` vs `(gym)/(tabs)/gym/pulse.tsx`), and static
-  segments win over parameters (`D-MOBILE-NAMESPACE-SHARING`).
+  (`/coach/today`). They live in different groups (`(fighter)/gym/[gymId]/…`
+  vs `(gym)/(tabs)/(pulse)/gyms/[gymId]/pulse.tsx`, whose `/gyms` prefix is the
+  gym shell's since SF-89), and static segments win over parameters
+  (`D-MOBILE-NAMESPACE-SHARING`).
 - **Session guard (UX only, §6).** Each shell layout wraps its stack in
   `SessionGate`, which applies the focused route's own `session` rule, so one
   shell can mix access (the auth shell has public invite links, guest-only
@@ -1067,7 +1095,7 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-WEB-WORKSPACE-SWITCHER`           | RESOLVED               | In-shell switcher action, no route                                                                     |
 | `D-SPONSOR-NAV`                      | RESOLVED               | Challenges/Events filter `/sponsor/campaigns`; no Creative route; analytics index is a gap             |
 | `D-NAV-DETAIL-TARGETS`               | RESOLVED               | Creator targets kept; list roots designed in `1791276973-ad1d` (G08, G09, WC7, WG27, AD21)             |
-| `D-WORKSPACE-NOT-IN-URL`             | RESOLVED               | Active workspace is session context; no workspace ids in URLs (web gym console id-based since SF-88)   |
+| `D-WORKSPACE-NOT-IN-URL`             | RESOLVED               | Active workspace is session context; the gym consoles are id-based (web SF-88, mobile SF-89)           |
 | `D-WEB-DEFAULT-WORKSPACE`            | RESOLVED               | `/app` resolves the active workspace; `/app/home` is fighter-only                                      |
 | `D-SHARED-ROUTES-ON-PERSONA-PAGES`   | RESOLVED               | Account-level routes need no capability                                                                |
 | `D-TRIAL-AUDIENCE`                   | RESOLVED               | Shared signed-in trial/pricing; backend decides eligibility                                            |
@@ -1094,6 +1122,7 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-WEB-COACH-ONBOARDING-FLOW`        | DEFERRED               | Web Coach onboarding: WCR1, WCR2, WCR7 current; WCR3–WCR6 future; session-only access                  |
 | `D-WEB-GYM-ONBOARDING-FLOW`          | DEFERRED               | Web Gym owner registration: OG1, OG2, OG3, OG6b current; OG4–OG14 future; session-only access          |
 | `D-MOBILE-GYM-ONBOARDING-FLOW`       | DEFERRED               | Mobile Gym owner registration: the web steps natively, no mobile artboards; OG0 handoff superseded     |
+| `D-MOBILE-GYM-SHELL-MVP`             | DEFERRED               | Mobile gym shell: G01 with real data, gym rows in A04, MGC1 chooser, Pulse the only linked tab         |
 | `D-WEB-GYM-CONSOLE-MVP`              | DEFERRED               | Web gym console: id-based, WG1 real gym data, R5 tiles hidden, Soon nav; chooser WGC1 and switcher     |
 | `D-MOBILE-COACH-ONBOARDING-FLOW`     | DEFERRED               | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access                  |
 | `D-ENTRY-CONTEXT-SELECTION`          | RESOLVED               | `context_selection` opens WCX1 on the web and A04 on mobile; never WA6 / O05 or home                   |
