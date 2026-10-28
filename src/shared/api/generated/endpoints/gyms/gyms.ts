@@ -24,6 +24,8 @@ import type {
   ErrorResponse,
   ForbiddenResponse,
   GymCreateRequest,
+  GymFirstRunResponse,
+  GymFirstRunTransitionRequest,
   GymList,
   GymPrimaryLocationRequest,
   GymResponse,
@@ -501,6 +503,503 @@ export function useCompleteGymSetup<TData = Awaited<ReturnType<typeof completeGy
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getCompleteGymSetupQueryOptions(gymId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetGymFirstRunUrl = (gymId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}/first-run`
+}
+
+/**
+ * The owner's introduction to this gym (`not_started`, `in_progress`, `completed`, `dismissed`; `unavailable`
+ * for a draft) and the gym's opening-week checklist, derived from the gym's own records. The same answer on
+ * every client and after any sign-in; reading creates nothing.
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never revealed).
+ * * `forbidden` - the viewer is active staff but not the owner (the first run is the owner's).
+ * @summary A gym's first run and setup checklist
+ */
+export const getGymFirstRun = async (gymId: string, options?: Parameters<typeof apiFetch>[1]): Promise<GymFirstRunResponse> => {
+
+  return apiFetch<GymFirstRunResponse>(getGetGymFirstRunUrl(gymId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetGymFirstRunQueryKey = (gymId: string,) => {
+    return [
+    `/api/v1/gyms/${gymId}/first-run`
+    ] as const;
+    }
+
+
+export const getGetGymFirstRunQueryOptions = <TData = Awaited<ReturnType<typeof getGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetGymFirstRunQueryKey(gymId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getGymFirstRun>>> = ({ signal }) => getGymFirstRun(gymId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getGymFirstRun>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetGymFirstRunQueryResult = NonNullable<Awaited<ReturnType<typeof getGymFirstRun>>>
+export type GetGymFirstRunQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetGymFirstRun<TData = Awaited<ReturnType<typeof getGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymFirstRun>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getGymFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof getGymFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetGymFirstRun<TData = Awaited<ReturnType<typeof getGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymFirstRun>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getGymFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof getGymFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetGymFirstRun<TData = Awaited<ReturnType<typeof getGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary A gym's first run and setup checklist
+ */
+
+export function useGetGymFirstRun<TData = Awaited<ReturnType<typeof getGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetGymFirstRunQueryOptions(gymId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getCompleteGymFirstRunUrl = (gymId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}/first-run/complete`
+}
+
+/**
+ * Records that the owner finished the introduction (`completed`, final). It marks no checklist item done and
+ * changes nothing about the gym. Repeating it returns the same state with the first `completed_at`.
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never revealed).
+ * * `forbidden` - the viewer is active staff but not the owner (the first run is the owner's).
+ *
+ * * `conflict` - the gym is a draft (`details.setup_status: "draft"`), or the introduction already ended the
+ *   other way (`details.first_run: "completed"` or `"dismissed"`); nothing changes.
+ * * `validation_error` - the body has a field (none is accepted).
+ * @summary Finish the gym introduction
+ */
+export const completeGymFirstRun = async (gymId: string,
+    gymFirstRunTransitionRequest?: GymFirstRunTransitionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<GymFirstRunResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<GymFirstRunResponse>(getCompleteGymFirstRunUrl(gymId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(gymFirstRunTransitionRequest)
+  }
+);}
+
+
+
+
+
+export const getCompleteGymFirstRunQueryKey = (gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>,) => {
+    return [
+    'POST', `/api/v1/gyms/${gymId}/first-run/complete`, gymFirstRunTransitionRequest
+    ] as const;
+    }
+
+
+export const getCompleteGymFirstRunQueryOptions = <TData = Awaited<ReturnType<typeof completeGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeGymFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getCompleteGymFirstRunQueryKey(gymId,gymFirstRunTransitionRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof completeGymFirstRun>>> = ({ signal }) => completeGymFirstRun(gymId,gymFirstRunTransitionRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof completeGymFirstRun>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type CompleteGymFirstRunQueryResult = NonNullable<Awaited<ReturnType<typeof completeGymFirstRun>>>
+export type CompleteGymFirstRunQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useCompleteGymFirstRun<TData = Awaited<ReturnType<typeof completeGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymFirstRunTransitionRequest: undefined |  BodyType<GymFirstRunTransitionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeGymFirstRun>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof completeGymFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof completeGymFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCompleteGymFirstRun<TData = Awaited<ReturnType<typeof completeGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeGymFirstRun>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof completeGymFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof completeGymFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCompleteGymFirstRun<TData = Awaited<ReturnType<typeof completeGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeGymFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Finish the gym introduction
+ */
+
+export function useCompleteGymFirstRun<TData = Awaited<ReturnType<typeof completeGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeGymFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getCompleteGymFirstRunQueryOptions(gymId,gymFirstRunTransitionRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getDismissGymFirstRunUrl = (gymId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}/first-run/dismiss`
+}
+
+/**
+ * Records that the owner skipped or ended the introduction (`dismissed`, final: it is not offered again and
+ * cannot be resumed). It marks no checklist item done. Repeating it returns the same state with the first
+ * `dismissed_at`.
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never revealed).
+ * * `forbidden` - the viewer is active staff but not the owner (the first run is the owner's).
+ *
+ * * `conflict` - the gym is a draft (`details.setup_status: "draft"`), or the introduction already ended the
+ *   other way (`details.first_run: "completed"` or `"dismissed"`); nothing changes.
+ * * `validation_error` - the body has a field (none is accepted).
+ * @summary Skip or end the gym introduction
+ */
+export const dismissGymFirstRun = async (gymId: string,
+    gymFirstRunTransitionRequest?: GymFirstRunTransitionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<GymFirstRunResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<GymFirstRunResponse>(getDismissGymFirstRunUrl(gymId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(gymFirstRunTransitionRequest)
+  }
+);}
+
+
+
+
+
+export const getDismissGymFirstRunQueryKey = (gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>,) => {
+    return [
+    'POST', `/api/v1/gyms/${gymId}/first-run/dismiss`, gymFirstRunTransitionRequest
+    ] as const;
+    }
+
+
+export const getDismissGymFirstRunQueryOptions = <TData = Awaited<ReturnType<typeof dismissGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof dismissGymFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getDismissGymFirstRunQueryKey(gymId,gymFirstRunTransitionRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof dismissGymFirstRun>>> = ({ signal }) => dismissGymFirstRun(gymId,gymFirstRunTransitionRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof dismissGymFirstRun>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type DismissGymFirstRunQueryResult = NonNullable<Awaited<ReturnType<typeof dismissGymFirstRun>>>
+export type DismissGymFirstRunQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useDismissGymFirstRun<TData = Awaited<ReturnType<typeof dismissGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymFirstRunTransitionRequest: undefined |  BodyType<GymFirstRunTransitionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof dismissGymFirstRun>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof dismissGymFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof dismissGymFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDismissGymFirstRun<TData = Awaited<ReturnType<typeof dismissGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof dismissGymFirstRun>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof dismissGymFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof dismissGymFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDismissGymFirstRun<TData = Awaited<ReturnType<typeof dismissGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof dismissGymFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Skip or end the gym introduction
+ */
+
+export function useDismissGymFirstRun<TData = Awaited<ReturnType<typeof dismissGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof dismissGymFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getDismissGymFirstRunQueryOptions(gymId,gymFirstRunTransitionRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getStartGymFirstRunUrl = (gymId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}/first-run/start`
+}
+
+/**
+ * Records that the owner started the introduction (`in_progress`), so another client can offer to resume it.
+ * Repeating it while in progress returns the same state with the first `started_at`.
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never revealed).
+ * * `forbidden` - the viewer is active staff but not the owner (the first run is the owner's).
+ *
+ * * `conflict` - the gym is a draft (`details.setup_status: "draft"`), or the introduction already ended the
+ *   other way (`details.first_run: "completed"` or `"dismissed"`); nothing changes.
+ * * `validation_error` - the body has a field (none is accepted).
+ * @summary Start the gym introduction
+ */
+export const startGymFirstRun = async (gymId: string,
+    gymFirstRunTransitionRequest?: GymFirstRunTransitionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<GymFirstRunResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<GymFirstRunResponse>(getStartGymFirstRunUrl(gymId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(gymFirstRunTransitionRequest)
+  }
+);}
+
+
+
+
+
+export const getStartGymFirstRunQueryKey = (gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>,) => {
+    return [
+    'POST', `/api/v1/gyms/${gymId}/first-run/start`, gymFirstRunTransitionRequest
+    ] as const;
+    }
+
+
+export const getStartGymFirstRunQueryOptions = <TData = Awaited<ReturnType<typeof startGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof startGymFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getStartGymFirstRunQueryKey(gymId,gymFirstRunTransitionRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof startGymFirstRun>>> = ({ signal }) => startGymFirstRun(gymId,gymFirstRunTransitionRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof startGymFirstRun>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type StartGymFirstRunQueryResult = NonNullable<Awaited<ReturnType<typeof startGymFirstRun>>>
+export type StartGymFirstRunQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useStartGymFirstRun<TData = Awaited<ReturnType<typeof startGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymFirstRunTransitionRequest: undefined |  BodyType<GymFirstRunTransitionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof startGymFirstRun>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof startGymFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof startGymFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useStartGymFirstRun<TData = Awaited<ReturnType<typeof startGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof startGymFirstRun>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof startGymFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof startGymFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useStartGymFirstRun<TData = Awaited<ReturnType<typeof startGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof startGymFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Start the gym introduction
+ */
+
+export function useStartGymFirstRun<TData = Awaited<ReturnType<typeof startGymFirstRun>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    gymFirstRunTransitionRequest?: BodyType<GymFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof startGymFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getStartGymFirstRunQueryOptions(gymId,gymFirstRunTransitionRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
