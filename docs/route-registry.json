@@ -11,8 +11,8 @@
         "id": "gallery-1",
         "artboard": "GalleryIndex.dc.html",
         "title": "route gallery 1 / 3 · onboarding & fighter mobile",
-        "rows": 251,
-        "rowsNote": "242 Route Gallery rows + WCX1 (SF-54: added with its artboard WebContextSelect.dc.html, not yet listed in GalleryIndex) + FC1 and FC2 (SF-59: added with their artboard FighterCoaches.dc.html, not yet listed in GalleryIndex) + FCI1 and FCI2 (SF-76: added to FighterCoaches.dc.html, not yet listed in GalleryIndex) + FT1 and FT2 (SF-66: added to TrainingHub.dc.html and SessionDetail.dc.html in 1792569354-73b2, not yet listed in GalleryIndex) + FCI3 (SF-79: added to FighterCoaches.dc.html in 1792675284-1046, not yet listed in GalleryIndex) + WGC1 (SF-88: the web gym chooser in the WCX1 composition of WebContextSelect.dc.html, no artboard of its own; D-WEB-GYM-CONSOLE-MVP)"
+        "rows": 252,
+        "rowsNote": "242 Route Gallery rows + WCX1 (SF-54: added with its artboard WebContextSelect.dc.html, not yet listed in GalleryIndex) + FC1 and FC2 (SF-59: added with their artboard FighterCoaches.dc.html, not yet listed in GalleryIndex) + FCI1 and FCI2 (SF-76: added to FighterCoaches.dc.html, not yet listed in GalleryIndex) + FT1 and FT2 (SF-66: added to TrainingHub.dc.html and SessionDetail.dc.html in 1792569354-73b2, not yet listed in GalleryIndex) + FCI3 (SF-79: added to FighterCoaches.dc.html in 1792675284-1046, not yet listed in GalleryIndex) + WGC1 (SF-88: the web gym chooser in the WCX1 composition of WebContextSelect.dc.html, no artboard of its own; D-WEB-GYM-CONSOLE-MVP) + MGC1 (SF-89: the mobile gym chooser in the A04 composition of Workspaces.dc.html, no artboard of its own; D-MOBILE-GYM-SHELL-MVP)"
       },
       {
         "id": "gallery-2",
@@ -55,7 +55,7 @@
     "GYM_WORKSPACE": {
       "grantedBy": "WorkspaceMembership (Gym)",
       "home": {
-        "mobile": "mobile.gym.pulse",
+        "mobile": "mobile.gyms",
         "web": "web.app.gyms"
       },
       "onboarding": {
@@ -124,7 +124,7 @@
     "returnToParam": "returnTo",
     "intentParam": "intent",
     "entryDestinations": {
-      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied. coach_home (SF-51, SF-52, SF-53) opens the Coach home of each platform, today its canonical placeholder. context_selection opens the context chooser of each platform: WCX1 on the web (web.app.context, SF-54) and A04 on mobile (mobile.workspaces, SF-55); never role selection (WA6 / O05) or a home (D-ENTRY-CONTEXT-SELECTION). gym_home (SF-84) opens the GYM_WORKSPACE home of each platform: on the web the id-based gym console of the entry answer's gym_id (web.app.gyms._gym-id, SF-88, ADR 0026 D-G23), on mobile mobile.gym.pulse (its canonical placeholder until the mobile gym UI). gym_selection (SF-84) opens the gym chooser on the web (web.app.gyms, SF-88) and A04 on mobile (mobile.workspaces), listing the entry answer's gym_workspaces; never a gym home. gym_onboarding starts Gym setup, or resumes the owned draft named by gym_id.",
+      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied. coach_home (SF-51, SF-52, SF-53) opens the Coach home of each platform, today its canonical placeholder. context_selection opens the context chooser of each platform: WCX1 on the web (web.app.context, SF-54) and A04 on mobile (mobile.workspaces, SF-55); never role selection (WA6 / O05) or a home (D-ENTRY-CONTEXT-SELECTION). gym_home (SF-84) opens the GYM_WORKSPACE home of each platform: on the web the id-based gym console of the entry answer's gym_id (web.app.gyms._gym-id, SF-88, ADR 0026 D-G23), on mobile the id-based Gym pulse of the entry answer's gym_id (mobile.gyms._gym-id.pulse, SF-89). gym_selection (SF-84) opens the gym chooser of each platform: web.app.gyms on the web (SF-88) and mobile.gyms on mobile (SF-89), listing the entry answer's gym_workspaces; never a gym home or A04. gym_onboarding starts Gym setup, or resumes the owned draft named by gym_id.",
       "account_registration": {
         "web": "web.app.onboarding.account",
         "mobile": "mobile.signup.consent"
@@ -159,11 +159,11 @@
       },
       "gym_home": {
         "web": "web.app.gyms._gym-id",
-        "mobile": "mobile.gym.pulse"
+        "mobile": "mobile.gyms._gym-id.pulse"
       },
       "gym_selection": {
         "web": "web.app.gyms",
-        "mobile": "mobile.workspaces"
+        "mobile": "mobile.gyms"
       },
       "sponsor_application": {
         "web": "web.partners.apply",
@@ -834,7 +834,7 @@
       "id": "mobile.gym",
       "platform": "mobile",
       "parent": "mobile.root",
-      "description": "Gym tab bar (Pulse, Classes, QR check-in, Members, Staff).",
+      "description": "Gym tab bar (Pulse, Classes, QR check-in, Members, Staff) of the gym in the path (/gyms/:gymId/**, SF-89, ADR 0026 D-G23). Its GYM_WORKSPACE routes are gated on the capability the entry reports (CapabilityGate), then on the gym read for that id. Production links Pulse only; the other items are shown as Soon until their domains exist (D-MOBILE-GYM-SHELL-MVP).",
       "design": "GymTabs.dc.html",
       "status": "IMPLEMENTED",
       "production": {
@@ -844,29 +844,30 @@
         {
           "key": "pulse",
           "label": "Pulse",
-          "route": "mobile.gym.pulse"
+          "route": "mobile.gyms._gym-id.pulse"
         },
         {
           "key": "classes",
           "label": "Classes",
-          "route": "mobile.gym.classes"
+          "route": "mobile.gyms._gym-id.classes"
         },
         {
           "key": "checkin",
           "label": "QR check-in",
-          "route": "mobile.gym.check-in"
+          "route": "mobile.gyms._gym-id.check-in"
         },
         {
           "key": "members",
           "label": "Members",
-          "route": "mobile.gym.members"
+          "route": "mobile.gyms._gym-id.members"
         },
         {
           "key": "staff",
           "label": "Staff",
-          "route": "mobile.gym.staff.on-shift"
+          "route": "mobile.gyms._gym-id.staff.on-shift"
         }
-      ]
+      ],
+      "params": ["gymId"]
     },
     {
       "id": "mobile.shared",
@@ -1266,10 +1267,40 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(shared)/workspaces.tsx",
-        "note": "SF-55: A04 on the SF-51 entry (Claude Design 1791994719-673f). While GET /api/v1/me/entry answers context_selection it is the chooser of that answer, with no current context, no Back and Sign out: two completed contexts without a remembered choice (choose) or two journeys in progress (E11, setup). Opened in a context (the entry answers fighter_home or coach_home) it is the switcher with that context checked, closed with Back; any other answer continues to its destination. Completed contexts (the FIGHTER / COACH capabilities the entry reports) are opened by recording the choice (PUT /api/v1/me/entry/context) and resolving the entry again; unfinished journeys are continued with an explicit intent and never recorded. Nothing is kept on the device. The homes open the same chooser as a sheet from their identity pill."
+        "note": "SF-55: A04 on the SF-51 entry (Claude Design 1791994719-673f). While GET /api/v1/me/entry answers context_selection it is the chooser of that answer, with no current context, no Back and Sign out: two completed contexts without a remembered choice (choose) or two journeys in progress (E11, setup). Opened in a context (the entry answers fighter_home or coach_home) it is the switcher with that context checked, closed with Back; any other answer continues to its destination. Completed contexts (the FIGHTER / COACH capabilities the entry reports) are opened by recording the choice (PUT /api/v1/me/entry/context) and resolving the entry again; unfinished journeys are continued with an explicit intent and never recorded. Nothing is kept on the device. The homes open the same chooser as a sheet from their identity pill. SF-89: the account's gym workspaces join A04 under the profiles (open a completed gym by recording the gym choice; continue the owner's draft by intent), the Gym pulse of the gym in the route is the current row, and 'All gyms' opens mobile.gyms when the entry lists fewer than gym_workspace_count (D-MOBILE-GYM-SHELL-MVP)."
       },
-      "discrepancies": ["D-ENTRY-CONTEXT-SELECTION", "D-MOBILE-SPONSOR-ADMIN"],
+      "discrepancies": [
+        "D-ENTRY-CONTEXT-SELECTION",
+        "D-MOBILE-SPONSOR-ADMIN",
+        "D-MOBILE-GYM-SHELL-MVP"
+      ],
       "screens": ["A04"]
+    },
+    {
+      "id": "mobile.gyms",
+      "platform": "mobile",
+      "path": "/gyms",
+      "params": [],
+      "name": "Choose a gym",
+      "surface": "SHARED",
+      "shell": "mobile.shared",
+      "parent": null,
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": null
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/(shared)/gyms.tsx",
+        "note": "SF-89: every gym workspace of the account, in the A04 row composition (no artboard of its own; D-MOBILE-GYM-SHELL-MVP), where GET /api/v1/me/entry's gym_selection lands (route-architecture rule 7), also opened from A04's 'All gyms' when the entry lists fewer gyms than gym_workspace_count. It lists the entry's gym_workspaces (at most 25), then GET /api/v1/me/gyms page by page. A completed gym opens its Gym pulse (the choice is recorded with PUT /api/v1/me/entry/context and the route names the gym); the owner's draft continues setup; no gym offers gym registration. Nothing is created, granted or stored on the device."
+      },
+      "discrepancies": ["D-MOBILE-GYM-SHELL-MVP"],
+      "screens": ["MGC1"]
     },
     {
       "id": "mobile.invite._code",
@@ -1900,10 +1931,10 @@
       "discrepancies": ["D-ONBOARDING-ENTRY-CAPABILITY", "D-MOBILE-GYM-ONBOARDING-FLOW"]
     },
     {
-      "id": "mobile.gym.pulse",
+      "id": "mobile.gyms._gym-id.pulse",
       "platform": "mobile",
-      "path": "/gym/pulse",
-      "params": [],
+      "path": "/gyms/:gymId/pulse",
+      "params": ["gymId"],
       "name": "Gym pulse",
       "surface": "GYM",
       "shell": "mobile.gym",
@@ -1919,10 +1950,10 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/(gym)/(tabs)/(pulse)/gym/pulse.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/(gym)/(tabs)/(pulse)/gyms/[gymId]/pulse.tsx",
+        "note": "SF-89: G01 Gym pulse as the GYM_WORKSPACE home of the gym in the path (ADR 0026 D-G23), reduced to real data (D-MOBILE-GYM-SHELL-MVP): the identity pill (gym name and the viewer's role from GET /api/v1/gyms/{gym_id}; opens the A04 sheet with the account's contexts and gyms), the eyebrow and title, OG1's 'How members see you' card (name, type, primary location), for the owner the saved setup (GET /api/v1/gyms/{gym_id}/setup), for other roles a limited-access notice, the viewer's access and the areas coming later. Location chips, QR check-in, KPI tiles, classes, incidents and announcements are hidden until their domains exist; never shown as zero. GR1/GR2 (first run) stay with SF-101. Every /gyms/:gymId route renders inside the gym gate (CapabilityGate GYM_WORKSPACE, then the gym read: 404 not available, 403 role-restricted, draft continues setup, failure retries)."
       },
-      "discrepancies": ["D-WORKSPACE-NOT-IN-URL"],
+      "discrepancies": ["D-WORKSPACE-NOT-IN-URL", "D-MOBILE-GYM-SHELL-MVP"],
       "screens": ["GR1", "GR2", "G01"]
     },
     {
@@ -4989,10 +5020,10 @@
       "screens": ["AV5"]
     },
     {
-      "id": "mobile.gym.check-in",
+      "id": "mobile.gyms._gym-id.check-in",
       "platform": "mobile",
-      "path": "/gym/check-in",
-      "params": [],
+      "path": "/gyms/:gymId/check-in",
+      "params": ["gymId"],
       "name": "QR check-in",
       "surface": "GYM",
       "shell": "mobile.gym",
@@ -5008,20 +5039,20 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/(gym)/(tabs)/(checkin)/gym/check-in.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/(gym)/(tabs)/(checkin)/gyms/[gymId]/check-in.tsx",
+        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-89: id-based (/gyms/:gymId/…, ADR 0026 D-G23), behind the gym gate of the gym in the path; not linked from the gym tab bar until its domain exists (D-MOBILE-GYM-SHELL-MVP)."
       },
       "screens": ["G02"]
     },
     {
-      "id": "mobile.gym.classes._class-id.roster",
+      "id": "mobile.gyms._gym-id.classes._class-id.roster",
       "platform": "mobile",
-      "path": "/gym/classes/:classId/roster",
-      "params": ["classId"],
+      "path": "/gyms/:gymId/classes/:classId/roster",
+      "params": ["gymId", "classId"],
       "name": "Class roster",
       "surface": "GYM",
       "shell": "mobile.gym",
-      "parent": "mobile.gym.classes",
+      "parent": "mobile.gyms._gym-id.classes",
       "nav": {
         "type": "STACK",
         "from": []
@@ -5033,21 +5064,21 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/(gym)/(tabs)/(classes)/gym/classes/[classId]/roster.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/(gym)/(tabs)/(classes)/gyms/[gymId]/classes/[classId]/roster.tsx",
+        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-89: id-based (/gyms/:gymId/…, ADR 0026 D-G23), behind the gym gate of the gym in the path; not linked from the gym tab bar until its domain exists (D-MOBILE-GYM-SHELL-MVP)."
       },
       "discrepancies": ["D-NAV-DETAIL-TARGETS"],
       "screens": ["G03"]
     },
     {
-      "id": "mobile.gym.members._member-id",
+      "id": "mobile.gyms._gym-id.members._member-id",
       "platform": "mobile",
-      "path": "/gym/members/:memberId",
-      "params": ["memberId"],
+      "path": "/gyms/:gymId/members/:memberId",
+      "params": ["gymId", "memberId"],
       "name": "Member card",
       "surface": "GYM",
       "shell": "mobile.gym",
-      "parent": "mobile.gym.members",
+      "parent": "mobile.gyms._gym-id.members",
       "nav": {
         "type": "STACK",
         "from": []
@@ -5059,17 +5090,17 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/(gym)/(tabs)/(members)/gym/members/[memberId].tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/(gym)/(tabs)/(members)/gyms/[gymId]/members/[memberId].tsx",
+        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-89: id-based (/gyms/:gymId/…, ADR 0026 D-G23), behind the gym gate of the gym in the path; not linked from the gym tab bar until its domain exists (D-MOBILE-GYM-SHELL-MVP)."
       },
       "discrepancies": ["D-NAV-DETAIL-TARGETS"],
       "screens": ["G04"]
     },
     {
-      "id": "mobile.gym.staff.on-shift",
+      "id": "mobile.gyms._gym-id.staff.on-shift",
       "platform": "mobile",
-      "path": "/gym/staff/on-shift",
-      "params": [],
+      "path": "/gyms/:gymId/staff/on-shift",
+      "params": ["gymId"],
       "name": "Staff on shift",
       "surface": "GYM",
       "shell": "mobile.gym",
@@ -5085,16 +5116,16 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/(gym)/(tabs)/(staff)/gym/staff/on-shift.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/(gym)/(tabs)/(staff)/gyms/[gymId]/staff/on-shift.tsx",
+        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-89: id-based (/gyms/:gymId/…, ADR 0026 D-G23), behind the gym gate of the gym in the path; not linked from the gym tab bar until its domain exists (D-MOBILE-GYM-SHELL-MVP)."
       },
       "screens": ["G05"]
     },
     {
-      "id": "mobile.gym.incidents.new",
+      "id": "mobile.gyms._gym-id.incidents.new",
       "platform": "mobile",
-      "path": "/gym/incidents/new",
-      "params": [],
+      "path": "/gyms/:gymId/incidents/new",
+      "params": ["gymId"],
       "name": "Incidents",
       "surface": "GYM",
       "shell": "mobile.gym",
@@ -5110,16 +5141,16 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/(gym)/gym/incidents/new.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/(gym)/gyms/[gymId]/incidents/new.tsx",
+        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-89: id-based (/gyms/:gymId/…, ADR 0026 D-G23), behind the gym gate of the gym in the path; not linked from the gym tab bar until its domain exists (D-MOBILE-GYM-SHELL-MVP)."
       },
       "screens": ["G06"]
     },
     {
-      "id": "mobile.gym.announcements.new",
+      "id": "mobile.gyms._gym-id.announcements.new",
       "platform": "mobile",
-      "path": "/gym/announcements/new",
-      "params": [],
+      "path": "/gyms/:gymId/announcements/new",
+      "params": ["gymId"],
       "name": "Announcement",
       "surface": "GYM",
       "shell": "mobile.gym",
@@ -5135,8 +5166,8 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/(gym)/gym/announcements/new.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/(gym)/gyms/[gymId]/announcements/new.tsx",
+        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-89: id-based (/gyms/:gymId/…, ADR 0026 D-G23), behind the gym gate of the gym in the path; not linked from the gym tab bar until its domain exists (D-MOBILE-GYM-SHELL-MVP)."
       },
       "screens": ["G07"]
     },
@@ -8203,10 +8234,10 @@
       "screens": []
     },
     {
-      "id": "mobile.gym.classes",
+      "id": "mobile.gyms._gym-id.classes",
       "platform": "mobile",
-      "path": "/gym/classes",
-      "params": [],
+      "path": "/gyms/:gymId/classes",
+      "params": ["gymId"],
       "name": "Classes",
       "surface": "GYM",
       "shell": "mobile.gym",
@@ -8222,17 +8253,17 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/(gym)/(tabs)/(classes)/gym/classes/index.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/(gym)/(tabs)/(classes)/gyms/[gymId]/classes/index.tsx",
+        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-89: id-based (/gyms/:gymId/…, ADR 0026 D-G23), behind the gym gate of the gym in the path; not linked from the gym tab bar until its domain exists (D-MOBILE-GYM-SHELL-MVP)."
       },
       "discrepancies": ["D-NAV-DETAIL-TARGETS"],
       "screens": ["G08"]
     },
     {
-      "id": "mobile.gym.members",
+      "id": "mobile.gyms._gym-id.members",
       "platform": "mobile",
-      "path": "/gym/members",
-      "params": [],
+      "path": "/gyms/:gymId/members",
+      "params": ["gymId"],
       "name": "Members",
       "surface": "GYM",
       "shell": "mobile.gym",
@@ -8248,8 +8279,8 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/(gym)/(tabs)/(members)/gym/members/index.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/(gym)/(tabs)/(members)/gyms/[gymId]/members/index.tsx",
+        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-89: id-based (/gyms/:gymId/…, ADR 0026 D-G23), behind the gym gate of the gym in the path; not linked from the gym tab bar until its domain exists (D-MOBILE-GYM-SHELL-MVP)."
       },
       "discrepancies": ["D-NAV-DETAIL-TARGETS"],
       "screens": ["G09"]
@@ -10147,7 +10178,7 @@
       "id": "GR1",
       "code": "GR1",
       "name": "Gym pulse · opening week",
-      "route": "mobile.gym.pulse",
+      "route": "mobile.gyms._gym-id.pulse",
       "query": {
         "state": "opening-week"
       },
@@ -10165,7 +10196,7 @@
       "id": "GR2",
       "code": "GR2",
       "name": "Tip · QR check-in",
-      "route": "mobile.gym.pulse",
+      "route": "mobile.gyms._gym-id.pulse",
       "query": {
         "tip": "check-in"
       },
@@ -13428,7 +13459,7 @@
       "id": "G01",
       "code": "G01",
       "name": "Gym pulse",
-      "route": "mobile.gym.pulse",
+      "route": "mobile.gyms._gym-id.pulse",
       "states": ["location filter"],
       "design": {
         "gallery": "gallery-2",
@@ -13443,7 +13474,7 @@
       "id": "G02",
       "code": "G02",
       "name": "QR check-in",
-      "route": "mobile.gym.check-in",
+      "route": "mobile.gyms._gym-id.check-in",
       "states": ["valid", "payment due"],
       "design": {
         "gallery": "gallery-2",
@@ -13458,7 +13489,7 @@
       "id": "G03",
       "code": "G03",
       "name": "Class roster",
-      "route": "mobile.gym.classes._class-id.roster",
+      "route": "mobile.gyms._gym-id.classes._class-id.roster",
       "states": ["default"],
       "design": {
         "gallery": "gallery-2",
@@ -13474,7 +13505,7 @@
       "id": "G04",
       "code": "G04",
       "name": "Member card",
-      "route": "mobile.gym.members._member-id",
+      "route": "mobile.gyms._gym-id.members._member-id",
       "states": ["default"],
       "design": {
         "gallery": "gallery-2",
@@ -13490,7 +13521,7 @@
       "id": "G05",
       "code": "G05",
       "name": "Staff on shift",
-      "route": "mobile.gym.staff.on-shift",
+      "route": "mobile.gyms._gym-id.staff.on-shift",
       "states": ["default"],
       "design": {
         "gallery": "gallery-2",
@@ -13505,7 +13536,7 @@
       "id": "G06",
       "code": "G06",
       "name": "Incidents",
-      "route": "mobile.gym.incidents.new",
+      "route": "mobile.gyms._gym-id.incidents.new",
       "states": ["injury", "damage"],
       "design": {
         "gallery": "gallery-2",
@@ -13520,7 +13551,7 @@
       "id": "G07",
       "code": "G07",
       "name": "Announcement",
-      "route": "mobile.gym.announcements.new",
+      "route": "mobile.gyms._gym-id.announcements.new",
       "states": ["draft"],
       "design": {
         "gallery": "gallery-2",
@@ -15868,7 +15899,7 @@
       "id": "G08",
       "code": "G08",
       "name": "Classes",
-      "route": "mobile.gym.classes",
+      "route": "mobile.gyms._gym-id.classes",
       "states": ["today", "tomorrow", "this week", "location"],
       "design": {
         "gallery": "gallery-2",
@@ -15884,7 +15915,7 @@
       "id": "G09",
       "code": "G09",
       "name": "Members",
-      "route": "mobile.gym.members",
+      "route": "mobile.gyms._gym-id.members",
       "states": ["all", "payment due", "trials", "at risk"],
       "design": {
         "gallery": "gallery-2",
@@ -16100,6 +16131,21 @@
         "tag": "WEB_SITE",
         "artboard": "WebEmailVerified.dc.html",
         "galleryPath": "/verify-email#token=:token"
+      }
+    },
+    {
+      "id": "MGC1",
+      "code": "MGC1",
+      "name": "Choose a gym",
+      "route": "mobile.gyms",
+      "states": ["several", "completed and draft", "draft only", "no gym", "pending", "failed"],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "onboarding",
+        "section": "1a · Registration · start — mobile app (all roles)",
+        "step": "1.8a",
+        "tag": "MOBILE",
+        "artboard": "Workspaces.dc.html"
       }
     }
   ],
@@ -17259,16 +17305,16 @@
       "resolution": "Nav items for classes, members, coach fighters, open sparring and admin support point at design gaps; their detail routes are no longer NAV_ITEM.",
       "status": "RESOLVED",
       "routes": [
-        "mobile.gym.classes._class-id.roster",
-        "mobile.gym.members._member-id",
+        "mobile.gyms._gym-id.classes._class-id.roster",
+        "mobile.gyms._gym-id.members._member-id",
         "web.app.coach.fighters._fighter-id",
         "web.app.coach.sessions.new",
         "web.app.coach.services.new",
         "web.app.gyms._gym-id.challenges.new",
         "web.app.gyms._gym-id.open-sparring._open-sparring-id",
         "web.admin.support._session-id",
-        "mobile.gym.classes",
-        "mobile.gym.members",
+        "mobile.gyms._gym-id.classes",
+        "mobile.gyms._gym-id.members",
         "web.app.coach.fighters",
         "web.app.gyms._gym-id.open-sparring",
         "web.admin.support"
@@ -17285,8 +17331,8 @@
           "GAP-WEB-ADMIN-SUPPORT"
         ],
         "routes": [
-          "mobile.gym.classes",
-          "mobile.gym.members",
+          "mobile.gyms._gym-id.classes",
+          "mobile.gyms._gym-id.members",
           "web.app.coach.fighters",
           "web.app.gym.open-sparring",
           "web.admin.support"
@@ -17300,9 +17346,9 @@
       "sourceB": "Identity model (User → WorkspaceMembership → Gym | Sponsor; a user may hold several)",
       "mismatch": "Paths do not say which gym or sponsor workspace they belong to (the gym console shows 'OWNER · 3 LOCATIONS').",
       "impact": "Links are only meaningful inside the active workspace; a user with two gym memberships cannot deep-link into a specific one.",
-      "resolution": "No path change for the Sponsor workspace and the mobile gym tabs. The web gym console is id-based since SF-88 (ADR 0026 D-G23): /app/gyms/:gymId/**, the id a lookup key that the backend authorizes on every request.",
+      "resolution": "No path change for the Sponsor workspace. The gym consoles are id-based (ADR 0026 D-G23): the web /app/gyms/:gymId/** since SF-88 and the mobile gym tabs /gyms/:gymId/** since SF-89, the id a lookup key that the backend authorizes on every request.",
       "status": "RESOLVED",
-      "routes": ["web.sponsor.dashboard", "mobile.gym.pulse"],
+      "routes": ["web.sponsor.dashboard", "mobile.gyms._gym-id.pulse"],
       "decision": "The active workspace is session context. Workspace ids are not added to URLs globally; cross-workspace deep links may be added later when email/push features need them.",
       "decidedOn": "2026-10-06"
     },
@@ -17866,6 +17912,20 @@
       "status": "DEFERRED",
       "routes": ["web.app.gyms", "web.app.gyms._gym-id"],
       "screens": ["WG1", "GRW1", "GRW2"]
+    },
+    {
+      "id": "D-MOBILE-GYM-SHELL-MVP",
+      "title": "Mobile gym shell reduced to existing domains, with chooser and switcher from approved compositions",
+      "sourceA": "Claude Design 1792675284-1046: G01 GymPulse (location chips, QR check-in, check-ins, occupancy, failed payments, sales, today's classes, incidents and announcements; SF-82 R5/C7 keep only today's classes, check-ins and members, unapplied), GR1/GR2 FirstRunGPulse (opening checklist, member funnel, tour), GymTabs (Pulse, Classes, QR check-in, Members, Staff), A04 Workspaces (Fighter and Coach rows only); no mobile gym chooser, gym row or role-restricted board",
+      "sourceB": "SF-83 / SF-84 / SF-85 backend: the gym, its locations and setup fields, the viewer's staff role and permission projection, the entry's gym workspaces; no members, scheduling, bookings, attendance, staff invitations, billing, incidents, announcements or publishing domain",
+      "mismatch": "The designed mobile gym cockpit shows records that do not exist and has no gym chooser or gym rows in the switcher.",
+      "impact": "Building it would fake members, classes, revenue and activity, and leave several gyms unreachable on mobile.",
+      "resolution": "SF-89 (Claude Design unchanged): A04 (sheet and /workspaces) lists the account's gym workspaces under the Fighter and Coach rows in the same row composition (gym name, the viewer's role, setup status and the backend's action: open a completed gym, continue the owner's draft), with 'All gyms' when the entry lists fewer than gym_workspace_count; /gyms (MGC1, the same rows) is where gym_selection lands and lists every gym page by page. G01 keeps its identity pill (opens the A04 sheet), eyebrow and title and shows OG1's 'How members see you' card with the real name, type and primary location, the owner's saved setup, the viewer's access and the areas coming later; every G01 tile and action of SF-82 R5/C7 is hidden until its domain exists (members SF-90/SF-91, scheduling SF-93+, check-in SF-96/SF-97). The header's Incidents and Announcements are replaced by Settings (the shared ST1, the account and Sign out). Non-owner roles see the gym, their role and a limited-access notice. The tab bar links Pulse only; Classes, QR check-in, Members and Staff are shown as Soon and not linked. GR1/GR2 (first run) stay with SF-101.",
+      "decision": "The mobile gym shell grows with its domains; nothing is shown before it is real.",
+      "decidedOn": "2026-10-28",
+      "status": "DEFERRED",
+      "routes": ["mobile.workspaces", "mobile.gyms", "mobile.gyms._gym-id.pulse"],
+      "screens": ["G01", "GR1", "GR2", "MGC1"]
     }
   ]
 }
