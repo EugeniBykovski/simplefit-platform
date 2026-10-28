@@ -1,10 +1,18 @@
 "use client";
 
 import { CircleAlertIcon, ClockIcon } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
-import type { ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 
-import { primaryLocation, type Gym } from "@/entities/gym";
+import { gymQueryKey, primaryLocation, type Gym } from "@/entities/gym";
+import {
+  FIRST_RUN_PERMISSION,
+  isFirstRunConflict,
+  useGymFirstRun,
+  useGymFirstRunActions,
+  type GymFirstRunAction,
+} from "@/entities/gym-first-run";
 import { useGymSetup, type GymSetup } from "@/entities/gym-setup";
 import { initialsOf } from "@/features/session-gate";
 import { isApiError } from "@/shared/api/http/api-error";
@@ -16,6 +24,16 @@ import { Notice } from "@/shared/ui/notice";
 import { PageBody, PageHeader } from "@/shared/ui/page";
 import { Skeleton } from "@/shared/ui/skeleton";
 
+import {
+  FirstRunIntro,
+  FirstRunIntroLoading,
+  FirstRunUnavailable,
+  GymChecklist,
+  GymChecklistLoading,
+  SkipDialog,
+  type IntroAction,
+} from "./gym-first-run";
+import { GymTour } from "./gym-tour";
 import { useGymWorkspace } from "./gym-workspace";
 
 type AccentName = "olive" | "amber" | "coral" | "sky" | "bone" | "moss";
@@ -63,45 +81,215 @@ export function GymDashboardView({ gym }: { gym: Gym }) {
   const location = primaryLocation(gym);
   const where = gym.locations.length === 1 && location !== null ? location.name : t("allLocations");
   const today = format.dateTime(new Date(), { weekday: "short", month: "short", day: "numeric" });
+  const heading = useRef<HTMLHeadingElement>(null);
+  const firstRun = useOwnerFirstRun(gym, heading);
 
   return (
-    <div data-gym-dashboard data-gym-id={gym.id} className="flex min-h-full flex-col">
+    <div
+      data-gym-dashboard
+      data-gym-id={gym.id}
+      data-first-run={firstRun.mode}
+      className="flex min-h-full flex-col"
+    >
       <PageHeader>
         <div className="flex min-w-0 flex-col gap-0.5">
           <p className="truncate type-label text-faint-foreground">
             {t("eyebrow", { date: today, where })}
           </p>
-          <h1 className="type-h3 font-display">{t("title")}</h1>
+          <h1 ref={heading} tabIndex={-1} className="type-h3 font-display outline-none">
+            {t("title")}
+          </h1>
         </div>
       </PageHeader>
-      <PageBody className="grid content-start gap-4 pt-5.5 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
-        <div className="flex min-w-0 flex-col gap-4">
-          <GymSummary gym={gym} owner={owner} />
-          {owner ? <GymDetails gymId={gym.id} /> : <LimitedAccess gym={gym} />}
-        </div>
-        <div className="flex min-w-0 flex-col gap-4">
-          <YourAccess gym={gym} />
-          <ComingLater />
-        </div>
-      </PageBody>
+      {firstRun.mode === "off" ? (
+        <PageBody className="grid content-start gap-4 pt-5.5 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
+          <div className="flex min-w-0 flex-col gap-4">
+            <GymSummary gym={gym} owner={owner} />
+            {owner ? <GymDetails gymId={gym.id} /> : <LimitedAccess gym={gym} />}
+          </div>
+          <div className="flex min-w-0 flex-col gap-4">
+            <YourAccess gym={gym} />
+            <ComingLater />
+          </div>
+        </PageBody>
+      ) : (
+        // GRW1: the introduction and the checklist beside the gym and its access.
+        <PageBody className="grid content-start gap-4 pt-5.5 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
+          <div className="flex min-w-0 flex-col gap-4">{firstRun.panel}</div>
+          <div className="flex min-w-0 flex-col gap-4">
+            <GymSummary gym={gym} owner={owner} />
+            <YourAccess gym={gym} />
+          </div>
+        </PageBody>
+      )}
+      {firstRun.overlays}
     </div>
   );
+}
+
+/**
+ * The owner's first run on this gym (SF-90 lifecycle, SF-91 UI), read only
+ * with the `manage_first_run` permission (owner): managers, coaches and front
+ * desk never call it and keep WG1. Modes:
+ *
+ * - `off`: no permission, a 403, or an outcome kept before this page was
+ *   opened (completed and dismissed never reopen; WG1 shows).
+ * - `loading`, `unavailable` (the read failed; the console works without it).
+ * - `offer`: `not_started` or `in_progress` (started on another device).
+ * - `kept`: an outcome kept on this page, said once until the next visit.
+ *
+ * A 404 means the gym itself is gone for this user: the gym is re-read so the
+ * console shows "not available". A 409 (the other outcome was kept elsewhere)
+ * re-reads the state, closes the tour if it is open and shows what the
+ * backend kept.
+ */
+function useOwnerFirstRun(gym: Gym, heading: RefObject<HTMLHeadingElement | null>) {
+  const enabled = gym.viewer.permissions.includes(FIRST_RUN_PERMISSION);
+  const query = useGymFirstRun(gym.id, enabled);
+  const transition = useGymFirstRunActions(gym.id);
+  const client = useQueryClient();
+  const [keptHere, setKeptHere] = useState(false);
+  const [pending, setPending] = useState<IntroAction>();
+  const [failed, setFailed] = useState<IntroAction>();
+  const [skipping, setSkipping] = useState(false);
+  const [touring, setTouring] = useState(false);
+
+  const data = query.data?.gym_id === gym.id ? query.data : undefined;
+  const status = isApiError(query.error) ? query.error.status : undefined;
+  // The gym is gone for this user (revoked meanwhile): the console re-reads it and shows "not available".
+  useEffect(() => {
+    if (status === 404) void client.invalidateQueries({ queryKey: gymQueryKey(gym.id) });
+  }, [client, gym.id, status]);
+
+  const act = useCallback(
+    async (action: GymFirstRunAction) => {
+      try {
+        const kept = await transition(action);
+        if (kept.status === "completed" || kept.status === "dismissed") setKeptHere(true);
+        return kept;
+      } catch (error) {
+        // The other outcome was kept elsewhere: the tour closes and the page shows the backend's answer.
+        if (isFirstRunConflict(error)) {
+          setKeptHere(true);
+          setTouring(false);
+        }
+        if (isApiError(error) && error.status === 404) {
+          void client.invalidateQueries({ queryKey: gymQueryKey(gym.id) });
+        }
+        throw error;
+      }
+    },
+    [client, gym.id, transition],
+  );
+
+  const start = async () => {
+    setPending("start");
+    setFailed(undefined);
+    try {
+      const kept = await act("start");
+      if (kept.status === "in_progress") setTouring(true);
+    } catch {
+      setFailed("start");
+    } finally {
+      setPending(undefined);
+    }
+  };
+
+  const skip = async () => {
+    setPending("dismiss");
+    setFailed(undefined);
+    try {
+      await act("dismiss");
+      setSkipping(false);
+    } catch (error) {
+      if (isFirstRunConflict(error)) setSkipping(false);
+      else setFailed("dismiss");
+    } finally {
+      setPending(undefined);
+    }
+  };
+
+  let mode: "off" | "loading" | "unavailable" | "offer" | "kept" = "off";
+  if (!enabled || status === 403 || status === 404) mode = "off";
+  else if (data === undefined) mode = query.isError ? "unavailable" : "loading";
+  else if (data.status === "not_started" || data.status === "in_progress") mode = "offer";
+  else if (keptHere && (data.status === "completed" || data.status === "dismissed")) mode = "kept";
+
+  let panel: ReactNode = null;
+  if (mode === "loading") {
+    panel = (
+      <>
+        <FirstRunIntroLoading />
+        <GymChecklistLoading />
+      </>
+    );
+  } else if (mode === "unavailable") {
+    panel = <FirstRunUnavailable onRetry={() => void query.refetch()} />;
+  } else if (data !== undefined && (mode === "offer" || mode === "kept")) {
+    panel = (
+      <>
+        <FirstRunIntro
+          firstRun={data}
+          pending={pending}
+          failed={failed === "start"}
+          onStart={() => void start()}
+          onSkip={() => {
+            setFailed(undefined);
+            setSkipping(true);
+          }}
+        />
+        <GymChecklist items={data.checklist} />
+      </>
+    );
+  }
+
+  const overlays =
+    !enabled || mode === "off" ? null : (
+      <>
+        <SkipDialog
+          open={skipping}
+          pending={pending === "dismiss"}
+          failed={failed === "dismiss"}
+          onConfirm={() => void skip()}
+          onCancel={() => setSkipping(false)}
+          onClosed={() => {
+            // Back to "Skip introduction" when it is still there; the page otherwise.
+            const skip = document.querySelector<HTMLElement>("[data-first-run-skip]");
+            (skip ?? heading.current)?.focus();
+          }}
+        />
+        <GymTour
+          open={touring}
+          gymName={gym.name}
+          onComplete={() => act("complete")}
+          onDismiss={() => act("dismiss")}
+          onClose={() => setTouring(false)}
+          onClosed={() => heading.current?.focus()}
+        />
+      </>
+    );
+
+  return { mode, panel, overlays };
 }
 
 function Section({
   id,
   title,
   aside,
+  tourTarget,
   children,
 }: {
   id: string;
   title: string;
   aside?: ReactNode;
+  /** The GRW2 anchor of this card (SF-91). */
+  tourTarget?: string;
   children: ReactNode;
 }) {
   return (
     <section
       aria-labelledby={id}
+      data-tour-target={tourTarget}
       className="flex min-w-0 flex-col gap-3.5 rounded-3xl border bg-surface px-5 py-4.5"
     >
       <div className="flex items-center justify-between gap-3">
@@ -136,6 +324,7 @@ function GymSummary({ gym, owner }: { gym: Gym; owner: boolean }) {
     <Section
       id="gym-summary-heading"
       title={t("summary.title")}
+      tourTarget="gym-summary"
       aside={<Badge variant="accent">{t("summary.completed")}</Badge>}
     >
       <div className="flex items-center gap-3.5">
@@ -288,7 +477,7 @@ function YourAccess({ gym }: { gym: Gym }) {
   const t = useTranslations("gymConsole.dashboard.access");
   const roles = useTranslations("gymConsole.switcher.roles");
   return (
-    <Section id="gym-access-heading" title={t("title")}>
+    <Section id="gym-access-heading" title={t("title")} tourTarget="gym-access">
       <div className="flex flex-col gap-1">
         <p className="type-title font-extrabold" data-gym-role={gym.viewer.role}>
           {roles(gym.viewer.role)}

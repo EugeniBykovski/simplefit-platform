@@ -116,11 +116,11 @@ stale`); reread and retry. Completion and discard take no revision.
 Not in the contract yet: gym size and features (OG4/OG5, future with plans)
 and logo/cover uploads (waiting for a storage attachment mechanism).
 
-## SF-90: gym first run and setup checklist API (no screens yet)
+## SF-90: gym first run and setup checklist API
 
 The generated client adds the owner's gym first run (ADR 0026, SF-90
-amendment). There are no screens yet; GRW1/GR1 and the GRW2/GR2 tours are
-SF-101.
+amendment). The web screens GRW1 and GRW2 are SF-91 (below); GR1 and the
+GR2 tour on mobile are SF-101.
 
 - `getGymFirstRun` returns the introduction's `status` (`unavailable` for a
   draft, then `not_started`, `in_progress`, `completed`, `dismissed`), its
@@ -139,3 +139,14 @@ SF-101.
   introduction changes any item.
 - Tour steps, highlights and replays stay in the client. Never send them to
   the API, and never block the gym shell on the first run.
+
+## SF-91: web owner first run (GRW1, GRW2)
+
+`entities/gym-first-run` wraps the SF-90 client: one query per gym
+(`gymFirstRunQueryKey`), read only with `manage_first_run`, and the start,
+complete and dismiss transitions, which write the backend's answer to that
+gym's cache and re-read it on a `409`. The console (`widgets/gym-workspace`)
+renders GRW1 and the four-step GRW2 tour of Claude Design 112 from that
+state only; the tour step stays in the client. See
+`docs/gym-console-web.md` (SF-91) for behaviour and the differences from the
+design (`D-WEB-GYM-FIRST-RUN`).

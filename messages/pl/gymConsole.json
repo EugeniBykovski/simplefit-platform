@@ -114,5 +114,139 @@
         "body": "Zaproś zespół i nadaj każdemu rolę."
       }
     }
+  },
+  "firstRun": {
+    "loading": "Wczytywanie wprowadzenia i listy",
+    "intro": {
+      "eyebrowNotStarted": "Wprowadzenie właściciela · nierozpoczęte",
+      "eyebrowInProgress": "Wprowadzenie właściciela · w toku",
+      "title": "Witaj w konsoli swojej sali",
+      "body": "Krótki przegląd tego, co działa dziś: twoja lista, twoja sala, menu i przełącznik. Około minuty.",
+      "resumeTitle": "Wróć do wprowadzenia",
+      "resumeBody": "Zaczęto je {date}. Kroki przewodnika nie są zapisywane, więc tutaj zaczyna się od pierwszego.",
+      "resumeBodyUndated": "Zaczęto je na innym urządzeniu. Kroki przewodnika nie są zapisywane, więc tutaj zaczyna się od pierwszego.",
+      "start": "Zacznij przewodnik",
+      "resume": "Wznów przewodnik",
+      "starting": "Uruchamianie…",
+      "skip": "Pomiń wprowadzenie",
+      "failed": "Nie udało się tego zapisać. Nic się nie zmieniło.",
+      "completed": {
+        "title": "Wprowadzenie ukończone.",
+        "body": "Nie otworzy się ponownie na żadnym urządzeniu. Lista nadal odzwierciedla to, co naprawdę robi twoja sala."
+      },
+      "dismissed": {
+        "title": "Wprowadzenie pominięte.",
+        "body": "Nie otworzy się ponownie na żadnym urządzeniu. Pominięcie nie zmieniło listy ani sali."
+      }
+    },
+    "unavailable": {
+      "title": "Nie udało się wczytać wprowadzenia i listy.",
+      "body": "Konsola działa bez nich. Nic się nie zmieniło.",
+      "retry": "Spróbuj ponownie"
+    },
+    "checklist": {
+      "eyebrow": "Lista otwarcia",
+      "title": "Lista twojej sali",
+      "readyTitle": "Twoja sala jest gotowa",
+      "readyBody": "Tożsamość i lokalizacja sali są zapisane.",
+      "moreTitle": "Kolejne narzędzia w drodze",
+      "moreBody": "Otworzą się wraz z uruchomieniem ich funkcji. To nie są brakujące kroki.",
+      "footnote": "Ukończenie lub pominięcie wprowadzenia nie zmienia tej listy. Każdy krok odhacza się sam, gdy sala naprawdę go wykona, w sieci i w aplikacji.",
+      "loading": "Wczytywanie listy",
+      "badges": {
+        "completed": "Gotowe",
+        "available": "Dostępne",
+        "coming_later": "Wkrótce"
+      },
+      "items": {
+        "create_gym": {
+          "title": "Utwórz salę",
+          "completed": "Nazwa, typ i lokalizacja są zapisane",
+          "available": "Dokończ konfigurację, aby utworzyć salę",
+          "coming_later": "Wkrótce"
+        },
+        "add_class": {
+          "title": "Dodaj pierwsze zajęcia",
+          "completed": "Pierwsze zajęcia są w grafiku",
+          "available": "Dodaj zajęcia do grafiku",
+          "coming_later": "Pojawi się z zajęciami i grafikiem"
+        },
+        "invite_staff": {
+          "title": "Zaproś zespół",
+          "completed": "Osoba z zespołu przyjęła zaproszenie",
+          "available": "Wyślij pierwsze zaproszenie dla zespołu",
+          "coming_later": "Pojawi się z zaproszeniami dla zespołu"
+        },
+        "invite_members": {
+          "title": "Zaproś członków",
+          "completed": "Członek dołączył do twojej sali",
+          "available": "Wyślij pierwsze zaproszenie dla członków",
+          "coming_later": "Pojawi się z zaproszeniami dla członków"
+        },
+        "first_check_in": {
+          "title": "Zarejestruj pierwsze wejście",
+          "completed": "Zarejestrowano pierwsze wejście",
+          "available": "Zarejestruj wejście członka w recepcji",
+          "coming_later": "Pojawi się z wejściem przez kod QR"
+        }
+      }
+    },
+    "skip": {
+      "eyebrow": "Pomiń wprowadzenie",
+      "title": "Pominąć wprowadzenie?",
+      "body": "Nie otworzy się ponownie ani na tym, ani na żadnym innym urządzeniu. Lista pozostaje bez zmian: pominięcie niczego nie kończy.",
+      "confirm": "Pomiń wprowadzenie",
+      "keep": "Zostaw",
+      "failed": "Nie udało się tego zapisać. Nic się nie zmieniło. Spróbuj ponownie."
+    },
+    "tour": {
+      "step": "Przewodnik · {step} z {total}",
+      "complete": "Wprowadzenie ukończone",
+      "end": "Zakończ przewodnik",
+      "back": "Wstecz",
+      "next": "Dalej",
+      "finish": "Zakończ",
+      "tryAgain": "Spróbuj ponownie",
+      "failed": "Nie można połączyć się z SimpleFit. Nic się nie zmieniło.",
+      "toDashboard": "Wróć do pulpitu",
+      "finishing": {
+        "title": "Kończenie…",
+        "body": "Zapisujemy, że ukończono wprowadzenie. Nic więcej się nie zmienia.",
+        "button": "Kończenie…"
+      },
+      "finishFailed": {
+        "title": "Nie udało się tego zapisać",
+        "body": "Wprowadzenie pozostaje otwarte i nic się nie zmieniło. Spróbuj ponownie albo dokończ je później na dowolnym urządzeniu."
+      },
+      "confirm": {
+        "label": "Zakończ wprowadzenie",
+        "title": "Zakończyć wprowadzenie?",
+        "body": "Nie otworzy się ponownie ani na tym, ani na żadnym innym urządzeniu. Lista pozostaje bez zmian: zakończenie niczego nie odhacza.",
+        "keep": "Kontynuuj",
+        "end": "Zakończ wprowadzenie"
+      },
+      "steps": {
+        "checklist": {
+          "title": "Twoja lista otwarcia",
+          "body": "Jeden krok jest gotowy: twoja sala istnieje. Zajęcia, zespół, członkowie i wejścia są oznaczone jako „wkrótce”, dopóki się nie pojawią. Żaden nie liczy się jako brakujący."
+        },
+        "gym": {
+          "title": "Twoja sala i twój dostęp",
+          "body": "Nazwa, typ i lokalizacja pochodzą prosto z konfiguracji. Dostęp pokazuje, co twoja rola może w tej sali, i tylko w niej."
+        },
+        "menu": {
+          "title": "Narzędzia pojawią się w tym menu",
+          "body": "Pulpit działa już dziś. Członkowie, grafik, zespół i reszta są oznaczone jako „Wkrótce” i otworzą się po uruchomieniu. Nic za nimi nie jest zrobione do połowy."
+        },
+        "switcher": {
+          "title": "Jedno konto, każda rola",
+          "body": "Jesteś właścicielem {name}. Tutaj przełączasz sale albo otwierasz profil zawodnika lub trenera, bez ponownego logowania. Każda sala ma własne dane i własne wprowadzenie."
+        },
+        "done": {
+          "title": "Znasz już drogę",
+          "body": "Zapisane dla tej sali na każdym urządzeniu: wprowadzenie nie otworzy się ponownie. Lista nadal odzwierciedla to, co naprawdę robi twoja sala."
+        }
+      }
+    }
   }
 }

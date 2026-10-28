@@ -114,5 +114,139 @@
         "body": "Invite ton équipe et donne un rôle à chacun."
       }
     }
+  },
+  "firstRun": {
+    "loading": "Chargement de votre introduction et de votre liste",
+    "intro": {
+      "eyebrowNotStarted": "Introduction du propriétaire · non commencée",
+      "eyebrowInProgress": "Introduction du propriétaire · en cours",
+      "title": "Bienvenue dans la console de votre salle",
+      "body": "Une courte visite de ce qui fonctionne aujourd’hui : votre liste, votre salle, le menu et le sélecteur. Environ une minute.",
+      "resumeTitle": "Reprendre l’introduction",
+      "resumeBody": "Vous l’avez commencée le {date}. Les étapes ne sont pas enregistrées : ici, elle reprend à la première.",
+      "resumeBodyUndated": "Vous l’avez commencée sur un autre appareil. Les étapes ne sont pas enregistrées : ici, elle reprend à la première.",
+      "start": "Commencer la visite",
+      "resume": "Reprendre la visite",
+      "starting": "Démarrage…",
+      "skip": "Passer l’introduction",
+      "failed": "Impossible d’enregistrer. Rien n’a changé.",
+      "completed": {
+        "title": "Introduction terminée.",
+        "body": "Elle ne s’ouvrira plus sur aucun appareil. Votre liste continue de refléter ce que votre salle fait vraiment."
+      },
+      "dismissed": {
+        "title": "Introduction passée.",
+        "body": "Elle ne s’ouvrira plus sur aucun appareil. La passer n’a modifié ni votre liste ni votre salle."
+      }
+    },
+    "unavailable": {
+      "title": "Impossible de charger votre introduction et votre liste.",
+      "body": "La console fonctionne sans elles. Rien n’a changé.",
+      "retry": "Réessayer"
+    },
+    "checklist": {
+      "eyebrow": "Liste d’ouverture",
+      "title": "La liste de votre salle",
+      "readyTitle": "Votre salle est prête",
+      "readyBody": "L’identité et l’adresse de la salle sont enregistrées.",
+      "moreTitle": "D’autres outils arrivent",
+      "moreBody": "Ils s’ouvriront avec leurs fonctionnalités. Ce ne sont pas des étapes manquantes.",
+      "footnote": "Terminer ou passer l’introduction ne change pas cette liste. Chaque étape se coche quand votre salle l’accomplit vraiment, sur le web et sur mobile.",
+      "loading": "Chargement de votre liste",
+      "badges": {
+        "completed": "Fait",
+        "available": "Disponible",
+        "coming_later": "Bientôt"
+      },
+      "items": {
+        "create_gym": {
+          "title": "Créer votre salle",
+          "completed": "Nom, type et adresse enregistrés",
+          "available": "Terminez la configuration pour créer votre salle",
+          "coming_later": "Bientôt"
+        },
+        "add_class": {
+          "title": "Ajouter votre premier cours",
+          "completed": "Votre premier cours est au planning",
+          "available": "Ajoutez un cours à votre planning",
+          "coming_later": "Arrive avec les cours et le planning"
+        },
+        "invite_staff": {
+          "title": "Inviter votre équipe",
+          "completed": "Un membre de l’équipe a accepté une invitation",
+          "available": "Envoyez votre première invitation d’équipe",
+          "coming_later": "Arrive avec les invitations d’équipe"
+        },
+        "invite_members": {
+          "title": "Inviter des membres",
+          "completed": "Un membre a rejoint votre salle",
+          "available": "Envoyez votre première invitation de membre",
+          "coming_later": "Arrive avec les invitations de membres"
+        },
+        "first_check_in": {
+          "title": "Enregistrer un premier check-in",
+          "completed": "Un premier check-in a été enregistré",
+          "available": "Enregistrez l’arrivée d’un membre à l’accueil",
+          "coming_later": "Arrive avec le check-in par QR"
+        }
+      }
+    },
+    "skip": {
+      "eyebrow": "Passer l’introduction",
+      "title": "Passer l’introduction ?",
+      "body": "Elle ne s’ouvrira plus sur cet appareil ni sur un autre. Votre liste reste exactement la même : la passer ne termine rien.",
+      "confirm": "Passer l’introduction",
+      "keep": "La garder",
+      "failed": "Impossible d’enregistrer. Rien n’a changé. Réessayez."
+    },
+    "tour": {
+      "step": "Visite · {step} sur {total}",
+      "complete": "Introduction terminée",
+      "end": "Terminer la visite",
+      "back": "Retour",
+      "next": "Suivant",
+      "finish": "Terminer",
+      "tryAgain": "Réessayer",
+      "failed": "Impossible de joindre SimpleFit. Rien n’a changé.",
+      "toDashboard": "Retour au tableau de bord",
+      "finishing": {
+        "title": "Finalisation…",
+        "body": "Nous enregistrons que vous avez terminé l’introduction. Rien d’autre ne change.",
+        "button": "Finalisation…"
+      },
+      "finishFailed": {
+        "title": "Impossible d’enregistrer",
+        "body": "L’introduction reste ouverte et rien n’a changé. Réessayez, ou terminez-la plus tard sur n’importe quel appareil."
+      },
+      "confirm": {
+        "label": "Terminer l’introduction",
+        "title": "Terminer l’introduction ?",
+        "body": "Elle ne s’ouvrira plus sur cet appareil ni sur un autre. Votre liste reste exactement la même : la terminer ne coche rien.",
+        "keep": "Continuer",
+        "end": "Terminer l’introduction"
+      },
+      "steps": {
+        "checklist": {
+          "title": "Votre liste d’ouverture",
+          "body": "Une étape est faite : votre salle existe. Cours, équipe, membres et check-ins apparaissent comme « bientôt » jusqu’à leur arrivée. Aucun ne compte comme manquant."
+        },
+        "gym": {
+          "title": "Votre salle et votre accès",
+          "body": "Le nom, le type et l’adresse viennent directement de votre configuration. Votre accès montre ce que votre rôle permet dans cette salle, et seulement dans celle-ci."
+        },
+        "menu": {
+          "title": "Les outils arrivent dans ce menu",
+          "body": "Le tableau de bord fonctionne aujourd’hui. Membres, planning, équipe et le reste sont marqués « Bientôt » et s’ouvriront à leur arrivée. Rien derrière n’est à moitié construit."
+        },
+        "switcher": {
+          "title": "Un compte, tous les rôles",
+          "body": "Vous êtes propriétaire de {name}. Changez de salle ou ouvrez votre profil de combattant ou de coach ici, sans vous reconnecter. Chaque salle garde ses propres données et sa propre introduction."
+        },
+        "done": {
+          "title": "Vous connaissez les lieux",
+          "body": "Enregistré pour cette salle sur tous les appareils : l’introduction ne s’ouvrira plus. Votre liste continue de refléter ce que votre salle fait vraiment."
+        }
+      }
+    }
   }
 }

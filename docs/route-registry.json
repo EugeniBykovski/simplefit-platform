@@ -2043,12 +2043,12 @@
         "phase": "ACTIVE"
       },
       "status": "IMPLEMENTED",
-      "discrepancies": ["D-WEB-GYM-CONSOLE-MVP"],
+      "discrepancies": ["D-WEB-GYM-CONSOLE-MVP", "D-WEB-GYM-FIRST-RUN"],
       "production": {
         "file": "src/app/[locale]/app/gyms/[gymId]/page.tsx",
-        "note": "SF-88: WG1, the gym console's dashboard, for the gym named in the path. The layout reads the gym (GET /api/v1/gyms/{gym_id}) and renders the console only for its active staff: an unknown, foreign or revoked gym answers 404 and renders not found in the shell (existence never revealed); 403 renders the role-restricted state (D-G24). The owner sees the real gym (name, type, primary location, setup and profile fields from GET /api/v1/gyms/{gym_id}/setup); every WG1 tile whose domain does not exist yet is hidden (SF-82 R5/C7), never a zero. Other roles see the gym and their own access, and a limited-access notice until their dashboards are designed (D-WEB-GYM-CONSOLE-MVP)."
+        "note": "SF-88: WG1, the gym console's dashboard, for the gym named in the path. The layout reads the gym (GET /api/v1/gyms/{gym_id}) and renders the console only for its active staff: an unknown, foreign or revoked gym answers 404 and renders not found in the shell (existence never revealed); 403 renders the role-restricted state (D-G24). The owner sees the real gym (name, type, primary location, setup and profile fields from GET /api/v1/gyms/{gym_id}/setup); every WG1 tile whose domain does not exist yet is hidden (SF-82 R5/C7), never a zero. Other roles see the gym and their own access, and a limited-access notice until their dashboards are designed (D-WEB-GYM-CONSOLE-MVP). SF-91 (Claude Design 112): with the manage_first_run permission (the owner) the page reads GET /api/v1/gyms/{gym_id}/first-run (SF-90); never for other roles. While it is not_started or in_progress GRW1 replaces the WG1 details: the introduction (Start or Resume, Skip with confirmation) and the five checklist items exactly as the API answers them, beside the gym and access cards. Start calls POST …/first-run/start and opens GRW2, the four-step tour on real console elements; only Finish (POST …/complete) and End introduction or Skip (POST …/dismiss) record an outcome, and only the backend's answer moves the page. A completed or dismissed first run never reopens on any device: the outcome is said once on the page that kept it, then WG1. A 409 shows the outcome the backend kept; a failed read leaves the console usable with a retry. The tour step, the outcome and the checklist are never in the URL or browser storage (D-WEB-GYM-FIRST-RUN)."
       },
-      "screens": ["GRW1", "WG1"]
+      "screens": ["GRW1", "GRW2", "WG1"]
     },
     {
       "id": "web.app.gyms._gym-id.timetable",
@@ -2073,7 +2073,7 @@
         "file": "src/app/[locale]/app/gyms/[gymId]/timetable/page.tsx",
         "note": "SF-32 placeholder (FeaturePlaceholder) inside the gym console of the gym in the path (SF-88: id-based, D-G23); its sidebar item is marked Soon and not linked until the feature ticket builds the screen."
       },
-      "screens": ["GRW2", "WG5"]
+      "screens": ["WG5"]
     },
     {
       "id": "web.partners",
@@ -10505,37 +10505,58 @@
     {
       "id": "GRW1",
       "code": "GRW1",
-      "name": "Gym dashboard · opening week",
+      "name": "Gym dashboard · owner first run",
       "route": "web.app.gyms._gym-id",
       "query": {
-        "state": "opening-week"
+        "state": "first-run"
       },
-      "states": ["4 / 8"],
+      "states": [
+        "not started",
+        "in progress",
+        "starting",
+        "start failed",
+        "skip confirm",
+        "completed",
+        "dismissed",
+        "loading",
+        "unavailable"
+      ],
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
         "section": "GYM · 34f · Onboarding · web first run",
         "step": "34.20",
         "tag": "WEB_APP",
-        "artboard": "FirstRunWebG.dc.html"
+        "artboard": "FirstRunWebG.dc.html",
+        "note": "Claude Design 112 (1793198527-a0fc, SF-91) replaces the opening-week board: the introduction and the five-item opening checklist of GET /api/v1/gyms/{gym_id}/first-run beside the gym and access cards. Its session_expired and revoked states are the console's shared session and not-available states."
       }
     },
     {
       "id": "GRW2",
       "code": "GRW2",
-      "name": "Product tour · Timetable",
-      "route": "web.app.gyms._gym-id.timetable",
+      "name": "Product tour · 4 steps + complete",
+      "route": "web.app.gyms._gym-id",
       "query": {
-        "tour": "2"
+        "tour": "1"
       },
-      "states": ["step 2 / 5"],
+      "states": [
+        "step 1 / 4",
+        "step 2 / 4",
+        "step 3 / 4",
+        "step 4 / 4",
+        "finishing",
+        "finish failed",
+        "end confirm",
+        "complete"
+      ],
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
         "section": "GYM · 34f · Onboarding · web first run",
         "step": "34.21",
         "tag": "WEB_APP",
-        "artboard": "FirstRunWebGTour.dc.html"
+        "artboard": "FirstRunWebGTour.dc.html",
+        "note": "Claude Design 112 (1793198527-a0fc, SF-91): four MVP steps (checklist, gym and access, the menu's Soon items, the gym switcher) and the complete card. Its seven FUTURE steps (f-board, f-people, f-timetable, f-bookings, f-community, f-money, f-public) wait for their domains and are not built."
       }
     },
     {
@@ -17906,12 +17927,26 @@
       "sourceB": "SF-83 / SF-84 / SF-85 backend: the gym, its locations and setup fields, the viewer's staff role and permission projection, the entry's gym workspaces; no members, scheduling, bookings, attendance, staff invitations, billing, community or publishing domain",
       "mismatch": "The designed gym console shows records that do not exist and has no chooser or switcher.",
       "impact": "Building it would fake members, classes, revenue and activity, and leave several gyms unreachable.",
-      "resolution": "SF-88 (approved 2026-10-28, Claude Design unchanged): /app/gyms is the gym chooser in the WCX1 composition (its rows: gym name, the viewer's role, setup status and the backend's action); the GymWebNav identity block is the switcher in the ContextSwitcher pattern (gyms, plus the Fighter and Coach contexts the entry reports). WG1 keeps its header and shows the gym summary card of OG1 ('How members see you') with the real name, type and primary location, the setup and profile fields, and the viewer's access; every tile of SF-82 R5/C7 is hidden until its domain exists (members SF-89/SF-91, scheduling SF-93+). Non-owner roles see the gym, their role and a limited-access notice. The sidebar links Dashboard only; the other GymWebNav items are marked Soon and not linked. GRW1/GRW2 (first run) stay with SF-101.",
+      "resolution": "SF-88 (approved 2026-10-28, Claude Design unchanged): /app/gyms is the gym chooser in the WCX1 composition (its rows: gym name, the viewer's role, setup status and the backend's action); the GymWebNav identity block is the switcher in the ContextSwitcher pattern (gyms, plus the Fighter and Coach contexts the entry reports). WG1 keeps its header and shows the gym summary card of OG1 ('How members see you') with the real name, type and primary location, the setup and profile fields, and the viewer's access; every tile of SF-82 R5/C7 is hidden until its domain exists (members SF-89/SF-91, scheduling SF-93+). Non-owner roles see the gym, their role and a limited-access notice. The sidebar links Dashboard only; the other GymWebNav items are marked Soon and not linked. GRW1/GRW2 (first run) stay with SF-101; SF-91 builds them from Claude Design 112 (D-WEB-GYM-FIRST-RUN).",
       "decision": "The web gym console grows with its domains; nothing is shown before it is real.",
       "decidedOn": "2026-10-28",
       "status": "DEFERRED",
       "routes": ["web.app.gyms", "web.app.gyms._gym-id"],
-      "screens": ["WG1", "GRW1", "GRW2"]
+      "screens": ["WG1"]
+    },
+    {
+      "id": "D-WEB-GYM-FIRST-RUN",
+      "title": "Web gym owner first run built at content size from the four MVP tour steps",
+      "sourceA": "Claude Design 112 (1793198527-a0fc): GRW1 FirstRunWebG (introduction states not_started, in_progress, pending, failed, skip_confirm, completed, dismissed, loading, error, session_expired, revoked; the five-item opening checklist; a fixed 1440 × 900 frame with a 612 px checklist) and GRW2 FirstRunWebGTour (four MVP steps, done, finishing, finish_failed and confirm; seven FUTURE steps)",
+      "sourceB": "SF-90 backend: GET /api/v1/gyms/{gym_id}/first-run (status not_started, in_progress, completed or dismissed; checklist create_gym, add_class, invite_staff, invite_members, first_check_in with completed, available or coming_later), POST start, complete and dismiss; owner only (manage_first_run), 403 for other staff, 404 for foreign gyms, 409 with the kept outcome",
+      "mismatch": "The artboards are drawn at a fixed frame and height and include tour steps for domains that do not exist; production lays out at content size from 390 to 1920 px.",
+      "impact": "Copying the fixed frame would clip or stretch the checklist; building the FUTURE steps would point at features that do not exist.",
+      "resolution": "SF-91: GRW1 and GRW2 follow Claude Design 112 on the real dashboard (no own route; the timetable is not involved). The checklist is content-sized, not 612 px; 'Your gym is ready' shows only when the API reports create_gym completed. Step 2 spotlights the gym and access cards together. Where the card cannot sit 22 px beside its target (1280 px and narrower) it slides to the viewport edge without its arrow, and it is centred over a dimmed page when the target is hidden or there is no room (the sidebar is a sheet below md). A completed or dismissed outcome is said once, on the page that kept it; later visits show WG1. There is no tour replay. The FUTURE steps are not built.",
+      "decision": "Build the approved four-step tour and the API's checklist only; FUTURE steps wait for their domains.",
+      "decidedOn": "2026-10-28",
+      "status": "RESOLVED",
+      "routes": ["web.app.gyms._gym-id"],
+      "screens": ["GRW1", "GRW2"]
     },
     {
       "id": "D-MOBILE-GYM-SHELL-MVP",

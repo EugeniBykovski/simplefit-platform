@@ -35,6 +35,16 @@ import type { BrowserContext, Request } from "@playwright/test";
  *   `gym_workspaces`, draft first, with their `available_actions`) and the
  *   defaults over the completed contexts (a completed Fighter profile and
  *   each completed gym), as the SF-84 resolver applies them.
+ * - SF-91 (SF-90 contract): `GET /api/v1/gyms/{id}/first-run` (owner only,
+ *   `403` for other staff; a draft is `unavailable`) and `POST …/first-run/
+ *   start|complete|dismiss` with an empty body (`422` for any field): start
+ *   keeps the first `started_at`; completed and dismissed are final and the
+ *   other outcome (or a later start) answers `409 conflict` with
+ *   `details.first_run`; a draft answers `409` (`setup_status: draft`). The
+ *   checklist is the five SF-82 C7 keys: `create_gym` completed for a
+ *   completed gym, the four others `coming_later`. A gym's first run is
+ *   `completed` unless the test says otherwise, so the SF-88 console specs
+ *   keep testing WG1.
  */
 
 const GYM_TYPES = [
@@ -64,6 +74,10 @@ export type Gym = {
   role: "owner" | "manager" | "coach" | "front_desk";
   /** The viewer's membership was removed: the gym is invisible (404). */
   hidden?: boolean;
+  /** SF-91: the owner's first run here (default `completed`). */
+  firstRun?: "not_started" | "in_progress" | "completed" | "dismissed";
+  startedAt?: string | null;
+  endedAt?: string | null;
 };
 
 export type GymApiOptions = {
@@ -103,11 +117,14 @@ export type GymApi = {
   hold: (id: string) => () => void;
   /** SF-88: the next N gym reads fail as a dropped connection. */
   failReads: (count: number) => void;
+  /** SF-91: another device moves this gym's first run (start, complete or dismiss). */
+  externalFirstRun: (id: string, status: NonNullable<Gym["firstRun"]>) => void;
 };
 
 /** The SF-83 matrix, as `GET /api/v1/gyms/{id}` projects it for each role. */
 const PERMISSIONS: Record<Gym["role"], string[]> = {
   owner: [
+    "manage_first_run",
     "book_for_member",
     "cancel_occurrence",
     "change_member_status",
@@ -205,6 +222,9 @@ export async function gymApi(
     revision: 1,
     status: "draft",
     role: "owner",
+    firstRun: "completed",
+    startedAt: null,
+    endedAt: null,
     ...gym,
   }));
   const keys = new Map<string, string>();
@@ -256,6 +276,53 @@ export async function gymApi(
       viewer: viewer(gym),
     },
   });
+
+  const firstRunView = (gym: Gym) => {
+    const status = gym.status === "draft" ? "unavailable" : (gym.firstRun ?? "completed");
+    return {
+      first_run: {
+        gym_id: gym.id,
+        status,
+        started_at: gym.startedAt ?? null,
+        completed_at: status === "completed" ? (gym.endedAt ?? NOW) : null,
+        dismissed_at: status === "dismissed" ? (gym.endedAt ?? NOW) : null,
+        checklist: [
+          { key: "create_gym", status: gym.status === "completed" ? "completed" : "available" },
+          { key: "add_class", status: "coming_later" },
+          { key: "invite_staff", status: "coming_later" },
+          { key: "invite_members", status: "coming_later" },
+          { key: "first_check_in", status: "coming_later" },
+        ],
+      },
+    };
+  };
+  const moveFirstRun = (gym: Gym, action: string, body: Record<string, unknown>) => {
+    const fields = Object.keys(body ?? {});
+    if (fields.length > 0) {
+      return error(422, "validation_error", {
+        fields: Object.fromEntries(fields.map((field) => [field, ["is not accepted"]])),
+        field_codes: Object.fromEntries(fields.map((field) => [field, ["invalid"]])),
+      });
+    }
+    if (gym.status === "draft") return error(409, "conflict", { setup_status: "draft" });
+    const now = new Date().toISOString();
+    const kept = gym.firstRun ?? "completed";
+    const target =
+      action === "complete" ? "completed" : action === "dismiss" ? "dismissed" : "in_progress";
+    if (kept === "completed" || kept === "dismissed") {
+      if (kept === target) return { status: 200, json: firstRunView(gym) };
+      return error(409, "conflict", { first_run: kept });
+    }
+    if (target === "in_progress") {
+      gym.firstRun = "in_progress";
+      gym.startedAt ??= now;
+    } else {
+      if (target === "completed") gym.startedAt ??= now;
+      gym.firstRun = target;
+      gym.endedAt = now;
+    }
+    return { status: 200, json: firstRunView(gym) };
+  };
 
   function create(body: Record<string, unknown>) {
     const key = body.client_request_id;
@@ -578,6 +645,12 @@ export async function gymApi(
         else if (rest === "" && method === "GET") result = { status: 200, json: gymView(gym) };
         else if (rest === "/setup" && method === "GET")
           result = { status: 200, json: setupView(gym) };
+        else if (rest.startsWith("/first-run") && gym.role !== "owner")
+          result = error(403, "forbidden");
+        else if (rest === "/first-run" && method === "GET")
+          result = { status: 200, json: firstRunView(gym) };
+        else if (/^\/first-run\/(start|complete|dismiss)$/.test(rest) && method === "POST")
+          result = moveFirstRun(gym, rest.slice("/first-run/".length), body);
         else if (gym.role !== "owner" && write) result = error(403, "forbidden");
         else if (rest === "/setup" && method === "PATCH") result = update(gym, body);
         else if (rest === "/setup/primary-location" && method === "PUT")
@@ -642,6 +715,13 @@ export async function gymApi(
     },
     failReads: (count) => {
       readFailures = count;
+    },
+    externalFirstRun: (id, status) => {
+      const gym = gyms.find((candidate) => candidate.id === id);
+      if (!gym) return;
+      gym.firstRun = status;
+      if (status === "in_progress") gym.startedAt ??= NOW;
+      if (status === "completed" || status === "dismissed") gym.endedAt = NOW;
     },
   };
 }

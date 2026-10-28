@@ -29,6 +29,8 @@ import deShells from "../../../../messages/de/shells.json";
  * the path, WG1) and the gym chooser (WGC1, the WCX1 composition) on a
  * deterministic stand-in of the SF-83/SF-84/SF-85 API (`fetch` is replaced
  * per story; nothing reaches a backend). Gym names are Storybook fixtures.
+ * SF-91 adds the owner's first run (GRW1, GRW2; Claude Design 112) on the
+ * SF-90 first-run answer.
  */
 
 const RING = "3d0a7f52-1c8e-4b6a-9f20-5e7d1b3c9a64";
@@ -36,10 +38,19 @@ const ANNEX = "9b4e2d61-7a3c-4f85-8e1d-6c2a0b5f3d97";
 const DRAFT = "c5a1e8f3-4d29-4b7e-a6c0-1f8d3e5b7a22";
 const LONG_NAME = "Bokserski Klub Sportowy Wybrzeże Gdańsk–Gdynia–Sopot Akademia";
 
-type Role = "owner" | "manager" | "coach" | "front_desk";
+type Role = "owner" | "manager" | "coach" | "front_desk" | "first_run_owner";
 
 const PERMISSIONS: Record<Role, string[]> = {
   owner: ["view_workspace", "edit_gym", "manage_locations", "complete_setup", "manage_billing"],
+  // The owner with SF-90's first-run permission (GRW1, GRW2).
+  first_run_owner: [
+    "view_workspace",
+    "edit_gym",
+    "manage_locations",
+    "complete_setup",
+    "manage_billing",
+    "manage_first_run",
+  ],
   manager: ["view_workspace", "edit_gym", "manage_locations", "invite_staff"],
   coach: ["view_workspace", "view_rosters", "record_check_in"],
   front_desk: ["view_workspace", "record_check_in", "book_for_member"],
@@ -136,6 +147,7 @@ function consoleStory({
   workspaces = TWO,
   choice = ok(undefined, 204),
   refresh = ok(SESSION),
+  firstRun = {},
   play,
 }: {
   gymId?: string;
@@ -144,6 +156,8 @@ function consoleStory({
   workspaces?: ReturnType<typeof workspace>[];
   choice?: Answer;
   refresh?: Answer;
+  /** SF-90 first-run routes (GRW1, GRW2). */
+  firstRun?: Record<string, Answer | Answer[]>;
   play?: StoryObj["play"];
 } = {}): StoryObj {
   return {
@@ -159,6 +173,7 @@ function consoleStory({
         [`/api/v1/gyms/${gymId}`]: gymAnswer,
         [`/api/v1/gyms/${gymId}/setup`]: setupAnswer,
         "PUT /api/v1/me/entry/context": choice,
+        ...firstRun,
       }),
     render: () => (
       <RequireSession
@@ -401,6 +416,194 @@ export const GermanOwner = {
   ],
 };
 GermanOwner.name = "German · long copy";
+
+/* ── GRW1, GRW2 · the owner's first run (SF-91) ──────────────────── */
+
+const CHECKLIST = [
+  { key: "create_gym", status: "completed" },
+  { key: "add_class", status: "coming_later" },
+  { key: "invite_staff", status: "coming_later" },
+  { key: "invite_members", status: "coming_later" },
+  { key: "first_check_in", status: "coming_later" },
+];
+const firstRun = (status: string, started_at: string | null = null) => ({
+  first_run: {
+    gym_id: RING,
+    status,
+    started_at,
+    completed_at: status === "completed" ? "2026-10-28T09:05:00Z" : null,
+    dismissed_at: status === "dismissed" ? "2026-10-28T09:05:00Z" : null,
+    checklist: CHECKLIST,
+  },
+});
+const STARTED = "2026-10-28T09:00:00Z";
+const FIRST_RUN = `/api/v1/gyms/${RING}/first-run`;
+
+function firstRunStory(
+  read: Answer | Answer[],
+  play?: StoryObj["play"],
+  transitions: Record<string, Answer | Answer[]> = {},
+) {
+  return consoleStory({
+    gymAnswer: ok(gym(RING, "Ring One Boxing", "first_run_owner")),
+    firstRun: {
+      [FIRST_RUN]: read,
+      [`POST ${FIRST_RUN}/start`]: ok(firstRun("in_progress", STARTED)),
+      [`POST ${FIRST_RUN}/complete`]: ok(firstRun("completed", STARTED)),
+      [`POST ${FIRST_RUN}/dismiss`]: ok(firstRun("dismissed", STARTED)),
+      ...transitions,
+    },
+    play,
+  });
+}
+
+/** The tour renders in a portal, outside the story's canvas. */
+const page = () => within(document.body);
+const startTour = async (canvasElement: HTMLElement, next = 0) => {
+  await userEvent.click(
+    await within(canvasElement).findByRole("button", { name: "Start the tour" }, { timeout: 5000 }),
+  );
+  await page().findByRole("dialog", { name: "Your opening checklist" });
+  for (let step = 0; step < next; step += 1) {
+    await userEvent.click(page().getByRole("button", { name: "Next" }));
+  }
+};
+
+export const FirstRunNotStarted = firstRunStory(
+  ok(firstRun("not_started")),
+  async ({ canvasElement }) => {
+    await expect(
+      await within(canvasElement).findByRole("heading", { name: "Welcome to your gym console" }),
+    ).toBeVisible();
+  },
+);
+FirstRunNotStarted.name = "GRW1 · not started";
+
+export const FirstRunInProgress = firstRunStory(ok(firstRun("in_progress", STARTED)));
+FirstRunInProgress.name = "GRW1 · in progress (resume)";
+
+export const FirstRunLoading = firstRunStory("pending");
+FirstRunLoading.name = "GRW1 · loading";
+
+export const FirstRunUnavailable = firstRunStory(apiError(503, "service_unavailable"));
+FirstRunUnavailable.name = "GRW1 · could not load (console still works)";
+
+export const FirstRunStartFailed = firstRunStory(
+  ok(firstRun("not_started")),
+  async ({ canvasElement }) => {
+    await userEvent.click(
+      await within(canvasElement).findByRole(
+        "button",
+        { name: "Start the tour" },
+        { timeout: 5000 },
+      ),
+    );
+    await within(canvasElement).findByRole("alert");
+  },
+  { [`POST ${FIRST_RUN}/start`]: apiError(503, "service_unavailable") },
+);
+FirstRunStartFailed.name = "GRW1 · start failed";
+
+export const FirstRunSkipConfirm = firstRunStory(
+  ok(firstRun("not_started")),
+  async ({ canvasElement }) => {
+    await userEvent.click(
+      await within(canvasElement).findByRole(
+        "button",
+        { name: "Skip introduction" },
+        { timeout: 5000 },
+      ),
+    );
+    await page().findByRole("alertdialog");
+  },
+);
+FirstRunSkipConfirm.name = "GRW1 · skip confirmation";
+
+export const FirstRunDismissed = firstRunStory(
+  ok(firstRun("not_started")),
+  async ({ canvasElement }) => {
+    await userEvent.click(
+      await within(canvasElement).findByRole(
+        "button",
+        { name: "Skip introduction" },
+        { timeout: 5000 },
+      ),
+    );
+    const dialog = await page().findByRole("alertdialog");
+    await userEvent.click(within(dialog).getByRole("button", { name: "Skip introduction" }));
+    await within(canvasElement).findByText("Introduction skipped.");
+  },
+);
+FirstRunDismissed.name = "GRW1 · dismissed (said once)";
+
+export const TourStep1 = firstRunStory(ok(firstRun("not_started")), async ({ canvasElement }) => {
+  await startTour(canvasElement);
+});
+TourStep1.name = "GRW2 · step 1 / 4 · checklist";
+
+export const TourStep2 = firstRunStory(ok(firstRun("not_started")), async ({ canvasElement }) => {
+  await startTour(canvasElement, 1);
+  await page().findByRole("dialog", { name: "Your gym and your access" });
+});
+TourStep2.name = "GRW2 · step 2 / 4 · gym and access";
+
+export const TourStep3 = firstRunStory(ok(firstRun("not_started")), async ({ canvasElement }) => {
+  await startTour(canvasElement, 2);
+  await page().findByRole("dialog", { name: "Tools arrive in this menu" });
+});
+TourStep3.name = "GRW2 · step 3 / 4 · menu";
+
+export const TourStep4 = firstRunStory(ok(firstRun("not_started")), async ({ canvasElement }) => {
+  await startTour(canvasElement, 3);
+  await page().findByRole("dialog", { name: "One account, every role" });
+});
+TourStep4.name = "GRW2 · step 4 / 4 · switcher";
+
+export const TourDone = firstRunStory(ok(firstRun("not_started")), async ({ canvasElement }) => {
+  await startTour(canvasElement, 3);
+  await userEvent.click(page().getByRole("button", { name: "Finish" }));
+  await page().findByRole("dialog", { name: "You know your way around" });
+});
+TourDone.name = "GRW2 · complete";
+
+export const TourFinishFailed = firstRunStory(
+  ok(firstRun("not_started")),
+  async ({ canvasElement }) => {
+    await startTour(canvasElement, 3);
+    await userEvent.click(page().getByRole("button", { name: "Finish" }));
+    await page().findByRole("dialog", { name: "We couldn’t save that" });
+  },
+  { [`POST ${FIRST_RUN}/complete`]: apiError(503, "service_unavailable") },
+);
+TourFinishFailed.name = "GRW2 · finish failed";
+
+export const TourEndConfirm = firstRunStory(
+  ok(firstRun("not_started")),
+  async ({ canvasElement }) => {
+    await startTour(canvasElement, 1);
+    await userEvent.click(page().getByRole("button", { name: "End tour" }));
+    await page().findByRole("dialog", { name: "End the introduction?" });
+  },
+);
+TourEndConfirm.name = "GRW2 · end confirmation";
+
+export const FirstRunLight = {
+  ...firstRunStory(ok(firstRun("not_started"))),
+  globals: { theme: "Light" },
+};
+FirstRunLight.name = "GRW1 · light theme";
+
+export const FirstRunGerman = {
+  ...firstRunStory(ok(firstRun("in_progress", STARTED))),
+  decorators: [
+    (Story: () => ReactNode) => (
+      <German>
+        <Story />
+      </German>
+    ),
+  ],
+};
+FirstRunGerman.name = "GRW1 · German · long copy";
 
 /* ── WGC1 chooser ───────────────────────────────────────────────────── */
 
