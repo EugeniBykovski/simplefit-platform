@@ -15,8 +15,8 @@ Every Gym web board, classified against the current API:
 | ---------------------------------------- | ---------------------------------------- | ------------------------------------------- | ------------------------------------------------------ | ----------------------- | ----------- | ------------------------------------------------------------------------------- |
 | GymWebNav (sidebar, identity block)      | `GymWebNav.dc.html`                      | `web.app.gym` shell                         | `getGym`: name, role, locations; entry: gym workspaces | GYM_WORKSPACE           | MVP PARTIAL | Identity block = switcher; Dashboard linked; 19 items Soon, unlinked            |
 | WG1 · Gym dashboard                      | `WebDashboard.dc.html`                   | `/app/gyms/:gymId`                          | `getGym`, `getGymSetup`                                | staff (backend per gym) | MVP PARTIAL | Header and two-column frame; real gym summary, details, access; R5 tiles hidden |
-| GRW1 · Dashboard · opening week          | `FirstRunWebG.dc.html`                   | `/app/gyms/:gymId?state=opening-week`       | none (first-run experience keys, SF-101)               | —                       | FUTURE      | Not built (SF-101); no invented checklist                                       |
-| GRW2 · Product tour                      | `FirstRunWebGTour(Steps).dc.html`        | console areas                               | none                                                   | —                       | FUTURE      | Not built (SF-101)                                                              |
+| GRW1 · Dashboard · opening week          | `FirstRunWebG.dc.html`                   | `/app/gyms/:gymId` (owner)                  | `getGymFirstRun` (SF-90)                               | —                       | MVP         | Built in SF-91 from Claude Design 112 (see below)                               |
+| GRW2 · Product tour                      | `FirstRunWebGTour(Steps).dc.html`        | `/app/gyms/:gymId` (overlay)                | client-only steps; SF-90 outcomes                      | —                       | MVP PARTIAL | SF-91: 4 MVP steps + complete; 7 FUTURE steps not built                         |
 | WCX1 · Choose where to continue          | `WebContextSelect.dc.html`               | `/app/context`                              | entry: profiles and gym workspaces                     | session                 | MVP         | Gym rows added (Fighter + Gym users land here, SF-84 rule 5)                    |
 | WGC1 · Choose a gym (no own artboard)    | WCX1 composition                         | `/app/gyms`                                 | entry `gym_workspaces` (≤ 25) + `listMyGyms` pages     | session                 | MVP         | Built in the WCX1 composition                                                   |
 | ContextSwitcher                          | `ContextSwitcher.dc.html`                | Fighter, Coach and Gym sidebars             | entry                                                  | session                 | MVP         | Extended with gyms (open, continue setup, all gyms)                             |
@@ -162,3 +162,88 @@ the open switcher, the chooser and the not-available state in dark and light.
   both themes, keyboard.
 - Real backend (`e2e/real-api/gym-console.spec.ts`, Phoenix + PostgreSQL,
   scenarios A–R; J has no member domain yet).
+
+## SF-91: the owner's first run (GRW1, GRW2)
+
+Claude Design 112 (`1793198527-a0fc`, artifact `JEsBg51MjX8KiHWEro8omY`)
+supersedes the opening-week GRW1 and the five-step timetable GRW2 of
+`1792675284-1046`; those are not implemented. Its structured artboards were
+reconciled before coding: GRW1 `FirstRunWebG` draws 11 states
+(`not_started`, `in_progress`, `pending`, `failed`, `skip_confirm`,
+`completed`, `dismissed`, `loading`, `error`, `session_expired`, `revoked`);
+GRW2 `FirstRunWebGTour` draws 4 MVP steps (checklist, gym and access, the
+menu's Soon items, the switcher) plus `done`, `finishing`, `finish_failed` and
+`confirm`, and 7 FUTURE steps (`f-board`, `f-people`, `f-timetable`,
+`f-bookings`, `f-community`, `f-money`, `f-public`) for domains that do not
+exist. Only the 4 MVP steps are built; no FUTURE target is anchored or
+reachable.
+
+**Behaviour** (`widgets/gym-workspace`, `entities/gym-first-run`):
+
+- Only a viewer with `manage_first_run` (the owner) reads
+  `GET /api/v1/gyms/{gym_id}/first-run`; managers, coaches and front desk
+  never call it and keep WG1. A `403` keeps WG1; a `404` re-reads the gym
+  (not available). The console never waits on the first run: a failed read
+  shows "We couldn't load your introduction and checklist" with Try again,
+  beside the gym cards.
+- `not_started` and `in_progress` render GRW1 in WG1's 1.7 : 1 frame: the
+  introduction (Start the tour / Resume tour with the start date, Skip
+  introduction) and the checklist, then the gym and access cards on the
+  right. WG1's details and coming-later cards return once the first run ends.
+- The checklist renders the API's five items, in its order, with its
+  statuses (`completed` Done, `available`, `coming_later` under "More tools
+  are coming"). Nothing is derived, counted or linked; the introduction's
+  outcome changes no item.
+- Start and Resume call `startGymFirstRun` (idempotent) and open GRW2 only
+  when the backend answers `in_progress`. Back and Next record nothing (a
+  resumed tour starts at step 1 on any device). Finish calls
+  `completeGymFirstRun`; End tour or Escape asks first, then
+  `dismissGymFirstRun`; Skip introduction asks in a dialog, then dismisses.
+  Only the backend's answer moves the page; a failure keeps the state with
+  "Nothing changed".
+- `completed` and `dismissed` never reopen: the page that kept the outcome
+  says it once (notice), every later visit, device and sign-in shows WG1.
+  A `409` (another device kept the other outcome) closes the tour or dialog
+  and shows the outcome the backend kept. `unavailable` (a draft) never
+  reaches the console. Nothing about the first run is in the URL or browser
+  storage; the cache is keyed per gym, so Gym A and Gym B are independent.
+- The tour is one modal dialog: focus stays in the card (Tab, Arrow keys,
+  Escape asks to end), the page is inert, the spotlight re-measures on
+  resize and scroll and is clipped to the scrolling sidebar; focus returns
+  to the page heading (or to Skip introduction after "Keep it").
+
+**Differences from Claude Design 112** (`D-WEB-GYM-FIRST-RUN`, resolved):
+
+1. The artboards are a fixed 1440 × 900 frame with a 612 px checklist;
+   production is content-sized from 390 to 1920 px (geometry at 1440 matches
+   the frame: sidebar 240, 16 px gaps, 1.7 : 1 columns).
+2. "Your gym is ready" heads the checklist only when the API reports
+   `create_gym` completed; otherwise the neutral "Your gym's checklist".
+3. Step 2 spotlights the gym and access cards together (one union box).
+4. The card sits 22 px beside its target with an arrow when it fits; at
+   1280 px and below it slides to the viewport edge without the arrow; when
+   the target is hidden (the sidebar is a sheet below `md`) or there is no
+   room it is centred over the dimmed page.
+5. `pending` is the Start button's loading state and `failed` its inline
+   alert; `session_expired` and `revoked` are the console's shared session
+   and not-available states, not first-run cards.
+6. The completed and dismissed notices show only on the page that kept the
+   outcome; there is no tour replay (FUTURE).
+7. Warning text uses `text-warning-subtle-foreground`: the artboards' amber
+   `text-warning` on the bone card is 2.19 : 1 in the light theme (axe).
+
+**Verification:** unit and widget tests (`model/tour.test.ts`,
+`ui/gym-first-run.test.tsx`); production E2E
+`e2e/production/gym-first-run.spec.ts` (mocked network edge, 1440 × 900:
+every GRW1 and GRW2 state, geometry, widths 390–1920, keyboard, focus, axe in
+dark and light with the theme actually switched); real backend
+`e2e/real-api/gym-first-run.spec.ts` (Phoenix + PostgreSQL: first visit with
+no row, start, finish with the `first_run_completed` audit event, reload and
+sign-in never reopen, Gym A/B independence, cross-device resume and skip, a
+late finish answered `409`, manager `403` with no request from the page,
+stranger `404`).
+
+Finding outside SF-91: the SF-86 and SF-88 production "light" axe runs only
+call `emulateMedia`, which does not switch next-themes (`simplefit-theme` in
+localStorage, default dark), so they test the dark theme twice. The SF-91
+spec sets the stored theme and asserts the `html` class.

@@ -547,6 +547,14 @@ entry. Claude Design has no MVP console: WG1 shows the real gym, the owner's
 setup and the viewer's role, every R5 tile hidden; the sidebar links
 Dashboard only, the other items Soon.
 
+**Web gym owner first run (SF-91).** On `/app/gyms/:gymId` the owner
+(`manage_first_run`) reads `GET /api/v1/gyms/{gym_id}/first-run` (SF-90);
+other roles never do. While it is not started or in progress, GRW1 (the
+introduction and the API's five checklist items) replaces the WG1 details,
+and Start opens GRW2, the four-step tour of Claude Design 112 on real console
+elements; its seven FUTURE steps are not built. Only Finish and End or Skip
+record an outcome, which never reopens on any device (`D-WEB-GYM-FIRST-RUN`).
+
 **Mobile Gym owner registration (SF-87).** `/onboarding/gym` runs the same
 steps natively (`?step=type|location|branding|complete`) on the same
 contract, with an authenticated session only and the Gym intent as the
@@ -1124,6 +1132,7 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-MOBILE-GYM-ONBOARDING-FLOW`       | DEFERRED               | Mobile Gym owner registration: the web steps natively, no mobile artboards; OG0 handoff superseded     |
 | `D-MOBILE-GYM-SHELL-MVP`             | DEFERRED               | Mobile gym shell: G01 with real data, gym rows in A04, MGC1 chooser, Pulse the only linked tab         |
 | `D-WEB-GYM-CONSOLE-MVP`              | DEFERRED               | Web gym console: id-based, WG1 real gym data, R5 tiles hidden, Soon nav; chooser WGC1 and switcher     |
+| `D-WEB-GYM-FIRST-RUN`                | RESOLVED               | Web gym owner first run: GRW1 + four MVP GRW2 steps at content size; FUTURE steps not built            |
 | `D-MOBILE-COACH-ONBOARDING-FLOW`     | DEFERRED               | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access                  |
 | `D-ENTRY-CONTEXT-SELECTION`          | RESOLVED               | `context_selection` opens WCX1 on the web and A04 on mobile; never WA6 / O05 or home                   |
 | `D-WEB-COACH-HOME-MVP`               | DEFERRED               | Coach web: real profile dashboard, MVP nav with Soon rows; CRW1, CRW2 future                           |

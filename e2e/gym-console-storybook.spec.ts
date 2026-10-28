@@ -50,6 +50,21 @@ for (const [id, text] of [
   ["chooser-with-draft", "Setup in progress"],
   ["chooser-none", "You don’t work at a gym yet"],
   ["chooser-many", "Gym 26"],
+  ["first-run-not-started", "Welcome to your gym console"],
+  ["first-run-in-progress", "Pick up the introduction"],
+  ["first-run-unavailable", "We couldn’t load your introduction and checklist."],
+  ["first-run-start-failed", "We couldn’t save that. Nothing changed."],
+  ["first-run-skip-confirm", "Skip the introduction?"],
+  ["first-run-dismissed", "Introduction skipped."],
+  ["tour-step-1", "Your opening checklist"],
+  ["tour-step-2", "Your gym and your access"],
+  ["tour-step-3", "Tools arrive in this menu"],
+  ["tour-step-4", "One account, every role"],
+  ["tour-done", "You know your way around"],
+  ["tour-finish-failed", "We couldn’t save that"],
+  ["tour-end-confirm", "End the introduction?"],
+  ["first-run-light", "Welcome to your gym console"],
+  ["first-run-german", "Einführung fortsetzen"],
 ] as const) {
   test(`${id}: ${text}`, async ({ page }) => {
     const outside = await story(page, id);
@@ -61,6 +76,15 @@ for (const [id, text] of [
 test("switching: the chosen gym says it is opening", async ({ page }) => {
   await story(page, "switching");
   await expect(page.getByRole("status", { name: "Opening…" })).toBeVisible({ timeout: 15_000 });
+});
+
+test("first-run-loading: the introduction and checklist load beside the gym", async ({ page }) => {
+  const outside = await story(page, "first-run-loading");
+  await expect(page.getByLabel("Loading your introduction and checklist")).toBeVisible({
+    timeout: 15_000,
+  });
+  await expect(page.getByText("Ring One Boxing").first()).toBeVisible();
+  expect(outside).toEqual([]);
 });
 
 test("loading: the skeleton, never another gym's content", async ({ page }) => {

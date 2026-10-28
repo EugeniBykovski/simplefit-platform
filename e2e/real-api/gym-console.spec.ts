@@ -329,7 +329,9 @@ test("G, K, L: owner of A and manager of C see different access; another user's 
   await expect(page.getByText(/The Manager dashboard isn’t available yet/)).toBeVisible();
   await expect(page.getByRole("region", { name: "Gym details" })).toHaveCount(0);
   await go(page, `/en/app/gyms/${a}`);
-  await expect(page.getByRole("region", { name: "Gym details" })).toBeVisible();
+  // The owner's console: since SF-91 a new owner first gets the owner-only introduction (GRW1).
+  await expect(page.locator("[data-first-run-intro=not_started]")).toBeVisible();
+  await expect(page.getByText(/The Manager dashboard isn’t available yet/)).toHaveCount(0);
 
   // L · the second user (C's owner) revokes the manager through the domain function.
   await go(page, `/en/app/gyms/${c}`);

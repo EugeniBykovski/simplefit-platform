@@ -114,5 +114,139 @@
         "body": "Invita a tu equipo y da un rol a cada persona."
       }
     }
+  },
+  "firstRun": {
+    "loading": "Cargando tu introducción y tu lista",
+    "intro": {
+      "eyebrowNotStarted": "Introducción del propietario · sin empezar",
+      "eyebrowInProgress": "Introducción del propietario · en curso",
+      "title": "Bienvenido a la consola de tu gimnasio",
+      "body": "Un recorrido breve por lo que funciona hoy: tu lista, tu gimnasio, el menú y el selector. Alrededor de un minuto.",
+      "resumeTitle": "Retoma la introducción",
+      "resumeBody": "La empezaste el {date}. Los pasos del recorrido no se guardan, así que aquí empieza desde el primero.",
+      "resumeBodyUndated": "La empezaste en otro dispositivo. Los pasos del recorrido no se guardan, así que aquí empieza desde el primero.",
+      "start": "Empezar el recorrido",
+      "resume": "Retomar el recorrido",
+      "starting": "Empezando…",
+      "skip": "Omitir la introducción",
+      "failed": "No pudimos guardarlo. No cambió nada.",
+      "completed": {
+        "title": "Introducción terminada.",
+        "body": "No volverá a abrirse en ningún dispositivo. Tu lista sigue reflejando lo que tu gimnasio hace de verdad."
+      },
+      "dismissed": {
+        "title": "Introducción omitida.",
+        "body": "No volverá a abrirse en ningún dispositivo. Omitirla no cambió tu lista ni tu gimnasio."
+      }
+    },
+    "unavailable": {
+      "title": "No pudimos cargar tu introducción y tu lista.",
+      "body": "La consola funciona sin ellas. No cambió nada.",
+      "retry": "Reintentar"
+    },
+    "checklist": {
+      "eyebrow": "Lista de apertura",
+      "title": "La lista de tu gimnasio",
+      "readyTitle": "Tu gimnasio está listo",
+      "readyBody": "La identidad y la ubicación del gimnasio están guardadas.",
+      "moreTitle": "Llegan más herramientas",
+      "moreBody": "Se abren cuando sus funciones estén disponibles. No son pasos pendientes.",
+      "footnote": "Terminar u omitir la introducción no cambia esta lista. Cada paso se marca solo cuando tu gimnasio lo hace de verdad, en la web y en el móvil.",
+      "loading": "Cargando tu lista",
+      "badges": {
+        "completed": "Hecho",
+        "available": "Disponible",
+        "coming_later": "Más adelante"
+      },
+      "items": {
+        "create_gym": {
+          "title": "Crea tu gimnasio",
+          "completed": "Nombre, tipo y ubicación guardados",
+          "available": "Termina la configuración para crear tu gimnasio",
+          "coming_later": "Más adelante"
+        },
+        "add_class": {
+          "title": "Añade tu primera clase",
+          "completed": "Tu primera clase está en el horario",
+          "available": "Añade una clase a tu horario",
+          "coming_later": "Llega con las clases y el horario"
+        },
+        "invite_staff": {
+          "title": "Invita a tu equipo",
+          "completed": "Alguien del equipo aceptó una invitación",
+          "available": "Envía tu primera invitación al equipo",
+          "coming_later": "Llega con las invitaciones al equipo"
+        },
+        "invite_members": {
+          "title": "Invita a miembros",
+          "completed": "Un miembro se unió a tu gimnasio",
+          "available": "Envía tu primera invitación a miembros",
+          "coming_later": "Llega con las invitaciones a miembros"
+        },
+        "first_check_in": {
+          "title": "Registra un primer check-in",
+          "completed": "Se registró un primer check-in",
+          "available": "Registra la entrada de un miembro en recepción",
+          "coming_later": "Llega con el check-in por QR"
+        }
+      }
+    },
+    "skip": {
+      "eyebrow": "Omitir la introducción",
+      "title": "¿Omitir la introducción?",
+      "body": "No volverá a abrirse en este ni en ningún otro dispositivo. Tu lista se queda exactamente igual: omitirla no completa nada.",
+      "confirm": "Omitir la introducción",
+      "keep": "Mantenerla",
+      "failed": "No pudimos guardarlo. No cambió nada. Inténtalo de nuevo."
+    },
+    "tour": {
+      "step": "Recorrido · {step} de {total}",
+      "complete": "Introducción terminada",
+      "end": "Terminar el recorrido",
+      "back": "Atrás",
+      "next": "Siguiente",
+      "finish": "Terminar",
+      "tryAgain": "Reintentar",
+      "failed": "No pudimos conectar con SimpleFit. No cambió nada.",
+      "toDashboard": "Volver al panel",
+      "finishing": {
+        "title": "Terminando…",
+        "body": "Guardando que terminaste la introducción. No cambia nada más.",
+        "button": "Terminando…"
+      },
+      "finishFailed": {
+        "title": "No pudimos guardarlo",
+        "body": "La introducción sigue abierta y no cambió nada. Inténtalo de nuevo o termínala más tarde en cualquier dispositivo."
+      },
+      "confirm": {
+        "label": "Terminar la introducción",
+        "title": "¿Terminar la introducción?",
+        "body": "No volverá a abrirse en este ni en ningún otro dispositivo. Tu lista se queda exactamente igual: terminarla no completa nada.",
+        "keep": "Seguir",
+        "end": "Terminar la introducción"
+      },
+      "steps": {
+        "checklist": {
+          "title": "Tu lista de apertura",
+          "body": "Un paso está hecho: tu gimnasio existe. Clases, equipo, miembros y check-ins aparecen como «más adelante» hasta que estén disponibles. Ninguno cuenta como pendiente."
+        },
+        "gym": {
+          "title": "Tu gimnasio y tu acceso",
+          "body": "El nombre, el tipo y la ubicación vienen directamente de tu configuración. Tu acceso muestra lo que tu rol puede hacer en este gimnasio, y solo en este."
+        },
+        "menu": {
+          "title": "Las herramientas llegan a este menú",
+          "body": "El panel funciona hoy. Miembros, horario, equipo y el resto aparecen como «Pronto» y se abren cuando estén disponibles. Nada de lo que hay detrás está a medias."
+        },
+        "switcher": {
+          "title": "Una cuenta, todos los roles",
+          "body": "Eres el propietario de {name}. Cambia de gimnasio o abre tu perfil de luchador o de entrenador aquí, sin volver a iniciar sesión. Cada gimnasio conserva sus propios datos y su propia introducción."
+        },
+        "done": {
+          "title": "Ya conoces el camino",
+          "body": "Guardado para este gimnasio en todos los dispositivos: la introducción no volverá a abrirse. Tu lista sigue reflejando lo que tu gimnasio hace de verdad."
+        }
+      }
+    }
   }
 }
