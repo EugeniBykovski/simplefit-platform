@@ -96,9 +96,13 @@ jobs:
     # after 13 minutes of `playwright install --with-deps` fetching apt
     # packages (normally 59 s). User 1001 is the runner's, as Playwright's
     # CI guide prescribes for its image.
+    #
+    # SF-88 brought the suite to 1277 tests; main was already finishing at
+    # about 14 of the 15 minutes, so the gym console projects pushed it over.
+    # 30 minutes leaves room for both builds and the run on two workers.
     name: Browsers
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     container:
       image: mcr.microsoft.com/playwright:v1.63.0-noble
       options: --user 1001
