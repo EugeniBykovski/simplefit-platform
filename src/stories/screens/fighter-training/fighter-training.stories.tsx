@@ -40,6 +40,9 @@ const ENTRY = {
     account_registration: "complete",
     fighter_profile: "completed",
     coach_profile: "not_started",
+    gym_id: null,
+    gym_workspaces: [],
+    gym_workspace_count: 0,
     capabilities: ["FIGHTER"],
   },
 };

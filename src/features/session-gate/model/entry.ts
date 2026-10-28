@@ -46,14 +46,34 @@ export function knowsDestination(destination: string): destination is KnownDesti
   return Object.hasOwn(webGuards.entryDestinations, destination);
 }
 
-/** Whether this client maps the entry's destination (see `knowsDestination`). */
+/**
+ * Whether this client maps the entry's destination (see `knowsDestination`)
+ * and the entry names what that route needs: `gym_home` opens the console of
+ * the entry's `gym_id` (SF-88), so a `gym_home` without one is not mapped.
+ */
 export function isKnownEntry(entry: Entry): entry is KnownEntry {
-  return knowsDestination(entry.destination);
+  if (!knowsDestination(entry.destination)) return false;
+  return destinationParams(entry as KnownEntry) !== undefined;
 }
 
 /** The canonical web route of a semantic destination (`guards.entryDestinations`). */
 export function destinationRoute(destination: KnownDestination): WebRouteId {
   return webGuards.entryDestinations[destination];
+}
+
+/**
+ * The route parameters of the entry's destination: the gym console is
+ * id-based (`/app/gyms/:gymId`, ADR 0026 D-G23) and names the entry's
+ * `gym_id`. Undefined when the entry lacks a parameter its route needs.
+ */
+function destinationParams(entry: KnownEntry): Record<string, string> | undefined {
+  const needed: readonly string[] = webRoute(destinationRoute(entry.destination)).params;
+  const params: Record<string, string> = {};
+  for (const name of needed) {
+    if (name !== "gymId" || entry.gym_id === null) return undefined;
+    params[name] = entry.gym_id;
+  }
+  return params;
 }
 
 /**
@@ -105,7 +125,11 @@ export function entryHref(entry: KnownEntry, continuation: Continuation = {}): s
   }
 
   const carries = webRoute(target).phase === "ONBOARDING";
-  return routeHref(target, {}, carries ? continuationQuery(continuation) : {});
+  return routeHref(
+    target,
+    destinationParams(entry) ?? {},
+    carries ? continuationQuery(continuation) : {},
+  );
 }
 
 /** The resolver request for a continuation: only its validated intent is sent. */

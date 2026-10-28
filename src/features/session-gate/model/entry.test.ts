@@ -52,8 +52,8 @@ describe("destinationRoute", () => {
       coach_home: "web.app.coach",
       context_selection: "web.app.context",
       gym_onboarding: "web.app.onboarding.gym",
-      gym_home: "web.app.gym",
-      gym_selection: "web.app.context",
+      gym_home: "web.app.gyms._gym-id",
+      gym_selection: "web.app.gyms",
       sponsor_application: "web.partners.apply",
     });
     expect(routeHref(destinationRoute("account_registration"))).toBe("/app/onboarding/account");
@@ -190,5 +190,53 @@ describe("SF-51 destinations (SF-52)", () => {
       capabilities: ["FIGHTER"],
     });
     expect(entryHref(fighter, { returnTo: "/app/coach" })).toBe("/app/home");
+  });
+});
+
+describe("gym destinations (SF-84, SF-88)", () => {
+  const GYM = "1b9f6c2a-5d34-4e8b-9a71-0c2e4f6d8a10";
+  const OTHER = "7c3e9b1d-2a6f-4c58-b0e4-9d1f3a5c7e82";
+  const workspace = (gymId: string, actions: ("enter" | "continue_setup")[]) => ({
+    gym_id: gymId,
+    name: "Gym",
+    role: "owner" as const,
+    setup_status: actions.includes("enter") ? ("completed" as const) : ("draft" as const),
+    available_actions: actions,
+    selected: false,
+  });
+  const GYM_HOME = entry({
+    destination: "gym_home",
+    reason: "gym_workspace_completed",
+    capabilities: ["GYM_WORKSPACE"],
+    gym_id: GYM,
+    gym_workspaces: [workspace(GYM, ["enter"])],
+    gym_workspace_count: 1,
+  });
+
+  it("opens the console of the entry's gym_id, never a guessed gym", () => {
+    expect(isKnownEntry(GYM_HOME)).toBe(true);
+    expect(entryHref(GYM_HOME)).toBe(`/app/gyms/${GYM}`);
+    expect(entryHref(GYM_HOME, { intent: "gym" })).toBe(`/app/gyms/${GYM}`);
+  });
+
+  it("does not map a gym_home without its gym_id (a controlled failure)", () => {
+    expect(isKnownEntry({ ...GYM_HOME, gym_id: null })).toBe(false);
+  });
+
+  it("opens the gym chooser for gym_selection", () => {
+    const choice = entry({
+      destination: "gym_selection",
+      reason: "gym_choice_required",
+      capabilities: ["GYM_WORKSPACE"],
+      gym_workspaces: [workspace(GYM, ["enter"]), workspace(OTHER, ["enter"])],
+      gym_workspace_count: 2,
+    });
+    expect(isKnownEntry(choice)).toBe(true);
+    expect(entryHref(choice)).toBe("/app/gyms");
+  });
+
+  it("keeps a gym console returnTo only while the entry reports GYM_WORKSPACE", () => {
+    expect(entryHref(GYM_HOME, { returnTo: `/app/gyms/${OTHER}` })).toBe(`/app/gyms/${OTHER}`);
+    expect(entryHref(FIGHTER_HOME, { returnTo: `/app/gyms/${OTHER}` })).toBe("/app/home");
   });
 });

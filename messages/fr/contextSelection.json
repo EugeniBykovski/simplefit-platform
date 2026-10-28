@@ -7,16 +7,21 @@
     "eyebrow": "Tes profils",
     "title": "Où veux-tu aller ?",
     "lead": "Tu as un profil de boxeur et un profil de coach sur un seul compte.",
-    "note": "La prochaine fois, nous ouvrons ton dernier choix. Change à tout moment en haut de la barre latérale."
+    "note": "La prochaine fois, nous ouvrons ton dernier choix. Change à tout moment en haut de la barre latérale.",
+    "leadMixed": "Tes profils et tes salles sont sur un seul compte."
   },
   "setup": {
     "eyebrow": "Ton inscription",
     "title": "Quelle inscription veux-tu reprendre ?",
     "lead": "Tu en as commencé plus d’une. Choisis-en une ; l’autre t’attend.",
-    "note": "Rien n’est perdu : chaque inscription garde ce que tu as enregistré."
+    "note": "Rien n’est perdu : chaque inscription garde ce que tu as enregistré.",
+    "leadMixed": "Choisis-en un ; le reste t’attend."
   },
   "failed": {
     "title": "Impossible de l’ouvrir.",
     "body": "Rien n’a changé. Réessaie."
-  }
+  },
+  "gymLine": "{role} · console de la salle",
+  "gymSetup": "Reprendre la configuration de la salle",
+  "allGyms": "Toutes les salles ({count})"
 }

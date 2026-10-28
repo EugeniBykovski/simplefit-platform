@@ -7,16 +7,21 @@
     "eyebrow": "Tus perfiles",
     "title": "¿A dónde quieres ir?",
     "lead": "Tienes un perfil de boxeador y otro de entrenador en una sola cuenta.",
-    "note": "La próxima vez abrimos tu última elección. Cambia cuando quieras desde la parte superior de la barra lateral."
+    "note": "La próxima vez abrimos tu última elección. Cambia cuando quieras desde la parte superior de la barra lateral.",
+    "leadMixed": "Tus perfiles y gimnasios están en una sola cuenta."
   },
   "setup": {
     "eyebrow": "Tu registro",
     "title": "¿Qué registro quieres continuar?",
     "lead": "Empezaste más de uno. Elige uno; el otro te espera.",
-    "note": "No se pierde nada: cada registro conserva lo que guardaste."
+    "note": "No se pierde nada: cada registro conserva lo que guardaste.",
+    "leadMixed": "Elige uno; lo demás te espera."
   },
   "failed": {
     "title": "No pudimos abrirlo.",
     "body": "No cambió nada. Inténtalo de nuevo."
-  }
+  },
+  "gymLine": "{role} · consola del gimnasio",
+  "gymSetup": "Continuar la configuración del gimnasio",
+  "allGyms": "Todos los gimnasios ({count})"
 }

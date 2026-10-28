@@ -317,7 +317,10 @@ describe("shells, capabilities and guards", () => {
             found.push(`${where}: unknown route ${item.route}`);
           else if (!route.nav.from.includes(where))
             found.push(`${where}: ${route.id} lacks it in nav.from`);
-          else if (route.params.length > 0) found.push(`${where}: ${route.id} needs parameters`);
+          // A shell whose routes are id-based supplies their parameters (the
+          // gym console's gymId, SF-88); no other parameter can be filled.
+          else if (route.params.some((param) => !(shell.params ?? []).includes(param)))
+            found.push(`${where}: ${route.id} needs parameters`);
         } else if (item.designGap) {
           if (!gapIds.has(item.designGap))
             found.push(`${where}: unknown design gap ${item.designGap}`);
@@ -670,10 +673,17 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
       web: "web.app.onboarding.account",
       mobile: "mobile.signup.consent",
     });
-    // SF-84: the gym home is the GYM_WORKSPACE home; the gym chooser is the
-    // workspace chooser (route-architecture rule 7), as for context_selection.
-    expect(entryDestinations.gym_home).toEqual({ web: "web.app.gym", mobile: "mobile.gym.pulse" });
-    expect(entryDestinations.gym_selection).toEqual(entryDestinations.context_selection);
+    // SF-84: the gym home is the GYM_WORKSPACE home: on the web the id-based
+    // console of the entry's gym_id (SF-88, D-G23). The gym chooser is the web
+    // gym chooser (SF-88) and A04 on mobile.
+    expect(entryDestinations.gym_home).toEqual({
+      web: "web.app.gyms._gym-id",
+      mobile: "mobile.gym.pulse",
+    });
+    expect(entryDestinations.gym_selection).toEqual({
+      web: "web.app.gyms",
+      mobile: entryDestinations.context_selection.mobile,
+    });
     expect(entryDestinations.role_selection).toEqual({
       web: "web.app.onboarding.role",
       mobile: "mobile.onboarding.role",
@@ -719,7 +729,7 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
     for (const [id, capability] of [
       ["web.app.home", "FIGHTER"],
       ["web.app.coach", "COACH"],
-      ["web.app.gym", "GYM_WORKSPACE"],
+      ["web.app.gyms._gym-id", "GYM_WORKSPACE"],
       ["mobile.home", "FIGHTER"],
     ]) {
       expect(routeById.get(id).access.capability).toBe(capability);

@@ -7,16 +7,21 @@
     "eyebrow": "Deine Profile",
     "title": "Wohin möchtest du?",
     "lead": "Du hast ein Fighter- und ein Coach-Profil in einem Konto.",
-    "note": "Beim nächsten Mal öffnen wir deine letzte Wahl. Wechseln kannst du jederzeit oben in der Seitenleiste."
+    "note": "Beim nächsten Mal öffnen wir deine letzte Wahl. Wechseln kannst du jederzeit oben in der Seitenleiste.",
+    "leadMixed": "Deine Profile und Gyms liegen in einem Konto."
   },
   "setup": {
     "eyebrow": "Deine Einrichtung",
     "title": "Welche Einrichtung möchtest du fortsetzen?",
     "lead": "Du hast mehr als eine begonnen. Wähle eine; die andere wartet auf dich.",
-    "note": "Nichts geht verloren: Jede Einrichtung behält, was du gespeichert hast."
+    "note": "Nichts geht verloren: Jede Einrichtung behält, was du gespeichert hast.",
+    "leadMixed": "Wähl eins; alles andere wartet auf dich."
   },
   "failed": {
     "title": "Das konnten wir nicht öffnen.",
     "body": "Nichts wurde geändert. Versuche es erneut."
-  }
+  },
+  "gymLine": "{role} · Gym-Konsole",
+  "gymSetup": "Gym-Einrichtung fortsetzen",
+  "allGyms": "Alle Gyms ({count})"
 }

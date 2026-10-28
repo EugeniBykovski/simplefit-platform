@@ -41,7 +41,7 @@ describe("canonical feature placeholder", () => {
   });
 
   it("offers nothing that looks functional", async () => {
-    await renderRoute("web.app.gym.members");
+    await renderRoute("web.app.gyms._gym-id.members");
     expect(screen.queryAllByRole("button")).toEqual([]);
     expect(screen.queryAllByRole("link")).toEqual([]);
     expect(screen.queryAllByRole("textbox")).toEqual([]);
@@ -53,7 +53,7 @@ describe("canonical feature placeholder", () => {
     ["de", "Stundenplan"],
     ["es-MX", "Horario"],
   ] as const)("is translated in %s", async (locale, title) => {
-    await renderRoute("web.app.gym.timetable", locale);
+    await renderRoute("web.app.gyms._gym-id.timetable", locale);
     expect(screen.getByRole("heading", { level: 1, name: title })).toBeInTheDocument();
   });
 

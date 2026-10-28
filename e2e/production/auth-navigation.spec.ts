@@ -95,6 +95,9 @@ async function signedInApi(page: Page, entry: EntryFixture) {
       return call.fulfill({
         json: {
           entry: {
+            gym_id: null,
+            gym_workspaces: [],
+            gym_workspace_count: 0,
             capabilities: [],
             fighter_profile: "not_started",
             intent,

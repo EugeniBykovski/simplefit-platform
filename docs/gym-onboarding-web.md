@@ -63,8 +63,8 @@ A FUTURE `?step=` never opens anything: it resolves to the resume step
   registration links to WA5. OG6b shows only after the API answered
   `completed` in this tab; the entry resolutions are dropped from the cache.
 - **Go to gym**: `PUT /api/v1/me/entry/context` (`context: gym`, the gym's
-  id), then `/app?intent=gym`; the SF-84 resolver opens `gym_home`
-  (`/app/gym`, the SF-88 placeholder today).
+  id), then `/app?intent=gym`; the SF-84 resolver opens `gym_home`, the
+  console of that gym (`/app/gyms/:gymId`, SF-88).
 
 ## Errors and uncertain outcomes
 

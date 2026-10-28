@@ -7,8 +7,10 @@ repository:
 - `simplefit-api/docs/architecture/proposals/SF-82-gym/`
 
 SF-82 changes no code, no route registry entry and no design in this
-repository. The Gym routes (`/app/gym/**` console, `/app/onboarding/gym` owner setup) stay SF-32/SF-33 feature placeholders until
-their tickets (SF-83 onwards) are approved.
+repository. The Gym routes stayed SF-32/SF-33 feature placeholders until
+their tickets: owner setup `/app/onboarding/gym` (SF-86) and the id-based
+console `/app/gyms/:gymId/**` with the chooser `/app/gyms` (SF-88,
+`docs/gym-console-web.md`).
 
 ## What the web client will have to follow
 
@@ -19,9 +21,8 @@ their tickets (SF-83 onwards) are approved.
    gym id: `/app/gyms/:gymId/…` (console) and `/app/me/gyms/:gymId/…` (member view). The page passes the id unchanged to
    `/api/v1/gyms/{gym_id}/…` (`D-G15`). The id is only a lookup key, and
    the backend authorizes every request. `/app/gyms` lands on the only gym or
-   lists several, preselecting the last choice the server remembers. These
-   registry changes are made in SF-85 and SF-91; today's id-free
-   placeholders stay until then.
+   lists several, preselecting the last choice the server remembers. SF-88
+   moved the web console to these paths; the member view comes with SF-91.
 3. **404 vs 403** (`D-G24`, approved). A 404 from a gym endpoint means "not
    available to you", so render not found and never hint that the gym
    exists. A 403 `forbidden` means the user is staff but their role lacks
@@ -83,11 +84,11 @@ entry projection (`GYM_WORKSPACE`) come with SF-84/SF-85.
   a per-account preference; every gym request still names its gym in the
   path.
 
-Registry: `gym_home` maps to the `GYM_WORKSPACE` home placeholder, and
-`gym_selection` to the workspace chooser, as for `context_selection` (route
-architecture rule 7). Client code keeps its profile-context type to
-`fighter` / `coach`. Rendering gym rows in the choosers and the id-based gym
-routes (D-G23) belong to the gym UI tickets.
+Registry: since SF-88, `gym_home` maps on the web to the console of the
+entry's `gym_id` (`/app/gyms/:gymId`) and `gym_selection` to the web gym
+chooser (`/app/gyms`); on mobile they stay `mobile.gym.pulse` and A04.
+Client code keeps its profile-context type to `fighter` / `coach`; gym
+workspaces are listed from the entry's `gym_workspaces`.
 
 ## SF-85: gym setup API (no screens yet)
 

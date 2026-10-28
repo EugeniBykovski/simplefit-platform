@@ -1,0 +1,118 @@
+{
+  "announcement": "Gym-Konsole {name}",
+  "switcher": {
+    "trigger": "{name}, {role}. Gym oder Profil wechseln",
+    "identity": "{role} · {count, plural, one {# Standort} other {# Standorte}}",
+    "heading": "Deine Gyms",
+    "continueSetup": "Gym-Einrichtung fortsetzen",
+    "allGyms": "Alle Gyms ({count})",
+    "roles": {
+      "owner": "Inhaber",
+      "manager": "Manager",
+      "coach": "Coach",
+      "front_desk": "Empfang"
+    }
+  },
+  "chooser": {
+    "metaTitle": "Gym auswählen",
+    "eyebrow": "Deine Gyms",
+    "title": "Welches Gym möchtest du öffnen?",
+    "lead": "Jedes Gym, in dem du arbeitest, in einem Konto. Jedes öffnet seine eigene Konsole.",
+    "gyms": "Gyms",
+    "setup": "Einrichtung läuft",
+    "draftLine": "Noch nicht eingerichtet · nur die Einrichtung geht weiter",
+    "open": "Öffnen",
+    "continue": "Fortsetzen",
+    "more": "Weitere Gyms anzeigen ({count} insgesamt)",
+    "moreFailed": "Weitere Gyms konnten nicht geladen werden. Versuch es noch einmal.",
+    "note": "Beim nächsten Mal öffnen wir deine letzte Wahl. Wechseln kannst du jederzeit oben in der Seitenleiste.",
+    "signOut": "Abmelden",
+    "empty": {
+      "title": "Du arbeitest noch in keinem Gym",
+      "lead": "Registriere dein Gym, um seine Konsole zu öffnen. Gyms, zu denen du eingeladen wirst, erscheinen hier.",
+      "action": "Gym registrieren"
+    },
+    "failed": {
+      "title": "Dieses Gym konnte nicht geöffnet werden.",
+      "body": "Nichts wurde geändert. Versuch es noch einmal."
+    }
+  },
+  "states": {
+    "eyebrow": "Gym-Konsole",
+    "notAvailable": {
+      "heading": "Gym nicht verfügbar",
+      "title": "Dieses Gym ist nicht verfügbar",
+      "body": "Es existiert nicht, oder du arbeitest dort nicht. Öffne stattdessen eines deiner Gyms.",
+      "action": "Deine Gyms"
+    },
+    "restricted": {
+      "heading": "Für deine Rolle nicht verfügbar",
+      "title": "Deine Rolle umfasst das nicht",
+      "body": "Du arbeitest in diesem Gym, aber dieser Teil der Konsole gehört nicht zu deiner Rolle. Frag den Gym-Inhaber, wenn du ihn brauchst.",
+      "action": "Zurück zum Dashboard"
+    },
+    "draft": {
+      "title": "Dieses Gym ist noch nicht eingerichtet",
+      "body": "Seine Konsole öffnet sich, sobald die Einrichtung abgeschlossen ist. Mach dort weiter, wo du aufgehört hast.",
+      "bodyStaff": "Seine Konsole öffnet sich, sobald der Inhaber die Einrichtung abschließt.",
+      "action": "Einrichtung fortsetzen"
+    }
+  },
+  "dashboard": {
+    "metaTitle": "Gym-Dashboard",
+    "title": "Dashboard",
+    "eyebrow": "{date} · {where}",
+    "allLocations": "Alle Standorte",
+    "summary": {
+      "title": "Dein Gym",
+      "completed": "Einrichtung abgeschlossen"
+    },
+    "details": {
+      "title": "Gym-Angaben",
+      "address": "Adresse",
+      "phone": "Telefon",
+      "website": "Website",
+      "tagline": "Slogan",
+      "accent": "Akzentfarbe",
+      "none": "Nicht angegeben",
+      "loading": "Gym-Angaben werden geladen",
+      "failed": "Die Gym-Angaben konnten nicht geladen werden. Der Rest der Seite ist aktuell.",
+      "restricted": "Deine Rolle umfasst die Gym-Angaben nicht.",
+      "retry": "Erneut versuchen"
+    },
+    "access": {
+      "title": "Dein Zugang",
+      "note": "SimpleFit prüft jede Aktion für dieses Gym. Keine Gym-Rolle liest private Trainingsdaten.",
+      "roles": {
+        "owner": "Dir gehört dieses Gym: seine Angaben, die Einrichtung und später sein Team und seine Mitglieder.",
+        "manager": "Du leitest dieses Gym mit: seine Angaben, Standorte, das Team und die Mitglieder.",
+        "coach": "Du trainierst in diesem Gym: deine Kurse und ihre Teilnehmerlisten.",
+        "front_desk": "Du betreust den Empfang: Check-ins, Buchungen und Mitglieder am Empfang."
+      }
+    },
+    "limited": {
+      "title": "Dein Dashboard",
+      "body": "Das Dashboard für die Rolle {role} ist noch nicht verfügbar. Du kannst dieses Gym öffnen; seine Werkzeuge kommen mit ihren Funktionen."
+    },
+    "later": {
+      "title": "Bald in deiner Konsole",
+      "badge": "Später",
+      "members": {
+        "title": "Mitglieder",
+        "body": "Lade Mitglieder ein und sieh, wer hier trainiert."
+      },
+      "schedule": {
+        "title": "Kurse & Stundenplan",
+        "body": "Plane Kurse für die ganze Woche."
+      },
+      "attendance": {
+        "title": "Buchungen & Check-ins",
+        "body": "Buchungen und Check-ins für jeden Kurs."
+      },
+      "staff": {
+        "title": "Coaches & Team",
+        "body": "Lade dein Team ein und gib jeder Person eine Rolle."
+      }
+    }
+  }
+}

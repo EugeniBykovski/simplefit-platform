@@ -7,16 +7,21 @@
     "eyebrow": "Twoje profile",
     "title": "Dokąd chcesz przejść?",
     "lead": "Masz profil zawodnika i profil trenera na jednym koncie.",
-    "note": "Następnym razem otworzymy Twój ostatni wybór. Przełączaj się w każdej chwili u góry paska bocznego."
+    "note": "Następnym razem otworzymy Twój ostatni wybór. Przełączaj się w każdej chwili u góry paska bocznego.",
+    "leadMixed": "Twoje profile i kluby są na jednym koncie."
   },
   "setup": {
     "eyebrow": "Twoja rejestracja",
     "title": "Którą rejestrację chcesz dokończyć?",
     "lead": "Zacząłeś więcej niż jedną. Wybierz jedną; druga na Ciebie poczeka.",
-    "note": "Nic nie przepada: każda rejestracja zachowuje to, co zapisałeś."
+    "note": "Nic nie przepada: każda rejestracja zachowuje to, co zapisałeś.",
+    "leadMixed": "Wybierz jedno; reszta na Ciebie poczeka."
   },
   "failed": {
     "title": "Nie udało się tego otworzyć.",
     "body": "Nic się nie zmieniło. Spróbuj ponownie."
-  }
+  },
+  "gymLine": "{role} · konsola klubu",
+  "gymSetup": "Dokończ konfigurację klubu",
+  "allGyms": "Wszystkie kluby ({count})"
 }

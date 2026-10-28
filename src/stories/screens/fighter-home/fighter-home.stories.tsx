@@ -134,6 +134,9 @@ function story({
         "/api/v1/me/entry": ok({
           entry: {
             account_registration: "complete",
+            gym_id: null,
+            gym_workspaces: [],
+            gym_workspace_count: 0,
             capabilities: ["FIGHTER"],
             destination: "fighter_home",
             fighter_profile: "completed",

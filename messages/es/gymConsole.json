@@ -1,0 +1,118 @@
+{
+  "announcement": "Consola del gimnasio {name}",
+  "switcher": {
+    "trigger": "{name}, {role}. Cambiar de gimnasio o de perfil",
+    "identity": "{role} · {count, plural, one {# sede} other {# sedes}}",
+    "heading": "Tus gimnasios",
+    "continueSetup": "Continuar la configuración del gimnasio",
+    "allGyms": "Todos los gimnasios ({count})",
+    "roles": {
+      "owner": "Propietario",
+      "manager": "Gerente",
+      "coach": "Entrenador",
+      "front_desk": "Recepción"
+    }
+  },
+  "chooser": {
+    "metaTitle": "Elige un gimnasio",
+    "eyebrow": "Tus gimnasios",
+    "title": "¿Qué gimnasio quieres abrir?",
+    "lead": "Todos los gimnasios en los que trabajas, en una sola cuenta. Cada uno abre su propia consola.",
+    "gyms": "Gimnasios",
+    "setup": "Configuración en curso",
+    "draftLine": "Aún sin configurar · solo continúa la configuración",
+    "open": "Abrir",
+    "continue": "Continuar",
+    "more": "Mostrar más gimnasios ({count} en total)",
+    "moreFailed": "No pudimos cargar más gimnasios. Inténtalo de nuevo.",
+    "note": "La próxima vez abrimos tu última elección. Cambia cuando quieras desde la parte superior de la barra lateral.",
+    "signOut": "Cerrar sesión",
+    "empty": {
+      "title": "Todavía no trabajas en ningún gimnasio",
+      "lead": "Registra tu gimnasio para abrir su consola. Los gimnasios que te inviten aparecerán aquí.",
+      "action": "Registrar mi gimnasio"
+    },
+    "failed": {
+      "title": "No pudimos abrir ese gimnasio.",
+      "body": "No cambió nada. Inténtalo de nuevo."
+    }
+  },
+  "states": {
+    "eyebrow": "Consola del gimnasio",
+    "notAvailable": {
+      "heading": "Gimnasio no disponible",
+      "title": "Este gimnasio no está disponible",
+      "body": "No existe o no trabajas en él. Abre uno de tus gimnasios.",
+      "action": "Tus gimnasios"
+    },
+    "restricted": {
+      "heading": "No disponible para tu rol",
+      "title": "Tu rol no incluye esto",
+      "body": "Trabajas en este gimnasio, pero esta parte de la consola no forma parte de tu rol. Pídesela al propietario del gimnasio si la necesitas.",
+      "action": "Volver al panel"
+    },
+    "draft": {
+      "title": "Este gimnasio aún no está configurado",
+      "body": "Su consola se abre cuando termine la configuración. Continúa donde lo dejaste.",
+      "bodyStaff": "Su consola se abre cuando el propietario termine la configuración.",
+      "action": "Continuar la configuración"
+    }
+  },
+  "dashboard": {
+    "metaTitle": "Panel del gimnasio",
+    "title": "Panel",
+    "eyebrow": "{date} · {where}",
+    "allLocations": "Todas las sedes",
+    "summary": {
+      "title": "Tu gimnasio",
+      "completed": "Configuración completa"
+    },
+    "details": {
+      "title": "Datos del gimnasio",
+      "address": "Dirección",
+      "phone": "Teléfono",
+      "website": "Sitio web",
+      "tagline": "Eslogan",
+      "accent": "Color de acento",
+      "none": "Sin añadir",
+      "loading": "Cargando los datos del gimnasio",
+      "failed": "No pudimos cargar los datos del gimnasio. El resto de la página está al día.",
+      "restricted": "Tu rol no incluye los datos del gimnasio.",
+      "retry": "Intentar de nuevo"
+    },
+    "access": {
+      "title": "Tu acceso",
+      "note": "SimpleFit comprueba cada acción para este gimnasio. Ningún rol del gimnasio lee datos de entrenamiento privados.",
+      "roles": {
+        "owner": "Eres el propietario de este gimnasio: sus datos, su configuración y, más adelante, su equipo y sus miembros.",
+        "manager": "Ayudas a dirigir este gimnasio: sus datos, sedes, equipo y miembros.",
+        "coach": "Entrenas en este gimnasio: tus clases y sus listas.",
+        "front_desk": "Llevas la recepción: check-ins, reservas y miembros en recepción."
+      }
+    },
+    "limited": {
+      "title": "Tu panel",
+      "body": "El panel del rol {role} aún no está disponible. Puedes abrir este gimnasio; sus herramientas llegan con sus funciones."
+    },
+    "later": {
+      "title": "Pronto en tu consola",
+      "badge": "Más adelante",
+      "members": {
+        "title": "Miembros",
+        "body": "Invita a miembros y mira quién entrena aquí."
+      },
+      "schedule": {
+        "title": "Clases y horario",
+        "body": "Planifica las clases de toda la semana."
+      },
+      "attendance": {
+        "title": "Reservas y check-ins",
+        "body": "Reservas y check-ins de cada clase."
+      },
+      "staff": {
+        "title": "Entrenadores y equipo",
+        "body": "Invita a tu equipo y da un rol a cada persona."
+      }
+    }
+  }
+}

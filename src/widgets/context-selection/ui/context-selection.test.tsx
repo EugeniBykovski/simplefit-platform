@@ -122,3 +122,31 @@ describe("ContextSelection (WCX1)", () => {
     expect(screen.queryByRole("heading", { level: 1 })).toBeNull();
   });
 });
+
+describe("WCX1 with gym workspaces (SF-88)", () => {
+  const GYM = "3d0a7f52-1c8e-4b6a-9f20-5e7d1b3c9a64";
+  const FIGHTER_AND_GYM = entry({
+    coach_profile: "not_started",
+    capabilities: ["FIGHTER", "GYM_WORKSPACE"],
+    gym_workspaces: [
+      {
+        gym_id: GYM,
+        name: "Ring One",
+        role: "owner",
+        setup_status: "completed",
+        available_actions: ["enter"],
+        selected: false,
+      },
+    ],
+    gym_workspace_count: 1,
+  });
+
+  it("lists the gym next to the Fighter profile and opens its console by recording the choice", async () => {
+    const calls = api(FIGHTER_AND_GYM);
+    await renderWithProviders(<ContextSelection />);
+    expect(await screen.findByText("Your profiles and gyms live on one account.")).toBeVisible();
+    await userEvent.setup().click(screen.getByRole("button", { name: /Ring One.*Owner/ }));
+    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith(`/app/gyms/${GYM}`));
+    expect(calls.writes).toEqual([{ context: "gym", gym_id: GYM }]);
+  });
+});

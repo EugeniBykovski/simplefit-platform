@@ -75,3 +75,13 @@ export function FighterGate(props: GateProps) {
 export function CoachGate(props: GateProps) {
   return <WorkspaceGate capability="COACH" {...props} />;
 }
+
+/**
+ * The gym console (`web.app.gym`, capability GYM_WORKSPACE; SF-88): active
+ * staff of at least one gym with a completed setup. Which gym the page may
+ * show is decided per request by the backend for the gym in the path, never
+ * here: holding the capability for one gym opens no other.
+ */
+export function GymGate(props: GateProps) {
+  return <WorkspaceGate capability="GYM_WORKSPACE" {...props} />;
+}

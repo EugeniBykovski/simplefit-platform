@@ -35,6 +35,9 @@ const REAL_SCREENS = [
   "web.app.onboarding.coach",
   // SF-86: Gym owner web registration (OG1, OG2, OG3, OG6b).
   "web.app.onboarding.gym",
+  // SF-88: the gym chooser (WGC1) and the gym dashboard (WG1).
+  "web.app.gyms",
+  "web.app.gyms._gym-id",
   // SF-54: the Coach dashboard (WC1) and the context chooser (WCX1).
   "web.app.coach",
   "web.app.context",
@@ -186,12 +189,14 @@ describe("shells", () => {
     for (const [file, shell] of [
       ["src/app/[locale]/app/(fighter)/layout.tsx", "web.app.fighter"],
       ["src/app/[locale]/app/coach/layout.tsx", "web.app.coach"],
-      ["src/app/[locale]/app/gym/layout.tsx", "web.app.gym"],
       ["src/app/[locale]/(sponsor)/sponsor/layout.tsx", "web.sponsor"],
       ["src/app/[locale]/(admin)/admin/layout.tsx", "web.admin"],
     ]) {
       expect(read(file)).toContain(`<WorkspaceShell shell="${shell}">`);
     }
+    // SF-88: the gym console renders its shell around the gym the path names.
+    expect(read("src/app/[locale]/app/gyms/[gymId]/layout.tsx")).toContain("<GymWorkspace gymId=");
+    expect(read("src/widgets/gym-workspace/ui/gym-workspace.tsx")).toContain('shell="web.app.gym"');
   });
 });
 

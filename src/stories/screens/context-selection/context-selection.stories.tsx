@@ -31,6 +31,9 @@ const entry = (scenario: "completed" | "setup") => ({
     account_registration: "complete",
     fighter_profile: scenario === "completed" ? "completed" : "in_progress",
     coach_profile: scenario === "completed" ? "completed" : "in_progress",
+    gym_id: null,
+    gym_workspaces: [],
+    gym_workspace_count: 0,
     capabilities: scenario === "completed" ? ["FIGHTER", "COACH"] : [],
   },
 });

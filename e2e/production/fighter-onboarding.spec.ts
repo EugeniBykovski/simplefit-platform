@@ -237,6 +237,9 @@ test("completion before account registration: the account notice, no completion"
         json: {
           entry: {
             account_registration: "complete",
+            gym_id: null,
+            gym_workspaces: [],
+            gym_workspace_count: 0,
             capabilities: [],
             destination: "fighter_onboarding",
             fighter_profile: "in_progress",

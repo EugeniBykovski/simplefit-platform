@@ -34,14 +34,22 @@ import { ShellNav, ShellNavLinks, type ShellNavSection } from "./shell-nav";
  * its own, pages compose PageHeader and PageBody.
  *
  * The Fighter and Coach shells carry the profile context switcher (SF-54);
- * item badges, the "next session" card and the Gym / Sponsor workspace
- * identity stay absent until their data exists.
+ * the gym console passes its own identity block (the gym switcher, SF-88)
+ * and the route parameters its links need (`gymId`). Item badges, the
+ * "next session" card and the Sponsor workspace identity stay absent until
+ * their data exists.
  */
 export function WorkspaceShell({
   shell,
+  params = {},
+  identity,
   children,
 }: {
   shell: SidebarShellId;
+  /** The parameters of the shell's id-based routes (the gym console's `gymId`). */
+  params?: Record<string, string>;
+  /** The identity block above the navigation, when the shell supplies its own. */
+  identity?: ReactNode;
   children: ReactNode;
 }) {
   const config = shellNavigation[shell];
@@ -61,7 +69,7 @@ export function WorkspaceShell({
       if (!Icon) throw new Error(`${shell} has no icon for ${key}`);
       return {
         key,
-        href: routeHref(item.route, {}, "query" in item ? item.query : {}),
+        href: routeHref(item.route, params, "query" in item ? item.query : {}),
         label: message(`${config.messages}.nav.${key}`),
         icon: <Icon aria-hidden className="size-4.5" />,
         soon: config.soon?.includes(key) ? navigation("soon") : undefined,
@@ -70,6 +78,8 @@ export function WorkspaceShell({
   }));
 
   const name = message(`${config.messages}.name`);
+  const block =
+    identity ?? (config.context ? <ContextSwitcher context={config.context} /> : undefined);
   const nav = (inSheet: boolean) => (
     <Suspense fallback={<ShellNavLinks label={name} sections={sections} inSheet={inSheet} />}>
       <ShellNav shell={shell} label={name} sections={sections} inSheet={inSheet} />
@@ -82,7 +92,7 @@ export function WorkspaceShell({
         <Brand
           name={name}
           internal={shell === "web.admin" ? t("admin.internal") : undefined}
-          identity={config.context ? <ContextSwitcher context={config.context} /> : undefined}
+          identity={block}
         />
         <div className="flex-1 overflow-y-auto">{nav(false)}</div>
         <div className="flex flex-col items-start gap-2 pt-2">
@@ -112,7 +122,7 @@ export function WorkspaceShell({
                 <SheetDescription>{name}</SheetDescription>
               </SheetHeader>
               <div className="flex flex-col gap-4 px-4 pb-4">
-                {config.context ? <ContextSwitcher context={config.context} /> : null}
+                {block ?? null}
                 {nav(true)}
                 <div>
                   <SessionControl />
