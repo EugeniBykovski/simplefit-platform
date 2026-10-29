@@ -593,6 +593,15 @@ real gym, the owner's setup, the viewer's role and the areas coming later,
 every R5 tile hidden; its header actions give way to Settings; the tab bar
 links Pulse only, the other items Soon.
 
+**Mobile gym owner first run (SF-92).** On `/gyms/:gymId/pulse` the owner
+(`manage_first_run`) reads `GET /api/v1/gyms/{gym_id}/first-run` (SF-90, the
+state SF-91 shares on the web); other roles never do. While it is not started
+or in progress, GR1 (the introduction and the API's five checklist items)
+replaces the details cards, and Start opens GR2, the four-step tour of Claude
+Design 112 on measured Pulse targets; its six FUTURE steps are not built.
+Only Finish and End or Skip record an outcome, which never reopens on any
+device or client (`D-MOBILE-GYM-FIRST-RUN`).
+
 **Coach web workspace and context switching (SF-54).** `/app/coach` is WC1,
 reduced in Claude Design `1791982482-71e3` to the real CoachProfile, a setup
 checklist and dashes (never zeros) for domains that do not exist yet; the
@@ -1131,6 +1140,7 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-WEB-GYM-ONBOARDING-FLOW`          | DEFERRED               | Web Gym owner registration: OG1, OG2, OG3, OG6b current; OG4–OG14 future; session-only access          |
 | `D-MOBILE-GYM-ONBOARDING-FLOW`       | DEFERRED               | Mobile Gym owner registration: the web steps natively, no mobile artboards; OG0 handoff superseded     |
 | `D-MOBILE-GYM-SHELL-MVP`             | DEFERRED               | Mobile gym shell: G01 with real data, gym rows in A04, MGC1 chooser, Pulse the only linked tab         |
+| `D-MOBILE-GYM-FIRST-RUN`             | RESOLVED               | Mobile gym owner first run: GR1 + four MVP GR2 steps on measured targets; FUTURE steps not built       |
 | `D-WEB-GYM-CONSOLE-MVP`              | DEFERRED               | Web gym console: id-based, WG1 real gym data, R5 tiles hidden, Soon nav; chooser WGC1 and switcher     |
 | `D-WEB-GYM-FIRST-RUN`                | RESOLVED               | Web gym owner first run: GRW1 + four MVP GRW2 steps at content size; FUTURE steps not built            |
 | `D-MOBILE-COACH-ONBOARDING-FLOW`     | DEFERRED               | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access                  |
