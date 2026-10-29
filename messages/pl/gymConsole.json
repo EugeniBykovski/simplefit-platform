@@ -84,7 +84,7 @@
       "title": "Twój dostęp",
       "note": "SimpleFit sprawdza każde działanie dla tego klubu. Żadna rola w klubie nie odczytuje prywatnych danych treningowych.",
       "roles": {
-        "owner": "Jesteś właścicielem tego klubu: jego danych, konfiguracji, a później także zespołu i członków.",
+        "owner": "Jesteś właścicielem tego klubu: jego danych, konfiguracji i zespołu, a później także członków.",
         "manager": "Pomagasz prowadzić ten klub: jego dane, lokalizacje, zespół i członków.",
         "coach": "Trenujesz w tym klubie: swoje zajęcia i ich listy uczestników.",
         "front_desk": "Prowadzisz recepcję: wejścia, rezerwacje i członków przy recepcji."
@@ -108,10 +108,6 @@
       "attendance": {
         "title": "Rezerwacje i wejścia",
         "body": "Rezerwacje i wejścia na każde zajęcia."
-      },
-      "staff": {
-        "title": "Trenerzy i personel",
-        "body": "Zaproś zespół i nadaj każdemu rolę."
       }
     }
   },
@@ -247,6 +243,213 @@
           "body": "Zapisane dla tej sali na każdym urządzeniu: wprowadzenie nie otworzy się ponownie. Lista nadal odzwierciedla to, co naprawdę robi twoja sala."
         }
       }
+    }
+  },
+  "staff": {
+    "metaTitle": "Trenerzy i personel",
+    "eyebrow": "Ludzie",
+    "title": "Trenerzy i personel",
+    "noName": "Imię niedostępne",
+    "stats": {
+      "team": "Zespół",
+      "roles": {
+        "owner": "{count, plural, one {# właściciel} few {# właścicieli} many {# właścicieli} other {# właściciela}}",
+        "manager": "{count, plural, one {# menedżer} few {# menedżerów} many {# menedżerów} other {# menedżera}}",
+        "coach": "{count, plural, one {# trener} few {# trenerów} many {# trenerów} other {# trenera}}",
+        "front_desk": "{count, plural, other {# w recepcji}}"
+      },
+      "pending": "Oczekujące zaproszenia",
+      "pendingNone": "Nikt nie czeka na odpowiedź",
+      "pendingLine": "Czekają na odpowiedź"
+    },
+    "roster": {
+      "heading": "Zespół",
+      "views": "Pokaż",
+      "tabs": {
+        "active": "Aktywni",
+        "ended": "Byli"
+      },
+      "label": {
+        "active": "Aktywny personel",
+        "ended": "Byli pracownicy"
+      },
+      "columns": {
+        "person": "Osoba",
+        "role": "Rola",
+        "joined": "Od",
+        "status": "Status",
+        "ended": "Zakończono"
+      },
+      "select": "Pokaż: {name}",
+      "you": "Ty",
+      "loading": "Wczytujemy zespół",
+      "more": "Pokaż więcej",
+      "loadingMore": "Wczytywanie…",
+      "alone": "Na razie jesteś tu sam. Zaproś trenerów i pracowników recepcji do wspólnej pracy.",
+      "failed": {
+        "title": "Nie udało się wczytać zespołu",
+        "body": "Nic się nie zmieniło. Spróbuj ponownie.",
+        "retry": "Spróbuj ponownie"
+      },
+      "empty": {
+        "active": {
+          "title": "Brak aktywnego personelu",
+          "body": "Zaproszone osoby pojawią się tu, gdy przyjmą zaproszenie."
+        },
+        "ended": {
+          "title": "Nikt nie odszedł",
+          "body": "Tu pojawią się osoby, które odeszły z tego klubu lub zostały usunięte."
+        }
+      }
+    },
+    "status": {
+      "owner": "Właściciel",
+      "active": "Aktywny"
+    },
+    "person": {
+      "heading": "{name}",
+      "since": "{role} · od {date}",
+      "ended": {
+        "left": "Odszedł {date}",
+        "removed": "Usunięty {date}",
+        "transferred": "Własność przekazana {date}",
+        "account_deleted": "Konto usunięte {date}",
+        "gym_closed": "Klub zamknięty {date}"
+      },
+      "abilities": "{role} w tym klubie",
+      "owner": "Właściciel zachowuje pełny dostęp. Zmienia się on tylko przy przekazaniu własności.",
+      "noActions": "Twoja rola nie pozwala zmieniać dostępu tej osoby."
+    },
+    "roles": {
+      "owner": {
+        "line": "Wszystko w tym klubie, w tym konfiguracja i zespół",
+        "detail": "Prowadzi klub: jego dane, lokalizację, konfigurację i cały zespół."
+      },
+      "manager": {
+        "line": "Dane i lokalizacja klubu; zaprasza trenerów i recepcję i nimi zarządza",
+        "detail": "Pomaga prowadzić klub: jego dane i lokalizację, zaprasza trenerów i pracowników recepcji oraz zmienia ich role."
+      },
+      "coach": {
+        "line": "Trenuje w tym klubie; widzi klub i zespół",
+        "detail": "Trenuje w tym klubie. Na razie: konsola klubu i jego zespół; zajęcia pojawią się później."
+      },
+      "front_desk": {
+        "line": "Obsługuje recepcję; widzi klub i zespół",
+        "detail": "Obsługuje recepcję. Na razie: konsola klubu i jego zespół; meldowanie pojawi się później."
+      }
+    },
+    "reference": {
+      "heading": "Role w tym klubie",
+      "never": "Żadna rola w klubie nie daje dostępu do niczyich prywatnych danych treningowych. Rola trenera tutaj nie tworzy z nikim relacji trenerskiej, a własny profil trenera pozostaje prywatny."
+    },
+    "invite": {
+      "open": "Zaproś",
+      "close": "Zamknij",
+      "title": "Zaproś do {gym}",
+      "lead": "Wyślemy zaproszenie na ten adres. Osoba dołączy dopiero po jego przyjęciu, gdy zaloguje się tym adresem.",
+      "email": {
+        "label": "E-mail",
+        "invalid": "Wpisz poprawny adres e-mail.",
+        "rejected": "Tego adresu nie można zaprosić. Może to być Twój własny adres."
+      },
+      "role": {
+        "label": "Rola",
+        "invalid": "Wybierz jedną z pokazanych ról.",
+        "required": "Wybierz rolę."
+      },
+      "cancel": "Anuluj",
+      "submit": "Wyślij zaproszenie",
+      "sending": "Wysyłanie…",
+      "pending": {
+        "title": "Zaproszenie oczekuje",
+        "body": "Zaproszenie dla {email} do roli „{role}” jest ważne do {expires}.",
+        "note": "W klubie nic się nie zmieni, dopóki zaproszenie nie zostanie przyjęte. Możesz je wysłać ponownie lub anulować w sekcji Zaproszenia.",
+        "done": "Gotowe"
+      }
+    },
+    "invitations": {
+      "heading": "Zaproszenia",
+      "loading": "Wczytujemy zaproszenia",
+      "empty": "Brak zaproszeń.",
+      "failed": "Nie udało się wczytać zaproszeń.",
+      "retry": "Spróbuj ponownie",
+      "more": "Pokaż więcej",
+      "notice": "Zaproszone osoby będą mogły przyjąć zaproszenie, gdy zaproszenia dla personelu zostaną uruchomione w SimpleFit. Zaproszenie czeka na odpowiedź do wygaśnięcia i możesz je wysłać ponownie.",
+      "status": {
+        "pending": "Oczekuje",
+        "accepted": "Przyjęte",
+        "declined": "Odrzucone",
+        "cancelled": "Anulowane",
+        "expired": "Wygasło"
+      },
+      "line": {
+        "pending": "Wysłane {sent} · wygasa {expires}",
+        "accepted": "Przyjęte {date}",
+        "declined": "Odrzucone {date}",
+        "cancelled": "Anulowane {date}",
+        "expired": "Wygasło {date}"
+      },
+      "invitedBy": "zaprosił(a) {name}",
+      "resend": "Wyślij ponownie (zostało {count})",
+      "resending": "Wysyłanie…",
+      "resendLabel": "Wyślij ponownie zaproszenie dla {email}",
+      "resent": "Nowe zaproszenie dla {email} jest ważne do {expires}.",
+      "cancel": "Anuluj",
+      "cancelLabel": "Anuluj zaproszenie dla {email}",
+      "cancelled": "Zaproszenie dla {email} zostało anulowane."
+    },
+    "cancelInvitation": {
+      "title": "Anulować to zaproszenie?",
+      "body": "Zaproszenie dla {email} przestanie działać. Później możesz zaprosić tę osobę ponownie.",
+      "keep": "Zostaw",
+      "pending": "Anulowanie…",
+      "confirm": "Anuluj zaproszenie"
+    },
+    "roleChange": {
+      "open": "Zmień rolę",
+      "someone": "Ta osoba",
+      "title": "Zmień rolę: {name}",
+      "lead": "{name} ma rolę „{role}” w {gym}. Nowa rola obowiązuje od następnej czynności.",
+      "label": "Nowa rola",
+      "cancel": "Anuluj",
+      "pending": "Zmienianie…",
+      "confirm": "Zmień rolę",
+      "done": "{name} ma teraz rolę „{role}”.",
+      "close": "Zamknij"
+    },
+    "remove": {
+      "open": "Usuń z zespołu",
+      "someone": "Ta osoba",
+      "title": "Usunąć {name} z {gym}?",
+      "body": "{name} od razu traci dostęp do {gym}. Konto SimpleFit, profile i inne kluby, w których ta osoba pracuje, pozostają bez zmian.",
+      "keep": "Zostaw",
+      "pending": "Usuwanie…",
+      "confirm": "Usuń z zespołu",
+      "done": "{name} usunięto z {gym}."
+    },
+    "leave": {
+      "open": "Opuść ten klub",
+      "someone": "Ty",
+      "title": "Opuścić {gym}?",
+      "body": "Od razu stracisz dostęp do {gym}. Twoje konto SimpleFit i inne kluby, w których pracujesz, pozostają bez zmian.",
+      "keep": "Zostań",
+      "pending": "Opuszczanie…",
+      "confirm": "Opuść klub",
+      "done": "Opuściłeś {gym}."
+    },
+    "problems": {
+      "limited": "Zbyt wiele żądań. Spróbuj za {minutes, plural, one {# minutę} few {# minuty} many {# minut} other {# minuty}}.",
+      "limitedLater": "Zbyt wiele żądań. Spróbuj później.",
+      "pendingOtherRole": "Ten adres ma już oczekujące zaproszenie do innej roli. Najpierw je anuluj.",
+      "alreadyActive": "Ta osoba już pracuje w tym klubie.",
+      "noResends": "Nie zostało ponownych wysyłek. Anuluj zaproszenie i zaproś ponownie.",
+      "notPending": "To zaproszenie już nie oczekuje.",
+      "resolved": "Na to zaproszenie już odpowiedziano.",
+      "ownerTransfer": "Dostęp właściciela zmienia się tylko przy przekazaniu własności.",
+      "forbidden": "Twoja rola już na to nie pozwala. Strona jest aktualna.",
+      "gone": "Tej osoby lub zaproszenia nie ma już w klubie. Strona jest aktualna.",
+      "unknown": "Nie udało się potwierdzić wyniku. Strona pokazuje najnowszy stan — sprawdź go przed ponowną próbą.",
+      "failed": "Coś poszło nie tak. Nic się nie zmieniło. Spróbuj ponownie."
     }
   }
 }

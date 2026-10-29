@@ -11,21 +11,22 @@ client. Claude Design `1792675284-1046` (unchanged since SF-82).
 Claude Design is the visual source; the backend contract decides what exists.
 Every Gym web board, classified against the current API:
 
-| Artboard                                 | File                                     | Route                                       | Backend data                                           | Access                  | Status      | SF-88 action                                                                    |
-| ---------------------------------------- | ---------------------------------------- | ------------------------------------------- | ------------------------------------------------------ | ----------------------- | ----------- | ------------------------------------------------------------------------------- |
-| GymWebNav (sidebar, identity block)      | `GymWebNav.dc.html`                      | `web.app.gym` shell                         | `getGym`: name, role, locations; entry: gym workspaces | GYM_WORKSPACE           | MVP PARTIAL | Identity block = switcher; Dashboard linked; 19 items Soon, unlinked            |
-| WG1 · Gym dashboard                      | `WebDashboard.dc.html`                   | `/app/gyms/:gymId`                          | `getGym`, `getGymSetup`                                | staff (backend per gym) | MVP PARTIAL | Header and two-column frame; real gym summary, details, access; R5 tiles hidden |
-| GRW1 · Dashboard · opening week          | `FirstRunWebG.dc.html`                   | `/app/gyms/:gymId` (owner)                  | `getGymFirstRun` (SF-90)                               | —                       | MVP         | Built in SF-91 from Claude Design 112 (see below)                               |
-| GRW2 · Product tour                      | `FirstRunWebGTour(Steps).dc.html`        | `/app/gyms/:gymId` (overlay)                | client-only steps; SF-90 outcomes                      | —                       | MVP PARTIAL | SF-91: 4 MVP steps + complete; 7 FUTURE steps not built                         |
-| WCX1 · Choose where to continue          | `WebContextSelect.dc.html`               | `/app/context`                              | entry: profiles and gym workspaces                     | session                 | MVP         | Gym rows added (Fighter + Gym users land here, SF-84 rule 5)                    |
-| WGC1 · Choose a gym (no own artboard)    | WCX1 composition                         | `/app/gyms`                                 | entry `gym_workspaces` (≤ 25) + `listMyGyms` pages     | session                 | MVP         | Built in the WCX1 composition                                                   |
-| ContextSwitcher                          | `ContextSwitcher.dc.html`                | Fighter, Coach and Gym sidebars             | entry                                                  | session                 | MVP         | Extended with gyms (open, continue setup, all gyms)                             |
-| WG2–WG27, GC2, GC10, GC11, SH0, AV6, AV7 | `WebGymBoard` … `WebGymPromoAnalytics`   | `/app/gyms/:gymId/<area>`                   | none (members, scheduling, staff, billing, community…) | —                       | FUTURE      | SF-32 placeholders, id-based; nav items Soon                                    |
-| WG3, WG14, WG15 (members)                | `WebMembers` …                           | `/app/gyms/:gymId/members…`                 | none yet (SF-89 / SF-91)                               | —                       | FUTURE      | Placeholder                                                                     |
-| WG16, WG17 (staff, roles)                | `WebStaff`, `WebRoles`                   | `/app/gyms/:gymId/staff`, `/settings/roles` | none yet (SF-92)                                       | —                       | FUTURE      | Placeholder                                                                     |
-| WG22, WG23 (settings, locations)         | `WebGymSettings`, `WebLocations`         | `/app/gyms/:gymId/settings…`                | `updateGymSetup` exists; no designed MVP editor        | —                       | BLOCKED     | Placeholder until an editor is designed (SF-98)                                 |
-| WG7, WG25, GC10, GC11 (money)            | `WebRevenue`, `WebGymBilling` …          | `/app/gyms/:gymId/revenue…`                 | none (D-G09, D-G10 deferred)                           | —                       | BLOCKED     | Placeholder; never linked                                                       |
-| FlowGymWeb, RouteGym                     | `FlowGymWeb.dc.html`, `RouteGym.dc.html` | —                                           | —                                                      | —                       | reference   | Unchanged                                                                       |
+| Artboard                                 | File                                     | Route                             | Backend data                                           | Access                  | Status      | SF-88 action                                                                    |
+| ---------------------------------------- | ---------------------------------------- | --------------------------------- | ------------------------------------------------------ | ----------------------- | ----------- | ------------------------------------------------------------------------------- |
+| GymWebNav (sidebar, identity block)      | `GymWebNav.dc.html`                      | `web.app.gym` shell               | `getGym`: name, role, locations; entry: gym workspaces | GYM_WORKSPACE           | MVP PARTIAL | Identity block = switcher; Dashboard linked; 19 items Soon, unlinked            |
+| WG1 · Gym dashboard                      | `WebDashboard.dc.html`                   | `/app/gyms/:gymId`                | `getGym`, `getGymSetup`                                | staff (backend per gym) | MVP PARTIAL | Header and two-column frame; real gym summary, details, access; R5 tiles hidden |
+| GRW1 · Dashboard · opening week          | `FirstRunWebG.dc.html`                   | `/app/gyms/:gymId` (owner)        | `getGymFirstRun` (SF-90)                               | —                       | MVP         | Built in SF-91 from Claude Design 112 (see below)                               |
+| GRW2 · Product tour                      | `FirstRunWebGTour(Steps).dc.html`        | `/app/gyms/:gymId` (overlay)      | client-only steps; SF-90 outcomes                      | —                       | MVP PARTIAL | SF-91: 4 MVP steps + complete; 7 FUTURE steps not built                         |
+| WCX1 · Choose where to continue          | `WebContextSelect.dc.html`               | `/app/context`                    | entry: profiles and gym workspaces                     | session                 | MVP         | Gym rows added (Fighter + Gym users land here, SF-84 rule 5)                    |
+| WGC1 · Choose a gym (no own artboard)    | WCX1 composition                         | `/app/gyms`                       | entry `gym_workspaces` (≤ 25) + `listMyGyms` pages     | session                 | MVP         | Built in the WCX1 composition                                                   |
+| ContextSwitcher                          | `ContextSwitcher.dc.html`                | Fighter, Coach and Gym sidebars   | entry                                                  | session                 | MVP         | Extended with gyms (open, continue setup, all gyms)                             |
+| WG2–WG27, GC2, GC10, GC11, SH0, AV6, AV7 | `WebGymBoard` … `WebGymPromoAnalytics`   | `/app/gyms/:gymId/<area>`         | none (members, scheduling, staff, billing, community…) | —                       | FUTURE      | SF-32 placeholders, id-based; nav items Soon                                    |
+| WG3, WG14, WG15 (members)                | `WebMembers` …                           | `/app/gyms/:gymId/members…`       | none yet (SF-89 / SF-91)                               | —                       | FUTURE      | Placeholder                                                                     |
+| WG16 (staff)                             | `WebStaff`                               | `/app/gyms/:gymId/staff`          | SF-93 staff and invitations                            | per action (below)      | MVP         | Built in SF-94 (see below)                                                      |
+| WG17 (roles matrix)                      | `WebRoles`                               | `/app/gyms/:gymId/settings/roles` | none (no matrix read for all roles)                    | —                       | FUTURE      | Placeholder; the staff page carries the matrix in words                         |
+| WG22, WG23 (settings, locations)         | `WebGymSettings`, `WebLocations`         | `/app/gyms/:gymId/settings…`      | `updateGymSetup` exists; no designed MVP editor        | —                       | BLOCKED     | Placeholder until an editor is designed (SF-98)                                 |
+| WG7, WG25, GC10, GC11 (money)            | `WebRevenue`, `WebGymBilling` …          | `/app/gyms/:gymId/revenue…`       | none (D-G09, D-G10 deferred)                           | —                       | BLOCKED     | Placeholder; never linked                                                       |
+| FlowGymWeb, RouteGym                     | `FlowGymWeb.dc.html`, `RouteGym.dc.html` | —                                 | —                                                      | —                       | reference   | Unchanged                                                                       |
 
 No board draws a gym chooser, a gym switcher, a role-restricted state, a
 non-owner dashboard or a WG1 composed of existing data. SF-82 R5/C7 (approved,
@@ -247,3 +248,57 @@ Finding outside SF-91: the SF-86 and SF-88 production "light" axe runs only
 call `emulateMedia`, which does not switch next-themes (`simplefit-theme` in
 localStorage, default dark), so they test the dark theme twice. The SF-91
 spec sets the stored theme and asserts the `html` class.
+
+## SF-94: coaches & staff (WG16)
+
+Claude Design 112 (`1793198527-a0fc`) is unchanged; WG16 `WebStaff`, OG11
+`WebSetupTeam` and WG17 `WebRoles` still carry the pre-SF-82 content, so the
+SF-82 corrections R4, R7, R10, R11 and C10–C16 apply (`D-WEB-GYM-STAFF`).
+
+### Design inventory
+
+| Artboard / state                                 | Route                    | API operation                                          | Permission                                        | Status                       | Implementation                                                     |
+| ------------------------------------------------ | ------------------------ | ------------------------------------------------------ | ------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------ |
+| WG16 header: eyebrow, title                      | `/app/gyms/:gymId/staff` | `getGym` (console)                                     | `view_staff`                                      | MVP                          | Built                                                              |
+| WG16 header: Invite                              | same                     | `createGymStaffInvitation`                             | `invite_staff` (+ `invite_manager` for manager)   | MVP                          | Dialog: email, role                                                |
+| WG16 header: search                              | —                        | none                                                   | —                                                 | FUTURE                       | Not built (no search domain)                                       |
+| WG16 header: Roles & permissions → WG17          | `/settings/roles`        | none                                                   | —                                                 | FUTURE                       | Not linked; the roles card says the matrix in words                |
+| WG16 tile TEAM + breakdown                       | same                     | `listGymStaff` (active)                                | `view_staff`                                      | MVP                          | Shown once the list is complete                                    |
+| WG16 tile ON SHIFT NOW                           | —                        | none                                                   | —                                                 | FUTURE                       | Not built (R11)                                                    |
+| WG16 tile PENDING INVITES                        | same                     | `listGymStaffInvitations`                              | `view_staff_records`                              | MVP                          | Shown once the list is complete                                    |
+| WG16 roster: person, role, status                | same                     | `listGymStaff`                                         | `view_staff`                                      | MVP                          | Person, role, joined, status                                       |
+| WG16 roster: LOCATION, LAST ACTIVE               | —                        | none                                                   | —                                                 | FUTURE                       | Not built                                                          |
+| WG16 roster: INVITED rows                        | same                     | `listGymStaffInvitations`                              | `view_staff_records`                              | MVP PARTIAL                  | Their own Invitations card, never roster rows                      |
+| WG16 roster: ON SHIFT, Head coach                | —                        | none                                                   | —                                                 | FUTURE                       | Not built (R11, D-G03)                                             |
+| WG16 roster: ended staff                         | same                     | `listGymStaff?status=ended`                            | `view_staff_records`                              | MVP                          | Ended view                                                         |
+| WG16 detail panel: name, role, since             | same                     | `listGymStaff`                                         | `view_staff`                                      | MVP                          | Built                                                              |
+| WG16 detail panel: permission checklist          | —                        | none                                                   | —                                                 | MVP PARTIAL                  | The role in words (C10); no fighter notes, sparring, payments (R7) |
+| WG16 detail: Change role                         | dialog                   | `changeGymStaffRole`                                   | `change_staff_role` (manager: coach ⇄ front desk) | MVP                          | Built                                                              |
+| WG16 detail: Remove from team                    | dialog                   | `endGymStaffMembership`                                | `remove_staff` (manager: coach, front desk)       | MVP                          | Built; Leave for one's own row                                     |
+| OG11 invite row: email, role                     | dialog                   | `createGymStaffInvitation`                             | as above                                          | MVP                          | Built                                                              |
+| OG11 invite row: location                        | —                        | none                                                   | —                                                 | FUTURE                       | Not built (no per-member location)                                 |
+| OG11 roles panel                                 | staff page               | none (copy)                                            | —                                                 | MVP PARTIAL                  | Roles card from the MVP matrix (C10)                               |
+| Invitation resend / cancel                       | staff page               | `resendGymStaffInvitation`, `cancelGymStaffInvitation` | as inviting that role                             | MVP                          | Built; cancel confirmed                                            |
+| Loading, empty, error, retry                     | staff page               | —                                                      | —                                                 | MVP                          | Built                                                              |
+| Not available (404), role-restricted (403)       | console                  | `getGym`                                               | —                                                 | MVP                          | The console's shared states                                        |
+| E06 recipient page `/invite/staff`, mobile inbox | —                        | SF-93 recipient operations                             | —                                                 | BLOCKED (not in this ticket) | Not built; the invitations card says acceptance opens later        |
+
+### Behaviour
+
+- **Data:** every read and write names the gym in the path; query keys
+  carry the gym id, the page is keyed by gym, and the session boundary
+  clears the cache. Nothing is stored in the browser.
+- **Actions** are offered from the viewer's permission projection
+  (`staffCapabilities`): the owner may invite and manage managers, coaches and
+  front desk; a manager coaches and front desk only (expressed by the absence
+  of `invite_manager`); coaches and front desk see a read-only roster. The
+  backend decides every request: a refusal is said in the dialog and the
+  page re-reads the roster, invitations, gym and checklist.
+- **Invite:** email and role only. A new invitation and the already pending
+  one (201 / 200) read the same: pending until its expiry. A dropped answer
+  claims nothing (sending again returns the pending invitation).
+- **Role change and removal** wait for the backend; removal and leaving are
+  confirmed, naming the gym and saying the account and other gyms are not
+  affected. Leaving re-reads the gym, which then shows as not available.
+- **Checklist:** the dashboard's available `invite_staff` links here for a
+  viewer who may invite; only the backend completes it.

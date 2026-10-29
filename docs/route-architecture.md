@@ -555,6 +555,16 @@ and Start opens GRW2, the four-step tour of Claude Design 112 on real console
 elements; its seven FUTURE steps are not built. Only Finish and End or Skip
 record an outcome, which never reopens on any device (`D-WEB-GYM-FIRST-RUN`).
 
+**Web gym coaches & staff (SF-94).** `/app/gyms/:gymId/staff` (WG16) is the
+staff page of the gym in the path, linked from the console's sidebar for
+every staff role. It shows only SF-93 data: the active roster (and, for the
+owner and managers, ended staff and the gym's invitations), and offers
+invite, resend, cancel, change role and remove or leave as the viewer's
+permission projection allows; the backend decides each request and nothing
+changes before its answer. Invitations are never roster rows. The dashboard
+checklist's available `invite_staff` item links here for a viewer who may
+invite; it completes only when the backend says so (`D-WEB-GYM-STAFF`).
+
 **Mobile Gym owner registration (SF-87).** `/onboarding/gym` runs the same
 steps natively (`?step=type|location|branding|complete`) on the same
 contract, with an authenticated session only and the Gym intent as the
@@ -1143,6 +1153,7 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-MOBILE-GYM-FIRST-RUN`             | RESOLVED               | Mobile gym owner first run: GR1 + four MVP GR2 steps on measured targets; FUTURE steps not built       |
 | `D-WEB-GYM-CONSOLE-MVP`              | DEFERRED               | Web gym console: id-based, WG1 real gym data, R5 tiles hidden, Soon nav; chooser WGC1 and switcher     |
 | `D-WEB-GYM-FIRST-RUN`                | RESOLVED               | Web gym owner first run: GRW1 + four MVP GRW2 steps at content size; FUTURE steps not built            |
+| `D-WEB-GYM-STAFF`                    | RESOLVED               | Web gym coaches & staff on the SF-93 contract: no shifts, locations, Head coach or WG17 editor         |
 | `D-MOBILE-COACH-ONBOARDING-FLOW`     | DEFERRED               | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access                  |
 | `D-ENTRY-CONTEXT-SELECTION`          | RESOLVED               | `context_selection` opens WCX1 on the web and A04 on mobile; never WA6 / O05 or home                   |
 | `D-WEB-COACH-HOME-MVP`               | DEFERRED               | Coach web: real profile dashboard, MVP nav with Soon rows; CRW1, CRW2 future                           |

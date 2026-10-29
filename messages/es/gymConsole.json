@@ -84,7 +84,7 @@
       "title": "Tu acceso",
       "note": "SimpleFit comprueba cada acción para este gimnasio. Ningún rol del gimnasio lee datos de entrenamiento privados.",
       "roles": {
-        "owner": "Eres el propietario de este gimnasio: sus datos, su configuración y, más adelante, su equipo y sus miembros.",
+        "owner": "Eres el propietario de este gimnasio: sus datos, su configuración y su equipo y, más adelante, sus miembros.",
         "manager": "Ayudas a dirigir este gimnasio: sus datos, sedes, equipo y miembros.",
         "coach": "Entrenas en este gimnasio: tus clases y sus listas.",
         "front_desk": "Llevas la recepción: check-ins, reservas y miembros en recepción."
@@ -108,10 +108,6 @@
       "attendance": {
         "title": "Reservas y check-ins",
         "body": "Reservas y check-ins de cada clase."
-      },
-      "staff": {
-        "title": "Entrenadores y equipo",
-        "body": "Invita a tu equipo y da un rol a cada persona."
       }
     }
   },
@@ -247,6 +243,213 @@
           "body": "Guardado para este gimnasio en todos los dispositivos: la introducción no volverá a abrirse. Tu lista sigue reflejando lo que tu gimnasio hace de verdad."
         }
       }
+    }
+  },
+  "staff": {
+    "metaTitle": "Entrenadores y personal",
+    "eyebrow": "Personas",
+    "title": "Entrenadores y personal",
+    "noName": "Nombre no disponible",
+    "stats": {
+      "team": "Equipo",
+      "roles": {
+        "owner": "{count, plural, one {# propietario} other {# propietarios}}",
+        "manager": "{count, plural, one {# gerente} other {# gerentes}}",
+        "coach": "{count, plural, one {# entrenador} other {# entrenadores}}",
+        "front_desk": "{count, plural, other {# en recepción}}"
+      },
+      "pending": "Invitaciones pendientes",
+      "pendingNone": "Ninguna espera respuesta",
+      "pendingLine": "Esperando respuesta"
+    },
+    "roster": {
+      "heading": "Equipo",
+      "views": "Mostrar",
+      "tabs": {
+        "active": "Activos",
+        "ended": "Finalizados"
+      },
+      "label": {
+        "active": "Personal activo",
+        "ended": "Personal anterior"
+      },
+      "columns": {
+        "person": "Persona",
+        "role": "Rol",
+        "joined": "Desde",
+        "status": "Estado",
+        "ended": "Finalizó"
+      },
+      "select": "Mostrar a {name}",
+      "you": "Tú",
+      "loading": "Cargando el equipo",
+      "more": "Mostrar más",
+      "loadingMore": "Cargando…",
+      "alone": "Por ahora solo estás tú. Invita a entrenadores y personal de recepción a trabajar contigo.",
+      "failed": {
+        "title": "No pudimos cargar el equipo",
+        "body": "No cambió nada. Inténtalo de nuevo.",
+        "retry": "Reintentar"
+      },
+      "empty": {
+        "active": {
+          "title": "No hay personal activo",
+          "body": "Las personas invitadas aparecen aquí cuando aceptan."
+        },
+        "ended": {
+          "title": "Nadie se ha ido",
+          "body": "Aquí aparecen quienes dejan este gimnasio o son retirados."
+        }
+      }
+    },
+    "status": {
+      "owner": "Propietario",
+      "active": "Activo"
+    },
+    "person": {
+      "heading": "{name}",
+      "since": "{role} · desde el {date}",
+      "ended": {
+        "left": "Se fue el {date}",
+        "removed": "Retirado el {date}",
+        "transferred": "Propiedad transferida el {date}",
+        "account_deleted": "Cuenta eliminada el {date}",
+        "gym_closed": "Gimnasio cerrado el {date}"
+      },
+      "abilities": "{role} en este gimnasio",
+      "owner": "El propietario conserva el acceso completo. Solo cambia al transferir la propiedad.",
+      "noActions": "Tu rol no permite cambiar el acceso de esta persona."
+    },
+    "roles": {
+      "owner": {
+        "line": "Todo en este gimnasio, incluida su configuración y su equipo",
+        "detail": "Dirige el gimnasio: sus datos, su ubicación, su configuración y todo el equipo."
+      },
+      "manager": {
+        "line": "Datos y ubicación del gimnasio; invita y gestiona a entrenadores y recepción",
+        "detail": "Ayuda a dirigir el gimnasio: sus datos y su ubicación; invita a entrenadores y personal de recepción y cambia sus roles."
+      },
+      "coach": {
+        "line": "Entrena en este gimnasio; ve el gimnasio y su equipo",
+        "detail": "Entrena en este gimnasio. Por ahora: la consola del gimnasio y su equipo; las clases llegarán más adelante."
+      },
+      "front_desk": {
+        "line": "Atiende la recepción; ve el gimnasio y su equipo",
+        "detail": "Atiende la recepción. Por ahora: la consola del gimnasio y su equipo; los registros de entrada llegarán más adelante."
+      }
+    },
+    "reference": {
+      "heading": "Roles en este gimnasio",
+      "never": "Ningún rol del gimnasio lee los datos de entrenamiento privados de nadie. Un rol de entrenador aquí no es una relación de entrenamiento con nadie, y el perfil de entrenador de cada persona sigue siendo suyo."
+    },
+    "invite": {
+      "open": "Invitar",
+      "close": "Cerrar",
+      "title": "Invitar a {gym}",
+      "lead": "Enviamos una invitación a esta dirección. La persona se une solo después de aceptarla con la sesión iniciada con esa dirección.",
+      "email": {
+        "label": "Correo electrónico",
+        "invalid": "Escribe una dirección de correo válida.",
+        "rejected": "No se puede invitar a esta dirección. Puede que sea una de las tuyas."
+      },
+      "role": {
+        "label": "Rol",
+        "invalid": "Elige uno de los roles mostrados.",
+        "required": "Elige un rol."
+      },
+      "cancel": "Cancelar",
+      "submit": "Enviar invitación",
+      "sending": "Enviando…",
+      "pending": {
+        "title": "Invitación pendiente",
+        "body": "Una invitación a {email} como {role} está pendiente hasta el {expires}.",
+        "note": "Nada cambia en el gimnasio hasta que la acepten. Puedes reenviarla o cancelarla desde Invitaciones.",
+        "done": "Listo"
+      }
+    },
+    "invitations": {
+      "heading": "Invitaciones",
+      "loading": "Cargando las invitaciones",
+      "empty": "Aún no hay invitaciones.",
+      "failed": "No pudimos cargar las invitaciones.",
+      "retry": "Reintentar",
+      "more": "Mostrar más",
+      "notice": "Las personas invitadas podrán aceptar cuando las invitaciones de personal se abran en SimpleFit. Una invitación queda pendiente hasta que caduca, y puedes reenviarla.",
+      "status": {
+        "pending": "Pendiente",
+        "accepted": "Aceptada",
+        "declined": "Rechazada",
+        "cancelled": "Cancelada",
+        "expired": "Caducada"
+      },
+      "line": {
+        "pending": "Enviada el {sent} · caduca el {expires}",
+        "accepted": "Aceptada el {date}",
+        "declined": "Rechazada el {date}",
+        "cancelled": "Cancelada el {date}",
+        "expired": "Caducó el {date}"
+      },
+      "invitedBy": "invitada por {name}",
+      "resend": "Reenviar (quedan {count})",
+      "resending": "Reenviando…",
+      "resendLabel": "Reenviar la invitación a {email}",
+      "resent": "Una nueva invitación a {email} está pendiente hasta el {expires}.",
+      "cancel": "Cancelar",
+      "cancelLabel": "Cancelar la invitación a {email}",
+      "cancelled": "Se canceló la invitación a {email}."
+    },
+    "cancelInvitation": {
+      "title": "¿Cancelar esta invitación?",
+      "body": "La invitación a {email} dejará de funcionar. Puedes volver a invitar más tarde.",
+      "keep": "Conservarla",
+      "pending": "Cancelando…",
+      "confirm": "Cancelar invitación"
+    },
+    "roleChange": {
+      "open": "Cambiar rol",
+      "someone": "Esta persona",
+      "title": "Cambiar el rol de {name}",
+      "lead": "{name} es {role} en {gym}. El nuevo rol se aplica desde su siguiente acción.",
+      "label": "Nuevo rol",
+      "cancel": "Cancelar",
+      "pending": "Cambiando…",
+      "confirm": "Cambiar rol",
+      "done": "{name} ahora es {role}.",
+      "close": "Cerrar"
+    },
+    "remove": {
+      "open": "Retirar del equipo",
+      "someone": "Esta persona",
+      "title": "¿Retirar a {name} de {gym}?",
+      "body": "{name} pierde el acceso a {gym} de inmediato. Su cuenta de SimpleFit, sus perfiles y cualquier otro gimnasio donde trabaje no se ven afectados.",
+      "keep": "Mantener",
+      "pending": "Retirando…",
+      "confirm": "Retirar del equipo",
+      "done": "Se retiró a {name} de {gym}."
+    },
+    "leave": {
+      "open": "Dejar este gimnasio",
+      "someone": "Tú",
+      "title": "¿Dejar {gym}?",
+      "body": "Pierdes el acceso a {gym} de inmediato. Tu cuenta de SimpleFit y cualquier otro gimnasio donde trabajes no se ven afectados.",
+      "keep": "Quedarme",
+      "pending": "Saliendo…",
+      "confirm": "Dejar el gimnasio",
+      "done": "Dejaste {gym}."
+    },
+    "problems": {
+      "limited": "Demasiadas solicitudes. Vuelve a intentarlo en {minutes, plural, one {# minuto} other {# minutos}}.",
+      "limitedLater": "Demasiadas solicitudes. Vuelve a intentarlo más tarde.",
+      "pendingOtherRole": "Esta dirección ya tiene una invitación pendiente para otro rol. Cancélala primero.",
+      "alreadyActive": "Esta persona ya trabaja en este gimnasio.",
+      "noResends": "No quedan reenvíos. Cancélala e invita de nuevo.",
+      "notPending": "Esta invitación ya no está pendiente.",
+      "resolved": "Esta invitación ya fue respondida.",
+      "ownerTransfer": "El acceso del propietario solo cambia al transferir la propiedad.",
+      "forbidden": "Tu rol ya no permite esto. La página está actualizada.",
+      "gone": "Esta persona o invitación ya no forma parte del gimnasio. La página está actualizada.",
+      "unknown": "No pudimos confirmar si funcionó. La página muestra el estado más reciente; revísalo antes de volver a intentarlo.",
+      "failed": "Algo salió mal. No cambió nada. Inténtalo de nuevo."
     }
   }
 }

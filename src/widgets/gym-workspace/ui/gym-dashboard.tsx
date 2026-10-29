@@ -18,6 +18,7 @@ import { initialsOf } from "@/features/session-gate";
 import { isApiError } from "@/shared/api/http/api-error";
 import { countryName } from "@/shared/lib/countries";
 import { cn } from "@/shared/lib/utils";
+import { routeHref } from "@/shared/routes/routes";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Notice } from "@/shared/ui/notice";
@@ -52,7 +53,8 @@ const ACCENTS: Record<string, AccentName> = {
  * The console areas whose domains do not exist yet (SF-82 R5/C7): listed as
  * coming later, never as tiles with numbers, because no backend counts them.
  */
-const LATER = ["members", "schedule", "attendance", "staff"] as const;
+// Coaches & staff has its page since SF-94.
+const LATER = ["members", "schedule", "attendance"] as const;
 
 /**
  * WG1, the gym dashboard (`web.app.gyms._gym-id`, SF-88), inside the gym
@@ -238,7 +240,14 @@ function useOwnerFirstRun(gym: Gym, heading: RefObject<HTMLHeadingElement | null
             setSkipping(true);
           }}
         />
-        <GymChecklist items={data.checklist} />
+        <GymChecklist
+          items={data.checklist}
+          staffHref={
+            gym.viewer.permissions.includes("invite_staff")
+              ? routeHref("web.app.gyms._gym-id.staff", { gymId: gym.id })
+              : undefined
+          }
+        />
       </>
     );
   }

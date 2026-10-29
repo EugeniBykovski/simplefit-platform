@@ -38,6 +38,7 @@ const REAL_SCREENS = [
   // SF-88: the gym chooser (WGC1) and the gym dashboard (WG1).
   "web.app.gyms",
   "web.app.gyms._gym-id",
+  "web.app.gyms._gym-id.staff",
   // SF-54: the Coach dashboard (WC1) and the context chooser (WCX1).
   "web.app.coach",
   "web.app.context",

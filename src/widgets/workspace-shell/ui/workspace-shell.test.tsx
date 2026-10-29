@@ -104,13 +104,17 @@ describe("WorkspaceShell", () => {
     );
   });
 
-  it("shows the gym console MVP: Dashboard of the gym in the path, every other item Soon (SF-88)", async () => {
+  it("shows the gym console MVP: Dashboard and Coaches & staff (SF-94) of the gym in the path, every other item Soon (SF-88)", async () => {
     const nav = await renderShell("web.app.gym", `/app/gyms/${GYM_ID}/members/m-42`);
     const links = within(nav).getAllByRole("link");
-    expect(links).toHaveLength(1);
+    expect(links).toHaveLength(2);
     expect(within(nav).getByRole("link", { name: "Dashboard" })).toHaveAttribute(
       "href",
       `/en/app/gyms/${GYM_ID}`,
+    );
+    expect(within(nav).getByRole("link", { name: "Coaches & staff" })).toHaveAttribute(
+      "href",
+      `/en/app/gyms/${GYM_ID}/staff`,
     );
     for (const label of ["Members", "Timetable", "Revenue & payouts", "Gym settings & plan"]) {
       expect(within(nav).queryByRole("link", { name: label })).toBeNull();

@@ -5,6 +5,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { Dialog as DialogPrimitive } from "radix-ui";
 
 import type { GymChecklistItem, GymFirstRun } from "@/entities/gym-first-run";
+import { Link } from "@/shared/i18n/navigation";
 import { cn } from "@/shared/lib/utils";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
@@ -174,7 +175,18 @@ export function FirstRunUnavailable({ onRetry }: { onRetry: () => void }) {
  * "coming later" item has no feature yet, links nowhere and is never counted
  * as missing. There is no progress count: no denominator would be truthful.
  */
-export function GymChecklist({ items }: { items: GymChecklistItem[] }) {
+export function GymChecklist({
+  items,
+  staffHref,
+}: {
+  items: GymChecklistItem[];
+  /**
+   * SF-94: where "Invite your staff" leads while it is available (the gym's
+   * Coaches & staff page), for a viewer who may invite. Its status stays the
+   * backend's: it completes only once an invitation is accepted.
+   */
+  staffHref?: string;
+}) {
   const t = useTranslations("gymConsole.firstRun.checklist");
   const ready = items.filter((item) => item.status !== "coming_later");
   const later = items.filter((item) => item.status === "coming_later");
@@ -197,7 +209,13 @@ export function GymChecklist({ items }: { items: GymChecklistItem[] }) {
       {ready.length > 0 && (
         <ul className="flex flex-col gap-2">
           {ready.map((item) => (
-            <ChecklistRow key={item.key} item={item} />
+            <ChecklistRow
+              key={item.key}
+              item={item}
+              href={
+                item.key === "invite_staff" && item.status === "available" ? staffHref : undefined
+              }
+            />
           ))}
         </ul>
       )}
@@ -217,7 +235,7 @@ export function GymChecklist({ items }: { items: GymChecklistItem[] }) {
   );
 }
 
-function ChecklistRow({ item }: { item: GymChecklistItem }) {
+function ChecklistRow({ item, href }: { item: GymChecklistItem; href?: string }) {
   const t = useTranslations("gymConsole.firstRun.checklist");
   const done = item.status === "completed";
   const later = item.status === "coming_later";
@@ -255,7 +273,13 @@ function ChecklistRow({ item }: { item: GymChecklistItem }) {
             done && "text-accent-foreground",
           )}
         >
-          {t(`items.${item.key}.title`)}
+          {href ? (
+            <Link href={href} className="underline-offset-4 hover:underline" data-checklist-link>
+              {t(`items.${item.key}.title`)}
+            </Link>
+          ) : (
+            t(`items.${item.key}.title`)
+          )}
         </span>
         <span className="type-caption text-muted-foreground">
           {t(`items.${item.key}.${item.status}`)}

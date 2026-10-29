@@ -5867,9 +5867,10 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/app/gyms/[gymId]/staff/page.tsx",
-        "note": "SF-32 placeholder (FeaturePlaceholder) inside the gym console of the gym in the path (SF-88: id-based, D-G23); its sidebar item is marked Soon and not linked until the feature ticket builds the screen."
+        "note": "SF-94: WG16, the coaches and staff of the gym in the path, inside its console (the layout authorizes the gym; 404 not available, 403 role-restricted). Every staff role reads the active roster (GET /api/v1/gyms/{gym_id}/staff: short name, gym role, joined, status; never an email, user id or profile); the owner and managers (view_staff_records) also the ended staff and the gym's invitations (GET …/staff-invitations: masked address, the backend's status, resends left). Invite (POST …/staff-invitations, email and role only; the owner offers manager, coach and front desk, a manager coach and front desk; never owner), resend and cancel (POST …/{invitation_id}/resend, /cancel; cancel confirmed), change role (PATCH …/staff/{staff_membership_id}) and remove or leave (DELETE …/staff/{staff_membership_id}, confirmed, naming the gym and sparing the account and other gyms) are offered from the viewer's permission projection and decided by the backend; nothing changes on screen before its answer, and every answer re-reads this gym's roster, invitations, gym and checklist. A 201 and the 200 of an already pending invitation read the same: an invitation is pending until its expiry (never 'sent' or 'delivered'); a lost answer claims nothing. Counts show only for complete lists. The page is keyed by gym; the session boundary clears the cache. Its sidebar item is linked for every staff role (D-WEB-GYM-STAFF)."
       },
-      "screens": ["WG16"]
+      "screens": ["WG16"],
+      "discrepancies": ["D-WEB-GYM-STAFF"]
     },
     {
       "id": "web.app.gyms._gym-id.bookings",
@@ -14166,14 +14167,15 @@
       "code": "WG16",
       "name": "Coaches & staff",
       "route": "web.app.gyms._gym-id.staff",
-      "states": ["invited"],
+      "states": ["active", "ended", "invited", "invite", "role change", "remove", "read only"],
       "design": {
         "gallery": "gallery-2",
         "page": "desktop-web",
         "section": "18a · Gym web · overview & people",
         "step": "18.8",
         "tag": "WEB_APP",
-        "artboard": "WebStaff.dc.html"
+        "artboard": "WebStaff.dc.html",
+        "note": "Claude Design 112 (1793198527-a0fc) reconciled with SF-82 R7, R11, C10 and C16 (SF-94): the roster columns are person, role, joined and status; LOCATION, LAST ACTIVE, ON SHIFT, Head coach, search and the per-role permission checklist (fighter notes, sparring approvals, payments) are not built. The detail panel shows the selected person's role in words from the MVP matrix with Change role and Remove from team."
       }
     },
     {
@@ -18001,6 +18003,20 @@
       "status": "RESOLVED",
       "routes": ["mobile.gyms._gym-id.pulse"],
       "screens": ["GR1", "GR2"]
+    },
+    {
+      "id": "D-WEB-GYM-STAFF",
+      "title": "Web gym coaches & staff built from the SF-93 staff contract, without shifts, locations or a permissions editor",
+      "sourceA": "Claude Design 112 (1793198527-a0fc): WG16 WebStaff (header with search, Roles & permissions and Invite; tiles TEAM, ON SHIFT NOW and PENDING INVITES; a roster with PERSON, ROLE, LOCATION, LAST ACTIVE and STATUS incl. ON SHIFT and INVITED rows; a detail panel with a Head coach permission checklist incl. fighter notes, sparring approvals, payments and payouts, Change role and Remove from team), OG11 WebSetupTeam (invite row with email, role and location; role descriptions incl. payouts, fighter notes, sales and incidents) and WG17 WebRoles (an editable matrix with custom roles, Head coach, refunds and an audit list)",
+      "sourceB": "SF-93 backend: listGymStaff (active; ended for view_staff_records), changeGymStaffRole, endGymStaffMembership, listGymStaffInvitations, createGymStaffInvitation (email and role), resendGymStaffInvitation, cancelGymStaffInvitation; roles owner, manager, coach, front_desk; the viewer's permission projection on getGym; no locations per member, activity, shifts, display titles, custom roles or audit read",
+      "mismatch": "The artboards show facts and controls that no backend domain provides, mix pending invitations into the roster and describe permissions the MVP matrix does not grant (SF-82 R7, R11).",
+      "impact": "Building them would fake staff activity, shifts and locations, imply a coach reads fighter notes, and let invitations look like members.",
+      "resolution": "SF-94: WG16's layout (header, tiles, roster, detail panel) with the SF-93 data only. Tiles: TEAM (the role breakdown) and PENDING INVITATIONS (owner and managers), each shown only when its list is complete; ON SHIFT is not built. The roster lists memberships only (Active / Ended); invitations are their own card (OG11's status column becomes their status). Columns: person, role, joined, status. The detail panel describes the role in words from the MVP matrix (SF-82 C10) and offers Change role and Remove from team (or Leave this gym) only as the permission projection allows; the owner's row has no action. A roles card replaces WG17's matrix on this page with the matrix in words and its 'never, for any role' row; WG17 (web.app.gyms._gym-id.settings.roles) stays a placeholder until settings exist. The invite form has email and role only (no location, D-G staff memberships carry none). Search, last activity, Head coach and the permissions checklist are not built. Until recipients can accept invitations in a client, the invitations card says so.",
+      "decision": "Build WG16 on the SF-93 contract; keep shifts, locations, display titles, custom roles and the WG17 editor out.",
+      "decidedOn": "2026-10-29",
+      "status": "RESOLVED",
+      "routes": ["web.app.gyms._gym-id.staff"],
+      "screens": ["WG16"]
     }
   ]
 }

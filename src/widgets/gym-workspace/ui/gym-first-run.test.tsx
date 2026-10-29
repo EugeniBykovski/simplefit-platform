@@ -207,6 +207,49 @@ describe("GRW1 · the owner's first run on the console (SF-91)", () => {
     expect(calls.filter((call) => call.startsWith("POST"))).toEqual([]);
   });
 
+  it("links an available invite_staff to the gym's staff page for a viewer who may invite (SF-94)", async () => {
+    const available = CHECKLIST.map((item) =>
+      item.key === "invite_staff" ? { ...item, status: "available" as const } : item,
+    );
+    api({
+      [`GET /api/v1/gyms/${RING}`]: [ok({ gym: gym({}, [...OWNER, "invite_staff"]) })],
+      [`GET /api/v1/gyms/${RING}/setup`]: [ok({ setup: setup() })],
+      [`GET /api/v1/gyms/${RING}/first-run`]: [ok(firstRun({ checklist: available }))],
+    });
+    const view = await renderConsole();
+    const checklist = await screen.findByRole("region", { name: "Your gym is ready" });
+    const link = within(checklist).getByRole("link", { name: "Invite your staff" });
+    expect(link).toHaveAttribute("href", `/en/app/gyms/${RING}/staff`);
+    // Still the backend's status: available, not done.
+    expect(checklist.querySelector("[data-checklist-key=invite_staff]")).toHaveAttribute(
+      "data-checklist-status",
+      "available",
+    );
+    view.unmount();
+
+    // Accepted: completed, and no longer a link.
+    api({
+      [`GET /api/v1/gyms/${RING}`]: [ok({ gym: gym({}, [...OWNER, "invite_staff"]) })],
+      [`GET /api/v1/gyms/${RING}/setup`]: [ok({ setup: setup() })],
+      [`GET /api/v1/gyms/${RING}/first-run`]: [
+        ok(
+          firstRun({
+            checklist: CHECKLIST.map((item) =>
+              item.key === "invite_staff" ? { ...item, status: "completed" as const } : item,
+            ),
+          }),
+        ),
+      ],
+    });
+    await renderConsole();
+    const done = await screen.findByRole("region", { name: "Your gym is ready" });
+    expect(within(done).queryAllByRole("link")).toHaveLength(0);
+    expect(done.querySelector("[data-checklist-key=invite_staff]")).toHaveAttribute(
+      "data-checklist-status",
+      "completed",
+    );
+  });
+
   it("renders only the items the API sends, in its order", async () => {
     api({
       ...base(),

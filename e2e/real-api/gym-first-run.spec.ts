@@ -234,7 +234,9 @@ test("A: a new owner gets the first run, takes the tour, finishes; it never reop
   const checklist = (api.body.first_run as { checklist: { key: string; status: string }[] })
     .checklist;
   expect(checklist.map((item) => item.key)).toEqual(KEYS);
-  // E · the page renders exactly the API's checklist.
+  // E · the page renders exactly the API's checklist: GRW1 lists the done and
+  // available items first, then the coming-later ones, each in the API's
+  // order (SF-93 made invite_staff available).
   const rendered = await page
     .locator("[data-checklist-key]")
     .evaluateAll((rows) =>
@@ -242,7 +244,11 @@ test("A: a new owner gets the first run, takes the tour, finishes; it never reop
         (r) => `${r.getAttribute("data-checklist-key")}:${r.getAttribute("data-checklist-status")}`,
       ),
     );
-  expect(rendered).toEqual(checklist.map((item) => `${item.key}:${item.status}`));
+  const grouped = [
+    ...checklist.filter((item) => item.status !== "coming_later"),
+    ...checklist.filter((item) => item.status === "coming_later"),
+  ];
+  expect(rendered).toEqual(grouped.map((item) => `${item.key}:${item.status}`));
   await expect(page.locator("main")).not.toContainText(
     /PLN|MRR|revenue|members joined|invites sent/i,
   );
