@@ -84,7 +84,7 @@
       "title": "Dein Zugang",
       "note": "SimpleFit prüft jede Aktion für dieses Gym. Keine Gym-Rolle liest private Trainingsdaten.",
       "roles": {
-        "owner": "Dir gehört dieses Gym: seine Angaben, die Einrichtung und später sein Team und seine Mitglieder.",
+        "owner": "Dir gehört dieses Gym: seine Angaben, die Einrichtung und das Team, später auch seine Mitglieder.",
         "manager": "Du leitest dieses Gym mit: seine Angaben, Standorte, das Team und die Mitglieder.",
         "coach": "Du trainierst in diesem Gym: deine Kurse und ihre Teilnehmerlisten.",
         "front_desk": "Du betreust den Empfang: Check-ins, Buchungen und Mitglieder am Empfang."
@@ -108,10 +108,6 @@
       "attendance": {
         "title": "Buchungen & Check-ins",
         "body": "Buchungen und Check-ins für jeden Kurs."
-      },
-      "staff": {
-        "title": "Coaches & Team",
-        "body": "Lade dein Team ein und gib jeder Person eine Rolle."
       }
     }
   },
@@ -247,6 +243,213 @@
           "body": "Für dieses Gym auf jedem Gerät gespeichert: Die Einführung öffnet sich nicht wieder. Deine Checkliste folgt weiter dem, was dein Gym wirklich tut."
         }
       }
+    }
+  },
+  "staff": {
+    "metaTitle": "Coaches & Team",
+    "eyebrow": "Personen",
+    "title": "Coaches & Team",
+    "noName": "Name nicht verfügbar",
+    "stats": {
+      "team": "Team",
+      "roles": {
+        "owner": "{count, plural, one {# Inhaber} other {# Inhaber}}",
+        "manager": "{count, plural, one {# Manager} other {# Manager}}",
+        "coach": "{count, plural, one {# Coach} other {# Coaches}}",
+        "front_desk": "{count, plural, other {# am Empfang}}"
+      },
+      "pending": "Offene Einladungen",
+      "pendingNone": "Keine wartet auf Antwort",
+      "pendingLine": "Warten auf Antwort"
+    },
+    "roster": {
+      "heading": "Team",
+      "views": "Anzeigen",
+      "tabs": {
+        "active": "Aktiv",
+        "ended": "Beendet"
+      },
+      "label": {
+        "active": "Aktives Team",
+        "ended": "Ehemaliges Team"
+      },
+      "columns": {
+        "person": "Person",
+        "role": "Rolle",
+        "joined": "Dabei seit",
+        "status": "Status",
+        "ended": "Beendet"
+      },
+      "select": "{name} anzeigen",
+      "you": "Du",
+      "loading": "Team wird geladen",
+      "more": "Mehr anzeigen",
+      "loadingMore": "Wird geladen…",
+      "alone": "Bisher nur du. Lade Coaches und Empfangsteam ein, mit dir zu arbeiten.",
+      "failed": {
+        "title": "Das Team konnte nicht geladen werden",
+        "body": "Nichts wurde geändert. Versuch es noch einmal.",
+        "retry": "Erneut versuchen"
+      },
+      "empty": {
+        "active": {
+          "title": "Kein aktives Team",
+          "body": "Eingeladene erscheinen hier, sobald sie annehmen."
+        },
+        "ended": {
+          "title": "Niemand ist gegangen",
+          "body": "Wer dieses Gym verlässt oder entfernt wird, erscheint hier."
+        }
+      }
+    },
+    "status": {
+      "owner": "Inhaber",
+      "active": "Aktiv"
+    },
+    "person": {
+      "heading": "{name}",
+      "since": "{role} · seit {date}",
+      "ended": {
+        "left": "Gegangen am {date}",
+        "removed": "Entfernt am {date}",
+        "transferred": "Inhaberschaft übertragen am {date}",
+        "account_deleted": "Konto gelöscht am {date}",
+        "gym_closed": "Gym geschlossen am {date}"
+      },
+      "abilities": "{role} in diesem Gym",
+      "owner": "Der Inhaber behält vollen Zugriff. Er ändert sich nur, wenn die Inhaberschaft übertragen wird.",
+      "noActions": "Deine Rolle erlaubt nicht, den Zugriff dieser Person zu ändern."
+    },
+    "roles": {
+      "owner": {
+        "line": "Alles in diesem Gym, auch Einrichtung und Team",
+        "detail": "Führt das Gym: seine Angaben, den Standort, die Einrichtung und das ganze Team."
+      },
+      "manager": {
+        "line": "Angaben und Standort des Gyms; lädt Coaches und Empfang ein und verwaltet sie",
+        "detail": "Hilft, das Gym zu führen: seine Angaben und den Standort; lädt Coaches und Empfangsteam ein und ändert ihre Rollen."
+      },
+      "coach": {
+        "line": "Coacht in diesem Gym; sieht das Gym und sein Team",
+        "detail": "Coacht in diesem Gym. Vorerst: die Konsole des Gyms und sein Team; Kurse kommen später."
+      },
+      "front_desk": {
+        "line": "Betreut den Empfang; sieht das Gym und sein Team",
+        "detail": "Betreut den Empfang. Vorerst: die Konsole des Gyms und sein Team; Check-ins kommen später."
+      }
+    },
+    "reference": {
+      "heading": "Rollen in diesem Gym",
+      "never": "Keine Gym-Rolle liest private Trainingsdaten von irgendwem. Eine Coach-Rolle hier ist keine Coaching-Beziehung zu irgendwem, und das eigene Coach-Profil bleibt privat."
+    },
+    "invite": {
+      "open": "Einladen",
+      "close": "Schließen",
+      "title": "In {gym} einladen",
+      "lead": "Wir senden eine Einladung an diese Adresse. Die Person kommt erst dazu, wenn sie sie annimmt und dabei mit dieser Adresse angemeldet ist.",
+      "email": {
+        "label": "E-Mail",
+        "invalid": "Gib eine gültige E-Mail-Adresse ein.",
+        "rejected": "Diese Adresse kann nicht eingeladen werden. Vielleicht ist es deine eigene."
+      },
+      "role": {
+        "label": "Rolle",
+        "invalid": "Wähle eine der angezeigten Rollen.",
+        "required": "Wähle eine Rolle."
+      },
+      "cancel": "Abbrechen",
+      "submit": "Einladung senden",
+      "sending": "Wird gesendet…",
+      "pending": {
+        "title": "Einladung offen",
+        "body": "Eine Einladung an {email} als {role} ist bis {expires} offen.",
+        "note": "Im Gym ändert sich nichts, bis sie angenommen wird. Du kannst sie unter Einladungen erneut senden oder zurückziehen.",
+        "done": "Fertig"
+      }
+    },
+    "invitations": {
+      "heading": "Einladungen",
+      "loading": "Einladungen werden geladen",
+      "empty": "Noch keine Einladungen.",
+      "failed": "Die Einladungen konnten nicht geladen werden.",
+      "retry": "Erneut versuchen",
+      "more": "Mehr anzeigen",
+      "notice": "Eingeladene können annehmen, sobald Team-Einladungen in SimpleFit freigeschaltet sind. Eine Einladung bleibt offen, bis sie abläuft, und du kannst sie erneut senden.",
+      "status": {
+        "pending": "Offen",
+        "accepted": "Angenommen",
+        "declined": "Abgelehnt",
+        "cancelled": "Zurückgezogen",
+        "expired": "Abgelaufen"
+      },
+      "line": {
+        "pending": "Gesendet {sent} · läuft ab {expires}",
+        "accepted": "Angenommen {date}",
+        "declined": "Abgelehnt {date}",
+        "cancelled": "Zurückgezogen {date}",
+        "expired": "Abgelaufen {date}"
+      },
+      "invitedBy": "eingeladen von {name}",
+      "resend": "Erneut senden (noch {count})",
+      "resending": "Wird gesendet…",
+      "resendLabel": "Einladung an {email} erneut senden",
+      "resent": "Eine neue Einladung an {email} ist bis {expires} offen.",
+      "cancel": "Zurückziehen",
+      "cancelLabel": "Einladung an {email} zurückziehen",
+      "cancelled": "Die Einladung an {email} wurde zurückgezogen."
+    },
+    "cancelInvitation": {
+      "title": "Einladung zurückziehen?",
+      "body": "Die Einladung an {email} gilt dann nicht mehr. Du kannst die Person später erneut einladen.",
+      "keep": "Behalten",
+      "pending": "Wird zurückgezogen…",
+      "confirm": "Einladung zurückziehen"
+    },
+    "roleChange": {
+      "open": "Rolle ändern",
+      "someone": "Diese Person",
+      "title": "Rolle von {name} ändern",
+      "lead": "{name} ist {role} in {gym}. Die neue Rolle gilt ab der nächsten Aktion.",
+      "label": "Neue Rolle",
+      "cancel": "Abbrechen",
+      "pending": "Wird geändert…",
+      "confirm": "Rolle ändern",
+      "done": "{name} ist jetzt {role}.",
+      "close": "Schließen"
+    },
+    "remove": {
+      "open": "Aus dem Team entfernen",
+      "someone": "Diese Person",
+      "title": "{name} aus {gym} entfernen?",
+      "body": "{name} verliert sofort den Zugriff auf {gym}. Das SimpleFit-Konto, die Profile und andere Gyms, in denen die Person arbeitet, bleiben unberührt.",
+      "keep": "Behalten",
+      "pending": "Wird entfernt…",
+      "confirm": "Aus dem Team entfernen",
+      "done": "{name} wurde aus {gym} entfernt."
+    },
+    "leave": {
+      "open": "Dieses Gym verlassen",
+      "someone": "Du",
+      "title": "{gym} verlassen?",
+      "body": "Du verlierst sofort den Zugriff auf {gym}. Dein SimpleFit-Konto und andere Gyms, in denen du arbeitest, bleiben unberührt.",
+      "keep": "Bleiben",
+      "pending": "Wird verlassen…",
+      "confirm": "Gym verlassen",
+      "done": "Du hast {gym} verlassen."
+    },
+    "problems": {
+      "limited": "Zu viele Anfragen. Versuch es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
+      "limitedLater": "Zu viele Anfragen. Versuch es später erneut.",
+      "pendingOtherRole": "Für diese Adresse ist schon eine Einladung für eine andere Rolle offen. Zieh sie zuerst zurück.",
+      "alreadyActive": "Diese Person arbeitet schon in diesem Gym.",
+      "noResends": "Keine erneuten Sendungen mehr. Zieh sie zurück und lade erneut ein.",
+      "notPending": "Diese Einladung ist nicht mehr offen.",
+      "resolved": "Diese Einladung wurde schon beantwortet.",
+      "ownerTransfer": "Der Zugriff des Inhabers ändert sich nur, wenn die Inhaberschaft übertragen wird.",
+      "forbidden": "Deine Rolle erlaubt das nicht mehr. Die Seite ist aktuell.",
+      "gone": "Diese Person oder Einladung gehört nicht mehr zum Gym. Die Seite ist aktuell.",
+      "unknown": "Wir konnten nicht bestätigen, ob es geklappt hat. Die Seite zeigt den neuesten Stand; prüf ihn, bevor du es erneut versuchst.",
+      "failed": "Etwas ist schiefgelaufen. Nichts wurde geändert. Versuch es noch einmal."
     }
   }
 }

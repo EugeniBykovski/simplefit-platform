@@ -84,7 +84,7 @@
       "title": "Your access",
       "note": "Each action is checked by SimpleFit for this gym. No gym role reads anyone’s private training data.",
       "roles": {
-        "owner": "You own this gym: its details, setup and, later, its team and members.",
+        "owner": "You own this gym: its details, setup and team, and later its members.",
         "manager": "You help run this gym: its details, locations, team and members.",
         "coach": "You coach at this gym: your classes and their rosters.",
         "front_desk": "You run the front desk: check-ins, bookings and members at the desk."
@@ -108,10 +108,6 @@
       "attendance": {
         "title": "Bookings & check-ins",
         "body": "Bookings and check-ins for each class."
-      },
-      "staff": {
-        "title": "Coaches & staff",
-        "body": "Invite your team and give each person a role."
       }
     }
   },
@@ -247,6 +243,213 @@
           "body": "Saved for this gym on every device: the introduction won’t open again. Your checklist keeps following what your gym really does."
         }
       }
+    }
+  },
+  "staff": {
+    "metaTitle": "Coaches & staff",
+    "eyebrow": "People",
+    "title": "Coaches & staff",
+    "noName": "Name not available",
+    "stats": {
+      "team": "Team",
+      "roles": {
+        "owner": "{count, plural, one {# owner} other {# owners}}",
+        "manager": "{count, plural, one {# manager} other {# managers}}",
+        "coach": "{count, plural, one {# coach} other {# coaches}}",
+        "front_desk": "{count, plural, one {# at the front desk} other {# at the front desk}}"
+      },
+      "pending": "Pending invitations",
+      "pendingNone": "None waiting for an answer",
+      "pendingLine": "Waiting for an answer"
+    },
+    "roster": {
+      "heading": "Team",
+      "views": "Show",
+      "tabs": {
+        "active": "Active",
+        "ended": "Ended"
+      },
+      "label": {
+        "active": "Active staff",
+        "ended": "Ended staff"
+      },
+      "columns": {
+        "person": "Person",
+        "role": "Role",
+        "joined": "Joined",
+        "status": "Status",
+        "ended": "Ended"
+      },
+      "select": "Show {name}",
+      "you": "You",
+      "loading": "Loading the team",
+      "more": "Show more",
+      "loadingMore": "Loading…",
+      "alone": "Only you so far. Invite coaches and front desk staff to work here with you.",
+      "failed": {
+        "title": "We couldn’t load the team",
+        "body": "Nothing changed. Try again.",
+        "retry": "Try again"
+      },
+      "empty": {
+        "active": {
+          "title": "No active staff",
+          "body": "Invited people appear here once they accept."
+        },
+        "ended": {
+          "title": "No one has left",
+          "body": "People who leave or are removed from this gym appear here."
+        }
+      }
+    },
+    "status": {
+      "owner": "Owner",
+      "active": "Active"
+    },
+    "person": {
+      "heading": "{name}",
+      "since": "{role} · since {date}",
+      "ended": {
+        "left": "Left on {date}",
+        "removed": "Removed on {date}",
+        "transferred": "Ownership moved on {date}",
+        "account_deleted": "Account deleted on {date}",
+        "gym_closed": "Gym closed on {date}"
+      },
+      "abilities": "{role} at this gym",
+      "owner": "The owner keeps full access. It changes only when ownership is transferred.",
+      "noActions": "Your role doesn’t include changing this person’s access."
+    },
+    "roles": {
+      "owner": {
+        "line": "Everything at this gym, including its setup and team",
+        "detail": "Runs the gym: its details, location and setup, and the whole team."
+      },
+      "manager": {
+        "line": "The gym’s details and location; invites and manages coaches and front desk",
+        "detail": "Helps run the gym: its details and location, and invites coaches and front desk and changes their roles."
+      },
+      "coach": {
+        "line": "Coaches at this gym; sees the gym and its team",
+        "detail": "Coaches at this gym. For now: the gym’s console and its team; classes come later."
+      },
+      "front_desk": {
+        "line": "Runs the front desk; sees the gym and its team",
+        "detail": "Runs the front desk. For now: the gym’s console and its team; check-ins come later."
+      }
+    },
+    "reference": {
+      "heading": "Roles at this gym",
+      "never": "No gym role reads anyone’s private training data. A coach role here is not a coaching relationship with anyone, and a person’s own coach profile stays theirs."
+    },
+    "invite": {
+      "open": "Invite",
+      "close": "Close",
+      "title": "Invite to {gym}",
+      "lead": "We send an invitation to this address. The person joins only after accepting it while signed in with that address.",
+      "email": {
+        "label": "Email",
+        "invalid": "Enter a valid email address.",
+        "rejected": "This address can’t be invited. It may be one of your own."
+      },
+      "role": {
+        "label": "Role",
+        "invalid": "Choose one of the roles shown.",
+        "required": "Choose a role."
+      },
+      "cancel": "Cancel",
+      "submit": "Send invitation",
+      "sending": "Sending…",
+      "pending": {
+        "title": "Invitation pending",
+        "body": "An invitation to {email} as {role} is pending until {expires}.",
+        "note": "Nothing changes at the gym until they accept. You can resend or cancel it from Invitations.",
+        "done": "Done"
+      }
+    },
+    "invitations": {
+      "heading": "Invitations",
+      "loading": "Loading the invitations",
+      "empty": "No invitations yet.",
+      "failed": "We couldn’t load the invitations.",
+      "retry": "Try again",
+      "more": "Show more",
+      "notice": "Invited people can accept once staff invitations open in SimpleFit. An invitation stays pending until it expires, and you can resend it.",
+      "status": {
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "cancelled": "Cancelled",
+        "expired": "Expired"
+      },
+      "line": {
+        "pending": "Sent {sent} · expires {expires}",
+        "accepted": "Accepted {date}",
+        "declined": "Declined {date}",
+        "cancelled": "Cancelled {date}",
+        "expired": "Expired {date}"
+      },
+      "invitedBy": "invited by {name}",
+      "resend": "Resend ({count} left)",
+      "resending": "Resending…",
+      "resendLabel": "Resend the invitation to {email}",
+      "resent": "A new invitation to {email} is pending until {expires}.",
+      "cancel": "Cancel",
+      "cancelLabel": "Cancel the invitation to {email}",
+      "cancelled": "The invitation to {email} was cancelled."
+    },
+    "cancelInvitation": {
+      "title": "Cancel this invitation?",
+      "body": "The invitation to {email} stops working. You can invite them again later.",
+      "keep": "Keep it",
+      "pending": "Cancelling…",
+      "confirm": "Cancel invitation"
+    },
+    "roleChange": {
+      "open": "Change role",
+      "someone": "This person",
+      "title": "Change {name}’s role",
+      "lead": "{name} is {role} at {gym}. The new role applies from their next action.",
+      "label": "New role",
+      "cancel": "Cancel",
+      "pending": "Changing…",
+      "confirm": "Change role",
+      "done": "{name} is now {role}.",
+      "close": "Close"
+    },
+    "remove": {
+      "open": "Remove from team",
+      "someone": "This person",
+      "title": "Remove {name} from {gym}?",
+      "body": "{name} loses access to {gym} at once. Their SimpleFit account, their profiles and any other gym they work at are not affected.",
+      "keep": "Keep",
+      "pending": "Removing…",
+      "confirm": "Remove from team",
+      "done": "{name} was removed from {gym}."
+    },
+    "leave": {
+      "open": "Leave this gym",
+      "someone": "You",
+      "title": "Leave {gym}?",
+      "body": "You lose access to {gym} at once. Your SimpleFit account and any other gym you work at are not affected.",
+      "keep": "Stay",
+      "pending": "Leaving…",
+      "confirm": "Leave gym",
+      "done": "You left {gym}."
+    },
+    "problems": {
+      "limited": "Too many requests. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+      "limitedLater": "Too many requests. Try again later.",
+      "pendingOtherRole": "This address already has a pending invitation for another role. Cancel it first.",
+      "alreadyActive": "This person already works at this gym.",
+      "noResends": "No resends left. Cancel it and invite again.",
+      "notPending": "This invitation isn’t pending any more.",
+      "resolved": "This invitation was already answered.",
+      "ownerTransfer": "The owner’s access changes only when ownership is transferred.",
+      "forbidden": "Your role doesn’t allow this any more. The page is up to date.",
+      "gone": "This person or invitation isn’t part of the gym any more. The page is up to date.",
+      "unknown": "We couldn’t confirm whether it worked. The page shows the latest state; check it before trying again.",
+      "failed": "Something went wrong. Nothing changed. Try again."
     }
   }
 }
