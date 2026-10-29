@@ -33,5 +33,6 @@ export const GymSetupViewerPermissionsItem = {
   view_members: 'view_members',
   view_rosters: 'view_rosters',
   view_staff: 'view_staff',
+  view_staff_records: 'view_staff_records',
   view_workspace: 'view_workspace',
 } as const;

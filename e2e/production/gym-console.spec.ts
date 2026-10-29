@@ -26,6 +26,14 @@ const COMPLETED = { status: "completed" as const, location: LOCATION };
 
 const dashboard = (page: Page) => page.getByRole("heading", { level: 1, name: "Dashboard" });
 const gymName = (page: Page) => page.locator("[data-gym-name]");
+
+/**
+ * The owner's dashboard renders GRW1's loading layout (the gym summary in the
+ * side column) until the first-run read settles, then the gym summary moves
+ * (and remounts) into the main column. Measure only after that.
+ */
+const settledDashboard = (page: Page) =>
+  expect(page.locator("[data-gym-dashboard]")).not.toHaveAttribute("data-first-run", "loading");
 const gymReads = (api: GymApi) =>
   api.requests.filter(
     (request) => request.method === "GET" && /^\/api\/v1\/gyms\//.test(request.path),
@@ -294,6 +302,7 @@ test.describe("geometry and accessibility", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const api = await start(page, [{ name: "Ring One Boxing", ...COMPLETED }]);
     await page.goto(`/en/app/gyms/${idOf(api, "Ring One Boxing")}`);
+    await settledDashboard(page);
     await expect(gymName(page)).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
     await expectBox(page.getByRole("complementary"), { x: 0, y: 0, w: 240, h: 900 });
@@ -340,6 +349,7 @@ test.describe("geometry and accessibility", () => {
         },
       ]);
       await page.goto(`/en/app/gyms/${api.gyms()[0]?.id}`);
+      await settledDashboard(page);
       await expect(gymName(page)).toBeVisible();
       expect(await overflow(page)).toBe(0);
       const name = await box(gymName(page));

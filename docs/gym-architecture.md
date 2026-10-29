@@ -150,3 +150,52 @@ renders GRW1 and the four-step GRW2 tour of Claude Design 112 from that
 state only; the tour step stays in the client. See
 `docs/gym-console-web.md` (SF-91) for behaviour and the differences from the
 design (`D-WEB-GYM-FIRST-RUN`).
+
+## SF-93: gym staff, roles and staff invitations API (no screens yet)
+
+The generated client adds the gym's staff and staff invitations (ADR 0026,
+SF-93 amendment; tag "Gym staff"). There are no screens yet: WG16, OS1, OS1b,
+OS2 and the mobile invitation inbox are the next frontend ticket.
+
+- **Roster:** `listGymStaff` (`status=active` for every role; `status=ended`
+  for owner and managers). Each member is `staff_membership_id`, `role`,
+  `status`, a short `name` ("Natalia W."), `is_viewer`, `joined_at` and the
+  end fields. No email, user id or profile.
+- **Roles:** `changeGymStaffRole` (`{role}`) follows the matrix: the owner
+  sets any non-owner to `manager`, `coach` or `front_desk`; a manager only
+  switches coaches and front desk. Nobody changes their own role; the owner's
+  row answers `409` (`staff_membership: owner_requires_transfer`).
+- **Removal and leaving:** `endGymStaffMembership` ends another member's
+  membership (removal) or the viewer's own (leaving; never the owner). The
+  member gets `404` at that gym on their next request; their session and
+  other gyms are untouched. A repeat answers `404`.
+- **Invitations (gym side):** `createGymStaffInvitation` (`{email, role}`;
+  `201` new, `200` the same pending address and role), `listGymStaffInvitations`
+  (owner, managers; masked addresses), `resendGymStaffInvitation` (new link,
+  new 7 days; 3 resends, 60 s apart), `cancelGymStaffInvitation`. The owner
+  invites managers, coaches and front desk; a manager coaches and front desk.
+  Conflicts: `setup_status: draft`, `staff_invitation: pending_other_role`,
+  `staff_membership: already_active`. New permission `view_staff_records`
+  (owner, manager) gates the invitation list and ended staff.
+- **Invitations (recipient side):** the mobile inbox is token-free:
+  `listMyStaffInvitations`, `getMyStaffInvitation`, `acceptMyStaffInvitation`,
+  `declineMyStaffInvitation` (by id; matched by the user's verified email
+  identities; Google/Apple-only users verify the address first with the SF-77
+  linking flow). The web page of the E06 link (`/invite/staff#token=…`, read
+  once from the fragment) uses `previewStaffInvitation` (anonymous: gym name,
+  role, inviter first name, expiry), `acceptStaffInvitation` and
+  `declineStaffInvitation` with the token in the body. Never put the token in
+  a route, query, storage or log.
+- **Answers:** `410 invitation_unavailable` (expired, cancelled, declined,
+  used token), `403 invitation_recipient_mismatch` (token of another address:
+  offer to verify that address), `404` (an id not in the viewer's inbox),
+  `409 staff_membership: already_active`, `422 account_registration`. A
+  repeated acceptance returns `outcome: already_accepted` with the same
+  membership. Acceptance creates no Coach or Fighter profile and no
+  Coach–Fighter relationship.
+- **After acceptance:** the gym appears in `resolveMyEntry` / `listMyGyms`;
+  the current context is not switched.
+- **Checklist:** `invite_staff` is now `available` at a completed gym and
+  `completed` once a staff invitation was accepted. The current checklist
+  rows show it without an action; the staff screen should become its
+  destination.
