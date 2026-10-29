@@ -14,7 +14,8 @@ import type { GymChecklistItemStatus } from './gymChecklistItemStatus';
 export interface GymChecklistItem {
   /**
      * Stable step keys, in display order: `create_gym` (name, type and primary location, completed with the
-     * setup), `add_class`, `invite_staff`, `invite_members`, `first_check_in`.
+     * setup), `add_class`, `invite_staff` (available at a completed gym, completed once a staff invitation
+     * was accepted, SF-93; sending one is not enough), `invite_members`, `first_check_in`.
      */
   key: GymChecklistItemKey;
   /**
