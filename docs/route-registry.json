@@ -1951,9 +1951,13 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(gym)/(tabs)/(pulse)/gyms/[gymId]/pulse.tsx",
-        "note": "SF-89: G01 Gym pulse as the GYM_WORKSPACE home of the gym in the path (ADR 0026 D-G23), reduced to real data (D-MOBILE-GYM-SHELL-MVP): the identity pill (gym name and the viewer's role from GET /api/v1/gyms/{gym_id}; opens the A04 sheet with the account's contexts and gyms), the eyebrow and title, OG1's 'How members see you' card (name, type, primary location), for the owner the saved setup (GET /api/v1/gyms/{gym_id}/setup), for other roles a limited-access notice, the viewer's access and the areas coming later. Location chips, QR check-in, KPI tiles, classes, incidents and announcements are hidden until their domains exist; never shown as zero. GR1/GR2 (first run) stay with SF-101. Every /gyms/:gymId route renders inside the gym gate (CapabilityGate GYM_WORKSPACE, then the gym read: 404 not available, 403 role-restricted, draft continues setup, failure retries)."
+        "note": "SF-89: G01 Gym pulse as the GYM_WORKSPACE home of the gym in the path (ADR 0026 D-G23), reduced to real data (D-MOBILE-GYM-SHELL-MVP): the identity pill (gym name and the viewer's role from GET /api/v1/gyms/{gym_id}; opens the A04 sheet with the account's contexts and gyms), the eyebrow and title, OG1's 'How members see you' card (name, type, primary location), for the owner the saved setup (GET /api/v1/gyms/{gym_id}/setup), for other roles a limited-access notice, the viewer's access and the areas coming later. Location chips, QR check-in, KPI tiles, classes, incidents and announcements are hidden until their domains exist; never shown as zero. GR1/GR2 (first run) stay with SF-101. Every /gyms/:gymId route renders inside the gym gate (CapabilityGate GYM_WORKSPACE, then the gym read: 404 not available, 403 role-restricted, draft continues setup, failure retries). SF-92 (Claude Design 112): with the manage_first_run permission (the owner) Pulse reads GET /api/v1/gyms/{gym_id}/first-run (SF-90), never for other roles. While it is not_started or in_progress, GR1 replaces the details and coming-later cards: the introduction (Start or Resume, Skip with a confirmation sheet) and the five checklist items exactly as the API answers them, above the gym and access cards. Start calls POST …/first-run/start and opens GR2, the four-step native tour on real Pulse UI (measured targets, scroll-to-target, safe areas, Android Back steps back); only Finish (POST …/complete) and End introduction or Skip (POST …/dismiss) record an outcome, and only the backend's answer moves the screen (a lost answer is reconciled by reading the state again; a 409 shows the kept outcome). A completed or dismissed first run never reopens on any device or client: the outcome is said once on the screen that kept it, then G01. The tour step, the outcome and the checklist are never in the URL or on the device (D-MOBILE-GYM-FIRST-RUN)."
       },
-      "discrepancies": ["D-WORKSPACE-NOT-IN-URL", "D-MOBILE-GYM-SHELL-MVP"],
+      "discrepancies": [
+        "D-WORKSPACE-NOT-IN-URL",
+        "D-MOBILE-GYM-SHELL-MVP",
+        "D-MOBILE-GYM-FIRST-RUN"
+      ],
       "screens": ["GR1", "GR2", "G01"]
     },
     {
@@ -10177,37 +10181,59 @@
     {
       "id": "GR1",
       "code": "GR1",
-      "name": "Gym pulse · opening week",
+      "name": "Gym pulse · owner first run",
       "route": "mobile.gyms._gym-id.pulse",
       "query": {
-        "state": "opening-week"
+        "state": "first-run"
       },
-      "states": ["3 / 6"],
+      "states": [
+        "not started",
+        "in progress",
+        "starting",
+        "start failed",
+        "skip confirm",
+        "completed",
+        "dismissed",
+        "loading",
+        "unavailable",
+        "offline"
+      ],
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
         "section": "GYM · 34e · Onboarding · mobile first run",
         "step": "34.18",
         "tag": "MOBILE",
-        "artboard": "FirstRunGPulse.dc.html"
+        "artboard": "FirstRunGPulse.dc.html",
+        "note": "Claude Design 112 (1793198527-a0fc, SF-92) replaces the opening-week board: the owner introduction and the five-item opening checklist of GET /api/v1/gyms/{gym_id}/first-run above the gym card on Gym pulse. Its session_expired and revoked states are the app's shared session and gym-not-available states."
       }
     },
     {
       "id": "GR2",
       "code": "GR2",
-      "name": "Tip · QR check-in",
+      "name": "Product tour · 4 steps + complete",
       "route": "mobile.gyms._gym-id.pulse",
       "query": {
-        "tip": "check-in"
+        "tour": "1"
       },
-      "states": ["first shift"],
+      "states": [
+        "step 1 / 4",
+        "step 2 / 4",
+        "step 3 / 4",
+        "step 4 / 4",
+        "finishing",
+        "finish failed",
+        "end confirm",
+        "complete"
+      ],
       "design": {
         "gallery": "gallery-1",
         "page": "onboarding",
         "section": "GYM · 34e · Onboarding · mobile first run",
         "step": "34.19",
         "tag": "MOBILE",
-        "artboard": "FirstRunGCheckinTip.dc.html"
+        "artboard": "FirstRunGCheckinTip.dc.html",
+        "note": "Claude Design 112 (1793198527-a0fc, SF-92): four MVP steps (the checklist, the gym card, the tab bar's Soon items, the identity pill / switcher) and the complete card. Its six FUTURE steps (f-pulse, f-checkin, f-classes, f-members, f-staff, f-announce) wait for their domains and are not built."
       }
     },
     {
@@ -17955,12 +17981,26 @@
       "sourceB": "SF-83 / SF-84 / SF-85 backend: the gym, its locations and setup fields, the viewer's staff role and permission projection, the entry's gym workspaces; no members, scheduling, bookings, attendance, staff invitations, billing, incidents, announcements or publishing domain",
       "mismatch": "The designed mobile gym cockpit shows records that do not exist and has no gym chooser or gym rows in the switcher.",
       "impact": "Building it would fake members, classes, revenue and activity, and leave several gyms unreachable on mobile.",
-      "resolution": "SF-89 (Claude Design unchanged): A04 (sheet and /workspaces) lists the account's gym workspaces under the Fighter and Coach rows in the same row composition (gym name, the viewer's role, setup status and the backend's action: open a completed gym, continue the owner's draft), with 'All gyms' when the entry lists fewer than gym_workspace_count; /gyms (MGC1, the same rows) is where gym_selection lands and lists every gym page by page. G01 keeps its identity pill (opens the A04 sheet), eyebrow and title and shows OG1's 'How members see you' card with the real name, type and primary location, the owner's saved setup, the viewer's access and the areas coming later; every G01 tile and action of SF-82 R5/C7 is hidden until its domain exists (members SF-90/SF-91, scheduling SF-93+, check-in SF-96/SF-97). The header's Incidents and Announcements are replaced by Settings (the shared ST1, the account and Sign out). Non-owner roles see the gym, their role and a limited-access notice. The tab bar links Pulse only; Classes, QR check-in, Members and Staff are shown as Soon and not linked. GR1/GR2 (first run) stay with SF-101.",
+      "resolution": "SF-89 (Claude Design unchanged): A04 (sheet and /workspaces) lists the account's gym workspaces under the Fighter and Coach rows in the same row composition (gym name, the viewer's role, setup status and the backend's action: open a completed gym, continue the owner's draft), with 'All gyms' when the entry lists fewer than gym_workspace_count; /gyms (MGC1, the same rows) is where gym_selection lands and lists every gym page by page. G01 keeps its identity pill (opens the A04 sheet), eyebrow and title and shows OG1's 'How members see you' card with the real name, type and primary location, the owner's saved setup, the viewer's access and the areas coming later; every G01 tile and action of SF-82 R5/C7 is hidden until its domain exists (members SF-90/SF-91, scheduling SF-93+, check-in SF-96/SF-97). The header's Incidents and Announcements are replaced by Settings (the shared ST1, the account and Sign out). Non-owner roles see the gym, their role and a limited-access notice. The tab bar links Pulse only; Classes, QR check-in, Members and Staff are shown as Soon and not linked. GR1/GR2 (first run) stay with SF-101; SF-92 builds them from Claude Design 112 (D-MOBILE-GYM-FIRST-RUN).",
       "decision": "The mobile gym shell grows with its domains; nothing is shown before it is real.",
       "decidedOn": "2026-10-28",
       "status": "DEFERRED",
       "routes": ["mobile.workspaces", "mobile.gyms", "mobile.gyms._gym-id.pulse"],
-      "screens": ["G01", "GR1", "GR2", "MGC1"]
+      "screens": ["G01", "MGC1"]
+    },
+    {
+      "id": "D-MOBILE-GYM-FIRST-RUN",
+      "title": "Mobile gym owner first run built on measured native targets from the four MVP tour steps",
+      "sourceA": "Claude Design 112 (1793198527-a0fc): GR1 FirstRunGPulse (states not_started, in_progress, pending, failed, skip_confirm, completed, dismissed, loading, error, offline, session_expired, revoked; the five-item opening checklist; a fixed 390 × 1060 frame) and GR2 FirstRunGCheckinTip (four MVP steps, done, finishing, finish_failed and confirm, drawn at artboard coordinates; six FUTURE steps)",
+      "sourceB": "SF-90 backend: GET /api/v1/gyms/{gym_id}/first-run (status unavailable, not_started, in_progress, completed or dismissed; checklist create_gym, add_class, invite_staff, invite_members, first_check_in with completed, available or coming_later), POST start, complete and dismiss with an empty body; owner only (manage_first_run), 403 for other staff, 404 for foreign or revoked gyms, 409 with the kept outcome",
+      "mismatch": "The artboards place the rings and cards at fixed coordinates of one tall frame and include steps for domains that do not exist; production lays out from 375 to 430 pt, with dynamic type, and scrolls.",
+      "impact": "Copying coordinates would point at the wrong place on every other phone, text size or scroll position; building the FUTURE steps would point at features that do not exist.",
+      "resolution": "SF-92: GR1 and GR2 follow Claude Design 112 on the real Gym pulse (no own route). Every ring is the measured target in window coordinates, re-measured on step change, rotation, text size, page reflow and return to the foreground; content targets are scrolled into view first; a target that cannot be measured gets no ring or arrow and the card stays on screen. The coach mark uses the opposite theme's tokens as FR5. 'Your gym is ready' shows only when the API reports create_gym completed. The skip confirmation is a bottom sheet. Android Back goes one step back, asks before ending on step 1 and never records. A lost answer to Finish or End is reconciled by reading the state again. The completed and dismissed notices show only on the screen that kept the outcome; there is no tour replay. The FUTURE steps are not built.",
+      "decision": "Build the approved four-step tour on measured native targets and the API's checklist only; FUTURE steps wait for their domains.",
+      "decidedOn": "2026-10-29",
+      "status": "RESOLVED",
+      "routes": ["mobile.gyms._gym-id.pulse"],
+      "screens": ["GR1", "GR2"]
     }
   ]
 }
