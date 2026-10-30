@@ -250,6 +250,39 @@ describe("GRW1 · the owner's first run on the console (SF-91)", () => {
     );
   });
 
+  it("links an available invite_members to the gym's members page for a viewer who may enroll (SF-96)", async () => {
+    const available = CHECKLIST.map((item) =>
+      item.key === "invite_members" ? { ...item, status: "available" as const } : item,
+    );
+    api({
+      [`GET /api/v1/gyms/${RING}`]: [ok({ gym: gym({}, [...OWNER, "manage_member_enrollment"]) })],
+      [`GET /api/v1/gyms/${RING}/setup`]: [ok({ setup: setup() })],
+      [`GET /api/v1/gyms/${RING}/first-run`]: [ok(firstRun({ checklist: available }))],
+    });
+    const view = await renderConsole();
+    const checklist = await screen.findByRole("region", { name: "Your gym is ready" });
+    const link = within(checklist).getByRole("link", { name: "Invite members" });
+    expect(link).toHaveAttribute("href", `/en/app/gyms/${RING}/members`);
+    // The page, not an invitation form: invitations may be off on this server.
+    expect(within(checklist).getByText("Share your join code or invite a member")).toBeVisible();
+    // Still the backend's status: available, not done.
+    expect(checklist.querySelector("[data-checklist-key=invite_members]")).toHaveAttribute(
+      "data-checklist-status",
+      "available",
+    );
+    view.unmount();
+
+    // Without the permission there is no link, whatever the status.
+    api({
+      [`GET /api/v1/gyms/${RING}`]: [ok({ gym: gym({}, OWNER) })],
+      [`GET /api/v1/gyms/${RING}/setup`]: [ok({ setup: setup() })],
+      [`GET /api/v1/gyms/${RING}/first-run`]: [ok(firstRun({ checklist: available }))],
+    });
+    await renderConsole();
+    const plain = await screen.findByRole("region", { name: "Your gym is ready" });
+    expect(within(plain).queryByRole("link", { name: "Invite members" })).toBeNull();
+  });
+
   it("renders only the items the API sends, in its order", async () => {
     api({
       ...base(),

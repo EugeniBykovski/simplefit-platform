@@ -65,6 +65,31 @@ env -u RESEND_API_KEY MIX_ENV=dev PORT=4100 DATABASE_URL=$E2E_DB PHX_SERVER=true
 Journey 7 runs against the same API restarted with
 `COACHING_ACCESS_ENABLED=false`, with `E2E_SHARING=off` for the spec.
 
+`gym-members.spec.ts` (SF-96) drives the gym's members page, scenarios A–AF
+of the ticket: the owner creates a gym, turns joining by code on, approves
+and rejects requests, rotates the code (the old one stops working), turns
+auto-approval on (a verified applicant joins active, an unverified one
+still waits), is refused member invitations by the server's gate without
+any claim of sending, and previews a CSV whose dry run changes no table;
+the manager and front desk answer requests, the coach is refused; a user
+joins two gyms that never see each other; a revoked front desk and a
+switched account keep nothing. Joining is the member API called with the
+applicant's own session (no member web page exists), staff accept their
+SF-93 invitations through the API, and the unverified applicant comes from
+`fixtures/member-unverified-join.exs`. The API runs with member invitations
+off, as in production, and with the test-only legal fixtures:
+
+```bash
+env -u RESEND_API_KEY MIX_ENV=dev PORT=4196 DATABASE_URL=$E2E_DB PHX_SERVER=true \
+  CORS_ALLOWED_ORIGINS=http://127.0.0.1:3100 WEB_APP_URL=http://127.0.0.1:3100 \
+  mix run --no-halt -e 'Application.put_env(:simple_fit, SimpleFit.Legal, registry_path: "test/support/legal", allow_test_fixtures: true); SimpleFit.Legal.Registry.load(); Application.put_env(:simple_fit, SimpleFit.Gyms, Keyword.put(Application.get_env(:simple_fit, SimpleFit.Gyms, []), :member_invitations, false))' \
+  > /path/to/api.log 2>&1
+```
+
+With `E2E_API_LOG=/path/to/api.log` the spec also checks (AF) that the API's
+log holds none of the run's join codes, imported addresses, invitation
+tokens, bearer tokens or CSV rows; it prints none of them.
+
 This is a **local acceptance gate, not part of CI**. It needs an API on a
 **disposable** database. Never point it at `simple_fit_dev`: the spec refuses
 any database whose name does not contain `e2e`, because it clears that

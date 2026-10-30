@@ -97,10 +97,6 @@
     "later": {
       "title": "Coming to your console",
       "badge": "Later",
-      "members": {
-        "title": "Members",
-        "body": "Invite members and see who trains here."
-      },
       "schedule": {
         "title": "Classes & timetable",
         "body": "Plan classes across your week."
@@ -176,7 +172,7 @@
         "invite_members": {
           "title": "Invite members",
           "completed": "A member joined your gym",
-          "available": "Send your first member invitation",
+          "available": "Share your join code or invite a member",
           "coming_later": "Comes with member invitations"
         },
         "first_check_in": {
@@ -450,6 +446,388 @@
       "gone": "This person or invitation isn’t part of the gym any more. The page is up to date.",
       "unknown": "We couldn’t confirm whether it worked. The page shows the latest state; check it before trying again.",
       "failed": "Something went wrong. Nothing changed. Try again."
+    }
+  },
+  "members": {
+    "metaTitle": "Members",
+    "eyebrow": "People",
+    "title": "Members",
+    "noName": "Member without a name",
+    "tabs": {
+      "label": "Members sections",
+      "members": "Members",
+      "requests": "Join requests",
+      "invitations": "Invitations",
+      "settings": "Join code & approval",
+      "import": "Import preview",
+      "requestsWaiting": "Join requests, {count} waiting"
+    },
+    "read": {
+      "restricted": {
+        "title": "Your role can’t see this yet",
+        "body": "Coaches will see the members of their own classes once classes exist. The gym’s owner, managers and front desk manage members."
+      },
+      "failed": {
+        "title": "Couldn’t load this",
+        "body": "Check your connection and try again. Nothing was changed.",
+        "retry": "Try again"
+      }
+    },
+    "roster": {
+      "heading": "Gym members",
+      "views": "Which members",
+      "tabs": {
+        "active": "Active",
+        "ended": "Ended"
+      },
+      "loading": "Loading members",
+      "loadingMore": "Loading…",
+      "more": "Show more",
+      "empty": {
+        "active": {
+          "title": "No members yet",
+          "body": "People become members when you approve their join request or they accept your invitation. Share your join code to get started."
+        },
+        "ended": {
+          "title": "No ended memberships",
+          "body": "Members who leave or are removed are listed here."
+        }
+      },
+      "label": {
+        "active": "Active members",
+        "ended": "Ended memberships"
+      },
+      "columns": {
+        "person": "Member",
+        "joined": "Joined",
+        "via": "Joined with",
+        "status": "Status",
+        "ended": "Ended",
+        "how": "How it ended"
+      },
+      "select": "Show details for {name}",
+      "count": "{count, plural, one {# member} other {# members}}"
+    },
+    "via": {
+      "join_code": "Join code",
+      "invitation": "Invitation"
+    },
+    "status": {
+      "active": "Active"
+    },
+    "ended": {
+      "left": "Left",
+      "removed": "Removed",
+      "account_deleted": "Account deleted",
+      "gym_closed": "Gym closed"
+    },
+    "person": {
+      "heading": "About {name}",
+      "since": "Member of {gym} since {date}",
+      "ended": {
+        "left": "Left on {date}",
+        "removed": "Removed on {date}",
+        "account_deleted": "Account deleted on {date}",
+        "gym_closed": "Gym closed on {date}"
+      },
+      "via": "Joined with",
+      "requested": "Asked to join",
+      "approval": "Approved",
+      "autoApproved": "Automatically (verified account)",
+      "staffApproved": "By the gym",
+      "noActions": "Only the owner and managers can end a membership."
+    },
+    "privacy": {
+      "heading": "The gym can’t see",
+      "body": "Email addresses, training logs, weight, goals, coach notes, videos and messages. Members keep these to themselves.",
+      "membership": "A membership means this person takes part in your gym. It isn’t a paid plan or a subscription."
+    },
+    "requests": {
+      "heading": "Join requests",
+      "lead": "People who entered your join code and are waiting for your answer.",
+      "settingsLink": "Join code & approval",
+      "loading": "Loading join requests",
+      "empty": "No requests are waiting.",
+      "someone": "Someone without a name",
+      "asked": "Asked on {date}",
+      "more": "Show more",
+      "approve": "Approve",
+      "approving": "Approving…",
+      "approveLabel": "Approve {name}",
+      "approved": "{name} is now a member of {gym}.",
+      "reject": "Reject",
+      "rejectLabel": "Reject {name}"
+    },
+    "reject": {
+      "title": "Reject {name}?",
+      "body": "{name} won’t become a member of {gym}. They can ask again later with a valid join code. Their account isn’t affected.",
+      "keep": "Keep request",
+      "confirm": "Reject request",
+      "pending": "Rejecting…",
+      "done": "{name}’s request was rejected."
+    },
+    "remove": {
+      "open": "End membership",
+      "someone": "this member",
+      "title": "End {name}’s membership?",
+      "body": "{name} stops being a member of {gym} right away. The membership stays in your history as ended.",
+      "keeps": {
+        "account": "Their SimpleFit account isn’t deleted.",
+        "profiles": "Their Fighter or Coach profile isn’t changed.",
+        "coaches": "Their coaches and training stay as they are.",
+        "gyms": "Memberships at other gyms aren’t affected."
+      },
+      "keep": "Keep member",
+      "confirm": "End membership",
+      "pending": "Ending…",
+      "done": "{name} is no longer a member of {gym}."
+    },
+    "invite": {
+      "open": "Invite member",
+      "close": "Close",
+      "title": "Invite a member to {gym}",
+      "lead": "We’ll email an invitation to this address. The person becomes a member only if they accept it.",
+      "email": {
+        "label": "Email address",
+        "invalid": "Enter a valid email address.",
+        "rejected": "This address can’t be invited."
+      },
+      "privacy": "An email address alone doesn’t prove who someone is. The person signs in with this address to accept.",
+      "cancel": "Cancel",
+      "sending": "Creating…",
+      "submit": "Create invitation",
+      "pending": {
+        "title": "Invitation pending",
+        "body": "The invitation for {email} is pending until {expires}.",
+        "note": "They become a member only after they accept. You can resend or cancel it under Invitations.",
+        "done": "Done"
+      },
+      "unavailable": {
+        "title": "Member invitations aren’t available yet",
+        "body": "Invited people can’t accept member invitations in SimpleFit yet, so they’re switched off. Nothing was created and no email was sent.",
+        "note": "Share your join code instead: people who enter it send you a join request.",
+        "done": "OK"
+      }
+    },
+    "invitations": {
+      "heading": "Member invitations",
+      "off": "Member invitations aren’t available yet. No invitations can be created or resent; your join code still works.",
+      "loading": "Loading invitations",
+      "empty": "No member invitations yet.",
+      "more": "Show more",
+      "about": {
+        "heading": "How invitations work",
+        "body": "An invitation is pending for 7 days. A person becomes a member only when they accept it.",
+        "proof": "Accepting needs a SimpleFit account signed in with the invited address. Nobody is added automatically."
+      },
+      "line": {
+        "pending": "Pending until {expires}",
+        "accepted": "Accepted on {date}",
+        "declined": "Declined on {date}",
+        "cancelled": "Cancelled on {date}",
+        "expired": "Expired on {date}"
+      },
+      "status": {
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "cancelled": "Cancelled",
+        "expired": "Expired"
+      },
+      "invitedBy": "Invited by {name}",
+      "resent": "The invitation for {email} is pending again until {expires}.",
+      "resendLabel": "Resend the invitation for {email}",
+      "resending": "Resending…",
+      "resend": "Resend ({count} left)",
+      "cancelled": "The invitation for {email} was cancelled.",
+      "cancelLabel": "Cancel the invitation for {email}",
+      "cancel": "Cancel"
+    },
+    "cancelInvitation": {
+      "title": "Cancel this invitation?",
+      "body": "The link sent to {email} stops working. You can invite this address again later.",
+      "keep": "Keep invitation",
+      "pending": "Cancelling…",
+      "confirm": "Cancel invitation"
+    },
+    "settings": {
+      "loading": "Loading join settings",
+      "readOnly": "Only the owner and managers can change this.",
+      "code": {
+        "heading": "Join code",
+        "current": "Current join code",
+        "copy": "Copy code",
+        "copied": "Join code copied.",
+        "copyFailed": "Couldn’t copy. Select the code and copy it yourself.",
+        "off": "Joining by code is off.",
+        "howOn": "People who enter this code in SimpleFit send your gym a join request. The code alone doesn’t prove who they are.",
+        "howOff": "Turn it on to give people a code they can use to ask to join.",
+        "since": "Issued on {date}",
+        "rotate": "New code",
+        "disable": "Turn off",
+        "enable": "Turn on joining by code"
+      },
+      "auto": {
+        "heading": "Approval",
+        "label": "Approve verified accounts automatically",
+        "on": "On: people with a completed account and a verified sign-in become members as soon as they enter your code.",
+        "off": "Off: every join request waits for your answer.",
+        "verified": "Anyone without a verified sign-in still waits for your answer.",
+        "changed": "Last changed on {date}"
+      },
+      "done": {
+        "rotate": "New join code issued. The old code no longer works.",
+        "enable": "Joining by code is on.",
+        "disable": "Joining by code is off. The old code no longer works.",
+        "autoOn": "Automatic approval is on for {gym}.",
+        "autoOff": "Automatic approval is off for {gym}."
+      },
+      "confirm": {
+        "keep": "Cancel",
+        "pending": "Saving…",
+        "rotate": {
+          "title": "Issue a new join code?",
+          "body": "The current code stops working right away. Share the new code with anyone who hasn’t joined yet.",
+          "confirm": "Issue new code"
+        },
+        "enable": {
+          "title": "Turn on joining by code?",
+          "body": "{gym} gets a join code people can use to ask to join.",
+          "confirm": "Turn on"
+        },
+        "disable": {
+          "title": "Turn off joining by code?",
+          "body": "The current code stops working and nobody can ask to join {gym} with a code until you turn it on again. Pending requests stay.",
+          "confirm": "Turn off"
+        },
+        "autoOn": {
+          "title": "Approve verified accounts automatically?",
+          "body": "People with a completed SimpleFit account and a verified sign-in will become members of {gym} as soon as they enter your join code, without your review. Everyone else still waits for your answer. You can turn this off at any time.",
+          "confirm": "Turn on"
+        },
+        "autoOff": {
+          "title": "Turn off automatic approval?",
+          "body": "Every new join request to {gym} will wait for your answer.",
+          "confirm": "Turn off"
+        }
+      },
+      "about": {
+        "heading": "About joining",
+        "code": "Front desk can show the code at the desk. Only the owner and managers can issue a new one or turn it off.",
+        "auto": "Automatic approval is off unless you turn it on, and it never applies to people without a verified sign-in."
+      }
+    },
+    "problems": {
+      "limited": "Too many requests. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+      "limitedLater": "Too many requests. Try again later.",
+      "decided": {
+        "requested": "This request is still waiting. The page is up to date.",
+        "active": "This person is already a member. The page is up to date.",
+        "rejected": "This request was already rejected. The page is up to date.",
+        "cancelled": "The person cancelled this request. The page is up to date.",
+        "ended": "This membership has already ended. The page is up to date."
+      },
+      "alreadyActive": "This person is already a member of this gym.",
+      "invitationsUnavailable": "Member invitations aren’t available yet. Nothing was created and no email was sent.",
+      "noResends": "No resends left. Cancel it and invite again.",
+      "notPending": "This invitation isn’t pending any more.",
+      "resolved": "This invitation was already answered.",
+      "draft": "Finish setting up your gym first.",
+      "forbidden": "Your role doesn’t allow this any more. The page is up to date.",
+      "gone": "This request, member or invitation isn’t part of the gym any more. The page is up to date.",
+      "unknown": "We couldn’t confirm whether it worked. The page shows the latest state; check it before trying again.",
+      "failed": "Something went wrong. Nothing changed. Try again."
+    },
+    "import": {
+      "file": {
+        "heading": "Member list",
+        "none": "No file chosen.",
+        "reading": "Reading…",
+        "size": "{size} KB · stays in this browser tab until you validate it",
+        "choose": "Choose CSV file",
+        "replace": "Choose another file",
+        "clear": "Clear",
+        "limits": "A CSV file with a header row: up to 1 MB, {rows, number} rows, {columns} columns and {field} characters per field."
+      },
+      "fileProblems": {
+        "type": "Choose a CSV file (.csv, .tsv or .txt).",
+        "empty": "This file is empty.",
+        "tooLarge": "This file is larger than 1 MB.",
+        "encoding": "This file isn’t UTF-8 text. Export it again as CSV (UTF-8).",
+        "columns": "This file has more than {columns} columns.",
+        "header": "Every column in the first row needs its own name."
+      },
+      "validate": "Run validation",
+      "validating": "Validating…",
+      "validateNote": "Checks the file. Nothing is saved or sent.",
+      "about": {
+        "heading": "Preview a member list",
+        "steps": {
+          "choose": "Select a CSV file.",
+          "map": "Map its columns.",
+          "validate": "Run validation.",
+          "review": "Review the results."
+        },
+        "unavailable": "Importing members is not available yet. This checks your list only: nobody is added, invited or emailed.",
+        "privacy": "Your file isn’t stored. Email addresses come back masked, and SimpleFit never matches people by name or treats an address as verified."
+      },
+      "mapping": {
+        "heading": "Map columns",
+        "lead": "Choose which of your columns holds each field. Leave email on “Suggest” to let SimpleFit pick from common column names.",
+        "email": "Email",
+        "name": "Full name",
+        "required": "required",
+        "optional": "optional",
+        "suggest": "Suggest",
+        "none": "Don’t use",
+        "others": "Other columns (plan, phone, dates…) aren’t used.",
+        "reset": "Reset mapping"
+      },
+      "problems": {
+        "file": "This file couldn’t be read as a member list. Check its quoting and limits, then try again.",
+        "emailColumn": "Choose the column that holds email addresses.",
+        "mapping": "That column mapping doesn’t match the file. Choose the columns again.",
+        "limited": "Too many validations. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+        "limitedLater": "Too many validations. Try again later.",
+        "draft": "Finish setting up your gym first.",
+        "forbidden": "Your role can’t preview member lists any more.",
+        "gone": "This gym isn’t available any more.",
+        "unknown": "Validation didn’t finish. Nothing was saved. Try again."
+      },
+      "results": {
+        "heading": "Review results",
+        "status": "Validation complete: {total, plural, one {# row} other {# rows}} checked.",
+        "unavailable": "Validation complete. Importing member records is not available yet. Nothing was saved, and nobody was added or emailed.",
+        "total": "Rows",
+        "outcomes": {
+          "ready": "Could be invited",
+          "already_member": "Already a member",
+          "request_pending": "Join request waiting",
+          "already_invited": "Already invited",
+          "duplicate": "Duplicate",
+          "missing_email": "No email",
+          "invalid_email": "Invalid email"
+        },
+        "ignored": "Not used: {columns}.",
+        "filter": "Which rows",
+        "all": "All rows",
+        "attention": "Needs attention",
+        "noneAttention": "No rows need attention.",
+        "noRows": "The file has no data rows.",
+        "more": "Show {count} more",
+        "nothingStored": "Results disappear when you leave this page, choose another file or sign out.",
+        "tableLabel": "Validation results by row",
+        "columns": {
+          "line": "Line",
+          "email": "Email",
+          "name": "Name",
+          "result": "Result"
+        },
+        "noEmail": "No address",
+        "namePresent": "Given",
+        "nameMissing": "Missing",
+        "duplicateOf": "Same address as line {line}"
+      }
     }
   }
 }

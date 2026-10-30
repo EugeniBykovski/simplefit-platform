@@ -39,6 +39,8 @@ const REAL_SCREENS = [
   "web.app.gyms",
   "web.app.gyms._gym-id",
   "web.app.gyms._gym-id.staff",
+  // SF-96: the gym's members (WG3 with OG12).
+  "web.app.gyms._gym-id.members",
   // SF-54: the Coach dashboard (WC1) and the context chooser (WCX1).
   "web.app.coach",
   "web.app.context",

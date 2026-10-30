@@ -565,6 +565,19 @@ changes before its answer. Invitations are never roster rows. The dashboard
 checklist's available `invite_staff` item links here for a viewer who may
 invite; it completes only when the backend says so (`D-WEB-GYM-STAFF`).
 
+**Web gym members (SF-96).** `/app/gyms/:gymId/members` (WG3 with OG12) is
+the members page of the gym in the path, linked from the console's sidebar
+for every staff role. It shows only SF-95 data: active and ended
+memberships, join requests (approve, reject), member invitations (invite,
+resend, cancel; where the server keeps them off, the page says so and stops
+offering them), the join code and auto-approval, and a member-list import
+preview that stores and sends nothing (importing is not available, D-G27).
+The backend decides every request and nothing changes before its answer; a
+coach's roster is refused by the backend and shown as such. The dashboard
+checklist's available `invite_members` item links here for a viewer who may
+enroll members; it completes only when the backend says so
+(`D-WEB-GYM-MEMBERS`).
+
 **Mobile Gym owner registration (SF-87).** `/onboarding/gym` runs the same
 steps natively (`?step=type|location|branding|complete`) on the same
 contract, with an authenticated session only and the Gym intent as the
@@ -1154,6 +1167,7 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-WEB-GYM-CONSOLE-MVP`              | DEFERRED               | Web gym console: id-based, WG1 real gym data, R5 tiles hidden, Soon nav; chooser WGC1 and switcher     |
 | `D-WEB-GYM-FIRST-RUN`                | RESOLVED               | Web gym owner first run: GRW1 + four MVP GRW2 steps at content size; FUTURE steps not built            |
 | `D-WEB-GYM-STAFF`                    | RESOLVED               | Web gym coaches & staff on the SF-93 contract: no shifts, locations, Head coach or WG17 editor         |
+| `D-WEB-GYM-MEMBERS`                  | RESOLVED               | Web gym members on the SF-95 contract: no plans, payments, attendance, contact or import commit        |
 | `D-MOBILE-COACH-ONBOARDING-FLOW`     | DEFERRED               | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access                  |
 | `D-ENTRY-CONTEXT-SELECTION`          | RESOLVED               | `context_selection` opens WCX1 on the web and A04 on mobile; never WA6 / O05 or home                   |
 | `D-WEB-COACH-HOME-MVP`               | DEFERRED               | Coach web: real profile dashboard, MVP nav with Soon rows; CRW1, CRW2 future                           |

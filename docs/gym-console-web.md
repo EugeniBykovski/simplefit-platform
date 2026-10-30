@@ -21,7 +21,8 @@ Every Gym web board, classified against the current API:
 | WGC1 · Choose a gym (no own artboard)    | WCX1 composition                         | `/app/gyms`                       | entry `gym_workspaces` (≤ 25) + `listMyGyms` pages     | session                 | MVP         | Built in the WCX1 composition                                                   |
 | ContextSwitcher                          | `ContextSwitcher.dc.html`                | Fighter, Coach and Gym sidebars   | entry                                                  | session                 | MVP         | Extended with gyms (open, continue setup, all gyms)                             |
 | WG2–WG27, GC2, GC10, GC11, SH0, AV6, AV7 | `WebGymBoard` … `WebGymPromoAnalytics`   | `/app/gyms/:gymId/<area>`         | none (members, scheduling, staff, billing, community…) | —                       | FUTURE      | SF-32 placeholders, id-based; nav items Soon                                    |
-| WG3, WG14, WG15 (members)                | `WebMembers` …                           | `/app/gyms/:gymId/members…`       | none yet (SF-89 / SF-91)                               | —                       | FUTURE      | Placeholder                                                                     |
+| WG3 (members), OG12 (import preview)     | `WebMembers`, `WebSetupImport`           | `/app/gyms/:gymId/members`        | SF-95 members, requests, invitations, enrollment       | per action (below)      | MVP PARTIAL | Built in SF-96 (see below)                                                      |
+| WG14, WG15 (member detail, ban)          | `WebMemberDetail`, `WebMemberBan`        | `/app/gyms/:gymId/members/:id`    | none (no member detail, suspension or ban domain)      | —                       | FUTURE      | Placeholder                                                                     |
 | WG16 (staff)                             | `WebStaff`                               | `/app/gyms/:gymId/staff`          | SF-93 staff and invitations                            | per action (below)      | MVP         | Built in SF-94 (see below)                                                      |
 | WG17 (roles matrix)                      | `WebRoles`                               | `/app/gyms/:gymId/settings/roles` | none (no matrix read for all roles)                    | —                       | FUTURE      | Placeholder; the staff page carries the matrix in words                         |
 | WG22, WG23 (settings, locations)         | `WebGymSettings`, `WebLocations`         | `/app/gyms/:gymId/settings…`      | `updateGymSetup` exists; no designed MVP editor        | —                       | BLOCKED     | Placeholder until an editor is designed (SF-98)                                 |
@@ -302,3 +303,80 @@ SF-82 corrections R4, R7, R10, R11 and C10–C16 apply (`D-WEB-GYM-STAFF`).
   affected. Leaving re-reads the gym, which then shows as not available.
 - **Checklist:** the dashboard's available `invite_staff` links here for a
   viewer who may invite; only the backend completes it.
+
+## SF-96: members (WG3) and the member-list import preview (OG12)
+
+Claude Design 112 (`1793198527-a0fc`) is unchanged and still the latest
+version. WG3 `WebMembers`, WG14 `WebMemberDetail`, WG15 `WebMemberBan`, OG8
+`WebSetupPlans` and OG12 `WebSetupImport` are all marked FUTURE and carry the
+pre-SF-82 content (plans, payments, visits, an import that sends invitations
+and merges duplicates). The SF-95 contract, D-G06, D-G09/D-G10 (deferred) and
+the proposed D-G27 decide what exists (`D-WEB-GYM-MEMBERS`). Claude Design
+was not changed.
+
+### Design inventory
+
+| Artboard / state                                    | Route                      | API operation                                               | Permission                                             | Status      | Implementation                                                           |
+| --------------------------------------------------- | -------------------------- | ----------------------------------------------------------- | ------------------------------------------------------ | ----------- | ------------------------------------------------------------------------ |
+| WG3 header: title                                   | `/app/gyms/:gymId/members` | `getGym` (console)                                          | console access                                         | MVP         | Built (eyebrow, title)                                                   |
+| WG3 header: total ("612")                           | same                       | none (no count operation)                                   | —                                                      | MVP PARTIAL | Count beside the roster only once the list is complete                   |
+| WG3 header: search, Export CSV                      | —                          | none                                                        | —                                                      | FUTURE      | Not built                                                                |
+| WG3 header: + Add member                            | same                       | `createGymMemberInvitation`                                 | `manage_member_enrollment`                             | MVP PARTIAL | "Invite member" (email only); gated by the server (409, below)           |
+| WG3 tabs All, Active                                | same                       | `listGymMembers?status=active`                              | `view_members` (all scope)                             | MVP         | Active / Ended toggle                                                    |
+| WG3 tabs At risk, Frozen, Expired, Trials           | —                          | none                                                        | —                                                      | FUTURE      | Not built (no attendance, freeze, plan or trial domain)                  |
+| WG3 roster: MEMBER, STATUS                          | same                       | `listGymMembers`                                            | `view_members`                                         | MVP         | Member, joined, joined with, status                                      |
+| WG3 roster: PLAN, LOCATION, LAST VISIT, 30 D        | —                          | none                                                        | —                                                      | FUTURE      | Not built (D-G10, no attendance)                                         |
+| WG3 roster: DISCOVERABLE                            | —                          | none                                                        | —                                                      | FUTURE      | Not built (a member's own privacy, not the gym's)                        |
+| Ended memberships                                   | same                       | `listGymMembers?status=ended`                               | `view_members`                                         | MVP         | Ended view: ended, how it ended                                          |
+| WG3 panel: name, since                              | same                       | `listGymMembers`                                            | `view_members`                                         | MVP         | Person, joined with, asked on, approved (auto / gym)                     |
+| WG3 panel: visits, renewal, payment, waiver, coach  | —                          | none                                                        | —                                                      | FUTURE      | Not built                                                                |
+| WG3 panel: "Gym admin can't see"                    | same                       | none (copy)                                                 | —                                                      | MVP         | Kept (D-G06), plus "not a paid plan or subscription"                     |
+| WG3 panel: Open member (WG14), Message              | —                          | none                                                        | —                                                      | FUTURE      | Not linked; WG14/WG15 stay placeholders                                  |
+| End membership (WG15 "end")                         | dialog                     | `removeGymMember`                                           | `change_member_status` (owner, managers)               | MVP         | Confirmed; spares account, profiles, coaches, other gyms                 |
+| WG15 suspend, ban                                   | —                          | none                                                        | —                                                      | FUTURE      | Not built                                                                |
+| Join requests (no artboard)                         | tab                        | `listGymJoinRequests`, `approve…`, `rejectGymJoinRequest`   | `manage_member_enrollment`                             | MVP         | Approve (one click), reject (confirmed)                                  |
+| Member invitations (no artboard)                    | tab                        | `listGymMemberInvitations`, `resend…`, `cancel…`            | `manage_member_enrollment`                             | MVP         | Masked address, backend status; resend, cancel (confirmed)               |
+| Invitations off (409 `recipient_flow_unavailable`)  | dialog, tab                | `createGymMemberInvitation`, `resendGymMemberInvitation`    | —                                                      | MVP         | "Nothing was created and no email was sent"; invite and resend withdrawn |
+| Join code, rotate, disable (no artboard)            | tab                        | `getGymEnrollmentSettings`, `rotateGymJoinCode`, `disable…` | read: `manage_member_enrollment`; change: `can_manage` | MVP         | Code, copy; new code and turn off confirmed                              |
+| Auto-approval (no artboard)                         | tab                        | `updateGymEnrollmentSettings`                               | `can_manage` (owner, managers)                         | MVP         | Switch; turning on explained and confirmed                               |
+| OG8 Memberships (priced plans)                      | —                          | none (D-G10)                                                | —                                                      | FUTURE      | Not built; WG6/GC2 stay placeholders                                     |
+| OG12 file card                                      | tab                        | none (browser)                                              | `manage_member_enrollment`                             | MVP         | Choose CSV; 1 MB, UTF-8, header names checked locally                    |
+| OG12 column mapping: name, email                    | tab                        | `previewGymMemberImport` (`mapping`)                        | `manage_member_enrollment`                             | MVP         | Email (suggest or a column), name (optional)                             |
+| OG12 column mapping: plan, start date, phone        | —                          | none                                                        | —                                                      | FUTURE      | "Other columns aren't used"; listed as not used in the result            |
+| OG12 "Before you send": Ready, Missing email        | tab                        | `previewGymMemberImport` (`summary`)                        | `manage_member_enrollment`                             | MVP         | Every outcome the backend returns, row by row, masked                    |
+| OG12 "Duplicates merged"                            | tab                        | `summary.duplicate`, `duplicate_of_line`                    | —                                                      | MVP PARTIAL | Duplicates shown, never merged                                           |
+| OG12 "Send invite emails", Continue                 | —                          | none (commit blocked, D-G27)                                | —                                                      | BLOCKED     | Not built; "Importing members is not available yet"                      |
+| Loading, empty, error, retry, restricted (403)      | page                       | —                                                           | —                                                      | MVP         | Built per tab                                                            |
+| Not available (404), session (401)                  | console                    | `getGym`                                                    | —                                                      | MVP         | The console's shared states                                              |
+| Recipient page `/invite/gym`, mobile join and inbox | —                          | SF-95 `/me` operations                                      | —                                                      | BLOCKED     | Not in this ticket; E07 stays gated off in production                    |
+
+### Behaviour
+
+- **Data:** every read and write names the gym in the path; query keys
+  carry the gym id, the page is keyed by gym, and the session boundary
+  clears the cache. The join code is held only while shown (`gcTime: 0`).
+- **Permissions** come from the viewer's projection: `manage_member_enrollment`
+  (owner, managers, front desk) opens requests, invitations, the code and
+  the import preview; `change_member_status` (owner, managers) ends a
+  membership; the settings' own `can_manage` decides rotation, disabling and
+  auto-approval. A coach holds `view_members` only for their own classes;
+  the backend refuses the roster (403) and the page shows it as restricted.
+- **Nothing before the answer:** approving does not add a roster row; the
+  roster, requests, invitations, settings, gym and checklist are read again
+  after every answer. A request decided elsewhere (409 `gym_member: …`) is
+  said as such. A lost answer claims nothing.
+- **Invitations:** an invitation is pending until its expiry, never "sent".
+  Where the server answers 409 `recipient_flow_unavailable` (production
+  until the recipient page exists), the dialog says nothing was created or
+  sent, and the page stops offering invite and resend; the join code is the
+  way in.
+- **Import preview:** the file is read in the browser only to check its
+  size, encoding and header names; its text stays in memory (not in React
+  Query, storage, the URL or a log) until the preview is sent, and is
+  dropped on Clear, another file, leaving the tab or page, another gym and
+  any session boundary. The backend parses, validates and classifies; the
+  page shows its masked rows and summary and says importing is not
+  available. No commit, invitation, user or membership results from it.
+- **Checklist:** the dashboard's available `invite_members` links here (not
+  to an invitation form) for a viewer who may enroll; only the backend
+  completes it, when someone is an active member.

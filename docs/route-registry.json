@@ -5792,9 +5792,10 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/app/gyms/[gymId]/members/page.tsx",
-        "note": "SF-32 placeholder (FeaturePlaceholder) inside the gym console of the gym in the path (SF-88: id-based, D-G23); its sidebar item is marked Soon and not linked until the feature ticket builds the screen."
+        "note": "SF-96: WG3 with OG12, the members of the gym in the path, inside its console (the layout authorizes the gym; 404 not available, 403 role-restricted). Members: active and ended memberships (GET /api/v1/gyms/{gym_id}/members: short name, status, how and when the person joined, how it ended; never an email, user id, profile, plan, payment or training data). Join requests (GET …/join-requests; approve and reject, POST …/join-requests/{gym_member_id}/approve|reject, reject confirmed), member invitations (GET/POST …/member-invitations, resend and cancel; a 409 recipient_flow_unavailable is said as such, nothing is said to be sent, and the page stops offering invitations), the join code and auto-approval (GET/PATCH …/enrollment, POST …/join-code/rotate|disable; changes only where can_manage, rotation, disabling and switching auto-approval on confirmed) for owner, managers and front desk (manage_member_enrollment); ending a membership (POST …/members/{gym_member_id}/remove, confirmed, sparing the account, profiles, coaches and other gyms) for owner and managers (change_member_status). Import preview: a CSV chosen in the browser (1 MB, UTF-8, header only read locally), mapped to email and name and validated by POST …/member-imports/preview, a dry run that stores and sends nothing; the masked result only, and 'importing is not available yet' (commit blocked, D-G27). A coach's roster is refused by the backend (403) and shown as such. Nothing changes on screen before the backend answers; counts show only for complete lists; the page is keyed by gym; the session boundary clears the cache and the chosen file. Its sidebar item is linked for every staff role (D-WEB-GYM-MEMBERS)."
       },
-      "screens": ["WG3"]
+      "screens": ["WG3"],
+      "discrepancies": ["D-WEB-GYM-MEMBERS"]
     },
     {
       "id": "web.app.gyms._gym-id.members._member-id",
@@ -14102,14 +14103,25 @@
       "code": "WG3",
       "name": "Members",
       "route": "web.app.gyms._gym-id.members",
-      "states": ["filters"],
+      "states": [
+        "active",
+        "ended",
+        "requests",
+        "invitations",
+        "invitations off",
+        "join code",
+        "auto-approval",
+        "import preview",
+        "restricted"
+      ],
       "design": {
         "gallery": "gallery-2",
         "page": "desktop-web",
         "section": "18a · Gym web · overview & people",
         "step": "18.4",
         "tag": "WEB_APP",
-        "artboard": "WebMembers.dc.html"
+        "artboard": "WebMembers.dc.html",
+        "note": "Claude Design 112 (1793198527-a0fc) reconciled with SF-95, D-G06, D-G09, D-G10 and D-G27 (SF-96): the roster columns are member, joined, joined with and status (ended: ended and how); PLAN, LOCATION, LAST VISIT, 30 D, DISCOVERABLE, the status tabs All/At risk/Frozen/Expired/Trials, the gym-wide total, search, Export CSV, + Add member and the detail panel's visits, renewal, payment, waiver, coach and Message are not built. The panel keeps the person, how they joined and 'The gym can't see'. Join requests, invitations, the join code and OG12's import preview are tabs of this page."
       }
     },
     {
@@ -18017,6 +18029,20 @@
       "status": "RESOLVED",
       "routes": ["web.app.gyms._gym-id.staff"],
       "screens": ["WG16"]
+    },
+    {
+      "id": "D-WEB-GYM-MEMBERS",
+      "title": "Web gym members built from the SF-95 membership contract, without plans, payments, attendance or an import commit",
+      "sourceA": "Claude Design 112 (1793198527-a0fc): WG3 WebMembers (header with a 612 total, search, Export CSV and + Add member; tabs All, Active, At risk, Frozen, Expired, Trials with counts; roster MEMBER, PLAN, LOCATION, LAST VISIT, 30 D, STATUS, DISCOVERABLE; a detail panel with visits, renewal, payment, waiver, coach, community, Open member and Message), WG14/WG15 member detail and ban, OG8 WebSetupPlans (priced plans, freeze, cancellation) and OG12 WebSetupImport (file, mapping to name, email, plan, start date and phone, 'Before you send' with Ready 175, Duplicates merged, Missing email, Send invite emails)",
+      "sourceB": "SF-95 backend: listGymMembers (active, ended), listGymJoinRequests, approveGymJoinRequest, rejectGymJoinRequest, removeGymMember, listGymMemberInvitations, createGymMemberInvitation, resendGymMemberInvitation, cancelGymMemberInvitation (409 recipient_flow_unavailable where E07 is gated off), getGymEnrollmentSettings, updateGymEnrollmentSettings, rotateGymJoinCode, disableGymJoinCode, previewGymMemberImport (email and name only; commit.available false, blocked_by legal_basis_pending, D-G27 proposed); no plans, payments, attendance, locations per member, contact, discoverability or search; D-G09/D-G10 deferred",
+      "mismatch": "The artboards show commercial plans, payments, visits and attendance, a gym-wide total and an import that sends invitations and merges duplicates, none of which exist; a membership in the contract is gym participation only.",
+      "impact": "Building them would fake revenue and attendance, present members as paying subscribers, expose contact data the contract withholds, and claim an import that stores or emails third parties without an approved lawful basis.",
+      "resolution": "SF-96: WG3's layout (header, tabs, roster card, detail panel) with SF-95 data only. Tabs: Members (Active / Ended; member, joined, joined with, status), Join requests (approve, reject), Invitations (masked address and the backend's status; invite, resend, cancel), Join code & approval, Import preview. The panel keeps the person, how they joined and WG3's 'The gym can't see' (D-G06). Counts show only for complete lists, never a gym-wide total. Invite is email only; a 409 recipient_flow_unavailable is said in the dialog ('nothing was created and no email was sent') and the page stops offering invitations. OG12 becomes the import preview: choose a CSV, map email and name, run the backend's validation, review masked rows; 'Importing members is not available yet' and no commit, send or merge control (D-G27). OG8 (priced plans) and WG6/GC2 stay placeholders (D-G10); WG14/WG15 stay placeholders (no member detail domain). The checklist's invite_members links to this page, never to an invitation form.",
+      "decision": "Build WG3 and OG12's preview on the SF-95 contract; keep plans, payments, attendance, contact, search, export and the import commit out.",
+      "decidedOn": "2026-10-30",
+      "status": "RESOLVED",
+      "routes": ["web.app.gyms._gym-id.members"],
+      "screens": ["WG3"]
     }
   ]
 }
