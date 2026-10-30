@@ -8,7 +8,8 @@ import type { GymMemberImportPreviewResponsePreviewCommitBlockedBy } from './gym
 
 /**
  * Whether the list can be committed. Not yet: storing third parties' contacts and inviting them in bulk
- * wait for an approved legal basis and retention rule (`blocked_by: legal_basis_pending`).
+ * wait for an approved lawful basis and retention rule (proposed decision D-G27; `blocked_by:
+ * legal_basis_pending`).
  */
 export type GymMemberImportPreviewResponsePreviewCommit = {
   available: false;
