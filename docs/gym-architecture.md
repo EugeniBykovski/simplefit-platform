@@ -22,7 +22,8 @@ console `/app/gyms/:gymId/**` with the chooser `/app/gyms` (SF-88,
    `/api/v1/gyms/{gym_id}/…` (`D-G15`). The id is only a lookup key, and
    the backend authorizes every request. `/app/gyms` lands on the only gym or
    lists several, preselecting the last choice the server remembers. SF-88
-   moved the web console to these paths; the member view comes with SF-91.
+   moved the web console to these paths; the member view comes with
+   a member-UI task not yet in Jira (SF-91 is the web first run).
 3. **404 vs 403** (`D-G24`, approved). A 404 from a gym endpoint means "not
    available to you", so render not found and never hint that the gym
    exists. A 403 `forbidden` means the user is staff but their role lacks
@@ -30,7 +31,7 @@ console `/app/gyms/:gymId/**` with the chooser `/app/gyms` (SF-88,
    route-architecture rule 9) and do not retry.
 4. **Members do not need a FighterProfile** (`D-G07`, approved).
    Member-facing gym routes move from `FIGHTER` to account level under
-   `/me/gyms/:gymId` in a registry change (SF-91).
+   `/me/gyms/:gymId` in a registry change, part of a member-UI task not yet in Jira (SF-91 is the web first run).
 5. **No fabricated data.** Plans, prices, trials, payments, balances,
    revenue, leads and payouts are blocked or future. Their screens stay
    placeholders and their dashboard tiles stay hidden (never shown as zero).
@@ -199,3 +200,57 @@ OS2 and the mobile invitation inbox are the next frontend ticket.
   `completed` once a staff invitation was accepted. The current checklist
   rows show it without an action; the staff screen should become its
   destination.
+
+## SF-95: gym members, enrollment and member invitations API (no screens yet)
+
+The generated client adds gym **members** (participants), separate from
+staff (ADR 0026, SF-95 amendment; tag "Gym members"). There are no member screens yet. `/app/me/gyms`, `/invite/gym`, `/join/:code`
+(A03), the mobile inbox entries and the members console have no Jira task
+yet (SF-91 is the web first run; SF-100 is booking and attendance UI).
+
+- **A membership is not a workspace:** a member gets no `GYM_WORKSPACE`, no
+  gym permission and no Fighter or Coach profile. Member routes stay
+  account-level (`/me/gyms/:gymId`, SF-82 07).
+- **Joining by code:** `previewGymJoin` (anonymous: gym name,
+  `requires_approval`) and `joinGym` (`{code}`; `201` new, `200` the pending
+  request again). The result is `requested` unless the gym enabled
+  auto-approval (`active`, `auto_approved: true`). Answers: `404` unknown or
+  disabled code, `409 gym_member: already_active`, `422
+account_registration`, `429` (20 per 10 min per client, 10 per user).
+  Codes are typed forgivingly (case, spaces, hyphens; `O`/`I`/`L`).
+- **The member's own list:** `listMyGymMemberships`, `getMyGymMembership`,
+  `cancelMyGymJoinRequest` (requested → cancelled), `leaveGymMembership`
+  (active → ended, `left`). Final rows stay; joining again creates a new
+  membership.
+- **Gym side:** `listGymMembers` (`status=active|ended`; owner, managers,
+  front desk; coaches get `403` until classes exist), `getGymMember`,
+  `listGymJoinRequests`, `approveGymJoinRequest`, `rejectGymJoinRequest`
+  (owner, managers, front desk), `removeGymMember` (owner, managers). Each
+  row: `gym_member_id`, `status`, short `name`, `joined_via`,
+  `auto_approved` and dates; never an email or user id.
+- **Enrollment settings:** `getGymEnrollmentSettings` (code as `ABCD-EFGH` or
+  `null`, `auto_approve`, `can_manage`), `rotateGymJoinCode`,
+  `disableGymJoinCode`, `updateGymEnrollmentSettings` (`{auto_approve}`).
+  New permission `manage_enrollment_settings` (owner, manager); the front
+  desk reads the code. Auto-approval is off by default.
+- **Member invitations (E07):** off in production until `/invite/gym` exists
+  (`createGymMemberInvitation` and `resendGymMemberInvitation` answer `409
+member_invitation: recipient_flow_unavailable`; on in dev and test).
+  gym side `createGymMemberInvitation`
+  (`{email}`), `listGymMemberInvitations`, `resendGymMemberInvitation`,
+  `cancelGymMemberInvitation`; recipient side `listMyGymInvitations`,
+  `getMyGymInvitation`, `acceptMyGymInvitation`, `declineMyGymInvitation`
+  (token-free inbox), and for the web page of the E07 link
+  (`/invite/gym#token=sgm_…`, read once from the fragment)
+  `previewGymInvitation`, `acceptGymInvitation`, `declineGymInvitation` with
+  the token in the body. Same answers as staff invitations (`410`, `403
+invitation_recipient_mismatch`, `404`, `409 gym_member: already_active`).
+  Invitations expire 7 days after the last sending.
+- **Member list (OG12):** `previewGymMemberImport` is a dry run (CSV text in
+  the body; nothing stored or sent; masked addresses; row outcomes). Its
+  `commit.available` is always `false` (`legal_basis_pending`): there is no
+  import commit until the proposed decision D-G27 (lawful basis, retention) is
+  approved.
+- **Checklist:** `invite_members` is now `available` at a completed gym and
+  `completed` once a member became active. The checklist row shows it
+  without an action until a member screen exists.
