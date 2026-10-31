@@ -100,9 +100,20 @@ jobs:
     # SF-88 brought the suite to 1277 tests; main was already finishing at
     # about 14 of the 15 minutes, so the gym console projects pushed it over.
     # 30 minutes leaves room for both builds and the run on two workers.
-    name: Browsers
+    #
+    # SF-96 brought the suite to 1901 tests, past the 30 minutes on one
+    # runner. It is split into three shards on parallel runners (each builds,
+    # then runs a third of the tests), so the wall time stays near a third
+    # of the suite plus the builds, and further growth adds a shard instead
+    # of raising the limit. `browsers-result` reports them as one "Browsers"
+    # check, the name branch protection and earlier runs know.
+    name: Browsers shard ${{ matrix.shard }}/3
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
     container:
       image: mcr.microsoft.com/playwright:v1.63.0-noble
       options: --user 1001
@@ -138,4 +149,14 @@ jobs:
         run: node scripts/font-fetch-retry.mjs pnpm storybook:build
 
       - name: Geometry, functional and portability QA (Playwright)
-        run: pnpm test:geometry
+        run: pnpm test:geometry --shard=${{ matrix.shard }}/3
+
+  browsers-result:
+    name: Browsers
+    needs: browsers
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Every shard passed
+        run: test "${{ needs.browsers.result }}" = "success"
