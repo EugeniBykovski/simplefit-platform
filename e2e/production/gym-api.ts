@@ -57,6 +57,22 @@ import type { BrowserContext, Request } from "@playwright/test";
  *   completed gym and completed once an invitation was accepted (the test
  *   accepts one with `acceptInvitation`, as the recipient would through the
  *   backend).
+ * - SF-96 (SF-95 contract): `GET …/members` (`status` active or ended;
+ *   `view_members` with the coach's own-classes scope refused, 403),
+ *   `POST …/members/{id}/remove` (`change_member_status`), `GET
+ *   …/join-requests` and `POST …/join-requests/{id}/approve|reject`
+ *   (`manage_member_enrollment`; repeating the same answer returns the row,
+ *   any other state `409 gym_member: <status>`), `GET|PATCH …/enrollment`
+ *   (`auto_approve` only) and `POST …/join-code/rotate|disable` (owner and
+ *   managers; `can_manage` in the answer), `GET|POST …/member-invitations`
+ *   with `…/{id}/resend|cancel` (creation and resend `409
+ *   recipient_flow_unavailable` unless the test turns `memberInvitations`
+ *   on, as production keeps them off), and `POST …/member-imports/preview`
+ *   (a dry run: header, mapping or suggestion, masked rows, the backend's
+ *   outcomes, `commit.available: false`; nothing stored). `invite_members`
+ *   is available at a completed gym and completed once someone became an
+ *   active member. A person joins with `requestJoin` (the recipient's own
+ *   backend call; auto-approved only when on and `verified`).
  */
 
 const GYM_TYPES = [
@@ -94,6 +110,38 @@ export type Gym = {
   staff?: StaffRow[];
   /** SF-94: the gym's staff invitations. */
   invitations?: StaffInvite[];
+  /** SF-96: the gym's memberships (participants), every status. */
+  members?: MemberRow[];
+  /** SF-96: the gym's member invitations. */
+  memberInvites?: MemberInvite[];
+  /** SF-96: the current join code (`null`: joining by code is off). */
+  joinCode?: string | null;
+  autoApprove?: boolean;
+};
+
+export type MemberRow = {
+  id: string;
+  name: string | null;
+  email: string;
+  status: "requested" | "active" | "ended" | "rejected" | "cancelled";
+  joined_via: "join_code" | "invitation";
+  auto_approved: boolean;
+  requested_at: string | null;
+  joined_at: string | null;
+  responded_at: string | null;
+  ended_at: string | null;
+  ended_reason: "left" | "removed" | null;
+};
+
+export type MemberInvite = {
+  id: string;
+  email: string;
+  status: "pending" | "accepted" | "declined" | "cancelled" | "expired";
+  expires_at: string;
+  last_sent_at: string;
+  send_count: number;
+  responded_at: string | null;
+  gym_member_id: string | null;
 };
 
 export type StaffRow = {
@@ -132,6 +180,8 @@ export type GymApiOptions = {
   console?: boolean;
   /** SF-88: the account also holds a completed Fighter profile. */
   fighter?: boolean;
+  /** SF-96: member invitations (E07) are on, as in dev; production keeps them off (409). */
+  memberInvitations?: boolean;
 };
 
 export type GymApi = {
@@ -163,6 +213,17 @@ export type GymApi = {
   changeViewerRole: (gymId: string, role: Gym["role"]) => void;
   /** SF-94: the next N invitation creations answer `429`. */
   limitInvites: (count: number) => void;
+  /** SF-96: a signed-in person enters the gym's code (their own backend call). */
+  requestJoin: (
+    gymId: string,
+    name: string,
+    email: string,
+    options?: { verified?: boolean },
+  ) => MemberRow | undefined;
+  /** SF-96: a request or membership changes elsewhere (another staff member, the person). */
+  externalMember: (gymId: string, memberId: string, fields: Partial<MemberRow>) => void;
+  /** SF-96: the next N enrollment decisions answer `429`. */
+  limitEnrollment: (count: number) => void;
 };
 
 /** The SF-83 matrix, as `GET /api/v1/gyms/{id}` projects it for each role. */
@@ -180,6 +241,7 @@ const PERMISSIONS: Record<Gym["role"], string[]> = {
     "invite_manager",
     "invite_staff",
     "manage_billing",
+    "manage_enrollment_settings",
     "manage_locations",
     "manage_member_enrollment",
     "manage_timetable",
@@ -202,6 +264,7 @@ const PERMISSIONS: Record<Gym["role"], string[]> = {
     "edit_gym",
     "invite_staff",
     "leave_gym",
+    "manage_enrollment_settings",
     "manage_locations",
     "manage_member_enrollment",
     "manage_timetable",
@@ -283,6 +346,7 @@ export async function gymApi(
     ];
   }
   let inviteLimit = 0;
+  let enrollmentLimit = 0;
   const keys = new Map<string, string>();
   const discarded = new Set<string>();
   let created = 0;
@@ -354,7 +418,15 @@ export async function gymApi(
                   ? "completed"
                   : "available",
           },
-          { key: "invite_members", status: "coming_later" },
+          {
+            key: "invite_members",
+            status:
+              gym.status !== "completed"
+                ? "coming_later"
+                : (gym.members ?? []).some((row) => row.joined_at !== null)
+                  ? "completed"
+                  : "available",
+          },
           { key: "first_check_in", status: "coming_later" },
         ],
       },
@@ -551,6 +623,277 @@ export async function gymApi(
         invite.responded_at = new Date().toISOString();
       }
       return { status: 200, json: { invitation: inviteView(invite) } };
+    }
+    return error(404, "not_found");
+  }
+
+  // -- SF-96: the SF-95 member contract --------------------------------------
+
+  const memberRowView = (row: MemberRow) => ({
+    gym_member_id: row.id,
+    name: row.name,
+    status: row.status,
+    joined_via: row.joined_via,
+    auto_approved: row.auto_approved,
+    requested_at: row.requested_at,
+    joined_at: row.joined_at,
+    responded_at: row.responded_at,
+    ended_at: row.ended_at,
+    ended_reason: row.ended_reason,
+  });
+  const memberInviteView = (invite: MemberInvite) => ({
+    invitation_id: invite.id,
+    status: invite.status,
+    recipient_email: masked(invite.email),
+    invited_by: { staff_membership_id: VIEWER_MEMBERSHIP, name: "Yauheni B." },
+    created_at: NOW,
+    expires_at: invite.expires_at,
+    last_sent_at: invite.last_sent_at,
+    resends_remaining: invite.status === "pending" ? Math.max(4 - invite.send_count, 0) : 0,
+    responded_at: invite.responded_at,
+    gym_member_id: invite.gym_member_id,
+  });
+  const enrollmentView = (gym: Gym) => ({
+    enrollment: {
+      join_code: gym.joinCode ?? null,
+      join_code_rotated_at: gym.joinCode ? NOW : null,
+      auto_approve: gym.autoApprove ?? false,
+      auto_approve_changed_at: null,
+      can_manage: can(gym, "manage_enrollment_settings"),
+    },
+  });
+  const CODE_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+  const newCode = () =>
+    Array.from(
+      { length: 8 },
+      (_, index) => (index === 4 ? "-" : "") + CODE_ALPHABET[Math.floor(Math.random() * 32)],
+    ).join("");
+  const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function previewImport(gym: Gym, body: Record<string, unknown>) {
+    const csv = body.csv;
+    const fields = Object.keys(body).filter((key) => key !== "csv" && key !== "mapping");
+    if (fields.length > 0 || typeof csv !== "string" || csv.trim() === "")
+      return validation({ csv: ["required"] });
+    if (new TextEncoder().encode(csv).length > 1_000_000) return validation({ csv: ["invalid"] });
+    const lines = csv.split(/\r\n|\n|\r/).filter((line) => line.trim() !== "");
+    const first = lines[0] ?? "";
+    const delimiter = [",", ";", "\t"].reduce((best, char) =>
+      first.split(char).length > first.split(best).length ? char : best,
+    );
+    const header = first.split(delimiter).map((cell) => cell.trim().replace(/^"|"$/g, ""));
+    if (lines.length - 1 > 1000 || header.length > 30) return validation({ csv: ["invalid"] });
+    const mapping = body.mapping as { email?: string | null; name?: string | null } | undefined;
+    const suggest = (names: string[]) =>
+      header.find((column) => names.includes(column.toLowerCase().replace(/[\s_.-]/g, "")));
+    const emailColumn = mapping ? mapping.email : suggest(["email", "mail", "emailaddress"]);
+    const nameColumn = mapping ? mapping.name : suggest(["name", "fullname"]);
+    if ([emailColumn, nameColumn].some((column) => column && !header.includes(column)))
+      return validation({ mapping: ["invalid_choice"] });
+    if (!emailColumn) return validation({ email_column: ["required"] });
+    const at = header.indexOf(emailColumn);
+    const nameAt = nameColumn ? header.indexOf(nameColumn) : -1;
+    const seen = new Map<string, number>();
+    const rows = lines.slice(1).map((line, index) => {
+      const cells = line.split(delimiter);
+      const raw = (cells[at] ?? "").trim();
+      const address = raw.toLowerCase();
+      const lineNo = index + 2;
+      const base = {
+        line: lineNo,
+        name_present: nameAt >= 0 && (cells[nameAt] ?? "").trim() !== "",
+        duplicate_of_line: null as number | null,
+      };
+      if (raw === "") return { ...base, email: null, outcome: "missing_email" };
+      if (!EMAIL.test(raw)) return { ...base, email: null, outcome: "invalid_email" };
+      const first = seen.get(address);
+      if (first !== undefined)
+        return { ...base, email: masked(address), outcome: "duplicate", duplicate_of_line: first };
+      seen.set(address, lineNo);
+      const member = (gym.members ?? []).find((row) => row.email.toLowerCase() === address);
+      const outcome =
+        member?.status === "active"
+          ? "already_member"
+          : member?.status === "requested"
+            ? "request_pending"
+            : (gym.memberInvites ?? []).some(
+                  (invite) => invite.email === address && invite.status === "pending",
+                )
+              ? "already_invited"
+              : "ready";
+      return { ...base, email: masked(address), outcome };
+    });
+    const outcomes = [
+      "ready",
+      "missing_email",
+      "invalid_email",
+      "duplicate",
+      "already_member",
+      "request_pending",
+      "already_invited",
+    ];
+    const summary = Object.fromEntries(
+      outcomes.map((outcome) => [outcome, rows.filter((row) => row.outcome === outcome).length]),
+    );
+    return {
+      status: 200,
+      json: {
+        preview: {
+          persisted: false,
+          commit: { available: false, blocked_by: "legal_basis_pending" },
+          delimiter,
+          columns: header.map((column) => {
+            const field = column === emailColumn ? "email" : column === nameColumn ? "name" : null;
+            return { header: column, field, status: field ? "mapped" : "not_imported" };
+          }),
+          summary: { ...summary, total: rows.length },
+          rows,
+        },
+      },
+    };
+  }
+
+  function memberRoute(
+    gym: Gym,
+    rest: string,
+    method: string,
+    body: Record<string, unknown>,
+    url: URL,
+  ): { status: number; json?: unknown; headers?: Record<string, string> } {
+    const members = (gym.members ??= []);
+    const invites = (gym.memberInvites ??= []);
+    const enroll = can(gym, "manage_member_enrollment");
+    const page = <T>(items: T[]) => {
+      const limit = Number(url.searchParams.get("limit") ?? "50");
+      const offset = Number(url.searchParams.get("cursor") ?? "0");
+      return {
+        items: items.slice(offset, offset + limit),
+        next_cursor: offset + limit < items.length ? String(offset + limit) : null,
+      };
+    };
+    const now = () => new Date().toISOString();
+    const limited = () => {
+      if (enrollmentLimit <= 0) return null;
+      enrollmentLimit -= 1;
+      return { ...error(429, "rate_limited"), headers: { "retry-after": "120" } };
+    };
+
+    if (rest === "/members" && method === "GET") {
+      // A coach's grant covers their own classes, which do not exist: refused.
+      if (gym.role === "coach" || !can(gym, "view_members")) return error(403, "forbidden");
+      const status = url.searchParams.get("status") ?? "active";
+      const { items, next_cursor } = page(members.filter((row) => row.status === status));
+      return { status: 200, json: { members: items.map(memberRowView), next_cursor } };
+    }
+    const removal = /^\/members\/([^/]+)\/remove$/.exec(rest);
+    if (removal && method === "POST") {
+      if (!can(gym, "change_member_status")) return error(403, "forbidden");
+      const target = members.find((row) => row.id === removal[1]);
+      if (!target) return error(404, "not_found");
+      const late = limited();
+      if (late) return late;
+      if (target.status === "ended" && target.ended_reason === "removed")
+        return { status: 200, json: { member: memberRowView(target) } };
+      if (target.status !== "active") return error(409, "conflict", { gym_member: target.status });
+      Object.assign(target, { status: "ended", ended_at: now(), ended_reason: "removed" });
+      return { status: 200, json: { member: memberRowView(target) } };
+    }
+    if (rest === "/join-requests" && method === "GET") {
+      if (!enroll) return error(403, "forbidden");
+      const { items, next_cursor } = page(members.filter((row) => row.status === "requested"));
+      return { status: 200, json: { members: items.map(memberRowView), next_cursor } };
+    }
+    const decision = /^\/join-requests\/([^/]+)\/(approve|reject)$/.exec(rest);
+    if (decision && method === "POST") {
+      if (!enroll) return error(403, "forbidden");
+      const target = members.find((row) => row.id === decision[1]);
+      if (!target) return error(404, "not_found");
+      const late = limited();
+      if (late) return late;
+      const to = decision[2] === "approve" ? "active" : "rejected";
+      if (target.status === to) return { status: 200, json: { member: memberRowView(target) } };
+      if (target.status !== "requested")
+        return error(409, "conflict", { gym_member: target.status });
+      if (to === "active") Object.assign(target, { status: "active", joined_at: now() });
+      else Object.assign(target, { status: "rejected", responded_at: now() });
+      return { status: 200, json: { member: memberRowView(target) } };
+    }
+    if (rest === "/enrollment" && method === "GET") {
+      if (!enroll) return error(403, "forbidden");
+      return { status: 200, json: enrollmentView(gym) };
+    }
+    if (
+      (rest === "/enrollment" && method === "PATCH") ||
+      (/^\/join-code\/(rotate|disable)$/.test(rest) && method === "POST")
+    ) {
+      if (!can(gym, "manage_enrollment_settings")) return error(403, "forbidden");
+      if (rest === "/join-code/rotate") gym.joinCode = newCode();
+      else if (rest === "/join-code/disable") gym.joinCode = null;
+      else {
+        const extra = Object.keys(body).filter((key) => key !== "auto_approve");
+        if (extra.length > 0 || typeof body.auto_approve !== "boolean")
+          return validation({ auto_approve: ["required"] });
+        gym.autoApprove = body.auto_approve;
+      }
+      return { status: 200, json: enrollmentView(gym) };
+    }
+    if (rest === "/member-imports/preview" && method === "POST") {
+      if (!enroll) return error(403, "forbidden");
+      return previewImport(gym, body);
+    }
+    if (rest === "/member-invitations" && method === "GET") {
+      if (!enroll) return error(403, "forbidden");
+      const { items, next_cursor } = page([...invites].reverse());
+      return { status: 200, json: { invitations: items.map(memberInviteView), next_cursor } };
+    }
+    if (rest === "/member-invitations" && method === "POST") {
+      if (!enroll) return error(403, "forbidden");
+      if (options.memberInvitations !== true)
+        return error(409, "conflict", { member_invitation: "recipient_flow_unavailable" });
+      const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+      if (!EMAIL.test(email)) return validation({ email: ["invalid_format"] });
+      const pending = invites.find(
+        (invite) => invite.email === email && invite.status === "pending",
+      );
+      if (pending) return { status: 200, json: { invitation: memberInviteView(pending) } };
+      if (members.some((row) => row.email === email && row.status === "active"))
+        return error(409, "conflict", { gym_member: "already_active" });
+      const invite: MemberInvite = {
+        id: newId(),
+        email,
+        status: "pending",
+        expires_at: inDays(7),
+        last_sent_at: now(),
+        send_count: 1,
+        responded_at: null,
+        gym_member_id: null,
+      };
+      invites.push(invite);
+      return { status: 201, json: { invitation: memberInviteView(invite) } };
+    }
+    const inviteAction = /^\/member-invitations\/([^/]+)\/(resend|cancel)$/.exec(rest);
+    if (inviteAction && method === "POST") {
+      if (!enroll) return error(403, "forbidden");
+      const invite = invites.find((candidate) => candidate.id === inviteAction[1]);
+      if (!invite) return error(404, "not_found");
+      if (inviteAction[2] === "resend") {
+        if (options.memberInvitations !== true)
+          return error(409, "conflict", { member_invitation: "recipient_flow_unavailable" });
+        if (invite.status !== "pending")
+          return error(409, "conflict", { member_invitation: "not_pending" });
+        if (invite.send_count >= 4) return error(409, "conflict", { resends: "limit_reached" });
+        Object.assign(invite, {
+          send_count: invite.send_count + 1,
+          last_sent_at: now(),
+          expires_at: inDays(7),
+        });
+        return { status: 200, json: { invitation: memberInviteView(invite) } };
+      }
+      if (invite.status === "pending")
+        Object.assign(invite, { status: "cancelled", responded_at: now() });
+      else if (invite.status !== "cancelled")
+        return error(409, "conflict", { member_invitation: invite.status });
+      return { status: 200, json: { invitation: memberInviteView(invite) } };
     }
     return error(404, "not_found");
   }
@@ -883,6 +1226,12 @@ export async function gymApi(
         else if (/^\/first-run\/(start|complete|dismiss)$/.test(rest) && method === "POST")
           result = moveFirstRun(gym, rest.slice("/first-run/".length), body);
         else if (rest.startsWith("/staff")) result = staffRoute(gym, rest, method, body, url);
+        else if (
+          /^\/(members|join-requests|enrollment|join-code|member-imports|member-invitations)(\/|$)/.test(
+            rest,
+          )
+        )
+          result = memberRoute(gym, rest, method, body, url);
         else if (gym.role !== "owner" && write) result = error(403, "forbidden");
         else if (rest === "/setup" && method === "PATCH") result = update(gym, body);
         else if (rest === "/setup/primary-location" && method === "PUT")
@@ -972,6 +1321,36 @@ export async function gymApi(
     },
     limitInvites: (count) => {
       inviteLimit = count;
+    },
+    requestJoin: (gymId, name, email, { verified = true } = {}) => {
+      const gym = gyms.find((candidate) => candidate.id === gymId);
+      if (!gym || !gym.joinCode) return undefined;
+      const now = new Date().toISOString();
+      const auto = gym.autoApprove === true && verified;
+      const row: MemberRow = {
+        id: newId(),
+        name,
+        email,
+        status: auto ? "active" : "requested",
+        joined_via: "join_code",
+        auto_approved: auto,
+        requested_at: now,
+        joined_at: auto ? now : null,
+        responded_at: null,
+        ended_at: null,
+        ended_reason: null,
+      };
+      (gym.members ??= []).push(row);
+      return row;
+    },
+    externalMember: (gymId, memberId, fields) => {
+      const row = gyms
+        .find((candidate) => candidate.id === gymId)
+        ?.members?.find((candidate) => candidate.id === memberId);
+      if (row) Object.assign(row, fields);
+    },
+    limitEnrollment: (count) => {
+      enrollmentLimit = count;
     },
     externalFirstRun: (id, status) => {
       const gym = gyms.find((candidate) => candidate.id === id);

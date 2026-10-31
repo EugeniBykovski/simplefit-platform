@@ -97,10 +97,6 @@
     "later": {
       "title": "Pronto en tu consola",
       "badge": "Más adelante",
-      "members": {
-        "title": "Miembros",
-        "body": "Invita a miembros y mira quién entrena aquí."
-      },
       "schedule": {
         "title": "Clases y horario",
         "body": "Planifica las clases de toda la semana."
@@ -176,7 +172,7 @@
         "invite_members": {
           "title": "Invita a miembros",
           "completed": "Un miembro se unió a tu gimnasio",
-          "available": "Envía tu primera invitación a miembros",
+          "available": "Comparte tu código de unión o invita a un miembro",
           "coming_later": "Llega con las invitaciones a miembros"
         },
         "first_check_in": {
@@ -450,6 +446,388 @@
       "gone": "Esta persona o invitación ya no forma parte del gimnasio. La página está actualizada.",
       "unknown": "No pudimos confirmar si funcionó. La página muestra el estado más reciente; revísalo antes de volver a intentarlo.",
       "failed": "Algo salió mal. No cambió nada. Inténtalo de nuevo."
+    }
+  },
+  "members": {
+    "metaTitle": "Miembros",
+    "eyebrow": "Personas",
+    "title": "Miembros",
+    "noName": "Miembro sin nombre",
+    "tabs": {
+      "label": "Secciones de miembros",
+      "members": "Miembros",
+      "requests": "Solicitudes de unión",
+      "invitations": "Invitaciones",
+      "settings": "Código de unión y aprobación",
+      "import": "Vista previa de importación",
+      "requestsWaiting": "Solicitudes de unión, {count} pendientes"
+    },
+    "read": {
+      "restricted": {
+        "title": "Tu rol todavía no puede ver esto",
+        "body": "Los entrenadores verán a los miembros de sus propias clases cuando existan las clases. El propietario, los gerentes y la recepción gestionan a los miembros."
+      },
+      "failed": {
+        "title": "No se pudo cargar",
+        "body": "Revisa tu conexión y vuelve a intentarlo. No se cambió nada.",
+        "retry": "Reintentar"
+      }
+    },
+    "roster": {
+      "heading": "Miembros del gimnasio",
+      "views": "Qué miembros",
+      "tabs": {
+        "active": "Activos",
+        "ended": "Dados de baja"
+      },
+      "loading": "Cargando miembros",
+      "loadingMore": "Cargando…",
+      "more": "Mostrar más",
+      "empty": {
+        "active": {
+          "title": "Aún no hay miembros",
+          "body": "Las personas se convierten en miembros cuando apruebas su solicitud o aceptan tu invitación. Comparte tu código de unión para empezar."
+        },
+        "ended": {
+          "title": "Nadie se ha dado de baja",
+          "body": "Aquí aparecen los miembros que se fueron o fueron dados de baja."
+        }
+      },
+      "label": {
+        "active": "Miembros activos",
+        "ended": "Miembros dados de baja"
+      },
+      "columns": {
+        "person": "Miembro",
+        "joined": "Se unió",
+        "via": "Se unió con",
+        "status": "Estado",
+        "ended": "Baja",
+        "how": "Cómo terminó"
+      },
+      "select": "Ver detalles de {name}",
+      "count": "{count, plural, one {# miembro} other {# miembros}}"
+    },
+    "via": {
+      "join_code": "Código de unión",
+      "invitation": "Invitación"
+    },
+    "status": {
+      "active": "Activo"
+    },
+    "ended": {
+      "left": "Se fue",
+      "removed": "Dado de baja por el gimnasio",
+      "account_deleted": "Cuenta eliminada",
+      "gym_closed": "Gimnasio cerrado"
+    },
+    "person": {
+      "heading": "Sobre {name}",
+      "since": "Miembro de {gym} desde el {date}",
+      "ended": {
+        "left": "Se fue el {date}",
+        "removed": "Dado de baja el {date}",
+        "account_deleted": "Cuenta eliminada el {date}",
+        "gym_closed": "Gimnasio cerrado el {date}"
+      },
+      "via": "Se unió con",
+      "requested": "Pidió unirse",
+      "approval": "Aprobación",
+      "autoApproved": "Automática (cuenta verificada)",
+      "staffApproved": "Por el gimnasio",
+      "noActions": "Solo el propietario y los gerentes pueden dar de baja a un miembro."
+    },
+    "privacy": {
+      "heading": "El gimnasio no ve",
+      "body": "Correos electrónicos, registros de entrenamiento, peso, objetivos, notas del entrenador, videos ni mensajes. Eso queda para cada miembro.",
+      "membership": "Ser miembro significa participar en tu gimnasio. No es un plan de pago ni una suscripción."
+    },
+    "requests": {
+      "heading": "Solicitudes de unión",
+      "lead": "Personas que ingresaron tu código de unión y esperan tu respuesta.",
+      "settingsLink": "Código de unión y aprobación",
+      "loading": "Cargando solicitudes",
+      "empty": "No hay solicitudes pendientes.",
+      "someone": "Alguien sin nombre",
+      "asked": "Lo pidió el {date}",
+      "more": "Mostrar más",
+      "approve": "Aprobar",
+      "approving": "Aprobando…",
+      "approveLabel": "Aprobar a {name}",
+      "approved": "{name} ya es miembro de {gym}.",
+      "reject": "Rechazar",
+      "rejectLabel": "Rechazar a {name}"
+    },
+    "reject": {
+      "title": "¿Rechazar a {name}?",
+      "body": "{name} no será miembro de {gym}. Más adelante puede volver a pedirlo con un código válido. Su cuenta no se ve afectada.",
+      "keep": "Mantener solicitud",
+      "confirm": "Rechazar solicitud",
+      "pending": "Rechazando…",
+      "done": "Se rechazó la solicitud de {name}."
+    },
+    "remove": {
+      "open": "Dar de baja",
+      "someone": "este miembro",
+      "title": "¿Dar de baja a {name}?",
+      "body": "{name} deja de ser miembro de {gym} de inmediato. La baja queda en tu historial.",
+      "keeps": {
+        "account": "Su cuenta de SimpleFit no se elimina.",
+        "profiles": "Su perfil de Fighter o Coach no cambia.",
+        "coaches": "Sus entrenadores y entrenamientos siguen igual.",
+        "gyms": "No afecta a otros gimnasios de los que sea miembro."
+      },
+      "keep": "Mantener miembro",
+      "confirm": "Dar de baja",
+      "pending": "Dando de baja…",
+      "done": "{name} ya no es miembro de {gym}."
+    },
+    "invite": {
+      "open": "Invitar miembro",
+      "close": "Cerrar",
+      "title": "Invitar a un miembro a {gym}",
+      "lead": "Enviaremos una invitación a esta dirección. La persona solo será miembro si la acepta.",
+      "email": {
+        "label": "Correo electrónico",
+        "invalid": "Ingresa un correo electrónico válido.",
+        "rejected": "No se puede invitar a esta dirección."
+      },
+      "privacy": "Un correo por sí solo no demuestra quién es alguien. Para aceptar, la persona inicia sesión con esta dirección.",
+      "cancel": "Cancelar",
+      "sending": "Creando…",
+      "submit": "Crear invitación",
+      "pending": {
+        "title": "Invitación pendiente",
+        "body": "La invitación para {email} está pendiente hasta el {expires}.",
+        "note": "Solo será miembro cuando la acepte. Puedes reenviarla o cancelarla en Invitaciones.",
+        "done": "Listo"
+      },
+      "unavailable": {
+        "title": "Las invitaciones a miembros aún no están disponibles",
+        "body": "Las personas invitadas todavía no pueden aceptar invitaciones de miembro en SimpleFit, así que están desactivadas. No se creó nada ni se envió ningún correo.",
+        "note": "Comparte tu código de unión: quien lo ingrese te enviará una solicitud.",
+        "done": "Entendido"
+      }
+    },
+    "invitations": {
+      "heading": "Invitaciones a miembros",
+      "off": "Las invitaciones a miembros aún no están disponibles. No se pueden crear ni reenviar; tu código de unión sigue funcionando.",
+      "loading": "Cargando invitaciones",
+      "empty": "Aún no hay invitaciones a miembros.",
+      "more": "Mostrar más",
+      "about": {
+        "heading": "Cómo funcionan las invitaciones",
+        "body": "Una invitación queda pendiente 7 días. La persona solo es miembro cuando la acepta.",
+        "proof": "Para aceptar hace falta una cuenta de SimpleFit con sesión iniciada con la dirección invitada. Nadie se agrega automáticamente."
+      },
+      "line": {
+        "pending": "Pendiente hasta el {expires}",
+        "accepted": "Aceptada el {date}",
+        "declined": "Rechazada el {date}",
+        "cancelled": "Cancelada el {date}",
+        "expired": "Venció el {date}"
+      },
+      "status": {
+        "pending": "Pendiente",
+        "accepted": "Aceptada",
+        "declined": "Rechazada",
+        "cancelled": "Cancelada",
+        "expired": "Vencida"
+      },
+      "invitedBy": "Invitó {name}",
+      "resent": "La invitación para {email} vuelve a estar pendiente hasta el {expires}.",
+      "resendLabel": "Reenviar la invitación para {email}",
+      "resending": "Reenviando…",
+      "resend": "Reenviar (quedan {count})",
+      "cancelled": "Se canceló la invitación para {email}.",
+      "cancelLabel": "Cancelar la invitación para {email}",
+      "cancel": "Cancelar"
+    },
+    "cancelInvitation": {
+      "title": "¿Cancelar esta invitación?",
+      "body": "El enlace enviado a {email} dejará de funcionar. Puedes volver a invitar esta dirección más adelante.",
+      "keep": "Mantener invitación",
+      "pending": "Cancelando…",
+      "confirm": "Cancelar invitación"
+    },
+    "settings": {
+      "loading": "Cargando ajustes de unión",
+      "readOnly": "Solo el propietario y los gerentes pueden cambiar esto.",
+      "code": {
+        "heading": "Código de unión",
+        "current": "Código de unión actual",
+        "copy": "Copiar código",
+        "copied": "Código de unión copiado.",
+        "copyFailed": "No se pudo copiar. Selecciona el código y cópialo tú.",
+        "off": "Unirse con código está desactivado.",
+        "howOn": "Quien ingrese este código en SimpleFit enviará a tu gimnasio una solicitud de unión. El código por sí solo no demuestra quién es alguien.",
+        "howOff": "Actívalo para dar a la gente un código con el que pedir unirse.",
+        "since": "Emitido el {date}",
+        "rotate": "Código nuevo",
+        "disable": "Desactivar",
+        "enable": "Activar unión con código"
+      },
+      "auto": {
+        "heading": "Aprobación",
+        "label": "Aprobar automáticamente cuentas verificadas",
+        "on": "Activada: las personas con cuenta completa e inicio de sesión verificado son miembros en cuanto ingresan tu código.",
+        "off": "Desactivada: cada solicitud espera tu respuesta.",
+        "verified": "Quien no tenga un inicio de sesión verificado sigue esperando tu respuesta.",
+        "changed": "Último cambio el {date}"
+      },
+      "done": {
+        "rotate": "Se emitió un código nuevo. El código anterior ya no funciona.",
+        "enable": "Unirse con código está activado.",
+        "disable": "Unirse con código está desactivado. El código anterior ya no funciona.",
+        "autoOn": "La aprobación automática está activada en {gym}.",
+        "autoOff": "La aprobación automática está desactivada en {gym}."
+      },
+      "confirm": {
+        "keep": "Cancelar",
+        "pending": "Guardando…",
+        "rotate": {
+          "title": "¿Emitir un código de unión nuevo?",
+          "body": "El código actual deja de funcionar de inmediato. Comparte el nuevo con quien aún no se haya unido.",
+          "confirm": "Emitir código nuevo"
+        },
+        "enable": {
+          "title": "¿Activar la unión con código?",
+          "body": "{gym} tendrá un código de unión con el que la gente puede pedir unirse.",
+          "confirm": "Activar"
+        },
+        "disable": {
+          "title": "¿Desactivar la unión con código?",
+          "body": "El código actual deja de funcionar y nadie podrá pedir unirse a {gym} con un código hasta que lo vuelvas a activar. Las solicitudes pendientes se mantienen.",
+          "confirm": "Desactivar"
+        },
+        "autoOn": {
+          "title": "¿Aprobar automáticamente cuentas verificadas?",
+          "body": "Las personas con una cuenta de SimpleFit completa e inicio de sesión verificado serán miembros de {gym} en cuanto ingresen tu código, sin tu revisión. Las demás siguen esperando tu respuesta. Puedes desactivarlo cuando quieras.",
+          "confirm": "Activar"
+        },
+        "autoOff": {
+          "title": "¿Desactivar la aprobación automática?",
+          "body": "Cada nueva solicitud a {gym} esperará tu respuesta.",
+          "confirm": "Desactivar"
+        }
+      },
+      "about": {
+        "heading": "Sobre unirse",
+        "code": "La recepción puede mostrar el código en el mostrador. Solo el propietario y los gerentes pueden emitir uno nuevo o desactivarlo.",
+        "auto": "La aprobación automática está desactivada hasta que la actives y nunca se aplica a personas sin inicio de sesión verificado."
+      }
+    },
+    "problems": {
+      "limited": "Demasiadas solicitudes. Vuelve a intentarlo en {minutes, plural, one {# minuto} other {# minutos}}.",
+      "limitedLater": "Demasiadas solicitudes. Vuelve a intentarlo más tarde.",
+      "decided": {
+        "requested": "Esta solicitud sigue pendiente. La página está actualizada.",
+        "active": "Esta persona ya es miembro. La página está actualizada.",
+        "rejected": "Esta solicitud ya fue rechazada. La página está actualizada.",
+        "cancelled": "La persona canceló esta solicitud. La página está actualizada.",
+        "ended": "Este miembro ya fue dado de baja. La página está actualizada."
+      },
+      "alreadyActive": "Esta persona ya es miembro de este gimnasio.",
+      "invitationsUnavailable": "Las invitaciones a miembros aún no están disponibles. No se creó nada ni se envió ningún correo.",
+      "noResends": "No quedan reenvíos. Cancélala e invita de nuevo.",
+      "notPending": "Esta invitación ya no está pendiente.",
+      "resolved": "Esta invitación ya fue respondida.",
+      "draft": "Primero termina de configurar tu gimnasio.",
+      "forbidden": "Tu rol ya no permite esto. La página está actualizada.",
+      "gone": "Esta solicitud, miembro o invitación ya no forma parte del gimnasio. La página está actualizada.",
+      "unknown": "No pudimos confirmar si funcionó. La página muestra el estado más reciente; revísalo antes de volver a intentarlo.",
+      "failed": "Algo salió mal. No cambió nada. Vuelve a intentarlo."
+    },
+    "import": {
+      "file": {
+        "heading": "Lista de miembros",
+        "none": "No se eligió ningún archivo.",
+        "reading": "Leyendo…",
+        "size": "{size} KB · queda en esta pestaña del navegador hasta que lo valides",
+        "choose": "Seleccionar archivo CSV",
+        "replace": "Elegir otro archivo",
+        "clear": "Quitar",
+        "limits": "Un archivo CSV con fila de encabezado: hasta 1 MB, {rows, number} filas, {columns} columnas y {field} caracteres por campo."
+      },
+      "fileProblems": {
+        "type": "Elige un archivo CSV (.csv, .tsv o .txt).",
+        "empty": "Este archivo está vacío.",
+        "tooLarge": "Este archivo pesa más de 1 MB.",
+        "encoding": "Este archivo no es texto UTF-8. Expórtalo de nuevo como CSV (UTF-8).",
+        "columns": "Este archivo tiene más de {columns} columnas.",
+        "header": "Cada columna de la primera fila necesita su propio nombre."
+      },
+      "validate": "Ejecutar validación",
+      "validating": "Validando…",
+      "validateNote": "Revisa el archivo. No se guarda ni se envía nada.",
+      "about": {
+        "heading": "Vista previa de una lista de miembros",
+        "steps": {
+          "choose": "Selecciona un archivo CSV.",
+          "map": "Asigna sus columnas.",
+          "validate": "Ejecuta la validación.",
+          "review": "Revisa los resultados."
+        },
+        "unavailable": "Importar miembros aún no está disponible. Esto solo revisa tu lista: nadie se agrega, se invita ni recibe correos.",
+        "privacy": "Tu archivo no se guarda. Los correos vuelven enmascarados, y SimpleFit nunca empareja personas por nombre ni da una dirección por verificada."
+      },
+      "mapping": {
+        "heading": "Asignar columnas",
+        "lead": "Elige qué columna contiene cada campo. Deja el correo en «Sugerir» para que SimpleFit elija entre nombres de columna habituales.",
+        "email": "Correo electrónico",
+        "name": "Nombre completo",
+        "required": "obligatorio",
+        "optional": "opcional",
+        "suggest": "Sugerir",
+        "none": "No usar",
+        "others": "Las demás columnas (plan, teléfono, fechas…) no se usan.",
+        "reset": "Restablecer asignación"
+      },
+      "problems": {
+        "file": "No se pudo leer este archivo como lista de miembros. Revisa las comillas y los límites e inténtalo de nuevo.",
+        "emailColumn": "Elige la columna con los correos electrónicos.",
+        "mapping": "Esa asignación de columnas no coincide con el archivo. Vuelve a asignarlas.",
+        "limited": "Demasiadas validaciones. Vuelve a intentarlo en {minutes, plural, one {# minuto} other {# minutos}}.",
+        "limitedLater": "Demasiadas validaciones. Vuelve a intentarlo más tarde.",
+        "draft": "Primero termina de configurar tu gimnasio.",
+        "forbidden": "Tu rol ya no puede revisar listas de miembros.",
+        "gone": "Este gimnasio ya no está disponible.",
+        "unknown": "La validación no terminó. No se guardó nada. Vuelve a intentarlo."
+      },
+      "results": {
+        "heading": "Revisar resultados",
+        "status": "Validación completa: {total, plural, one {# fila revisada} other {# filas revisadas}}.",
+        "unavailable": "Validación completa. Importar miembros aún no está disponible. No se guardó nada, y nadie fue agregado ni recibió correos.",
+        "total": "Filas",
+        "outcomes": {
+          "ready": "Se podría invitar",
+          "already_member": "Ya es miembro",
+          "request_pending": "Solicitud pendiente",
+          "already_invited": "Ya invitado",
+          "duplicate": "Duplicado",
+          "missing_email": "Sin correo",
+          "invalid_email": "Correo no válido"
+        },
+        "ignored": "No se usan: {columns}.",
+        "filter": "Qué filas",
+        "all": "Todas las filas",
+        "attention": "Requieren atención",
+        "noneAttention": "Ninguna fila requiere atención.",
+        "noRows": "El archivo no tiene filas de datos.",
+        "more": "Mostrar {count} más",
+        "nothingStored": "Los resultados desaparecen al salir de esta página, elegir otro archivo o cerrar sesión.",
+        "tableLabel": "Resultados de validación por fila",
+        "columns": {
+          "line": "Línea",
+          "email": "Correo",
+          "name": "Nombre",
+          "result": "Resultado"
+        },
+        "noEmail": "Sin dirección",
+        "namePresent": "Indicado",
+        "nameMissing": "Falta",
+        "duplicateOf": "Misma dirección que la línea {line}"
+      }
     }
   }
 }

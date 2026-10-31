@@ -27,8 +27,9 @@ const LOCATION = {
 };
 const COMPLETED = { status: "completed" as const, location: LOCATION };
 // The API's five keys as GRW1 lists them: done and available first, then the
-// coming-later ones, each in the API's order (SF-93 made invite_staff available).
-const KEYS = ["create_gym", "invite_staff", "add_class", "invite_members", "first_check_in"];
+// coming-later ones, each in the API's order (SF-93 made invite_staff and
+// SF-95 invite_members available).
+const KEYS = ["create_gym", "invite_staff", "invite_members", "add_class", "first_check_in"];
 
 async function start(page: Page, gyms: Partial<Gym>[]) {
   await onboardingApi(page, { tour: "completed" });
@@ -83,12 +84,17 @@ test.describe("GRW1 · first visit", () => {
       await rows.evaluateAll((all) => all.map((row) => row.getAttribute("data-checklist-key"))),
     ).toEqual(KEYS);
     await expect(checklist(page).locator("[data-checklist-status=completed]")).toHaveCount(1);
-    // SF-93/SF-94: inviting staff is available and leads to the staff page.
-    await expect(checklist(page).getByText("Coming later")).toHaveCount(3);
-    await expect(checklist(page).getByRole("link")).toHaveCount(1);
+    // SF-93/SF-94: inviting staff is available and leads to the staff page;
+    // SF-95/SF-96: inviting members leads to the members page.
+    await expect(checklist(page).getByText("Coming later")).toHaveCount(2);
+    await expect(checklist(page).getByRole("link")).toHaveCount(2);
     await expect(checklist(page).getByRole("link", { name: "Invite your staff" })).toHaveAttribute(
       "href",
       /\/app\/gyms\/[^/]+\/staff$/,
+    );
+    await expect(checklist(page).getByRole("link", { name: "Invite members" })).toHaveAttribute(
+      "href",
+      /\/app\/gyms\/[^/]+\/members$/,
     );
     await expect(checklist(page)).not.toContainText(/\d+\s*(\/|of)\s*\d+|%/);
     await expect(page.locator("main")).not.toContainText(
@@ -259,7 +265,7 @@ test.describe("GRW1 · skip, failures and other devices", () => {
     expect(writes(api)).toEqual([]);
     await dialog.getByRole("button", { name: "Skip introduction" }).click();
     await expect(page.locator("[data-first-run-outcome=dismissed]")).toBeVisible();
-    await expect(checklist(page).locator("[data-checklist-status=coming_later]")).toHaveCount(3);
+    await expect(checklist(page).locator("[data-checklist-status=coming_later]")).toHaveCount(2);
     expect(writes(api)).toEqual(["dismiss"]);
     await shot(page, "grw1-dismissed-1440-dark");
   });

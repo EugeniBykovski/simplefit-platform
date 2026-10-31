@@ -104,10 +104,10 @@ describe("WorkspaceShell", () => {
     );
   });
 
-  it("shows the gym console MVP: Dashboard and Coaches & staff (SF-94) of the gym in the path, every other item Soon (SF-88)", async () => {
+  it("shows the gym console MVP: Dashboard, Members (SF-96) and Coaches & staff (SF-94) of the gym in the path, every other item Soon (SF-88)", async () => {
     const nav = await renderShell("web.app.gym", `/app/gyms/${GYM_ID}/members/m-42`);
     const links = within(nav).getAllByRole("link");
-    expect(links).toHaveLength(2);
+    expect(links).toHaveLength(3);
     expect(within(nav).getByRole("link", { name: "Dashboard" })).toHaveAttribute(
       "href",
       `/en/app/gyms/${GYM_ID}`,
@@ -116,7 +116,16 @@ describe("WorkspaceShell", () => {
       "href",
       `/en/app/gyms/${GYM_ID}/staff`,
     );
-    for (const label of ["Members", "Timetable", "Revenue & payouts", "Gym settings & plan"]) {
+    expect(within(nav).getByRole("link", { name: "Members" })).toHaveAttribute(
+      "href",
+      `/en/app/gyms/${GYM_ID}/members`,
+    );
+    for (const label of [
+      "Leads & trials",
+      "Timetable",
+      "Revenue & payouts",
+      "Gym settings & plan",
+    ]) {
       expect(within(nav).queryByRole("link", { name: label })).toBeNull();
       expect(within(nav).getByText(label).closest("[aria-disabled]")).toHaveTextContent("Soon");
     }

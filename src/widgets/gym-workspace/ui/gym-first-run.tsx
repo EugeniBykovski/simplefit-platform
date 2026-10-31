@@ -178,6 +178,7 @@ export function FirstRunUnavailable({ onRetry }: { onRetry: () => void }) {
 export function GymChecklist({
   items,
   staffHref,
+  membersHref,
 }: {
   items: GymChecklistItem[];
   /**
@@ -186,6 +187,13 @@ export function GymChecklist({
    * backend's: it completes only once an invitation is accepted.
    */
   staffHref?: string;
+  /**
+   * SF-96: where "Invite members" leads while it is available (the gym's
+   * Members page, with its join code, requests and invitations), for a
+   * viewer who may enroll members. Its status stays the backend's: it
+   * completes only once someone is an active member.
+   */
+  membersHref?: string;
 }) {
   const t = useTranslations("gymConsole.firstRun.checklist");
   const ready = items.filter((item) => item.status !== "coming_later");
@@ -213,7 +221,13 @@ export function GymChecklist({
               key={item.key}
               item={item}
               href={
-                item.key === "invite_staff" && item.status === "available" ? staffHref : undefined
+                item.status !== "available"
+                  ? undefined
+                  : item.key === "invite_staff"
+                    ? staffHref
+                    : item.key === "invite_members"
+                      ? membersHref
+                      : undefined
               }
             />
           ))}

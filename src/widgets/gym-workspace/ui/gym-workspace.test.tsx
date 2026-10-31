@@ -157,8 +157,8 @@ describe("GymWorkspace and the WG1 dashboard (SF-88)", () => {
     expect(within(page).getByText("Owner", { selector: "[data-gym-role]" })).toBeVisible();
     // SF-82 R5: no member, class, revenue or activity figures, not even zeros.
     expect(page).not.toHaveTextContent(/PLN|MRR|revenue|check-ins today|active members|\b0\b/i);
-    // Members, classes and check-ins; Coaches & staff has its page (SF-94).
-    expect(within(page).getAllByText("Later")).toHaveLength(3);
+    // Classes and check-ins; Coaches & staff (SF-94) and Members (SF-96) have their pages.
+    expect(within(page).getAllByText("Later")).toHaveLength(2);
   });
 
   it("renders not available, without any gym data, for a gym the backend does not show (404)", async () => {

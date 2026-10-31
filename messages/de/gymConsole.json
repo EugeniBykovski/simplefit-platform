@@ -97,10 +97,6 @@
     "later": {
       "title": "Bald in deiner Konsole",
       "badge": "Später",
-      "members": {
-        "title": "Mitglieder",
-        "body": "Lade Mitglieder ein und sieh, wer hier trainiert."
-      },
       "schedule": {
         "title": "Kurse & Stundenplan",
         "body": "Plane Kurse für die ganze Woche."
@@ -176,7 +172,7 @@
         "invite_members": {
           "title": "Mitglieder einladen",
           "completed": "Ein Mitglied ist deinem Gym beigetreten",
-          "available": "Verschicke deine erste Mitglieder-Einladung",
+          "available": "Teile deinen Beitrittscode oder lade ein Mitglied ein",
           "coming_later": "Kommt mit Mitglieder-Einladungen"
         },
         "first_check_in": {
@@ -450,6 +446,388 @@
       "gone": "Diese Person oder Einladung gehört nicht mehr zum Gym. Die Seite ist aktuell.",
       "unknown": "Wir konnten nicht bestätigen, ob es geklappt hat. Die Seite zeigt den neuesten Stand; prüf ihn, bevor du es erneut versuchst.",
       "failed": "Etwas ist schiefgelaufen. Nichts wurde geändert. Versuch es noch einmal."
+    }
+  },
+  "members": {
+    "metaTitle": "Mitglieder",
+    "eyebrow": "Personen",
+    "title": "Mitglieder",
+    "noName": "Mitglied ohne Namen",
+    "tabs": {
+      "label": "Bereiche der Mitglieder",
+      "members": "Mitglieder",
+      "requests": "Beitrittsanfragen",
+      "invitations": "Einladungen",
+      "settings": "Beitrittscode & Freigabe",
+      "import": "Import-Vorschau",
+      "requestsWaiting": "Beitrittsanfragen, {count} offen"
+    },
+    "read": {
+      "restricted": {
+        "title": "Deine Rolle kann das noch nicht sehen",
+        "body": "Coaches sehen die Mitglieder ihrer eigenen Kurse, sobald es Kurse gibt. Mitglieder verwalten Inhaber, Manager und Empfang."
+      },
+      "failed": {
+        "title": "Konnte nicht geladen werden",
+        "body": "Prüf deine Verbindung und versuch es erneut. Es wurde nichts geändert.",
+        "retry": "Erneut versuchen"
+      }
+    },
+    "roster": {
+      "heading": "Mitglieder des Gyms",
+      "views": "Welche Mitglieder",
+      "tabs": {
+        "active": "Aktiv",
+        "ended": "Beendet"
+      },
+      "loading": "Mitglieder werden geladen",
+      "loadingMore": "Wird geladen…",
+      "more": "Mehr anzeigen",
+      "empty": {
+        "active": {
+          "title": "Noch keine Mitglieder",
+          "body": "Personen werden Mitglieder, wenn du ihre Beitrittsanfrage annimmst oder sie deine Einladung annehmen. Teile deinen Beitrittscode, um loszulegen."
+        },
+        "ended": {
+          "title": "Keine beendeten Mitgliedschaften",
+          "body": "Mitglieder, die austreten oder entfernt werden, erscheinen hier."
+        }
+      },
+      "label": {
+        "active": "Aktive Mitglieder",
+        "ended": "Beendete Mitgliedschaften"
+      },
+      "columns": {
+        "person": "Mitglied",
+        "joined": "Beigetreten",
+        "via": "Beigetreten über",
+        "status": "Status",
+        "ended": "Beendet",
+        "how": "Wie beendet"
+      },
+      "select": "Details zu {name} anzeigen",
+      "count": "{count, plural, one {# Mitglied} other {# Mitglieder}}"
+    },
+    "via": {
+      "join_code": "Beitrittscode",
+      "invitation": "Einladung"
+    },
+    "status": {
+      "active": "Aktiv"
+    },
+    "ended": {
+      "left": "Ausgetreten",
+      "removed": "Entfernt",
+      "account_deleted": "Konto gelöscht",
+      "gym_closed": "Gym geschlossen"
+    },
+    "person": {
+      "heading": "Über {name}",
+      "since": "Mitglied von {gym} seit {date}",
+      "ended": {
+        "left": "Ausgetreten am {date}",
+        "removed": "Entfernt am {date}",
+        "account_deleted": "Konto gelöscht am {date}",
+        "gym_closed": "Gym geschlossen am {date}"
+      },
+      "via": "Beigetreten über",
+      "requested": "Anfrage gestellt",
+      "approval": "Angenommen",
+      "autoApproved": "Automatisch (verifiziertes Konto)",
+      "staffApproved": "Vom Gym",
+      "noActions": "Nur Inhaber und Manager können eine Mitgliedschaft beenden."
+    },
+    "privacy": {
+      "heading": "Das Gym sieht nicht",
+      "body": "E-Mail-Adressen, Trainingsprotokolle, Gewicht, Ziele, Coach-Notizen, Videos und Nachrichten. Das bleibt bei den Mitgliedern.",
+      "membership": "Mitgliedschaft heißt hier: Die Person trainiert bei deinem Gym mit. Es ist kein bezahlter Tarif und kein Abo."
+    },
+    "requests": {
+      "heading": "Beitrittsanfragen",
+      "lead": "Personen, die deinen Beitrittscode eingegeben haben und auf deine Antwort warten.",
+      "settingsLink": "Beitrittscode & Freigabe",
+      "loading": "Beitrittsanfragen werden geladen",
+      "empty": "Keine Anfragen offen.",
+      "someone": "Person ohne Namen",
+      "asked": "Angefragt am {date}",
+      "more": "Mehr anzeigen",
+      "approve": "Annehmen",
+      "approving": "Wird angenommen…",
+      "approveLabel": "{name} annehmen",
+      "approved": "{name} ist jetzt Mitglied von {gym}.",
+      "reject": "Ablehnen",
+      "rejectLabel": "{name} ablehnen"
+    },
+    "reject": {
+      "title": "{name} ablehnen?",
+      "body": "{name} wird kein Mitglied von {gym}. Die Person kann später mit einem gültigen Beitrittscode erneut anfragen. Ihr Konto bleibt unberührt.",
+      "keep": "Anfrage behalten",
+      "confirm": "Anfrage ablehnen",
+      "pending": "Wird abgelehnt…",
+      "done": "Die Anfrage von {name} wurde abgelehnt."
+    },
+    "remove": {
+      "open": "Mitgliedschaft beenden",
+      "someone": "dieses Mitglied",
+      "title": "Mitgliedschaft von {name} beenden?",
+      "body": "{name} ist sofort kein Mitglied von {gym} mehr. Die Mitgliedschaft bleibt als beendet in deinem Verlauf.",
+      "keeps": {
+        "account": "Das SimpleFit-Konto wird nicht gelöscht.",
+        "profiles": "Das Fighter- oder Coach-Profil bleibt unverändert.",
+        "coaches": "Coaches und Training bleiben, wie sie sind.",
+        "gyms": "Mitgliedschaften in anderen Gyms sind nicht betroffen."
+      },
+      "keep": "Mitglied behalten",
+      "confirm": "Mitgliedschaft beenden",
+      "pending": "Wird beendet…",
+      "done": "{name} ist kein Mitglied von {gym} mehr."
+    },
+    "invite": {
+      "open": "Mitglied einladen",
+      "close": "Schließen",
+      "title": "Mitglied zu {gym} einladen",
+      "lead": "Wir schicken eine Einladung an diese Adresse. Die Person wird erst Mitglied, wenn sie annimmt.",
+      "email": {
+        "label": "E-Mail-Adresse",
+        "invalid": "Gib eine gültige E-Mail-Adresse ein.",
+        "rejected": "Diese Adresse kann nicht eingeladen werden."
+      },
+      "privacy": "Eine E-Mail-Adresse allein beweist nicht, wer jemand ist. Zum Annehmen meldet sich die Person mit dieser Adresse an.",
+      "cancel": "Abbrechen",
+      "sending": "Wird erstellt…",
+      "submit": "Einladung erstellen",
+      "pending": {
+        "title": "Einladung ausstehend",
+        "body": "Die Einladung für {email} ist bis {expires} ausstehend.",
+        "note": "Die Person wird erst Mitglied, wenn sie annimmt. Unter Einladungen kannst du sie erneut senden oder zurückziehen.",
+        "done": "Fertig"
+      },
+      "unavailable": {
+        "title": "Mitglieder-Einladungen sind noch nicht verfügbar",
+        "body": "Eingeladene können Mitglieder-Einladungen in SimpleFit noch nicht annehmen, deshalb sind sie ausgeschaltet. Es wurde nichts erstellt und keine E-Mail verschickt.",
+        "note": "Teile stattdessen deinen Beitrittscode: Wer ihn eingibt, schickt dir eine Beitrittsanfrage.",
+        "done": "OK"
+      }
+    },
+    "invitations": {
+      "heading": "Mitglieder-Einladungen",
+      "off": "Mitglieder-Einladungen sind noch nicht verfügbar. Es können keine Einladungen erstellt oder erneut gesendet werden; dein Beitrittscode funktioniert weiter.",
+      "loading": "Einladungen werden geladen",
+      "empty": "Noch keine Mitglieder-Einladungen.",
+      "more": "Mehr anzeigen",
+      "about": {
+        "heading": "So funktionieren Einladungen",
+        "body": "Eine Einladung ist 7 Tage lang ausstehend. Die Person wird erst Mitglied, wenn sie annimmt.",
+        "proof": "Zum Annehmen braucht es ein SimpleFit-Konto, das mit der eingeladenen Adresse angemeldet ist. Niemand wird automatisch hinzugefügt."
+      },
+      "line": {
+        "pending": "Ausstehend bis {expires}",
+        "accepted": "Angenommen am {date}",
+        "declined": "Abgelehnt am {date}",
+        "cancelled": "Zurückgezogen am {date}",
+        "expired": "Abgelaufen am {date}"
+      },
+      "status": {
+        "pending": "Ausstehend",
+        "accepted": "Angenommen",
+        "declined": "Abgelehnt",
+        "cancelled": "Zurückgezogen",
+        "expired": "Abgelaufen"
+      },
+      "invitedBy": "Eingeladen von {name}",
+      "resent": "Die Einladung für {email} ist wieder bis {expires} ausstehend.",
+      "resendLabel": "Einladung für {email} erneut senden",
+      "resending": "Wird erneut gesendet…",
+      "resend": "Erneut senden (noch {count})",
+      "cancelled": "Die Einladung für {email} wurde zurückgezogen.",
+      "cancelLabel": "Einladung für {email} zurückziehen",
+      "cancel": "Zurückziehen"
+    },
+    "cancelInvitation": {
+      "title": "Diese Einladung zurückziehen?",
+      "body": "Der an {email} gesendete Link funktioniert dann nicht mehr. Du kannst diese Adresse später erneut einladen.",
+      "keep": "Einladung behalten",
+      "pending": "Wird zurückgezogen…",
+      "confirm": "Einladung zurückziehen"
+    },
+    "settings": {
+      "loading": "Beitrittseinstellungen werden geladen",
+      "readOnly": "Nur Inhaber und Manager können das ändern.",
+      "code": {
+        "heading": "Beitrittscode",
+        "current": "Aktueller Beitrittscode",
+        "copy": "Code kopieren",
+        "copied": "Beitrittscode kopiert.",
+        "copyFailed": "Kopieren fehlgeschlagen. Markier den Code und kopier ihn selbst.",
+        "off": "Beitritt per Code ist ausgeschaltet.",
+        "howOn": "Wer diesen Code in SimpleFit eingibt, schickt deinem Gym eine Beitrittsanfrage. Der Code allein beweist nicht, wer jemand ist.",
+        "howOff": "Schalte ihn ein, um Personen einen Code zu geben, mit dem sie den Beitritt anfragen können.",
+        "since": "Ausgegeben am {date}",
+        "rotate": "Neuer Code",
+        "disable": "Ausschalten",
+        "enable": "Beitritt per Code einschalten"
+      },
+      "auto": {
+        "heading": "Freigabe",
+        "label": "Verifizierte Konten automatisch annehmen",
+        "on": "An: Personen mit vollständigem Konto und verifizierter Anmeldung werden Mitglied, sobald sie deinen Code eingeben.",
+        "off": "Aus: Jede Beitrittsanfrage wartet auf deine Antwort.",
+        "verified": "Wer keine verifizierte Anmeldung hat, wartet weiterhin auf deine Antwort.",
+        "changed": "Zuletzt geändert am {date}"
+      },
+      "done": {
+        "rotate": "Neuer Beitrittscode ausgegeben. Der alte Code funktioniert nicht mehr.",
+        "enable": "Beitritt per Code ist eingeschaltet.",
+        "disable": "Beitritt per Code ist ausgeschaltet. Der alte Code funktioniert nicht mehr.",
+        "autoOn": "Automatische Freigabe ist für {gym} eingeschaltet.",
+        "autoOff": "Automatische Freigabe ist für {gym} ausgeschaltet."
+      },
+      "confirm": {
+        "keep": "Abbrechen",
+        "pending": "Wird gespeichert…",
+        "rotate": {
+          "title": "Neuen Beitrittscode ausgeben?",
+          "body": "Der aktuelle Code funktioniert sofort nicht mehr. Teile den neuen Code mit allen, die noch nicht beigetreten sind.",
+          "confirm": "Neuen Code ausgeben"
+        },
+        "enable": {
+          "title": "Beitritt per Code einschalten?",
+          "body": "{gym} bekommt einen Beitrittscode, mit dem Personen den Beitritt anfragen können.",
+          "confirm": "Einschalten"
+        },
+        "disable": {
+          "title": "Beitritt per Code ausschalten?",
+          "body": "Der aktuelle Code funktioniert nicht mehr, und niemand kann per Code den Beitritt zu {gym} anfragen, bis du ihn wieder einschaltest. Offene Anfragen bleiben.",
+          "confirm": "Ausschalten"
+        },
+        "autoOn": {
+          "title": "Verifizierte Konten automatisch annehmen?",
+          "body": "Personen mit vollständigem SimpleFit-Konto und verifizierter Anmeldung werden Mitglied von {gym}, sobald sie deinen Beitrittscode eingeben – ohne deine Prüfung. Alle anderen warten weiterhin auf deine Antwort. Du kannst das jederzeit ausschalten.",
+          "confirm": "Einschalten"
+        },
+        "autoOff": {
+          "title": "Automatische Freigabe ausschalten?",
+          "body": "Jede neue Beitrittsanfrage an {gym} wartet auf deine Antwort.",
+          "confirm": "Ausschalten"
+        }
+      },
+      "about": {
+        "heading": "Zum Beitritt",
+        "code": "Der Empfang kann den Code am Tresen zeigen. Nur Inhaber und Manager können einen neuen ausgeben oder ihn ausschalten.",
+        "auto": "Die automatische Freigabe ist aus, bis du sie einschaltest, und gilt nie für Personen ohne verifizierte Anmeldung."
+      }
+    },
+    "problems": {
+      "limited": "Zu viele Anfragen. Versuch es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
+      "limitedLater": "Zu viele Anfragen. Versuch es später erneut.",
+      "decided": {
+        "requested": "Diese Anfrage wartet noch. Die Seite ist aktuell.",
+        "active": "Diese Person ist bereits Mitglied. Die Seite ist aktuell.",
+        "rejected": "Diese Anfrage wurde bereits abgelehnt. Die Seite ist aktuell.",
+        "cancelled": "Die Person hat diese Anfrage zurückgezogen. Die Seite ist aktuell.",
+        "ended": "Diese Mitgliedschaft ist bereits beendet. Die Seite ist aktuell."
+      },
+      "alreadyActive": "Diese Person ist bereits Mitglied dieses Gyms.",
+      "invitationsUnavailable": "Mitglieder-Einladungen sind noch nicht verfügbar. Es wurde nichts erstellt und keine E-Mail verschickt.",
+      "noResends": "Keine weiteren Sendungen möglich. Zieh sie zurück und lade erneut ein.",
+      "notPending": "Diese Einladung ist nicht mehr ausstehend.",
+      "resolved": "Diese Einladung wurde bereits beantwortet.",
+      "draft": "Schließ zuerst die Einrichtung deines Gyms ab.",
+      "forbidden": "Deine Rolle erlaubt das nicht mehr. Die Seite ist aktuell.",
+      "gone": "Diese Anfrage, dieses Mitglied oder diese Einladung gehört nicht mehr zum Gym. Die Seite ist aktuell.",
+      "unknown": "Wir konnten nicht bestätigen, ob es geklappt hat. Die Seite zeigt den neuesten Stand; prüf ihn, bevor du es erneut versuchst.",
+      "failed": "Etwas ist schiefgelaufen. Nichts wurde geändert. Versuch es erneut."
+    },
+    "import": {
+      "file": {
+        "heading": "Mitgliederliste",
+        "none": "Keine Datei ausgewählt.",
+        "reading": "Wird gelesen…",
+        "size": "{size} KB · bleibt in diesem Browser-Tab, bis du sie prüfst",
+        "choose": "CSV-Datei auswählen",
+        "replace": "Andere Datei auswählen",
+        "clear": "Entfernen",
+        "limits": "Eine CSV-Datei mit Kopfzeile: bis 1 MB, {rows, number} Zeilen, {columns} Spalten und {field} Zeichen pro Feld."
+      },
+      "fileProblems": {
+        "type": "Wähl eine CSV-Datei (.csv, .tsv oder .txt).",
+        "empty": "Diese Datei ist leer.",
+        "tooLarge": "Diese Datei ist größer als 1 MB.",
+        "encoding": "Diese Datei ist kein UTF-8-Text. Exportier sie erneut als CSV (UTF-8).",
+        "columns": "Diese Datei hat mehr als {columns} Spalten.",
+        "header": "Jede Spalte in der ersten Zeile braucht einen eigenen Namen."
+      },
+      "validate": "Prüfung starten",
+      "validating": "Wird geprüft…",
+      "validateNote": "Prüft die Datei. Nichts wird gespeichert oder verschickt.",
+      "about": {
+        "heading": "Mitgliederliste prüfen",
+        "steps": {
+          "choose": "CSV-Datei auswählen.",
+          "map": "Spalten zuordnen.",
+          "validate": "Prüfung starten.",
+          "review": "Ergebnisse ansehen."
+        },
+        "unavailable": "Der Import von Mitgliedern ist noch nicht verfügbar. Hier wird nur deine Liste geprüft: Niemand wird hinzugefügt, eingeladen oder angeschrieben.",
+        "privacy": "Deine Datei wird nicht gespeichert. E-Mail-Adressen kommen maskiert zurück, und SimpleFit gleicht Personen nie über Namen ab und behandelt keine Adresse als verifiziert."
+      },
+      "mapping": {
+        "heading": "Spalten zuordnen",
+        "lead": "Wähl, welche deiner Spalten welches Feld enthält. Lass E-Mail auf „Vorschlagen“, damit SimpleFit aus üblichen Spaltennamen wählt.",
+        "email": "E-Mail",
+        "name": "Vollständiger Name",
+        "required": "erforderlich",
+        "optional": "optional",
+        "suggest": "Vorschlagen",
+        "none": "Nicht verwenden",
+        "others": "Andere Spalten (Tarif, Telefon, Daten …) werden nicht verwendet.",
+        "reset": "Zuordnung zurücksetzen"
+      },
+      "problems": {
+        "file": "Diese Datei konnte nicht als Mitgliederliste gelesen werden. Prüf Anführungszeichen und Grenzen und versuch es erneut.",
+        "emailColumn": "Wähl die Spalte mit den E-Mail-Adressen.",
+        "mapping": "Diese Spaltenzuordnung passt nicht zur Datei. Ordne die Spalten erneut zu.",
+        "limited": "Zu viele Prüfungen. Versuch es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
+        "limitedLater": "Zu viele Prüfungen. Versuch es später erneut.",
+        "draft": "Schließ zuerst die Einrichtung deines Gyms ab.",
+        "forbidden": "Deine Rolle kann keine Mitgliederlisten mehr prüfen.",
+        "gone": "Dieses Gym ist nicht mehr verfügbar.",
+        "unknown": "Die Prüfung wurde nicht abgeschlossen. Nichts wurde gespeichert. Versuch es erneut."
+      },
+      "results": {
+        "heading": "Ergebnisse ansehen",
+        "status": "Prüfung abgeschlossen: {total, plural, one {# Zeile} other {# Zeilen}} geprüft.",
+        "unavailable": "Prüfung abgeschlossen. Der Import von Mitgliedern ist noch nicht verfügbar. Nichts wurde gespeichert, niemand wurde hinzugefügt oder angeschrieben.",
+        "total": "Zeilen",
+        "outcomes": {
+          "ready": "Könnte eingeladen werden",
+          "already_member": "Bereits Mitglied",
+          "request_pending": "Beitrittsanfrage offen",
+          "already_invited": "Bereits eingeladen",
+          "duplicate": "Duplikat",
+          "missing_email": "Keine E-Mail",
+          "invalid_email": "Ungültige E-Mail"
+        },
+        "ignored": "Nicht verwendet: {columns}.",
+        "filter": "Welche Zeilen",
+        "all": "Alle Zeilen",
+        "attention": "Prüfen nötig",
+        "noneAttention": "Keine Zeile muss geprüft werden.",
+        "noRows": "Die Datei hat keine Datenzeilen.",
+        "more": "{count} weitere anzeigen",
+        "nothingStored": "Die Ergebnisse verschwinden, wenn du diese Seite verlässt, eine andere Datei wählst oder dich abmeldest.",
+        "tableLabel": "Prüfergebnisse je Zeile",
+        "columns": {
+          "line": "Zeile",
+          "email": "E-Mail",
+          "name": "Name",
+          "result": "Ergebnis"
+        },
+        "noEmail": "Keine Adresse",
+        "namePresent": "Angegeben",
+        "nameMissing": "Fehlt",
+        "duplicateOf": "Gleiche Adresse wie Zeile {line}"
+      }
     }
   }
 }

@@ -252,5 +252,12 @@ invitation_recipient_mismatch`, `404`, `409 gym_member: already_active`).
   import commit until the proposed decision D-G27 (lawful basis, retention) is
   approved.
 - **Checklist:** `invite_members` is now `available` at a completed gym and
-  `completed` once a member became active. The checklist row shows it
-  without an action until a member screen exists.
+  `completed` once a member became active. On the web (SF-96) the row links
+  to the gym's members page for a viewer who may enroll members (never to an
+  invitation form); the mobile row shows it without an action until a member
+  screen exists there.
+- **Web staff side (SF-96):** everything above that the gym's staff use is
+  built at `/app/gyms/:gymId/members` (`docs/gym-console-web.md`, SF-96):
+  the roster, requests, invitations (honouring the 409 gate), the join code
+  and auto-approval, and the import preview with no commit. The member's own
+  side (join, inbox, `/invite/gym`, `/app/me/gyms`) is not built.

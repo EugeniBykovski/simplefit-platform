@@ -97,10 +97,6 @@
     "later": {
       "title": "Wkrótce w Twojej konsoli",
       "badge": "Później",
-      "members": {
-        "title": "Członkowie",
-        "body": "Zapraszaj członków i sprawdzaj, kto tu trenuje."
-      },
       "schedule": {
         "title": "Zajęcia i grafik",
         "body": "Planuj zajęcia na cały tydzień."
@@ -176,7 +172,7 @@
         "invite_members": {
           "title": "Zaproś członków",
           "completed": "Członek dołączył do twojej sali",
-          "available": "Wyślij pierwsze zaproszenie dla członków",
+          "available": "Udostępnij kod dołączenia lub zaproś członka",
           "coming_later": "Pojawi się z zaproszeniami dla członków"
         },
         "first_check_in": {
@@ -450,6 +446,388 @@
       "gone": "Tej osoby lub zaproszenia nie ma już w klubie. Strona jest aktualna.",
       "unknown": "Nie udało się potwierdzić wyniku. Strona pokazuje najnowszy stan — sprawdź go przed ponowną próbą.",
       "failed": "Coś poszło nie tak. Nic się nie zmieniło. Spróbuj ponownie."
+    }
+  },
+  "members": {
+    "metaTitle": "Członkowie",
+    "eyebrow": "Ludzie",
+    "title": "Członkowie",
+    "noName": "Członek bez imienia",
+    "tabs": {
+      "label": "Sekcje członków",
+      "members": "Członkowie",
+      "requests": "Prośby o dołączenie",
+      "invitations": "Zaproszenia",
+      "settings": "Kod dołączenia i akceptacja",
+      "import": "Podgląd importu",
+      "requestsWaiting": "Prośby o dołączenie, oczekuje: {count}"
+    },
+    "read": {
+      "restricted": {
+        "title": "Twoja rola jeszcze tego nie widzi",
+        "body": "Trenerzy zobaczą członków swoich zajęć, gdy pojawią się zajęcia. Członkami zarządzają właściciel, menedżerowie i recepcja."
+      },
+      "failed": {
+        "title": "Nie udało się wczytać",
+        "body": "Sprawdź połączenie i spróbuj ponownie. Nic nie zostało zmienione.",
+        "retry": "Spróbuj ponownie"
+      }
+    },
+    "roster": {
+      "heading": "Członkowie klubu",
+      "views": "Którzy członkowie",
+      "tabs": {
+        "active": "Aktywni",
+        "ended": "Zakończeni"
+      },
+      "loading": "Wczytywanie członków",
+      "loadingMore": "Wczytywanie…",
+      "more": "Pokaż więcej",
+      "empty": {
+        "active": {
+          "title": "Brak członków",
+          "body": "Osoby zostają członkami, gdy zaakceptujesz ich prośbę o dołączenie albo przyjmą twoje zaproszenie. Na start udostępnij kod dołączenia."
+        },
+        "ended": {
+          "title": "Brak zakończonych członkostw",
+          "body": "Tu pojawią się członkowie, którzy odeszli lub zostali usunięci."
+        }
+      },
+      "label": {
+        "active": "Aktywni członkowie",
+        "ended": "Zakończone członkostwa"
+      },
+      "columns": {
+        "person": "Członek",
+        "joined": "Dołączył(a)",
+        "via": "Sposób dołączenia",
+        "status": "Status",
+        "ended": "Zakończono",
+        "how": "Jak zakończono"
+      },
+      "select": "Pokaż szczegóły: {name}",
+      "count": "{count, plural, one {# członek} few {# członków} many {# członków} other {# członka}}"
+    },
+    "via": {
+      "join_code": "Kod dołączenia",
+      "invitation": "Zaproszenie"
+    },
+    "status": {
+      "active": "Aktywny"
+    },
+    "ended": {
+      "left": "Odszedł/odeszła",
+      "removed": "Usunięty/usunięta",
+      "account_deleted": "Konto usunięte",
+      "gym_closed": "Klub zamknięty"
+    },
+    "person": {
+      "heading": "O osobie {name}",
+      "since": "Członek {gym} od {date}",
+      "ended": {
+        "left": "Odejście {date}",
+        "removed": "Usunięcie {date}",
+        "account_deleted": "Konto usunięte {date}",
+        "gym_closed": "Klub zamknięty {date}"
+      },
+      "via": "Sposób dołączenia",
+      "requested": "Prośba o dołączenie",
+      "approval": "Akceptacja",
+      "autoApproved": "Automatyczna (zweryfikowane konto)",
+      "staffApproved": "Przez klub",
+      "noActions": "Tylko właściciel i menedżerowie mogą zakończyć członkostwo."
+    },
+    "privacy": {
+      "heading": "Klub nie widzi",
+      "body": "Adresów e-mail, dzienników treningów, wagi, celów, notatek trenera, filmów ani wiadomości. To zostaje u członków.",
+      "membership": "Członkostwo oznacza tu udział w twoim klubie. To nie jest płatny plan ani subskrypcja."
+    },
+    "requests": {
+      "heading": "Prośby o dołączenie",
+      "lead": "Osoby, które wpisały twój kod dołączenia i czekają na odpowiedź.",
+      "settingsLink": "Kod dołączenia i akceptacja",
+      "loading": "Wczytywanie próśb o dołączenie",
+      "empty": "Żadna prośba nie czeka.",
+      "someone": "Osoba bez imienia",
+      "asked": "Prośba z {date}",
+      "more": "Pokaż więcej",
+      "approve": "Zaakceptuj",
+      "approving": "Akceptowanie…",
+      "approveLabel": "Zaakceptuj: {name}",
+      "approved": "{name} jest teraz członkiem {gym}.",
+      "reject": "Odrzuć",
+      "rejectLabel": "Odrzuć: {name}"
+    },
+    "reject": {
+      "title": "Odrzucić prośbę: {name}?",
+      "body": "{name} nie zostanie członkiem {gym}. Ta osoba może później poprosić ponownie z ważnym kodem. Jej konto pozostaje bez zmian.",
+      "keep": "Zostaw prośbę",
+      "confirm": "Odrzuć prośbę",
+      "pending": "Odrzucanie…",
+      "done": "Prośba ({name}) została odrzucona."
+    },
+    "remove": {
+      "open": "Zakończ członkostwo",
+      "someone": "tego członka",
+      "title": "Zakończyć członkostwo: {name}?",
+      "body": "{name} od razu przestaje być członkiem {gym}. Członkostwo zostaje w historii jako zakończone.",
+      "keeps": {
+        "account": "Konto SimpleFit nie zostanie usunięte.",
+        "profiles": "Profil zawodnika lub trenera pozostaje bez zmian.",
+        "coaches": "Trenerzy i treningi pozostają bez zmian.",
+        "gyms": "Członkostwa w innych klubach nie są naruszone."
+      },
+      "keep": "Zostaw członka",
+      "confirm": "Zakończ członkostwo",
+      "pending": "Kończenie…",
+      "done": "{name} nie jest już członkiem {gym}."
+    },
+    "invite": {
+      "open": "Zaproś członka",
+      "close": "Zamknij",
+      "title": "Zaproś członka do {gym}",
+      "lead": "Wyślemy zaproszenie na ten adres. Osoba zostanie członkiem dopiero, gdy je przyjmie.",
+      "email": {
+        "label": "Adres e-mail",
+        "invalid": "Wpisz prawidłowy adres e-mail.",
+        "rejected": "Nie można zaprosić tego adresu."
+      },
+      "privacy": "Sam adres e-mail nie potwierdza, kim ktoś jest. Aby przyjąć zaproszenie, osoba loguje się tym adresem.",
+      "cancel": "Anuluj",
+      "sending": "Tworzenie…",
+      "submit": "Utwórz zaproszenie",
+      "pending": {
+        "title": "Zaproszenie oczekuje",
+        "body": "Zaproszenie dla {email} oczekuje do {expires}.",
+        "note": "Osoba zostanie członkiem dopiero po przyjęciu. W zakładce Zaproszenia możesz je wysłać ponownie lub anulować.",
+        "done": "Gotowe"
+      },
+      "unavailable": {
+        "title": "Zaproszenia dla członków nie są jeszcze dostępne",
+        "body": "Zaproszone osoby nie mogą jeszcze przyjmować zaproszeń w SimpleFit, dlatego są wyłączone. Nic nie zostało utworzone i nie wysłano żadnego e-maila.",
+        "note": "Zamiast tego udostępnij kod dołączenia: kto go wpisze, wyśle ci prośbę o dołączenie.",
+        "done": "OK"
+      }
+    },
+    "invitations": {
+      "heading": "Zaproszenia dla członków",
+      "off": "Zaproszenia dla członków nie są jeszcze dostępne. Nie można ich tworzyć ani wysyłać ponownie; kod dołączenia nadal działa.",
+      "loading": "Wczytywanie zaproszeń",
+      "empty": "Brak zaproszeń dla członków.",
+      "more": "Pokaż więcej",
+      "about": {
+        "heading": "Jak działają zaproszenia",
+        "body": "Zaproszenie oczekuje 7 dni. Osoba zostaje członkiem dopiero, gdy je przyjmie.",
+        "proof": "Do przyjęcia potrzebne jest konto SimpleFit zalogowane zaproszonym adresem. Nikt nie jest dodawany automatycznie."
+      },
+      "line": {
+        "pending": "Oczekuje do {expires}",
+        "accepted": "Przyjęte {date}",
+        "declined": "Odrzucone {date}",
+        "cancelled": "Anulowane {date}",
+        "expired": "Wygasło {date}"
+      },
+      "status": {
+        "pending": "Oczekuje",
+        "accepted": "Przyjęte",
+        "declined": "Odrzucone",
+        "cancelled": "Anulowane",
+        "expired": "Wygasło"
+      },
+      "invitedBy": "Zaprasza: {name}",
+      "resent": "Zaproszenie dla {email} znów oczekuje do {expires}.",
+      "resendLabel": "Wyślij ponownie zaproszenie dla {email}",
+      "resending": "Wysyłanie…",
+      "resend": "Wyślij ponownie (zostało {count})",
+      "cancelled": "Zaproszenie dla {email} zostało anulowane.",
+      "cancelLabel": "Anuluj zaproszenie dla {email}",
+      "cancel": "Anuluj"
+    },
+    "cancelInvitation": {
+      "title": "Anulować to zaproszenie?",
+      "body": "Link wysłany na {email} przestanie działać. Możesz później zaprosić ten adres ponownie.",
+      "keep": "Zostaw zaproszenie",
+      "pending": "Anulowanie…",
+      "confirm": "Anuluj zaproszenie"
+    },
+    "settings": {
+      "loading": "Wczytywanie ustawień dołączania",
+      "readOnly": "Tylko właściciel i menedżerowie mogą to zmienić.",
+      "code": {
+        "heading": "Kod dołączenia",
+        "current": "Aktualny kod dołączenia",
+        "copy": "Kopiuj kod",
+        "copied": "Skopiowano kod dołączenia.",
+        "copyFailed": "Nie udało się skopiować. Zaznacz kod i skopiuj go samodzielnie.",
+        "off": "Dołączanie kodem jest wyłączone.",
+        "howOn": "Kto wpisze ten kod w SimpleFit, wyśle twojemu klubowi prośbę o dołączenie. Sam kod nie potwierdza, kim ktoś jest.",
+        "howOff": "Włącz, aby dać ludziom kod, którym mogą poprosić o dołączenie.",
+        "since": "Wydany {date}",
+        "rotate": "Nowy kod",
+        "disable": "Wyłącz",
+        "enable": "Włącz dołączanie kodem"
+      },
+      "auto": {
+        "heading": "Akceptacja",
+        "label": "Automatycznie akceptuj zweryfikowane konta",
+        "on": "Włączone: osoby z ukończonym kontem i zweryfikowanym logowaniem zostają członkami od razu po wpisaniu kodu.",
+        "off": "Wyłączone: każda prośba o dołączenie czeka na twoją odpowiedź.",
+        "verified": "Osoby bez zweryfikowanego logowania nadal czekają na twoją odpowiedź.",
+        "changed": "Ostatnia zmiana {date}"
+      },
+      "done": {
+        "rotate": "Wydano nowy kod dołączenia. Stary kod już nie działa.",
+        "enable": "Dołączanie kodem jest włączone.",
+        "disable": "Dołączanie kodem jest wyłączone. Stary kod już nie działa.",
+        "autoOn": "Automatyczna akceptacja w {gym} jest włączona.",
+        "autoOff": "Automatyczna akceptacja w {gym} jest wyłączona."
+      },
+      "confirm": {
+        "keep": "Anuluj",
+        "pending": "Zapisywanie…",
+        "rotate": {
+          "title": "Wydać nowy kod dołączenia?",
+          "body": "Obecny kod od razu przestanie działać. Przekaż nowy kod osobom, które jeszcze nie dołączyły.",
+          "confirm": "Wydaj nowy kod"
+        },
+        "enable": {
+          "title": "Włączyć dołączanie kodem?",
+          "body": "{gym} dostanie kod dołączenia, którym ludzie mogą poprosić o dołączenie.",
+          "confirm": "Włącz"
+        },
+        "disable": {
+          "title": "Wyłączyć dołączanie kodem?",
+          "body": "Obecny kod przestanie działać i nikt nie poprosi kodem o dołączenie do {gym}, dopóki go nie włączysz. Oczekujące prośby zostają.",
+          "confirm": "Wyłącz"
+        },
+        "autoOn": {
+          "title": "Automatycznie akceptować zweryfikowane konta?",
+          "body": "Osoby z ukończonym kontem SimpleFit i zweryfikowanym logowaniem zostaną członkami {gym} od razu po wpisaniu kodu, bez twojej weryfikacji. Wszyscy inni nadal czekają na twoją odpowiedź. Możesz to w każdej chwili wyłączyć.",
+          "confirm": "Włącz"
+        },
+        "autoOff": {
+          "title": "Wyłączyć automatyczną akceptację?",
+          "body": "Każda nowa prośba o dołączenie do {gym} będzie czekać na twoją odpowiedź.",
+          "confirm": "Wyłącz"
+        }
+      },
+      "about": {
+        "heading": "O dołączaniu",
+        "code": "Recepcja może pokazać kod na miejscu. Tylko właściciel i menedżerowie mogą wydać nowy kod lub go wyłączyć.",
+        "auto": "Automatyczna akceptacja jest wyłączona, dopóki jej nie włączysz, i nigdy nie dotyczy osób bez zweryfikowanego logowania."
+      }
+    },
+    "problems": {
+      "limited": "Zbyt wiele żądań. Spróbuj ponownie za {minutes, plural, one {# minutę} few {# minuty} many {# minut} other {# minuty}}.",
+      "limitedLater": "Zbyt wiele żądań. Spróbuj ponownie później.",
+      "decided": {
+        "requested": "Ta prośba nadal czeka. Strona jest aktualna.",
+        "active": "Ta osoba jest już członkiem. Strona jest aktualna.",
+        "rejected": "Ta prośba została już odrzucona. Strona jest aktualna.",
+        "cancelled": "Ta osoba wycofała prośbę. Strona jest aktualna.",
+        "ended": "To członkostwo zostało już zakończone. Strona jest aktualna."
+      },
+      "alreadyActive": "Ta osoba jest już członkiem tego klubu.",
+      "invitationsUnavailable": "Zaproszenia dla członków nie są jeszcze dostępne. Nic nie zostało utworzone i nie wysłano żadnego e-maila.",
+      "noResends": "Nie można już wysłać ponownie. Anuluj je i zaproś jeszcze raz.",
+      "notPending": "To zaproszenie już nie oczekuje.",
+      "resolved": "Na to zaproszenie już odpowiedziano.",
+      "draft": "Najpierw dokończ konfigurację klubu.",
+      "forbidden": "Twoja rola już na to nie pozwala. Strona jest aktualna.",
+      "gone": "Ta prośba, członek lub zaproszenie nie należy już do klubu. Strona jest aktualna.",
+      "unknown": "Nie udało się potwierdzić wyniku. Strona pokazuje najnowszy stan — sprawdź go przed ponowną próbą.",
+      "failed": "Coś poszło nie tak. Nic się nie zmieniło. Spróbuj ponownie."
+    },
+    "import": {
+      "file": {
+        "heading": "Lista członków",
+        "none": "Nie wybrano pliku.",
+        "reading": "Wczytywanie…",
+        "size": "{size} KB · zostaje w tej karcie przeglądarki do czasu sprawdzenia",
+        "choose": "Wybierz plik CSV",
+        "replace": "Wybierz inny plik",
+        "clear": "Wyczyść",
+        "limits": "Plik CSV z wierszem nagłówka: do 1 MB, {rows, number} wierszy, {columns} kolumn i {field} znaków w polu."
+      },
+      "fileProblems": {
+        "type": "Wybierz plik CSV (.csv, .tsv lub .txt).",
+        "empty": "Ten plik jest pusty.",
+        "tooLarge": "Ten plik jest większy niż 1 MB.",
+        "encoding": "Ten plik nie jest tekstem UTF-8. Wyeksportuj go ponownie jako CSV (UTF-8).",
+        "columns": "Ten plik ma więcej niż {columns} kolumn.",
+        "header": "Każda kolumna w pierwszym wierszu musi mieć własną nazwę."
+      },
+      "validate": "Uruchom walidację",
+      "validating": "Sprawdzanie…",
+      "validateNote": "Sprawdza plik. Nic nie jest zapisywane ani wysyłane.",
+      "about": {
+        "heading": "Podgląd listy członków",
+        "steps": {
+          "choose": "Wybierz plik CSV.",
+          "map": "Przypisz kolumny.",
+          "validate": "Uruchom walidację.",
+          "review": "Przejrzyj wyniki."
+        },
+        "unavailable": "Import członków nie jest jeszcze dostępny. To tylko sprawdza twoją listę: nikt nie zostaje dodany, zaproszony ani nie dostaje e-maila.",
+        "privacy": "Twój plik nie jest zapisywany. Adresy e-mail wracają zamaskowane, a SimpleFit nigdy nie dopasowuje osób po imieniu ani nie uznaje adresu za zweryfikowany."
+      },
+      "mapping": {
+        "heading": "Przypisz kolumny",
+        "lead": "Wybierz, która kolumna zawiera każde pole. Zostaw e-mail na „Zaproponuj”, aby SimpleFit wybrał spośród typowych nazw kolumn.",
+        "email": "E-mail",
+        "name": "Imię i nazwisko",
+        "required": "wymagane",
+        "optional": "opcjonalne",
+        "suggest": "Zaproponuj",
+        "none": "Nie używaj",
+        "others": "Inne kolumny (karnet, telefon, daty…) nie są używane.",
+        "reset": "Resetuj przypisanie"
+      },
+      "problems": {
+        "file": "Nie udało się odczytać tego pliku jako listy członków. Sprawdź cudzysłowy i limity, a potem spróbuj ponownie.",
+        "emailColumn": "Wybierz kolumnę z adresami e-mail.",
+        "mapping": "To przypisanie kolumn nie pasuje do pliku. Przypisz kolumny ponownie.",
+        "limited": "Zbyt wiele walidacji. Spróbuj ponownie za {minutes, plural, one {# minutę} few {# minuty} many {# minut} other {# minuty}}.",
+        "limitedLater": "Zbyt wiele walidacji. Spróbuj ponownie później.",
+        "draft": "Najpierw dokończ konfigurację klubu.",
+        "forbidden": "Twoja rola nie może już sprawdzać list członków.",
+        "gone": "Ten klub nie jest już dostępny.",
+        "unknown": "Walidacja się nie zakończyła. Nic nie zostało zapisane. Spróbuj ponownie."
+      },
+      "results": {
+        "heading": "Przejrzyj wyniki",
+        "status": "Walidacja zakończona: sprawdzono {total, plural, one {# wiersz} few {# wiersze} many {# wierszy} other {# wiersza}}.",
+        "unavailable": "Walidacja zakończona. Import członków nie jest jeszcze dostępny. Nic nie zostało zapisane, nikogo nie dodano ani nie wysłano e-maili.",
+        "total": "Wiersze",
+        "outcomes": {
+          "ready": "Można zaprosić",
+          "already_member": "Już członek",
+          "request_pending": "Prośba czeka",
+          "already_invited": "Już zaproszony",
+          "duplicate": "Duplikat",
+          "missing_email": "Brak e-maila",
+          "invalid_email": "Błędny e-mail"
+        },
+        "ignored": "Nieużywane: {columns}.",
+        "filter": "Które wiersze",
+        "all": "Wszystkie wiersze",
+        "attention": "Do sprawdzenia",
+        "noneAttention": "Żaden wiersz nie wymaga uwagi.",
+        "noRows": "Plik nie zawiera wierszy z danymi.",
+        "more": "Pokaż kolejne ({count})",
+        "nothingStored": "Wyniki znikną, gdy opuścisz tę stronę, wybierzesz inny plik lub się wylogujesz.",
+        "tableLabel": "Wyniki walidacji według wierszy",
+        "columns": {
+          "line": "Wiersz",
+          "email": "E-mail",
+          "name": "Imię",
+          "result": "Wynik"
+        },
+        "noEmail": "Brak adresu",
+        "namePresent": "Podane",
+        "nameMissing": "Brak",
+        "duplicateOf": "Ten sam adres co w wierszu {line}"
+      }
     }
   }
 }
