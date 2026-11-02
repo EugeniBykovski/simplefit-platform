@@ -90,6 +90,35 @@ With `E2E_API_LOG=/path/to/api.log` the spec also checks (AF) that the API's
 log holds none of the run's join codes, imported addresses, invitation
 tokens, bearer tokens or CSV rows; it prints none of them.
 
+`gym-timetable.spec.ts` (SF-98) drives the gym timetable, scenarios A–AJ of
+the ticket: the owner creates a gym, a venue and a template in the web UI,
+schedules a one-time class (from a New York browser, shown at its Warsaw
+wall time), assigns the coach, is refused overlapping venue and instructor
+slots (adjacent ones are fine), schedules weekly classes across the spring
+DST change (18:00 stays 18:00; a 02:30 series lists its skipped date),
+refuses a 02:30 one-time class on 28 March 2027 and picks the second 02:30 on
+31 October 2027, moves and cancels single dates, cancels a series (the date
+cancelled on its own keeps its reason), loses a stale edit to the manager
+without overwriting it, and recovers a lost create answer without a
+duplicate. The manager plans, the coach cancels only their own class, the
+front desk only reads, a revoked front desk loses the gym; Gym B (another
+owner, API) is invisible to Gym A, and the coach's Gym A class blocks the
+same slot in Gym B with a bare `instructor_unavailable`. Staff join through
+the SF-93 API with their own sessions. It writes `evidence.json` (status
+codes, ids, UTC instants, revisions, audit event counts) to its output and,
+with `E2E_EVIDENCE=/path/prefix`, beside it. The API needs only the test-only
+legal fixtures:
+
+```bash
+env -u RESEND_API_KEY MIX_ENV=dev PORT=4198 DATABASE_URL=$E2E_DB PHX_SERVER=true \
+  CORS_ALLOWED_ORIGINS=http://127.0.0.1:3100 WEB_APP_URL=http://127.0.0.1:3100 \
+  mix run --no-halt -e 'Application.put_env(:simple_fit, SimpleFit.Legal, registry_path: "test/support/legal", allow_test_fixtures: true); SimpleFit.Legal.Registry.load()' \
+  > /path/to/api.log 2>&1
+```
+
+With `E2E_API_LOG=/path/to/api.log` the spec checks (AJ) that the log holds no
+bearer, access or refresh token and none of the run's email addresses.
+
 This is a **local acceptance gate, not part of CI**. It needs an API on a
 **disposable** database. Never point it at `simple_fit_dev`: the spec refuses
 any database whose name does not contain `e2e`, because it clears that

@@ -2075,9 +2075,10 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/app/gyms/[gymId]/timetable/page.tsx",
-        "note": "SF-32 placeholder (FeaturePlaceholder) inside the gym console of the gym in the path (SF-88: id-based, D-G23); its sidebar item is marked Soon and not linked until the feature ticket builds the screen."
+        "note": "SF-98: WG5 with OG10, the timetable of the gym in the path, inside its console (the layout authorizes the gym; 404 not available, 403 role-restricted), on the SF-97 API only. Timetable: a week (Week grid on wide screens, a day strip and that day's classes on phones), a day, or the week as an accessible list grouped by wall date, read as one window of at most 31 days with every cursor page (GET /api/v1/gyms/{gym_id}/class-occurrences?from&to&venue_id&instructor_staff_membership_id&status; nothing is shown as the whole week until the last page arrives); each class sits at its own wall time in its venue's IANA zone (local_starts_at), whatever the viewer's device zone; the week starts on the locale's first day. Class details (title, date, wall times with zone and UTC offset, duration, venue, instructor or 'Instructor needed', maximum capacity, the backend's status and cancel reason, its series); change one class (PATCH …/class-occurrences/{id} with expected_revision; only changed fields; venues in the same zone) and cancel one class (POST …/cancel, confirmed). + Class: one-time (POST …/class-occurrences: starts_at with the venue zone's own offset; a spring-gap time is said before sending and refused by the backend, never moved; a repeated autumn hour needs an explicit choice of offset) or weekly (POST …/class-series: weekdays, wall time, first and last date ≤ one year; the result shows the backend's count and every skipped date with its reason); one client_request_id per attempt, reused after a lost answer. Weekly series (GET/PATCH …/class-series, POST …/cancel with a stronger confirmation, POST …/generate), class templates (GET/POST/PATCH …/class-templates, POST …/archive) and venues (GET/POST/PATCH …/venues, POST …/deactivate; zone set once). A 409 stale revision re-reads the record and keeps only the user's own edits for an explicit save; 409 venue_unavailable / instructor_unavailable keep the form and name nothing of another gym. Every staff role reads it (view_workspace); the owner and managers write (manage_timetable); a coach cancels only the classes they teach (cancel_occurrence). No booking, waitlist, attendance, occupancy, payment, visibility or 'friends attending': those domains do not exist, and a capacity is shown as the limit it is. The page is keyed by gym; the session boundary clears the cache. Its sidebar item is linked for every staff role (D-WEB-GYM-TIMETABLE)."
       },
-      "screens": ["WG5"]
+      "screens": ["WG5"],
+      "discrepancies": ["D-WEB-GYM-TIMETABLE"]
     },
     {
       "id": "web.partners",
@@ -14195,14 +14196,33 @@
       "code": "WG5",
       "name": "Timetable",
       "route": "web.app.gyms._gym-id.timetable",
-      "states": ["week", "day", "coach"],
+      "states": [
+        "week",
+        "day",
+        "list",
+        "class details",
+        "one-time class",
+        "weekly class",
+        "skipped dates",
+        "DST gap",
+        "DST repeated hour",
+        "conflict",
+        "stale revision",
+        "outcome unknown",
+        "weekly series",
+        "templates",
+        "venues",
+        "empty",
+        "read-only"
+      ],
       "design": {
         "gallery": "gallery-2",
         "page": "desktop-web",
         "section": "18b · Gym web · schedule & money",
         "step": "18.9",
         "tag": "WEB_APP",
-        "artboard": "WebTimetable.dc.html"
+        "artboard": "WebTimetable.dc.html",
+        "note": "Claude Design 112 (1793198527-a0fc) reconciled with SF-97 (SF-98): the header, Week/Day toggle, + Class, the 7-day grid with hour rail and the right-hand class panel are built. The Coach segment becomes the instructor filter; a List view and a venue filter are added. The class blocks show title, wall times and venue only: the 14/20-style booked counts, the 'full' tint, the 'Shared · Team' and 'Open sparring' kinds and the 'X friends attending' are not built. The panel keeps the eyebrow (day · time · venue), title, coach and repeats; its 'Capacity 19 / 20 · 2 waitlist' becomes 'Up to N people', and Level, the VISIBILITY toggles (public profile, friends attending, attendee names), Roster and Save are not built. OG10's template choice (Start from template / Import CSV / Google Calendar, the 14-class week template copied to other locations) is not built: classes are added one by one or as weekly series (D-WEB-GYM-TIMETABLE)."
       }
     },
     {
@@ -18043,6 +18063,20 @@
       "status": "RESOLVED",
       "routes": ["web.app.gyms._gym-id.members"],
       "screens": ["WG3"]
+    },
+    {
+      "id": "D-WEB-GYM-TIMETABLE",
+      "title": "Web gym timetable built from the SF-97 scheduling contract, without bookings, attendance, visibility or setup templates",
+      "sourceA": "Claude Design 112 (1793198527-a0fc): WG5 WebTimetable (Week / Day / Coach toggle, + Class, a week grid whose blocks show booked counts such as 14/20 and 'full', shared and open-sparring kinds, a class panel with Capacity 19 / 20 · 2 waitlist, Level, Repeats, VISIBILITY toggles for the public profile, 'X friends attending' and attendee names, Roster and Save) and OG10 WebSetupTimetable (Start from template, Import CSV, Google Calendar; a 14-class week template copied to other locations)",
+      "sourceB": "SF-97 backend: venues (IANA zone, capacity), class templates, bounded weekly series materialized into class occurrences (skipped_dates for nonexistent and ambiguous wall times), occurrences with revisions, idempotent creates, venue and instructor exclusion (409), permissions view_workspace / manage_timetable / cancel_occurrence (coach: own classes); no bookings, waitlists, attendance, levels, visibility settings, rosters, imports or calendar sync",
+      "mismatch": "The artboards show participant counts, waitlists, social visibility, rosters and setup imports that no domain provides; the backend has venues, templates, series and classes only, and a capacity is a configured limit.",
+      "impact": "Building them would invent bookings and occupancy, expose attendance or friends data that does not exist, and claim imports or calendar sync that store nothing.",
+      "resolution": "SF-98: WG5's layout with SF-97 data only. Week grid (lanes for overlapping venues), Day, and an accessible List; venue and instructor filters (the Coach segment becomes the instructor filter); show cancelled. Blocks show title, wall times and venue; the panel shows date, time, zone and offset, duration, venue, instructor or 'Instructor needed', 'Up to N people', status and series, with Change this class and Cancel class where permitted. + Class creates one-time or weekly classes (skipped dates listed); Weekly series, Class templates and Venues are tabs of the page. OG10's template choice, import and calendar sync are not built: the setup step stays as designed for later (D-WEB-GYM-ONBOARDING-FLOW). The checklist's add_class links to this page for who may plan.",
+      "decision": "Build WG5 on the SF-97 contract; keep bookings, waitlists, attendance, visibility, rosters, levels, setup templates, import and calendar sync out.",
+      "decidedOn": "2026-11-02",
+      "status": "RESOLVED",
+      "routes": ["web.app.gyms._gym-id.timetable"],
+      "screens": ["WG5"]
     }
   ]
 }

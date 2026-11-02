@@ -53,8 +53,8 @@ const ACCENTS: Record<string, AccentName> = {
  * The console areas whose domains do not exist yet (SF-82 R5/C7): listed as
  * coming later, never as tiles with numbers, because no backend counts them.
  */
-// Coaches & staff has its page since SF-94, Members since SF-96.
-const LATER = ["schedule", "attendance"] as const;
+// Coaches & staff has its page since SF-94, Members since SF-96, Timetable since SF-98.
+const LATER = ["attendance"] as const;
 
 /**
  * WG1, the gym dashboard (`web.app.gyms._gym-id`, SF-88), inside the gym
@@ -250,6 +250,11 @@ function useOwnerFirstRun(gym: Gym, heading: RefObject<HTMLHeadingElement | null
           membersHref={
             gym.viewer.permissions.includes("manage_member_enrollment")
               ? routeHref("web.app.gyms._gym-id.members", { gymId: gym.id })
+              : undefined
+          }
+          classHref={
+            gym.viewer.permissions.includes("manage_timetable")
+              ? routeHref("web.app.gyms._gym-id.timetable", { gymId: gym.id })
               : undefined
           }
         />

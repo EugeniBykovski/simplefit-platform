@@ -97,10 +97,6 @@
     "later": {
       "title": "Coming to your console",
       "badge": "Later",
-      "schedule": {
-        "title": "Classes & timetable",
-        "body": "Plan classes across your week."
-      },
       "attendance": {
         "title": "Bookings & check-ins",
         "body": "Bookings and check-ins for each class."
@@ -220,7 +216,7 @@
       "steps": {
         "checklist": {
           "title": "Your opening checklist",
-          "body": "One step is done: your gym exists. Classes, staff, members and check-ins show as coming later until they launch. None of them is counted as missing."
+          "body": "One step is done: your gym exists. Steps whose tools haven’t launched show as coming later and are never counted as missing."
         },
         "gym": {
           "title": "Your gym and your access",
@@ -228,7 +224,7 @@
         },
         "menu": {
           "title": "Tools arrive in this menu",
-          "body": "Dashboard works today. Members, timetable, staff and the rest are marked Soon and open when they launch. Nothing behind them is half-built."
+          "body": "Dashboard, members, staff and the timetable work today. The rest are marked Soon and open when they launch. Nothing behind them is half-built."
         },
         "switcher": {
           "title": "One account, every role",
@@ -828,6 +824,551 @@
         "nameMissing": "Missing",
         "duplicateOf": "Same address as line {line}"
       }
+    }
+  },
+  "timetable": {
+    "metaTitle": "Timetable",
+    "eyebrow": "Schedule",
+    "title": "Timetable",
+    "addClass": "Class",
+    "confirmAgain": "Confirm again",
+    "loading": "Loading the timetable",
+    "tabs": {
+      "label": "Timetable sections",
+      "timetable": "Timetable",
+      "series": "Weekly series",
+      "templates": "Class templates",
+      "venues": "Venues"
+    },
+    "zones": {
+      "none": "Times appear in each venue’s time zone once you add a venue.",
+      "one": "Times in {zone}, for everyone, whatever their device’s time zone.",
+      "many": "Each class shows its venue’s local time ({zones})."
+    },
+    "hint": {
+      "heading": "Class details",
+      "body": "Choose a class to see its date, time, venue, instructor and capacity.",
+      "capacity": "Capacity is the most people a class can take. Bookings and check-ins aren’t part of SimpleFit yet, so nothing is booked or counted here."
+    },
+    "toolbar": {
+      "previous": {
+        "week": "Previous week",
+        "day": "Previous day"
+      },
+      "next": {
+        "week": "Next week",
+        "day": "Next day"
+      },
+      "today": "Today",
+      "view": "View",
+      "views": {
+        "week": "Week",
+        "day": "Day",
+        "list": "List"
+      },
+      "goTo": "Go to date",
+      "venue": "Venue",
+      "allVenues": "All venues",
+      "instructor": "Instructor",
+      "allInstructors": "All instructors",
+      "unnamed": "Staff member",
+      "showCancelled": "Show cancelled"
+    },
+    "card": {
+      "label": "{title}, {from} to {to}, {venue}, {instructor}, capacity {capacity}{status}",
+      "instructorNeeded": "Instructor needed",
+      "noInstructor": "No instructor",
+      "unnamed": "Staff member",
+      "cancelled": "Cancelled",
+      "minutes": "{count, plural, one {# min} other {# min}}",
+      "max": "Max {count}"
+    },
+    "grid": {
+      "openDay": "Open {day}",
+      "noClasses": "No classes",
+      "noClassesDay": "No classes on this day.",
+      "days": "Days of the week",
+      "dayWithCount": "{day}: {count, plural, =0 {# classes} one {# class} other {# classes}}"
+    },
+    "list": {
+      "today": "Today"
+    },
+    "empty": {
+      "addVenue": "Add a venue",
+      "addTemplate": "Add a class template",
+      "addClass": "Add a class",
+      "toVenues": "Open venues",
+      "toTemplates": "Open class templates",
+      "venue": {
+        "title": "Add a venue first",
+        "body": "Every class takes place in a venue: a room, ring or hall at one of your locations, with its time zone. Add one to start your timetable.",
+        "readonly": "Every class takes place in a venue. The owner or a manager adds venues; you’ll see classes here once they’re planned."
+      },
+      "template": {
+        "title": "Add a class template",
+        "body": "A template is a class you run again and again: its title, length and capacity. Add one, then schedule it once or every week.",
+        "readonly": "The owner or a manager plans classes from templates. You’ll see classes here once they’re planned."
+      },
+      "filtered": {
+        "title": "No classes match these filters",
+        "body": "Try another venue or instructor, or show all."
+      },
+      "free": {
+        "title": "Nothing planned for these dates",
+        "body": "No classes are scheduled on these dates. Pick other dates, or add a class."
+      }
+    },
+    "read": {
+      "restricted": {
+        "title": "Your role can’t see this",
+        "body": "The gym decides what each role can see. Ask the owner or a manager."
+      },
+      "failed": {
+        "title": "We couldn’t load the timetable",
+        "body": "Check your connection and try again. Nothing is shown until every class of these dates has loaded.",
+        "limited": "Too many requests in a short time. Wait a moment and try again.",
+        "retry": "Try again"
+      },
+      "first100": "Showing the first 100. More may exist."
+    },
+    "details": {
+      "status": {
+        "scheduled": "Scheduled",
+        "cancelled": "Cancelled",
+        "series_changed": "Cancelled · series changed",
+        "series_cancelled": "Cancelled · series cancelled"
+      },
+      "weekly": "Weekly series",
+      "rescheduled": "Changed on its own",
+      "date": "Date",
+      "time": "Time",
+      "timeValue": "{from} – {to}",
+      "zone": "Time zone",
+      "zoneValue": "{zone} (UTC{offset})",
+      "duration": "Duration",
+      "minutes": "{count, plural, one {# minute} other {# minutes}}",
+      "venue": "Venue",
+      "instructor": "Instructor",
+      "instructorNeeded": "Instructor needed",
+      "noInstructor": "No instructor",
+      "unnamed": "Staff member",
+      "capacity": "Capacity",
+      "capacityValue": "Up to {count, plural, one {# person} other {# people}}",
+      "needsInstructorNote": "The instructor no longer teaches at this gym and was taken off this class. Choose another instructor.",
+      "openSeries": "Open its weekly series",
+      "capacityNote": "Capacity is a limit. Bookings, waitlists and check-ins aren’t part of SimpleFit yet.",
+      "change": "Change this class",
+      "cancel": "Cancel class",
+      "readonly": {
+        "cancelled": "This class is cancelled. It stays on the timetable as a record.",
+        "started": "This class has started, so it can’t change any more.",
+        "role": "Your role can view the timetable. The owner and managers plan it."
+      }
+    },
+    "problems": {
+      "limited": "Too many changes in a short time. Try again in {minutes} min.",
+      "limitedLater": "Too many changes in a short time. Try again a little later.",
+      "stale": "Someone changed this meanwhile. Nothing was saved.",
+      "venueTaken": "Another class is in this venue at that time. Choose another time or venue.",
+      "venueTakenOn": "Another class is in this venue at that time on {count, plural, one {# date} other {# dates}}: {dates}. Choose another time, days or venue.",
+      "instructorBusy": "This instructor teaches another class at that time. Choose another time or instructor.",
+      "venueHasClasses": "{count, plural, one {# class is} other {# classes are}} still to come in this venue. Move or cancel them first.",
+      "venueHasClassesSome": "Classes are still to come in this venue. Move or cancel them first.",
+      "venueCapacity": "{count, plural, one {# class} other {# classes}} still to come in this venue take more people than that. Lower their capacity first.",
+      "venueCapacitySome": "Classes still to come in this venue take more people than that. Lower their capacity first.",
+      "venueInactive": "This venue was deactivated. It takes no new classes.",
+      "templateArchived": "This template was archived. It takes no new classes.",
+      "occurrenceCancelled": "This class was cancelled meanwhile.",
+      "occurrenceStarted": "This class has started, so it can’t change any more.",
+      "seriesCancelled": "This series was cancelled meanwhile.",
+      "draft": "Finish your gym’s setup before planning classes.",
+      "forbidden": "Your role can’t do this. Nothing changed.",
+      "gone": "This is no longer available. It may have been removed, or your access changed.",
+      "unknown": "We couldn’t confirm this. Your connection may have dropped; the timetable is being reloaded.",
+      "failed": "That didn’t work. Nothing changed. Try again."
+    },
+    "form": {
+      "wallTime": {
+        "gap": {
+          "title": "This time doesn’t exist that day.",
+          "body": "Clocks in {zone} jump over {time} that night (summer time starts). Choose another time. It won’t be moved for you."
+        },
+        "overlap": {
+          "title": "This time happens twice that day.",
+          "body": "Clocks in {zone} go back that night, so {time} happens twice. Choose which one:",
+          "first": "First (UTC{offset})",
+          "second": "Second (UTC{offset})"
+        }
+      }
+    },
+    "venueForm": {
+      "close": "Close",
+      "createTitle": "New venue",
+      "editTitle": "Edit venue",
+      "lead": "A room, ring or hall at one of your locations. Every class takes place in one venue, one class at a time.",
+      "name": {
+        "label": "Name",
+        "invalid": "Enter a name of up to 80 characters.",
+        "taken": "Another active venue already has this name."
+      },
+      "location": {
+        "label": "Location",
+        "placeholder": "Choose a location",
+        "required": "Choose a location.",
+        "invalid": "Choose one of this gym’s active locations."
+      },
+      "zone": {
+        "label": "Time zone",
+        "help": "Classes here are planned in this zone. It can’t be changed later.",
+        "fixed": "Set when the venue was created. Classes keep their local times.",
+        "search": "Search time zones",
+        "empty": "No time zone matches",
+        "required": "Choose a time zone.",
+        "invalid": "Choose a time zone from the list."
+      },
+      "capacity": {
+        "label": "Capacity (optional)",
+        "help": "The most people it holds. No class here can take more.",
+        "unit": "people",
+        "invalid": "Enter a whole number from 1 to 500, or leave it empty."
+      },
+      "description": {
+        "label": "Description (optional)",
+        "invalid": "Use up to 500 characters."
+      },
+      "latest": "Someone changed this venue meanwhile. It now reads “{name}”. Check your changes and save again.",
+      "cancel": "Cancel",
+      "saving": "Saving…",
+      "saveAgain": "Save again",
+      "save": "Save",
+      "create": "Add venue",
+      "saved": "{name} saved",
+      "created": "{name} added"
+    },
+    "templateForm": {
+      "close": "Close",
+      "createTitle": "New class template",
+      "editTitle": "Edit class template",
+      "lead": "A class you run again and again. Its defaults fill in new classes; you can change them each time.",
+      "editLead": "Changes apply to classes you plan from now on.",
+      "title": {
+        "label": "Class name",
+        "invalid": "Enter a name of up to 80 characters."
+      },
+      "duration": {
+        "label": "Default length",
+        "help": "5 to 480 minutes.",
+        "unit": "min",
+        "invalid": "Enter a whole number of minutes from 5 to 480."
+      },
+      "capacity": {
+        "label": "Default capacity",
+        "help": "The most people per class.",
+        "unit": "people",
+        "invalid": "Enter a whole number from 1 to 500.",
+        "overVenue": "More people than the default venue holds."
+      },
+      "venue": {
+        "label": "Default venue (optional)",
+        "none": "No default venue",
+        "option": "{name} · up to {capacity}",
+        "invalid": "Choose one of this gym’s active venues."
+      },
+      "instructor": {
+        "label": "Default instructor (optional)",
+        "help": "Active owners, managers and coaches of this gym.",
+        "none": "No default instructor",
+        "unnamed": "Staff member",
+        "invalid": "This person can’t teach at this gym any more. Choose someone else."
+      },
+      "description": {
+        "label": "Description (optional)",
+        "invalid": "Use up to 1,000 characters."
+      },
+      "historyNote": "Classes already scheduled from this template keep their current details.",
+      "latest": "Someone changed this template meanwhile. It now reads “{title}”. Check your changes and save again.",
+      "cancel": "Cancel",
+      "saving": "Saving…",
+      "saveAgain": "Save again",
+      "save": "Save",
+      "create": "Add template",
+      "saved": "{title} saved",
+      "created": "{title} added"
+    },
+    "classForm": {
+      "close": "Close",
+      "missing": {
+        "title": "A class needs a venue and a template",
+        "both": "Add a venue and a class template first, in their tabs.",
+        "venue": "Add a venue first, in the Venues tab.",
+        "template": "Add a class template first, in the Class templates tab.",
+        "done": "OK"
+      },
+      "title": "New class",
+      "lead": "Schedule a class once, or every week for a set period.",
+      "kind": {
+        "label": "How often",
+        "once": "One time",
+        "onceHint": "A single date",
+        "weekly": "Every week",
+        "weeklyHint": "Chosen days, up to a year"
+      },
+      "template": {
+        "label": "Class template",
+        "placeholder": "Choose a template",
+        "required": "Choose a class template.",
+        "invalid": "Choose one of this gym’s active templates."
+      },
+      "venue": {
+        "label": "Venue",
+        "placeholder": "Choose a venue",
+        "option": "{name} · {zone}",
+        "zone": "Times are in {zone}.",
+        "required": "Choose a venue.",
+        "invalid": "Choose one of this gym’s active venues (in the same time zone)."
+      },
+      "date": {
+        "label": "Date",
+        "required": "Choose a date."
+      },
+      "time": {
+        "label": "Start time",
+        "labelIn": "Start time ({zone})",
+        "required": "Choose a start time.",
+        "invalid": "Enter a valid date and time.",
+        "window": "Choose a time in the future, at most a year ahead."
+      },
+      "weekly": {
+        "days": "Repeat on",
+        "daysRequired": "Choose at least one day.",
+        "startsOn": "First date",
+        "startsOnRequired": "Choose the first date.",
+        "startsOnInvalid": "Choose today or a later date.",
+        "endsOn": "Last date",
+        "endsOnHelp": "At most a year after the first date.",
+        "endsOnRequired": "Choose the last date.",
+        "endsOnInvalid": "Choose a last date on or after the first date, at most a year later.",
+        "endsBefore": "The last date can’t be before the first date.",
+        "tooLong": "A weekly class can run for at most a year.",
+        "noDates": "No class falls on these days between the dates you chose.",
+        "summary": "Every {days} at {time} ({zone}), {from} to {to}.",
+        "dstNote": "On a date when clocks skip or repeat the start time, no class is scheduled. You’ll see those dates after saving."
+      },
+      "wallTime": {
+        "required": "Choose which of the two times you mean.",
+        "gapRefused": "This time doesn’t exist on that date in the venue’s time zone. Choose another time."
+      },
+      "instructor": {
+        "label": "Instructor",
+        "help": "Active owners, managers and coaches of this gym.",
+        "noneEligible": "No one can teach yet. Instructors are this gym’s active owners, managers and coaches.",
+        "none": "No instructor",
+        "unnamed": "Staff member",
+        "invalid": "This person can’t teach at this gym any more. Choose someone else."
+      },
+      "duration": {
+        "label": "Length",
+        "help": "5 to 480 minutes.",
+        "unit": "min",
+        "invalid": "Enter a whole number of minutes from 5 to 480."
+      },
+      "capacity": {
+        "label": "Capacity",
+        "help": "The most people who can take part.",
+        "venueLimit": "The venue holds up to {capacity}.",
+        "unit": "people",
+        "invalid": "Enter a whole number from 1 to 500.",
+        "overVenue": "More people than the venue holds."
+      },
+      "unknown": {
+        "title": "We couldn’t confirm whether this was saved.",
+        "body": "Your connection may have dropped. “Try again” sends the very same request, so the class can’t be scheduled twice."
+      },
+      "cancel": "Cancel",
+      "saving": "Scheduling…",
+      "retry": "Try again",
+      "createOnce": "Schedule class",
+      "createWeekly": "Schedule weekly class",
+      "createdOnce": "{title} scheduled",
+      "created": {
+        "title": "Weekly class scheduled",
+        "titleSkipped": "Weekly class scheduled, with dates skipped",
+        "body": "{title}: {count, plural, one {# class is} other {# classes are}} on the timetable.",
+        "bodyUncounted": "{title} is on the timetable.",
+        "done": "Done"
+      }
+    },
+    "skipped": {
+      "title": "{count, plural, one {# date has} other {# dates have}} no class.",
+      "body": "On these dates the start time doesn’t exist once in {zone}:",
+      "reasons": {
+        "nonexistent_local_time": "clocks skip this time",
+        "ambiguous_local_time": "this time happens twice"
+      },
+      "hint": "Nothing was moved. To hold a class on one of them, add it as a one-time class and pick the exact time."
+    },
+    "reschedule": {
+      "close": "Close",
+      "title": "Change {title}",
+      "leadOnce": "Only this class changes.",
+      "leadSeries": "Only this date changes. It then keeps its own details when the series changes.",
+      "now": "Now: {when}, {venue}",
+      "venueZone": "Venues in {zone} only: a class keeps its time zone.",
+      "needsInstructor": "The previous instructor no longer teaches here. Choose another.",
+      "changed": {
+        "title": "This class changed meanwhile.",
+        "body": "It’s now {when}, {venue}. Your edits are still here: check them and save again.",
+        "cancelled": "It has been cancelled, so it can’t change."
+      },
+      "cancel": "Cancel",
+      "saving": "Saving…",
+      "saveAgain": "Save again",
+      "save": "Save changes",
+      "saved": "{title} changed"
+    },
+    "cancelClass": {
+      "title": "Cancel {title}?",
+      "body": "{when}, {venue}.",
+      "onlyThis": "Only this date is cancelled. The rest of its weekly series stays.",
+      "stays": "It stays on the timetable, marked cancelled.",
+      "noBookings": "No one is notified or refunded: bookings aren’t part of SimpleFit yet.",
+      "changed": "This class changed meanwhile. It’s now {when}, {venue}. Confirm again to cancel it.",
+      "confirm": "Cancel class",
+      "pending": "Cancelling…",
+      "keep": "Keep class",
+      "done": "{title} cancelled"
+    },
+    "series": {
+      "rule": "Every {days} at {time} ({zone})",
+      "heading": "Weekly series",
+      "lead": "Classes that repeat every week for a set period. Each date is its own class on the timetable.",
+      "views": "Series",
+      "active": "Active",
+      "cancelled": "Cancelled",
+      "cancelledBadge": "Cancelled",
+      "loading": "Loading weekly series",
+      "empty": {
+        "active": "No weekly series yet. Add a class and choose “Every week”.",
+        "cancelled": "No cancelled series."
+      },
+      "period": "Period",
+      "venue": "Venue",
+      "instructor": "Instructor",
+      "noInstructor": "No instructor",
+      "duration": "Length",
+      "minutes": "{count, plural, one {# minute} other {# minutes}}",
+      "capacity": "Capacity",
+      "max": "Up to {count, plural, one {# person} other {# people}}",
+      "scheduled": "Scheduled classes",
+      "cancelledCount": "Cancelled classes",
+      "status": "Status",
+      "countsNote": "Counts include past and future classes. They are classes, not bookings.",
+      "show": "Show in timetable",
+      "edit": "Edit series",
+      "cancel": "Cancel series"
+    },
+    "seriesForm": {
+      "close": "Close",
+      "title": "Edit {title}",
+      "lead": "Changes apply to the whole series. The template, time zone and first date stay as they are.",
+      "now": "Now: {rule}, {period}",
+      "endsOnHelp": "At most a year after the first date.",
+      "venueZone": "Venues in {zone} only: a series keeps its time zone.",
+      "venueInvalid": "Choose an active venue in the same time zone.",
+      "impact": {
+        "title": "What happens",
+        "follow": "Classes still to come follow the new rule.",
+        "dropped": "Dates the rule no longer has are cancelled.",
+        "kept": "Classes changed or cancelled on their own stay as they are.",
+        "past": "Past classes don’t change."
+      },
+      "changed": {
+        "title": "This series changed meanwhile.",
+        "body": "It’s now {rule}, {period}. Your edits are still here: check them and save again.",
+        "cancelled": "It has been cancelled, so it can’t change."
+      },
+      "savedTitle": "Series updated",
+      "savedBody": "{rule}, {period}.",
+      "done": "Done",
+      "cancel": "Cancel",
+      "saving": "Saving…",
+      "saveAgain": "Save again",
+      "save": "Save series"
+    },
+    "cancelSeries": {
+      "title": "Cancel the series {title}?",
+      "body": "{rule}, {period}.",
+      "future": "Every class of this series still to come is cancelled.",
+      "past": "Past classes stay as they are.",
+      "final": "A cancelled series can’t be restarted.",
+      "noBookings": "No one is notified or refunded: bookings aren’t part of SimpleFit yet.",
+      "understand": "I understand that every class still to come in this series will be cancelled.",
+      "changed": "This series changed meanwhile. It’s now {rule}, {period}. Confirm again to cancel it.",
+      "confirm": "Cancel series",
+      "pending": "Cancelling…",
+      "keep": "Keep series",
+      "done": "{title} series cancelled"
+    },
+    "repair": {
+      "action": "Check for missing classes",
+      "none": "Nothing was missing.",
+      "created": "{count, plural, one {# missing class was} other {# missing classes were}} added."
+    },
+    "templates": {
+      "heading": "Class templates",
+      "lead": "The classes you run, with the defaults new classes start from.",
+      "views": "Templates",
+      "active": "Active",
+      "archived": "Archived",
+      "archivedBadge": "Archived",
+      "create": "New template",
+      "loading": "Loading class templates",
+      "empty": {
+        "active": "No class templates yet.",
+        "archived": "No archived templates."
+      },
+      "minutes": "{count, plural, one {# min} other {# min}}",
+      "max": "up to {count, plural, one {# person} other {# people}}",
+      "edit": "Edit",
+      "archive": "Archive",
+      "note": "Changing or archiving a template never changes classes already scheduled."
+    },
+    "venues": {
+      "heading": "Venues",
+      "lead": "Rooms, rings and halls at your locations. A venue holds one class at a time.",
+      "views": "Venues",
+      "active": "Active",
+      "inactive": "Inactive",
+      "inactiveBadge": "Inactive",
+      "create": "New venue",
+      "loading": "Loading venues",
+      "empty": {
+        "active": "No venues yet. Add one to start your timetable.",
+        "inactive": "No inactive venues.",
+        "readonly": "No venues yet. The owner or a manager adds them."
+      },
+      "locationUnavailable": "Location no longer listed",
+      "noLimit": "No venue limit",
+      "max": "up to {count, plural, one {# person} other {# people}}",
+      "edit": "Edit",
+      "deactivate": "Deactivate",
+      "note": "Classes already held in a venue keep naming it after it’s deactivated."
+    },
+    "deactivateVenue": {
+      "title": "Deactivate {name}?",
+      "body": "It will take no new classes, and this can’t be undone. Classes already held there keep naming it. A venue with classes still to come can’t be deactivated.",
+      "confirm": "Deactivate",
+      "pending": "Deactivating…",
+      "keep": "Keep venue",
+      "done": "{name} deactivated"
+    },
+    "archiveTemplate": {
+      "title": "Archive {title}?",
+      "body": "It will take no new classes, and this can’t be undone. Classes and series already scheduled from it stay exactly as they are.",
+      "confirm": "Archive",
+      "pending": "Archiving…",
+      "keep": "Keep template",
+      "done": "{title} archived"
     }
   }
 }

@@ -262,10 +262,11 @@ invitation_recipient_mismatch`, `404`, `409 gym_member: already_active`).
   and auto-approval, and the import preview with no commit. The member's own
   side (join, inbox, `/invite/gym`, `/app/me/gyms`) is not built.
 
-## SF-97: gym classes, venues and the timetable API (no screens yet)
+## SF-97: gym classes, venues and the timetable API
 
 The generated client gains the "Gym timetable" operations (ADR 0026 SF-97
-amendment). No screen uses them yet; the timetable UI is a later ticket.
+amendment). SF-98 builds the web timetable on them (`docs/gym-console-web.md`,
+`D-WEB-GYM-TIMETABLE`); no mobile screen uses them yet.
 
 - **Venues:** `listGymVenues`, `createGymVenue`, `getGymVenue`,
   `updateGymVenue`, `deactivateGymVenue`. A training area at one of the gym's

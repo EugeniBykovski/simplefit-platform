@@ -283,6 +283,37 @@ describe("GRW1 · the owner's first run on the console (SF-91)", () => {
     expect(within(plain).queryByRole("link", { name: "Invite members" })).toBeNull();
   });
 
+  it("links an available add_class to the gym's timetable for a viewer who may plan it (SF-98)", async () => {
+    const available = CHECKLIST.map((item) =>
+      item.key === "add_class" ? { ...item, status: "available" as const } : item,
+    );
+    api({
+      [`GET /api/v1/gyms/${RING}`]: [ok({ gym: gym({}, [...OWNER, "manage_timetable"]) })],
+      [`GET /api/v1/gyms/${RING}/setup`]: [ok({ setup: setup() })],
+      [`GET /api/v1/gyms/${RING}/first-run`]: [ok(firstRun({ checklist: available }))],
+    });
+    const view = await renderConsole();
+    const checklist = await screen.findByRole("region", { name: "Your gym is ready" });
+    const link = within(checklist).getByRole("link", { name: "Add your first class" });
+    expect(link).toHaveAttribute("href", `/en/app/gyms/${RING}/timetable`);
+    // Still the backend's status: a template or venue alone never completes it.
+    expect(checklist.querySelector("[data-checklist-key=add_class]")).toHaveAttribute(
+      "data-checklist-status",
+      "available",
+    );
+    view.unmount();
+
+    // Without the permission there is no link, whatever the status.
+    api({
+      [`GET /api/v1/gyms/${RING}`]: [ok({ gym: gym({}, OWNER) })],
+      [`GET /api/v1/gyms/${RING}/setup`]: [ok({ setup: setup() })],
+      [`GET /api/v1/gyms/${RING}/first-run`]: [ok(firstRun({ checklist: available }))],
+    });
+    await renderConsole();
+    const plain = await screen.findByRole("region", { name: "Your gym is ready" });
+    expect(within(plain).queryByRole("link", { name: "Add your first class" })).toBeNull();
+  });
+
   it("renders only the items the API sends, in its order", async () => {
     api({
       ...base(),

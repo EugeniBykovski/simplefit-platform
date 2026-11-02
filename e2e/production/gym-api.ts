@@ -117,6 +117,8 @@ export type Gym = {
   /** SF-96: the current join code (`null`: joining by code is off). */
   joinCode?: string | null;
   autoApprove?: boolean;
+  /** SF-98: the gym has a scheduled class (the backend's `add_class` fact). */
+  hasClass?: boolean;
 };
 
 export type MemberRow = {
@@ -408,7 +410,16 @@ export async function gymApi(
         dismissed_at: status === "dismissed" ? (gym.endedAt ?? NOW) : null,
         checklist: [
           { key: "create_gym", status: gym.status === "completed" ? "completed" : "available" },
-          { key: "add_class", status: "coming_later" },
+          {
+            // SF-97: available on a completed gym; done once it has a scheduled class.
+            key: "add_class",
+            status:
+              gym.status !== "completed"
+                ? "coming_later"
+                : gym.hasClass
+                  ? "completed"
+                  : "available",
+          },
           {
             key: "invite_staff",
             status:

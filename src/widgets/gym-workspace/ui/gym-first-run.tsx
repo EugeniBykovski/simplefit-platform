@@ -179,6 +179,7 @@ export function GymChecklist({
   items,
   staffHref,
   membersHref,
+  classHref,
 }: {
   items: GymChecklistItem[];
   /**
@@ -194,6 +195,12 @@ export function GymChecklist({
    * completes only once someone is an active member.
    */
   membersHref?: string;
+  /**
+   * SF-98: where "Add your first class" leads while it is available (the
+   * gym's timetable), for a viewer who may plan it. Its status stays the
+   * backend's: it completes only once a class is scheduled.
+   */
+  classHref?: string;
 }) {
   const t = useTranslations("gymConsole.firstRun.checklist");
   const ready = items.filter((item) => item.status !== "coming_later");
@@ -227,7 +234,9 @@ export function GymChecklist({
                     ? staffHref
                     : item.key === "invite_members"
                       ? membersHref
-                      : undefined
+                      : item.key === "add_class"
+                        ? classHref
+                        : undefined
               }
             />
           ))}

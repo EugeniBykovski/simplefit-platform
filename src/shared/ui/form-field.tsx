@@ -13,6 +13,7 @@ export function FormField({
   label,
   help,
   error,
+  helpTone = "faint",
   className,
   children,
 }: {
@@ -20,6 +21,11 @@ export function FormField({
   label: string;
   help?: string;
   error?: string;
+  /**
+   * `muted` for fields on a raised surface (a dialog), where the faint help
+   * colour falls below 4.5:1 against the popover background.
+   */
+  helpTone?: "faint" | "muted";
   className?: string;
   children: ReactNode;
 }) {
@@ -35,7 +41,11 @@ export function FormField({
           id={describedBy(id)}
           className={cn(
             "type-caption",
-            error === undefined ? "text-faint-foreground" : "text-destructive-subtle-foreground",
+            error !== undefined
+              ? "text-destructive-subtle-foreground"
+              : helpTone === "muted"
+                ? "text-muted-foreground"
+                : "text-faint-foreground",
           )}
         >
           {note}
