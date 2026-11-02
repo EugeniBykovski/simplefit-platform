@@ -7,6 +7,7 @@ export * from './fighter-profile/fighter-profile';
 export * from './first-run/first-run';
 export * from './gym-members/gym-members';
 export * from './gym-staff/gym-staff';
+export * from './gym-timetable/gym-timetable';
 export * from './gyms/gyms';
 export * from './legal/legal';
 export * from './system/system';

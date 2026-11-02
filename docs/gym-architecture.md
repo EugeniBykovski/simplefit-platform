@@ -261,3 +261,41 @@ invitation_recipient_mismatch`, `404`, `409 gym_member: already_active`).
   the roster, requests, invitations (honouring the 409 gate), the join code
   and auto-approval, and the import preview with no commit. The member's own
   side (join, inbox, `/invite/gym`, `/app/me/gyms`) is not built.
+
+## SF-97: gym classes, venues and the timetable API (no screens yet)
+
+The generated client gains the "Gym timetable" operations (ADR 0026 SF-97
+amendment). No screen uses them yet; the timetable UI is a later ticket.
+
+- **Venues:** `listGymVenues`, `createGymVenue`, `getGymVenue`,
+  `updateGymVenue`, `deactivateGymVenue`. A training area at one of the gym's
+  locations, with an IANA `time_zone` (never an offset) and an optional
+  capacity. Every class is in one venue; a venue holds one scheduled class at
+  a time.
+- **Class templates:** `listGymClassTemplates`, `createGymClassTemplate`,
+  `getGymClassTemplate`, `updateGymClassTemplate`, `archiveGymClassTemplate`.
+  Defaults for new classes; editing never changes a scheduled class.
+- **Weekly series:** `listGymClassSeries`, `createGymClassSeries`,
+  `getGymClassSeries`, `updateGymClassSeries`, `cancelGymClassSeries`,
+  `generateGymClassSeries`. ISO `weekdays`, a wall-clock `local_start_time`
+  in the venue's zone, `starts_on`/`ends_on` at most a year apart, all
+  classes created at once. Dates whose start time does not exist or exists
+  twice (daylight-saving changes) come back in `skipped_dates`; the client
+  shows them, never computes its own recurrence.
+- **Classes:** `listGymClassOccurrences` (`from`/`to` RFC 3339, at most 31
+  days, filters, cursor pages), `createGymClassOccurrence`,
+  `getGymClassOccurrence`, `updateGymClassOccurrence`,
+  `cancelGymClassOccurrence`. Render `local_starts_at`/`local_ends_at` with
+  `time_zone` (the gym's wall clock, not the device's); `starts_at`/`ends_at`
+  are UTC. A one-time `starts_at` must carry the venue zone's offset at that
+  instant. `needs_instructor` marks a class whose instructor left;
+  `rescheduled` a series class changed on its own. No booking or attendance
+  figures exist.
+- **Writes:** creates carry a `client_request_id` (a retry returns `200` with
+  the same record); changes carry `expected_revision` (`409 revision: stale`).
+  `409 schedule: venue_unavailable` (with `local_dates` for a series) or
+  `instructor_unavailable` (no details) for overlaps.
+- **Who:** every staff role reads; owner and managers write; a coach cancels
+  only a class they instruct; front desk reads only (`403` otherwise).
+- **Checklist:** `add_class` is now `available` at a completed gym and
+  `completed` once the gym has scheduled a class (a template alone does not).
