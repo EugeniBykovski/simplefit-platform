@@ -307,6 +307,9 @@ test.describe("join code and auto-approval", () => {
     await expect(page.locator("[data-join-code]")).toHaveText("K7QM-4TXD");
     await page.getByRole("button", { name: "New code" }).click();
     await page.getByRole("alertdialog").getByRole("button", { name: "Issue new code" }).click();
+    // The page shows a new code only once the backend has answered; read the double after that
+    // (reading it right after the click raced the request under parallel load).
+    await expect(page.locator("[data-join-code]")).not.toHaveText("K7QM-4TXD");
     const fresh = api.gyms().find((gym) => gym.id === id)?.joinCode;
     expect(fresh).toMatch(/^[0-9A-Z]{4}-[0-9A-Z]{4}$/);
     expect(fresh).not.toBe("K7QM-4TXD");
