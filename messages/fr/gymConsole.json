@@ -97,10 +97,6 @@
     "later": {
       "title": "Bientôt dans ta console",
       "badge": "Plus tard",
-      "schedule": {
-        "title": "Cours et planning",
-        "body": "Planifie les cours de ta semaine."
-      },
       "attendance": {
         "title": "Réservations et check-ins",
         "body": "Réservations et check-ins de chaque cours."
@@ -220,7 +216,7 @@
       "steps": {
         "checklist": {
           "title": "Votre liste d’ouverture",
-          "body": "Une étape est faite : votre salle existe. Cours, équipe, membres et check-ins apparaissent comme « bientôt » jusqu’à leur arrivée. Aucun ne compte comme manquant."
+          "body": "Une étape est faite : votre salle existe. Les étapes dont les outils ne sont pas encore disponibles apparaissent comme à venir et ne comptent jamais comme manquantes."
         },
         "gym": {
           "title": "Votre salle et votre accès",
@@ -228,7 +224,7 @@
         },
         "menu": {
           "title": "Les outils arrivent dans ce menu",
-          "body": "Le tableau de bord fonctionne aujourd’hui. Membres, planning, équipe et le reste sont marqués « Bientôt » et s’ouvriront à leur arrivée. Rien derrière n’est à moitié construit."
+          "body": "Le tableau de bord, les membres, l’équipe et le planning fonctionnent aujourd’hui. Le reste est marqué « Bientôt » et s’ouvrira à son arrivée. Rien derrière n’est à moitié construit."
         },
         "switcher": {
           "title": "Un compte, tous les rôles",
@@ -828,6 +824,551 @@
         "nameMissing": "Manquant",
         "duplicateOf": "Même adresse que la ligne {line}"
       }
+    }
+  },
+  "timetable": {
+    "metaTitle": "Planning",
+    "eyebrow": "Programmation",
+    "title": "Planning",
+    "addClass": "Cours",
+    "confirmAgain": "Confirmer à nouveau",
+    "loading": "Chargement du planning",
+    "tabs": {
+      "label": "Sections du planning",
+      "timetable": "Planning",
+      "series": "Séries hebdomadaires",
+      "templates": "Modèles de cours",
+      "venues": "Salles"
+    },
+    "zones": {
+      "none": "Les horaires s’afficheront dans le fuseau de chaque salle dès que vous en ajouterez une.",
+      "one": "Horaires en {zone}, pour tout le monde, quel que soit le fuseau de l’appareil.",
+      "many": "Chaque cours affiche l’heure locale de sa salle ({zones})."
+    },
+    "hint": {
+      "heading": "Détails du cours",
+      "body": "Choisissez un cours pour voir sa date, son horaire, sa salle, son coach et sa capacité.",
+      "capacity": "La capacité est le nombre maximal de participants. Les réservations et les pointages ne font pas encore partie de SimpleFit : rien n’est réservé ni compté ici."
+    },
+    "toolbar": {
+      "previous": {
+        "week": "Semaine précédente",
+        "day": "Jour précédent"
+      },
+      "next": {
+        "week": "Semaine suivante",
+        "day": "Jour suivant"
+      },
+      "today": "Aujourd’hui",
+      "view": "Vue",
+      "views": {
+        "week": "Semaine",
+        "day": "Jour",
+        "list": "Liste"
+      },
+      "goTo": "Aller à la date",
+      "venue": "Salle",
+      "allVenues": "Toutes les salles",
+      "instructor": "Coach",
+      "allInstructors": "Tous les coachs",
+      "unnamed": "Membre de l’équipe",
+      "showCancelled": "Afficher les cours annulés"
+    },
+    "card": {
+      "label": "{title}, de {from} à {to}, {venue}, {instructor}, capacité {capacity}{status}",
+      "instructorNeeded": "Coach à trouver",
+      "noInstructor": "Sans coach",
+      "unnamed": "Membre de l’équipe",
+      "cancelled": "Annulé",
+      "minutes": "{count, plural, one {# min} other {# min}}",
+      "max": "Max. {count}"
+    },
+    "grid": {
+      "openDay": "Ouvrir {day}",
+      "noClasses": "Aucun cours",
+      "noClassesDay": "Aucun cours ce jour-là.",
+      "days": "Jours de la semaine",
+      "dayWithCount": "{day} : {count, plural, =0 {# cours} one {# cours} other {# cours}}"
+    },
+    "list": {
+      "today": "Aujourd’hui"
+    },
+    "empty": {
+      "addVenue": "Ajouter une salle",
+      "addTemplate": "Ajouter un modèle de cours",
+      "addClass": "Ajouter un cours",
+      "toVenues": "Ouvrir les salles",
+      "toTemplates": "Ouvrir les modèles de cours",
+      "venue": {
+        "title": "Ajoutez d’abord une salle",
+        "body": "Chaque cours a lieu dans une salle : une pièce, un ring ou un hall sur l’un de vos sites, avec son fuseau horaire. Ajoutez-en une pour commencer votre planning.",
+        "readonly": "Chaque cours a lieu dans une salle. Le propriétaire ou un manager ajoute les salles ; les cours apparaîtront ici une fois planifiés."
+      },
+      "template": {
+        "title": "Ajoutez un modèle de cours",
+        "body": "Un modèle est un cours que vous donnez encore et encore : son nom, sa durée et sa capacité. Ajoutez-en un, puis planifiez-le une fois ou chaque semaine.",
+        "readonly": "Le propriétaire ou un manager planifie les cours à partir de modèles. Les cours apparaîtront ici une fois planifiés."
+      },
+      "filtered": {
+        "title": "Aucun cours ne correspond à ces filtres",
+        "body": "Essayez une autre salle ou un autre coach, ou affichez tout."
+      },
+      "free": {
+        "title": "Rien de prévu à ces dates",
+        "body": "Aucun cours n’est planifié à ces dates. Choisissez d’autres dates ou ajoutez un cours."
+      }
+    },
+    "read": {
+      "restricted": {
+        "title": "Votre rôle ne permet pas de voir ceci",
+        "body": "La salle décide de ce que chaque rôle peut voir. Demandez au propriétaire ou à un manager."
+      },
+      "failed": {
+        "title": "Impossible de charger le planning",
+        "body": "Vérifiez votre connexion et réessayez. Rien ne s’affiche tant que tous les cours de ces dates ne sont pas chargés.",
+        "limited": "Trop de requêtes en peu de temps. Patientez un instant et réessayez.",
+        "retry": "Réessayer"
+      },
+      "first100": "Les 100 premiers sont affichés. Il peut y en avoir davantage."
+    },
+    "details": {
+      "status": {
+        "scheduled": "Planifié",
+        "cancelled": "Annulé",
+        "series_changed": "Annulé · série modifiée",
+        "series_cancelled": "Annulé · série annulée"
+      },
+      "weekly": "Série hebdomadaire",
+      "rescheduled": "Modifié à part",
+      "date": "Date",
+      "time": "Horaire",
+      "timeValue": "{from} – {to}",
+      "zone": "Fuseau horaire",
+      "zoneValue": "{zone} (UTC{offset})",
+      "duration": "Durée",
+      "minutes": "{count, plural, one {# minute} other {# minutes}}",
+      "venue": "Salle",
+      "instructor": "Coach",
+      "instructorNeeded": "Coach à trouver",
+      "noInstructor": "Sans coach",
+      "unnamed": "Membre de l’équipe",
+      "capacity": "Capacité",
+      "capacityValue": "Jusqu’à {count, plural, one {# personne} other {# personnes}}",
+      "needsInstructorNote": "Le coach n’enseigne plus dans cette salle et a été retiré de ce cours. Choisissez un autre coach.",
+      "openSeries": "Ouvrir sa série hebdomadaire",
+      "capacityNote": "La capacité est une limite. Les réservations, listes d’attente et pointages ne font pas encore partie de SimpleFit.",
+      "change": "Modifier ce cours",
+      "cancel": "Annuler le cours",
+      "readonly": {
+        "cancelled": "Ce cours est annulé. Il reste dans le planning comme trace.",
+        "started": "Ce cours a commencé : il ne peut plus être modifié.",
+        "role": "Votre rôle peut consulter le planning. Le propriétaire et les managers le planifient."
+      }
+    },
+    "problems": {
+      "limited": "Trop de modifications en peu de temps. Réessayez dans {minutes} min.",
+      "limitedLater": "Trop de modifications en peu de temps. Réessayez un peu plus tard.",
+      "stale": "Quelqu’un a modifié ceci entre-temps. Rien n’a été enregistré.",
+      "venueTaken": "Un autre cours a lieu dans cette salle à cette heure. Choisissez une autre heure ou une autre salle.",
+      "venueTakenOn": "Un autre cours a lieu dans cette salle à cette heure ({count, plural, one {# date} other {# dates}}) : {dates}. Choisissez une autre heure, d’autres jours ou une autre salle.",
+      "instructorBusy": "Ce coach donne un autre cours à cette heure. Choisissez une autre heure ou un autre coach.",
+      "venueHasClasses": "{count, plural, one {# cours est} other {# cours sont}} encore à venir dans cette salle. Déplacez-les ou annulez-les d’abord.",
+      "venueHasClassesSome": "Des cours sont encore à venir dans cette salle. Déplacez-les ou annulez-les d’abord.",
+      "venueCapacity": "{count, plural, one {# cours à venir accueille} other {# cours à venir accueillent}} plus de personnes dans cette salle. Baissez d’abord leur capacité.",
+      "venueCapacitySome": "Des cours à venir dans cette salle accueillent plus de personnes. Baissez d’abord leur capacité.",
+      "venueInactive": "Cette salle a été désactivée. Elle n’accepte plus de nouveaux cours.",
+      "templateArchived": "Ce modèle a été archivé. Il n’accepte plus de nouveaux cours.",
+      "occurrenceCancelled": "Ce cours a été annulé entre-temps.",
+      "occurrenceStarted": "Ce cours a commencé : il ne peut plus être modifié.",
+      "seriesCancelled": "Cette série a été annulée entre-temps.",
+      "draft": "Terminez la configuration de votre salle avant de planifier des cours.",
+      "forbidden": "Votre rôle ne permet pas cette action. Rien n’a changé.",
+      "gone": "Ceci n’est plus disponible. Il a peut-être été supprimé, ou votre accès a changé.",
+      "unknown": "Nous n’avons pas pu le confirmer. Votre connexion a peut-être été coupée ; le planning est rechargé.",
+      "failed": "Cela n’a pas fonctionné. Rien n’a changé. Réessayez."
+    },
+    "form": {
+      "wallTime": {
+        "gap": {
+          "title": "Cette heure n’existe pas ce jour-là.",
+          "body": "Cette nuit-là, les horloges en {zone} sautent {time} (passage à l’heure d’été). Choisissez une autre heure. Elle ne sera pas décalée à votre place."
+        },
+        "overlap": {
+          "title": "Cette heure a lieu deux fois ce jour-là.",
+          "body": "Cette nuit-là, les horloges en {zone} reculent, donc {time} a lieu deux fois. Choisissez laquelle :",
+          "first": "Première (UTC{offset})",
+          "second": "Seconde (UTC{offset})"
+        }
+      }
+    },
+    "venueForm": {
+      "close": "Fermer",
+      "createTitle": "Nouvelle salle",
+      "editTitle": "Modifier la salle",
+      "lead": "Une pièce, un ring ou un hall sur l’un de vos sites. Chaque cours a lieu dans une salle, un seul cours à la fois.",
+      "name": {
+        "label": "Nom",
+        "invalid": "Saisissez un nom de 80 caractères maximum.",
+        "taken": "Une autre salle active porte déjà ce nom."
+      },
+      "location": {
+        "label": "Site",
+        "placeholder": "Choisir un site",
+        "required": "Choisissez un site.",
+        "invalid": "Choisissez l’un des sites actifs de cette salle."
+      },
+      "zone": {
+        "label": "Fuseau horaire",
+        "help": "Les cours ici sont planifiés dans ce fuseau. Il ne peut pas être modifié ensuite.",
+        "fixed": "Défini à la création de la salle. Les cours gardent leur heure locale.",
+        "search": "Rechercher un fuseau horaire",
+        "empty": "Aucun fuseau ne correspond",
+        "required": "Choisissez un fuseau horaire.",
+        "invalid": "Choisissez un fuseau horaire dans la liste."
+      },
+      "capacity": {
+        "label": "Capacité (facultatif)",
+        "help": "Le nombre maximal de personnes. Aucun cours ici ne peut en accueillir plus.",
+        "unit": "personnes",
+        "invalid": "Saisissez un nombre entier de 1 à 500, ou laissez vide."
+      },
+      "description": {
+        "label": "Description (facultatif)",
+        "invalid": "500 caractères maximum."
+      },
+      "latest": "Quelqu’un a modifié cette salle entre-temps. Elle s’appelle maintenant « {name} ». Vérifiez vos modifications et enregistrez à nouveau.",
+      "cancel": "Annuler",
+      "saving": "Enregistrement…",
+      "saveAgain": "Enregistrer à nouveau",
+      "save": "Enregistrer",
+      "create": "Ajouter la salle",
+      "saved": "{name} enregistrée",
+      "created": "{name} ajoutée"
+    },
+    "templateForm": {
+      "close": "Fermer",
+      "createTitle": "Nouveau modèle de cours",
+      "editTitle": "Modifier le modèle de cours",
+      "lead": "Un cours que vous donnez encore et encore. Ses valeurs par défaut préremplissent les nouveaux cours ; vous pouvez les modifier à chaque fois.",
+      "editLead": "Les modifications s’appliquent aux cours que vous planifiez désormais.",
+      "title": {
+        "label": "Nom du cours",
+        "invalid": "Saisissez un nom de 80 caractères maximum."
+      },
+      "duration": {
+        "label": "Durée par défaut",
+        "help": "De 5 à 480 minutes.",
+        "unit": "min",
+        "invalid": "Saisissez un nombre entier de minutes de 5 à 480."
+      },
+      "capacity": {
+        "label": "Capacité par défaut",
+        "help": "Le nombre maximal de personnes par cours.",
+        "unit": "personnes",
+        "invalid": "Saisissez un nombre entier de 1 à 500.",
+        "overVenue": "Plus de personnes que la salle par défaut ne peut en accueillir."
+      },
+      "venue": {
+        "label": "Salle par défaut (facultatif)",
+        "none": "Pas de salle par défaut",
+        "option": "{name} · jusqu’à {capacity}",
+        "invalid": "Choisissez l’une des salles actives de cet établissement."
+      },
+      "instructor": {
+        "label": "Coach par défaut (facultatif)",
+        "help": "Propriétaires, managers et coachs actifs de cet établissement.",
+        "none": "Pas de coach par défaut",
+        "unnamed": "Membre de l’équipe",
+        "invalid": "Cette personne ne peut plus enseigner ici. Choisissez quelqu’un d’autre."
+      },
+      "description": {
+        "label": "Description (facultatif)",
+        "invalid": "1 000 caractères maximum."
+      },
+      "historyNote": "Les cours déjà planifiés à partir de ce modèle gardent leurs informations actuelles.",
+      "latest": "Quelqu’un a modifié ce modèle entre-temps. Il s’appelle maintenant « {title} ». Vérifiez vos modifications et enregistrez à nouveau.",
+      "cancel": "Annuler",
+      "saving": "Enregistrement…",
+      "saveAgain": "Enregistrer à nouveau",
+      "save": "Enregistrer",
+      "create": "Ajouter le modèle",
+      "saved": "{title} enregistré",
+      "created": "{title} ajouté"
+    },
+    "classForm": {
+      "close": "Fermer",
+      "missing": {
+        "title": "Un cours a besoin d’une salle et d’un modèle",
+        "both": "Ajoutez d’abord une salle et un modèle de cours dans leurs onglets.",
+        "venue": "Ajoutez d’abord une salle dans l’onglet Salles.",
+        "template": "Ajoutez d’abord un modèle dans l’onglet Modèles de cours.",
+        "done": "OK"
+      },
+      "title": "Nouveau cours",
+      "lead": "Planifiez un cours une fois, ou chaque semaine sur une période donnée.",
+      "kind": {
+        "label": "Fréquence",
+        "once": "Une fois",
+        "onceHint": "Une seule date",
+        "weekly": "Chaque semaine",
+        "weeklyHint": "Jours choisis, jusqu’à un an"
+      },
+      "template": {
+        "label": "Modèle de cours",
+        "placeholder": "Choisir un modèle",
+        "required": "Choisissez un modèle de cours.",
+        "invalid": "Choisissez l’un des modèles actifs de cet établissement."
+      },
+      "venue": {
+        "label": "Salle",
+        "placeholder": "Choisir une salle",
+        "option": "{name} · {zone}",
+        "zone": "Les horaires sont en {zone}.",
+        "required": "Choisissez une salle.",
+        "invalid": "Choisissez l’une des salles actives de cet établissement (dans le même fuseau)."
+      },
+      "date": {
+        "label": "Date",
+        "required": "Choisissez une date."
+      },
+      "time": {
+        "label": "Heure de début",
+        "labelIn": "Heure de début ({zone})",
+        "required": "Choisissez une heure de début.",
+        "invalid": "Saisissez une date et une heure valides.",
+        "window": "Choisissez une heure future, au plus un an à l’avance."
+      },
+      "weekly": {
+        "days": "Répéter le",
+        "daysRequired": "Choisissez au moins un jour.",
+        "startsOn": "Première date",
+        "startsOnRequired": "Choisissez la première date.",
+        "startsOnInvalid": "Choisissez aujourd’hui ou une date ultérieure.",
+        "endsOn": "Dernière date",
+        "endsOnHelp": "Au plus un an après la première date.",
+        "endsOnRequired": "Choisissez la dernière date.",
+        "endsOnInvalid": "Choisissez une dernière date égale ou postérieure à la première, au plus un an plus tard.",
+        "endsBefore": "La dernière date ne peut pas précéder la première.",
+        "tooLong": "Un cours hebdomadaire peut durer au plus un an.",
+        "noDates": "Aucun cours ne tombe ces jours-là entre les dates choisies.",
+        "summary": "Chaque {days} à {time} ({zone}), du {from} au {to}.",
+        "dstNote": "À une date où les horloges sautent ou répètent l’heure de début, aucun cours n’est planifié. Vous verrez ces dates après l’enregistrement."
+      },
+      "wallTime": {
+        "required": "Choisissez laquelle des deux heures vous voulez dire.",
+        "gapRefused": "Cette heure n’existe pas à cette date dans le fuseau de la salle. Choisissez une autre heure."
+      },
+      "instructor": {
+        "label": "Coach",
+        "help": "Propriétaires, managers et coachs actifs de cet établissement.",
+        "noneEligible": "Personne ne peut encore enseigner. Les coachs sont les propriétaires, managers et coachs actifs de l’établissement.",
+        "none": "Sans coach",
+        "unnamed": "Membre de l’équipe",
+        "invalid": "Cette personne ne peut plus enseigner ici. Choisissez quelqu’un d’autre."
+      },
+      "duration": {
+        "label": "Durée",
+        "help": "De 5 à 480 minutes.",
+        "unit": "min",
+        "invalid": "Saisissez un nombre entier de minutes de 5 à 480."
+      },
+      "capacity": {
+        "label": "Capacité",
+        "help": "Le nombre maximal de participants.",
+        "venueLimit": "La salle accueille jusqu’à {capacity}.",
+        "unit": "personnes",
+        "invalid": "Saisissez un nombre entier de 1 à 500.",
+        "overVenue": "Plus de personnes que la salle ne peut en accueillir."
+      },
+      "unknown": {
+        "title": "Nous n’avons pas pu confirmer l’enregistrement.",
+        "body": "Votre connexion a peut-être été coupée. « Réessayer » envoie exactement la même demande : le cours ne peut pas être planifié deux fois."
+      },
+      "cancel": "Annuler",
+      "saving": "Planification…",
+      "retry": "Réessayer",
+      "createOnce": "Planifier le cours",
+      "createWeekly": "Planifier le cours hebdomadaire",
+      "createdOnce": "{title} planifié",
+      "created": {
+        "title": "Cours hebdomadaire planifié",
+        "titleSkipped": "Cours hebdomadaire planifié, certaines dates ignorées",
+        "body": "{title} : {count, plural, one {# cours figure} other {# cours figurent}} au planning.",
+        "bodyUncounted": "{title} figure au planning.",
+        "done": "Terminé"
+      }
+    },
+    "skipped": {
+      "title": "{count, plural, one {# date n’a} other {# dates n’ont}} aucun cours.",
+      "body": "À ces dates, l’heure de début n’existe pas exactement une fois en {zone} :",
+      "reasons": {
+        "nonexistent_local_time": "les horloges sautent cette heure",
+        "ambiguous_local_time": "cette heure a lieu deux fois"
+      },
+      "hint": "Rien n’a été décalé. Pour donner un cours à l’une de ces dates, ajoutez-le comme cours unique en choisissant l’heure exacte."
+    },
+    "reschedule": {
+      "close": "Fermer",
+      "title": "Modifier {title}",
+      "leadOnce": "Seul ce cours change.",
+      "leadSeries": "Seule cette date change. Elle garde ensuite ses propres informations quand la série change.",
+      "now": "Actuellement : {when}, {venue}",
+      "venueZone": "Salles en {zone} uniquement : un cours garde son fuseau horaire.",
+      "needsInstructor": "Le coach précédent n’enseigne plus ici. Choisissez-en un autre.",
+      "changed": {
+        "title": "Ce cours a été modifié entre-temps.",
+        "body": "Il est maintenant {when}, {venue}. Vos modifications sont toujours là : vérifiez-les et enregistrez à nouveau.",
+        "cancelled": "Il a été annulé : il ne peut plus être modifié."
+      },
+      "cancel": "Annuler",
+      "saving": "Enregistrement…",
+      "saveAgain": "Enregistrer à nouveau",
+      "save": "Enregistrer les modifications",
+      "saved": "{title} modifié"
+    },
+    "cancelClass": {
+      "title": "Annuler {title} ?",
+      "body": "{when}, {venue}.",
+      "onlyThis": "Seule cette date est annulée. Le reste de sa série hebdomadaire est conservé.",
+      "stays": "Il reste dans le planning, marqué comme annulé.",
+      "noBookings": "Personne n’est prévenu ni remboursé : les réservations ne font pas encore partie de SimpleFit.",
+      "changed": "Ce cours a été modifié entre-temps. Il est maintenant {when}, {venue}. Confirmez à nouveau pour l’annuler.",
+      "confirm": "Annuler le cours",
+      "pending": "Annulation…",
+      "keep": "Garder le cours",
+      "done": "{title} annulé"
+    },
+    "series": {
+      "rule": "Chaque {days} à {time} ({zone})",
+      "heading": "Séries hebdomadaires",
+      "lead": "Des cours répétés chaque semaine sur une période donnée. Chaque date est un cours à part entière dans le planning.",
+      "views": "Séries",
+      "active": "Actives",
+      "cancelled": "Annulées",
+      "cancelledBadge": "Annulée",
+      "loading": "Chargement des séries hebdomadaires",
+      "empty": {
+        "active": "Aucune série hebdomadaire pour l’instant. Ajoutez un cours et choisissez « Chaque semaine ».",
+        "cancelled": "Aucune série annulée."
+      },
+      "period": "Période",
+      "venue": "Salle",
+      "instructor": "Coach",
+      "noInstructor": "Sans coach",
+      "duration": "Durée",
+      "minutes": "{count, plural, one {# minute} other {# minutes}}",
+      "capacity": "Capacité",
+      "max": "Jusqu’à {count, plural, one {# personne} other {# personnes}}",
+      "scheduled": "Cours planifiés",
+      "cancelledCount": "Cours annulés",
+      "status": "Statut",
+      "countsNote": "Les décomptes incluent les cours passés et futurs. Ce sont des cours, pas des réservations.",
+      "show": "Afficher dans le planning",
+      "edit": "Modifier la série",
+      "cancel": "Annuler la série"
+    },
+    "seriesForm": {
+      "close": "Fermer",
+      "title": "Modifier {title}",
+      "lead": "Les modifications s’appliquent à toute la série. Le modèle, le fuseau horaire et la première date ne changent pas.",
+      "now": "Actuellement : {rule}, {period}",
+      "endsOnHelp": "Au plus un an après la première date.",
+      "venueZone": "Salles en {zone} uniquement : une série garde son fuseau horaire.",
+      "venueInvalid": "Choisissez une salle active dans le même fuseau horaire.",
+      "impact": {
+        "title": "Ce qui se passe",
+        "follow": "Les cours à venir suivent la nouvelle règle.",
+        "dropped": "Les dates que la règle n’inclut plus sont annulées.",
+        "kept": "Les cours modifiés ou annulés à part restent tels quels.",
+        "past": "Les cours passés ne changent pas."
+      },
+      "changed": {
+        "title": "Cette série a été modifiée entre-temps.",
+        "body": "Elle est maintenant {rule}, {period}. Vos modifications sont toujours là : vérifiez-les et enregistrez à nouveau.",
+        "cancelled": "Elle a été annulée : elle ne peut plus être modifiée."
+      },
+      "savedTitle": "Série mise à jour",
+      "savedBody": "{rule}, {period}.",
+      "done": "Terminé",
+      "cancel": "Annuler",
+      "saving": "Enregistrement…",
+      "saveAgain": "Enregistrer à nouveau",
+      "save": "Enregistrer la série"
+    },
+    "cancelSeries": {
+      "title": "Annuler la série {title} ?",
+      "body": "{rule}, {period}.",
+      "future": "Tous les cours à venir de cette série sont annulés.",
+      "past": "Les cours passés restent tels quels.",
+      "final": "Une série annulée ne peut pas être relancée.",
+      "noBookings": "Personne n’est prévenu ni remboursé : les réservations ne font pas encore partie de SimpleFit.",
+      "understand": "Je comprends que tous les cours à venir de cette série seront annulés.",
+      "changed": "Cette série a été modifiée entre-temps. Elle est maintenant {rule}, {period}. Confirmez à nouveau pour l’annuler.",
+      "confirm": "Annuler la série",
+      "pending": "Annulation…",
+      "keep": "Garder la série",
+      "done": "Série {title} annulée"
+    },
+    "repair": {
+      "action": "Rechercher les cours manquants",
+      "none": "Rien ne manquait.",
+      "created": "{count, plural, one {# cours manquant a été ajouté} other {# cours manquants ont été ajoutés}}."
+    },
+    "templates": {
+      "heading": "Modèles de cours",
+      "lead": "Les cours que vous donnez, avec les valeurs par défaut des nouveaux cours.",
+      "views": "Modèles",
+      "active": "Actifs",
+      "archived": "Archivés",
+      "archivedBadge": "Archivé",
+      "create": "Nouveau modèle",
+      "loading": "Chargement des modèles de cours",
+      "empty": {
+        "active": "Aucun modèle de cours pour l’instant.",
+        "archived": "Aucun modèle archivé."
+      },
+      "minutes": "{count, plural, one {# min} other {# min}}",
+      "max": "jusqu’à {count, plural, one {# personne} other {# personnes}}",
+      "edit": "Modifier",
+      "archive": "Archiver",
+      "note": "Modifier ou archiver un modèle ne change jamais les cours déjà planifiés."
+    },
+    "venues": {
+      "heading": "Salles",
+      "lead": "Pièces, rings et halls de vos sites. Une salle accueille un seul cours à la fois.",
+      "views": "Salles",
+      "active": "Actives",
+      "inactive": "Inactives",
+      "inactiveBadge": "Inactive",
+      "create": "Nouvelle salle",
+      "loading": "Chargement des salles",
+      "empty": {
+        "active": "Aucune salle pour l’instant. Ajoutez-en une pour commencer votre planning.",
+        "inactive": "Aucune salle inactive.",
+        "readonly": "Aucune salle pour l’instant. Le propriétaire ou un manager les ajoute."
+      },
+      "locationUnavailable": "Site qui n’est plus listé",
+      "noLimit": "Pas de limite de salle",
+      "max": "jusqu’à {count, plural, one {# personne} other {# personnes}}",
+      "edit": "Modifier",
+      "deactivate": "Désactiver",
+      "note": "Les cours déjà donnés dans une salle continuent de la nommer après sa désactivation."
+    },
+    "deactivateVenue": {
+      "title": "Désactiver {name} ?",
+      "body": "Elle n’acceptera plus de nouveaux cours, et c’est irréversible. Les cours déjà donnés là-bas continuent de la nommer. Une salle avec des cours à venir ne peut pas être désactivée.",
+      "confirm": "Désactiver",
+      "pending": "Désactivation…",
+      "keep": "Garder la salle",
+      "done": "{name} désactivée"
+    },
+    "archiveTemplate": {
+      "title": "Archiver {title} ?",
+      "body": "Il n’acceptera plus de nouveaux cours, et c’est irréversible. Les cours et séries déjà planifiés à partir de lui restent exactement tels quels.",
+      "confirm": "Archiver",
+      "pending": "Archivage…",
+      "keep": "Garder le modèle",
+      "done": "{title} archivé"
     }
   }
 }

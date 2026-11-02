@@ -97,10 +97,6 @@
     "later": {
       "title": "Pronto en tu consola",
       "badge": "Más adelante",
-      "schedule": {
-        "title": "Clases y horario",
-        "body": "Planifica las clases de toda la semana."
-      },
       "attendance": {
         "title": "Reservas y check-ins",
         "body": "Reservas y check-ins de cada clase."
@@ -220,7 +216,7 @@
       "steps": {
         "checklist": {
           "title": "Tu lista de apertura",
-          "body": "Un paso está hecho: tu gimnasio existe. Clases, equipo, miembros y check-ins aparecen como «más adelante» hasta que estén disponibles. Ninguno cuenta como pendiente."
+          "body": "Ya hay un paso hecho: tu gimnasio existe. Los pasos cuyas herramientas aún no han llegado aparecen como próximos y nunca cuentan como pendientes."
         },
         "gym": {
           "title": "Tu gimnasio y tu acceso",
@@ -228,7 +224,7 @@
         },
         "menu": {
           "title": "Las herramientas llegan a este menú",
-          "body": "El panel funciona hoy. Miembros, horario, equipo y el resto aparecen como «Pronto» y se abren cuando estén disponibles. Nada de lo que hay detrás está a medias."
+          "body": "El panel, los miembros, el equipo y el horario funcionan hoy. El resto aparece como «Pronto» y se abre cuando esté disponible. Nada de lo que hay detrás está a medias."
         },
         "switcher": {
           "title": "Una cuenta, todos los roles",
@@ -828,6 +824,551 @@
         "nameMissing": "Falta",
         "duplicateOf": "Misma dirección que la línea {line}"
       }
+    }
+  },
+  "timetable": {
+    "metaTitle": "Horario",
+    "eyebrow": "Programación",
+    "title": "Horario",
+    "addClass": "Clase",
+    "confirmAgain": "Confirmar de nuevo",
+    "loading": "Cargando el horario",
+    "tabs": {
+      "label": "Secciones del horario",
+      "timetable": "Horario",
+      "series": "Series semanales",
+      "templates": "Plantillas de clase",
+      "venues": "Salas"
+    },
+    "zones": {
+      "none": "Las horas aparecerán en la zona horaria de cada sala cuando añadas una.",
+      "one": "Horas en {zone}, para todos, sea cual sea la zona horaria del dispositivo.",
+      "many": "Cada clase muestra la hora local de su sala ({zones})."
+    },
+    "hint": {
+      "heading": "Detalles de la clase",
+      "body": "Elige una clase para ver su fecha, hora, sala, instructor y aforo.",
+      "capacity": "El aforo es el máximo de personas de una clase. Las reservas y los registros de entrada aún no forman parte de SimpleFit, así que aquí no se reserva ni se cuenta nada."
+    },
+    "toolbar": {
+      "previous": {
+        "week": "Semana anterior",
+        "day": "Día anterior"
+      },
+      "next": {
+        "week": "Semana siguiente",
+        "day": "Día siguiente"
+      },
+      "today": "Hoy",
+      "view": "Vista",
+      "views": {
+        "week": "Semana",
+        "day": "Día",
+        "list": "Lista"
+      },
+      "goTo": "Ir a la fecha",
+      "venue": "Sala",
+      "allVenues": "Todas las salas",
+      "instructor": "Instructor",
+      "allInstructors": "Todos los instructores",
+      "unnamed": "Miembro del equipo",
+      "showCancelled": "Mostrar canceladas"
+    },
+    "card": {
+      "label": "{title}, de {from} a {to}, {venue}, {instructor}, aforo {capacity}{status}",
+      "instructorNeeded": "Falta instructor",
+      "noInstructor": "Sin instructor",
+      "unnamed": "Miembro del equipo",
+      "cancelled": "Cancelada",
+      "minutes": "{count, plural, one {# min} other {# min}}",
+      "max": "Máx. {count}"
+    },
+    "grid": {
+      "openDay": "Abrir {day}",
+      "noClasses": "Sin clases",
+      "noClassesDay": "No hay clases este día.",
+      "days": "Días de la semana",
+      "dayWithCount": "{day}: {count, plural, =0 {# clases} one {# clase} other {# clases}}"
+    },
+    "list": {
+      "today": "Hoy"
+    },
+    "empty": {
+      "addVenue": "Añadir una sala",
+      "addTemplate": "Añadir una plantilla de clase",
+      "addClass": "Añadir una clase",
+      "toVenues": "Abrir salas",
+      "toTemplates": "Abrir plantillas de clase",
+      "venue": {
+        "title": "Primero añade una sala",
+        "body": "Cada clase tiene lugar en una sala: un cuarto, ring o pabellón en una de tus sedes, con su zona horaria. Añade una para empezar tu horario.",
+        "readonly": "Cada clase tiene lugar en una sala. Las salas las añade el propietario o un gerente; verás las clases aquí cuando se programen."
+      },
+      "template": {
+        "title": "Añade una plantilla de clase",
+        "body": "Una plantilla es una clase que das una y otra vez: su nombre, duración y aforo. Añade una y prográmala una vez o cada semana.",
+        "readonly": "El propietario o un gerente programa las clases a partir de plantillas. Verás las clases aquí cuando se programen."
+      },
+      "filtered": {
+        "title": "Ninguna clase coincide con estos filtros",
+        "body": "Prueba con otra sala u otro instructor, o muéstralas todas."
+      },
+      "free": {
+        "title": "Nada programado para estas fechas",
+        "body": "No hay clases en estas fechas. Elige otras fechas o añade una clase."
+      }
+    },
+    "read": {
+      "restricted": {
+        "title": "Tu rol no puede ver esto",
+        "body": "El gimnasio decide qué ve cada rol. Pregunta al propietario o a un gerente."
+      },
+      "failed": {
+        "title": "No pudimos cargar el horario",
+        "body": "Revisa tu conexión e inténtalo de nuevo. No se muestra nada hasta que se carguen todas las clases de estas fechas.",
+        "limited": "Demasiadas solicitudes en poco tiempo. Espera un momento e inténtalo de nuevo.",
+        "retry": "Reintentar"
+      },
+      "first100": "Se muestran las primeras 100. Puede haber más."
+    },
+    "details": {
+      "status": {
+        "scheduled": "Programada",
+        "cancelled": "Cancelada",
+        "series_changed": "Cancelada · serie modificada",
+        "series_cancelled": "Cancelada · serie cancelada"
+      },
+      "weekly": "Serie semanal",
+      "rescheduled": "Modificada por separado",
+      "date": "Fecha",
+      "time": "Hora",
+      "timeValue": "{from} – {to}",
+      "zone": "Zona horaria",
+      "zoneValue": "{zone} (UTC{offset})",
+      "duration": "Duración",
+      "minutes": "{count, plural, one {# minuto} other {# minutos}}",
+      "venue": "Sala",
+      "instructor": "Instructor",
+      "instructorNeeded": "Falta instructor",
+      "noInstructor": "Sin instructor",
+      "unnamed": "Miembro del equipo",
+      "capacity": "Aforo",
+      "capacityValue": "Hasta {count, plural, one {# persona} other {# personas}}",
+      "needsInstructorNote": "El instructor ya no da clases en este gimnasio y se le retiró de esta clase. Elige otro instructor.",
+      "openSeries": "Abrir su serie semanal",
+      "capacityNote": "El aforo es un límite. Las reservas, listas de espera y registros de entrada aún no forman parte de SimpleFit.",
+      "change": "Cambiar esta clase",
+      "cancel": "Cancelar clase",
+      "readonly": {
+        "cancelled": "Esta clase está cancelada. Permanece en el horario como registro.",
+        "started": "Esta clase ya empezó, así que ya no puede cambiar.",
+        "role": "Tu rol puede ver el horario. Lo planifican el propietario y los gerentes."
+      }
+    },
+    "problems": {
+      "limited": "Demasiados cambios en poco tiempo. Vuelve a intentarlo en {minutes} min.",
+      "limitedLater": "Demasiados cambios en poco tiempo. Vuelve a intentarlo un poco más tarde.",
+      "stale": "Alguien cambió esto mientras tanto. No se guardó nada.",
+      "venueTaken": "Hay otra clase en esta sala a esa hora. Elige otra hora u otra sala.",
+      "venueTakenOn": "Hay otra clase en esta sala a esa hora ({count, plural, one {# fecha} other {# fechas}}): {dates}. Elige otra hora, otros días u otra sala.",
+      "instructorBusy": "Este instructor da otra clase a esa hora. Elige otra hora u otro instructor.",
+      "venueHasClasses": "Quedan {count, plural, one {# clase próxima} other {# clases próximas}} en esta sala. Muévelas o cancélalas primero.",
+      "venueHasClassesSome": "Quedan clases próximas en esta sala. Muévelas o cancélalas primero.",
+      "venueCapacity": "{count, plural, one {# clase próxima} other {# clases próximas}} en esta sala admiten más personas. Baja su aforo primero.",
+      "venueCapacitySome": "Las clases próximas en esta sala admiten más personas. Baja su aforo primero.",
+      "venueInactive": "Esta sala se desactivó. No admite clases nuevas.",
+      "templateArchived": "Esta plantilla se archivó. No admite clases nuevas.",
+      "occurrenceCancelled": "Esta clase se canceló mientras tanto.",
+      "occurrenceStarted": "Esta clase ya empezó, así que ya no puede cambiar.",
+      "seriesCancelled": "Esta serie se canceló mientras tanto.",
+      "draft": "Termina la configuración de tu gimnasio antes de programar clases.",
+      "forbidden": "Tu rol no puede hacer esto. No cambió nada.",
+      "gone": "Esto ya no está disponible. Puede que se haya eliminado o que tu acceso haya cambiado.",
+      "unknown": "No pudimos confirmarlo. Puede que se cortara tu conexión; el horario se está recargando.",
+      "failed": "No funcionó. No cambió nada. Inténtalo de nuevo."
+    },
+    "form": {
+      "wallTime": {
+        "gap": {
+          "title": "Esta hora no existe ese día.",
+          "body": "Esa noche los relojes en {zone} saltan las {time} (empieza el horario de verano). Elige otra hora. No la moveremos por ti."
+        },
+        "overlap": {
+          "title": "Esta hora ocurre dos veces ese día.",
+          "body": "Esa noche los relojes en {zone} se atrasan, así que las {time} ocurren dos veces. Elige cuál:",
+          "first": "Primera (UTC{offset})",
+          "second": "Segunda (UTC{offset})"
+        }
+      }
+    },
+    "venueForm": {
+      "close": "Cerrar",
+      "createTitle": "Nueva sala",
+      "editTitle": "Editar sala",
+      "lead": "Un cuarto, ring o pabellón en una de tus sedes. Cada clase tiene lugar en una sala, una clase a la vez.",
+      "name": {
+        "label": "Nombre",
+        "invalid": "Escribe un nombre de hasta 80 caracteres.",
+        "taken": "Otra sala activa ya tiene este nombre."
+      },
+      "location": {
+        "label": "Sede",
+        "placeholder": "Elige una sede",
+        "required": "Elige una sede.",
+        "invalid": "Elige una de las sedes activas de este gimnasio."
+      },
+      "zone": {
+        "label": "Zona horaria",
+        "help": "Las clases aquí se programan en esta zona. No se puede cambiar después.",
+        "fixed": "Se fijó al crear la sala. Las clases mantienen su hora local.",
+        "search": "Buscar zonas horarias",
+        "empty": "Ninguna zona horaria coincide",
+        "required": "Elige una zona horaria.",
+        "invalid": "Elige una zona horaria de la lista."
+      },
+      "capacity": {
+        "label": "Aforo (opcional)",
+        "help": "El máximo de personas que caben. Ninguna clase aquí puede admitir más.",
+        "unit": "personas",
+        "invalid": "Escribe un número entero de 1 a 500 o déjalo vacío."
+      },
+      "description": {
+        "label": "Descripción (opcional)",
+        "invalid": "Usa hasta 500 caracteres."
+      },
+      "latest": "Alguien cambió esta sala mientras tanto. Ahora se llama «{name}». Revisa tus cambios y guarda de nuevo.",
+      "cancel": "Cancelar",
+      "saving": "Guardando…",
+      "saveAgain": "Guardar de nuevo",
+      "save": "Guardar",
+      "create": "Añadir sala",
+      "saved": "{name} guardada",
+      "created": "{name} añadida"
+    },
+    "templateForm": {
+      "close": "Cerrar",
+      "createTitle": "Nueva plantilla de clase",
+      "editTitle": "Editar plantilla de clase",
+      "lead": "Una clase que das una y otra vez. Sus valores predeterminados rellenan las clases nuevas; puedes cambiarlos cada vez.",
+      "editLead": "Los cambios se aplican a las clases que programes a partir de ahora.",
+      "title": {
+        "label": "Nombre de la clase",
+        "invalid": "Escribe un nombre de hasta 80 caracteres."
+      },
+      "duration": {
+        "label": "Duración predeterminada",
+        "help": "De 5 a 480 minutos.",
+        "unit": "min",
+        "invalid": "Escribe un número entero de minutos de 5 a 480."
+      },
+      "capacity": {
+        "label": "Aforo predeterminado",
+        "help": "El máximo de personas por clase.",
+        "unit": "personas",
+        "invalid": "Escribe un número entero de 1 a 500.",
+        "overVenue": "Más personas de las que caben en la sala predeterminada."
+      },
+      "venue": {
+        "label": "Sala predeterminada (opcional)",
+        "none": "Sin sala predeterminada",
+        "option": "{name} · hasta {capacity}",
+        "invalid": "Elige una de las salas activas de este gimnasio."
+      },
+      "instructor": {
+        "label": "Instructor predeterminado (opcional)",
+        "help": "Propietarios, gerentes y entrenadores activos de este gimnasio.",
+        "none": "Sin instructor predeterminado",
+        "unnamed": "Miembro del equipo",
+        "invalid": "Esta persona ya no puede dar clases en este gimnasio. Elige a otra."
+      },
+      "description": {
+        "label": "Descripción (opcional)",
+        "invalid": "Usa hasta 1.000 caracteres."
+      },
+      "historyNote": "Las clases ya programadas con esta plantilla conservan sus datos actuales.",
+      "latest": "Alguien cambió esta plantilla mientras tanto. Ahora se llama «{title}». Revisa tus cambios y guarda de nuevo.",
+      "cancel": "Cancelar",
+      "saving": "Guardando…",
+      "saveAgain": "Guardar de nuevo",
+      "save": "Guardar",
+      "create": "Añadir plantilla",
+      "saved": "{title} guardada",
+      "created": "{title} añadida"
+    },
+    "classForm": {
+      "close": "Cerrar",
+      "missing": {
+        "title": "Una clase necesita una sala y una plantilla",
+        "both": "Primero añade una sala y una plantilla de clase en sus pestañas.",
+        "venue": "Primero añade una sala en la pestaña Salas.",
+        "template": "Primero añade una plantilla en la pestaña Plantillas de clase.",
+        "done": "Entendido"
+      },
+      "title": "Nueva clase",
+      "lead": "Programa una clase una vez, o cada semana durante un periodo.",
+      "kind": {
+        "label": "Con qué frecuencia",
+        "once": "Una vez",
+        "onceHint": "Una sola fecha",
+        "weekly": "Cada semana",
+        "weeklyHint": "Días elegidos, hasta un año"
+      },
+      "template": {
+        "label": "Plantilla de clase",
+        "placeholder": "Elige una plantilla",
+        "required": "Elige una plantilla de clase.",
+        "invalid": "Elige una de las plantillas activas de este gimnasio."
+      },
+      "venue": {
+        "label": "Sala",
+        "placeholder": "Elige una sala",
+        "option": "{name} · {zone}",
+        "zone": "Las horas están en {zone}.",
+        "required": "Elige una sala.",
+        "invalid": "Elige una de las salas activas de este gimnasio (en la misma zona horaria)."
+      },
+      "date": {
+        "label": "Fecha",
+        "required": "Elige una fecha."
+      },
+      "time": {
+        "label": "Hora de inicio",
+        "labelIn": "Hora de inicio ({zone})",
+        "required": "Elige una hora de inicio.",
+        "invalid": "Escribe una fecha y hora válidas.",
+        "window": "Elige una hora en el futuro, como mucho dentro de un año."
+      },
+      "weekly": {
+        "days": "Repetir los",
+        "daysRequired": "Elige al menos un día.",
+        "startsOn": "Primera fecha",
+        "startsOnRequired": "Elige la primera fecha.",
+        "startsOnInvalid": "Elige hoy o una fecha posterior.",
+        "endsOn": "Última fecha",
+        "endsOnHelp": "Como mucho un año después de la primera fecha.",
+        "endsOnRequired": "Elige la última fecha.",
+        "endsOnInvalid": "Elige una última fecha igual o posterior a la primera, como mucho un año después.",
+        "endsBefore": "La última fecha no puede ser anterior a la primera.",
+        "tooLong": "Una clase semanal puede durar como mucho un año.",
+        "noDates": "Ninguna clase cae en estos días entre las fechas elegidas.",
+        "summary": "Cada {days} a las {time} ({zone}), del {from} al {to}.",
+        "dstNote": "En una fecha en que los relojes saltan o repiten la hora de inicio, no se programa ninguna clase. Verás esas fechas después de guardar."
+      },
+      "wallTime": {
+        "required": "Elige a cuál de las dos horas te refieres.",
+        "gapRefused": "Esta hora no existe en esa fecha en la zona horaria de la sala. Elige otra hora."
+      },
+      "instructor": {
+        "label": "Instructor",
+        "help": "Propietarios, gerentes y entrenadores activos de este gimnasio.",
+        "noneEligible": "Nadie puede dar clases todavía. Los instructores son los propietarios, gerentes y entrenadores activos del gimnasio.",
+        "none": "Sin instructor",
+        "unnamed": "Miembro del equipo",
+        "invalid": "Esta persona ya no puede dar clases en este gimnasio. Elige a otra."
+      },
+      "duration": {
+        "label": "Duración",
+        "help": "De 5 a 480 minutos.",
+        "unit": "min",
+        "invalid": "Escribe un número entero de minutos de 5 a 480."
+      },
+      "capacity": {
+        "label": "Aforo",
+        "help": "El máximo de personas que pueden participar.",
+        "venueLimit": "En la sala caben hasta {capacity}.",
+        "unit": "personas",
+        "invalid": "Escribe un número entero de 1 a 500.",
+        "overVenue": "Más personas de las que caben en la sala."
+      },
+      "unknown": {
+        "title": "No pudimos confirmar si se guardó.",
+        "body": "Puede que se cortara tu conexión. «Reintentar» envía exactamente la misma solicitud, así que la clase no puede programarse dos veces."
+      },
+      "cancel": "Cancelar",
+      "saving": "Programando…",
+      "retry": "Reintentar",
+      "createOnce": "Programar clase",
+      "createWeekly": "Programar clase semanal",
+      "createdOnce": "{title} programada",
+      "created": {
+        "title": "Clase semanal programada",
+        "titleSkipped": "Clase semanal programada, con fechas omitidas",
+        "body": "{title}: {count, plural, one {# clase está} other {# clases están}} en el horario.",
+        "bodyUncounted": "{title} está en el horario.",
+        "done": "Listo"
+      }
+    },
+    "skipped": {
+      "title": "{count, plural, one {# fecha no tiene} other {# fechas no tienen}} clase.",
+      "body": "En estas fechas la hora de inicio no existe exactamente una vez en {zone}:",
+      "reasons": {
+        "nonexistent_local_time": "los relojes saltan esta hora",
+        "ambiguous_local_time": "esta hora ocurre dos veces"
+      },
+      "hint": "No se movió nada. Para dar una clase en una de ellas, añádela como clase única y elige la hora exacta."
+    },
+    "reschedule": {
+      "close": "Cerrar",
+      "title": "Cambiar {title}",
+      "leadOnce": "Solo cambia esta clase.",
+      "leadSeries": "Solo cambia esta fecha. Después conserva sus propios datos cuando cambie la serie.",
+      "now": "Ahora: {when}, {venue}",
+      "venueZone": "Solo salas en {zone}: una clase conserva su zona horaria.",
+      "needsInstructor": "El instructor anterior ya no da clases aquí. Elige otro.",
+      "changed": {
+        "title": "Esta clase cambió mientras tanto.",
+        "body": "Ahora es {when}, {venue}. Tus cambios siguen aquí: revísalos y guarda de nuevo.",
+        "cancelled": "Se canceló, así que no puede cambiar."
+      },
+      "cancel": "Cancelar",
+      "saving": "Guardando…",
+      "saveAgain": "Guardar de nuevo",
+      "save": "Guardar cambios",
+      "saved": "{title} cambiada"
+    },
+    "cancelClass": {
+      "title": "¿Cancelar {title}?",
+      "body": "{when}, {venue}.",
+      "onlyThis": "Solo se cancela esta fecha. El resto de su serie semanal se mantiene.",
+      "stays": "Permanece en el horario, marcada como cancelada.",
+      "noBookings": "No se avisa ni se reembolsa a nadie: las reservas aún no forman parte de SimpleFit.",
+      "changed": "Esta clase cambió mientras tanto. Ahora es {when}, {venue}. Confirma de nuevo para cancelarla.",
+      "confirm": "Cancelar clase",
+      "pending": "Cancelando…",
+      "keep": "Mantener clase",
+      "done": "{title} cancelada"
+    },
+    "series": {
+      "rule": "Cada {days} a las {time} ({zone})",
+      "heading": "Series semanales",
+      "lead": "Clases que se repiten cada semana durante un periodo. Cada fecha es una clase propia en el horario.",
+      "views": "Series",
+      "active": "Activas",
+      "cancelled": "Canceladas",
+      "cancelledBadge": "Cancelada",
+      "loading": "Cargando series semanales",
+      "empty": {
+        "active": "Aún no hay series semanales. Añade una clase y elige «Cada semana».",
+        "cancelled": "No hay series canceladas."
+      },
+      "period": "Periodo",
+      "venue": "Sala",
+      "instructor": "Instructor",
+      "noInstructor": "Sin instructor",
+      "duration": "Duración",
+      "minutes": "{count, plural, one {# minuto} other {# minutos}}",
+      "capacity": "Aforo",
+      "max": "Hasta {count, plural, one {# persona} other {# personas}}",
+      "scheduled": "Clases programadas",
+      "cancelledCount": "Clases canceladas",
+      "status": "Estado",
+      "countsNote": "Los recuentos incluyen clases pasadas y futuras. Son clases, no reservas.",
+      "show": "Mostrar en el horario",
+      "edit": "Editar serie",
+      "cancel": "Cancelar serie"
+    },
+    "seriesForm": {
+      "close": "Cerrar",
+      "title": "Editar {title}",
+      "lead": "Los cambios se aplican a toda la serie. La plantilla, la zona horaria y la primera fecha no cambian.",
+      "now": "Ahora: {rule}, {period}",
+      "endsOnHelp": "Como mucho un año después de la primera fecha.",
+      "venueZone": "Solo salas en {zone}: una serie conserva su zona horaria.",
+      "venueInvalid": "Elige una sala activa en la misma zona horaria.",
+      "impact": {
+        "title": "Qué pasa",
+        "follow": "Las clases próximas siguen la nueva regla.",
+        "dropped": "Las fechas que la regla ya no incluye se cancelan.",
+        "kept": "Las clases cambiadas o canceladas por separado se quedan como están.",
+        "past": "Las clases pasadas no cambian."
+      },
+      "changed": {
+        "title": "Esta serie cambió mientras tanto.",
+        "body": "Ahora es {rule}, {period}. Tus cambios siguen aquí: revísalos y guarda de nuevo.",
+        "cancelled": "Se canceló, así que no puede cambiar."
+      },
+      "savedTitle": "Serie actualizada",
+      "savedBody": "{rule}, {period}.",
+      "done": "Listo",
+      "cancel": "Cancelar",
+      "saving": "Guardando…",
+      "saveAgain": "Guardar de nuevo",
+      "save": "Guardar serie"
+    },
+    "cancelSeries": {
+      "title": "¿Cancelar la serie {title}?",
+      "body": "{rule}, {period}.",
+      "future": "Se cancelan todas las clases próximas de esta serie.",
+      "past": "Las clases pasadas se quedan como están.",
+      "final": "Una serie cancelada no se puede reanudar.",
+      "noBookings": "No se avisa ni se reembolsa a nadie: las reservas aún no forman parte de SimpleFit.",
+      "understand": "Entiendo que se cancelarán todas las clases próximas de esta serie.",
+      "changed": "Esta serie cambió mientras tanto. Ahora es {rule}, {period}. Confirma de nuevo para cancelarla.",
+      "confirm": "Cancelar serie",
+      "pending": "Cancelando…",
+      "keep": "Mantener serie",
+      "done": "Serie {title} cancelada"
+    },
+    "repair": {
+      "action": "Buscar clases que falten",
+      "none": "No faltaba nada.",
+      "created": "{count, plural, one {# clase que faltaba se añadió} other {# clases que faltaban se añadieron}}."
+    },
+    "templates": {
+      "heading": "Plantillas de clase",
+      "lead": "Las clases que das, con los valores con los que empiezan las clases nuevas.",
+      "views": "Plantillas",
+      "active": "Activas",
+      "archived": "Archivadas",
+      "archivedBadge": "Archivada",
+      "create": "Nueva plantilla",
+      "loading": "Cargando plantillas de clase",
+      "empty": {
+        "active": "Aún no hay plantillas de clase.",
+        "archived": "No hay plantillas archivadas."
+      },
+      "minutes": "{count, plural, one {# min} other {# min}}",
+      "max": "hasta {count, plural, one {# persona} other {# personas}}",
+      "edit": "Editar",
+      "archive": "Archivar",
+      "note": "Cambiar o archivar una plantilla nunca cambia las clases ya programadas."
+    },
+    "venues": {
+      "heading": "Salas",
+      "lead": "Cuartos, rings y pabellones en tus sedes. Una sala acoge una clase a la vez.",
+      "views": "Salas",
+      "active": "Activas",
+      "inactive": "Inactivas",
+      "inactiveBadge": "Inactiva",
+      "create": "Nueva sala",
+      "loading": "Cargando salas",
+      "empty": {
+        "active": "Aún no hay salas. Añade una para empezar tu horario.",
+        "inactive": "No hay salas inactivas.",
+        "readonly": "Aún no hay salas. Las añade el propietario o un gerente."
+      },
+      "locationUnavailable": "Sede que ya no aparece",
+      "noLimit": "Sin límite de sala",
+      "max": "hasta {count, plural, one {# persona} other {# personas}}",
+      "edit": "Editar",
+      "deactivate": "Desactivar",
+      "note": "Las clases ya celebradas en una sala siguen nombrándola después de desactivarla."
+    },
+    "deactivateVenue": {
+      "title": "¿Desactivar {name}?",
+      "body": "No admitirá clases nuevas y no se puede deshacer. Las clases ya celebradas allí siguen nombrándola. Una sala con clases próximas no se puede desactivar.",
+      "confirm": "Desactivar",
+      "pending": "Desactivando…",
+      "keep": "Mantener sala",
+      "done": "{name} desactivada"
+    },
+    "archiveTemplate": {
+      "title": "¿Archivar {title}?",
+      "body": "No admitirá clases nuevas y no se puede deshacer. Las clases y series ya programadas con ella se quedan tal como están.",
+      "confirm": "Archivar",
+      "pending": "Archivando…",
+      "keep": "Mantener plantilla",
+      "done": "{title} archivada"
     }
   }
 }

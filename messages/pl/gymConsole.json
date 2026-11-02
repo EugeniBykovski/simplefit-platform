@@ -97,10 +97,6 @@
     "later": {
       "title": "Wkrótce w Twojej konsoli",
       "badge": "Później",
-      "schedule": {
-        "title": "Zajęcia i grafik",
-        "body": "Planuj zajęcia na cały tydzień."
-      },
       "attendance": {
         "title": "Rezerwacje i wejścia",
         "body": "Rezerwacje i wejścia na każde zajęcia."
@@ -220,7 +216,7 @@
       "steps": {
         "checklist": {
           "title": "Twoja lista otwarcia",
-          "body": "Jeden krok jest gotowy: twoja sala istnieje. Zajęcia, zespół, członkowie i wejścia są oznaczone jako „wkrótce”, dopóki się nie pojawią. Żaden nie liczy się jako brakujący."
+          "body": "Jeden krok jest gotowy: Twój klub istnieje. Kroki, których narzędzia jeszcze nie działają, są oznaczone jako późniejsze i nigdy nie liczą się jako brakujące."
         },
         "gym": {
           "title": "Twoja sala i twój dostęp",
@@ -228,7 +224,7 @@
         },
         "menu": {
           "title": "Narzędzia pojawią się w tym menu",
-          "body": "Pulpit działa już dziś. Członkowie, grafik, zespół i reszta są oznaczone jako „Wkrótce” i otworzą się po uruchomieniu. Nic za nimi nie jest zrobione do połowy."
+          "body": "Pulpit, członkowie, zespół i grafik działają już dziś. Reszta jest oznaczona jako „Wkrótce” i otworzy się po uruchomieniu. Nic za nią nie jest zrobione do połowy."
         },
         "switcher": {
           "title": "Jedno konto, każda rola",
@@ -828,6 +824,551 @@
         "nameMissing": "Brak",
         "duplicateOf": "Ten sam adres co w wierszu {line}"
       }
+    }
+  },
+  "timetable": {
+    "metaTitle": "Grafik",
+    "eyebrow": "Grafik",
+    "title": "Grafik",
+    "addClass": "Zajęcia",
+    "confirmAgain": "Potwierdź ponownie",
+    "loading": "Wczytujemy grafik",
+    "tabs": {
+      "label": "Sekcje grafiku",
+      "timetable": "Grafik",
+      "series": "Serie cotygodniowe",
+      "templates": "Szablony zajęć",
+      "venues": "Sale"
+    },
+    "zones": {
+      "none": "Godziny pojawią się w strefie czasowej sali, gdy dodasz salę.",
+      "one": "Godziny w strefie {zone} — dla wszystkich, niezależnie od strefy czasowej urządzenia.",
+      "many": "Każde zajęcia pokazują czas lokalny swojej sali ({zones})."
+    },
+    "hint": {
+      "heading": "Szczegóły zajęć",
+      "body": "Wybierz zajęcia, aby zobaczyć datę, godzinę, salę, prowadzącego i limit miejsc.",
+      "capacity": "Limit miejsc to największa liczba uczestników. Zapisów i rejestracji wejść nie ma jeszcze w SimpleFit, więc nic tu nie jest rezerwowane ani liczone."
+    },
+    "toolbar": {
+      "previous": {
+        "week": "Poprzedni tydzień",
+        "day": "Poprzedni dzień"
+      },
+      "next": {
+        "week": "Następny tydzień",
+        "day": "Następny dzień"
+      },
+      "today": "Dziś",
+      "view": "Widok",
+      "views": {
+        "week": "Tydzień",
+        "day": "Dzień",
+        "list": "Lista"
+      },
+      "goTo": "Przejdź do daty",
+      "venue": "Sala",
+      "allVenues": "Wszystkie sale",
+      "instructor": "Prowadzący",
+      "allInstructors": "Wszyscy prowadzący",
+      "unnamed": "Członek zespołu",
+      "showCancelled": "Pokaż odwołane"
+    },
+    "card": {
+      "label": "{title}, od {from} do {to}, {venue}, {instructor}, limit {capacity}{status}",
+      "instructorNeeded": "Potrzebny prowadzący",
+      "noInstructor": "Bez prowadzącego",
+      "unnamed": "Członek zespołu",
+      "cancelled": "Odwołane",
+      "minutes": "{count, plural, one {# min} few {# min} many {# min} other {# min}}",
+      "max": "Maks. {count}"
+    },
+    "grid": {
+      "openDay": "Otwórz: {day}",
+      "noClasses": "Brak zajęć",
+      "noClassesDay": "Tego dnia nie ma zajęć.",
+      "days": "Dni tygodnia",
+      "dayWithCount": "{day}: {count, plural, =0 {# zajęć} one {# zajęcia} few {# zajęcia} many {# zajęć} other {# zajęcia}}"
+    },
+    "list": {
+      "today": "Dziś"
+    },
+    "empty": {
+      "addVenue": "Dodaj salę",
+      "addTemplate": "Dodaj szablon zajęć",
+      "addClass": "Dodaj zajęcia",
+      "toVenues": "Otwórz sale",
+      "toTemplates": "Otwórz szablony zajęć",
+      "venue": {
+        "title": "Najpierw dodaj salę",
+        "body": "Każde zajęcia odbywają się w sali: pokoju, ringu lub hali w jednej z Twoich lokalizacji, z jej strefą czasową. Dodaj salę, aby zacząć grafik.",
+        "readonly": "Każde zajęcia odbywają się w sali. Sale dodaje właściciel lub manager; zajęcia pojawią się tu, gdy zostaną zaplanowane."
+      },
+      "template": {
+        "title": "Dodaj szablon zajęć",
+        "body": "Szablon to zajęcia, które prowadzisz regularnie: nazwa, długość i limit miejsc. Dodaj go, a potem zaplanuj raz albo co tydzień.",
+        "readonly": "Właściciel lub manager planuje zajęcia na podstawie szablonów. Zajęcia pojawią się tu, gdy zostaną zaplanowane."
+      },
+      "filtered": {
+        "title": "Brak zajęć dla tych filtrów",
+        "body": "Wybierz inną salę lub prowadzącego albo pokaż wszystkie."
+      },
+      "free": {
+        "title": "Na te dni nic nie zaplanowano",
+        "body": "W te dni nie ma zajęć. Wybierz inne daty albo dodaj zajęcia."
+      }
+    },
+    "read": {
+      "restricted": {
+        "title": "Twoja rola nie ma do tego dostępu",
+        "body": "Klub decyduje, co widzi każda rola. Zapytaj właściciela lub managera."
+      },
+      "failed": {
+        "title": "Nie udało się wczytać grafiku",
+        "body": "Sprawdź połączenie i spróbuj ponownie. Nic nie jest pokazywane, dopóki nie wczytają się wszystkie zajęcia z tych dni.",
+        "limited": "Zbyt wiele żądań w krótkim czasie. Poczekaj chwilę i spróbuj ponownie.",
+        "retry": "Spróbuj ponownie"
+      },
+      "first100": "Pokazujemy pierwsze 100. Może być ich więcej."
+    },
+    "details": {
+      "status": {
+        "scheduled": "Zaplanowane",
+        "cancelled": "Odwołane",
+        "series_changed": "Odwołane · seria zmieniona",
+        "series_cancelled": "Odwołane · seria odwołana"
+      },
+      "weekly": "Seria cotygodniowa",
+      "rescheduled": "Zmienione osobno",
+      "date": "Data",
+      "time": "Godzina",
+      "timeValue": "{from} – {to}",
+      "zone": "Strefa czasowa",
+      "zoneValue": "{zone} (UTC{offset})",
+      "duration": "Długość",
+      "minutes": "{count, plural, one {# minuta} few {# minuty} many {# minut} other {# minuty}}",
+      "venue": "Sala",
+      "instructor": "Prowadzący",
+      "instructorNeeded": "Potrzebny prowadzący",
+      "noInstructor": "Bez prowadzącego",
+      "unnamed": "Członek zespołu",
+      "capacity": "Limit miejsc",
+      "capacityValue": "Do {count, plural, one {# osoby} few {# osób} many {# osób} other {# osoby}}",
+      "needsInstructorNote": "Prowadzący nie pracuje już w tym klubie i został zdjęty z tych zajęć. Wybierz innego prowadzącego.",
+      "openSeries": "Otwórz jej serię cotygodniową",
+      "capacityNote": "Limit miejsc to granica. Zapisów, list oczekujących i rejestracji wejść nie ma jeszcze w SimpleFit.",
+      "change": "Zmień zajęcia",
+      "cancel": "Odwołaj zajęcia",
+      "readonly": {
+        "cancelled": "Zajęcia są odwołane. Zostają w grafiku jako zapis.",
+        "started": "Zajęcia już się zaczęły, więc nie można ich zmienić.",
+        "role": "Twoja rola może przeglądać grafik. Planują go właściciel i managerowie."
+      }
+    },
+    "problems": {
+      "limited": "Zbyt wiele zmian w krótkim czasie. Spróbuj ponownie za {minutes} min.",
+      "limitedLater": "Zbyt wiele zmian w krótkim czasie. Spróbuj ponownie trochę później.",
+      "stale": "Ktoś to w międzyczasie zmienił. Nic nie zapisano.",
+      "venueTaken": "W tej sali o tej porze są inne zajęcia. Wybierz inną godzinę lub salę.",
+      "venueTakenOn": "W tej sali o tej porze są inne zajęcia ({count, plural, one {# data} few {# daty} many {# dat} other {# daty}}): {dates}. Wybierz inną godzinę, dni lub salę.",
+      "instructorBusy": "Ten prowadzący ma o tej porze inne zajęcia. Wybierz inną godzinę lub prowadzącego.",
+      "venueHasClasses": "W tej sali są jeszcze nadchodzące zajęcia ({count, plural, one {#} few {#} many {#} other {#}}). Najpierw je przenieś lub odwołaj.",
+      "venueHasClassesSome": "W tej sali są jeszcze nadchodzące zajęcia. Najpierw je przenieś lub odwołaj.",
+      "venueCapacity": "Nadchodzące zajęcia w tej sali ({count, plural, one {#} few {#} many {#} other {#}}) mają większy limit miejsc. Najpierw go obniż.",
+      "venueCapacitySome": "Nadchodzące zajęcia w tej sali mają większy limit miejsc. Najpierw go obniż.",
+      "venueInactive": "Ta sala została dezaktywowana. Nie przyjmuje nowych zajęć.",
+      "templateArchived": "Ten szablon został zarchiwizowany. Nie można z niego planować nowych zajęć.",
+      "occurrenceCancelled": "Te zajęcia zostały w międzyczasie odwołane.",
+      "occurrenceStarted": "Zajęcia już się zaczęły, więc nie można ich zmienić.",
+      "seriesCancelled": "Ta seria została w międzyczasie odwołana.",
+      "draft": "Dokończ konfigurację klubu, zanim zaplanujesz zajęcia.",
+      "forbidden": "Twoja rola nie może tego zrobić. Nic się nie zmieniło.",
+      "gone": "To nie jest już dostępne. Mogło zostać usunięte albo zmienił się Twój dostęp.",
+      "unknown": "Nie udało się tego potwierdzić. Połączenie mogło zostać przerwane; grafik wczytuje się ponownie.",
+      "failed": "Nie udało się. Nic się nie zmieniło. Spróbuj ponownie."
+    },
+    "form": {
+      "wallTime": {
+        "gap": {
+          "title": "Tego dnia nie ma takiej godziny.",
+          "body": "Tej nocy zegary w strefie {zone} przeskakują {time} (zaczyna się czas letni). Wybierz inną godzinę. Nie przesuniemy jej za Ciebie."
+        },
+        "overlap": {
+          "title": "Tego dnia ta godzina występuje dwa razy.",
+          "body": "Tej nocy zegary w strefie {zone} cofają się, więc {time} występuje dwa razy. Wybierz, o którą chodzi:",
+          "first": "Pierwsza (UTC{offset})",
+          "second": "Druga (UTC{offset})"
+        }
+      }
+    },
+    "venueForm": {
+      "close": "Zamknij",
+      "createTitle": "Nowa sala",
+      "editTitle": "Edytuj salę",
+      "lead": "Pokój, ring lub hala w jednej z Twoich lokalizacji. Każde zajęcia odbywają się w jednej sali, jedne naraz.",
+      "name": {
+        "label": "Nazwa",
+        "invalid": "Wpisz nazwę do 80 znaków.",
+        "taken": "Inna aktywna sala ma już taką nazwę."
+      },
+      "location": {
+        "label": "Lokalizacja",
+        "placeholder": "Wybierz lokalizację",
+        "required": "Wybierz lokalizację.",
+        "invalid": "Wybierz jedną z aktywnych lokalizacji klubu."
+      },
+      "zone": {
+        "label": "Strefa czasowa",
+        "help": "Zajęcia w tej sali są planowane w tej strefie. Później nie można jej zmienić.",
+        "fixed": "Ustawiona przy tworzeniu sali. Zajęcia zachowują swój czas lokalny.",
+        "search": "Szukaj strefy czasowej",
+        "empty": "Brak pasującej strefy",
+        "required": "Wybierz strefę czasową.",
+        "invalid": "Wybierz strefę czasową z listy."
+      },
+      "capacity": {
+        "label": "Pojemność (opcjonalnie)",
+        "help": "Największa liczba osób. Żadne zajęcia tu nie mogą mieć więcej.",
+        "unit": "osób",
+        "invalid": "Wpisz liczbę całkowitą od 1 do 500 lub zostaw puste."
+      },
+      "description": {
+        "label": "Opis (opcjonalnie)",
+        "invalid": "Maksymalnie 500 znaków."
+      },
+      "latest": "Ktoś w międzyczasie zmienił tę salę. Teraz nazywa się „{name}”. Sprawdź zmiany i zapisz ponownie.",
+      "cancel": "Anuluj",
+      "saving": "Zapisujemy…",
+      "saveAgain": "Zapisz ponownie",
+      "save": "Zapisz",
+      "create": "Dodaj salę",
+      "saved": "{name}: zapisano",
+      "created": "{name}: dodano"
+    },
+    "templateForm": {
+      "close": "Zamknij",
+      "createTitle": "Nowy szablon zajęć",
+      "editTitle": "Edytuj szablon zajęć",
+      "lead": "Zajęcia, które prowadzisz regularnie. Ich wartości domyślne wypełniają nowe zajęcia; za każdym razem możesz je zmienić.",
+      "editLead": "Zmiany dotyczą zajęć planowanych od teraz.",
+      "title": {
+        "label": "Nazwa zajęć",
+        "invalid": "Wpisz nazwę do 80 znaków."
+      },
+      "duration": {
+        "label": "Domyślna długość",
+        "help": "Od 5 do 480 minut.",
+        "unit": "min",
+        "invalid": "Wpisz całkowitą liczbę minut od 5 do 480."
+      },
+      "capacity": {
+        "label": "Domyślny limit miejsc",
+        "help": "Największa liczba osób na zajęciach.",
+        "unit": "osób",
+        "invalid": "Wpisz liczbę całkowitą od 1 do 500.",
+        "overVenue": "Więcej osób, niż mieści domyślna sala."
+      },
+      "venue": {
+        "label": "Domyślna sala (opcjonalnie)",
+        "none": "Bez domyślnej sali",
+        "option": "{name} · do {capacity}",
+        "invalid": "Wybierz jedną z aktywnych sal klubu."
+      },
+      "instructor": {
+        "label": "Domyślny prowadzący (opcjonalnie)",
+        "help": "Aktywni właściciele, managerowie i trenerzy tego klubu.",
+        "none": "Bez domyślnego prowadzącego",
+        "unnamed": "Członek zespołu",
+        "invalid": "Ta osoba nie może już prowadzić zajęć w tym klubie. Wybierz kogoś innego."
+      },
+      "description": {
+        "label": "Opis (opcjonalnie)",
+        "invalid": "Maksymalnie 1000 znaków."
+      },
+      "historyNote": "Zajęcia już zaplanowane z tego szablonu zachowują swoje dane.",
+      "latest": "Ktoś w międzyczasie zmienił ten szablon. Teraz nazywa się „{title}”. Sprawdź zmiany i zapisz ponownie.",
+      "cancel": "Anuluj",
+      "saving": "Zapisujemy…",
+      "saveAgain": "Zapisz ponownie",
+      "save": "Zapisz",
+      "create": "Dodaj szablon",
+      "saved": "{title}: zapisano",
+      "created": "{title}: dodano"
+    },
+    "classForm": {
+      "close": "Zamknij",
+      "missing": {
+        "title": "Zajęcia potrzebują sali i szablonu",
+        "both": "Najpierw dodaj salę i szablon zajęć w ich zakładkach.",
+        "venue": "Najpierw dodaj salę w zakładce „Sale”.",
+        "template": "Najpierw dodaj szablon w zakładce „Szablony zajęć”.",
+        "done": "OK"
+      },
+      "title": "Nowe zajęcia",
+      "lead": "Zaplanuj zajęcia raz albo co tydzień przez wybrany okres.",
+      "kind": {
+        "label": "Jak często",
+        "once": "Jednorazowo",
+        "onceHint": "Jedna data",
+        "weekly": "Co tydzień",
+        "weeklyHint": "Wybrane dni, do roku"
+      },
+      "template": {
+        "label": "Szablon zajęć",
+        "placeholder": "Wybierz szablon",
+        "required": "Wybierz szablon zajęć.",
+        "invalid": "Wybierz jeden z aktywnych szablonów klubu."
+      },
+      "venue": {
+        "label": "Sala",
+        "placeholder": "Wybierz salę",
+        "option": "{name} · {zone}",
+        "zone": "Godziny w strefie {zone}.",
+        "required": "Wybierz salę.",
+        "invalid": "Wybierz jedną z aktywnych sal klubu (w tej samej strefie czasowej)."
+      },
+      "date": {
+        "label": "Data",
+        "required": "Wybierz datę."
+      },
+      "time": {
+        "label": "Godzina rozpoczęcia",
+        "labelIn": "Godzina rozpoczęcia ({zone})",
+        "required": "Wybierz godzinę rozpoczęcia.",
+        "invalid": "Wpisz poprawną datę i godzinę.",
+        "window": "Wybierz godzinę w przyszłości, najwyżej rok naprzód."
+      },
+      "weekly": {
+        "days": "Powtarzaj w",
+        "daysRequired": "Wybierz co najmniej jeden dzień.",
+        "startsOn": "Pierwsza data",
+        "startsOnRequired": "Wybierz pierwszą datę.",
+        "startsOnInvalid": "Wybierz dzisiejszą lub późniejszą datę.",
+        "endsOn": "Ostatnia data",
+        "endsOnHelp": "Najwyżej rok po pierwszej dacie.",
+        "endsOnRequired": "Wybierz ostatnią datę.",
+        "endsOnInvalid": "Wybierz ostatnią datę nie wcześniejszą niż pierwsza i najwyżej rok później.",
+        "endsBefore": "Ostatnia data nie może być przed pierwszą.",
+        "tooLong": "Zajęcia cotygodniowe mogą trwać najwyżej rok.",
+        "noDates": "Między wybranymi datami w te dni nie wypadają żadne zajęcia.",
+        "summary": "Co tydzień: {days}, o {time} ({zone}), od {from} do {to}.",
+        "dstNote": "W dniu, w którym zegary pomijają lub powtarzają godzinę rozpoczęcia, zajęcia nie są planowane. Te daty zobaczysz po zapisaniu."
+      },
+      "wallTime": {
+        "required": "Wybierz, o którą z dwóch godzin chodzi.",
+        "gapRefused": "W strefie czasowej sali tego dnia nie ma takiej godziny. Wybierz inną godzinę."
+      },
+      "instructor": {
+        "label": "Prowadzący",
+        "help": "Aktywni właściciele, managerowie i trenerzy tego klubu.",
+        "noneEligible": "Nikt jeszcze nie może prowadzić zajęć. Prowadzący to aktywni właściciele, managerowie i trenerzy klubu.",
+        "none": "Bez prowadzącego",
+        "unnamed": "Członek zespołu",
+        "invalid": "Ta osoba nie może już prowadzić zajęć w tym klubie. Wybierz kogoś innego."
+      },
+      "duration": {
+        "label": "Długość",
+        "help": "Od 5 do 480 minut.",
+        "unit": "min",
+        "invalid": "Wpisz całkowitą liczbę minut od 5 do 480."
+      },
+      "capacity": {
+        "label": "Limit miejsc",
+        "help": "Największa liczba uczestników.",
+        "venueLimit": "Sala mieści do {capacity}.",
+        "unit": "osób",
+        "invalid": "Wpisz liczbę całkowitą od 1 do 500.",
+        "overVenue": "Więcej osób, niż mieści sala."
+      },
+      "unknown": {
+        "title": "Nie udało się potwierdzić, czy zajęcia zostały zapisane.",
+        "body": "Połączenie mogło zostać przerwane. „Spróbuj ponownie” wysyła dokładnie to samo żądanie, więc zajęcia nie zostaną zaplanowane dwa razy."
+      },
+      "cancel": "Anuluj",
+      "saving": "Planujemy…",
+      "retry": "Spróbuj ponownie",
+      "createOnce": "Zaplanuj zajęcia",
+      "createWeekly": "Zaplanuj co tydzień",
+      "createdOnce": "{title}: zaplanowano",
+      "created": {
+        "title": "Zajęcia cotygodniowe zaplanowane",
+        "titleSkipped": "Zajęcia cotygodniowe zaplanowane, niektóre daty pominięte",
+        "body": "{title}: w grafiku {count, plural, one {# zajęcia} few {# zajęcia} many {# zajęć} other {# zajęcia}}.",
+        "bodyUncounted": "{title} jest w grafiku.",
+        "done": "Gotowe"
+      }
+    },
+    "skipped": {
+      "title": "{count, plural, one {# data bez zajęć} few {# daty bez zajęć} many {# dat bez zajęć} other {# daty bez zajęć}}.",
+      "body": "W te dni godzina rozpoczęcia nie występuje dokładnie raz w strefie {zone}:",
+      "reasons": {
+        "nonexistent_local_time": "zegary pomijają tę godzinę",
+        "ambiguous_local_time": "ta godzina występuje dwa razy"
+      },
+      "hint": "Nic nie zostało przesunięte. Aby poprowadzić zajęcia w jednym z tych dni, dodaj je jako jednorazowe i wybierz dokładną godzinę."
+    },
+    "reschedule": {
+      "close": "Zamknij",
+      "title": "Zmień: {title}",
+      "leadOnce": "Zmienią się tylko te zajęcia.",
+      "leadSeries": "Zmieni się tylko ta data. Przy zmianie serii zachowa swoje dane.",
+      "now": "Teraz: {when}, {venue}",
+      "venueZone": "Tylko sale w strefie {zone}: zajęcia zachowują swoją strefę czasową.",
+      "needsInstructor": "Poprzedni prowadzący już tu nie pracuje. Wybierz innego.",
+      "changed": {
+        "title": "Te zajęcia zostały w międzyczasie zmienione.",
+        "body": "Teraz: {when}, {venue}. Twoje zmiany są nadal tutaj: sprawdź je i zapisz ponownie.",
+        "cancelled": "Zostały odwołane, więc nie można ich zmienić."
+      },
+      "cancel": "Anuluj",
+      "saving": "Zapisujemy…",
+      "saveAgain": "Zapisz ponownie",
+      "save": "Zapisz zmiany",
+      "saved": "{title}: zmieniono"
+    },
+    "cancelClass": {
+      "title": "Odwołać „{title}”?",
+      "body": "{when}, {venue}.",
+      "onlyThis": "Odwołana zostaje tylko ta data. Reszta serii cotygodniowej zostaje.",
+      "stays": "Zajęcia zostają w grafiku z oznaczeniem „odwołane”.",
+      "noBookings": "Nikt nie dostaje powiadomień ani zwrotów: zapisów nie ma jeszcze w SimpleFit.",
+      "changed": "Te zajęcia zostały w międzyczasie zmienione. Teraz: {when}, {venue}. Potwierdź ponownie, aby je odwołać.",
+      "confirm": "Odwołaj zajęcia",
+      "pending": "Odwołujemy…",
+      "keep": "Zostaw zajęcia",
+      "done": "{title}: odwołano"
+    },
+    "series": {
+      "rule": "Co tydzień: {days}, o {time} ({zone})",
+      "heading": "Serie cotygodniowe",
+      "lead": "Zajęcia powtarzane co tydzień przez wybrany okres. Każda data to osobne zajęcia w grafiku.",
+      "views": "Serie",
+      "active": "Aktywne",
+      "cancelled": "Odwołane",
+      "cancelledBadge": "Odwołana",
+      "loading": "Wczytujemy serie cotygodniowe",
+      "empty": {
+        "active": "Nie ma jeszcze serii cotygodniowych. Dodaj zajęcia i wybierz „Co tydzień”.",
+        "cancelled": "Brak odwołanych serii."
+      },
+      "period": "Okres",
+      "venue": "Sala",
+      "instructor": "Prowadzący",
+      "noInstructor": "Bez prowadzącego",
+      "duration": "Długość",
+      "minutes": "{count, plural, one {# minuta} few {# minuty} many {# minut} other {# minuty}}",
+      "capacity": "Limit miejsc",
+      "max": "Do {count, plural, one {# osoby} few {# osób} many {# osób} other {# osoby}}",
+      "scheduled": "Zaplanowane zajęcia",
+      "cancelledCount": "Odwołane zajęcia",
+      "status": "Status",
+      "countsNote": "Liczby obejmują przeszłe i przyszłe zajęcia. To zajęcia, nie zapisy.",
+      "show": "Pokaż w grafiku",
+      "edit": "Edytuj serię",
+      "cancel": "Odwołaj serię"
+    },
+    "seriesForm": {
+      "close": "Zamknij",
+      "title": "Edytuj: {title}",
+      "lead": "Zmiany dotyczą całej serii. Szablon, strefa czasowa i pierwsza data pozostają bez zmian.",
+      "now": "Teraz: {rule}, {period}",
+      "endsOnHelp": "Najwyżej rok po pierwszej dacie.",
+      "venueZone": "Tylko sale w strefie {zone}: seria zachowuje swoją strefę czasową.",
+      "venueInvalid": "Wybierz aktywną salę w tej samej strefie czasowej.",
+      "impact": {
+        "title": "Co się stanie",
+        "follow": "Nadchodzące zajęcia będą zgodne z nową regułą.",
+        "dropped": "Daty, których reguła już nie obejmuje, zostają odwołane.",
+        "kept": "Zajęcia zmienione lub odwołane osobno pozostają bez zmian.",
+        "past": "Przeszłe zajęcia się nie zmieniają."
+      },
+      "changed": {
+        "title": "Ta seria została w międzyczasie zmieniona.",
+        "body": "Teraz: {rule}, {period}. Twoje zmiany są nadal tutaj: sprawdź je i zapisz ponownie.",
+        "cancelled": "Została odwołana, więc nie można jej zmienić."
+      },
+      "savedTitle": "Seria zaktualizowana",
+      "savedBody": "{rule}, {period}.",
+      "done": "Gotowe",
+      "cancel": "Anuluj",
+      "saving": "Zapisujemy…",
+      "saveAgain": "Zapisz ponownie",
+      "save": "Zapisz serię"
+    },
+    "cancelSeries": {
+      "title": "Odwołać serię „{title}”?",
+      "body": "{rule}, {period}.",
+      "future": "Wszystkie nadchodzące zajęcia tej serii zostaną odwołane.",
+      "past": "Przeszłe zajęcia pozostają bez zmian.",
+      "final": "Odwołanej serii nie można wznowić.",
+      "noBookings": "Nikt nie dostaje powiadomień ani zwrotów: zapisów nie ma jeszcze w SimpleFit.",
+      "understand": "Rozumiem, że wszystkie nadchodzące zajęcia tej serii zostaną odwołane.",
+      "changed": "Ta seria została w międzyczasie zmieniona. Teraz: {rule}, {period}. Potwierdź ponownie, aby ją odwołać.",
+      "confirm": "Odwołaj serię",
+      "pending": "Odwołujemy…",
+      "keep": "Zostaw serię",
+      "done": "Seria „{title}” odwołana"
+    },
+    "repair": {
+      "action": "Sprawdź brakujące zajęcia",
+      "none": "Niczego nie brakowało.",
+      "created": "Dodano brakujące zajęcia: {count, plural, one {#} few {#} many {#} other {#}}."
+    },
+    "templates": {
+      "heading": "Szablony zajęć",
+      "lead": "Zajęcia, które prowadzisz, z wartościami domyślnymi dla nowych zajęć.",
+      "views": "Szablony",
+      "active": "Aktywne",
+      "archived": "Zarchiwizowane",
+      "archivedBadge": "Zarchiwizowany",
+      "create": "Nowy szablon",
+      "loading": "Wczytujemy szablony zajęć",
+      "empty": {
+        "active": "Nie ma jeszcze szablonów zajęć.",
+        "archived": "Brak zarchiwizowanych szablonów."
+      },
+      "minutes": "{count, plural, one {# min} few {# min} many {# min} other {# min}}",
+      "max": "do {count, plural, one {# osoby} few {# osób} many {# osób} other {# osoby}}",
+      "edit": "Edytuj",
+      "archive": "Archiwizuj",
+      "note": "Zmiana lub archiwizacja szablonu nigdy nie zmienia zajęć już zaplanowanych."
+    },
+    "venues": {
+      "heading": "Sale",
+      "lead": "Pokoje, ringi i hale w Twoich lokalizacjach. W sali odbywają się jedne zajęcia naraz.",
+      "views": "Sale",
+      "active": "Aktywne",
+      "inactive": "Nieaktywne",
+      "inactiveBadge": "Nieaktywna",
+      "create": "Nowa sala",
+      "loading": "Wczytujemy sale",
+      "empty": {
+        "active": "Nie ma jeszcze sal. Dodaj salę, aby zacząć grafik.",
+        "inactive": "Brak nieaktywnych sal.",
+        "readonly": "Nie ma jeszcze sal. Dodaje je właściciel lub manager."
+      },
+      "locationUnavailable": "Lokalizacja nie jest już na liście",
+      "noLimit": "Bez limitu sali",
+      "max": "do {count, plural, one {# osoby} few {# osób} many {# osób} other {# osoby}}",
+      "edit": "Edytuj",
+      "deactivate": "Dezaktywuj",
+      "note": "Zajęcia, które już odbyły się w sali, zachowują jej nazwę po dezaktywacji."
+    },
+    "deactivateVenue": {
+      "title": "Dezaktywować „{name}”?",
+      "body": "Sala nie przyjmie nowych zajęć i nie można tego cofnąć. Zajęcia, które już się w niej odbyły, zachowają jej nazwę. Sali z nadchodzącymi zajęciami nie można dezaktywować.",
+      "confirm": "Dezaktywuj",
+      "pending": "Dezaktywujemy…",
+      "keep": "Zostaw salę",
+      "done": "{name}: dezaktywowano"
+    },
+    "archiveTemplate": {
+      "title": "Zarchiwizować „{title}”?",
+      "body": "Nie będzie można z niego planować nowych zajęć i nie można tego cofnąć. Zajęcia i serie już z niego zaplanowane pozostają bez zmian.",
+      "confirm": "Archiwizuj",
+      "pending": "Archiwizujemy…",
+      "keep": "Zostaw szablon",
+      "done": "{title}: zarchiwizowano"
     }
   }
 }

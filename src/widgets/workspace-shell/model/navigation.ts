@@ -113,10 +113,12 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
     soon: ["settings"],
   },
   // The gym console MVP (SF-88, D-WEB-GYM-CONSOLE-MVP): Dashboard, since
-  // SF-94 Coaches & staff (every staff role may view the roster) and since
+  // SF-94 Coaches & staff (every staff role may view the roster), since
   // SF-96 Members (every staff role; a coach's roster waits for classes and
-  // the page says so) have their domains; GymWebNav's other items are shown,
-  // marked Soon and not linked, until their feature tickets build them.
+  // the page says so) and since SF-98 Timetable (every staff role reads it;
+  // the owner and managers plan it) have their domains; GymWebNav's other
+  // items are shown, marked Soon and not linked, until their feature tickets
+  // build them.
   "web.app.gym": {
     messages: "gym",
     sections: [
@@ -153,7 +155,6 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
       "board",
       "reports",
       "leads",
-      "timetable",
       "bookings",
       "attendance",
       "shared",
