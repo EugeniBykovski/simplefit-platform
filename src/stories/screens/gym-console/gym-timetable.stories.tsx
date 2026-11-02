@@ -92,6 +92,13 @@ const plus = (date: string, days: number) => {
   return next.toISOString().slice(0, 10);
 };
 const MON = monday();
+/*
+ * The story clock: 06:00 UTC on that Monday, before every fixture class. The
+ * week shown follows the calendar, but whether a class has started (which
+ * decides if it may still be changed or cancelled) reads `Date.now()`; pinning
+ * it keeps the stories the same on every day and at every hour of the week.
+ */
+const STORY_NOW = Date.parse(`${MON}T06:00:00Z`);
 
 const venue = (id: string, name: string, capacity: number | null) => ({
   venue_id: id,
@@ -318,8 +325,10 @@ function timetableStory({
     parameters: {
       nextjs: { appDirectory: true, navigation: { pathname: `/en/app/gyms/${gymId}/timetable` } },
     },
-    beforeEach: () =>
-      installApi({
+    beforeEach: () => {
+      const realNow = Date.now;
+      Date.now = () => STORY_NOW;
+      const restoreApi = installApi({
         "/api/me": me,
         "/api/auth/session/refresh": ok(SESSION),
         "/api/v1/me/entry": ok(entry(role)),
@@ -331,7 +340,12 @@ function timetableStory({
         [`${base}/class-series/${SERIES}`]: ok({ series: series() }),
         [`${base}/staff`]: ok({ staff: STAFF, next_cursor: null }),
         ...routes,
-      }),
+      });
+      return () => {
+        restoreApi();
+        Date.now = realNow;
+      };
+    },
     render: () => (
       <AppFormats>
         <RequireSession
