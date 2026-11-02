@@ -300,3 +300,46 @@ amendment). SF-98 builds the web timetable on them (`docs/gym-console-web.md`,
   only a class they instruct; front desk reads only (`403` otherwise).
 - **Checklist:** `add_class` is now `available` at a completed gym and
   `completed` once the gym has scheduled a class (a template alone does not).
+
+## SF-99: gym class bookings, roster and check-in API (no web screens yet)
+
+The generated client gains the "Gym bookings" operations (ADR 0026 SF-99
+amendment). No screen uses them yet; SF-100 builds the member booking and
+attendance UI on them.
+
+- **Member:** `listMyGymClasses` (`GET
+/me/gym-memberships/{gym_member_id}/classes`, the timetable window, with
+  `remaining_capacity` and the caller's own `booking` per class),
+  `bookMyGymClass`, `listMyGymClassBookings`, `getMyGymClassBooking`,
+  `cancelMyGymClassBooking`. Only an _active_ membership books; no
+  FighterProfile is needed. Render the class's wall clock as for the
+  timetable, never the device's.
+- **Staff:** `getGymClassRoster` (summary `capacity`, `confirmed_count`,
+  `remaining_capacity`, `checked_in_count`; entries with the member's short
+  name, status, times and `checked_in_at`, nothing else),
+  `bookGymClassForMember`, `cancelGymClassBooking`,
+  `checkInGymClassBooking`.
+- **Writes:** a booking carries a `client_request_id` (UUID): a retry returns
+  `200` with the same booking, even a cancelled one, so a new attempt after a
+  cancellation needs a new key. Cancelling and checking in again are safe
+  (`200`, nothing changes).
+- **Conflicts (`409`, `details`):** `class_occurrence: full` (with
+  `capacity`), `cancelled`, `started`, `not_today` (check-in outside the
+  class's local day); `class_booking: already_booked`, `cancelled`,
+  `checked_in`; `gym_member` (membership not active); `client_request_id:
+reused`. Show the server's answer; never count seats on the client.
+- **Windows:** booking and cancelling until the class starts; check-in by
+  staff on the class's day only. No waitlist, cutoffs, no-show, QR or
+  self check-in, payments or notifications.
+- **Who:** a member reaches only their own bookings (`404` otherwise);
+  owner, manager and front desk read any roster and book or cancel for a
+  member; a coach reads the roster of a class they instruct (`403` for
+  others) and never books for a member; every staff role checks in.
+- **Timetable side effects:** cancelling a class releases its bookings;
+  lowering a capacity below the confirmed bookings is `409
+class_occurrence: capacity_below_bookings` (`class_series` with
+  `local_dates` for a series); a membership that ends releases the member's
+  bookings to come.
+- **Checklist:** `first_check_in` is now `available` at a completed gym and
+  `completed` after the gym's first real check-in (a booking alone does
+  not). The row stays without an action until SF-100 adds check-in screens.
