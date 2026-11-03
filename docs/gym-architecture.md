@@ -371,3 +371,32 @@ account level, no Fighter or Coach profile needed):
 - **Not built (no contract):** waitlists, credits, prices, passes and QR,
   cutoffs, reminders, no-shows, staff booking for a member, WG18 Bookings and
   WG19 Attendance overviews.
+
+## SF-101: SimpleFit plans, gym member products and entitlements API (no screens)
+
+Generated client operations only (ADR 0026 amendment SF-101); no client
+screen, checkout or gating is built:
+
+- **SimpleFit plans** (tag "SimpleFit plans"): `listSaasPlans` (published
+  versions only: empty until an operator publishes one under an approval),
+  `listGymSaasSubscriptions`, `requestGymSaasSubscription`,
+  `cancelGymSaasSubscription` (owner only), `getGymEntitlements` (any staff).
+- **Gym member products** (tag "Gym member products"): the staff catalog
+  (`listGymMemberProducts`, `createGymMemberProduct`, `getGymMemberProduct`,
+  `createGymMemberProductVersion`, `publishGymMemberProductVersion`,
+  `addGymMemberProductPrice`, `retireGymMemberProduct`,
+  `listGymMemberProductSubscriptions`) and the member side
+  (`listMyGymProducts`, `requestMyGymProduct`, `listMyProductSubscriptions`,
+  `cancelMyProductSubscription`).
+- **Rules any future client must keep:** money arrives as a decimal string
+  (`amount`) with its `currency` and integer `amount_minor`: display the
+  string, never compute with floats or convert currencies, never add VAT. A
+  subscription in `pending_activation` grants nothing and was not paid; no
+  client may label it as paid or active, and no client sends a status,
+  receipt or payment field (refused with `422`). Entitlements are the
+  backend's and informational (`enforced: false`): no client hides or locks
+  a gym feature on them. Prices shown are the current price versions; a
+  member's subscription shows the price it was taken at.
+- **Not built (no approved design or contract):** plan selection, checkout,
+  billing settings, trials, invoices, member product purchase, passes and
+  credits (D-G09 prices are provisional drafts; D-G10/D-G11 open).
