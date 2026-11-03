@@ -38,5 +38,10 @@
     "title": "Wechseln hat nicht geklappt.",
     "body": "Du bist weiter in deinem aktuellen Profil. Versuche es erneut."
   },
-  "footnote": "Ein Konto. Beim nächsten Mal öffnen wir deine letzte Wahl."
+  "footnote": "Ein Konto. Beim nächsten Mal öffnen wir deine letzte Wahl.",
+  "memberships": {
+    "heading": "Gym-Mitgliedschaft",
+    "title": "Meine Gym-Kurse",
+    "line": "{count, plural, one {# Gym} other {# Gyms}} · buchen und Buchungen ansehen"
+  }
 }

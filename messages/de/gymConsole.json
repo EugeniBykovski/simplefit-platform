@@ -98,8 +98,8 @@
       "title": "Bald in deiner Konsole",
       "badge": "Später",
       "attendance": {
-        "title": "Buchungen & Check-ins",
-        "body": "Buchungen und Check-ins für jeden Kurs."
+        "title": "Überblick über Buchungen & Anwesenheit",
+        "body": "Buchungen und Anwesenheit für das ganze Gym auf einen Blick. Teilnehmerliste und Check-ins jedes Kurses findest du im Stundenplan."
       }
     }
   },
@@ -323,11 +323,11 @@
       },
       "coach": {
         "line": "Coacht in diesem Gym; sieht das Gym und sein Team",
-        "detail": "Coacht in diesem Gym. Vorerst: die Konsole des Gyms und sein Team; Kurse kommen später."
+        "detail": "Coacht in diesem Gym: die Konsole des Gyms und sein Team sowie die Teilnehmerlisten der eigenen Kurse."
       },
       "front_desk": {
         "line": "Betreut den Empfang; sieht das Gym und sein Team",
-        "detail": "Betreut den Empfang. Vorerst: die Konsole des Gyms und sein Team; Check-ins kommen später."
+        "detail": "Betreut den Empfang: die Konsole des Gyms und sein Team, Teilnehmerlisten und Check-ins."
       }
     },
     "reference": {
@@ -848,7 +848,7 @@
     "hint": {
       "heading": "Kursdetails",
       "body": "Wähle einen Kurs, um Datum, Uhrzeit, Raum, Trainer:in und Kapazität zu sehen.",
-      "capacity": "Die Kapazität ist die höchste Teilnehmerzahl. Buchungen und Check-ins gibt es in SimpleFit noch nicht, deshalb wird hier nichts gebucht oder gezählt."
+      "capacity": "Die Kapazität ist die höchste Teilnehmerzahl eines Kurses. Buchungen und Check-ins jedes Kurses stehen in seiner Teilnehmerliste."
     },
     "toolbar": {
       "previous": {
@@ -956,7 +956,8 @@
       "capacityValue": "Bis zu {count, plural, one {# Person} other {# Personen}}",
       "needsInstructorNote": "Die Trainer:in unterrichtet nicht mehr in diesem Studio und wurde aus diesem Kurs entfernt. Wähle eine andere Trainer:in.",
       "openSeries": "Zugehörige wöchentliche Serie öffnen",
-      "capacityNote": "Die Kapazität ist eine Grenze. Buchungen, Wartelisten und Check-ins gibt es in SimpleFit noch nicht.",
+      "roster": "Teilnehmerliste",
+      "capacityNote": "Die Kapazität ist die höchste Teilnehmerzahl dieses Kurses. Seine Buchungen und Check-ins stehen in der Teilnehmerliste.",
       "change": "Diesen Kurs ändern",
       "cancel": "Kurs absagen",
       "readonly": {
@@ -1231,7 +1232,7 @@
       "body": "{when}, {venue}.",
       "onlyThis": "Nur dieses Datum wird abgesagt. Der Rest der wöchentlichen Serie bleibt.",
       "stays": "Er bleibt im Stundenplan, als abgesagt markiert.",
-      "noBookings": "Niemand wird benachrichtigt oder erstattet: Buchungen gibt es in SimpleFit noch nicht.",
+      "noBookings": "Mitglieder, die diesen Kurs gebucht haben, verlieren ihren Platz und sehen den Kurs als abgesagt. Niemand wird benachrichtigt, und nichts wird erstattet.",
       "changed": "Dieser Kurs wurde inzwischen geändert. Er ist jetzt {when}, {venue}. Bestätige erneut, um ihn abzusagen.",
       "confirm": "Kurs absagen",
       "pending": "Wird abgesagt…",
@@ -1301,7 +1302,7 @@
       "future": "Jeder anstehende Kurs dieser Serie wird abgesagt.",
       "past": "Vergangene Kurse bleiben, wie sie sind.",
       "final": "Eine abgesagte Serie kann nicht neu gestartet werden.",
-      "noBookings": "Niemand wird benachrichtigt oder erstattet: Buchungen gibt es in SimpleFit noch nicht.",
+      "noBookings": "Mitglieder, die anstehende Kurse dieser Serie gebucht haben, verlieren ihre Plätze und sehen diese Kurse als abgesagt. Niemand wird benachrichtigt, und nichts wird erstattet.",
       "understand": "Mir ist klar, dass jeder anstehende Kurs dieser Serie abgesagt wird.",
       "changed": "Diese Serie wurde inzwischen geändert. Sie ist jetzt {rule}, {period}. Bestätige erneut, um sie abzusagen.",
       "confirm": "Serie absagen",

@@ -31,7 +31,7 @@ console `/app/gyms/:gymId/**` with the chooser `/app/gyms` (SF-88,
    route-architecture rule 9) and do not retry.
 4. **Members do not need a FighterProfile** (`D-G07`, approved).
    Member-facing gym routes move from `FIGHTER` to account level under
-   `/me/gyms/:gymId` in a registry change, part of a member-UI task not yet in Jira (SF-91 is the web first run).
+   `/me/gyms/:gymId`; SF-100 made that registry change.
 5. **No fabricated data.** Plans, prices, trials, payments, balances,
    revenue, leads and payouts are blocked or future. Their screens stay
    placeholders and their dashboard tiles stay hidden (never shown as zero).
@@ -304,8 +304,8 @@ amendment). SF-98 builds the web timetable on them (`docs/gym-console-web.md`,
 ## SF-99: gym class bookings, roster and check-in API (no web screens yet)
 
 The generated client gains the "Gym bookings" operations (ADR 0026 SF-99
-amendment). No screen uses them yet; SF-100 builds the member booking and
-attendance UI on them.
+amendment). SF-100 builds the member booking and attendance UI on them
+(below).
 
 - **Member:** `listMyGymClasses` (`GET
 /me/gym-memberships/{gym_member_id}/classes`, the timetable window, with
@@ -343,3 +343,31 @@ class_occurrence: capacity_below_bookings` (`class_series` with
 - **Checklist:** `first_check_in` is now `available` at a completed gym and
   `completed` after the gym's first real check-in (a booking alone does
   not). The row stays without an action until SF-100 adds check-in screens.
+
+## SF-100: member booking, rosters and check-in
+
+Built on the SF-99 operations above (ADR 0026 `D-G07`: member routes are
+account level, no Fighter or Coach profile needed):
+
+- **Web:** `/app/me/gyms` (the viewer's active memberships and pending
+  requests), `/app/me/gyms/:gymId/classes` (seven days of the gym's classes,
+  places left, book and cancel) and `/app/me/bookings` (upcoming, past,
+  cancelled), an interim composition of F13 and F16 content without a web
+  artboard (`D-WEB-GYM-MEMBER-BOOKING`); the class panel of the timetable opens
+  the roster with manual check-in (`D-GYM-CLASS-ROSTER`). Entry points: the
+  context switcher and role selection.
+- **Mobile:** `/me/gyms` (F16's rows) and `/me/gyms/:gymId/classes` (F13:
+  day chips, rows, the class sheet with Confirm booking or Cancel booking) in
+  the shared stack, reached from A04 and O05; the Fighter-shell placeholder
+  `/gym/:gymId/classes/:classId/book` is retired. The gym tab bar links
+  Classes (G08) with G03 rosters and manual check-in. The member's booking
+  history has no mobile artboard: design-blocked (`D-MOBILE-GYM-MEMBER-BOOKING`).
+- **Rules the clients keep:** the membership, places left, bookings and
+  arrivals are the backend's; one `client_request_id` per booking attempt,
+  reused after a lost answer; every answer re-reads the classes and bookings;
+  a check-in re-reads the roster and the owner's checklist (`first_check_in`
+  completes only from a real arrival). Refresh is on focus and after
+  mutations (no push channel). The session boundary clears the cache.
+- **Not built (no contract):** waitlists, credits, prices, passes and QR,
+  cutoffs, reminders, no-shows, staff booking for a member, WG18 Bookings and
+  WG19 Attendance overviews.

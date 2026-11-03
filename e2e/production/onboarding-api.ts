@@ -583,6 +583,11 @@ export async function onboardingApi(
           user: { id: "6f1c2d3e-4b5a-4c6d-8e7f-90a1b2c3d4e5", created_at: "2026-10-06T12:00:00Z" },
         });
       }
+      // SF-100: the account's gym memberships (the context switcher and WA6
+      // read them); these accounts are members of no gym.
+      if (url.pathname === "/api/v1/me/gym-memberships" && request.method() === "GET") {
+        return json(200, { memberships: [], next_cursor: null });
+      }
       if (url.pathname === "/api/v1/me/entry") {
         if (entryFailures > 0) {
           entryFailures -= 1;

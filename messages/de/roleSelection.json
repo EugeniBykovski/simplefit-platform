@@ -50,5 +50,10 @@
     "body": "Prüfe deine Verbindung und versuche es erneut. An deinem Konto hat sich nichts geändert.",
     "unexpected": "Diese Version von SimpleFit kann das noch nicht öffnen. Lade die Seite neu und versuche es erneut.",
     "retry": "Erneut versuchen"
+  },
+  "member": {
+    "title": "Gym-Mitgliedschaften in deinem Konto: {count}",
+    "body": "Du kannst Kurse buchen und deine Buchungen ansehen, ohne eine Rolle zu wählen.",
+    "action": "Meine Gyms öffnen"
   }
 }

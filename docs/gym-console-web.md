@@ -456,3 +456,78 @@ was not changed.
 - **Checklist:** the dashboard's available `add_class` links here for a
   viewer who may plan; only the backend completes it, once a class is
   scheduled (a template or venue alone does not).
+
+## SF-100: member booking, class rosters and check-in
+
+Claude Design 112 (`1793198527-a0fc`) is unchanged and still the latest
+version; it was read, not edited. F13 `BookClass` (390 pt) is the only member
+booking board and is approved; there is no web member board. G03, G08, WG18
+and WG19 are labelled "FUTURE · no backend domain yet", which predates
+SF-97/SF-99; as SF-98 did for WG5, the boards whose domain now exists are
+built with backend-driven adaptations (product decision for SF-100). The web
+member pages are an interim composition of F13 and F16 content
+(`D-WEB-GYM-MEMBER-BOOKING`, needs a web artboard); rosters and check-in
+follow `D-GYM-CLASS-ROSTER`.
+
+### Design inventory
+
+| Artboard                                                           | Platform | Route                                             | User context                                | Backend operation                                                           | Status                                   | Implementation ticket          |
+| ------------------------------------------------------------------ | -------- | ------------------------------------------------- | ------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------- | ------------------------------ |
+| F13 BookClass                                                      | Mobile   | `/me/gyms/:gymId/classes`                         | Active member (no profile)                  | `listMyGymClasses`, `bookMyGymClass`, `cancelMyGymClassBooking`             | APPROVED WITH BACKEND-DRIVEN ADAPTATIONS | SF-100                         |
+| F13 credits, PT, sparring, waitlist, cutoffs, reminders            | Mobile   | —                                                 | —                                           | none                                                                        | FUTURE                                   | —                              |
+| F16 Membership pass (rows)                                         | Mobile   | `/me/gyms`                                        | Member                                      | `listMyGymMemberships`                                                      | APPROVED WITH BACKEND-DRIVEN ADAPTATIONS | SF-100                         |
+| F16 pass, QR, plan, credits                                        | Mobile   | `/membership` (placeholder)                       | —                                           | none (D-G19 open)                                                           | FUTURE                                   | —                              |
+| (none) web My gyms                                                 | Web      | `/app/me/gyms`                                    | Member                                      | `listMyGymMemberships`                                                      | BLOCKED BY DESIGN · interim composition  | SF-100 (PARTIAL design parity) |
+| (none) web gym classes                                             | Web      | `/app/me/gyms/:gymId/classes`                     | Active member                               | `listMyGymClasses`, `bookMyGymClass`, `cancelMyGymClassBooking`             | BLOCKED BY DESIGN · interim composition  | SF-100 (PARTIAL design parity) |
+| (none) web My bookings                                             | Web      | `/app/me/bookings`                                | Member                                      | `listMyGymClassBookings`, `cancelMyGymClassBooking`                         | BLOCKED BY DESIGN · interim composition  | SF-100 (PARTIAL design parity) |
+| (none) mobile My bookings                                          | Mobile   | —                                                 | Member                                      | `listMyGymClassBookings` (hook only)                                        | BLOCKED BY DESIGN                        | needs an artboard              |
+| WG5 panel · Roster                                                 | Web      | `/app/gyms/:gymId/timetable` (sheet)              | Owner, manager, front desk; coach own class | `getGymClassRoster`, `checkInGymClassBooking`                               | APPROVED WITH BACKEND-DRIVEN ADAPTATIONS | SF-100                         |
+| G08 GymClasses                                                     | Mobile   | `/gyms/:gymId/classes`                            | Gym staff                                   | `listGymClassOccurrences`                                                   | APPROVED WITH BACKEND-DRIVEN ADAPTATIONS | SF-100                         |
+| G03 ClassRoster                                                    | Mobile   | `/gyms/:gymId/classes/:classId/roster`            | Gym staff                                   | `getGymClassOccurrence`, `getGymClassRoster`, `checkInGymClassBooking`      | APPROVED WITH BACKEND-DRIVEN ADAPTATIONS | SF-100                         |
+| G03/G08 waitlist, Promote, Pay at desk, Trial, 8/16 counts, levels | Both     | —                                                 | —                                           | none                                                                        | FUTURE                                   | —                              |
+| WG18 Bookings                                                      | Web      | `/app/gyms/:gymId/bookings` (placeholder, Soon)   | Gym staff                                   | no per-day aggregate; KPIs (fill rate, waitlist, no-shows) have no contract | FUTURE                                   | —                              |
+| WG19 Attendance                                                    | Web      | `/app/gyms/:gymId/attendance` (placeholder, Soon) | Gym staff                                   | analytics, at-risk, nudges: no contract                                     | FUTURE                                   | —                              |
+| G02 QR check-in                                                    | Mobile   | `/gyms/:gymId/check-in` (placeholder, Soon)       | —                                           | none (QR out of scope)                                                      | FUTURE                                   | —                              |
+| GymTabs, GymWebNav                                                 | Both     | shells                                            | Gym staff                                   | —                                                                           | APPROVED (Classes tab linked)            | SF-100                         |
+| RouteGym, FlowGym, FlowGymWeb                                      | —        | —                                                 | —                                           | —                                                                           | REFERENCE ONLY                           | —                              |
+
+### Behaviour
+
+- **One booking domain:** every class, place count, booking and arrival is
+  the SF-99 API's (generated client only). The client never decides who may
+  book, never counts or reserves a place, and never infers attendance; it
+  hides actions for a class that has started (the panel's clock, as SF-98)
+  and the backend refuses again.
+- **Account level (`D-G07`):** `/app/me/gyms`, `/app/me/gyms/:gymId/classes`
+  and `/app/me/bookings` sit in the header-only app frame (`web.app.active`)
+  and need no Fighter or Coach profile and no gym workspace. The gym id only
+  selects one of the viewer's own memberships (`GET /me/gym-memberships`);
+  a pending request, an ended membership or no membership is said as such.
+  Entry points: the context switcher (every workspace sidebar) and role
+  selection (WA6) when the account holds a membership.
+- **Idempotency:** one `client_request_id` per attempt to book a class,
+  reused after a lost answer ("Try again"); once the backend answers for
+  certain the next attempt gets a new key. After every answer the member's
+  classes and bookings are read again; a lost answer whose booking the
+  re-read shows is said as confirmed (reconciled), never booked twice.
+- **Errors:** `409 class_occurrence: full | started | cancelled | not_today`,
+  `class_booking: already_booked | cancelled | checked_in`, `gym_member`,
+  `client_request_id: reused`, `403`, `404` (never implies existence), `429`
+  (`retry-after` when readable) and unknown outcomes each have their own
+  sentence; a failed read says it could not load (nothing changed).
+- **Rosters:** short names and booking facts only; confirmed and cancelled
+  views; counts from the backend's summary; manual check-in for
+  `record_check_in`, one per booking; afterwards the roster, the gym and the
+  owner's checklist (`first_check_in`, completed by the backend) are read again.
+- **Isolation:** keys name the membership or the gym and class; the session
+  boundary clears the cache; nothing is kept in browser storage.
+- **Refresh:** focus and every mutation re-read the backend; there is no
+  push channel, so another client's change shows on the next read.
+- **Copy:** console texts that said bookings did not exist (capacity notes,
+  class and series cancellation, staff role details, the dashboard's
+  coming-later card) now say what happens.
+- **Tests:** unit tests (member pages, roster, problem mapping), Storybook
+  stories with `e2e/gym-member-booking-storybook.spec.ts` (Chromium, Firefox,
+  WebKit, seven widths), and the real-backend
+  `e2e/real-api/gym-member-booking.spec.ts` (web leg A–AC and, with
+  `E2E_SYNC=1`, the second leg after the mobile leg).

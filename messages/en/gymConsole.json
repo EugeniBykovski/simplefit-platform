@@ -98,8 +98,8 @@
       "title": "Coming to your console",
       "badge": "Later",
       "attendance": {
-        "title": "Bookings & check-ins",
-        "body": "Bookings and check-ins for each class."
+        "title": "Bookings & attendance overview",
+        "body": "A gym-wide view of bookings and attendance. Each class’s roster and check-ins are in the timetable."
       }
     }
   },
@@ -323,11 +323,11 @@
       },
       "coach": {
         "line": "Coaches at this gym; sees the gym and its team",
-        "detail": "Coaches at this gym. For now: the gym’s console and its team; classes come later."
+        "detail": "Coaches at this gym: the gym’s console and team, and the rosters of the classes they teach."
       },
       "front_desk": {
         "line": "Runs the front desk; sees the gym and its team",
-        "detail": "Runs the front desk. For now: the gym’s console and its team; check-ins come later."
+        "detail": "Runs the front desk: the gym’s console and team, class rosters and check-ins."
       }
     },
     "reference": {
@@ -848,7 +848,7 @@
     "hint": {
       "heading": "Class details",
       "body": "Choose a class to see its date, time, venue, instructor and capacity.",
-      "capacity": "Capacity is the most people a class can take. Bookings and check-ins aren’t part of SimpleFit yet, so nothing is booked or counted here."
+      "capacity": "Capacity is the most people a class can take. Each class’s bookings and check-ins are in its roster."
     },
     "toolbar": {
       "previous": {
@@ -956,7 +956,8 @@
       "capacityValue": "Up to {count, plural, one {# person} other {# people}}",
       "needsInstructorNote": "The instructor no longer teaches at this gym and was taken off this class. Choose another instructor.",
       "openSeries": "Open its weekly series",
-      "capacityNote": "Capacity is a limit. Bookings, waitlists and check-ins aren’t part of SimpleFit yet.",
+      "roster": "Roster",
+      "capacityNote": "Capacity is the most people this class takes. Its bookings and check-ins are in the roster.",
       "change": "Change this class",
       "cancel": "Cancel class",
       "readonly": {
@@ -1231,7 +1232,7 @@
       "body": "{when}, {venue}.",
       "onlyThis": "Only this date is cancelled. The rest of its weekly series stays.",
       "stays": "It stays on the timetable, marked cancelled.",
-      "noBookings": "No one is notified or refunded: bookings aren’t part of SimpleFit yet.",
+      "noBookings": "Members booked into this class lose their place and see the class as cancelled. No one is notified or refunded.",
       "changed": "This class changed meanwhile. It’s now {when}, {venue}. Confirm again to cancel it.",
       "confirm": "Cancel class",
       "pending": "Cancelling…",
@@ -1301,7 +1302,7 @@
       "future": "Every class of this series still to come is cancelled.",
       "past": "Past classes stay as they are.",
       "final": "A cancelled series can’t be restarted.",
-      "noBookings": "No one is notified or refunded: bookings aren’t part of SimpleFit yet.",
+      "noBookings": "Members booked into its classes still to come lose their places and see those classes as cancelled. No one is notified or refunded.",
       "understand": "I understand that every class still to come in this series will be cancelled.",
       "changed": "This series changed meanwhile. It’s now {rule}, {period}. Confirm again to cancel it.",
       "confirm": "Cancel series",

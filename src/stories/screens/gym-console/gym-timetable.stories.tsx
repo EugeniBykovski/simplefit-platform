@@ -44,11 +44,13 @@ const SERIES = "7c000000-0000-4000-8000-000000000001";
 
 type Role = "owner" | "manager" | "coach" | "front_desk";
 
+// SF-99 adds view_rosters (a coach: own classes) and record_check_in for every role.
+const ROSTERS = ["view_rosters", "record_check_in"];
 const PERMISSIONS: Record<Role, string[]> = {
-  owner: ["view_workspace", "view_staff", "manage_timetable", "cancel_occurrence"],
-  manager: ["view_workspace", "view_staff", "manage_timetable", "cancel_occurrence"],
-  coach: ["view_workspace", "view_staff", "cancel_occurrence"],
-  front_desk: ["view_workspace", "view_staff"],
+  owner: ["view_workspace", "view_staff", "manage_timetable", "cancel_occurrence", ...ROSTERS],
+  manager: ["view_workspace", "view_staff", "manage_timetable", "cancel_occurrence", ...ROSTERS],
+  coach: ["view_workspace", "view_staff", "cancel_occurrence", ...ROSTERS],
+  front_desk: ["view_workspace", "view_staff", ...ROSTERS],
 };
 
 const gym = (id: string, name: string, role: Role) => ({
@@ -807,3 +809,118 @@ export const Narrow = {
   globals: { viewport: { value: "phone", isRotated: false } },
 } satisfies StoryObj;
 Narrow.name = "Narrow viewport";
+
+/* ── Roster and check-in (SF-100, G03 in WG5's panel) ─────────────────── */
+
+const ROSTER_PATH = `/api/v1/gyms/${RING}/class-occurrences/${WEEK[1]!.occurrence_id}/bookings`;
+const rosterEntry = (id: number, name: string, extra: Record<string, unknown> = {}) => ({
+  booking_id: `9c000000-0000-4000-8000-${String(id).padStart(12, "0")}`,
+  gym_member_id: `8b000000-0000-4000-8000-${String(id).padStart(12, "0")}`,
+  name,
+  status: "confirmed",
+  booked_via: "member",
+  confirmed_at: "2026-10-30T09:00:00Z",
+  cancelled_at: null,
+  cancel_reason: null,
+  checked_in_at: null as string | null,
+  ...extra,
+});
+const ROSTER = [
+  rosterEntry(1, "Marta K.", { checked_in_at: "2026-10-30T16:55:00Z" }),
+  rosterEntry(2, "Piotr Z."),
+  rosterEntry(3, "Ewa M.", { booked_via: "staff" }),
+];
+const roster = (entries: ReturnType<typeof rosterEntry>[], checkedIn = 0) =>
+  ok({
+    summary: {
+      capacity: 16,
+      confirmed_count: entries.length,
+      remaining_capacity: 16 - entries.length,
+      checked_in_count: checkedIn,
+    },
+    bookings: entries,
+    next_cursor: null,
+  });
+const openRoster = async (canvasElement: HTMLElement) => {
+  await userEvent.click(await ready(canvasElement));
+  await userEvent.click(await within(canvasElement).findByRole("button", { name: "Roster" }));
+  return body().findByRole("dialog", { name: "Technical boxing" });
+};
+
+export const RosterPopulated = timetableStory({
+  routes: { [ROSTER_PATH]: roster(ROSTER, 1) },
+  play: async ({ canvasElement }) => {
+    const dialog = await openRoster(canvasElement);
+    await expect(await within(dialog).findByText("Piotr Z.", {}, { timeout: T })).toBeVisible();
+  },
+});
+RosterPopulated.name = "Roster · populated";
+
+export const RosterEmpty = timetableStory({
+  routes: { [ROSTER_PATH]: roster([]) },
+  play: async ({ canvasElement }) => {
+    await openRoster(canvasElement);
+  },
+});
+RosterEmpty.name = "Roster · empty";
+
+export const CoachRoster = timetableStory({
+  role: "coach",
+  routes: { [ROSTER_PATH]: roster(ROSTER, 1) },
+  play: async ({ canvasElement }) => {
+    await openRoster(canvasElement);
+  },
+});
+CoachRoster.name = "Roster · coach, own class";
+
+export const CheckInCompleted = timetableStory({
+  routes: {
+    [ROSTER_PATH]: [
+      roster(ROSTER, 1),
+      roster([ROSTER[0]!, { ...ROSTER[1]!, checked_in_at: "2026-10-30T16:57:00Z" }, ROSTER[2]!], 2),
+    ],
+    [`POST /api/v1/gyms/${RING}/class-bookings/${ROSTER[1]!.booking_id}/check-in`]: ok(
+      {
+        check_in: {
+          check_in_id: "9d000000-0000-4000-8000-000000000001",
+          booking_id: ROSTER[1]!.booking_id,
+          occurrence_id: WEEK[1]!.occurrence_id,
+          gym_member_id: ROSTER[1]!.gym_member_id,
+          method: "manual",
+          checked_in_at: "2026-10-30T16:57:00Z",
+        },
+      },
+      201,
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const dialog = await openRoster(canvasElement);
+    await userEvent.click(
+      await within(dialog).findByRole("button", { name: "Check in Piotr Z." }, { timeout: T }),
+    );
+    await expect(
+      await within(dialog).findByText("Piotr Z. is checked in.", {}, { timeout: T }),
+    ).toBeVisible();
+  },
+});
+CheckInCompleted.name = "Check-in · recorded";
+
+export const CheckInRejected = timetableStory({
+  routes: {
+    [ROSTER_PATH]: roster(ROSTER, 1),
+    [`POST /api/v1/gyms/${RING}/class-bookings/${ROSTER[1]!.booking_id}/check-in`]: {
+      status: 409,
+      body: {
+        error: { code: "conflict", message: "x", details: { class_occurrence: "not_today" } },
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const dialog = await openRoster(canvasElement);
+    await userEvent.click(
+      await within(dialog).findByRole("button", { name: "Check in Piotr Z." }, { timeout: T }),
+    );
+    await expect(await within(dialog).findByRole("alert", {}, { timeout: T })).toBeVisible();
+  },
+});
+CheckInRejected.name = "Check-in · not the class's day";

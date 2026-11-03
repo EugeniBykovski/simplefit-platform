@@ -38,5 +38,10 @@
     "title": "Le changement n’a pas abouti.",
     "body": "Tu restes dans ton profil actuel. Réessaie."
   },
-  "footnote": "Un seul compte. La prochaine fois, nous ouvrons ton dernier choix."
+  "footnote": "Un seul compte. La prochaine fois, nous ouvrons ton dernier choix.",
+  "memberships": {
+    "heading": "Adhésion en salle",
+    "title": "Mes cours en salle",
+    "line": "{count, plural, one {# salle} other {# salles}} · réserve et consulte tes réservations"
+  }
 }

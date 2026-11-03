@@ -11,8 +11,8 @@
         "id": "gallery-1",
         "artboard": "GalleryIndex.dc.html",
         "title": "route gallery 1 / 3 · onboarding & fighter mobile",
-        "rows": 252,
-        "rowsNote": "242 Route Gallery rows + WCX1 (SF-54: added with its artboard WebContextSelect.dc.html, not yet listed in GalleryIndex) + FC1 and FC2 (SF-59: added with their artboard FighterCoaches.dc.html, not yet listed in GalleryIndex) + FCI1 and FCI2 (SF-76: added to FighterCoaches.dc.html, not yet listed in GalleryIndex) + FT1 and FT2 (SF-66: added to TrainingHub.dc.html and SessionDetail.dc.html in 1792569354-73b2, not yet listed in GalleryIndex) + FCI3 (SF-79: added to FighterCoaches.dc.html in 1792675284-1046, not yet listed in GalleryIndex) + WGC1 (SF-88: the web gym chooser in the WCX1 composition of WebContextSelect.dc.html, no artboard of its own; D-WEB-GYM-CONSOLE-MVP) + MGC1 (SF-89: the mobile gym chooser in the A04 composition of Workspaces.dc.html, no artboard of its own; D-MOBILE-GYM-SHELL-MVP)"
+        "rows": 256,
+        "rowsNote": "242 Route Gallery rows + WCX1 (SF-54: added with its artboard WebContextSelect.dc.html, not yet listed in GalleryIndex) + FC1 and FC2 (SF-59: added with their artboard FighterCoaches.dc.html, not yet listed in GalleryIndex) + FCI1 and FCI2 (SF-76: added to FighterCoaches.dc.html, not yet listed in GalleryIndex) + FT1 and FT2 (SF-66: added to TrainingHub.dc.html and SessionDetail.dc.html in 1792569354-73b2, not yet listed in GalleryIndex) + FCI3 (SF-79: added to FighterCoaches.dc.html in 1792675284-1046, not yet listed in GalleryIndex) + WGC1 (SF-88: the web gym chooser in the WCX1 composition of WebContextSelect.dc.html, no artboard of its own; D-WEB-GYM-CONSOLE-MVP) + MGC1 (SF-89: the mobile gym chooser in the A04 composition of Workspaces.dc.html, no artboard of its own; D-MOBILE-GYM-SHELL-MVP) + WMG1, WMG2 and WMG3 (SF-100: the web member pages, no web artboard; F16 and F13 content; D-WEB-GYM-MEMBER-BOOKING) + MMG1 (SF-100: F16's 'My gyms' rows on mobile without the pass; D-MOBILE-GYM-MEMBER-BOOKING)"
       },
       {
         "id": "gallery-2",
@@ -2075,10 +2075,10 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/app/gyms/[gymId]/timetable/page.tsx",
-        "note": "SF-98: WG5 with OG10, the timetable of the gym in the path, inside its console (the layout authorizes the gym; 404 not available, 403 role-restricted), on the SF-97 API only. Timetable: a week (Week grid on wide screens, a day strip and that day's classes on phones), a day, or the week as an accessible list grouped by wall date, read as one window of at most 31 days with every cursor page (GET /api/v1/gyms/{gym_id}/class-occurrences?from&to&venue_id&instructor_staff_membership_id&status; nothing is shown as the whole week until the last page arrives); each class sits at its own wall time in its venue's IANA zone (local_starts_at), whatever the viewer's device zone; the week starts on the locale's first day. Class details (title, date, wall times with zone and UTC offset, duration, venue, instructor or 'Instructor needed', maximum capacity, the backend's status and cancel reason, its series); change one class (PATCH …/class-occurrences/{id} with expected_revision; only changed fields; venues in the same zone) and cancel one class (POST …/cancel, confirmed). + Class: one-time (POST …/class-occurrences: starts_at with the venue zone's own offset; a spring-gap time is said before sending and refused by the backend, never moved; a repeated autumn hour needs an explicit choice of offset) or weekly (POST …/class-series: weekdays, wall time, first and last date ≤ one year; the result shows the backend's count and every skipped date with its reason); one client_request_id per attempt, reused after a lost answer. Weekly series (GET/PATCH …/class-series, POST …/cancel with a stronger confirmation, POST …/generate), class templates (GET/POST/PATCH …/class-templates, POST …/archive) and venues (GET/POST/PATCH …/venues, POST …/deactivate; zone set once). A 409 stale revision re-reads the record and keeps only the user's own edits for an explicit save; 409 venue_unavailable / instructor_unavailable keep the form and name nothing of another gym. Every staff role reads it (view_workspace); the owner and managers write (manage_timetable); a coach cancels only the classes they teach (cancel_occurrence). No booking, waitlist, attendance, occupancy, payment, visibility or 'friends attending': those domains do not exist, and a capacity is shown as the limit it is. The page is keyed by gym; the session boundary clears the cache. Its sidebar item is linked for every staff role (D-WEB-GYM-TIMETABLE)."
+        "note": "SF-98: WG5 with OG10, the timetable of the gym in the path, inside its console (the layout authorizes the gym; 404 not available, 403 role-restricted), on the SF-97 API only. Timetable: a week (Week grid on wide screens, a day strip and that day's classes on phones), a day, or the week as an accessible list grouped by wall date, read as one window of at most 31 days with every cursor page (GET /api/v1/gyms/{gym_id}/class-occurrences?from&to&venue_id&instructor_staff_membership_id&status; nothing is shown as the whole week until the last page arrives); each class sits at its own wall time in its venue's IANA zone (local_starts_at), whatever the viewer's device zone; the week starts on the locale's first day. Class details (title, date, wall times with zone and UTC offset, duration, venue, instructor or 'Instructor needed', maximum capacity, the backend's status and cancel reason, its series); change one class (PATCH …/class-occurrences/{id} with expected_revision; only changed fields; venues in the same zone) and cancel one class (POST …/cancel, confirmed). + Class: one-time (POST …/class-occurrences: starts_at with the venue zone's own offset; a spring-gap time is said before sending and refused by the backend, never moved; a repeated autumn hour needs an explicit choice of offset) or weekly (POST …/class-series: weekdays, wall time, first and last date ≤ one year; the result shows the backend's count and every skipped date with its reason); one client_request_id per attempt, reused after a lost answer. Weekly series (GET/PATCH …/class-series, POST …/cancel with a stronger confirmation, POST …/generate), class templates (GET/POST/PATCH …/class-templates, POST …/archive) and venues (GET/POST/PATCH …/venues, POST …/deactivate; zone set once). A 409 stale revision re-reads the record and keeps only the user's own edits for an explicit save; 409 venue_unavailable / instructor_unavailable keep the form and name nothing of another gym. Every staff role reads it (view_workspace); the owner and managers write (manage_timetable); a coach cancels only the classes they teach (cancel_occurrence). No booking, waitlist, attendance, occupancy, payment, visibility or 'friends attending': those domains do not exist, and a capacity is shown as the limit it is. The page is keyed by gym; the session boundary clears the cache. Its sidebar item is linked for every staff role (D-WEB-GYM-TIMETABLE). SF-100: the class panel's Roster (WG5, G03's content) opens the class's roster for a viewer whose role may read it (view_rosters: owner, managers, front desk; a coach only for a class they instruct): the backend's counts (capacity, confirmed, places left, check-ins) and each booking with the member's short name, how and when it was made and the recorded arrival, confirmed and cancelled views (GET …/class-occurrences/{id}/bookings, every page); manual Check in for record_check_in (POST …/class-bookings/{id}/check-in; a repeat records nothing new, 409 not_today / cancelled said as such), then the roster and the owner's checklist (first_check_in) are read again (D-GYM-CLASS-ROSTER)."
       },
       "screens": ["WG5"],
-      "discrepancies": ["D-WEB-GYM-TIMETABLE"]
+      "discrepancies": ["D-WEB-GYM-TIMETABLE", "D-GYM-CLASS-ROSTER"]
     },
     {
       "id": "web.partners",
@@ -2698,31 +2698,6 @@
       },
       "screens": ["F12"],
       "discrepancies": ["D-MOBILE-FIGHTER-TRAINING"]
-    },
-    {
-      "id": "mobile.gym._gym-id.classes._class-id.book",
-      "platform": "mobile",
-      "path": "/gym/:gymId/classes/:classId/book",
-      "params": ["gymId", "classId"],
-      "name": "Book a class",
-      "surface": "FIGHTER",
-      "shell": "mobile.fighter",
-      "parent": null,
-      "nav": {
-        "type": "STANDALONE",
-        "from": []
-      },
-      "access": {
-        "session": "AUTHENTICATED",
-        "capability": "FIGHTER",
-        "phase": "ACTIVE"
-      },
-      "status": "IMPLEMENTED",
-      "production": {
-        "file": "src/app/(fighter)/gym/[gymId]/classes/[classId]/book.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
-      },
-      "screens": ["F13"]
     },
     {
       "id": "mobile.membership",
@@ -5070,9 +5045,9 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(gym)/(tabs)/(classes)/gyms/[gymId]/classes/[classId]/roster.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-89: id-based (/gyms/:gymId/…, ADR 0026 D-G23), behind the gym gate of the gym in the path; not linked from the gym tab bar until its domain exists (D-MOBILE-GYM-SHELL-MVP)."
+        "note": "SF-100: G03 Class roster of one class of the gym in the path: the class (title, wall time, venue, duration, instructor), the backend's counts (confirmed of capacity, places left, check-ins) and each booking with the member's short name and its state; manual Check in for record_check_in (POST /api/v1/gyms/{gym_id}/class-bookings/{booking_id}/check-in; idempotent; 409 not_today / cancelled said as such), then the roster and the checklist are read again. Waitlist, Promote, Pay at desk, Trial and levels are not built; no QR, NFC or self check-in (D-GYM-CLASS-ROSTER)."
       },
-      "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "discrepancies": ["D-NAV-DETAIL-TARGETS", "D-GYM-CLASS-ROSTER"],
       "screens": ["G03"]
     },
     {
@@ -8261,9 +8236,9 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(gym)/(tabs)/(classes)/gyms/[gymId]/classes/index.tsx",
-        "note": "SF-33: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-89: id-based (/gyms/:gymId/…, ADR 0026 D-G23), behind the gym gate of the gym in the path; not linked from the gym tab bar until its domain exists (D-MOBILE-GYM-SHELL-MVP)."
+        "note": "SF-100: G08 Classes of the gym in the path, behind the gym gate: today, tomorrow or this week of GET /api/v1/gyms/{gym_id}/class-occurrences (every page), each class at its own wall time in its venue's zone with title, instructor, venue, duration and 'Up to N people'; a class whose roster the viewer may read (view_rosters; a coach only for a class they instruct) opens G03. Location chips, booked counts (8/16), DONE / NEXT tags beyond the backend's status, waitlists and levels are not built. Linked from the gym tab bar (D-GYM-CLASS-ROSTER)."
       },
-      "discrepancies": ["D-NAV-DETAIL-TARGETS"],
+      "discrepancies": ["D-NAV-DETAIL-TARGETS", "D-GYM-CLASS-ROSTER"],
       "screens": ["G08"]
     },
     {
@@ -8653,6 +8628,136 @@
         "note": "SF-60: WFI1 (Claude Design 1792151007-1d70), the E08 link (/invite/coach#token=…). The one-time token is read from the fragment in the browser only, the fragment removed, and the token kept in this tab's sessionStorage bound to the first signed-in viewer, never in a URL, returnTo or log. Anonymous preview (previewCoachInvitation); sign-in, WA5 and Fighter onboarding continue back here with the token-free returnTo /invite/coach; explicit unticked consent to the backend's disclosure version, then acceptCoachInvitation or declineCoachInvitation. Unavailable (404 / 410), recipient mismatch (403), profile required (422), stale disclosure (409) and rate limit (429) are their own states. SF-78 (Claude Design 1792666334-7310, WFI1 link-* states): a recipient mismatch offers \"Verify the invited email\" in place: the signed-in account requests and confirms an SF-77 code (requestMyEmailIdentityLink, confirmMyEmailIdentityLink; a lost answer is reconciled with listMyEmailIdentities), the address becomes an email identity of the same user, and the page returns to the review, unticked; SF-57 checks the recipient again on the next answer. The code stays in component state only; the token never moves and is never sent to the linking API; a session boundary ends both."
       },
       "screens": ["WFI1"]
+    },
+    {
+      "id": "web.app.me.gyms",
+      "platform": "web",
+      "path": "/app/me/gyms",
+      "params": [],
+      "name": "My gyms",
+      "surface": "SHARED",
+      "shell": "web.app.active",
+      "parent": "web.app",
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": null
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/me/gyms/page.tsx",
+        "note": "SF-100: the viewer's gyms as a member, account-level (ADR 0026 D-G07): no Fighter or Coach profile and no gym workspace is needed. Every row is the backend's (GET /api/v1/me/gym-memberships, every page): an active membership opens its classes, a pending request says it waits for the gym; ended, rejected and cancelled memberships book nothing and are not offered. F16's pass, plan, renewal, credits, PT pack and visit counts have no contract and are not built. Reached from the context switcher of every workspace sidebar and from WA6 role selection when the account holds a membership (D-WEB-GYM-MEMBER-BOOKING)."
+      },
+      "discrepancies": ["D-WEB-GYM-MEMBER-BOOKING"],
+      "screens": ["WMG1"]
+    },
+    {
+      "id": "web.app.me.gyms._gym-id.classes",
+      "platform": "web",
+      "path": "/app/me/gyms/:gymId/classes",
+      "params": ["gymId"],
+      "name": "Gym classes · member",
+      "surface": "SHARED",
+      "shell": "web.app.active",
+      "parent": "web.app.me.gyms",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": null
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/me/gyms/[gymId]/classes/page.tsx",
+        "note": "SF-100: F13 BookClass for the member of the gym in the path, in an interim web composition. The gym id only selects one of the viewer's own memberships (GET /api/v1/me/gym-memberships): an active one shows classes, a pending request, an ended membership or none is said as such (existence of the gym is never implied). Classes: seven days from today (later weeks forward), one window of GET /api/v1/me/gym-memberships/{gym_member_id}/classes with every page, each class at its own wall time in its venue's zone with the backend's places left and the member's own booking. Book (POST …/class-bookings, one client_request_id per attempt, reused after a lost answer; success only from the backend; 409 full / started / cancelled / already booked / membership said as such, no waitlist) and cancel the member's own booking (POST /api/v1/me/class-bookings/{booking_id}/cancel, confirmed). After every answer the classes and bookings are read again (D-WEB-GYM-MEMBER-BOOKING)."
+      },
+      "discrepancies": ["D-WEB-GYM-MEMBER-BOOKING"],
+      "screens": ["WMG2"]
+    },
+    {
+      "id": "web.app.me.bookings",
+      "platform": "web",
+      "path": "/app/me/bookings",
+      "params": [],
+      "name": "My bookings",
+      "surface": "SHARED",
+      "shell": "web.app.active",
+      "parent": "web.app",
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": null
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/me/bookings/page.tsx",
+        "note": "SF-100: the viewer's class bookings at every gym (GET /api/v1/me/class-bookings, every page; nothing is split or counted before the last page): upcoming (confirmed, class still to come; cancel, confirmed), past (the backend's check-in time when one was recorded, never 'attended' or 'missed' without it) and cancelled (the backend's reason). No artboard (D-WEB-GYM-MEMBER-BOOKING)."
+      },
+      "discrepancies": ["D-WEB-GYM-MEMBER-BOOKING"],
+      "screens": ["WMG3"]
+    },
+    {
+      "id": "mobile.me.gyms",
+      "platform": "mobile",
+      "path": "/me/gyms",
+      "params": [],
+      "name": "My gyms",
+      "surface": "SHARED",
+      "shell": "mobile.shared",
+      "parent": null,
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": null
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/(shared)/me/gyms/index.tsx",
+        "note": "SF-100: F16's 'My gyms' list, account-level (ADR 0026 D-G07): the viewer's active memberships (open their classes) and pending requests, from GET /api/v1/me/gym-memberships (every page). F16's pass and QR (D-G19 open), plan, renewal, credits, PT pack and visit counts are not built. Reached from A04 (sheet and /workspaces) and from role selection when the account holds a membership (D-MOBILE-GYM-MEMBER-BOOKING)."
+      },
+      "discrepancies": ["D-MOBILE-GYM-MEMBER-BOOKING"],
+      "screens": ["MMG1"]
+    },
+    {
+      "id": "mobile.me.gyms._gym-id.classes",
+      "platform": "mobile",
+      "path": "/me/gyms/:gymId/classes",
+      "params": ["gymId"],
+      "name": "Book a class",
+      "surface": "SHARED",
+      "shell": "mobile.shared",
+      "parent": "mobile.me.gyms",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": null
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/(shared)/me/gyms/[gymId]/classes.tsx",
+        "note": "SF-100: F13 BookClass at account level (was /gym/:gymId/classes/:classId/book under FIGHTER; D-G07). The day chips, the class list with the backend's places left and the member's booking, and the bottom sheet of the chosen class with Confirm booking (client_request_id per attempt, reused after a lost answer) or Cancel booking (confirmed). The gym selector, the Classes / PT / Sparring segments, credits, 'Uses 1 credit', 'Free cancel until', reminders and the waitlist have no contract and are not built. The member's booking history has no artboard (D-MOBILE-GYM-MEMBER-BOOKING)."
+      },
+      "discrepancies": ["D-MOBILE-GYM-MEMBER-BOOKING"],
+      "screens": ["F13"]
     }
   ],
   "screens": [
@@ -11270,8 +11375,18 @@
       "id": "F13",
       "code": "F13",
       "name": "Book a class",
-      "route": "mobile.gym._gym-id.classes._class-id.book",
-      "states": ["spots", "waitlist"],
+      "route": "mobile.me.gyms._gym-id.classes",
+      "states": [
+        "spots",
+        "full",
+        "booked",
+        "checked in",
+        "started",
+        "cancelled",
+        "pending request",
+        "ended membership",
+        "outcome unknown"
+      ],
       "design": {
         "gallery": "gallery-1",
         "page": "fighter-mobile",
@@ -11279,7 +11394,8 @@
         "step": "7.6",
         "tag": "MOBILE",
         "artboard": "BookClass.dc.html",
-        "galleryPath": "/gym/:gymId/classes/:id/book"
+        "galleryPath": "/gym/:gymId/classes/:id/book",
+        "note": "Claude Design 112 (1793198527-a0fc) reconciled with SF-99 (SF-100): day chips, class rows (time, title, instructor · venue · places left) and the chosen class's sheet with Confirm booking are built, plus Cancel booking for the member's own booking. Not built: the gym selector (one membership per screen, chosen in My gyms), the Classes / PT / Sparring slot segments, the credits pill, 'Uses 1 credit', 'Free cancel until', 'Reminder 2 h before' and 'Waitlist #2' (D-MOBILE-GYM-MEMBER-BOOKING)."
       }
     },
     {
@@ -13540,7 +13656,15 @@
       "code": "G03",
       "name": "Class roster",
       "route": "mobile.gyms._gym-id.classes._class-id.roster",
-      "states": ["default"],
+      "states": [
+        "default",
+        "confirmed",
+        "cancelled",
+        "checked in",
+        "not today",
+        "empty",
+        "restricted"
+      ],
       "design": {
         "gallery": "gallery-2",
         "page": "gym-mobile",
@@ -13548,7 +13672,8 @@
         "step": "13.3",
         "tag": "MOBILE",
         "artboard": "ClassRoster.dc.html",
-        "galleryPath": "/gym/classes/:id/roster"
+        "galleryPath": "/gym/classes/:id/roster",
+        "note": "SF-100: built from Claude Design 112 with the SF-99 contract: the header (class, time, venue, duration, instructor), confirmed of capacity, the member rows with Checked in or Check in; Waitlist, Promote, Pay at desk and Trial are not built. The artboard is labelled FUTURE (no backend domain yet), which predates SF-97/SF-99 (D-GYM-CLASS-ROSTER)."
       }
     },
     {
@@ -14213,7 +14338,9 @@
         "templates",
         "venues",
         "empty",
-        "read-only"
+        "read-only",
+        "roster",
+        "check-in"
       ],
       "design": {
         "gallery": "gallery-2",
@@ -14222,7 +14349,7 @@
         "step": "18.9",
         "tag": "WEB_APP",
         "artboard": "WebTimetable.dc.html",
-        "note": "Claude Design 112 (1793198527-a0fc) reconciled with SF-97 (SF-98): the header, Week/Day toggle, + Class, the 7-day grid with hour rail and the right-hand class panel are built. The Coach segment becomes the instructor filter; a List view and a venue filter are added. The class blocks show title, wall times and venue only: the 14/20-style booked counts, the 'full' tint, the 'Shared · Team' and 'Open sparring' kinds and the 'X friends attending' are not built. The panel keeps the eyebrow (day · time · venue), title, coach and repeats; its 'Capacity 19 / 20 · 2 waitlist' becomes 'Up to N people', and Level, the VISIBILITY toggles (public profile, friends attending, attendee names), Roster and Save are not built. OG10's template choice (Start from template / Import CSV / Google Calendar, the 14-class week template copied to other locations) is not built: classes are added one by one or as weekly series (D-WEB-GYM-TIMETABLE)."
+        "note": "Claude Design 112 (1793198527-a0fc) reconciled with SF-97 (SF-98): the header, Week/Day toggle, + Class, the 7-day grid with hour rail and the right-hand class panel are built. The Coach segment becomes the instructor filter; a List view and a venue filter are added. The class blocks show title, wall times and venue only: the 14/20-style booked counts, the 'full' tint, the 'Shared · Team' and 'Open sparring' kinds and the 'X friends attending' are not built. The panel keeps the eyebrow (day · time · venue), title, coach and repeats; its 'Capacity 19 / 20 · 2 waitlist' becomes 'Up to N people', and Level, the VISIBILITY toggles (public profile, friends attending, attendee names), Roster and Save are not built. OG10's template choice (Start from template / Import CSV / Google Calendar, the 14-class week template copied to other locations) is not built: classes are added one by one or as weekly series (D-WEB-GYM-TIMETABLE). SF-100: the panel's Roster is built (D-GYM-CLASS-ROSTER); booked counts on the blocks, waitlist, Level, VISIBILITY and Save stay out."
       }
     },
     {
@@ -15981,7 +16108,7 @@
       "code": "G08",
       "name": "Classes",
       "route": "mobile.gyms._gym-id.classes",
-      "states": ["today", "tomorrow", "this week", "location"],
+      "states": ["today", "tomorrow", "this week", "location", "empty", "read-only"],
       "design": {
         "gallery": "gallery-2",
         "page": "gym-mobile",
@@ -15989,7 +16116,8 @@
         "step": "13.8",
         "tag": "MOBILE",
         "artboard": "GymClasses.dc.html",
-        "addedIn": "1791276973-ad1d"
+        "addedIn": "1791276973-ad1d",
+        "note": "SF-100: built from Claude Design 112 with the SF-99 contract: the day filter, class rows (time, title, instructor · venue · duration, 'Up to N people'); location chips, 8/16 counts, DONE / NEXT and FULL · WAITLIST tags are not built. The artboard is labelled FUTURE (no backend domain yet), which predates SF-97/SF-99 (D-GYM-CLASS-ROSTER)."
       }
     },
     {
@@ -16227,6 +16355,81 @@
         "step": "1.8a",
         "tag": "MOBILE",
         "artboard": "Workspaces.dc.html"
+      }
+    },
+    {
+      "id": "WMG1",
+      "code": "WMG1",
+      "name": "My gyms · web",
+      "route": "web.app.me.gyms",
+      "states": ["active and pending", "no membership", "loading", "failed"],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "fighter-mobile",
+        "section": "7 · Fighter app · progress, schedule, messages, account",
+        "step": "7.7a",
+        "tag": "WEB_APP",
+        "artboard": "Membership.dc.html",
+        "note": "SF-100: no web artboard; F16's 'My gyms' content (the gym rows) in the header-only app frame. Needs design approval (D-WEB-GYM-MEMBER-BOOKING)."
+      }
+    },
+    {
+      "id": "WMG2",
+      "code": "WMG2",
+      "name": "Gym classes · web member",
+      "route": "web.app.me.gyms._gym-id.classes",
+      "states": [
+        "spots",
+        "full",
+        "booked",
+        "checked in",
+        "started",
+        "cancelled",
+        "pending request",
+        "ended membership",
+        "not a member",
+        "outcome unknown"
+      ],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "fighter-mobile",
+        "section": "7 · Fighter app · progress, schedule, messages, account",
+        "step": "7.6a",
+        "tag": "WEB_APP",
+        "artboard": "BookClass.dc.html",
+        "note": "SF-100: no web artboard; F13's content (day chips, class rows, the chosen class with Confirm booking) as a list and a details panel. Needs design approval (D-WEB-GYM-MEMBER-BOOKING)."
+      }
+    },
+    {
+      "id": "WMG3",
+      "code": "WMG3",
+      "name": "My bookings · web",
+      "route": "web.app.me.bookings",
+      "states": ["upcoming", "past", "cancelled", "empty", "loading", "failed"],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "fighter-mobile",
+        "section": "7 · Fighter app · progress, schedule, messages, account",
+        "step": "7.6b",
+        "tag": "WEB_APP",
+        "artboard": "BookClass.dc.html",
+        "note": "SF-100: no artboard on either platform; bookings listed in F13's row style. Needs design approval (D-WEB-GYM-MEMBER-BOOKING)."
+      }
+    },
+    {
+      "id": "MMG1",
+      "code": "MMG1",
+      "name": "My gyms",
+      "route": "mobile.me.gyms",
+      "states": ["active and pending", "no membership", "loading", "failed"],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "fighter-mobile",
+        "section": "7 · Fighter app · progress, schedule, messages, account",
+        "step": "7.7b",
+        "tag": "MOBILE",
+        "artboard": "Membership.dc.html",
+        "note": "SF-100: F16's 'My gyms' rows and 'Book a class' entry without the pass, QR, plan, credits or visit counts (D-MOBILE-GYM-MEMBER-BOOKING)."
       }
     }
   ],
@@ -18015,7 +18218,7 @@
       "sourceB": "SF-83 / SF-84 / SF-85 backend: the gym, its locations and setup fields, the viewer's staff role and permission projection, the entry's gym workspaces; no members, scheduling, bookings, attendance, staff invitations, billing, incidents, announcements or publishing domain",
       "mismatch": "The designed mobile gym cockpit shows records that do not exist and has no gym chooser or gym rows in the switcher.",
       "impact": "Building it would fake members, classes, revenue and activity, and leave several gyms unreachable on mobile.",
-      "resolution": "SF-89 (Claude Design unchanged): A04 (sheet and /workspaces) lists the account's gym workspaces under the Fighter and Coach rows in the same row composition (gym name, the viewer's role, setup status and the backend's action: open a completed gym, continue the owner's draft), with 'All gyms' when the entry lists fewer than gym_workspace_count; /gyms (MGC1, the same rows) is where gym_selection lands and lists every gym page by page. G01 keeps its identity pill (opens the A04 sheet), eyebrow and title and shows OG1's 'How members see you' card with the real name, type and primary location, the owner's saved setup, the viewer's access and the areas coming later; every G01 tile and action of SF-82 R5/C7 is hidden until its domain exists (members SF-90/SF-91, scheduling SF-93+, check-in SF-96/SF-97). The header's Incidents and Announcements are replaced by Settings (the shared ST1, the account and Sign out). Non-owner roles see the gym, their role and a limited-access notice. The tab bar links Pulse only; Classes, QR check-in, Members and Staff are shown as Soon and not linked. GR1/GR2 (first run) stay with SF-101; SF-92 builds them from Claude Design 112 (D-MOBILE-GYM-FIRST-RUN).",
+      "resolution": "SF-89 (Claude Design unchanged): A04 (sheet and /workspaces) lists the account's gym workspaces under the Fighter and Coach rows in the same row composition (gym name, the viewer's role, setup status and the backend's action: open a completed gym, continue the owner's draft), with 'All gyms' when the entry lists fewer than gym_workspace_count; /gyms (MGC1, the same rows) is where gym_selection lands and lists every gym page by page. G01 keeps its identity pill (opens the A04 sheet), eyebrow and title and shows OG1's 'How members see you' card with the real name, type and primary location, the owner's saved setup, the viewer's access and the areas coming later; every G01 tile and action of SF-82 R5/C7 is hidden until its domain exists (members SF-90/SF-91, scheduling SF-93+, check-in SF-96/SF-97). The header's Incidents and Announcements are replaced by Settings (the shared ST1, the account and Sign out). Non-owner roles see the gym, their role and a limited-access notice. The tab bar links Pulse only; Classes, QR check-in, Members and Staff are shown as Soon and not linked. GR1/GR2 (first run) stay with SF-101; SF-92 builds them from Claude Design 112 (D-MOBILE-GYM-FIRST-RUN). SF-100 links Classes (G08, with G03 rosters and check-in; D-GYM-CLASS-ROSTER); QR check-in, Members and Staff stay Soon.",
       "decision": "The mobile gym shell grows with its domains; nothing is shown before it is real.",
       "decidedOn": "2026-10-28",
       "status": "DEFERRED",
@@ -18077,6 +18280,52 @@
       "status": "RESOLVED",
       "routes": ["web.app.gyms._gym-id.timetable"],
       "screens": ["WG5"]
+    },
+    {
+      "id": "D-WEB-GYM-MEMBER-BOOKING",
+      "title": "Web member class booking built without a web artboard, from F13 and F16 content",
+      "sourceA": "Claude Design 112 (1793198527-a0fc): F13 BookClass (390 px: gym selector, credits pill, day chips, Classes / PT / Sparring slot segments, class rows with 'N of M left', full and 'Waitlist #2', a sheet with 'Uses 1 credit', 'Free cancel until 08:00', 'Reminder 2 h before' and Confirm booking) and F16 Membership pass ('My gyms': pass with QR, plan, renewal, visits, PT pack, 'Book a class · 8 credits left'); no web member-side artboard for class discovery, booking, cancellation or booking history",
+      "sourceB": "SF-99 backend: listMyGymClasses (window ≤ 31 days, places left, the member's own booking), bookMyGymClass (client_request_id, 409 full / started / cancelled / already_booked / gym_member / reused), cancelMyGymClassBooking, listMyGymClassBookings, getMyGymClassBooking; SF-95 listMyGymMemberships; no prices, credits, plans, waitlists, cutoffs, reminders, QR passes or PT and sparring slots",
+      "mismatch": "The member experience exists only as mobile artboards with commercial and waitlist content, and nothing is drawn for the web.",
+      "impact": "Without a web composition an active member could not book on the web at all; copying the artboards would invent credits, waitlists and cancellation windows.",
+      "resolution": "SF-100 (approved by the product owner as an interim composition): account-level pages in the header-only app frame. /app/me/gyms lists active memberships and pending requests (F16's rows); /app/me/gyms/:gymId/classes shows seven days of the gym's classes (F13's day chips and rows) with a details panel (F13's sheet): Confirm booking or Cancel booking, the backend's places left, no waitlist; /app/me/bookings lists upcoming, past and cancelled bookings. Reached from the context switcher and from role selection. Credits, prices, PT and sparring slots, cutoffs, reminders, the pass and QR are not built. The pages need a web artboard before design parity can be claimed.",
+      "decision": "Build the web member booking on the SF-99 contract as an interim composition; ask for web member artboards.",
+      "decidedOn": "2026-11-02",
+      "status": "NEEDS_PRODUCT_DECISION",
+      "routes": ["web.app.me.gyms", "web.app.me.gyms._gym-id.classes", "web.app.me.bookings"],
+      "screens": ["WMG1", "WMG2", "WMG3"]
+    },
+    {
+      "id": "D-MOBILE-GYM-MEMBER-BOOKING",
+      "title": "Mobile member booking at account level from F13 and F16, without credits, waitlist or booking history",
+      "sourceA": "Claude Design 112 (1793198527-a0fc): F13 BookClass at /gym/:gymId/classes/:id/book in the Fighter shell (gym selector, credits, Classes / PT / Sparring slot, 'N of M left', full, Waitlist #2, 'Uses 1 credit', 'Free cancel until', reminders, Confirm booking) and F16 Membership pass (QR pass, plan, renewal, visits, PT pack, 'Book a class'); no artboard for the member's booking history",
+      "sourceB": "SF-99 backend (member booking, cancellation and bookings list) and SF-95 memberships; ADR 0026 D-G07: member routes are account-level (/me/gyms/:gymId/…); no credits, waitlist, cutoffs, reminders, passes or slots",
+      "mismatch": "F13 sits in the Fighter shell and shows commercial and waitlist content; F16 is a paid pass; booking history is not drawn.",
+      "impact": "A member without a FighterProfile could not book, and copying the artboards would invent credits, a waitlist and cancellation windows.",
+      "resolution": "SF-100: /me/gyms (F16's 'My gyms' rows only) and /me/gyms/:gymId/classes (F13: day chips, rows with the backend's places left and the member's booking, the chosen class's sheet with Confirm booking or Cancel booking) in the shared stack, reached from A04 and role selection; the Fighter-shell placeholder /gym/:gymId/classes/:classId/book is retired. The member's booking history on mobile is design-blocked: the data and its hooks exist, the screen waits for an artboard.",
+      "decision": "Member booking is account-level on mobile; booking history waits for design.",
+      "decidedOn": "2026-11-02",
+      "status": "NEEDS_PRODUCT_DECISION",
+      "routes": ["mobile.me.gyms", "mobile.me.gyms._gym-id.classes"],
+      "screens": ["MMG1", "F13"]
+    },
+    {
+      "id": "D-GYM-CLASS-ROSTER",
+      "title": "Class roster and manual check-in from G03, G08 and WG5's Roster on the SF-99 contract",
+      "sourceA": "Claude Design 112 (1793198527-a0fc): G08 GymClasses and G03 ClassRoster (mobile) and WG18 WebBookings / WG19 WebAttendance (web) are labelled 'FUTURE · no backend domain yet'; they show booked counts on every class, waitlists with Promote and auto-fill, Pay at desk, Trial, levels, fill rate, no-shows, at-risk members and nudges; WG5's class panel has a Roster action",
+      "sourceB": "SF-99 backend: getGymClassRoster (counts and per-booking short name, status, times, check-in; view_rosters, a coach only for own classes), checkInGymClassBooking (manual, one per booking, the class's local day), bookGymClassForMember and cancelGymClassBooking; no waitlist, payments, trials, levels, analytics or nudges",
+      "mismatch": "The FUTURE labels predate SF-97/SF-99; the artboards carry waitlist, commercial and analytics content no contract provides.",
+      "impact": "Leaving them unbuilt would hide real rosters and check-in; copying them would invent waitlists, payments and attendance analytics.",
+      "resolution": "SF-100 (as SF-98 did for WG5): WG5's Roster opens the roster with manual Check in; on mobile the Classes tab (G08: day filter and class rows) and G03 (counts, member rows, Check in) are built and linked. Staff booking and cancelling for a member are not offered (WG18's 'Book for member' waits for its page). WG18 Bookings and WG19 Attendance stay placeholders: their KPIs have no contract.",
+      "decision": "Build rosters and manual check-in where the design draws them; keep waitlists, payments, analytics, QR and self check-in out.",
+      "decidedOn": "2026-11-02",
+      "status": "RESOLVED",
+      "routes": [
+        "web.app.gyms._gym-id.timetable",
+        "mobile.gyms._gym-id.classes",
+        "mobile.gyms._gym-id.classes._class-id.roster"
+      ],
+      "screens": ["WG5", "G08", "G03"]
     }
   ]
 }

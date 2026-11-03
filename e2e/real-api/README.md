@@ -109,6 +109,16 @@ codes, ids, UTC instants, revisions, audit event counts) to its output and,
 with `E2E_EVIDENCE=/path/prefix`, beside it. The API needs only the test-only
 legal fixtures:
 
+`gym-member-booking.spec.ts` (SF-100) drives member booking and staff
+attendance (scenarios A–AC of the ticket) and writes `E2E_HANDOFF_FILE` (ids
+and addresses, no token) for the mobile leg
+(`src/providers/gym-member-booking.real-api.test.tsx` in simplefit-mobile).
+With `E2E_SYNC=1` it runs its second leg after the mobile one: the web shows
+the mobile client's cancellation and booking and cancels the mobile booking.
+`E2E_API_LOG` (the API's log, scanned for secrets) and `E2E_EVIDENCE` are
+optional. Its "today" classes are scheduled from the run's own clock, so run
+it before 22:40 Warsaw time.
+
 ```bash
 env -u RESEND_API_KEY MIX_ENV=dev PORT=4198 DATABASE_URL=$E2E_DB PHX_SERVER=true \
   CORS_ALLOWED_ORIGINS=http://127.0.0.1:3100 WEB_APP_URL=http://127.0.0.1:3100 \

@@ -38,5 +38,10 @@
     "title": "Nie udało się przełączyć.",
     "body": "Nadal jesteś w obecnym profilu. Spróbuj ponownie."
   },
-  "footnote": "Jedno konto. Następnym razem otworzymy Twój ostatni wybór."
+  "footnote": "Jedno konto. Następnym razem otworzymy Twój ostatni wybór.",
+  "memberships": {
+    "heading": "Członkostwo w klubie",
+    "title": "Moje zajęcia w klubie",
+    "line": "{count, plural, one {# klub} few {# kluby} many {# klubów} other {# klubu}} · rezerwuj i przeglądaj rezerwacje"
+  }
 }

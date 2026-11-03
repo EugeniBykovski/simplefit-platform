@@ -98,8 +98,8 @@
       "title": "Bientôt dans ta console",
       "badge": "Plus tard",
       "attendance": {
-        "title": "Réservations et check-ins",
-        "body": "Réservations et check-ins de chaque cours."
+        "title": "Vue d’ensemble des réservations et de la fréquentation",
+        "body": "Les réservations et la fréquentation de toute la salle en un coup d’œil. La liste des participants et les check-ins de chaque cours sont dans le planning."
       }
     }
   },
@@ -323,11 +323,11 @@
       },
       "coach": {
         "line": "Coache dans cette salle ; voit la salle et son équipe",
-        "detail": "Coache dans cette salle. Pour l’instant : la console de la salle et son équipe ; les cours arriveront plus tard."
+        "detail": "Coache dans cette salle : la console de la salle et son équipe, ainsi que les listes des participants des cours qu’il anime."
       },
       "front_desk": {
         "line": "Tient l’accueil ; voit la salle et son équipe",
-        "detail": "Tient l’accueil. Pour l’instant : la console de la salle et son équipe ; les pointages arriveront plus tard."
+        "detail": "Tient l’accueil : la console de la salle et son équipe, les listes des participants et les check-ins."
       }
     },
     "reference": {
@@ -848,7 +848,7 @@
     "hint": {
       "heading": "Détails du cours",
       "body": "Choisissez un cours pour voir sa date, son horaire, sa salle, son coach et sa capacité.",
-      "capacity": "La capacité est le nombre maximal de participants. Les réservations et les pointages ne font pas encore partie de SimpleFit : rien n’est réservé ni compté ici."
+      "capacity": "La capacité est le nombre maximal de participants d’un cours. Les réservations et check-ins de chaque cours figurent dans sa liste des participants."
     },
     "toolbar": {
       "previous": {
@@ -956,7 +956,8 @@
       "capacityValue": "Jusqu’à {count, plural, one {# personne} other {# personnes}}",
       "needsInstructorNote": "Le coach n’enseigne plus dans cette salle et a été retiré de ce cours. Choisissez un autre coach.",
       "openSeries": "Ouvrir sa série hebdomadaire",
-      "capacityNote": "La capacité est une limite. Les réservations, listes d’attente et pointages ne font pas encore partie de SimpleFit.",
+      "roster": "Liste des participants",
+      "capacityNote": "La capacité est le nombre maximal de participants de ce cours. Ses réservations et check-ins figurent dans la liste des participants.",
       "change": "Modifier ce cours",
       "cancel": "Annuler le cours",
       "readonly": {
@@ -1231,7 +1232,7 @@
       "body": "{when}, {venue}.",
       "onlyThis": "Seule cette date est annulée. Le reste de sa série hebdomadaire est conservé.",
       "stays": "Il reste dans le planning, marqué comme annulé.",
-      "noBookings": "Personne n’est prévenu ni remboursé : les réservations ne font pas encore partie de SimpleFit.",
+      "noBookings": "Les membres inscrits à ce cours perdent leur place et le voient comme annulé. Personne n’est prévenu ni remboursé.",
       "changed": "Ce cours a été modifié entre-temps. Il est maintenant {when}, {venue}. Confirmez à nouveau pour l’annuler.",
       "confirm": "Annuler le cours",
       "pending": "Annulation…",
@@ -1301,7 +1302,7 @@
       "future": "Tous les cours à venir de cette série sont annulés.",
       "past": "Les cours passés restent tels quels.",
       "final": "Une série annulée ne peut pas être relancée.",
-      "noBookings": "Personne n’est prévenu ni remboursé : les réservations ne font pas encore partie de SimpleFit.",
+      "noBookings": "Les membres inscrits aux cours à venir de cette série perdent leur place et voient ces cours comme annulés. Personne n’est prévenu ni remboursé.",
       "understand": "Je comprends que tous les cours à venir de cette série seront annulés.",
       "changed": "Cette série a été modifiée entre-temps. Elle est maintenant {rule}, {period}. Confirmez à nouveau pour l’annuler.",
       "confirm": "Annuler la série",

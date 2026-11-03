@@ -1,9 +1,10 @@
 "use client";
 
-import { RepeatIcon, TriangleAlertIcon } from "lucide-react";
+import { ListChecksIcon, RepeatIcon, TriangleAlertIcon } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useEffect, useState, type Ref } from "react";
 
+import type { RosterCapabilities } from "@/entities/gym-booking";
 import {
   wallClock,
   type GymClassOccurrence,
@@ -11,6 +12,7 @@ import {
   type GymVenue,
   type TimetableCapabilities,
 } from "@/entities/gym-timetable";
+import { ClassRosterSheet } from "@/features/gym-class-booking";
 import { CancelOccurrenceDialog, RescheduleDialog } from "@/features/gym-timetable-manage";
 import { formatOffset } from "@/shared/lib/time-zone";
 import { Badge } from "@/shared/ui/badge";
@@ -22,15 +24,18 @@ import { Fact } from "./shared";
  * One class as the backend lists it (WG5's side panel, reconciled): its
  * date and wall times in its own zone with the UTC offset then, duration,
  * venue, instructor (or "Instructor needed", never a guessed name),
- * maximum capacity (a limit: nothing is booked), the backend's status and
- * its series. No roster, waitlist, attendance, visibility or "friends"
- * settings: those domains do not exist. The actions are the viewer's per
- * the permission projection, for a class still to come.
+ * maximum capacity, the backend's status and its series. Its roster
+ * (SF-99: bookings, places left, check-ins) opens from WG5's Roster action
+ * for a viewer whose role may read it: owner, managers and front desk for
+ * any class, a coach for the classes they teach. No waitlist, visibility or
+ * "friends" settings: those domains do not exist. Change and cancel are the
+ * viewer's per the permission projection, for a class still to come.
  */
 export function OccurrenceDetails({
   gymId,
   occurrence,
   can,
+  roster,
   venues,
   instructors,
   onSeries,
@@ -39,6 +44,7 @@ export function OccurrenceDetails({
   gymId: string;
   occurrence: GymClassOccurrence;
   can: TimetableCapabilities;
+  roster: RosterCapabilities;
   venues: readonly GymVenue[];
   instructors: readonly GymInstructor[];
   onSeries: (seriesId: string) => void;
@@ -146,6 +152,24 @@ export function OccurrenceDetails({
         </Button>
       )}
       <p className="type-caption text-faint-foreground">{t("capacityNote")}</p>
+      {roster.canViewRoster(occurrence) && (
+        <ClassRosterSheet
+          gymId={gymId}
+          occurrence={occurrence}
+          can={roster}
+          trigger={
+            <Button
+              size="sm"
+              variant="quiet"
+              className="self-start"
+              data-open-roster={occurrence.occurrence_id}
+            >
+              <ListChecksIcon aria-hidden />
+              {t("roster")}
+            </Button>
+          }
+        />
+      )}
       {canChange || canCancel ? (
         <div className="flex flex-wrap gap-2">
           {canChange && (

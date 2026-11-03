@@ -50,5 +50,10 @@
     "body": "Check your connection and try again. Nothing changed on your account.",
     "unexpected": "This version of SimpleFit can’t open it yet. Reload the page and try again.",
     "retry": "Retry"
+  },
+  "member": {
+    "title": "Gym memberships on your account: {count}",
+    "body": "You can book classes and see your bookings without choosing a role.",
+    "action": "Open my gyms"
   }
 }
