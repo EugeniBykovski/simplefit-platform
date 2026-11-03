@@ -23,13 +23,18 @@ import type {
   ConflictResponse,
   ErrorResponse,
   ForbiddenResponse,
+  GymBillingInvoiceList,
+  GymBillingPortalResponse,
+  GymBillingSummaryResponse,
   GymEntitlements,
+  GymSaasCheckoutResponse,
   GymSaasSubscriptionList,
   GymSaasSubscriptionRequest,
   GymSaasSubscriptionResponse,
   InternalErrorResponse,
   NotFoundResponse,
   SaasPlanList,
+  ServiceUnavailableResponse,
   SubscriptionCancelRequest,
   UnauthorizedResponse,
   ValidationErrorResponse
@@ -57,6 +62,334 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   }
   return result;
 };
+
+export const getGetGymBillingSummaryUrl = (gymId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}/billing`
+}
+
+/**
+ * The gym's latest SimpleFit subscription with its payment state, from provider state the backend reconciled
+ * (webhooks, the return from checkout, the hourly sweep), never from a browser redirect. Paid access comes only
+ * from a paid Stripe invoice. No card or payment method detail.
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never
+ *   revealed); for a subscription, also an unknown id or another gym's.
+ * * `forbidden` - only the gym's owner acts on its SimpleFit subscription (`manage_billing`).
+ * @summary The gym's SimpleFit billing
+ */
+export const getGymBillingSummary = async (gymId: string, options?: Parameters<typeof apiFetch>[1]): Promise<GymBillingSummaryResponse> => {
+
+  return apiFetch<GymBillingSummaryResponse>(getGetGymBillingSummaryUrl(gymId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetGymBillingSummaryQueryKey = (gymId: string,) => {
+    return [
+    `/api/v1/gyms/${gymId}/billing`
+    ] as const;
+    }
+
+
+export const getGetGymBillingSummaryQueryOptions = <TData = Awaited<ReturnType<typeof getGymBillingSummary>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymBillingSummary>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetGymBillingSummaryQueryKey(gymId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getGymBillingSummary>>> = ({ signal }) => getGymBillingSummary(gymId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getGymBillingSummary>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetGymBillingSummaryQueryResult = NonNullable<Awaited<ReturnType<typeof getGymBillingSummary>>>
+export type GetGymBillingSummaryQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetGymBillingSummary<TData = Awaited<ReturnType<typeof getGymBillingSummary>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymBillingSummary>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getGymBillingSummary>>,
+          TError,
+          Awaited<ReturnType<typeof getGymBillingSummary>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetGymBillingSummary<TData = Awaited<ReturnType<typeof getGymBillingSummary>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymBillingSummary>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getGymBillingSummary>>,
+          TError,
+          Awaited<ReturnType<typeof getGymBillingSummary>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetGymBillingSummary<TData = Awaited<ReturnType<typeof getGymBillingSummary>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymBillingSummary>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary The gym's SimpleFit billing
+ */
+
+export function useGetGymBillingSummary<TData = Awaited<ReturnType<typeof getGymBillingSummary>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGymBillingSummary>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetGymBillingSummaryQueryOptions(gymId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getListGymBillingInvoicesUrl = (gymId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}/billing/invoices`
+}
+
+/**
+ * The gym's Stripe invoices as last reconciled, newest first (at most 50): number, status, amounts, period and
+ * Stripe's hosted invoice and PDF links. SimpleFit renders no invoice document and computes no tax.
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never
+ *   revealed); for a subscription, also an unknown id or another gym's.
+ * * `forbidden` - only the gym's owner acts on its SimpleFit subscription (`manage_billing`).
+ * @summary The gym's SimpleFit invoices
+ */
+export const listGymBillingInvoices = async (gymId: string, options?: Parameters<typeof apiFetch>[1]): Promise<GymBillingInvoiceList> => {
+
+  return apiFetch<GymBillingInvoiceList>(getListGymBillingInvoicesUrl(gymId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListGymBillingInvoicesQueryKey = (gymId: string,) => {
+    return [
+    `/api/v1/gyms/${gymId}/billing/invoices`
+    ] as const;
+    }
+
+
+export const getListGymBillingInvoicesQueryOptions = <TData = Awaited<ReturnType<typeof listGymBillingInvoices>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listGymBillingInvoices>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListGymBillingInvoicesQueryKey(gymId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listGymBillingInvoices>>> = ({ signal }) => listGymBillingInvoices(gymId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listGymBillingInvoices>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListGymBillingInvoicesQueryResult = NonNullable<Awaited<ReturnType<typeof listGymBillingInvoices>>>
+export type ListGymBillingInvoicesQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useListGymBillingInvoices<TData = Awaited<ReturnType<typeof listGymBillingInvoices>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listGymBillingInvoices>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listGymBillingInvoices>>,
+          TError,
+          Awaited<ReturnType<typeof listGymBillingInvoices>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListGymBillingInvoices<TData = Awaited<ReturnType<typeof listGymBillingInvoices>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listGymBillingInvoices>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listGymBillingInvoices>>,
+          TError,
+          Awaited<ReturnType<typeof listGymBillingInvoices>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListGymBillingInvoices<TData = Awaited<ReturnType<typeof listGymBillingInvoices>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listGymBillingInvoices>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary The gym's SimpleFit invoices
+ */
+
+export function useListGymBillingInvoices<TData = Awaited<ReturnType<typeof listGymBillingInvoices>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listGymBillingInvoices>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getListGymBillingInvoicesQueryOptions(gymId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getCreateGymBillingPortalSessionUrl = (gymId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}/billing/portal-session`
+}
+
+/**
+ * A short-lived Stripe Customer Portal session for the gym's Stripe customer: update the payment method, see
+ * billing history and invoices, edit billing details. Plan changes and cancellation stay in SimpleFit. Open
+ * `url` at once; it is never stored.
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never
+ *   revealed); for a subscription, also an unknown id or another gym's.
+ * * `forbidden` - only the gym's owner acts on its SimpleFit subscription (`manage_billing`).
+ *
+ * * `conflict` - `details.payment_provider: "disabled"` (payments are off in this environment; nothing is
+ *   charged and nothing is substituted); a draft gym (`details.setup_status`).
+ * * `service_unavailable` - Stripe could not be reached or is misconfigured; nothing changed.
+ * * `rate_limited` - 30 billing changes per 10 minutes per user.
+ *
+ * * `conflict` (also) - `details.billing_portal: "no_customer"` (the gym never started a checkout) or
+ *   `"not_configured"`.
+ * @summary Manage billing (Stripe Customer Portal)
+ */
+export const createGymBillingPortalSession = async (gymId: string, options?: Parameters<typeof apiFetch>[1]): Promise<GymBillingPortalResponse> => {
+
+  return apiFetch<GymBillingPortalResponse>(getCreateGymBillingPortalSessionUrl(gymId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getCreateGymBillingPortalSessionQueryKey = (gymId: string,) => {
+    return [
+    'POST', `/api/v1/gyms/${gymId}/billing/portal-session`
+    ] as const;
+    }
+
+
+export const getCreateGymBillingPortalSessionQueryOptions = <TData = Awaited<ReturnType<typeof createGymBillingPortalSession>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createGymBillingPortalSession>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getCreateGymBillingPortalSessionQueryKey(gymId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof createGymBillingPortalSession>>> = ({ signal }) => createGymBillingPortalSession(gymId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof createGymBillingPortalSession>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type CreateGymBillingPortalSessionQueryResult = NonNullable<Awaited<ReturnType<typeof createGymBillingPortalSession>>>
+export type CreateGymBillingPortalSessionQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+export function useCreateGymBillingPortalSession<TData = Awaited<ReturnType<typeof createGymBillingPortalSession>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ gymId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof createGymBillingPortalSession>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof createGymBillingPortalSession>>,
+          TError,
+          Awaited<ReturnType<typeof createGymBillingPortalSession>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCreateGymBillingPortalSession<TData = Awaited<ReturnType<typeof createGymBillingPortalSession>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createGymBillingPortalSession>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof createGymBillingPortalSession>>,
+          TError,
+          Awaited<ReturnType<typeof createGymBillingPortalSession>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCreateGymBillingPortalSession<TData = Awaited<ReturnType<typeof createGymBillingPortalSession>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createGymBillingPortalSession>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Manage billing (Stripe Customer Portal)
+ */
+
+export function useCreateGymBillingPortalSession<TData = Awaited<ReturnType<typeof createGymBillingPortalSession>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ gymId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createGymBillingPortalSession>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getCreateGymBillingPortalSessionQueryOptions(gymId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
 
 export const getGetGymEntitlementsUrl = (gymId: string,) => {
 
@@ -279,9 +612,9 @@ export const getRequestGymSaasSubscriptionUrl = (gymId: string,) => {
 
 /**
  * Records the gym's intent to subscribe to a published plan version at one of its `fixed` prices: a
- * `pending_activation` subscription that grants nothing and charges nothing. Only verified evidence from a
- * payment provider activates it, and none is integrated yet. The same `client_request_id` again returns that
- * intent (`200`).
+ * `pending_activation` subscription that grants nothing and charges nothing. Pay for it with
+ * `createGymSaasCheckoutSession`; only a paid Stripe invoice reconciled by the backend activates it. The same
+ * `client_request_id` again returns that intent (`200`).
  *
  * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never
  *   revealed); for a subscription, also an unknown id or another gym's.
@@ -416,15 +749,18 @@ export const getCancelGymSaasSubscriptionUrl = (gymId: string,
 
 /**
  * `immediate` ends it now; `period_end` schedules the end at the current period's end (an intent is always
- * cancelled at once). Repeating the request returns it unchanged. No refund, proration or invoice exists.
+ * cancelled at once). Repeating the request returns it unchanged. A Stripe-backed subscription is cancelled
+ * at Stripe first (no proration, no refund); if Stripe cannot be reached nothing changes (`503`).
  *
  * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never
  *   revealed); for a subscription, also an unknown id or another gym's.
  * * `forbidden` - only the gym's owner acts on its SimpleFit subscription (`manage_billing`).
  *
- * * `conflict` - `details.saas_subscription: "expired"`; a draft gym (`details.setup_status`).
+ * * `conflict` - `details.saas_subscription: "expired"`; a draft gym (`details.setup_status`);
+ *   `details.checkout: "completed"` (a pending intent's checkout was just paid: refresh and retry).
  * * `validation_error` - `mode` missing or invalid, or an unknown field.
  * * `rate_limited` - 30 changes per 10 minutes per user.
+ * * `service_unavailable` - Stripe could not confirm the cancellation; nothing changed.
  * @summary Cancel the gym's SimpleFit subscription
  */
 export const cancelGymSaasSubscription = async (gymId: string,
@@ -467,7 +803,7 @@ export const getCancelGymSaasSubscriptionQueryKey = (gymId: string,
     }
 
 
-export const getCancelGymSaasSubscriptionQueryOptions = <TData = Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(gymId: string,
+export const getCancelGymSaasSubscriptionQueryOptions = <TData = Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(gymId: string,
     subscriptionId: string,
     subscriptionCancelRequest: BodyType<SubscriptionCancelRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
@@ -488,10 +824,10 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type CancelGymSaasSubscriptionQueryResult = NonNullable<Awaited<ReturnType<typeof cancelGymSaasSubscription>>>
-export type CancelGymSaasSubscriptionQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>
+export type CancelGymSaasSubscriptionQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>
 
 
-export function useCancelGymSaasSubscription<TData = Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+export function useCancelGymSaasSubscription<TData = Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
  gymId: string,
     subscriptionId: string,
     subscriptionCancelRequest: BodyType<SubscriptionCancelRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError, TData>> & Pick<
@@ -503,7 +839,7 @@ export function useCancelGymSaasSubscription<TData = Awaited<ReturnType<typeof c
       >, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useCancelGymSaasSubscription<TData = Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+export function useCancelGymSaasSubscription<TData = Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
  gymId: string,
     subscriptionId: string,
     subscriptionCancelRequest: BodyType<SubscriptionCancelRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError, TData>> & Pick<
@@ -515,7 +851,7 @@ export function useCancelGymSaasSubscription<TData = Awaited<ReturnType<typeof c
       >, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useCancelGymSaasSubscription<TData = Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+export function useCancelGymSaasSubscription<TData = Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
  gymId: string,
     subscriptionId: string,
     subscriptionCancelRequest: BodyType<SubscriptionCancelRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
@@ -525,7 +861,7 @@ export function useCancelGymSaasSubscription<TData = Awaited<ReturnType<typeof c
  * @summary Cancel the gym's SimpleFit subscription
  */
 
-export function useCancelGymSaasSubscription<TData = Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+export function useCancelGymSaasSubscription<TData = Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
  gymId: string,
     subscriptionId: string,
     subscriptionCancelRequest: BodyType<SubscriptionCancelRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof cancelGymSaasSubscription>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
@@ -533,6 +869,250 @@ export function useCancelGymSaasSubscription<TData = Awaited<ReturnType<typeof c
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getCancelGymSaasSubscriptionQueryOptions(gymId,subscriptionId,subscriptionCancelRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getCreateGymSaasCheckoutSessionUrl = (gymId: string,
+    subscriptionId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}/saas-subscriptions/${subscriptionId}/checkout-session`
+}
+
+/**
+ * A Stripe-hosted Checkout Session for the gym's pending subscription intent: the backend resolves the Stripe
+ * Price from the intent's price version (a client never names one) and creates the session idempotently, so a
+ * retry returns the same open session (`200`) instead of a second payable one. Redirect the browser to `url`;
+ * the return is not proof of payment: call `reconcileGymSaasSubscription`, and only a paid invoice activates.
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never
+ *   revealed); for a subscription, also an unknown id or another gym's.
+ * * `forbidden` - only the gym's owner acts on its SimpleFit subscription (`manage_billing`).
+ *
+ * * `conflict` - `details.payment_provider: "disabled"` (payments are off in this environment; nothing is
+ *   charged and nothing is substituted); a draft gym (`details.setup_status`).
+ * * `service_unavailable` - Stripe could not be reached or is misconfigured; nothing changed.
+ * * `rate_limited` - 30 billing changes per 10 minutes per user.
+ *
+ * * `conflict` (also) - `details.saas_subscription` (not pending); `details.checkout: "completed"` (already
+ *   paid or in payment); `details.stripe_price: "not_mapped" | "mismatch"`; `details.saas_plan_version:
+ *   "provisional"` (live mode never sells a provisional price).
+ * @summary Pay for a SimpleFit plan (hosted checkout)
+ */
+export const createGymSaasCheckoutSession = async (gymId: string,
+    subscriptionId: string, options?: Parameters<typeof apiFetch>[1]): Promise<GymSaasCheckoutResponse> => {
+
+  return apiFetch<GymSaasCheckoutResponse>(getCreateGymSaasCheckoutSessionUrl(gymId,subscriptionId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getCreateGymSaasCheckoutSessionQueryKey = (gymId: string,
+    subscriptionId: string,) => {
+    return [
+    'POST', `/api/v1/gyms/${gymId}/saas-subscriptions/${subscriptionId}/checkout-session`
+    ] as const;
+    }
+
+
+export const getCreateGymSaasCheckoutSessionQueryOptions = <TData = Awaited<ReturnType<typeof createGymSaasCheckoutSession>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(gymId: string,
+    subscriptionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createGymSaasCheckoutSession>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getCreateGymSaasCheckoutSessionQueryKey(gymId,subscriptionId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof createGymSaasCheckoutSession>>> = ({ signal }) => createGymSaasCheckoutSession(gymId,subscriptionId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined && subscriptionId !== null && subscriptionId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof createGymSaasCheckoutSession>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type CreateGymSaasCheckoutSessionQueryResult = NonNullable<Awaited<ReturnType<typeof createGymSaasCheckoutSession>>>
+export type CreateGymSaasCheckoutSessionQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+export function useCreateGymSaasCheckoutSession<TData = Awaited<ReturnType<typeof createGymSaasCheckoutSession>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ gymId: string,
+    subscriptionId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof createGymSaasCheckoutSession>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof createGymSaasCheckoutSession>>,
+          TError,
+          Awaited<ReturnType<typeof createGymSaasCheckoutSession>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCreateGymSaasCheckoutSession<TData = Awaited<ReturnType<typeof createGymSaasCheckoutSession>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ gymId: string,
+    subscriptionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createGymSaasCheckoutSession>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof createGymSaasCheckoutSession>>,
+          TError,
+          Awaited<ReturnType<typeof createGymSaasCheckoutSession>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCreateGymSaasCheckoutSession<TData = Awaited<ReturnType<typeof createGymSaasCheckoutSession>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ gymId: string,
+    subscriptionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createGymSaasCheckoutSession>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Pay for a SimpleFit plan (hosted checkout)
+ */
+
+export function useCreateGymSaasCheckoutSession<TData = Awaited<ReturnType<typeof createGymSaasCheckoutSession>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ gymId: string,
+    subscriptionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createGymSaasCheckoutSession>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getCreateGymSaasCheckoutSessionQueryOptions(gymId,subscriptionId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getReconcileGymSaasSubscriptionUrl = (gymId: string,
+    subscriptionId: string,) => {
+
+
+
+
+  return `/api/v1/gyms/${gymId}/saas-subscriptions/${subscriptionId}/reconcile`
+}
+
+/**
+ * Reads the subscription's checkout, Stripe subscription and invoices from Stripe now and applies them (the
+ * browser calls it on return from checkout or the portal), then answers the billing summary.
+ *
+ * * `not_found` - no such gym, or the viewer holds no active staff membership there (existence is never
+ *   revealed); for a subscription, also an unknown id or another gym's.
+ * * `forbidden` - only the gym's owner acts on its SimpleFit subscription (`manage_billing`).
+ *
+ * * `conflict` - `details.payment_provider: "disabled"` (payments are off in this environment; nothing is
+ *   charged and nothing is substituted); a draft gym (`details.setup_status`).
+ * * `service_unavailable` - Stripe could not be reached or is misconfigured; nothing changed.
+ * * `rate_limited` - 30 billing changes per 10 minutes per user.
+ * @summary Refresh the subscription from Stripe
+ */
+export const reconcileGymSaasSubscription = async (gymId: string,
+    subscriptionId: string, options?: Parameters<typeof apiFetch>[1]): Promise<GymBillingSummaryResponse> => {
+
+  return apiFetch<GymBillingSummaryResponse>(getReconcileGymSaasSubscriptionUrl(gymId,subscriptionId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getReconcileGymSaasSubscriptionQueryKey = (gymId: string,
+    subscriptionId: string,) => {
+    return [
+    'POST', `/api/v1/gyms/${gymId}/saas-subscriptions/${subscriptionId}/reconcile`
+    ] as const;
+    }
+
+
+export const getReconcileGymSaasSubscriptionQueryOptions = <TData = Awaited<ReturnType<typeof reconcileGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(gymId: string,
+    subscriptionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reconcileGymSaasSubscription>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReconcileGymSaasSubscriptionQueryKey(gymId,subscriptionId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reconcileGymSaasSubscription>>> = ({ signal }) => reconcileGymSaasSubscription(gymId,subscriptionId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined && subscriptionId !== null && subscriptionId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reconcileGymSaasSubscription>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ReconcileGymSaasSubscriptionQueryResult = NonNullable<Awaited<ReturnType<typeof reconcileGymSaasSubscription>>>
+export type ReconcileGymSaasSubscriptionQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+export function useReconcileGymSaasSubscription<TData = Awaited<ReturnType<typeof reconcileGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ gymId: string,
+    subscriptionId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof reconcileGymSaasSubscription>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof reconcileGymSaasSubscription>>,
+          TError,
+          Awaited<ReturnType<typeof reconcileGymSaasSubscription>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useReconcileGymSaasSubscription<TData = Awaited<ReturnType<typeof reconcileGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ gymId: string,
+    subscriptionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reconcileGymSaasSubscription>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof reconcileGymSaasSubscription>>,
+          TError,
+          Awaited<ReturnType<typeof reconcileGymSaasSubscription>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useReconcileGymSaasSubscription<TData = Awaited<ReturnType<typeof reconcileGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ gymId: string,
+    subscriptionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reconcileGymSaasSubscription>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Refresh the subscription from Stripe
+ */
+
+export function useReconcileGymSaasSubscription<TData = Awaited<ReturnType<typeof reconcileGymSaasSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ gymId: string,
+    subscriptionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reconcileGymSaasSubscription>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getReconcileGymSaasSubscriptionQueryOptions(gymId,subscriptionId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

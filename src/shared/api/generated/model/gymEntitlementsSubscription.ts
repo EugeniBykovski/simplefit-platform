@@ -13,7 +13,7 @@ import type { GymEntitlementsSubscriptionStatus } from './gymEntitlementsSubscri
 export type GymEntitlementsSubscription = {
   /** Active (or scheduled to cancel) with verified evidence, inside its period. */
   in_force: boolean;
-  /** `pending_activation` is an intent and grants nothing; only verified provider evidence activates (none exists yet). `cancellation_scheduled` stays in force until `cancellation_effective_at`. `cancelled` and `expired` are final. */
+  /** `pending_activation` is an intent and grants nothing; only verified provider evidence (a paid Stripe invoice, SF-102) activates. `cancellation_scheduled` stays in force until `cancellation_effective_at`. `cancelled` and `expired` are final. */
   status: GymEntitlementsSubscriptionStatus;
   /** The gym's latest subscription. */
   subscription_id: string;

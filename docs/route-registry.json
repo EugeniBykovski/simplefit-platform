@@ -6147,7 +6147,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/app/gyms/[gymId]/settings/page.tsx",
-        "note": "SF-32 placeholder (FeaturePlaceholder) inside the gym console of the gym in the path (SF-88: id-based, D-G23); its sidebar item is marked Soon and not linked until the feature ticket builds the screen."
+        "note": "SF-102: the gym settings entry (WG22) for the gym in the path: the settings sections, of which only the SimpleFit plan (WG25) has a domain; the others are marked Soon and not linked. Its sidebar item is live since SF-102."
       },
       "screens": ["WG22"]
     },
@@ -6247,7 +6247,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/app/gyms/[gymId]/settings/plan/page.tsx",
-        "note": "SF-32 placeholder (FeaturePlaceholder) inside the gym console of the gym in the path (SF-88: id-based, D-G23); its sidebar item is marked Soon and not linked until the feature ticket builds the screen."
+        "note": "SF-102: WG25 (Claude Design 1793198527-a0fc, FUTURE board built with adaptations): the gym's SimpleFit plan on the SF-101/SF-102 API (getGymBillingSummary, listSaasPlans, listGymBillingInvoices, requestGymSaasSubscription, createGymSaasCheckoutSession, reconcileGymSaasSubscription, createGymBillingPortalSession, cancelGymSaasSubscription). The owner only (manage_billing); other staff see the role restriction and nothing is read for them. Payment states come from the backend's Stripe reconciliation, never from a browser redirect; checkout and billing management are Stripe-hosted (no card field). Usage meters, card on file and plan comparison have no domain and are not shown."
       },
       "screens": ["WG25"]
     },

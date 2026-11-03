@@ -151,6 +151,18 @@ export default defineConfig({
       testMatch: ["gym-member-booking-storybook.spec.ts"],
       use: { ...device, baseURL: "http://127.0.0.1:3100", viewport: { width: 1440, height: 900 } },
     })),
+    // SF-102: the SimpleFit plan (WG25) in its stories, in Firefox and WebKit
+    // as well (Chromium runs them above).
+    ...(
+      [
+        ["firefox", devices["Desktop Firefox"]],
+        ["webkit", devices["Desktop Safari"]],
+      ] as const
+    ).map(([engine, device]) => ({
+      name: `sf102-${engine}`,
+      testMatch: ["gym-billing-storybook.spec.ts"],
+      use: { ...device, baseURL: "http://127.0.0.1:3100", viewport: { width: 1440, height: 900 } },
+    })),
     // SF-38, SF-46: browser-engine portability of production behaviour that
     // rests on the engine (the country list comes from each engine's region
     // names; the date of birth from each engine's date input).

@@ -1,0 +1,149 @@
+{
+  "metaTitle": "Plan de SimpleFit",
+  "settingsMetaTitle": "Ajustes del gimnasio",
+  "eyebrow": "Configuración",
+  "title": "Ajustes del gimnasio",
+  "retry": "Intentar de nuevo",
+  "tabs": {
+    "label": "Ajustes del gimnasio",
+    "general": "General",
+    "locations": "Ubicaciones",
+    "roles": "Roles y permisos",
+    "integrations": "Integraciones",
+    "plan": "Plan de SimpleFit",
+    "danger": "Zona de peligro",
+    "soon": "Pronto"
+  },
+  "sections": {
+    "general": "Nombre, tipo de gimnasio y datos de contacto.",
+    "locations": "Direcciones y horarios.",
+    "roles": "Qué puede hacer cada rol del personal.",
+    "integrations": "Aplicaciones y servicios conectados.",
+    "plan": "Tu plan de SimpleFit, pagos y facturas.",
+    "danger": "Transferir la propiedad o cerrar el gimnasio."
+  },
+  "restricted": {
+    "title": "Solo la persona propietaria gestiona el plan de SimpleFit",
+    "body": "El plan, sus pagos y facturas solo son visibles para la persona propietaria."
+  },
+  "provider": {
+    "disabled": "Los pagos no están disponibles en este entorno. No se cobra nada.",
+    "unavailable": "Los pagos no están disponibles por ahora. No se cobró nada; inténtalo más tarde."
+  },
+  "current": {
+    "label": "Plan actual",
+    "testMode": "Modo de prueba",
+    "testModeHint": "Modo de prueba de Stripe: no se mueve dinero real.",
+    "priceMonth": "{amount} / mes",
+    "priceYear": "{amount} / año",
+    "status": {
+      "pending_activation": "Esperando el pago",
+      "active": "Activo",
+      "cancellation_scheduled": "Por finalizar",
+      "cancelled": "Cancelado",
+      "expired": "Vencido"
+    },
+    "period": "pagado {start} – {end}",
+    "nextPayment": "próximo pago {date}",
+    "endsOn": "termina el {date}",
+    "none": "Sin plan de SimpleFit",
+    "noneBody": "Tu gimnasio conserva todas las funciones que ya usa. Elige un plan cuando quieras.",
+    "ended": {
+      "cancelled": "Tu plan anterior se canceló. Elige un plan para suscribirte de nuevo.",
+      "expired": "Tu plan anterior venció. Elige un plan para suscribirte de nuevo."
+    }
+  },
+  "payment": {
+    "returnCancelled": "Se cerró el pago. No se cobró nada.",
+    "confirming": "Confirmando tu pago con Stripe…",
+    "processing": "Tu pago se está confirmando. El plan empieza cuando Stripe confirme la factura pagada.",
+    "cancellationScheduled": "Tu plan termina el {date}. No se harán más cobros.",
+    "cancellationScheduledSoon": "Tu plan termina al final del periodo pagado. No se harán más cobros.",
+    "completePayment": "Completar el pago",
+    "payInvoice": "Pagar la factura",
+    "updatePaymentMethod": "Cambiar el método de pago",
+    "actionRequired": "Tu banco pide confirmar el pago. El plan empieza cuando esté pagado.",
+    "paymentFailed": "El pago no se completó, así que no se inició ningún plan. Prueba con otro método de pago.",
+    "pastDue": "El último pago de renovación falló. Cambia tu método de pago; el acceso dura hasta que termine el periodo pagado."
+  },
+  "plans": {
+    "title": "Planes",
+    "chooseTitle": "Elige un plan",
+    "pending": "{plan}: el pago aún no se completó.",
+    "continueCheckout": "Continuar al pago",
+    "empty": "Todavía no se ofrecen planes.",
+    "changeUnavailable": "Todavía no se puede cambiar de plan. Contacta con SimpleFit para cambiarlo.",
+    "taxNote": "Los precios no incluyen impuestos. Pagas de forma segura en la página de pago de Stripe.",
+    "currentBadge": "Tu plan",
+    "provisional": "Precio provisional",
+    "quote": "Precio a consultar",
+    "payMonthly": "{amount} al mes",
+    "payYearly": "{amount} al año"
+  },
+  "invoices": {
+    "title": "Facturas",
+    "empty": "Aún no hay facturas.",
+    "date": "Fecha",
+    "amount": "Importe",
+    "status": "Estado",
+    "document": "Factura",
+    "refunded": "reembolsado {amount}",
+    "statuses": {
+      "paid": "Pagada",
+      "open": "Abierta",
+      "draft": "Borrador",
+      "uncollectible": "Impagada",
+      "void": "Anulada"
+    },
+    "disputed": "En disputa",
+    "test": "Prueba",
+    "view": "Ver",
+    "opensStripe": "(abre Stripe en una pestaña nueva)"
+  },
+  "manage": {
+    "title": "Facturación",
+    "body": "Stripe gestiona de forma segura los métodos de pago, los datos de facturación y los recibos. SimpleFit nunca ve números de tarjeta.",
+    "open": "Gestionar la facturación",
+    "refresh": "Actualizar el estado",
+    "noCustomer": "Disponible tras tu primer pago."
+  },
+  "cancel": {
+    "open": "Cancelar el plan",
+    "withdraw": "Retirar la solicitud",
+    "title": "¿Cancelar tu plan de SimpleFit?",
+    "body": "Elige cuándo termina el plan. Cancelar no reembolsa un periodo pagado.",
+    "withdrawTitle": "¿Retirar tu solicitud de plan?",
+    "withdrawBody": "La solicitud termina ahora y se cierra cualquier pago abierto. No se cobra nada.",
+    "modeLabel": "Cuándo termina el plan",
+    "periodEnd": "Al final del periodo pagado ({date})",
+    "periodEndUnknown": "Al final del periodo pagado",
+    "periodEndHint": "Mantienes el acceso hasta entonces; sin más cobros.",
+    "immediate": "Ahora",
+    "immediateHint": "El acceso termina ahora. No se reembolsa el periodo pagado.",
+    "keep": "Mantener el plan",
+    "pending": "Cancelando…",
+    "confirm": "Cancelar el plan",
+    "withdrawConfirm": "Retirar la solicitud"
+  },
+  "problems": {
+    "unknown": "No pudimos confirmarlo. No se cobró nada dos veces; revisa el estado e inténtalo de nuevo.",
+    "loadFailed": "No se pudo cargar la facturación. Revisa tu conexión e inténtalo de nuevo.",
+    "providerUnavailable": "No se pudo contactar con Stripe. No cambió nada; inténtalo más tarde.",
+    "providerDisabled": "Los pagos no están disponibles en este entorno. No se cobra nada.",
+    "checkoutCompleted": "Se acaba de pagar un checkout. Estamos actualizando el estado.",
+    "currentExists": "Tu gimnasio ya tiene un plan actual.",
+    "notPending": "Esta solicitud de plan ya no espera un pago.",
+    "planUnavailable": "Este plan ya no se ofrece.",
+    "priceUnavailable": "Este precio todavía no se puede pagar aquí.",
+    "noCustomer": "La gestión de la facturación estará disponible tras tu primer pago.",
+    "portalUnavailable": "La gestión de la facturación no está disponible ahora.",
+    "draft": "Primero termina la configuración del gimnasio.",
+    "limited": "Demasiados intentos. Inténtalo de nuevo en {minutes, plural, one {# minuto} other {# minutos}}.",
+    "limitedLater": "Demasiados intentos. Inténtalo de nuevo en un rato.",
+    "forbidden": "Solo la persona propietaria del gimnasio puede hacerlo.",
+    "gone": "Este plan no está disponible.",
+    "session": "Tu sesión terminó. Vuelve a iniciar sesión.",
+    "keyReused": "Algo salió mal con esta solicitud. Recarga la página e inténtalo de nuevo.",
+    "failed": "No se pudo hacer. Recarga la página e inténtalo de nuevo."
+  }
+}

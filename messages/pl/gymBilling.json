@@ -1,0 +1,149 @@
+{
+  "metaTitle": "Plan SimpleFit",
+  "settingsMetaTitle": "Ustawienia klubu",
+  "eyebrow": "Konfiguracja",
+  "title": "Ustawienia klubu",
+  "retry": "Spróbuj ponownie",
+  "tabs": {
+    "label": "Ustawienia klubu",
+    "general": "Ogólne",
+    "locations": "Lokalizacje",
+    "roles": "Role i uprawnienia",
+    "integrations": "Integracje",
+    "plan": "Plan SimpleFit",
+    "danger": "Strefa zagrożenia",
+    "soon": "Wkrótce"
+  },
+  "sections": {
+    "general": "Nazwa, typ klubu i dane kontaktowe.",
+    "locations": "Adresy i godziny otwarcia.",
+    "roles": "Co może każda rola personelu.",
+    "integrations": "Połączone aplikacje i usługi.",
+    "plan": "Twój plan SimpleFit, płatności i faktury.",
+    "danger": "Przekazanie własności lub zamknięcie klubu."
+  },
+  "restricted": {
+    "title": "Planem SimpleFit zarządza tylko właściciel klubu",
+    "body": "Plan, jego płatności i faktury widzi wyłącznie właściciel."
+  },
+  "provider": {
+    "disabled": "Płatności nie są dostępne w tym środowisku. Nic nie jest pobierane.",
+    "unavailable": "Płatności są chwilowo niedostępne. Nic nie zostało pobrane; spróbuj później."
+  },
+  "current": {
+    "label": "Obecny plan",
+    "testMode": "Tryb testowy",
+    "testModeHint": "Tryb testowy Stripe: żadne prawdziwe pieniądze nie są przesyłane.",
+    "priceMonth": "{amount} / miesiąc",
+    "priceYear": "{amount} / rok",
+    "status": {
+      "pending_activation": "Oczekuje na płatność",
+      "active": "Aktywny",
+      "cancellation_scheduled": "Kończy się",
+      "cancelled": "Anulowany",
+      "expired": "Wygasły"
+    },
+    "period": "opłacony {start} – {end}",
+    "nextPayment": "następna płatność {date}",
+    "endsOn": "kończy się {date}",
+    "none": "Brak planu SimpleFit",
+    "noneBody": "Twój klub zachowuje wszystkie funkcje, z których już korzysta. Wybierz plan, gdy będziesz gotowy.",
+    "ended": {
+      "cancelled": "Poprzedni plan został anulowany. Wybierz plan, aby znowu go wykupić.",
+      "expired": "Poprzedni plan wygasł. Wybierz plan, aby znowu go wykupić."
+    }
+  },
+  "payment": {
+    "returnCancelled": "Płatność została przerwana. Nic nie zostało pobrane.",
+    "confirming": "Potwierdzamy płatność w Stripe…",
+    "processing": "Płatność jest potwierdzana. Plan zacznie działać, gdy Stripe potwierdzi opłaconą fakturę.",
+    "cancellationScheduled": "Plan kończy się {date}. Kolejne płatności nie będą pobierane.",
+    "cancellationScheduledSoon": "Plan kończy się z końcem opłaconego okresu. Kolejne płatności nie będą pobierane.",
+    "completePayment": "Dokończ płatność",
+    "payInvoice": "Opłać fakturę",
+    "updatePaymentMethod": "Zmień metodę płatności",
+    "actionRequired": "Bank prosi o potwierdzenie płatności. Plan zacznie działać po jej opłaceniu.",
+    "paymentFailed": "Płatność nie powiodła się, więc plan nie został uruchomiony. Spróbuj innej metody płatności.",
+    "pastDue": "Ostatnia płatność odnawiająca nie powiodła się. Zmień metodę płatności; dostęp trwa do końca opłaconego okresu."
+  },
+  "plans": {
+    "title": "Plany",
+    "chooseTitle": "Wybierz plan",
+    "pending": "{plan}: płatność nie została jeszcze dokończona.",
+    "continueCheckout": "Przejdź do płatności",
+    "empty": "Nie ma jeszcze oferowanych planów.",
+    "changeUnavailable": "Zmiana planu nie jest jeszcze dostępna. Skontaktuj się z SimpleFit, aby zmienić plan.",
+    "taxNote": "Ceny podano bez podatku. Płacisz bezpiecznie na stronie płatności Stripe.",
+    "currentBadge": "Twój plan",
+    "provisional": "Cena tymczasowa",
+    "quote": "Cena na zapytanie",
+    "payMonthly": "{amount} miesięcznie",
+    "payYearly": "{amount} rocznie"
+  },
+  "invoices": {
+    "title": "Faktury",
+    "empty": "Brak faktur.",
+    "date": "Data",
+    "amount": "Kwota",
+    "status": "Status",
+    "document": "Faktura",
+    "refunded": "zwrócono {amount}",
+    "statuses": {
+      "paid": "Opłacona",
+      "open": "Otwarta",
+      "draft": "Szkic",
+      "uncollectible": "Nieopłacona",
+      "void": "Unieważniona"
+    },
+    "disputed": "Sporna",
+    "test": "Test",
+    "view": "Zobacz",
+    "opensStripe": "(otwiera Stripe w nowej karcie)"
+  },
+  "manage": {
+    "title": "Rozliczenia",
+    "body": "Metodami płatności, danymi rozliczeniowymi i potwierdzeniami bezpiecznie zarządza Stripe. SimpleFit nigdy nie widzi numerów kart.",
+    "open": "Zarządzaj rozliczeniami",
+    "refresh": "Odśwież status",
+    "noCustomer": "Dostępne po pierwszej płatności."
+  },
+  "cancel": {
+    "open": "Anuluj plan",
+    "withdraw": "Wycofaj prośbę",
+    "title": "Anulować plan SimpleFit?",
+    "body": "Wybierz, kiedy plan się kończy. Anulowanie nie zwraca opłaconego okresu.",
+    "withdrawTitle": "Wycofać prośbę o plan?",
+    "withdrawBody": "Prośba kończy się teraz, a otwarta płatność zostaje zamknięta. Nic nie jest pobierane.",
+    "modeLabel": "Kiedy plan się kończy",
+    "periodEnd": "Z końcem opłaconego okresu ({date})",
+    "periodEndUnknown": "Z końcem opłaconego okresu",
+    "periodEndHint": "Dostęp do tego czasu; bez kolejnych płatności.",
+    "immediate": "Teraz",
+    "immediateHint": "Dostęp kończy się teraz. Opłacony okres nie jest zwracany.",
+    "keep": "Zachowaj plan",
+    "pending": "Anulowanie…",
+    "confirm": "Anuluj plan",
+    "withdrawConfirm": "Wycofaj prośbę"
+  },
+  "problems": {
+    "unknown": "Nie udało się tego potwierdzić. Nic nie zostało pobrane dwukrotnie; sprawdź status i spróbuj ponownie.",
+    "loadFailed": "Nie udało się wczytać rozliczeń. Sprawdź połączenie i spróbuj ponownie.",
+    "providerUnavailable": "Nie udało się połączyć ze Stripe. Nic się nie zmieniło; spróbuj później.",
+    "providerDisabled": "Płatności nie są dostępne w tym środowisku. Nic nie jest pobierane.",
+    "checkoutCompleted": "Płatność została właśnie opłacona. Odświeżamy status.",
+    "currentExists": "Twój klub ma już bieżący plan.",
+    "notPending": "Ta prośba o plan nie czeka już na płatność.",
+    "planUnavailable": "Ten plan nie jest już oferowany.",
+    "priceUnavailable": "Tej ceny nie można jeszcze tu opłacić.",
+    "noCustomer": "Zarządzanie rozliczeniami będzie dostępne po pierwszej płatności.",
+    "portalUnavailable": "Zarządzanie rozliczeniami jest teraz niedostępne.",
+    "draft": "Najpierw dokończ konfigurację klubu.",
+    "limited": "Zbyt wiele prób. Spróbuj ponownie za {minutes, plural, one {# minutę} few {# minuty} many {# minut} other {# minuty}}.",
+    "limitedLater": "Zbyt wiele prób. Spróbuj ponownie za chwilę.",
+    "forbidden": "Może to zrobić tylko właściciel klubu.",
+    "gone": "Ten plan jest niedostępny.",
+    "session": "Sesja wygasła. Zaloguj się ponownie.",
+    "keyReused": "Coś poszło nie tak z tym żądaniem. Odśwież stronę i spróbuj ponownie.",
+    "failed": "Nie udało się tego zrobić. Odśwież stronę i spróbuj ponownie."
+  }
+}

@@ -6,6 +6,7 @@
  */
 
 /**
+ * `provider_initiated` (SF-102): the payment provider ended or scheduled the end outside SimpleFit.
  * @nullable
  */
 export type GymSaasSubscriptionCancelReason = typeof GymSaasSubscriptionCancelReason[keyof typeof GymSaasSubscriptionCancelReason] | null;
@@ -14,4 +15,5 @@ export type GymSaasSubscriptionCancelReason = typeof GymSaasSubscriptionCancelRe
 export const GymSaasSubscriptionCancelReason = {
   requested_by_gym: 'requested_by_gym',
   gym_closed: 'gym_closed',
+  provider_initiated: 'provider_initiated',
 } as const;

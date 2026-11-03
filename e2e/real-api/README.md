@@ -170,3 +170,16 @@ MIX_ENV=dev DATABASE_URL=$E2E_DB mix ecto.drop   # in simplefit-api
 The emailed code is read with `mix e2e.email_code <address>`, a Mix task that
 runs only in dev and test. It opens the API's queued, encrypted email the way
 the delivery worker does. The development email adapter never logs codes.
+
+`gym-billing.spec.ts` (SF-102) drives the SimpleFit plan page: the owner
+reaches Settings → SimpleFit plan, sees the backend's provider state, chooses
+the published plan (the intent is recorded; checkout is refused before any
+Stripe call because the plan has no Stripe Price mapping), withdraws the
+request; a manager sees the restriction and requests nothing; a stranger gets
+404; signed webhooks over real HTTP (raw body, replay, stale, forged, other
+mode) record one event of an unprocessed type. **No journey reaches Stripe.**
+Run it twice against the API on a disposable database: `E2E_STRIPE=disabled`
+(API with `STRIPE_BILLING_ENABLED=false`) and `E2E_STRIPE=test` with
+`E2E_STRIPE_WEBHOOK_SECRET` (API with `STRIPE_BILLING_ENABLED=true
+STRIPE_MODE=test` and placeholder test credentials), with a published plan
+(`mix billing.catalog seed-provisional` and `publish`).

@@ -11,7 +11,7 @@ import type { GymSaasSubscriptionStatus } from './gymSaasSubscriptionStatus';
 import type { SaasPrice } from './saasPrice';
 
 /**
- * The gym (not a person) is the subscriber. It keeps the plan and price version it chose. No provider reference, payment or invoice is exposed.
+ * The gym (not a person) is the subscriber. It keeps the plan and price version it chose. No provider reference or payment detail is exposed (invoices: `listGymBillingInvoices`).
  */
 export interface GymSaasSubscription {
   /**
@@ -24,7 +24,10 @@ export interface GymSaasSubscription {
      * @nullable
      */
   cancel_mode: GymSaasSubscriptionCancelMode;
-  /** @nullable */
+  /**
+     * `provider_initiated` (SF-102): the payment provider ended or scheduled the end outside SimpleFit.
+     * @nullable
+     */
   cancel_reason: GymSaasSubscriptionCancelReason;
   /**
      * When it ends (or ended).
@@ -57,7 +60,7 @@ export interface GymSaasSubscription {
   price: SaasPrice;
   /** When the intent was recorded. */
   requested_at: string;
-  /** `pending_activation` is an intent and grants nothing; only verified provider evidence activates (none exists yet). `cancellation_scheduled` stays in force until `cancellation_effective_at`. `cancelled` and `expired` are final. */
+  /** `pending_activation` is an intent and grants nothing; only verified provider evidence (a paid Stripe invoice, SF-102) activates. `cancellation_scheduled` stays in force until `cancellation_effective_at`. `cancelled` and `expired` are final. */
   status: GymSaasSubscriptionStatus;
   /** The subscription. */
   subscription_id: string;

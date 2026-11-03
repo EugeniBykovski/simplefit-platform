@@ -17,6 +17,7 @@ import type fighterCoaches from "../../../messages/en/fighterCoaches.json";
 import type fighterHome from "../../../messages/en/fighterHome.json";
 import type fighterOnboarding from "../../../messages/en/fighterOnboarding.json";
 import type fighterTraining from "../../../messages/en/fighterTraining.json";
+import type gymBilling from "../../../messages/en/gymBilling.json";
 import type gymBooking from "../../../messages/en/gymBooking.json";
 import type gymConsole from "../../../messages/en/gymConsole.json";
 import type gymOnboarding from "../../../messages/en/gymOnboarding.json";
@@ -52,6 +53,7 @@ export const namespaces = [
   "gymOnboarding",
   "gymConsole",
   "gymBooking",
+  "gymBilling",
   "accountRegistration",
   "roleSelection",
   "fighterHome",
@@ -87,6 +89,7 @@ export type Messages = {
   gymOnboarding: typeof gymOnboarding;
   gymConsole: typeof gymConsole;
   gymBooking: typeof gymBooking;
+  gymBilling: typeof gymBilling;
   accountRegistration: typeof accountRegistration;
   roleSelection: typeof roleSelection;
   fighterHome: typeof fighterHome;
