@@ -5,6 +5,7 @@ import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { useEffect, useId, useMemo, useRef, type ReactNode } from "react";
 
 import type { Gym } from "@/entities/gym";
+import { rosterCapabilities } from "@/entities/gym-booking";
 import {
   addDays,
   datesFrom,
@@ -256,6 +257,7 @@ export function TimetableTab({
             gymId={gym.id}
             occurrence={selected}
             can={can}
+            roster={rosterCapabilities(gym.viewer)}
             venues={venues}
             instructors={instructors}
             onSeries={onSeries}

@@ -1182,6 +1182,9 @@ and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 | `D-WEB-GYM-STAFF`                    | RESOLVED               | Web gym coaches & staff on the SF-93 contract: no shifts, locations, Head coach or WG17 editor         |
 | `D-WEB-GYM-MEMBERS`                  | RESOLVED               | Web gym members on the SF-95 contract: no plans, payments, attendance, contact or import commit        |
 | `D-WEB-GYM-TIMETABLE`                | RESOLVED               | Web gym timetable on the SF-97 contract: no bookings, waitlists, attendance, visibility or imports     |
+| `D-WEB-GYM-MEMBER-BOOKING`           | NEEDS_PRODUCT_DECISION | Web member booking (SF-100): /app/me/gyms, classes, bookings from F13/F16 content; no web artboard     |
+| `D-MOBILE-GYM-MEMBER-BOOKING`        | NEEDS_PRODUCT_DECISION | Mobile member booking at /me/gyms (F13, F16 rows); credits, waitlist out; booking history needs design |
+| `D-GYM-CLASS-ROSTER`                 | RESOLVED               | Rosters and manual check-in (SF-100): WG5 Roster, G08 Classes, G03; no waitlist, payments or analytics |
 | `D-MOBILE-COACH-ONBOARDING-FLOW`     | DEFERRED               | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access                  |
 | `D-ENTRY-CONTEXT-SELECTION`          | RESOLVED               | `context_selection` opens WCX1 on the web and A04 on mobile; never WA6 / O05 or home                   |
 | `D-WEB-COACH-HOME-MVP`               | DEFERRED               | Coach web: real profile dashboard, MVP nav with Soon rows; CRW1, CRW2 future                           |

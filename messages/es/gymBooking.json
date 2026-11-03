@@ -1,0 +1,194 @@
+{
+  "problems": {
+    "unknown": "No pudimos confirmar el resultado. Nada se muestra como hecho hasta que SimpleFit lo confirme. Inténtalo de nuevo: no se puede reservar ni registrar la entrada de nadie dos veces.",
+    "loadFailed": "No pudimos cargar esto. Revisa tu conexión e inténtalo de nuevo.",
+    "limited": "Demasiadas solicitudes en poco tiempo. Inténtalo de nuevo en {minutes} min.",
+    "limitedLater": "Demasiadas solicitudes en poco tiempo. Inténtalo de nuevo un poco más tarde.",
+    "full": "Esta clase está completa ({capacity, plural, one {# plaza} other {# plazas}}). No se hizo ninguna reserva y no hay lista de espera.",
+    "fullSome": "Esta clase está completa. No se hizo ninguna reserva y no hay lista de espera.",
+    "classCancelled": "Esta clase está cancelada. No se reservó ni se registró nada.",
+    "started": "Esta clase ya empezó, así que las reservas ya no pueden cambiar.",
+    "notToday": "El check-in se registra el día de la clase. No se registró nada.",
+    "alreadyBooked": "Ya tienes una plaza en esta clase. No se hizo una segunda reserva.",
+    "bookingCancelled": "Esta reserva ya está cancelada.",
+    "checkedIn": "Este miembro ya hizo check-in, así que la reserva se mantiene.",
+    "membership": "Tu membresía en este gimnasio no está activa, así que no puedes reservar sus clases.",
+    "membershipRequested": "Tu solicitud para unirte a este gimnasio sigue pendiente de aprobación, así que aún no puedes reservar.",
+    "keyReused": "No pudimos asociar esta solicitud. Recarga la página e inténtalo de nuevo.",
+    "forbidden": "Tu rol no puede hacer esto. No cambió nada.",
+    "gone": "Esto no está disponible para ti. La página está actualizada.",
+    "session": "Tu sesión terminó. Vuelve a iniciar sesión para continuar.",
+    "failed": "Algo salió mal y no cambió nada. Inténtalo de nuevo."
+  },
+  "roster": {
+    "eyebrow": "{day} · {from} – {to} · {venue}",
+    "description": "Quién reservó esta clase, según los registros de SimpleFit.",
+    "close": "Cerrar",
+    "classCancelled": "Esta clase está cancelada. Sus reservas se liberaron y no se puede registrar el check-in de nadie.",
+    "views": {
+      "label": "Reservas",
+      "confirmed": "Reservadas",
+      "cancelled": "Canceladas"
+    },
+    "checkInNote": "Registra el check-in de los miembros a medida que llegan. El check-in se registra el día de la clase, una vez por reserva.",
+    "retry": "Reintentar",
+    "loading": "Cargando la lista",
+    "empty": {
+      "confirmed": "Nadie ha reservado esta clase todavía.",
+      "cancelled": "No hay reservas canceladas."
+    },
+    "privacy": "Solo se muestran un nombre corto y los datos de la reserva. El correo, el perfil y los datos de entrenamiento no forman parte de la lista.",
+    "unnamed": "Miembro",
+    "cancelledAt": "Cancelada {time}",
+    "bookedVia": {
+      "member": "Reservada por el miembro · {time}",
+      "staff": "Reservada por el equipo · {time}"
+    },
+    "reasons": {
+      "member_cancelled": "Cancelada por el miembro",
+      "staff_cancelled": "Cancelada por el equipo",
+      "occurrence_cancelled": "Clase cancelada",
+      "membership_ended": "Membresía finalizada"
+    },
+    "checkedInAt": "Check-in: {time}",
+    "checkInFor": "Registrar check-in de {name}",
+    "checkingIn": "Registrando check-in…",
+    "checkIn": "Check-in",
+    "booked": "Reservada",
+    "checkedInDone": "Check-in de {name} registrado.",
+    "summary": {
+      "booked": "{confirmed}/{capacity}",
+      "bookedLabel": "reservadas",
+      "remaining": "Plazas libres: {count}",
+      "checkedIn": "Con check-in: {count}"
+    }
+  },
+  "member": {
+    "nav": {
+      "label": "Tu membresía de gimnasio",
+      "gyms": "Mis gimnasios",
+      "bookings": "Mis reservas"
+    },
+    "cancel": {
+      "title": "¿Cancelar tu reserva?",
+      "body": "Tu plaza en {title} el {when} queda libre para otra persona. Puedes volver a reservar mientras queden plazas.",
+      "keep": "Mantener reserva",
+      "pending": "Cancelando…",
+      "again": "Reintentar",
+      "confirm": "Cancelar reserva"
+    },
+    "gyms": {
+      "metaTitle": "Mis gimnasios",
+      "eyebrow": "Membresía",
+      "title": "Mis gimnasios",
+      "retry": "Reintentar",
+      "loading": "Cargando tus gimnasios",
+      "empty": {
+        "title": "No eres miembro de ningún gimnasio",
+        "body": "Cuando un gimnasio te apruebe como miembro, aparecerá aquí y podrás reservar sus clases. Unirse a un gimnasio aún no está disponible en la web."
+      },
+      "unnamedGym": "Gimnasio",
+      "activeLine": "Reserva clases y consulta tus reservas",
+      "requestedLine": "Esperando a que el gimnasio apruebe tu solicitud",
+      "status": {
+        "active": "Miembro",
+        "requested": "Pendiente"
+      },
+      "open": "Abrir las clases de {gym}",
+      "note": "Una membresía de gimnasio no necesita perfil de boxeador ni de entrenador. SimpleFit solo muestra lo que el gimnasio ha registrado: sin planes, pagos ni créditos."
+    },
+    "classes": {
+      "metaTitle": "Clases del gimnasio",
+      "eyebrow": "Membresía",
+      "title": "Reservar una clase",
+      "retry": "Reintentar",
+      "loading": "Cargando clases",
+      "notMember": {
+        "title": "No eres miembro de este gimnasio",
+        "body": "Solo los miembros activos de un gimnasio pueden ver y reservar sus clases."
+      },
+      "requested": {
+        "title": "Tu solicitud está pendiente",
+        "body": "{gym} aún no ha aprobado tu solicitud. Podrás reservar clases cuando seas miembro."
+      },
+      "ended": {
+        "title": "Tu membresía no está activa",
+        "body": "Tu membresía en {gym} terminó, así que no puedes reservar sus clases. Tus reservas anteriores siguen en Mis reservas."
+      },
+      "thisGym": "Este gimnasio",
+      "backToGyms": "Volver a mis gimnasios",
+      "listHeading": "Clases",
+      "previousWeek": "Semana anterior",
+      "nextWeek": "Semana siguiente",
+      "days": "Días",
+      "today": "Hoy",
+      "zone": "Horas en {zone}",
+      "emptyDay": "No hay clases este día.",
+      "hint": "Elige una clase para ver sus detalles y reservar una plaza.",
+      "note": "Las plazas libres pueden cambiar en cualquier momento: una reserva solo cuenta cuando SimpleFit la confirma.",
+      "places": {
+        "cancelled": "Cancelada",
+        "full": "Completa · {capacity, plural, one {# plaza} other {# plazas}}",
+        "left": "Quedan {left} de {capacity}"
+      },
+      "states": {
+        "booked": "Reservada",
+        "checkedIn": "Check-in hecho",
+        "cancelled": "Cancelada",
+        "started": "Empezada",
+        "full": "Completa",
+        "open": "Reservar"
+      },
+      "detailsEyebrow": "{day} · {minutes} min · {venue}",
+      "instructor": "Instructor: {name}",
+      "until": "Hasta las {time}",
+      "confirmedNotice": "Reserva confirmada. Tu plaza está guardada.",
+      "cancelledBefore": "Cancelaste una reserva anterior de esta clase. Puedes volver a reservar mientras queden plazas.",
+      "booking": "Reservando…",
+      "tryAgain": "Reintentar",
+      "confirm": "Confirmar reserva",
+      "cancelBooking": "Cancelar reserva",
+      "checkedInNotice": "Se registró tu check-in a las {time}.",
+      "fullNotice": "Esta clase está completa. No hay lista de espera: vuelve a mirar más tarde por si se libera una plaza.",
+      "startedNotice": "Esta clase ya empezó y no se puede reservar.",
+      "cancelledNotice": "El gimnasio canceló esta clase.",
+      "cancelNote": "Puedes cancelar hasta que empiece la clase.",
+      "startedBooked": "Esta clase ya empezó. Tu reserva ya no se puede cancelar."
+    },
+    "bookings": {
+      "metaTitle": "Mis reservas",
+      "eyebrow": "Membresía",
+      "title": "Mis reservas",
+      "retry": "Reintentar",
+      "loading": "Cargando tus reservas",
+      "empty": {
+        "title": "Aún no tienes reservas",
+        "body": "Las clases que reserves en tus gimnasios aparecen aquí.",
+        "action": "Buscar una clase"
+      },
+      "groups": {
+        "upcoming": "Próximas · {count}",
+        "past": "Pasadas · {count}",
+        "cancelled": "Canceladas · {count}"
+      },
+      "none": {
+        "upcoming": "No tienes próximas clases reservadas.",
+        "past": "No hay clases pasadas.",
+        "cancelled": "No hay reservas canceladas."
+      },
+      "note": "Las reservas vienen de los registros de SimpleFit. Un check-in solo aparece cuando el gimnasio lo registró.",
+      "line": "{when} – {to} · {venue} · {gym}",
+      "unnamedGym": "Gimnasio",
+      "zone": "Horas en {zone}",
+      "reasons": {
+        "member_cancelled": "La cancelaste tú",
+        "staff_cancelled": "Cancelada por el gimnasio",
+        "occurrence_cancelled": "Clase cancelada",
+        "membership_ended": "Membresía finalizada"
+      },
+      "checkedIn": "Check-in: {time}",
+      "booked": "Reservada",
+      "cancel": "Cancelar reserva"
+    }
+  }
+}

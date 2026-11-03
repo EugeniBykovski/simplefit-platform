@@ -50,5 +50,10 @@
     "body": "Revisa tu conexión e inténtalo de nuevo. No cambió nada en tu cuenta.",
     "unexpected": "Esta versión de SimpleFit aún no puede abrirla. Recarga la página e inténtalo de nuevo.",
     "retry": "Reintentar"
+  },
+  "member": {
+    "title": "Membresías de gimnasio en tu cuenta: {count}",
+    "body": "Puedes reservar clases y ver tus reservas sin elegir un rol.",
+    "action": "Abrir mis gimnasios"
   }
 }

@@ -50,5 +50,10 @@
     "body": "Vérifiez votre connexion et réessayez. Rien n’a changé sur votre compte.",
     "unexpected": "Cette version de SimpleFit ne peut pas encore l’ouvrir. Rechargez la page et réessayez.",
     "retry": "Réessayer"
+  },
+  "member": {
+    "title": "Adhésions à une salle sur votre compte : {count}",
+    "body": "Vous pouvez réserver des cours et voir vos réservations sans choisir de rôle.",
+    "action": "Ouvrir mes salles"
   }
 }

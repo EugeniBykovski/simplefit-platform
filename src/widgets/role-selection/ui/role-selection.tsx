@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  CalendarCheckIcon,
   HandFistIcon,
   HouseIcon,
   InfoIcon,
@@ -11,9 +12,12 @@ import {
 import { useTranslations } from "next-intl";
 import { useId, useState } from "react";
 
+import { currentMemberships, useMyGymMemberships } from "@/entities/gym-booking";
 import { signOut } from "@/entities/session";
 import { useEntryChoice } from "@/features/session-gate";
+import { Link } from "@/shared/i18n/navigation";
 import type { EntryIntent } from "@/shared/routes/continuation";
+import { routeHref } from "@/shared/routes/routes";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Notice } from "@/shared/ui/notice";
@@ -97,6 +101,7 @@ export function RoleSelection() {
             </h1>
             <p className="type-body-lg text-pretty text-muted-foreground">{t("lead")}</p>
           </hgroup>
+          <MemberShortcut />
           {/* Empty, the live region stays out of the flow; a failure shows in place. */}
           <div
             role="status"
@@ -235,5 +240,38 @@ export function RoleSelection() {
         </aside>
       </OnboardingGrid>
     </OnboardingFrame>
+  );
+}
+
+/**
+ * A gym member needs no role to book classes (D-G07): when the account
+ * holds an active membership or a pending request (SF-95, the backend's
+ * list), the member's own pages are offered here too. Choosing a journey
+ * stays optional and nothing is created by either.
+ */
+function MemberShortcut() {
+  const t = useTranslations("roleSelection.member");
+  const list = useMyGymMemberships();
+  const count = currentMemberships(list.memberships).length;
+  if (!list.complete || count === 0) return null;
+  return (
+    <Notice
+      tone="olive"
+      icon={CalendarCheckIcon}
+      data-member-shortcut
+      action={
+        <Link
+          href={routeHref("web.app.me.gyms")}
+          className="rounded-xs type-caption font-extrabold whitespace-nowrap underline outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          {t("action")}
+        </Link>
+      }
+    >
+      <span className="flex flex-col gap-0.5">
+        <b>{t("title", { count })}</b>
+        <span>{t("body")}</span>
+      </span>
+    </Notice>
   );
 }

@@ -23,11 +23,15 @@ export function AppFrame({ children }: { children: ReactNode }) {
     <div className="flex min-h-dvh flex-col">
       <header className="sticky top-0 z-10 border-b bg-background/90 backdrop-blur">
         <Container className="flex h-19 items-center gap-2">
-          <Link href={routeHref("web.root")} className="flex items-center gap-2.5 rounded-md">
+          {/* The name gives way on phones so the session, language and theme controls fit (SF-100). */}
+          <Link
+            href={routeHref("web.root")}
+            className="flex min-w-0 items-center gap-2.5 rounded-md"
+          >
             <BrandTile />
-            <span className="type-title">{siteConfig.name}</span>
+            <span className="truncate type-title">{siteConfig.name}</span>
           </Link>
-          <div className="ml-auto flex items-center gap-1">
+          <div className="ml-auto flex flex-none items-center gap-1">
             <SessionControl />
             <LocaleSwitcher />
             <ThemeSwitcher />

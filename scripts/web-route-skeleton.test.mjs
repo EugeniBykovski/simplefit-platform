@@ -43,6 +43,10 @@ const REAL_SCREENS = [
   "web.app.gyms._gym-id.members",
   // SF-98: the gym's timetable (WG5 with OG10).
   "web.app.gyms._gym-id.timetable",
+  // SF-100: the member's gyms (WMG1), one gym's classes (WMG2) and bookings (WMG3).
+  "web.app.me.gyms",
+  "web.app.me.gyms._gym-id.classes",
+  "web.app.me.bookings",
   // SF-54: the Coach dashboard (WC1) and the context chooser (WCX1).
   "web.app.coach",
   "web.app.context",

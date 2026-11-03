@@ -1,12 +1,13 @@
 "use client";
 
-import { CheckIcon, ChevronsUpDownIcon, PlusIcon } from "lucide-react";
+import { CalendarCheckIcon, CheckIcon, ChevronsUpDownIcon, PlusIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, type ReactNode } from "react";
 
 import { useCoachProfile } from "@/entities/coach-profile";
 import { useFighterProfile } from "@/entities/fighter-profile";
 import type { GymRole } from "@/entities/gym";
+import { currentMemberships, useMyGymMemberships } from "@/entities/gym-booking";
 import { Link } from "@/shared/i18n/navigation";
 import { cn } from "@/shared/lib/utils";
 import { routeHref } from "@/shared/routes/routes";
@@ -77,6 +78,12 @@ function Switcher({ current, entry }: { current: SwitcherCurrent; entry: KnownEn
   const { completed, journeys } = contextOptions(entry);
   const gyms = gymWorkspaceOptions(entry);
   const names = useProfileNames(completed);
+  // The account's gym memberships (SF-95), read with the page (never as the
+  // menu opens, so opening it makes no request): a member's classes and
+  // bookings are account-level (D-G07), never a workspace, so they are a link
+  // of their own.
+  const memberships = useMyGymMemberships();
+  const membershipCount = currentMemberships(memberships.memberships).length;
   const pending = state.status === "pending";
   const opening = (target: SwitchTarget) => pending && state.target === target;
 
@@ -210,6 +217,30 @@ function Switcher({ current, entry }: { current: SwitcherCurrent; entry: KnownEn
             onSelect={() => void switching.continueJourney(journey.context)}
           />
         ))}
+        {membershipCount > 0 && (
+          <>
+            <DropdownMenuSeparator className="mx-1.5 my-1" />
+            <DropdownMenuLabel className="px-2 pt-2 pb-1 type-label text-faint-foreground">
+              {t("memberships.heading")}
+            </DropdownMenuLabel>
+            <DropdownMenuItem asChild className="min-h-11 gap-2.5 rounded-lg px-2 py-1.5">
+              <Link href={routeHref("web.app.me.gyms")} data-member-gyms-link>
+                <span
+                  aria-hidden
+                  className="flex size-8 flex-none items-center justify-center rounded-md bg-accent text-highlight"
+                >
+                  <CalendarCheckIcon className="size-4" />
+                </span>
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className="type-body-sm font-extrabold">{t("memberships.title")}</span>
+                  <span className="truncate type-caption text-muted-foreground">
+                    {t("memberships.line", { count: membershipCount })}
+                  </span>
+                </span>
+              </Link>
+            </DropdownMenuItem>
+          </>
+        )}
         {state.status === "failed" && (
           <div
             role="alert"

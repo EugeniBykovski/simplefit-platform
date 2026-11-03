@@ -38,5 +38,10 @@
     "title": "We couldn’t switch.",
     "body": "You’re still in your current profile. Try again."
   },
-  "footnote": "One account. We open your last choice next time."
+  "footnote": "One account. We open your last choice next time.",
+  "memberships": {
+    "heading": "Gym membership",
+    "title": "My gym classes",
+    "line": "{count, plural, one {# gym} other {# gyms}} · book and see bookings"
+  }
 }

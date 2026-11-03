@@ -87,6 +87,11 @@ async function signedInApi(page: Page, entry: EntryFixture) {
         },
       }),
   );
+  // SF-100: WA6 reads the account's gym memberships (a new account has none).
+  await page.route(
+    (url) => url.pathname === "/api/v1/me/gym-memberships" && url.port !== "3100",
+    (call) => call.fulfill({ json: { memberships: [], next_cursor: null } }),
+  );
   await page.route(
     (url) => url.pathname === "/api/v1/me/entry" && url.port !== "3100",
     (call) => {

@@ -38,5 +38,10 @@
     "title": "No pudimos cambiar.",
     "body": "Sigues en tu perfil actual. Inténtalo de nuevo."
   },
-  "footnote": "Una cuenta. La próxima vez abrimos tu última elección."
+  "footnote": "Una cuenta. La próxima vez abrimos tu última elección.",
+  "memberships": {
+    "heading": "Membresía de gimnasio",
+    "title": "Mis clases del gimnasio",
+    "line": "{count, plural, one {# gimnasio} other {# gimnasios}} · reserva y consulta tus reservas"
+  }
 }

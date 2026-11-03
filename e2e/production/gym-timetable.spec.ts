@@ -406,7 +406,13 @@ test.describe("roles and isolation", () => {
     await expect(page.getByRole("button", { name: "Class", exact: true })).toHaveCount(0);
     await goTo(page, "2026-12-03");
     await page.locator('[data-list-view] [data-local-start="2026-12-03T18:00:00"]').click();
-    await expect(page.locator("[data-occurrence-details]").getByRole("button")).toHaveCount(0);
+    // No mutation control; the roster (SF-100, a read for the front desk) is the only action.
+    await expect(
+      page
+        .locator("[data-occurrence-details]")
+        .getByRole("button")
+        .filter({ hasNotText: "Roster" }),
+    ).toHaveCount(0);
     await page.getByRole("tab", { name: "Venues" }).click();
     await expect(page.getByRole("button", { name: "New venue" })).toHaveCount(0);
     await page.getByRole("tab", { name: "Class templates" }).click();

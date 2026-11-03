@@ -98,8 +98,8 @@
       "title": "Pronto en tu consola",
       "badge": "Más adelante",
       "attendance": {
-        "title": "Reservas y check-ins",
-        "body": "Reservas y check-ins de cada clase."
+        "title": "Resumen de reservas y asistencia",
+        "body": "Una vista de las reservas y la asistencia de todo el gimnasio. La lista y los check-ins de cada clase están en el horario."
       }
     }
   },
@@ -323,11 +323,11 @@
       },
       "coach": {
         "line": "Entrena en este gimnasio; ve el gimnasio y su equipo",
-        "detail": "Entrena en este gimnasio. Por ahora: la consola del gimnasio y su equipo; las clases llegarán más adelante."
+        "detail": "Entrena en este gimnasio: la consola del gimnasio y su equipo, y las listas de las clases que imparte."
       },
       "front_desk": {
         "line": "Atiende la recepción; ve el gimnasio y su equipo",
-        "detail": "Atiende la recepción. Por ahora: la consola del gimnasio y su equipo; los registros de entrada llegarán más adelante."
+        "detail": "Atiende la recepción: la consola del gimnasio y su equipo, las listas de las clases y los check-ins."
       }
     },
     "reference": {
@@ -848,7 +848,7 @@
     "hint": {
       "heading": "Detalles de la clase",
       "body": "Elige una clase para ver su fecha, hora, sala, instructor y aforo.",
-      "capacity": "El aforo es el máximo de personas de una clase. Las reservas y los registros de entrada aún no forman parte de SimpleFit, así que aquí no se reserva ni se cuenta nada."
+      "capacity": "El aforo es el máximo de personas de una clase. Las reservas y los check-ins de cada clase están en su lista."
     },
     "toolbar": {
       "previous": {
@@ -956,7 +956,8 @@
       "capacityValue": "Hasta {count, plural, one {# persona} other {# personas}}",
       "needsInstructorNote": "El instructor ya no da clases en este gimnasio y se le retiró de esta clase. Elige otro instructor.",
       "openSeries": "Abrir su serie semanal",
-      "capacityNote": "El aforo es un límite. Las reservas, listas de espera y registros de entrada aún no forman parte de SimpleFit.",
+      "roster": "Lista de la clase",
+      "capacityNote": "El aforo es el máximo de personas de esta clase. Sus reservas y check-ins están en la lista de la clase.",
       "change": "Cambiar esta clase",
       "cancel": "Cancelar clase",
       "readonly": {
@@ -1231,7 +1232,7 @@
       "body": "{when}, {venue}.",
       "onlyThis": "Solo se cancela esta fecha. El resto de su serie semanal se mantiene.",
       "stays": "Permanece en el horario, marcada como cancelada.",
-      "noBookings": "No se avisa ni se reembolsa a nadie: las reservas aún no forman parte de SimpleFit.",
+      "noBookings": "Los miembros con reserva en esta clase pierden su plaza y la ven como cancelada. No se avisa ni se reembolsa a nadie.",
       "changed": "Esta clase cambió mientras tanto. Ahora es {when}, {venue}. Confirma de nuevo para cancelarla.",
       "confirm": "Cancelar clase",
       "pending": "Cancelando…",
@@ -1301,7 +1302,7 @@
       "future": "Se cancelan todas las clases próximas de esta serie.",
       "past": "Las clases pasadas se quedan como están.",
       "final": "Una serie cancelada no se puede reanudar.",
-      "noBookings": "No se avisa ni se reembolsa a nadie: las reservas aún no forman parte de SimpleFit.",
+      "noBookings": "Los miembros con reserva en las próximas clases de esta serie pierden sus plazas y ven esas clases como canceladas. No se avisa ni se reembolsa a nadie.",
       "understand": "Entiendo que se cancelarán todas las clases próximas de esta serie.",
       "changed": "Esta serie cambió mientras tanto. Ahora es {rule}, {period}. Confirma de nuevo para cancelarla.",
       "confirm": "Cancelar serie",

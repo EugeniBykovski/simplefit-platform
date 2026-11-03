@@ -98,8 +98,8 @@
       "title": "Wkrótce w Twojej konsoli",
       "badge": "Później",
       "attendance": {
-        "title": "Rezerwacje i wejścia",
-        "body": "Rezerwacje i wejścia na każde zajęcia."
+        "title": "Przegląd rezerwacji i frekwencji",
+        "body": "Rezerwacje i frekwencja w całym klubie w jednym widoku. Lista uczestników i wejścia każdych zajęć są w grafiku."
       }
     }
   },
@@ -323,11 +323,11 @@
       },
       "coach": {
         "line": "Trenuje w tym klubie; widzi klub i zespół",
-        "detail": "Trenuje w tym klubie. Na razie: konsola klubu i jego zespół; zajęcia pojawią się później."
+        "detail": "Trenuje w tym klubie: konsola klubu i jego zespół oraz listy uczestników zajęć, które prowadzi."
       },
       "front_desk": {
         "line": "Obsługuje recepcję; widzi klub i zespół",
-        "detail": "Obsługuje recepcję. Na razie: konsola klubu i jego zespół; meldowanie pojawi się później."
+        "detail": "Obsługuje recepcję: konsola klubu i jego zespół, listy uczestników zajęć i wejścia."
       }
     },
     "reference": {
@@ -848,7 +848,7 @@
     "hint": {
       "heading": "Szczegóły zajęć",
       "body": "Wybierz zajęcia, aby zobaczyć datę, godzinę, salę, prowadzącego i limit miejsc.",
-      "capacity": "Limit miejsc to największa liczba uczestników. Zapisów i rejestracji wejść nie ma jeszcze w SimpleFit, więc nic tu nie jest rezerwowane ani liczone."
+      "capacity": "Limit miejsc to największa liczba osób na zajęciach. Rezerwacje i wejścia każdych zajęć są na ich liście uczestników."
     },
     "toolbar": {
       "previous": {
@@ -956,7 +956,8 @@
       "capacityValue": "Do {count, plural, one {# osoby} few {# osób} many {# osób} other {# osoby}}",
       "needsInstructorNote": "Prowadzący nie pracuje już w tym klubie i został zdjęty z tych zajęć. Wybierz innego prowadzącego.",
       "openSeries": "Otwórz jej serię cotygodniową",
-      "capacityNote": "Limit miejsc to granica. Zapisów, list oczekujących i rejestracji wejść nie ma jeszcze w SimpleFit.",
+      "roster": "Lista uczestników",
+      "capacityNote": "Limit miejsc to największa liczba osób na tych zajęciach. Ich rezerwacje i wejścia są na liście uczestników.",
       "change": "Zmień zajęcia",
       "cancel": "Odwołaj zajęcia",
       "readonly": {
@@ -1231,7 +1232,7 @@
       "body": "{when}, {venue}.",
       "onlyThis": "Odwołana zostaje tylko ta data. Reszta serii cotygodniowej zostaje.",
       "stays": "Zajęcia zostają w grafiku z oznaczeniem „odwołane”.",
-      "noBookings": "Nikt nie dostaje powiadomień ani zwrotów: zapisów nie ma jeszcze w SimpleFit.",
+      "noBookings": "Członkowie zapisani na te zajęcia tracą miejsce i widzą je jako odwołane. Nikt nie dostaje powiadomień ani zwrotów.",
       "changed": "Te zajęcia zostały w międzyczasie zmienione. Teraz: {when}, {venue}. Potwierdź ponownie, aby je odwołać.",
       "confirm": "Odwołaj zajęcia",
       "pending": "Odwołujemy…",
@@ -1301,7 +1302,7 @@
       "future": "Wszystkie nadchodzące zajęcia tej serii zostaną odwołane.",
       "past": "Przeszłe zajęcia pozostają bez zmian.",
       "final": "Odwołanej serii nie można wznowić.",
-      "noBookings": "Nikt nie dostaje powiadomień ani zwrotów: zapisów nie ma jeszcze w SimpleFit.",
+      "noBookings": "Członkowie zapisani na nadchodzące zajęcia tej serii tracą miejsca i widzą te zajęcia jako odwołane. Nikt nie dostaje powiadomień ani zwrotów.",
       "understand": "Rozumiem, że wszystkie nadchodzące zajęcia tej serii zostaną odwołane.",
       "changed": "Ta seria została w międzyczasie zmieniona. Teraz: {rule}, {period}. Potwierdź ponownie, aby ją odwołać.",
       "confirm": "Odwołaj serię",

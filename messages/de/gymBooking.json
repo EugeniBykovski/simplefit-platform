@@ -1,0 +1,194 @@
+{
+  "problems": {
+    "unknown": "Wir konnten das Ergebnis nicht bestätigen. Nichts wird als erledigt angezeigt, bis SimpleFit es bestätigt. Versuche es erneut: Niemand kann doppelt gebucht oder eingecheckt werden.",
+    "loadFailed": "Das konnte nicht geladen werden. Prüfe deine Verbindung und versuch es noch einmal.",
+    "limited": "Zu viele Anfragen in kurzer Zeit. Versuche es in {minutes} Min. erneut.",
+    "limitedLater": "Zu viele Anfragen in kurzer Zeit. Versuche es etwas später erneut.",
+    "full": "Dieser Kurs ist ausgebucht ({capacity, plural, one {# Platz} other {# Plätze}}). Es wurde nichts gebucht, und es gibt keine Warteliste.",
+    "fullSome": "Dieser Kurs ist ausgebucht. Es wurde nichts gebucht, und es gibt keine Warteliste.",
+    "classCancelled": "Dieser Kurs ist abgesagt. Es wurde nichts gebucht oder erfasst.",
+    "started": "Dieser Kurs hat schon begonnen, deshalb können Buchungen nicht mehr geändert werden.",
+    "notToday": "Check-ins werden am Tag des Kurses erfasst. Es wurde nichts erfasst.",
+    "alreadyBooked": "Du hast schon einen Platz in diesem Kurs. Es wurde keine zweite Buchung angelegt.",
+    "bookingCancelled": "Diese Buchung ist bereits storniert.",
+    "checkedIn": "Dieses Mitglied ist bereits eingecheckt, deshalb bleibt die Buchung bestehen.",
+    "membership": "Deine Mitgliedschaft in diesem Gym ist nicht aktiv, deshalb kannst du seine Kurse nicht buchen.",
+    "membershipRequested": "Deine Beitrittsanfrage für dieses Gym wartet noch auf Bestätigung, deshalb kannst du noch nicht buchen.",
+    "keyReused": "Diese Anfrage konnte nicht zugeordnet werden. Lade die Seite neu und versuche es erneut.",
+    "forbidden": "Deine Rolle darf das nicht. Es hat sich nichts geändert.",
+    "gone": "Das ist für dich nicht verfügbar. Die Seite ist auf dem neuesten Stand.",
+    "session": "Deine Sitzung ist abgelaufen. Melde dich erneut an, um weiterzumachen.",
+    "failed": "Etwas ist schiefgelaufen, und es hat sich nichts geändert. Versuche es erneut."
+  },
+  "roster": {
+    "eyebrow": "{day} · {from} – {to} · {venue}",
+    "description": "Wer diesen Kurs gebucht hat, laut SimpleFit.",
+    "close": "Schließen",
+    "classCancelled": "Dieser Kurs ist abgesagt. Seine Buchungen wurden freigegeben, und niemand kann eingecheckt werden.",
+    "views": {
+      "label": "Buchungen",
+      "confirmed": "Gebucht",
+      "cancelled": "Storniert"
+    },
+    "checkInNote": "Checke Mitglieder ein, wenn sie ankommen. Check-ins werden am Tag des Kurses erfasst, einmal pro Buchung.",
+    "retry": "Erneut versuchen",
+    "loading": "Teilnehmerliste wird geladen",
+    "empty": {
+      "confirmed": "Noch niemand hat diesen Kurs gebucht.",
+      "cancelled": "Keine stornierten Buchungen."
+    },
+    "privacy": "Angezeigt werden nur ein Kurzname und die Buchungsdaten. E-Mail, Profil und Trainingsdaten sind nicht Teil der Teilnehmerliste.",
+    "unnamed": "Mitglied",
+    "cancelledAt": "Storniert {time}",
+    "bookedVia": {
+      "member": "Vom Mitglied gebucht · {time}",
+      "staff": "Vom Team gebucht · {time}"
+    },
+    "reasons": {
+      "member_cancelled": "Vom Mitglied storniert",
+      "staff_cancelled": "Vom Team storniert",
+      "occurrence_cancelled": "Kurs abgesagt",
+      "membership_ended": "Mitgliedschaft beendet"
+    },
+    "checkedInAt": "Eingecheckt {time}",
+    "checkInFor": "{name} einchecken",
+    "checkingIn": "Wird eingecheckt…",
+    "checkIn": "Einchecken",
+    "booked": "Gebucht",
+    "checkedInDone": "{name} ist eingecheckt.",
+    "summary": {
+      "booked": "{confirmed}/{capacity}",
+      "bookedLabel": "gebucht",
+      "remaining": "Freie Plätze: {count}",
+      "checkedIn": "Eingecheckt: {count}"
+    }
+  },
+  "member": {
+    "nav": {
+      "label": "Deine Gym-Mitgliedschaft",
+      "gyms": "Meine Gyms",
+      "bookings": "Meine Buchungen"
+    },
+    "cancel": {
+      "title": "Buchung stornieren?",
+      "body": "Dein Platz in {title} am {when} wird für andere freigegeben. Du kannst erneut buchen, solange Plätze frei sind.",
+      "keep": "Buchung behalten",
+      "pending": "Wird storniert…",
+      "again": "Erneut versuchen",
+      "confirm": "Buchung stornieren"
+    },
+    "gyms": {
+      "metaTitle": "Meine Gyms",
+      "eyebrow": "Mitgliedschaft",
+      "title": "Meine Gyms",
+      "retry": "Erneut versuchen",
+      "loading": "Deine Gyms werden geladen",
+      "empty": {
+        "title": "Du bist in keinem Gym Mitglied",
+        "body": "Sobald ein Gym dich als Mitglied bestätigt, erscheint es hier, und du kannst seine Kurse buchen. Einem Gym beitreten geht im Web noch nicht."
+      },
+      "unnamedGym": "Gym",
+      "activeLine": "Kurse buchen und deine Buchungen ansehen",
+      "requestedLine": "Wartet auf die Bestätigung durch das Gym",
+      "status": {
+        "active": "Mitglied",
+        "requested": "Ausstehend"
+      },
+      "open": "Kurse von {gym} öffnen",
+      "note": "Für eine Gym-Mitgliedschaft brauchst du kein Fighter- oder Coach-Profil. SimpleFit zeigt nur, was das Gym erfasst hat: keine Tarife, Zahlungen oder Credits."
+    },
+    "classes": {
+      "metaTitle": "Gym-Kurse",
+      "eyebrow": "Mitgliedschaft",
+      "title": "Kurs buchen",
+      "retry": "Erneut versuchen",
+      "loading": "Kurse werden geladen",
+      "notMember": {
+        "title": "Du bist kein Mitglied dieses Gyms",
+        "body": "Nur aktive Mitglieder eines Gyms können seine Kurse sehen und buchen."
+      },
+      "requested": {
+        "title": "Deine Anfrage wartet",
+        "body": "{gym} hat deine Anfrage noch nicht bestätigt. Sobald du Mitglied bist, kannst du Kurse buchen."
+      },
+      "ended": {
+        "title": "Deine Mitgliedschaft ist nicht aktiv",
+        "body": "Deine Mitgliedschaft bei {gym} ist beendet, deshalb kannst du seine Kurse nicht buchen. Deine früheren Buchungen bleiben unter Meine Buchungen."
+      },
+      "thisGym": "Dieses Gym",
+      "backToGyms": "Zurück zu meinen Gyms",
+      "listHeading": "Kurse",
+      "previousWeek": "Vorherige Woche",
+      "nextWeek": "Nächste Woche",
+      "days": "Tage",
+      "today": "Heute",
+      "zone": "Zeiten in {zone}",
+      "emptyDay": "An diesem Tag gibt es keine Kurse.",
+      "hint": "Wähle einen Kurs, um die Details zu sehen und einen Platz zu buchen.",
+      "note": "Freie Plätze können sich jederzeit ändern: Eine Buchung zählt erst, wenn SimpleFit sie bestätigt.",
+      "places": {
+        "cancelled": "Abgesagt",
+        "full": "Ausgebucht · {capacity, plural, one {# Platz} other {# Plätze}}",
+        "left": "{left} von {capacity} frei"
+      },
+      "states": {
+        "booked": "Gebucht",
+        "checkedIn": "Eingecheckt",
+        "cancelled": "Abgesagt",
+        "started": "Begonnen",
+        "full": "Ausgebucht",
+        "open": "Buchen"
+      },
+      "detailsEyebrow": "{day} · {minutes} Min. · {venue}",
+      "instructor": "Trainer:in {name}",
+      "until": "Bis {time}",
+      "confirmedNotice": "Buchung bestätigt. Dein Platz ist gesichert.",
+      "cancelledBefore": "Du hast eine frühere Buchung dieses Kurses storniert. Du kannst erneut buchen, solange Plätze frei sind.",
+      "booking": "Wird gebucht…",
+      "tryAgain": "Erneut versuchen",
+      "confirm": "Buchung bestätigen",
+      "cancelBooking": "Buchung stornieren",
+      "checkedInNotice": "Du wurdest um {time} eingecheckt.",
+      "fullNotice": "Dieser Kurs ist ausgebucht. Es gibt keine Warteliste: Schau später noch mal, falls ein Platz frei wird.",
+      "startedNotice": "Dieser Kurs hat begonnen und kann nicht gebucht werden.",
+      "cancelledNotice": "Das Gym hat diesen Kurs abgesagt.",
+      "cancelNote": "Du kannst bis zum Kursbeginn stornieren.",
+      "startedBooked": "Dieser Kurs hat begonnen. Deine Buchung kann nicht mehr storniert werden."
+    },
+    "bookings": {
+      "metaTitle": "Meine Buchungen",
+      "eyebrow": "Mitgliedschaft",
+      "title": "Meine Buchungen",
+      "retry": "Erneut versuchen",
+      "loading": "Deine Buchungen werden geladen",
+      "empty": {
+        "title": "Noch keine Buchungen",
+        "body": "Kurse, die du in deinen Gyms buchst, erscheinen hier.",
+        "action": "Kurs finden"
+      },
+      "groups": {
+        "upcoming": "Anstehend · {count}",
+        "past": "Vergangen · {count}",
+        "cancelled": "Storniert · {count}"
+      },
+      "none": {
+        "upcoming": "Keine anstehenden Kurse gebucht.",
+        "past": "Keine vergangenen Kurse.",
+        "cancelled": "Keine stornierten Buchungen."
+      },
+      "note": "Buchungen stammen aus den Daten von SimpleFit. Ein Check-in wird nur angezeigt, wenn das Gym einen erfasst hat.",
+      "line": "{when} – {to} · {venue} · {gym}",
+      "unnamedGym": "Gym",
+      "zone": "Zeiten in {zone}",
+      "reasons": {
+        "member_cancelled": "Von dir storniert",
+        "staff_cancelled": "Vom Gym storniert",
+        "occurrence_cancelled": "Kurs abgesagt",
+        "membership_ended": "Mitgliedschaft beendet"
+      },
+      "checkedIn": "Eingecheckt {time}",
+      "booked": "Gebucht",
+      "cancel": "Buchung stornieren"
+    }
+  }
+}
