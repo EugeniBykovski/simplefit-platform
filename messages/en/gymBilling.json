@@ -1,0 +1,149 @@
+{
+  "metaTitle": "SimpleFit plan",
+  "settingsMetaTitle": "Gym settings",
+  "eyebrow": "Setup",
+  "title": "Gym settings",
+  "retry": "Try again",
+  "tabs": {
+    "label": "Gym settings",
+    "general": "General",
+    "locations": "Locations",
+    "roles": "Roles & permissions",
+    "integrations": "Integrations",
+    "plan": "SimpleFit plan",
+    "danger": "Danger zone",
+    "soon": "Soon"
+  },
+  "sections": {
+    "general": "Name, gym type and contact details.",
+    "locations": "Addresses and opening hours.",
+    "roles": "What each staff role can do.",
+    "integrations": "Connected apps and services.",
+    "plan": "Your SimpleFit plan, payments and invoices.",
+    "danger": "Transfer ownership or close the gym."
+  },
+  "restricted": {
+    "title": "Only the gym's owner manages the SimpleFit plan",
+    "body": "The plan, its payments and invoices are visible to the owner only."
+  },
+  "provider": {
+    "disabled": "Payments are not available in this environment. Nothing is charged.",
+    "unavailable": "Payments are temporarily unavailable. Nothing was charged; try again later."
+  },
+  "current": {
+    "label": "Current plan",
+    "testMode": "Test mode",
+    "testModeHint": "Stripe test mode: no real money moves.",
+    "priceMonth": "{amount} / month",
+    "priceYear": "{amount} / year",
+    "status": {
+      "pending_activation": "Waiting for payment",
+      "active": "Active",
+      "cancellation_scheduled": "Ending",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    },
+    "period": "paid {start} – {end}",
+    "nextPayment": "next payment {date}",
+    "endsOn": "ends {date}",
+    "none": "No SimpleFit plan",
+    "noneBody": "Your gym keeps every feature it already uses. Choose a plan when you are ready.",
+    "ended": {
+      "cancelled": "Your previous plan was cancelled. Choose a plan to subscribe again.",
+      "expired": "Your previous plan expired. Choose a plan to subscribe again."
+    }
+  },
+  "payment": {
+    "returnCancelled": "Checkout was closed. Nothing was charged.",
+    "confirming": "Confirming your payment with Stripe…",
+    "processing": "Your payment is being confirmed. Your plan starts once Stripe confirms the paid invoice.",
+    "cancellationScheduled": "Your plan ends on {date}. No further payments are taken.",
+    "cancellationScheduledSoon": "Your plan ends at the end of the paid period. No further payments are taken.",
+    "completePayment": "Complete payment",
+    "payInvoice": "Pay invoice",
+    "updatePaymentMethod": "Update payment method",
+    "actionRequired": "Your bank asks you to confirm the payment. Your plan starts once it is paid.",
+    "paymentFailed": "The payment did not go through, so no plan was started. Try another payment method.",
+    "pastDue": "The latest renewal payment failed. Update your payment method; access lasts until the paid period ends."
+  },
+  "plans": {
+    "title": "Plans",
+    "chooseTitle": "Choose a plan",
+    "pending": "{plan}: checkout not finished yet.",
+    "continueCheckout": "Continue to checkout",
+    "empty": "No plans are offered yet.",
+    "changeUnavailable": "Changing plans is not available yet. Contact SimpleFit to change your plan.",
+    "taxNote": "Prices are shown without tax. You pay securely on Stripe's checkout page.",
+    "currentBadge": "Your plan",
+    "provisional": "Provisional price",
+    "quote": "Price on request",
+    "payMonthly": "{amount} monthly",
+    "payYearly": "{amount} yearly"
+  },
+  "invoices": {
+    "title": "Invoices",
+    "empty": "No invoices yet.",
+    "date": "Date",
+    "amount": "Amount",
+    "status": "Status",
+    "document": "Invoice",
+    "refunded": "refunded {amount}",
+    "statuses": {
+      "paid": "Paid",
+      "open": "Open",
+      "draft": "Draft",
+      "uncollectible": "Unpaid",
+      "void": "Void"
+    },
+    "disputed": "Disputed",
+    "test": "Test",
+    "view": "View",
+    "opensStripe": "(opens Stripe in a new tab)"
+  },
+  "manage": {
+    "title": "Billing",
+    "body": "Payment methods, billing details and receipts are managed securely by Stripe. SimpleFit never sees card numbers.",
+    "open": "Manage billing",
+    "refresh": "Refresh status",
+    "noCustomer": "Available after your first checkout."
+  },
+  "cancel": {
+    "open": "Cancel plan",
+    "withdraw": "Withdraw request",
+    "title": "Cancel your SimpleFit plan?",
+    "body": "Choose when the plan ends. Cancelling does not refund a paid period.",
+    "withdrawTitle": "Withdraw your plan request?",
+    "withdrawBody": "The request ends now and any open checkout is closed. Nothing is charged.",
+    "modeLabel": "When the plan ends",
+    "periodEnd": "At the end of the paid period ({date})",
+    "periodEndUnknown": "At the end of the paid period",
+    "periodEndHint": "Keep access until then; no further payments.",
+    "immediate": "Now",
+    "immediateHint": "Access ends now. No refund is made for the paid period.",
+    "keep": "Keep plan",
+    "pending": "Cancelling…",
+    "confirm": "Cancel plan",
+    "withdrawConfirm": "Withdraw request"
+  },
+  "problems": {
+    "unknown": "We couldn't confirm this. Nothing was charged twice; check the status and try again.",
+    "loadFailed": "Billing couldn't be loaded. Check your connection and try again.",
+    "providerUnavailable": "Stripe couldn't be reached. Nothing changed; try again later.",
+    "providerDisabled": "Payments are not available in this environment. Nothing is charged.",
+    "checkoutCompleted": "A checkout was just paid. The status is being refreshed.",
+    "currentExists": "Your gym already has a current plan.",
+    "notPending": "This plan request is no longer waiting for payment.",
+    "planUnavailable": "This plan is no longer offered.",
+    "priceUnavailable": "This price can't be paid here yet.",
+    "noCustomer": "Billing management becomes available after your first checkout.",
+    "portalUnavailable": "Billing management isn't available right now.",
+    "draft": "Finish your gym setup first.",
+    "limited": "Too many attempts. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+    "limitedLater": "Too many attempts. Try again a little later.",
+    "forbidden": "Only the gym's owner can do this.",
+    "gone": "This plan isn't available.",
+    "session": "Your session ended. Sign in again.",
+    "keyReused": "Something went wrong with this request. Reload the page and try again.",
+    "failed": "This couldn't be done. Reload the page and try again."
+  }
+}

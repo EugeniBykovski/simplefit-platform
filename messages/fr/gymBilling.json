@@ -1,0 +1,149 @@
+{
+  "metaTitle": "Offre SimpleFit",
+  "settingsMetaTitle": "Paramètres de la salle",
+  "eyebrow": "Configuration",
+  "title": "Paramètres de la salle",
+  "retry": "Réessayer",
+  "tabs": {
+    "label": "Paramètres de la salle",
+    "general": "Général",
+    "locations": "Adresses",
+    "roles": "Rôles et autorisations",
+    "integrations": "Intégrations",
+    "plan": "Offre SimpleFit",
+    "danger": "Zone sensible",
+    "soon": "Bientôt"
+  },
+  "sections": {
+    "general": "Nom, type de salle et coordonnées.",
+    "locations": "Adresses et horaires d'ouverture.",
+    "roles": "Ce que chaque rôle de l'équipe peut faire.",
+    "integrations": "Applications et services connectés.",
+    "plan": "Votre offre SimpleFit, vos paiements et vos factures.",
+    "danger": "Transférer la propriété ou fermer la salle."
+  },
+  "restricted": {
+    "title": "Seul le ou la propriétaire gère l'offre SimpleFit",
+    "body": "L'offre, ses paiements et ses factures ne sont visibles que par le ou la propriétaire."
+  },
+  "provider": {
+    "disabled": "Les paiements ne sont pas disponibles dans cet environnement. Rien n'est prélevé.",
+    "unavailable": "Les paiements sont momentanément indisponibles. Rien n'a été prélevé ; réessayez plus tard."
+  },
+  "current": {
+    "label": "Offre actuelle",
+    "testMode": "Mode test",
+    "testModeHint": "Mode test Stripe : aucun argent réel n'est prélevé.",
+    "priceMonth": "{amount} / mois",
+    "priceYear": "{amount} / an",
+    "status": {
+      "pending_activation": "En attente de paiement",
+      "active": "Active",
+      "cancellation_scheduled": "Se termine",
+      "cancelled": "Résiliée",
+      "expired": "Expirée"
+    },
+    "period": "payée du {start} au {end}",
+    "nextPayment": "prochain paiement le {date}",
+    "endsOn": "se termine le {date}",
+    "none": "Aucune offre SimpleFit",
+    "noneBody": "Votre salle conserve toutes les fonctionnalités qu'elle utilise déjà. Choisissez une offre quand vous êtes prêt.",
+    "ended": {
+      "cancelled": "Votre offre précédente a été résiliée. Choisissez une offre pour vous abonner à nouveau.",
+      "expired": "Votre offre précédente a expiré. Choisissez une offre pour vous abonner à nouveau."
+    }
+  },
+  "payment": {
+    "returnCancelled": "Le paiement a été fermé. Rien n'a été prélevé.",
+    "confirming": "Confirmation de votre paiement auprès de Stripe…",
+    "processing": "Votre paiement est en cours de confirmation. L'offre démarre dès que Stripe confirme la facture payée.",
+    "cancellationScheduled": "Votre offre se termine le {date}. Aucun autre paiement n'est prélevé.",
+    "cancellationScheduledSoon": "Votre offre se termine à la fin de la période payée. Aucun autre paiement n'est prélevé.",
+    "completePayment": "Finaliser le paiement",
+    "payInvoice": "Payer la facture",
+    "updatePaymentMethod": "Modifier le moyen de paiement",
+    "actionRequired": "Votre banque demande de confirmer le paiement. L'offre démarre une fois le paiement effectué.",
+    "paymentFailed": "Le paiement n'a pas abouti, aucune offre n'a donc démarré. Essayez un autre moyen de paiement.",
+    "pastDue": "Le dernier paiement de renouvellement a échoué. Modifiez votre moyen de paiement ; l'accès reste valable jusqu'à la fin de la période payée."
+  },
+  "plans": {
+    "title": "Offres",
+    "chooseTitle": "Choisir une offre",
+    "pending": "{plan} : paiement pas encore terminé.",
+    "continueCheckout": "Continuer vers le paiement",
+    "empty": "Aucune offre n'est encore proposée.",
+    "changeUnavailable": "Le changement d'offre n'est pas encore disponible. Contactez SimpleFit pour changer d'offre.",
+    "taxNote": "Prix hors taxes. Vous payez en toute sécurité sur la page de paiement Stripe.",
+    "currentBadge": "Votre offre",
+    "provisional": "Prix provisoire",
+    "quote": "Prix sur demande",
+    "payMonthly": "{amount} par mois",
+    "payYearly": "{amount} par an"
+  },
+  "invoices": {
+    "title": "Factures",
+    "empty": "Aucune facture pour l'instant.",
+    "date": "Date",
+    "amount": "Montant",
+    "status": "Statut",
+    "document": "Facture",
+    "refunded": "{amount} remboursé",
+    "statuses": {
+      "paid": "Payée",
+      "open": "Ouverte",
+      "draft": "Brouillon",
+      "uncollectible": "Impayée",
+      "void": "Annulée"
+    },
+    "disputed": "Contestée",
+    "test": "Test",
+    "view": "Voir",
+    "opensStripe": "(ouvre Stripe dans un nouvel onglet)"
+  },
+  "manage": {
+    "title": "Facturation",
+    "body": "Stripe gère en toute sécurité les moyens de paiement, les données de facturation et les reçus. SimpleFit ne voit jamais de numéro de carte.",
+    "open": "Gérer la facturation",
+    "refresh": "Actualiser le statut",
+    "noCustomer": "Disponible après votre premier paiement."
+  },
+  "cancel": {
+    "open": "Résilier l'offre",
+    "withdraw": "Retirer la demande",
+    "title": "Résilier votre offre SimpleFit ?",
+    "body": "Choisissez quand l'offre se termine. Une résiliation ne rembourse pas une période payée.",
+    "withdrawTitle": "Retirer votre demande d'offre ?",
+    "withdrawBody": "La demande se termine maintenant et tout paiement ouvert est fermé. Rien n'est prélevé.",
+    "modeLabel": "Quand l'offre se termine",
+    "periodEnd": "À la fin de la période payée ({date})",
+    "periodEndUnknown": "À la fin de la période payée",
+    "periodEndHint": "Accès conservé jusque-là ; aucun autre paiement.",
+    "immediate": "Maintenant",
+    "immediateHint": "L'accès se termine maintenant. La période payée n'est pas remboursée.",
+    "keep": "Conserver l'offre",
+    "pending": "Résiliation…",
+    "confirm": "Résilier l'offre",
+    "withdrawConfirm": "Retirer la demande"
+  },
+  "problems": {
+    "unknown": "Impossible de le confirmer. Rien n'a été prélevé deux fois ; vérifiez le statut et réessayez.",
+    "loadFailed": "La facturation n'a pas pu être chargée. Vérifiez votre connexion et réessayez.",
+    "providerUnavailable": "Stripe est injoignable. Rien n'a changé ; réessayez plus tard.",
+    "providerDisabled": "Les paiements ne sont pas disponibles dans cet environnement. Rien n'est prélevé.",
+    "checkoutCompleted": "Un paiement vient d'être effectué. Le statut est en cours d'actualisation.",
+    "currentExists": "Votre salle a déjà une offre en cours.",
+    "notPending": "Cette demande d'offre n'attend plus de paiement.",
+    "planUnavailable": "Cette offre n'est plus proposée.",
+    "priceUnavailable": "Ce prix ne peut pas encore être payé ici.",
+    "noCustomer": "La gestion de la facturation sera disponible après votre premier paiement.",
+    "portalUnavailable": "La gestion de la facturation n'est pas disponible pour le moment.",
+    "draft": "Terminez d'abord la configuration de votre salle.",
+    "limited": "Trop de tentatives. Réessayez dans {minutes, plural, one {# minute} other {# minutes}}.",
+    "limitedLater": "Trop de tentatives. Réessayez un peu plus tard.",
+    "forbidden": "Seul le ou la propriétaire de la salle peut le faire.",
+    "gone": "Cette offre n'est pas disponible.",
+    "session": "Votre session a expiré. Reconnectez-vous.",
+    "keyReused": "Un problème est survenu avec cette demande. Rechargez la page et réessayez.",
+    "failed": "Impossible de le faire. Rechargez la page et réessayez."
+  }
+}

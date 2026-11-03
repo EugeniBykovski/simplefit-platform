@@ -12,6 +12,7 @@ export * from './gym-staff/gym-staff';
 export * from './gym-timetable/gym-timetable';
 export * from './gyms/gyms';
 export * from './legal/legal';
+export * from './payment-provider-webhooks/payment-provider-webhooks';
 export * from './simplefit-plans/simplefit-plans';
 export * from './system/system';
 export * from './training/training';

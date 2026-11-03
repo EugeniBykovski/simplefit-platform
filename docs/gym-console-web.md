@@ -531,3 +531,59 @@ follow `D-GYM-CLASS-ROSTER`.
   WebKit, seven widths), and the real-backend
   `e2e/real-api/gym-member-booking.spec.ts` (web leg A–AC and, with
   `E2E_SYNC=1`, the second leg after the mobile leg).
+
+## SF-102: the SimpleFit plan (WG25) and Stripe billing
+
+The owner's SimpleFit plan in Gym settings
+(`web.app.gyms._gym-id.settings.plan`) on the SF-101/SF-102 API, with
+Stripe-hosted Checkout and Customer Portal. The console's Settings item is
+live; `web.app.gyms._gym-id.settings` lists the settings sections (only the
+plan has a domain; the others are marked Soon and not linked).
+
+### Design inventory
+
+Claude Design `1793198527-a0fc` (read with the Artifact tool): `WebGymBilling`
+(WG25, FUTURE, "SimpleFit plan"), `WebSetupPayments` (OG9, FUTURE, payouts and
+member payment methods: the Connect side, not built), `WebBilling`/`WebBillingPastDue`
+(BL1/BL1b, coach billing, used for the status and past-due patterns),
+`WebInvoices`/`InvoiceDetail` (BL9/BL10), `PaymentStates`.
+
+| WG25 element                         | Built as                                                                                                                                                    | Why                                                 |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| Settings tab bar                     | `GymSettingsHeader`: all six tabs; only "SimpleFit plan" links, the others are "Soon"                                                                       | Only the plan has a domain                          |
+| Current plan card (olive)            | Plan name, the backend's price and interval, status, paid period, next payment (only when the backend confirms a renewing subscription), "Test mode" badge  | Trial and member caps have no domain                |
+| Usage meters                         | Not shown                                                                                                                                                   | Entitlements are not enforced; no limits exist      |
+| "Need more locations? Compare plans" | The published plans with month/year buttons that start Stripe Checkout                                                                                      | Real catalog; plan changes are not available (said) |
+| Invoices table                       | Stripe's invoices as reconciled: date, number, amount, status, refunds, disputes, "View" (Stripe-hosted)                                                    | No PDF is rendered by SimpleFit                     |
+| "€89 + VAT 23%" note                 | "Prices are shown without tax"                                                                                                                              | No tax is configured (open decision)                |
+| Payment method (Visa •• 0042)        | "Billing" card: Stripe Customer Portal button, refresh, cancel                                                                                              | No card data exists in the contract                 |
+| — (no artboard)                      | Payment notices: processing, action required, payment failed, past due, scheduled end; return from checkout; restricted role; disabled/unavailable payments | States the design does not draw                     |
+
+### Behaviour
+
+- **Authority:** every state is the backend's (`getGymBillingSummary`),
+  reconciled from Stripe; the return from Checkout (`?checkout=returned`) asks
+  the backend to read Stripe once (`reconcileGymSaasSubscription`) and the
+  query is removed. A redirect is never shown as a payment.
+- **Checkout:** choosing a price records the intent
+  (`requestGymSaasSubscription`, one `client_request_id` per attempt, reused
+  after a lost answer) and leaves for the Stripe-hosted URL the backend
+  answered (`createGymSaasCheckoutSession`, idempotent). A pending intent
+  offers "Continue to checkout". No card field exists in SimpleFit.
+- **Portal and cancellation:** "Manage billing" opens a short-lived portal
+  URL (never stored); cancelling ends at the period end (default) or now, and
+  a pending request is withdrawn; the backend cancels at Stripe first (`503`
+  changes nothing). No refund is implied.
+- **Permissions:** only `manage_billing` (the owner) sees the page; other
+  staff see the restriction and nothing billing-related is requested.
+- **Errors:** `payment_provider: disabled`, `checkout: completed`,
+  `saas_subscription`, `saas_plan_version`, `stripe_price`, `billing_portal`,
+  `503`, `429`, `403`, `404`, unknown outcomes: one sentence each.
+- **Copy:** `gymBilling` in all seven locales; amounts and dates through
+  next-intl with the currency from the data.
+- **Tests:** unit tests (states, actions, problem mapping, settings tabs),
+  Storybook stories with `e2e/gym-billing-storybook.spec.ts` (Chromium,
+  Firefox, WebKit; dark/light; axe; 375–1920 px), and the real-backend
+  `e2e/real-api/gym-billing.spec.ts` (Stripe disabled and test mode with
+  placeholder credentials; no journey reaches Stripe). Real Stripe-hosted
+  journeys need Stripe test credentials.

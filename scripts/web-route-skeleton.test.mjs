@@ -43,6 +43,9 @@ const REAL_SCREENS = [
   "web.app.gyms._gym-id.members",
   // SF-98: the gym's timetable (WG5 with OG10).
   "web.app.gyms._gym-id.timetable",
+  // SF-102: the gym settings entry (WG22) and the SimpleFit plan (WG25).
+  "web.app.gyms._gym-id.settings",
+  "web.app.gyms._gym-id.settings.plan",
   // SF-100: the member's gyms (WMG1), one gym's classes (WMG2) and bookings (WMG3).
   "web.app.me.gyms",
   "web.app.me.gyms._gym-id.classes",

@@ -6,7 +6,7 @@
  */
 
 /**
- * `pending_activation` is an intent and grants nothing; only verified provider evidence activates (none exists yet). `cancellation_scheduled` stays in force until `cancellation_effective_at`. `cancelled` and `expired` are final.
+ * `pending_activation` is an intent and grants nothing; only verified provider evidence (a paid Stripe invoice, SF-102) activates. `cancellation_scheduled` stays in force until `cancellation_effective_at`. `cancelled` and `expired` are final.
  */
 export type GymSaasSubscriptionStatus = typeof GymSaasSubscriptionStatus[keyof typeof GymSaasSubscriptionStatus];
 

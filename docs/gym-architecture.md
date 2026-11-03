@@ -400,3 +400,12 @@ screen, checkout or gating is built:
 - **Not built (no approved design or contract):** plan selection, checkout,
   billing settings, trials, invoices, member product purchase, passes and
   credits (D-G09 prices are provisional drafts; D-G10/D-G11 open).
+
+## SF-102: Stripe billing and the SimpleFit plan page
+
+`entities/gym-billing` (summary, invoices, plans, `canManageBilling`),
+`features/gym-billing-manage` (checkout, portal, reconcile, cancel, problem
+mapping), `widgets/gym-billing` (WG25 and the settings header/sections). All
+data from the generated client (`simplefit-plans` endpoints); keys name the
+gym. Leaving for Stripe goes through `leaveForStripe` (an `https:` URL the
+backend answered, never stored). See `docs/gym-console-web.md#sf-102`.

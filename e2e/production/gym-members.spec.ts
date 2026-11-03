@@ -181,8 +181,15 @@ test.describe("join requests", () => {
     const { api, id } = await openMembers(page, [{ name: "Ring One Boxing", ...COMPLETED }]);
     api.requestJoin(id, "Rafał T.", "rafal@example.com");
     api.requestJoin(id, "Kamila L.", "kamila@example.com");
-    await refocus(page);
-    await expect(page.getByRole("tab", { name: "Join requests, 2 waiting" })).toBeVisible();
+    // A refocus while the page's first read of the requests is still in
+    // flight joins that read (from before the requests existed): refocus
+    // until the backend's count is shown.
+    await expect(async () => {
+      await refocus(page);
+      await expect(page.getByRole("tab", { name: "Join requests, 2 waiting" })).toBeVisible({
+        timeout: 1_000,
+      });
+    }).toPass({ timeout: 10_000 });
     await tab(page, /^Join requests/);
     const requests = page.locator("[data-members-requests]");
     await expect(requests).toContainText("Rafał T.");

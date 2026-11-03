@@ -1,0 +1,149 @@
+{
+  "metaTitle": "SimpleFit-Tarif",
+  "settingsMetaTitle": "Studio-Einstellungen",
+  "eyebrow": "Einrichtung",
+  "title": "Studio-Einstellungen",
+  "retry": "Erneut versuchen",
+  "tabs": {
+    "label": "Studio-Einstellungen",
+    "general": "Allgemein",
+    "locations": "Standorte",
+    "roles": "Rollen & Berechtigungen",
+    "integrations": "Integrationen",
+    "plan": "SimpleFit-Tarif",
+    "danger": "Gefahrenzone",
+    "soon": "Bald"
+  },
+  "sections": {
+    "general": "Name, Studiotyp und Kontaktdaten.",
+    "locations": "Adressen und Öffnungszeiten.",
+    "roles": "Was jede Personalrolle darf.",
+    "integrations": "Verbundene Apps und Dienste.",
+    "plan": "Dein SimpleFit-Tarif, Zahlungen und Rechnungen.",
+    "danger": "Inhaberschaft übertragen oder das Studio schließen."
+  },
+  "restricted": {
+    "title": "Nur die Inhaberin oder der Inhaber verwaltet den SimpleFit-Tarif",
+    "body": "Tarif, Zahlungen und Rechnungen sind nur für die Inhaberschaft sichtbar."
+  },
+  "provider": {
+    "disabled": "Zahlungen sind in dieser Umgebung nicht verfügbar. Es wird nichts abgebucht.",
+    "unavailable": "Zahlungen sind vorübergehend nicht verfügbar. Es wurde nichts abgebucht; versuche es später erneut."
+  },
+  "current": {
+    "label": "Aktueller Tarif",
+    "testMode": "Testmodus",
+    "testModeHint": "Stripe-Testmodus: Es fließt kein echtes Geld.",
+    "priceMonth": "{amount} / Monat",
+    "priceYear": "{amount} / Jahr",
+    "status": {
+      "pending_activation": "Wartet auf Zahlung",
+      "active": "Aktiv",
+      "cancellation_scheduled": "Endet",
+      "cancelled": "Gekündigt",
+      "expired": "Abgelaufen"
+    },
+    "period": "bezahlt {start} – {end}",
+    "nextPayment": "nächste Zahlung {date}",
+    "endsOn": "endet am {date}",
+    "none": "Kein SimpleFit-Tarif",
+    "noneBody": "Dein Studio behält alle Funktionen, die es bereits nutzt. Wähle einen Tarif, wenn du so weit bist.",
+    "ended": {
+      "cancelled": "Dein vorheriger Tarif wurde gekündigt. Wähle einen Tarif, um wieder zu abonnieren.",
+      "expired": "Dein vorheriger Tarif ist abgelaufen. Wähle einen Tarif, um wieder zu abonnieren."
+    }
+  },
+  "payment": {
+    "returnCancelled": "Der Bezahlvorgang wurde geschlossen. Es wurde nichts abgebucht.",
+    "confirming": "Deine Zahlung wird bei Stripe bestätigt…",
+    "processing": "Deine Zahlung wird bestätigt. Der Tarif beginnt, sobald Stripe die bezahlte Rechnung bestätigt.",
+    "cancellationScheduled": "Dein Tarif endet am {date}. Es werden keine weiteren Zahlungen abgebucht.",
+    "cancellationScheduledSoon": "Dein Tarif endet mit dem bezahlten Zeitraum. Es werden keine weiteren Zahlungen abgebucht.",
+    "completePayment": "Zahlung abschließen",
+    "payInvoice": "Rechnung bezahlen",
+    "updatePaymentMethod": "Zahlungsmethode ändern",
+    "actionRequired": "Deine Bank bittet dich, die Zahlung zu bestätigen. Der Tarif beginnt, sobald sie bezahlt ist.",
+    "paymentFailed": "Die Zahlung ist fehlgeschlagen, daher wurde kein Tarif gestartet. Versuche eine andere Zahlungsmethode.",
+    "pastDue": "Die letzte Verlängerungszahlung ist fehlgeschlagen. Ändere deine Zahlungsmethode; der Zugang bleibt bis zum Ende des bezahlten Zeitraums."
+  },
+  "plans": {
+    "title": "Tarife",
+    "chooseTitle": "Tarif wählen",
+    "pending": "{plan}: Bezahlvorgang noch nicht abgeschlossen.",
+    "continueCheckout": "Weiter zur Zahlung",
+    "empty": "Es werden noch keine Tarife angeboten.",
+    "changeUnavailable": "Ein Tarifwechsel ist noch nicht möglich. Wende dich an SimpleFit, um deinen Tarif zu ändern.",
+    "taxNote": "Preise ohne Steuern. Du bezahlst sicher auf der Bezahlseite von Stripe.",
+    "currentBadge": "Dein Tarif",
+    "provisional": "Vorläufiger Preis",
+    "quote": "Preis auf Anfrage",
+    "payMonthly": "{amount} monatlich",
+    "payYearly": "{amount} jährlich"
+  },
+  "invoices": {
+    "title": "Rechnungen",
+    "empty": "Noch keine Rechnungen.",
+    "date": "Datum",
+    "amount": "Betrag",
+    "status": "Status",
+    "document": "Rechnung",
+    "refunded": "{amount} erstattet",
+    "statuses": {
+      "paid": "Bezahlt",
+      "open": "Offen",
+      "draft": "Entwurf",
+      "uncollectible": "Unbezahlt",
+      "void": "Storniert"
+    },
+    "disputed": "Angefochten",
+    "test": "Test",
+    "view": "Ansehen",
+    "opensStripe": "(öffnet Stripe in einem neuen Tab)"
+  },
+  "manage": {
+    "title": "Abrechnung",
+    "body": "Zahlungsmethoden, Rechnungsdaten und Belege verwaltet Stripe sicher. SimpleFit sieht niemals Kartennummern.",
+    "open": "Abrechnung verwalten",
+    "refresh": "Status aktualisieren",
+    "noCustomer": "Verfügbar nach deinem ersten Bezahlvorgang."
+  },
+  "cancel": {
+    "open": "Tarif kündigen",
+    "withdraw": "Anfrage zurückziehen",
+    "title": "SimpleFit-Tarif kündigen?",
+    "body": "Wähle, wann der Tarif endet. Eine Kündigung erstattet keinen bezahlten Zeitraum.",
+    "withdrawTitle": "Tarifanfrage zurückziehen?",
+    "withdrawBody": "Die Anfrage endet jetzt und ein offener Bezahlvorgang wird geschlossen. Es wird nichts abgebucht.",
+    "modeLabel": "Wann der Tarif endet",
+    "periodEnd": "Am Ende des bezahlten Zeitraums ({date})",
+    "periodEndUnknown": "Am Ende des bezahlten Zeitraums",
+    "periodEndHint": "Zugang bis dahin; keine weiteren Zahlungen.",
+    "immediate": "Jetzt",
+    "immediateHint": "Der Zugang endet jetzt. Der bezahlte Zeitraum wird nicht erstattet.",
+    "keep": "Tarif behalten",
+    "pending": "Wird gekündigt…",
+    "confirm": "Tarif kündigen",
+    "withdrawConfirm": "Anfrage zurückziehen"
+  },
+  "problems": {
+    "unknown": "Das konnte nicht bestätigt werden. Es wurde nichts doppelt abgebucht; prüfe den Status und versuche es erneut.",
+    "loadFailed": "Die Abrechnung konnte nicht geladen werden. Prüfe deine Verbindung und versuche es erneut.",
+    "providerUnavailable": "Stripe war nicht erreichbar. Es hat sich nichts geändert; versuche es später erneut.",
+    "providerDisabled": "Zahlungen sind in dieser Umgebung nicht verfügbar. Es wird nichts abgebucht.",
+    "checkoutCompleted": "Ein Bezahlvorgang wurde gerade bezahlt. Der Status wird aktualisiert.",
+    "currentExists": "Dein Studio hat bereits einen aktuellen Tarif.",
+    "notPending": "Diese Tarifanfrage wartet nicht mehr auf eine Zahlung.",
+    "planUnavailable": "Dieser Tarif wird nicht mehr angeboten.",
+    "priceUnavailable": "Dieser Preis kann hier noch nicht bezahlt werden.",
+    "noCustomer": "Die Abrechnungsverwaltung ist nach deinem ersten Bezahlvorgang verfügbar.",
+    "portalUnavailable": "Die Abrechnungsverwaltung ist gerade nicht verfügbar.",
+    "draft": "Schließe zuerst die Einrichtung deines Studios ab.",
+    "limited": "Zu viele Versuche. Versuche es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
+    "limitedLater": "Zu viele Versuche. Versuche es etwas später erneut.",
+    "forbidden": "Das kann nur die Inhaberschaft des Studios tun.",
+    "gone": "Dieser Tarif ist nicht verfügbar.",
+    "session": "Deine Sitzung ist abgelaufen. Melde dich erneut an.",
+    "keyReused": "Bei dieser Anfrage ist etwas schiefgelaufen. Lade die Seite neu und versuche es erneut.",
+    "failed": "Das hat nicht geklappt. Lade die Seite neu und versuche es erneut."
+  }
+}
