@@ -11,8 +11,8 @@
         "id": "gallery-1",
         "artboard": "GalleryIndex.dc.html",
         "title": "route gallery 1 / 3 · onboarding & fighter mobile",
-        "rows": 256,
-        "rowsNote": "242 Route Gallery rows + WCX1 (SF-54: added with its artboard WebContextSelect.dc.html, not yet listed in GalleryIndex) + FC1 and FC2 (SF-59: added with their artboard FighterCoaches.dc.html, not yet listed in GalleryIndex) + FCI1 and FCI2 (SF-76: added to FighterCoaches.dc.html, not yet listed in GalleryIndex) + FT1 and FT2 (SF-66: added to TrainingHub.dc.html and SessionDetail.dc.html in 1792569354-73b2, not yet listed in GalleryIndex) + FCI3 (SF-79: added to FighterCoaches.dc.html in 1792675284-1046, not yet listed in GalleryIndex) + WGC1 (SF-88: the web gym chooser in the WCX1 composition of WebContextSelect.dc.html, no artboard of its own; D-WEB-GYM-CONSOLE-MVP) + MGC1 (SF-89: the mobile gym chooser in the A04 composition of Workspaces.dc.html, no artboard of its own; D-MOBILE-GYM-SHELL-MVP) + WMG1, WMG2 and WMG3 (SF-100: the web member pages, no web artboard; F16 and F13 content; D-WEB-GYM-MEMBER-BOOKING) + MMG1 (SF-100: F16's 'My gyms' rows on mobile without the pass; D-MOBILE-GYM-MEMBER-BOOKING)"
+        "rows": 257,
+        "rowsNote": "242 Route Gallery rows + WCX1 (SF-54: added with its artboard WebContextSelect.dc.html, not yet listed in GalleryIndex) + FC1 and FC2 (SF-59: added with their artboard FighterCoaches.dc.html, not yet listed in GalleryIndex) + FCI1 and FCI2 (SF-76: added to FighterCoaches.dc.html, not yet listed in GalleryIndex) + FT1 and FT2 (SF-66: added to TrainingHub.dc.html and SessionDetail.dc.html in 1792569354-73b2, not yet listed in GalleryIndex) + FCI3 (SF-79: added to FighterCoaches.dc.html in 1792675284-1046, not yet listed in GalleryIndex) + WGC1 (SF-88: the web gym chooser in the WCX1 composition of WebContextSelect.dc.html, no artboard of its own; D-WEB-GYM-CONSOLE-MVP) + MGC1 (SF-89: the mobile gym chooser in the A04 composition of Workspaces.dc.html, no artboard of its own; D-MOBILE-GYM-SHELL-MVP) + WMG1, WMG2 and WMG3 (SF-100: the web member pages, no web artboard; F16 and F13 content; D-WEB-GYM-MEMBER-BOOKING) + MMG1 (SF-100: F16's 'My gyms' rows on mobile without the pass; D-MOBILE-GYM-MEMBER-BOOKING) + WSI1 (SF-133: the web staff invitation page, no web artboard; OS1 and OS1b content; D-WEB-STAFF-INVITATION)"
       },
       {
         "id": "gallery-2",
@@ -8677,6 +8677,31 @@
       "screens": ["WFI1"]
     },
     {
+      "id": "web.invite.staff",
+      "platform": "web",
+      "path": "/invite/staff",
+      "params": [],
+      "name": "Staff invitation",
+      "surface": "GYM",
+      "shell": "web.minimal",
+      "parent": null,
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "PUBLIC",
+        "capability": null,
+        "phase": null
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(minimal)/invite/staff/page.tsx",
+        "note": "SF-133: the E06 link (/invite/staff#token=…); no web artboard (D-WEB-STAFF-INVITATION): an interim composition of WFI1 with the content of OS1/OS1b. The one-time token is read from the fragment in the browser only, the fragment removed, and the token kept in this tab's sessionStorage bound to the first signed-in viewer, never in a URL, returnTo or log. Anonymous preview (previewStaffInvitation); sign-in, registration and WA5 continue back here with the token-free returnTo /invite/staff; signed in, resolveStaffInvitation gives the viewer's own view in any status (expired, cancelled, declined, already accepted), and a 403 offers verifying the invited email in place (SF-77/SF-78) or another account. Explicit acceptStaffInvitation or declineStaffInvitation; an acceptance refreshes the entry and opens the console of the gym the backend answered."
+      },
+      "screens": ["WSI1"]
+    },
+    {
       "id": "web.app.me.gyms",
       "platform": "web",
       "path": "/app/me/gyms",
@@ -16463,6 +16488,39 @@
         "artboard": "Membership.dc.html",
         "note": "SF-100: F16's 'My gyms' rows and 'Book a class' entry without the pass, QR, plan, credits or visit counts (D-MOBILE-GYM-MEMBER-BOOKING)."
       }
+    },
+    {
+      "id": "WSI1",
+      "code": "WSI1",
+      "name": "Staff invitation · web",
+      "route": "web.invite.staff",
+      "states": [
+        "loading",
+        "signed out",
+        "pending",
+        "decline confirm",
+        "wrong account",
+        "registration",
+        "expired",
+        "cancelled",
+        "declined",
+        "already accepted",
+        "access ended",
+        "already staff",
+        "unavailable",
+        "missing",
+        "limited",
+        "failed"
+      ],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "onboarding",
+        "section": "GYM · 4 · Staff & owner onboarding · mobile",
+        "step": "4.1a",
+        "tag": "WEB_APP",
+        "artboard": "OnbSInvite.dc.html",
+        "note": "SF-133: no web artboard; OS1 and OS1b content in WFI1's column. Needs design approval (D-WEB-STAFF-INVITATION)."
+      }
     }
   ],
   "excludedRows": [
@@ -18374,6 +18432,18 @@
         "web.app.gyms._gym-id.settings.go-live"
       ],
       "screens": ["OG7", "OG13", "OG14", "WG10"]
+    },
+    {
+      "id": "D-WEB-STAFF-INVITATION",
+      "title": "Web staff invitation page without a web artboard",
+      "sourceA": "Claude Design 1793198527-a0fc: OS1 Staff invitation and OS1b Confirm email are mobile boards routed to /invite/staff/:token; E06 (SF-93) links to the web page /invite/staff with the token in the fragment. No web recipient board exists",
+      "sourceB": "SF-93 contract and SF-133: the token stays in the fragment; the signed-in viewer's status comes from resolveStaffInvitation; the invited address is shown only to its verified owner; there is no location, and abilities are the ones that exist today",
+      "mismatch": "No web artboard; OS1 shows the invited address before verification, a location chip and a confirm-by-code step bound to the invitation; OS2 lists abilities with no domain (QR, selling, incidents)",
+      "impact": "The page is an interim composition; a structured web artboard should replace it",
+      "resolution": "Compose WFI1's column with OS1's content; verify the invited email with the existing SF-78 flow on the same account; abilities as in E06; propose a structured web board",
+      "status": "NEEDS_PRODUCT_DECISION",
+      "routes": ["web.invite.staff"],
+      "screens": ["WSI1"]
     }
   ]
 }

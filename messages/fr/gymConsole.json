@@ -366,7 +366,7 @@
       "failed": "Impossible de charger les invitations.",
       "retry": "Réessayer",
       "more": "Afficher plus",
-      "notice": "Les personnes invitées pourront accepter quand les invitations d’équipe ouvriront dans SimpleFit. Une invitation reste en attente jusqu’à son expiration, et tu peux la renvoyer.",
+      "notice": "L’invitation reste en attente jusqu’à la réponse de la personne ou son expiration. Tu peux la renvoyer.",
       "status": {
         "pending": "En attente",
         "accepted": "Acceptée",
@@ -432,6 +432,7 @@
     "problems": {
       "limited": "Trop de demandes. Réessaie dans {minutes, plural, one {# minute} other {# minutes}}.",
       "limitedLater": "Trop de demandes. Réessaie plus tard.",
+      "invitationsUnavailable": "Les invitations d’équipe ne sont pas encore disponibles. Rien n’a été créé ni envoyé.",
       "pendingOtherRole": "Cette adresse a déjà une invitation en attente pour un autre rôle. Annule-la d’abord.",
       "alreadyActive": "Cette personne travaille déjà dans cette salle.",
       "noResends": "Plus aucun renvoi possible. Annule-la et invite à nouveau.",

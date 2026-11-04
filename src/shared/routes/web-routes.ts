@@ -1624,6 +1624,18 @@ export const webRoutes = [
     phase: null,
   },
   {
+    id: "web.invite.staff",
+    path: "/invite/staff",
+    params: [],
+    shell: "web.minimal",
+    surface: "GYM",
+    parent: null,
+    nav: "STANDALONE",
+    session: "PUBLIC",
+    capability: null,
+    phase: null,
+  },
+  {
     id: "web.login",
     path: "/login",
     params: [],

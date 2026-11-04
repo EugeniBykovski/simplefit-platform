@@ -366,7 +366,7 @@
       "failed": "No pudimos cargar las invitaciones.",
       "retry": "Reintentar",
       "more": "Mostrar más",
-      "notice": "Las personas invitadas podrán aceptar cuando las invitaciones de personal se abran en SimpleFit. Una invitación queda pendiente hasta que caduca, y puedes reenviarla.",
+      "notice": "La invitación queda pendiente hasta que la persona responda o caduque. Puedes reenviarla.",
       "status": {
         "pending": "Pendiente",
         "accepted": "Aceptada",
@@ -432,6 +432,7 @@
     "problems": {
       "limited": "Demasiadas solicitudes. Vuelve a intentarlo en {minutes, plural, one {# minuto} other {# minutos}}.",
       "limitedLater": "Demasiadas solicitudes. Vuelve a intentarlo más tarde.",
+      "invitationsUnavailable": "Las invitaciones de equipo aún no están disponibles. No se creó ni se envió nada.",
       "pendingOtherRole": "Esta dirección ya tiene una invitación pendiente para otro rol. Cancélala primero.",
       "alreadyActive": "Esta persona ya trabaja en este gimnasio.",
       "noResends": "No quedan reenvíos. Cancélala e invita de nuevo.",

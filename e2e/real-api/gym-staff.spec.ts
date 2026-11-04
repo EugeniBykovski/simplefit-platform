@@ -13,9 +13,9 @@ import { expect, type APIRequestContext, type Browser, type Page, test } from "@
  * - every staff administration step (open the page, invite, resend, change
  *   a role, remove) is a browser action on the production build;
  * - a recipient's acceptance is the real SF-93 recipient API
- *   (`acceptMyStaffInvitation`) called with that recipient's own session,
- *   because no recipient web page or app inbox exists yet: this is not an
- *   email-to-web acceptance journey;
+ *   (`acceptMyStaffInvitation`) called with that recipient's own session:
+ *   this is not the email-to-web journey (that is
+ *   `gym-staff-invitation.spec.ts`, SF-133);
  * - backend checks read the disposable database (psql) or call the API with
  *   a page's own session, and record its status codes.
  *

@@ -1,0 +1,106 @@
+{
+  "metaTitle": "Team-Einladung",
+  "eyebrow": "Team-Einladung",
+  "loading": "Die Einladung wird geladen",
+  "checking": "Dein Konto wird geprüft",
+  "title": "Tritt {gym} auf SimpleFit bei.",
+  "joinAs": "Du wirst eingeladen als",
+  "invitedBy": "Eingeladen von",
+  "inviter": "{name} ({role})",
+  "sentTo": "Gesendet an",
+  "expires": "Läuft ab am",
+  "roles": {
+    "owner": "Inhaber",
+    "manager": "Manager",
+    "coach": "Coach",
+    "front_desk": "Empfang"
+  },
+  "abilities": {
+    "title": "Mit dieser Rolle kannst du",
+    "edit": "Die Angaben und den Standort des Gyms bearbeiten",
+    "invite": "Coaches und Empfangspersonal einladen",
+    "workspace": "Den Arbeitsbereich des Gyms öffnen",
+    "team": "Das Team des Gyms sehen",
+    "private": "Keine Gym-Rolle sieht private Trainingsdaten, Nachrichten oder Coach-Notizen von Mitgliedern."
+  },
+  "accept": "Einladung annehmen",
+  "accepting": "Wird angenommen…",
+  "acceptHint": "Du trittst dem Gym erst bei, wenn du annimmst. Dein Konto und deine persönlichen Daten bleiben bei dir, auch wenn du gehst.",
+  "decline": {
+    "action": "Ablehnen",
+    "pending": "Wird abgelehnt…",
+    "keep": "Einladung behalten",
+    "confirm": "Einladung zu {gym} ablehnen? Du trittst dem Team nicht bei, und das Gym müsste dich erneut einladen."
+  },
+  "backToInvitation": "Zurück zur Einladung",
+  "linkDoneHint": "Diese E-Mail-Adresse gehört jetzt zu deinem Konto. Sieh dir als Nächstes die Einladung an.",
+  "actions": {
+    "retry": "Erneut versuchen",
+    "home": "Zu SimpleFit",
+    "site": "Zur SimpleFit-Startseite"
+  },
+  "signedOut": {
+    "body": "Melde dich an oder erstelle ein Konto, um zu antworten. Die eingeladene E-Mail-Adresse bestätigst du mit einem Code; dieser Link meldet dich nicht an.",
+    "signIn": "Anmelden",
+    "signUp": "Konto erstellen"
+  },
+  "missing": {
+    "title": "Öffne die Einladung aus deiner E-Mail",
+    "body": "In diesem Link war keine Einladung zu finden, oder die Sitzung dieses Tabs ist abgelaufen. Öffne den Link in deiner Einladungs-E-Mail erneut."
+  },
+  "mismatch": {
+    "title": "Diese Einladung ging an eine andere E-Mail-Adresse.",
+    "body": "Bestätige die eingeladene E-Mail-Adresse für dieses Konto, oder melde dich mit dem Konto an, das sie verwendet.",
+    "verify": "Eingeladene E-Mail bestätigen",
+    "switch": "Anderes Konto verwenden"
+  },
+  "registration": {
+    "title": "Schließe zuerst dein Konto ab.",
+    "body": "Annehmen kannst du, sobald dein Konto eingerichtet ist. Danach kommst du hierher zurück.",
+    "action": "Mein Konto abschließen"
+  },
+  "states": {
+    "unavailable": {
+      "title": "Diese Einladung ist nicht verfügbar",
+      "body": "Sie ist vielleicht abgelaufen oder zurückgezogen worden, oder sie ist für jemand anderen. Bitte das Gym, dich erneut einzuladen.",
+      "signedOut": "Sie ist vielleicht abgelaufen oder zurückgezogen worden. Wenn sie an dich ging, melde dich an, um zu sehen, was passiert ist, oder bitte das Gym, dich erneut einzuladen."
+    },
+    "expired": {
+      "title": "Diese Einladung ist abgelaufen",
+      "body": "Die Einladung zu {gym} ist nicht mehr gültig. Bitte das Gym, eine neue zu senden."
+    },
+    "cancelled": {
+      "title": "Diese Einladung wurde zurückgezogen",
+      "body": "{gym} hat diese Einladung zurückgezogen. Frag beim Gym nach, wenn du das für einen Fehler hältst."
+    },
+    "declined": {
+      "title": "Du hast diese Einladung abgelehnt",
+      "body": "Du hast die Einladung zu {gym} abgelehnt und bist dem Team nicht beigetreten. Das Gym kann dich erneut einladen.",
+      "justNow": "Du bist {gym} nicht beigetreten. Das Gym kann dich erneut einladen, falls du es dir anders überlegst."
+    },
+    "accepted": {
+      "title": "Du bist im Team von {gym}",
+      "body": "Du hast diese Einladung bereits angenommen.",
+      "action": "Gym öffnen"
+    },
+    "accessEnded": {
+      "title": "Du hast keinen Zugang mehr zu diesem Gym",
+      "body": "Du hast diese Einladung angenommen, aber dein Zugang zu {gym} ist inzwischen beendet. Frag beim Gym nach, wenn du das für einen Fehler hältst."
+    },
+    "alreadyStaff": {
+      "title": "Du arbeitest bereits bei {gym}",
+      "body": "Dein Konto gehört schon zum Team dieses Gyms, daher hat sich nichts geändert."
+    }
+  },
+  "problems": {
+    "limited": {
+      "title": "Zu viele Versuche.",
+      "body": "Warte ein paar Minuten und versuche es dann erneut."
+    },
+    "failed": {
+      "title": "Das konnten wir nicht bestätigen.",
+      "body": "Prüfe deine Verbindung und versuche es erneut. Nichts gilt als erledigt, bis der Server es bestätigt."
+    }
+  },
+  "entering": "Das Gym wird geöffnet"
+}

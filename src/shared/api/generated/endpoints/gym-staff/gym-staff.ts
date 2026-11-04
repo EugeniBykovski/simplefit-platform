@@ -337,7 +337,8 @@ export const getCreateGymStaffInvitationUrl = (gymId: string,) => {
  *   revealed); for an invitation, also an unknown id or another gym's invitation.
  *
  * * `forbidden` - the viewer's role may not invite (or not this role: managers are invited by the owner).
- * * `conflict` - the gym is a draft (`details.setup_status: "draft"`); this address has a pending invitation
+ * * `conflict` - sending is off in this deployment (`details.staff_invitation: "recipient_flow_unavailable"`,
+ *   nothing is created or sent); the gym is a draft (`details.setup_status: "draft"`); this address has a pending invitation
  *   to another role (`details.staff_invitation: "pending_other_role"`: cancel it first); or it belongs to an
  *   active member of this gym (`details.staff_membership: "already_active"`).
  * * `validation_error` - `email` invalid or the viewer's own, `role` missing or not `manager`, `coach` or
@@ -590,7 +591,8 @@ export const getResendGymStaffInvitationUrl = (gymId: string,
  *   revealed); for an invitation, also an unknown id or another gym's invitation.
  *
  * * `forbidden` - the viewer's role may not invite this role.
- * * `conflict` - not pending (`details.staff_invitation: "not_pending"`) or no resends left
+ * * `conflict` - sending is off in this deployment (`details.staff_invitation: "recipient_flow_unavailable"`);
+ *   not pending (`details.staff_invitation: "not_pending"`) or no resends left
  *   (`details.resends: "limit_reached"`).
  * * `rate_limited` - within 60 seconds of the last sending, or 60 staff administration requests per 10
  *   minutes per user.
@@ -1311,6 +1313,129 @@ export function useDeclineStaffInvitation<TData = Awaited<ReturnType<typeof decl
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getDeclineStaffInvitationQueryOptions(staffInvitationTokenRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getResolveStaffInvitationUrl = () => {
+
+
+
+
+  return `/api/v1/me/staff-invitations/resolve`
+}
+
+/**
+ * The invitation of an E06 token in any status (`pending`, `accepted`, `declined`, `cancelled`, `expired`), for
+ * a viewer whose verified email identity is the invited address, so the web page can say what became of it.
+ * Nothing is accepted, linked or changed. `previewStaffInvitation` answers an anonymous holder and never reveals
+ * a status.
+ *
+ * * `invitation_recipient_mismatch` (403) - a current token of another address; verify that address
+ *   (`requestEmailIdentityLink`) or use the account that owns it.
+ * * `invitation_unavailable` (410) - an unknown token, or a used one of another address.
+ * * `rate_limited` - 30 previews and answers per 10 minutes per client.
+ * @summary A staff invitation link, for its signed-in recipient
+ */
+export const resolveStaffInvitation = async (staffInvitationTokenRequest: StaffInvitationTokenRequest, options?: Parameters<typeof apiFetch>[1]): Promise<MyStaffInvitationResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<MyStaffInvitationResponse>(getResolveStaffInvitationUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(staffInvitationTokenRequest)
+  }
+);}
+
+
+
+
+
+export const getResolveStaffInvitationQueryKey = (staffInvitationTokenRequest?: BodyType<StaffInvitationTokenRequest>,) => {
+    return [
+    'POST', `/api/v1/me/staff-invitations/resolve`, staffInvitationTokenRequest
+    ] as const;
+    }
+
+
+export const getResolveStaffInvitationQueryOptions = <TData = Awaited<ReturnType<typeof resolveStaffInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(staffInvitationTokenRequest: BodyType<StaffInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof resolveStaffInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getResolveStaffInvitationQueryKey(staffInvitationTokenRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof resolveStaffInvitation>>> = ({ signal }) => resolveStaffInvitation(staffInvitationTokenRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof resolveStaffInvitation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ResolveStaffInvitationQueryResult = NonNullable<Awaited<ReturnType<typeof resolveStaffInvitation>>>
+export type ResolveStaffInvitationQueryError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function useResolveStaffInvitation<TData = Awaited<ReturnType<typeof resolveStaffInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
+ staffInvitationTokenRequest: BodyType<StaffInvitationTokenRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof resolveStaffInvitation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof resolveStaffInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof resolveStaffInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useResolveStaffInvitation<TData = Awaited<ReturnType<typeof resolveStaffInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
+ staffInvitationTokenRequest: BodyType<StaffInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof resolveStaffInvitation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof resolveStaffInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof resolveStaffInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useResolveStaffInvitation<TData = Awaited<ReturnType<typeof resolveStaffInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
+ staffInvitationTokenRequest: BodyType<StaffInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof resolveStaffInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary A staff invitation link, for its signed-in recipient
+ */
+
+export function useResolveStaffInvitation<TData = Awaited<ReturnType<typeof resolveStaffInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
+ staffInvitationTokenRequest: BodyType<StaffInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof resolveStaffInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getResolveStaffInvitationQueryOptions(staffInvitationTokenRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

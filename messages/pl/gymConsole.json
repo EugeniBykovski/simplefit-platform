@@ -366,7 +366,7 @@
       "failed": "Nie udało się wczytać zaproszeń.",
       "retry": "Spróbuj ponownie",
       "more": "Pokaż więcej",
-      "notice": "Zaproszone osoby będą mogły przyjąć zaproszenie, gdy zaproszenia dla personelu zostaną uruchomione w SimpleFit. Zaproszenie czeka na odpowiedź do wygaśnięcia i możesz je wysłać ponownie.",
+      "notice": "Zaproszenie czeka na odpowiedź, dopóki osoba nie odpowie lub nie wygaśnie. Możesz wysłać je ponownie.",
       "status": {
         "pending": "Oczekuje",
         "accepted": "Przyjęte",
@@ -432,6 +432,7 @@
     "problems": {
       "limited": "Zbyt wiele żądań. Spróbuj za {minutes, plural, one {# minutę} few {# minuty} many {# minut} other {# minuty}}.",
       "limitedLater": "Zbyt wiele żądań. Spróbuj później.",
+      "invitationsUnavailable": "Zaproszenia do zespołu nie są jeszcze dostępne. Nic nie utworzono ani nie wysłano.",
       "pendingOtherRole": "Ten adres ma już oczekujące zaproszenie do innej roli. Najpierw je anuluj.",
       "alreadyActive": "Ta osoba już pracuje w tym klubie.",
       "noResends": "Nie zostało ponownych wysyłek. Anuluj zaproszenie i zaproś ponownie.",

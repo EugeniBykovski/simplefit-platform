@@ -29,6 +29,7 @@ import type roleSelection from "../../../messages/en/roleSelection.json";
 import type routes from "../../../messages/en/routes.json";
 import type shells from "../../../messages/en/shells.json";
 import type site from "../../../messages/en/site.json";
+import type staffInvitation from "../../../messages/en/staffInvitation.json";
 import type system from "../../../messages/en/system.json";
 import type theme from "../../../messages/en/theme.json";
 
@@ -66,6 +67,7 @@ export const namespaces = [
   "coachHome",
   "coachFighters",
   "coachInvitation",
+  "staffInvitation",
   "emailIdentityLink",
   "coachSessions",
   "fighterCoaches",
@@ -105,6 +107,7 @@ export type Messages = {
   coachHome: typeof coachHome;
   coachFighters: typeof coachFighters;
   coachInvitation: typeof coachInvitation;
+  staffInvitation: typeof staffInvitation;
   emailIdentityLink: typeof emailIdentityLink;
   coachSessions: typeof coachSessions;
   fighterCoaches: typeof fighterCoaches;

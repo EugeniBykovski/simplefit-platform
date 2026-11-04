@@ -1,0 +1,106 @@
+{
+  "metaTitle": "Staff invitation",
+  "eyebrow": "Team invitation",
+  "loading": "Loading the invitation",
+  "checking": "Checking your account",
+  "title": "Join {gym} on SimpleFit.",
+  "joinAs": "You're invited to join as",
+  "invitedBy": "Invited by",
+  "inviter": "{name} ({role})",
+  "sentTo": "Sent to",
+  "expires": "Expires",
+  "roles": {
+    "owner": "Owner",
+    "manager": "Manager",
+    "coach": "Coach",
+    "front_desk": "Front desk"
+  },
+  "abilities": {
+    "title": "With this role you can",
+    "edit": "Edit the gym's details and location",
+    "invite": "Invite coaches and front-desk staff",
+    "workspace": "Open the gym's workspace",
+    "team": "See the gym's team",
+    "private": "No gym role sees members' private training data, messages or coach notes."
+  },
+  "accept": "Accept invitation",
+  "accepting": "Accepting…",
+  "acceptHint": "You join the gym only when you accept. Your account and personal data stay yours if you leave.",
+  "decline": {
+    "action": "Decline",
+    "pending": "Declining…",
+    "keep": "Keep the invitation",
+    "confirm": "Decline the invitation to {gym}? You won't join the team, and the gym would need to invite you again."
+  },
+  "backToInvitation": "Back to the invitation",
+  "linkDoneHint": "This email is now on your account. Next, review the invitation.",
+  "actions": {
+    "retry": "Try again",
+    "home": "Go to SimpleFit",
+    "site": "Go to the SimpleFit home page"
+  },
+  "signedOut": {
+    "body": "To answer, sign in or create an account. You'll confirm the invited email with a code; opening this link doesn't sign you in.",
+    "signIn": "Sign in",
+    "signUp": "Create account"
+  },
+  "missing": {
+    "title": "Open the invitation from your email",
+    "body": "We couldn't find an invitation in this link, or this tab's session ended. Open the link in your invitation email again."
+  },
+  "mismatch": {
+    "title": "This invitation is for another email.",
+    "body": "Verify the invited email on this account, or sign in with the account that uses it.",
+    "verify": "Verify the invited email",
+    "switch": "Use another account"
+  },
+  "registration": {
+    "title": "Finish your account first.",
+    "body": "You can accept once your account is set up. We'll bring you back here.",
+    "action": "Finish my account"
+  },
+  "states": {
+    "unavailable": {
+      "title": "This invitation isn't available",
+      "body": "It may have expired or been withdrawn, or it may be for someone else. Ask the gym to invite you again.",
+      "signedOut": "It may have expired or been withdrawn. If it was sent to you, sign in to see what happened, or ask the gym to invite you again."
+    },
+    "expired": {
+      "title": "This invitation has expired",
+      "body": "The invitation to {gym} is no longer valid. Ask the gym to send a new one."
+    },
+    "cancelled": {
+      "title": "This invitation was withdrawn",
+      "body": "{gym} withdrew this invitation. Ask the gym if you think that's a mistake."
+    },
+    "declined": {
+      "title": "You declined this invitation",
+      "body": "You declined the invitation to {gym}, and you didn't join the team. The gym can invite you again.",
+      "justNow": "You didn't join {gym}. The gym can invite you again if you change your mind."
+    },
+    "accepted": {
+      "title": "You're on the team at {gym}",
+      "body": "You already accepted this invitation.",
+      "action": "Open the gym"
+    },
+    "accessEnded": {
+      "title": "You no longer have access to this gym",
+      "body": "You accepted this invitation, but your access to {gym} has since ended. Ask the gym if you think that's a mistake."
+    },
+    "alreadyStaff": {
+      "title": "You already work at {gym}",
+      "body": "Your account is already on this gym's team, so nothing changed."
+    }
+  },
+  "problems": {
+    "limited": {
+      "title": "Too many attempts.",
+      "body": "Wait a few minutes, then try again."
+    },
+    "failed": {
+      "title": "We couldn't confirm that.",
+      "body": "Check your connection and try again. Nothing is shown as done until the server confirms it."
+    }
+  },
+  "entering": "Opening the gym"
+}

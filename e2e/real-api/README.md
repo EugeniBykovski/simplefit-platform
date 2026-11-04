@@ -137,6 +137,18 @@ database's rate-limit windows between steps.
 The Google and Apple scripts are blocked. Real provider sign-in is not covered
 here.
 
+## Staff invitation recipient (SF-133)
+
+`gym-staff-invitation.spec.ts` runs journeys A–T through the browser: the owner
+invites, the E06 link is read from the queued email with `mix
+e2e.staff_invitation_token --link` and opened as written, and the recipient
+previews, signs up or signs in, verifies the address and answers on the page.
+SQL only moves an expiry or resets rate limits; the API is called directly only
+where a refusal is the point. Google and Apple sign-in are not covered: see
+`email-identity-link.spec.ts` for the seeded provider-session variant. Start the
+API as for the coach journeys; `E2E_API_LOG` makes the spec scan the log for
+tokens and codes, and `E2E_EVIDENCE` is a directory for its result file.
+
 ## Run
 
 ```bash
