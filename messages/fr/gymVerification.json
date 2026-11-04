@@ -1,0 +1,139 @@
+{
+  "metaTitle": "Vérification de l'entreprise",
+  "retry": "Réessayer",
+  "restricted": {
+    "title": "Seul le propriétaire de la salle gère la vérification de l'entreprise",
+    "body": "La demande et ses documents ne sont visibles que par le propriétaire."
+  },
+  "status": {
+    "label": "Vérification de l'entreprise",
+    "badge": {
+      "not_started": "Non commencée",
+      "draft": "Brouillon",
+      "submitted": "En cours d'examen",
+      "changes_requested": "Modifications demandées",
+      "approved": "Vérifiée",
+      "rejected": "Non approuvée",
+      "revoked": "Révoquée"
+    },
+    "body": {
+      "not_started": "Ajoutez les informations de votre entreprise et un document, puis soumettez-les pour examen.",
+      "draft": "Votre brouillon est enregistré. Ajoutez au moins un document et soumettez-le quand vous êtes prêt.",
+      "submitted": "L'équipe de vérification de SimpleFit examine votre demande. Vous ne pouvez pas la modifier pendant l'examen.",
+      "changes_requested": "L'équipe de vérification a demandé des modifications. Mettez à jour vos informations ou ajoutez des documents, puis soumettez à nouveau.",
+      "approved": "L'équipe de vérification de SimpleFit a vérifié votre entreprise.",
+      "rejected": "Cette demande n'a pas été approuvée. Vous pouvez en commencer une nouvelle.",
+      "revoked": "La vérification de votre entreprise a été retirée. Vous pouvez commencer une nouvelle demande."
+    },
+    "reason": "Motif :",
+    "decidedAt": "Décision du {date}",
+    "reasons": {
+      "document_unreadable": "Un document est illisible. Importez une copie plus nette.",
+      "document_missing": "Un document nécessaire à l'examen est manquant.",
+      "document_mismatch": "Un document ne correspond pas aux informations de l'entreprise.",
+      "details_incomplete": "Certaines informations sur l'entreprise sont incomplètes.",
+      "details_mismatch": "Les informations de l'entreprise ne correspondent pas aux registres officiels.",
+      "other": "Consultez le message de l'équipe de vérification de SimpleFit.",
+      "business_not_verifiable": "L'entreprise n'a pas pu être vérifiée à partir des informations fournies.",
+      "ineligible_business": "Cette entreprise n'est pas éligible à la vérification.",
+      "suspected_fraud": "La demande a soulevé un problème de sécurité.",
+      "business_closed": "L'entreprise semble être fermée.",
+      "details_changed": "Les informations de l'entreprise ont changé après l'approbation.",
+      "owner_request": "Retirée à la demande du propriétaire."
+    }
+  },
+  "details": {
+    "title": "Informations sur l'entreprise",
+    "start": "Enregistrer et commencer la demande",
+    "save": "Enregistrer le brouillon",
+    "saved": "Enregistré",
+    "legal_name": {
+      "label": "Raison sociale"
+    },
+    "registration_country": {
+      "label": "Pays d'immatriculation",
+      "placeholder": "Choisissez un pays",
+      "search": "Rechercher un pays",
+      "empty": "Aucun pays trouvé"
+    },
+    "registration_number": {
+      "label": "Numéro d'immatriculation (facultatif)"
+    },
+    "address_line": {
+      "label": "Adresse du siège (facultatif)"
+    },
+    "postal_code": {
+      "label": "Code postal"
+    },
+    "city": {
+      "label": "Ville"
+    },
+    "website": {
+      "label": "Site web (facultatif)"
+    }
+  },
+  "documents": {
+    "title": "Documents",
+    "lead": "Importez un document prouvant l'existence de l'entreprise, comme un extrait de registre.",
+    "none": "Aucun document pour l'instant.",
+    "kindLabel": "Type de document",
+    "kinds": {
+      "registration_extract": "Extrait de registre",
+      "proof_of_address": "Justificatif de domicile",
+      "other": "Autre document"
+    },
+    "add": "Importer un document",
+    "uploading": "Importation…",
+    "fileLabel": "Fichier du document",
+    "limits": "PDF, JPEG ou PNG, {megabytes} Mo maximum. Jusqu'à {count} documents.",
+    "refusals": {
+      "type": "Choisissez un fichier PDF, JPEG ou PNG.",
+      "size": "Choisissez un fichier de {megabytes} Mo maximum."
+    },
+    "states": {
+      "pending_upload": "Importation",
+      "uploaded": "Importé",
+      "submitted": "Soumis"
+    },
+    "check": "Vérifier l'importation",
+    "remove": "Supprimer {name}",
+    "size": "{size} Ko"
+  },
+  "submit": {
+    "title": "Soumettre pour examen",
+    "body": "L'équipe de vérification de SimpleFit examine vos informations et vos documents. La soumission ne vérifie pas votre salle à elle seule.",
+    "missing": "Encore requis :",
+    "missingEvidence": "un document",
+    "action": "Soumettre pour examen",
+    "resubmit": "Soumettre à nouveau"
+  },
+  "about": {
+    "title": "Ce que signifie la vérification",
+    "review": "Une personne de l'équipe de vérification de SimpleFit s'assure que votre entreprise existe réellement.",
+    "notPublish": "Elle ne publie pas votre salle et ne la rend visible pour personne.",
+    "notPayments": "Elle n'active ni les paiements ni les versements.",
+    "notPlan": "Elle ne modifie pas votre formule SimpleFit.",
+    "privacy": "Seule l'équipe de vérification de SimpleFit peut ouvrir vos documents. Ils ne sont jamais affichés sur une page publique."
+  },
+  "problems": {
+    "stale": "Votre demande a été modifiée dans un autre onglet ou sur un autre appareil. La dernière version est affichée ; vérifiez-la et réessayez.",
+    "frozen": "Cette demande ne peut pas être modifiée dans son état actuel.",
+    "uploadPending": "Un document est encore en cours d'importation. Vérifiez-le ou supprimez-le avant de soumettre.",
+    "uploadMissing": "Le fichier n'est pas parvenu au stockage. Importez-le à nouveau.",
+    "uploadMismatch": "Le fichier stocké ne correspond pas à celui annoncé. Supprimez-le et importez-le à nouveau.",
+    "documentSubmitted": "Un document soumis ne peut pas être supprimé.",
+    "uploadFailed": "Le fichier n'a pas pu être importé. Vérifiez votre connexion, puis vérifiez l'importation ou supprimez le fichier.",
+    "limitReached": "Vous avez atteint le nombre maximal de documents.",
+    "draft": "Terminez d'abord la configuration de la salle.",
+    "storageUnavailable": "Le stockage des documents est temporairement indisponible. Réessayez dans quelques instants.",
+    "limited": "Trop de modifications. Réessayez dans {minutes, plural, one {# minute} other {# minutes}}.",
+    "limitedLater": "Trop de modifications. Réessayez plus tard.",
+    "forbidden": "Seul le propriétaire de la salle peut effectuer cette action.",
+    "gone": "Cet élément n'existe plus. La dernière version est affichée.",
+    "session": "Votre session a expiré. Reconnectez-vous.",
+    "invalid": "Vérifiez les informations signalées.",
+    "unknown": "Nous n'avons pas pu confirmer cette action. L'état le plus récent est affiché ; réessayez si nécessaire.",
+    "loadFailed": "Nous n'avons pas pu charger la vérification. Réessayez.",
+    "failed": "Une erreur s'est produite. Réessayez."
+  }
+}

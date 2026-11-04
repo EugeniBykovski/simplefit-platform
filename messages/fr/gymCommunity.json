@@ -1,0 +1,65 @@
+{
+  "metaTitle": "Paramètres de la communauté",
+  "lead": "Les membres contrôlent toujours leur propre visibilité. Ces paramètres permettront à la salle de choisir ce qu'elle propose une fois les fonctionnalités disponibles.",
+  "future": {
+    "title": "Plus tard",
+    "soon": "Plus tard",
+    "note": "Aucune de ces fonctionnalités n'est encore disponible : rien n'est activé et aucun membre n'est montré à qui que ce soit.",
+    "items": {
+      "communityFeed": {
+        "title": "Fil de la communauté de la salle",
+        "body": "Publications d'entraînement réservées aux membres."
+      },
+      "challenges": {
+        "title": "Défis mensuels",
+        "body": "Défis et classements sur inscription volontaire."
+      },
+      "publicProfile": {
+        "title": "Page publique de la salle",
+        "body": "Planning et coachs sur une page publique."
+      },
+      "memberVisibility": {
+        "title": "Les membres peuvent se voir entre eux",
+        "body": "Uniquement si les deux membres l'acceptent."
+      },
+      "discoverability": {
+        "title": "Visible dans la recherche",
+        "body": "La page de la salle dans Découvrir."
+      },
+      "openSparring": {
+        "title": "Sparring ouvert aux invités",
+        "body": "Demandes d'invités approuvées par un coach."
+      },
+      "sharedSessions": {
+        "title": "Séances partagées entre membres",
+        "body": "Les membres invitent d'autres membres."
+      },
+      "leaderboards": {
+        "title": "Classements publics",
+        "body": "Uniquement pour les membres qui l'acceptent."
+      }
+    }
+  },
+  "enrollment": {
+    "title": "Demandes d'adhésion",
+    "body": "L'approbation automatique des demandes d'adhésion se règle sur la page Membres.",
+    "link": "Aller à Membres"
+  },
+  "guarantees": {
+    "sees": "Ce que voit la salle",
+    "seesItems": {
+      "attendance": "Réservations, présences et enregistrements à l'arrivée",
+      "membership": "Statut d'abonnement",
+      "contact": "Coordonnées dont le personnel a besoin à l'accueil"
+    },
+    "never": "Jamais, quel que soit le paramètre",
+    "neverItems": {
+      "messages": "Messages privés",
+      "training": "Journaux d'entraînement privés",
+      "health": "Poids, RPE, douleurs ou données médicales",
+      "coachNotes": "Notes privées des coachs",
+      "location": "La position exacte de quiconque"
+    },
+    "note": "C'est la plateforme qui l'impose. Ce n'est pas un paramètre."
+  }
+}

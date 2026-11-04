@@ -99,6 +99,8 @@
     "web/app/gyms/_gym-id/settings/integrations": "Intégrations",
     "web/app/gyms/_gym-id/settings/locations": "Sites",
     "web/app/gyms/_gym-id/settings/plan": "Forfait SimpleFit",
+    "web/app/gyms/_gym-id/settings/verification": "Vérification de l'entreprise",
+    "web/app/gyms/_gym-id/settings/go-live": "Lancement",
     "web/app/gyms/_gym-id/settings/roles": "Rôles",
     "web/app/gyms/_gym-id/shared": "Séances partagées",
     "web/app/gyms/_gym-id/staff": "Coachs et équipe",

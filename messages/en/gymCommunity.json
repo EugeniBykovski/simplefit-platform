@@ -1,0 +1,65 @@
+{
+  "metaTitle": "Community settings",
+  "lead": "Members always control their own visibility. These settings will let the gym choose what it offers once the features exist.",
+  "future": {
+    "title": "Coming later",
+    "soon": "Coming later",
+    "note": "None of these features is available yet, so nothing is switched on and no member is shown to anyone.",
+    "items": {
+      "communityFeed": {
+        "title": "Gym community feed",
+        "body": "Training posts for members only."
+      },
+      "challenges": {
+        "title": "Monthly challenges",
+        "body": "Opt-in challenges and leaderboards."
+      },
+      "publicProfile": {
+        "title": "Public gym page",
+        "body": "Schedule and coaches on a public page."
+      },
+      "memberVisibility": {
+        "title": "Members can see each other",
+        "body": "Only if both members opt in."
+      },
+      "discoverability": {
+        "title": "Discoverable in search",
+        "body": "The gym page in Discover."
+      },
+      "openSparring": {
+        "title": "Open sparring with guests",
+        "body": "Guest requests approved by a coach."
+      },
+      "sharedSessions": {
+        "title": "Shared sessions by members",
+        "body": "Members invite members."
+      },
+      "leaderboards": {
+        "title": "Public leaderboards",
+        "body": "Only for members who opt in."
+      }
+    }
+  },
+  "enrollment": {
+    "title": "Join requests",
+    "body": "Whether join requests are approved automatically is set on the Members page.",
+    "link": "Go to Members"
+  },
+  "guarantees": {
+    "sees": "What the gym sees",
+    "seesItems": {
+      "attendance": "Bookings, attendance and check-ins",
+      "membership": "Membership status",
+      "contact": "Contact details staff need at the desk"
+    },
+    "never": "Never, whatever the setting",
+    "neverItems": {
+      "messages": "Private messages",
+      "training": "Private training logs",
+      "health": "Weight, RPE, pain or medical data",
+      "coachNotes": "Coaches' private notes",
+      "location": "Anyone's exact location"
+    },
+    "note": "The platform enforces this. It isn't a setting."
+  }
+}

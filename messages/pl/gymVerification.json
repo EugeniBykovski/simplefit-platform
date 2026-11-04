@@ -1,0 +1,139 @@
+{
+  "metaTitle": "Weryfikacja firmy",
+  "retry": "Spróbuj ponownie",
+  "restricted": {
+    "title": "Weryfikacją firmy zarządza tylko właściciel klubu",
+    "body": "Wniosek i jego dokumenty widzi tylko właściciel."
+  },
+  "status": {
+    "label": "Weryfikacja firmy",
+    "badge": {
+      "not_started": "Nie rozpoczęto",
+      "draft": "Wersja robocza",
+      "submitted": "W weryfikacji",
+      "changes_requested": "Wymagane zmiany",
+      "approved": "Zweryfikowano",
+      "rejected": "Nie zatwierdzono",
+      "revoked": "Cofnięto"
+    },
+    "body": {
+      "not_started": "Dodaj dane firmy i dokument, a następnie prześlij je do weryfikacji.",
+      "draft": "Wersja robocza została zapisana. Dodaj co najmniej jeden dokument i prześlij wniosek, gdy będziesz gotowy.",
+      "submitted": "Zespół weryfikacji SimpleFit sprawdza Twój wniosek. Podczas weryfikacji nie możesz go zmieniać.",
+      "changes_requested": "Zespół weryfikacji poprosił o zmiany. Zaktualizuj dane lub dodaj dokumenty, a następnie prześlij wniosek ponownie.",
+      "approved": "Zespół weryfikacji SimpleFit zweryfikował Twoją firmę.",
+      "rejected": "Ten wniosek nie został zatwierdzony. Możesz złożyć nowy.",
+      "revoked": "Weryfikacja Twojej firmy została cofnięta. Możesz złożyć nowy wniosek."
+    },
+    "reason": "Powód:",
+    "decidedAt": "Decyzja z {date}",
+    "reasons": {
+      "document_unreadable": "Nie udało się odczytać dokumentu. Prześlij wyraźniejszą kopię.",
+      "document_missing": "Brakuje dokumentu potrzebnego do weryfikacji.",
+      "document_mismatch": "Dokument nie zgadza się z danymi firmy.",
+      "details_incomplete": "Niektóre dane firmy są niekompletne.",
+      "details_mismatch": "Dane firmy nie zgadzają się z oficjalnymi rejestrami.",
+      "other": "Zobacz wiadomość od zespołu weryfikacji SimpleFit.",
+      "business_not_verifiable": "Nie udało się zweryfikować firmy na podstawie podanych informacji.",
+      "ineligible_business": "Ta firma nie kwalifikuje się do weryfikacji.",
+      "suspected_fraud": "Wniosek budzi zastrzeżenia dotyczące bezpieczeństwa.",
+      "business_closed": "Wygląda na to, że firma została zamknięta.",
+      "details_changed": "Dane firmy zmieniły się po zatwierdzeniu.",
+      "owner_request": "Cofnięto na prośbę właściciela."
+    }
+  },
+  "details": {
+    "title": "Dane firmy",
+    "start": "Zapisz i rozpocznij wniosek",
+    "save": "Zapisz wersję roboczą",
+    "saved": "Zapisano",
+    "legal_name": {
+      "label": "Nazwa prawna"
+    },
+    "registration_country": {
+      "label": "Kraj rejestracji",
+      "placeholder": "Wybierz kraj",
+      "search": "Szukaj kraju",
+      "empty": "Nie znaleziono kraju"
+    },
+    "registration_number": {
+      "label": "Numer rejestrowy (opcjonalnie)"
+    },
+    "address_line": {
+      "label": "Adres siedziby (opcjonalnie)"
+    },
+    "postal_code": {
+      "label": "Kod pocztowy"
+    },
+    "city": {
+      "label": "Miasto"
+    },
+    "website": {
+      "label": "Strona internetowa (opcjonalnie)"
+    }
+  },
+  "documents": {
+    "title": "Dokumenty",
+    "lead": "Prześlij dokument potwierdzający istnienie firmy, np. odpis z rejestru.",
+    "none": "Brak dokumentów.",
+    "kindLabel": "Rodzaj dokumentu",
+    "kinds": {
+      "registration_extract": "Odpis z rejestru",
+      "proof_of_address": "Potwierdzenie adresu",
+      "other": "Inny dokument"
+    },
+    "add": "Prześlij dokument",
+    "uploading": "Przesyłanie…",
+    "fileLabel": "Plik dokumentu",
+    "limits": "PDF, JPEG lub PNG, maks. {megabytes} MB. Maks. {count} dokumentów.",
+    "refusals": {
+      "type": "Wybierz plik PDF, JPEG lub PNG.",
+      "size": "Wybierz plik o rozmiarze do {megabytes} MB."
+    },
+    "states": {
+      "pending_upload": "Przesyłanie",
+      "uploaded": "Przesłano",
+      "submitted": "Złożono"
+    },
+    "check": "Sprawdź przesyłanie",
+    "remove": "Usuń {name}",
+    "size": "{size} KB"
+  },
+  "submit": {
+    "title": "Prześlij do weryfikacji",
+    "body": "Zespół weryfikacji SimpleFit sprawdza Twoje dane i dokumenty. Samo przesłanie wniosku nie weryfikuje Twojego klubu.",
+    "missing": "Jeszcze potrzebne:",
+    "missingEvidence": "dokument",
+    "action": "Prześlij do weryfikacji",
+    "resubmit": "Prześlij ponownie"
+  },
+  "about": {
+    "title": "Co oznacza weryfikacja",
+    "review": "Osoba z zespołu weryfikacji SimpleFit sprawdza, czy Twoja firma naprawdę istnieje.",
+    "notPublish": "Nie publikuje Twojego klubu ani nie udostępnia go nikomu.",
+    "notPayments": "Nie włącza płatności ani wypłat.",
+    "notPlan": "Nie zmienia Twojego planu SimpleFit.",
+    "privacy": "Tylko zespół weryfikacji SimpleFit może otworzyć Twoje dokumenty. Nigdy nie są pokazywane na publicznej stronie."
+  },
+  "problems": {
+    "stale": "Twój wniosek został zmieniony w innej karcie lub na innym urządzeniu. Wyświetlamy najnowszą wersję – sprawdź ją i spróbuj ponownie.",
+    "frozen": "Tego wniosku nie można zmienić w obecnym stanie.",
+    "uploadPending": "Dokument jest wciąż przesyłany. Sprawdź go lub usuń przed przesłaniem wniosku.",
+    "uploadMissing": "Plik nie dotarł na serwer. Prześlij go ponownie.",
+    "uploadMismatch": "Zapisany plik nie zgadza się z zapowiedzianym. Usuń go i prześlij ponownie.",
+    "documentSubmitted": "Złożonego dokumentu nie można usunąć.",
+    "uploadFailed": "Nie udało się przesłać pliku. Sprawdź połączenie, a następnie sprawdź przesyłanie lub usuń plik.",
+    "limitReached": "Osiągnięto maksymalną liczbę dokumentów.",
+    "draft": "Najpierw dokończ konfigurację klubu.",
+    "storageUnavailable": "Magazyn dokumentów jest chwilowo niedostępny. Spróbuj ponownie za chwilę.",
+    "limited": "Zbyt wiele zmian. Spróbuj ponownie za {minutes, plural, one {# minutę} few {# minuty} many {# minut} other {# minuty}}.",
+    "limitedLater": "Zbyt wiele zmian. Spróbuj ponownie później.",
+    "forbidden": "Tylko właściciel klubu może to zrobić.",
+    "gone": "Ten element już nie istnieje. Wyświetlamy najnowszą wersję.",
+    "session": "Twoja sesja wygasła. Zaloguj się ponownie.",
+    "invalid": "Sprawdź zaznaczone pola.",
+    "unknown": "Nie udało się potwierdzić tej czynności. Wyświetlamy najnowszy stan – w razie potrzeby spróbuj ponownie.",
+    "loadFailed": "Nie udało się wczytać weryfikacji. Spróbuj ponownie.",
+    "failed": "Coś poszło nie tak. Spróbuj ponownie."
+  }
+}

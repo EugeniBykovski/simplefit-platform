@@ -1132,71 +1132,72 @@ The 18 product decisions approved on 2026-10-06, the SF-27 decision of
 2026-10-13 and the SF-53 and SF-54 decisions of 2026-10-14 carry `decision`
 and `decidedOn`. No discrepancy awaits a product decision; ten are `DEFERRED`.
 
-| Id                                   | Status                 | Decision / summary                                                                                     |
-| ------------------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------ |
-| `D-ROUTE-MAP-BOARDS`                 | RESOLVED               | Route-map boards use 47 older paths; the gallery wins                                                  |
-| `D-PATH-EXAMPLES`                    | RESOLVED               | 20 gallery paths with sample data normalized to parameters                                             |
-| `D-PATH-PARAM-NAMES`                 | RESOLVED               | Generic `:id` renamed after its resource                                                               |
-| `D-ROLE-SELECTION-PATH`              | RESOLVED               | `/onboarding/role` canonical; `/auth` alias dropped                                                    |
-| `D-PROFILE-NO-ID`                    | RESOLVED               | Mobile `/profile/fighter/:fighterId`; web `/app/profile` is the own profile / view-as                  |
-| `D-SHARED-SESSION-NO-ID`             | RESOLVED               | `/shared-session/:sharedSessionId`; lifecycle state not in the URL                                     |
-| `D-ADMIN-SPONSOR-CAMPAIGN-PATHS`     | RESOLVED               | `/admin/sponsors/:sponsorId`, `/admin/campaigns/:campaignId` (+ edit, timeline)                        |
-| `D-NAMING-INCONSISTENCIES`           | RESOLVED               | Singular/plural and cross-platform naming kept as designed                                             |
-| `D-ALIAS-ROWS`                       | RESOLVED               | Uncoded rows registered as screens or excluded by a decision                                           |
-| `D-CAMP-DUPLICATE`                   | RESOLVED               | `/app/camp/board` canonical; `/app/camp` redirects                                                     |
-| `D-WEB-NAV-MOBILE-TARGETS`           | RESOLVED               | Web calendar, messages, coach board designed in `1791276973-ad1d` (W08, W09, WC8)                      |
-| `D-WEB-WORKSPACE-SWITCHER`           | RESOLVED               | In-shell switcher action, no route                                                                     |
-| `D-SPONSOR-NAV`                      | RESOLVED               | Challenges/Events filter `/sponsor/campaigns`; no Creative route; analytics index is a gap             |
-| `D-NAV-DETAIL-TARGETS`               | RESOLVED               | Creator targets kept; list roots designed in `1791276973-ad1d` (G08, G09, WC7, WG27, AD21)             |
-| `D-WORKSPACE-NOT-IN-URL`             | RESOLVED               | Active workspace is session context; the gym consoles are id-based (web SF-88, mobile SF-89)           |
-| `D-WEB-DEFAULT-WORKSPACE`            | RESOLVED               | `/app` resolves the active workspace; `/app/home` is fighter-only                                      |
-| `D-SHARED-ROUTES-ON-PERSONA-PAGES`   | RESOLVED               | Account-level routes need no capability                                                                |
-| `D-TRIAL-AUDIENCE`                   | RESOLVED               | Shared signed-in trial/pricing; backend decides eligibility                                            |
-| `D-GUEST-CHECKOUT`                   | RESOLVED               | `/checkout` public; guests see QA1; payment requires a session                                         |
-| `D-SIGNUP-SESSION-BOUNDARY`          | RESOLVED               | Email sign-up: session after email verification                                                        |
-| `D-ADMIN-IDENTITY`                   | RESOLVED               | Same global User + backend-granted staff capability                                                    |
-| `D-MOBILE-SPONSOR-ADMIN`             | RESOLVED               | Sponsor in mobile `/workspaces` with continue-on-web; no mobile surfaces                               |
-| `D-WEB-ACCOUNT-STATES`               | RESOLVED               | Web `/account/*` pages designed in `1791276973-ad1d` (WS3, WS4, WS5)                                   |
-| `D-PRODUCTION-FOUNDATION`            | DEFERRED               | Existing foundation routes differ from the design (SF-32/SF-33)                                        |
-| `D-MOBILE-NAMESPACE-SHARING`         | RESOLVED               | Mobile `/gym`, `/coach` serve fighters and workspaces; guards per group                                |
-| `D-REUSED-ARTBOARDS`                 | RESOLVED               | Coded wizard keys; no coach account step; Friends are S04/S05                                          |
-| `D-PROGRAM-BUILDER-PATHS`            | RESOLVED               | `/app/coach/sessions/new` canonical; tour is `?tour=2`                                                 |
-| `D-FUTURE-SPARRING`                  | DEFERRED               | `/sparring/find` is marked future                                                                      |
-| `D-BACKEND-PROPOSED`                 | DEFERRED               | 32 proposed endpoints; OpenAPI stays canonical                                                         |
-| `D-SERVER-OUTPUTS`                   | DEFERRED               | Email previews and share images: owner undecided                                                       |
-| `D-PITCH-PAGE-AUTHORITY`             | RESOLVED               | The Route Gallery is the IA source despite its reference-only page                                     |
-| `D-404-SCOPE`                        | RESOLVED               | One web catch-all for every area                                                                       |
-| `D-CANVAS-GROWTH`                    | RESOLVED               | Canvas grew from 456 (SF-16) to 473 artboards (`1791276973-ad1d`)                                      |
-| `D-WEB-COACH-FIGHTER-INVITE`         | RESOLVED               | The E08 link opens WFI1 at `/invite/coach` (SF-60); the coach's composer is the WC7 dialog (SF-58)     |
-| `D-WEB-FIGHTER-ONBOARDING-FLOW`      | DEFERRED               | Web Fighter onboarding: WF0, WF1, WF6 current; WF2–WF5 future; session-only access                     |
-| `D-ENTRY-RESOLUTION`                 | RESOLVED               | Backend entry resolver; semantic destinations; WA5, WA6; ephemeral `intent`                            |
-| `D-ONBOARDING-ENTRY-CAPABILITY`      | RESOLVED               | Onboarding entry routes need a session only, never the capability they create                          |
-| `D-WA3-PREAUTH-CONSENT`              | RESOLVED               | WA3 name and consents disabled, never sent; WA5 records consent (SF-36)                                |
-| `D-WEB-COACH-ONBOARDING-FLOW`        | DEFERRED               | Web Coach onboarding: WCR1, WCR2, WCR7 current; WCR3–WCR6 future; session-only access                  |
-| `D-WEB-GYM-ONBOARDING-FLOW`          | DEFERRED               | Web Gym owner registration: OG1, OG2, OG3, OG6b current; OG4–OG14 future; session-only access          |
-| `D-MOBILE-GYM-ONBOARDING-FLOW`       | DEFERRED               | Mobile Gym owner registration: the web steps natively, no mobile artboards; OG0 handoff superseded     |
-| `D-MOBILE-GYM-SHELL-MVP`             | DEFERRED               | Mobile gym shell: G01 with real data, gym rows in A04, MGC1 chooser, Pulse the only linked tab         |
-| `D-MOBILE-GYM-FIRST-RUN`             | RESOLVED               | Mobile gym owner first run: GR1 + four MVP GR2 steps on measured targets; FUTURE steps not built       |
-| `D-WEB-GYM-CONSOLE-MVP`              | DEFERRED               | Web gym console: id-based, WG1 real gym data, R5 tiles hidden, Soon nav; chooser WGC1 and switcher     |
-| `D-WEB-GYM-FIRST-RUN`                | RESOLVED               | Web gym owner first run: GRW1 + four MVP GRW2 steps at content size; FUTURE steps not built            |
-| `D-WEB-GYM-STAFF`                    | RESOLVED               | Web gym coaches & staff on the SF-93 contract: no shifts, locations, Head coach or WG17 editor         |
-| `D-WEB-GYM-MEMBERS`                  | RESOLVED               | Web gym members on the SF-95 contract: no plans, payments, attendance, contact or import commit        |
-| `D-WEB-GYM-TIMETABLE`                | RESOLVED               | Web gym timetable on the SF-97 contract: no bookings, waitlists, attendance, visibility or imports     |
-| `D-WEB-GYM-MEMBER-BOOKING`           | NEEDS_PRODUCT_DECISION | Web member booking (SF-100): /app/me/gyms, classes, bookings from F13/F16 content; no web artboard     |
-| `D-MOBILE-GYM-MEMBER-BOOKING`        | NEEDS_PRODUCT_DECISION | Mobile member booking at /me/gyms (F13, F16 rows); credits, waitlist out; booking history needs design |
-| `D-GYM-CLASS-ROSTER`                 | RESOLVED               | Rosters and manual check-in (SF-100): WG5 Roster, G08 Classes, G03; no waitlist, payments or analytics |
-| `D-MOBILE-COACH-ONBOARDING-FLOW`     | DEFERRED               | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access                  |
-| `D-ENTRY-CONTEXT-SELECTION`          | RESOLVED               | `context_selection` opens WCX1 on the web and A04 on mobile; never WA6 / O05 or home                   |
-| `D-WEB-COACH-HOME-MVP`               | DEFERRED               | Coach web: real profile dashboard, MVP nav with Soon rows; CRW1, CRW2 future                           |
-| `D-WEB-COACH-SESSIONS-PLANNER`       | RESOLVED               | Program builder reduced to a one-session planner: WCT1, WC3, WCT2, WCT3 (SF-64); agenda, no grid       |
-| `D-MOBILE-COACH-SHELL-MVP`           | DEFERRED               | Coach mobile: real profile Today, MVP tabs with Soon items; CR4–CR6 future                             |
-| `D-MOBILE-COACH-SESSIONS-PLANNER`    | RESOLVED               | Coach mobile Sessions: CT1, CT2, CT3, CT4 on the SF-62/SF-63 API (SF-65); agenda, native pickers       |
-| `D-MOBILE-FIGHTER-TRAINING`          | RESOLVED               | Fighter mobile Training: FT1, FT2 on the SF-62/SF-63 API (SF-66); explicit completion, no timer or log |
-| `D-WEB-FIGHTER-TRAINING`             | RESOLVED               | Fighter web Training: WFT1, WFT2 replace the Fight camp nav item (SF-67); W06 board future             |
-| `D-WEB-FIGHTER-HOME-TRAINING`        | RESOLVED               | Fighter web Home: Training card (next session, latest completed) under the Pro note (SF-68); no counts |
-| `D-MOBILE-FIGHTER-HOME-TRAINING`     | RESOLVED               | Fighter mobile Home: Training card under the Live Board (SF-69); FR4 unchanged otherwise; no counts    |
-| `D-MOBILE-FIGHTER-COACH-INVITATIONS` | DEFERRED               | Fighter mobile: inbox and review by invitation id (SF-76); INV1 and an app-link token handoff future   |
-| `D-WEB-LEGAL-DOCUMENT-PAGES`         | NEEDS_PRODUCT_DECISION | Public legal pages (SF-71 L-12) have no artboard: gap; flows show the approved text in place (SF-72)   |
+| Id                                   | Status                 | Decision / summary                                                                                                                      |
+| ------------------------------------ | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `D-ROUTE-MAP-BOARDS`                 | RESOLVED               | Route-map boards use 47 older paths; the gallery wins                                                                                   |
+| `D-PATH-EXAMPLES`                    | RESOLVED               | 20 gallery paths with sample data normalized to parameters                                                                              |
+| `D-PATH-PARAM-NAMES`                 | RESOLVED               | Generic `:id` renamed after its resource                                                                                                |
+| `D-ROLE-SELECTION-PATH`              | RESOLVED               | `/onboarding/role` canonical; `/auth` alias dropped                                                                                     |
+| `D-PROFILE-NO-ID`                    | RESOLVED               | Mobile `/profile/fighter/:fighterId`; web `/app/profile` is the own profile / view-as                                                   |
+| `D-SHARED-SESSION-NO-ID`             | RESOLVED               | `/shared-session/:sharedSessionId`; lifecycle state not in the URL                                                                      |
+| `D-ADMIN-SPONSOR-CAMPAIGN-PATHS`     | RESOLVED               | `/admin/sponsors/:sponsorId`, `/admin/campaigns/:campaignId` (+ edit, timeline)                                                         |
+| `D-NAMING-INCONSISTENCIES`           | RESOLVED               | Singular/plural and cross-platform naming kept as designed                                                                              |
+| `D-ALIAS-ROWS`                       | RESOLVED               | Uncoded rows registered as screens or excluded by a decision                                                                            |
+| `D-CAMP-DUPLICATE`                   | RESOLVED               | `/app/camp/board` canonical; `/app/camp` redirects                                                                                      |
+| `D-WEB-NAV-MOBILE-TARGETS`           | RESOLVED               | Web calendar, messages, coach board designed in `1791276973-ad1d` (W08, W09, WC8)                                                       |
+| `D-WEB-WORKSPACE-SWITCHER`           | RESOLVED               | In-shell switcher action, no route                                                                                                      |
+| `D-SPONSOR-NAV`                      | RESOLVED               | Challenges/Events filter `/sponsor/campaigns`; no Creative route; analytics index is a gap                                              |
+| `D-NAV-DETAIL-TARGETS`               | RESOLVED               | Creator targets kept; list roots designed in `1791276973-ad1d` (G08, G09, WC7, WG27, AD21)                                              |
+| `D-WORKSPACE-NOT-IN-URL`             | RESOLVED               | Active workspace is session context; the gym consoles are id-based (web SF-88, mobile SF-89)                                            |
+| `D-WEB-DEFAULT-WORKSPACE`            | RESOLVED               | `/app` resolves the active workspace; `/app/home` is fighter-only                                                                       |
+| `D-SHARED-ROUTES-ON-PERSONA-PAGES`   | RESOLVED               | Account-level routes need no capability                                                                                                 |
+| `D-TRIAL-AUDIENCE`                   | RESOLVED               | Shared signed-in trial/pricing; backend decides eligibility                                                                             |
+| `D-GUEST-CHECKOUT`                   | RESOLVED               | `/checkout` public; guests see QA1; payment requires a session                                                                          |
+| `D-SIGNUP-SESSION-BOUNDARY`          | RESOLVED               | Email sign-up: session after email verification                                                                                         |
+| `D-ADMIN-IDENTITY`                   | RESOLVED               | Same global User + backend-granted staff capability                                                                                     |
+| `D-MOBILE-SPONSOR-ADMIN`             | RESOLVED               | Sponsor in mobile `/workspaces` with continue-on-web; no mobile surfaces                                                                |
+| `D-WEB-ACCOUNT-STATES`               | RESOLVED               | Web `/account/*` pages designed in `1791276973-ad1d` (WS3, WS4, WS5)                                                                    |
+| `D-PRODUCTION-FOUNDATION`            | DEFERRED               | Existing foundation routes differ from the design (SF-32/SF-33)                                                                         |
+| `D-MOBILE-NAMESPACE-SHARING`         | RESOLVED               | Mobile `/gym`, `/coach` serve fighters and workspaces; guards per group                                                                 |
+| `D-REUSED-ARTBOARDS`                 | RESOLVED               | Coded wizard keys; no coach account step; Friends are S04/S05                                                                           |
+| `D-PROGRAM-BUILDER-PATHS`            | RESOLVED               | `/app/coach/sessions/new` canonical; tour is `?tour=2`                                                                                  |
+| `D-FUTURE-SPARRING`                  | DEFERRED               | `/sparring/find` is marked future                                                                                                       |
+| `D-BACKEND-PROPOSED`                 | DEFERRED               | 32 proposed endpoints; OpenAPI stays canonical                                                                                          |
+| `D-SERVER-OUTPUTS`                   | DEFERRED               | Email previews and share images: owner undecided                                                                                        |
+| `D-PITCH-PAGE-AUTHORITY`             | RESOLVED               | The Route Gallery is the IA source despite its reference-only page                                                                      |
+| `D-404-SCOPE`                        | RESOLVED               | One web catch-all for every area                                                                                                        |
+| `D-CANVAS-GROWTH`                    | RESOLVED               | Canvas grew from 456 (SF-16) to 473 artboards (`1791276973-ad1d`)                                                                       |
+| `D-WEB-COACH-FIGHTER-INVITE`         | RESOLVED               | The E08 link opens WFI1 at `/invite/coach` (SF-60); the coach's composer is the WC7 dialog (SF-58)                                      |
+| `D-WEB-FIGHTER-ONBOARDING-FLOW`      | DEFERRED               | Web Fighter onboarding: WF0, WF1, WF6 current; WF2–WF5 future; session-only access                                                      |
+| `D-ENTRY-RESOLUTION`                 | RESOLVED               | Backend entry resolver; semantic destinations; WA5, WA6; ephemeral `intent`                                                             |
+| `D-ONBOARDING-ENTRY-CAPABILITY`      | RESOLVED               | Onboarding entry routes need a session only, never the capability they create                                                           |
+| `D-WA3-PREAUTH-CONSENT`              | RESOLVED               | WA3 name and consents disabled, never sent; WA5 records consent (SF-36)                                                                 |
+| `D-WEB-COACH-ONBOARDING-FLOW`        | DEFERRED               | Web Coach onboarding: WCR1, WCR2, WCR7 current; WCR3–WCR6 future; session-only access                                                   |
+| `D-WEB-GYM-ONBOARDING-FLOW`          | DEFERRED               | Web Gym owner registration: OG1, OG2, OG3, OG6b current; OG4–OG6, OG8–OG12 future; OG7, OG13, OG14 in gym settings; session-only access |
+| `D-WEB-GYM-VERIFICATION-GO-LIVE`     | RESOLVED               | OG7, WG10/OG13, OG14 in gym settings on SF-103: operator-decided verification, no publishing or switches                                |
+| `D-MOBILE-GYM-ONBOARDING-FLOW`       | DEFERRED               | Mobile Gym owner registration: the web steps natively, no mobile artboards; OG0 handoff superseded                                      |
+| `D-MOBILE-GYM-SHELL-MVP`             | DEFERRED               | Mobile gym shell: G01 with real data, gym rows in A04, MGC1 chooser, Pulse the only linked tab                                          |
+| `D-MOBILE-GYM-FIRST-RUN`             | RESOLVED               | Mobile gym owner first run: GR1 + four MVP GR2 steps on measured targets; FUTURE steps not built                                        |
+| `D-WEB-GYM-CONSOLE-MVP`              | DEFERRED               | Web gym console: id-based, WG1 real gym data, R5 tiles hidden, Soon nav; chooser WGC1 and switcher                                      |
+| `D-WEB-GYM-FIRST-RUN`                | RESOLVED               | Web gym owner first run: GRW1 + four MVP GRW2 steps at content size; FUTURE steps not built                                             |
+| `D-WEB-GYM-STAFF`                    | RESOLVED               | Web gym coaches & staff on the SF-93 contract: no shifts, locations, Head coach or WG17 editor                                          |
+| `D-WEB-GYM-MEMBERS`                  | RESOLVED               | Web gym members on the SF-95 contract: no plans, payments, attendance, contact or import commit                                         |
+| `D-WEB-GYM-TIMETABLE`                | RESOLVED               | Web gym timetable on the SF-97 contract: no bookings, waitlists, attendance, visibility or imports                                      |
+| `D-WEB-GYM-MEMBER-BOOKING`           | NEEDS_PRODUCT_DECISION | Web member booking (SF-100): /app/me/gyms, classes, bookings from F13/F16 content; no web artboard                                      |
+| `D-MOBILE-GYM-MEMBER-BOOKING`        | NEEDS_PRODUCT_DECISION | Mobile member booking at /me/gyms (F13, F16 rows); credits, waitlist out; booking history needs design                                  |
+| `D-GYM-CLASS-ROSTER`                 | RESOLVED               | Rosters and manual check-in (SF-100): WG5 Roster, G08 Classes, G03; no waitlist, payments or analytics                                  |
+| `D-MOBILE-COACH-ONBOARDING-FLOW`     | DEFERRED               | Mobile Coach onboarding: OC1, OC2, OC11 current; OC3–OC10 future; session-only access                                                   |
+| `D-ENTRY-CONTEXT-SELECTION`          | RESOLVED               | `context_selection` opens WCX1 on the web and A04 on mobile; never WA6 / O05 or home                                                    |
+| `D-WEB-COACH-HOME-MVP`               | DEFERRED               | Coach web: real profile dashboard, MVP nav with Soon rows; CRW1, CRW2 future                                                            |
+| `D-WEB-COACH-SESSIONS-PLANNER`       | RESOLVED               | Program builder reduced to a one-session planner: WCT1, WC3, WCT2, WCT3 (SF-64); agenda, no grid                                        |
+| `D-MOBILE-COACH-SHELL-MVP`           | DEFERRED               | Coach mobile: real profile Today, MVP tabs with Soon items; CR4–CR6 future                                                              |
+| `D-MOBILE-COACH-SESSIONS-PLANNER`    | RESOLVED               | Coach mobile Sessions: CT1, CT2, CT3, CT4 on the SF-62/SF-63 API (SF-65); agenda, native pickers                                        |
+| `D-MOBILE-FIGHTER-TRAINING`          | RESOLVED               | Fighter mobile Training: FT1, FT2 on the SF-62/SF-63 API (SF-66); explicit completion, no timer or log                                  |
+| `D-WEB-FIGHTER-TRAINING`             | RESOLVED               | Fighter web Training: WFT1, WFT2 replace the Fight camp nav item (SF-67); W06 board future                                              |
+| `D-WEB-FIGHTER-HOME-TRAINING`        | RESOLVED               | Fighter web Home: Training card (next session, latest completed) under the Pro note (SF-68); no counts                                  |
+| `D-MOBILE-FIGHTER-HOME-TRAINING`     | RESOLVED               | Fighter mobile Home: Training card under the Live Board (SF-69); FR4 unchanged otherwise; no counts                                     |
+| `D-MOBILE-FIGHTER-COACH-INVITATIONS` | DEFERRED               | Fighter mobile: inbox and review by invitation id (SF-76); INV1 and an app-link token handoff future                                    |
+| `D-WEB-LEGAL-DOCUMENT-PAGES`         | NEEDS_PRODUCT_DECISION | Public legal pages (SF-71 L-12) have no artboard: gap; flows show the approved text in place (SF-72)                                    |
 
 Gallery rows dropped by a decision are listed in `excludedRows`, so every
 row stays accounted for:

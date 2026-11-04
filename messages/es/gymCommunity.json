@@ -1,0 +1,65 @@
+{
+  "metaTitle": "Ajustes de comunidad",
+  "lead": "Los socios siempre controlan su propia visibilidad. Estos ajustes permitirán al gimnasio elegir qué ofrece cuando las funciones estén disponibles.",
+  "future": {
+    "title": "Más adelante",
+    "soon": "Más adelante",
+    "note": "Ninguna de estas funciones está disponible todavía, así que no hay nada activado y ningún socio se muestra a nadie.",
+    "items": {
+      "communityFeed": {
+        "title": "Muro de la comunidad del gimnasio",
+        "body": "Publicaciones de entrenamiento solo para socios."
+      },
+      "challenges": {
+        "title": "Retos mensuales",
+        "body": "Retos y clasificaciones voluntarios."
+      },
+      "publicProfile": {
+        "title": "Página pública del gimnasio",
+        "body": "Horario y entrenadores en una página pública."
+      },
+      "memberVisibility": {
+        "title": "Los socios pueden verse entre sí",
+        "body": "Solo si ambos socios lo aceptan."
+      },
+      "discoverability": {
+        "title": "Visible en las búsquedas",
+        "body": "La página del gimnasio en Descubrir."
+      },
+      "openSparring": {
+        "title": "Sparring abierto con invitados",
+        "body": "Solicitudes de invitados aprobadas por un entrenador."
+      },
+      "sharedSessions": {
+        "title": "Sesiones compartidas entre socios",
+        "body": "Los socios invitan a otros socios."
+      },
+      "leaderboards": {
+        "title": "Clasificaciones públicas",
+        "body": "Solo para los socios que lo acepten."
+      }
+    }
+  },
+  "enrollment": {
+    "title": "Solicitudes de alta",
+    "body": "La aprobación automática de las solicitudes de alta se configura en la página Socios.",
+    "link": "Ir a Socios"
+  },
+  "guarantees": {
+    "sees": "Lo que ve el gimnasio",
+    "seesItems": {
+      "attendance": "Reservas, asistencia y registros de entrada",
+      "membership": "Estado de la membresía",
+      "contact": "Datos de contacto que el personal necesita en recepción"
+    },
+    "never": "Nunca, sea cual sea el ajuste",
+    "neverItems": {
+      "messages": "Mensajes privados",
+      "training": "Registros de entrenamiento privados",
+      "health": "Peso, RPE, dolor o datos médicos",
+      "coachNotes": "Notas privadas de los entrenadores",
+      "location": "La ubicación exacta de nadie"
+    },
+    "note": "Lo garantiza la plataforma. No es un ajuste."
+  }
+}

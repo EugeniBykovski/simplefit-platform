@@ -1,0 +1,65 @@
+{
+  "metaTitle": "Community-Einstellungen",
+  "lead": "Mitglieder bestimmen ihre Sichtbarkeit immer selbst. Sobald die Funktionen verfügbar sind, kann das Studio mit diesen Einstellungen festlegen, was es anbietet.",
+  "future": {
+    "title": "Folgt später",
+    "soon": "Folgt später",
+    "note": "Keine dieser Funktionen ist bereits verfügbar. Daher ist nichts aktiviert und kein Mitglied wird anderen angezeigt.",
+    "items": {
+      "communityFeed": {
+        "title": "Community-Feed des Studios",
+        "body": "Trainingsbeiträge nur für Mitglieder."
+      },
+      "challenges": {
+        "title": "Monatliche Challenges",
+        "body": "Challenges und Bestenlisten mit freiwilliger Teilnahme."
+      },
+      "publicProfile": {
+        "title": "Öffentliche Studioseite",
+        "body": "Kursplan und Trainer auf einer öffentlichen Seite."
+      },
+      "memberVisibility": {
+        "title": "Mitglieder sehen sich gegenseitig",
+        "body": "Nur wenn beide Mitglieder zustimmen."
+      },
+      "discoverability": {
+        "title": "In der Suche auffindbar",
+        "body": "Die Studioseite unter Entdecken."
+      },
+      "openSparring": {
+        "title": "Offenes Sparring mit Gästen",
+        "body": "Gastanfragen werden von einem Trainer genehmigt."
+      },
+      "sharedSessions": {
+        "title": "Gemeinsame Einheiten von Mitgliedern",
+        "body": "Mitglieder laden Mitglieder ein."
+      },
+      "leaderboards": {
+        "title": "Öffentliche Bestenlisten",
+        "body": "Nur für Mitglieder, die zustimmen."
+      }
+    }
+  },
+  "enrollment": {
+    "title": "Beitrittsanfragen",
+    "body": "Ob Beitrittsanfragen automatisch genehmigt werden, legen Sie auf der Seite Mitglieder fest.",
+    "link": "Zu den Mitgliedern"
+  },
+  "guarantees": {
+    "sees": "Was das Studio sieht",
+    "seesItems": {
+      "attendance": "Buchungen, Anwesenheit und Check-ins",
+      "membership": "Mitgliedschaftsstatus",
+      "contact": "Kontaktdaten, die das Personal am Empfang benötigt"
+    },
+    "never": "Niemals, unabhängig von der Einstellung",
+    "neverItems": {
+      "messages": "Private Nachrichten",
+      "training": "Private Trainingsprotokolle",
+      "health": "Gewicht, RPE, Schmerzen oder medizinische Daten",
+      "coachNotes": "Private Notizen der Trainer",
+      "location": "Den genauen Standort einer Person"
+    },
+    "note": "Die Plattform setzt dies durch. Es ist keine Einstellung."
+  }
+}

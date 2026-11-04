@@ -587,3 +587,62 @@ member payment methods: the Connect side, not built), `WebBilling`/`WebBillingPa
   `e2e/real-api/gym-billing.spec.ts` (Stripe disabled and test mode with
   placeholder credentials; no journey reaches Stripe). Real Stripe-hosted
   journeys need Stripe test credentials.
+
+## SF-103: business verification (OG7), community defaults (WG10 / OG13) and go-live (OG14)
+
+Three gym-settings screens on the SF-103 API. The design draws OG7, OG13 and
+OG14 as onboarding steps 7, 13 and 14 ("coming later" in the setup stepper);
+they are built under Gym settings (`settings/verification`,
+`settings/community`, `settings/go-live`), linked from the settings tabs and
+sections (`D-WEB-GYM-VERIFICATION-GO-LIVE`).
+
+### Design inventory
+
+Claude Design `1793198527-a0fc` (read with the Artifact tool, version
+unchanged since baseline 112):
+
+| Artboard                                                | Route                                        | User           | API                                                                                                                                                                                              | Source of truth                                                              | Status                                                                                                  |
+| ------------------------------------------------------- | -------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| OG7 WebSetupVerify                                      | `web.app.gyms._gym-id.settings.verification` | owner          | `getGymBusinessVerification`, `saveGymBusinessVerification`, `createGymVerificationEvidence`, `confirmGymVerificationEvidence`, `removeGymVerificationEvidence`, `submitGymBusinessVerification` | SF-103 verification domain; decisions by operators (`mix gyms.verification`) | Built with adaptations                                                                                  |
+| OG13 WebSetupCommunity, WG10 WebCommunitySettings       | `web.app.gyms._gym-id.settings.community`    | owner, staff   | none                                                                                                                                                                                             | platform guarantees (ADR 0026 D-G06)                                         | Guarantees built; every switch FUTURE                                                                   |
+| OG14 WebSetupLaunch                                     | `web.app.gyms._gym-id.settings.go-live`      | owner, manager | `getGymGoLive`                                                                                                                                                                                   | backend readiness evaluator                                                  | Built with adaptations; publishing BLOCKED (D-G11)                                                      |
+| GymSetupSteps                                           | onboarding stepper                           | owner          | —                                                                                                                                                                                                | —                                                                            | Unchanged ("coming later" list)                                                                         |
+| EmailGymLive (E05), Discover, MarketGyms                | —                                            | —              | —                                                                                                                                                                                                | —                                                                            | BLOCKED: no public gym surface                                                                          |
+| AdminTenants, AdminTenantDetail, AdminAccess (AD0–AD20) | —                                            | operator       | —                                                                                                                                                                                                | —                                                                            | BLOCKED: no operator identity or admin authorization domain; review is the `mix gyms.verification` task |
+
+| Design element                                      | Built as                                                                                              | Why                                              |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| OG7 "Tax ID (NIP)", "Registry (KRS)"                | Generic legal name, registration country (combobox), registration number, registered address, website | No jurisdiction-specific requirement is approved |
+| OG7 "Owner identity ✓ VERIFIED · payments partner"  | Not shown                                                                                             | No identity verification exists                  |
+| OG7 per-document ACCEPTED / IN REVIEW               | Uploading / Uploaded / Submitted (backend-confirmed); the decision is per application                 | No per-document review exists                    |
+| OG7 "under 24 h", payouts / EU AML / Discover badge | "What verification means": reviewed by people; doesn't publish, enable payments or change the plan    | Unapproved claims                                |
+| OG13 / WG10 switches, "142 athletes trained today"  | Listed as coming later; no switch, no count                                                           | No enforcing domain; no fabricated numbers       |
+| OG13 "Admins never see"                             | "Never, whatever the setting" guarantees                                                              | Enforced by the platform                         |
+| OG14 "Everything is ready", every row DONE          | The backend's checks grouped by requiredness with their status and reason                             | Readiness is derived by the backend              |
+| OG14 "Publish gym", invites "tomorrow 10:00", E05   | "Publishing · Not available yet"                                                                      | No public surface or policy                      |
+
+### Behaviour
+
+- **Authority:** every status, missing item and check is the backend's;
+  verification and go-live are read again on focus (a revoked approval never
+  stays shown as Verified). Only an operator decides; no button approves.
+- **Draft:** saved against the application's revision (no revision starts an
+  application, also after a rejection or revocation); a stale revision shows
+  the conflict and reads the latest state; field errors map with
+  `applyApiFieldErrors`.
+- **Documents:** announced (kind, file name, type, exact size within the
+  backend's limits), then sent by the browser directly to the presigned URL
+  (`https:` only, or loopback http in local development; the URL is used
+  once and never stored), then confirmed by the backend, which reads the
+  stored object itself. An interrupted upload stays "Uploading" with "Check
+  upload" and remove. No download link exists for the owner.
+- **Permissions:** OG7 for `manage_business_verification` (owner); OG14 for
+  `view_go_live` (owner, manager); others see the restriction and nothing is
+  requested.
+- **Copy:** `gymVerification`, `gymGoLive`, `gymCommunity` in all seven
+  locales.
+- **Tests:** unit tests (screens, upload flow, problem mapping), stories with
+  `e2e/gym-verification-storybook.spec.ts` (Chromium, Firefox, WebKit;
+  dark/light; axe; 375–1920 px), and the real-backend
+  `e2e/real-api/gym-verification.spec.ts` (journeys A–AD with a local
+  S3-compatible server and the operator task).

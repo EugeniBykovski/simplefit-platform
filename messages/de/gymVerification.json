@@ -1,0 +1,139 @@
+{
+  "metaTitle": "Unternehmensverifizierung",
+  "retry": "Erneut versuchen",
+  "restricted": {
+    "title": "Nur der Inhaber des Studios verwaltet die Unternehmensverifizierung",
+    "body": "Der Antrag und seine Dokumente sind nur für den Inhaber sichtbar."
+  },
+  "status": {
+    "label": "Unternehmensverifizierung",
+    "badge": {
+      "not_started": "Nicht begonnen",
+      "draft": "Entwurf",
+      "submitted": "In Prüfung",
+      "changes_requested": "Änderungen angefordert",
+      "approved": "Verifiziert",
+      "rejected": "Nicht genehmigt",
+      "revoked": "Widerrufen"
+    },
+    "body": {
+      "not_started": "Fügen Sie Ihre Unternehmensdaten und ein Dokument hinzu und reichen Sie sie zur Prüfung ein.",
+      "draft": "Ihr Entwurf ist gespeichert. Fügen Sie mindestens ein Dokument hinzu und reichen Sie ihn ein, sobald Sie bereit sind.",
+      "submitted": "Das Prüfteam von SimpleFit prüft Ihren Antrag. Während der Prüfung können Sie ihn nicht ändern.",
+      "changes_requested": "Das Prüfteam hat Änderungen angefordert. Aktualisieren Sie Ihre Daten oder fügen Sie Dokumente hinzu und reichen Sie den Antrag erneut ein.",
+      "approved": "Das Prüfteam von SimpleFit hat Ihr Unternehmen verifiziert.",
+      "rejected": "Dieser Antrag wurde nicht genehmigt. Sie können einen neuen stellen.",
+      "revoked": "Die Verifizierung Ihres Unternehmens wurde widerrufen. Sie können einen neuen Antrag stellen."
+    },
+    "reason": "Grund:",
+    "decidedAt": "Entschieden am {date}",
+    "reasons": {
+      "document_unreadable": "Ein Dokument war nicht lesbar. Laden Sie eine deutlichere Kopie hoch.",
+      "document_missing": "Ein für die Prüfung benötigtes Dokument fehlt.",
+      "document_mismatch": "Ein Dokument stimmt nicht mit den Unternehmensdaten überein.",
+      "details_incomplete": "Einige Unternehmensdaten sind unvollständig.",
+      "details_mismatch": "Die Unternehmensdaten stimmen nicht mit den amtlichen Registern überein.",
+      "other": "Siehe die Nachricht des Prüfteams von SimpleFit.",
+      "business_not_verifiable": "Das Unternehmen konnte anhand der angegebenen Informationen nicht verifiziert werden.",
+      "ineligible_business": "Dieses Unternehmen ist nicht für die Verifizierung berechtigt.",
+      "suspected_fraud": "Der Antrag hat Sicherheitsbedenken ausgelöst.",
+      "business_closed": "Das Unternehmen scheint geschlossen zu sein.",
+      "details_changed": "Die Unternehmensdaten haben sich nach der Genehmigung geändert.",
+      "owner_request": "Auf Wunsch des Inhabers widerrufen."
+    }
+  },
+  "details": {
+    "title": "Unternehmensdaten",
+    "start": "Speichern und Antrag beginnen",
+    "save": "Entwurf speichern",
+    "saved": "Gespeichert",
+    "legal_name": {
+      "label": "Offizieller Firmenname"
+    },
+    "registration_country": {
+      "label": "Land der Registrierung",
+      "placeholder": "Land auswählen",
+      "search": "Länder suchen",
+      "empty": "Kein Land gefunden"
+    },
+    "registration_number": {
+      "label": "Registernummer (optional)"
+    },
+    "address_line": {
+      "label": "Eingetragene Adresse (optional)"
+    },
+    "postal_code": {
+      "label": "Postleitzahl"
+    },
+    "city": {
+      "label": "Ort"
+    },
+    "website": {
+      "label": "Website (optional)"
+    }
+  },
+  "documents": {
+    "title": "Dokumente",
+    "lead": "Laden Sie ein Dokument hoch, das die Existenz des Unternehmens belegt, z. B. einen Registerauszug.",
+    "none": "Noch keine Dokumente.",
+    "kindLabel": "Dokumenttyp",
+    "kinds": {
+      "registration_extract": "Registerauszug",
+      "proof_of_address": "Adressnachweis",
+      "other": "Sonstiges Dokument"
+    },
+    "add": "Dokument hochladen",
+    "uploading": "Wird hochgeladen…",
+    "fileLabel": "Dokumentdatei",
+    "limits": "PDF, JPEG oder PNG, bis zu {megabytes} MB. Bis zu {count} Dokumente.",
+    "refusals": {
+      "type": "Wählen Sie eine PDF-, JPEG- oder PNG-Datei.",
+      "size": "Wählen Sie eine Datei mit bis zu {megabytes} MB."
+    },
+    "states": {
+      "pending_upload": "Wird hochgeladen",
+      "uploaded": "Hochgeladen",
+      "submitted": "Eingereicht"
+    },
+    "check": "Upload prüfen",
+    "remove": "{name} entfernen",
+    "size": "{size} KB"
+  },
+  "submit": {
+    "title": "Zur Prüfung einreichen",
+    "body": "Das Prüfteam von SimpleFit prüft Ihre Daten und Dokumente. Das Einreichen allein verifiziert Ihr Studio nicht.",
+    "missing": "Noch erforderlich:",
+    "missingEvidence": "ein Dokument",
+    "action": "Zur Prüfung einreichen",
+    "resubmit": "Erneut einreichen"
+  },
+  "about": {
+    "title": "Was die Verifizierung bedeutet",
+    "review": "Eine Person aus dem Prüfteam von SimpleFit prüft, ob Ihr Unternehmen tatsächlich existiert.",
+    "notPublish": "Sie veröffentlicht Ihr Studio nicht und macht es für niemanden sichtbar.",
+    "notPayments": "Sie aktiviert keine Zahlungen oder Auszahlungen.",
+    "notPlan": "Sie ändert Ihren SimpleFit-Tarif nicht.",
+    "privacy": "Nur das Prüfteam von SimpleFit kann Ihre Dokumente öffnen. Sie werden nie auf einer öffentlichen Seite angezeigt."
+  },
+  "problems": {
+    "stale": "Ihr Antrag wurde in einem anderen Tab oder auf einem anderen Gerät geändert. Die neueste Version wird angezeigt. Prüfen Sie sie und versuchen Sie es erneut.",
+    "frozen": "Dieser Antrag kann in seinem aktuellen Status nicht geändert werden.",
+    "uploadPending": "Ein Dokument wird noch hochgeladen. Prüfen oder entfernen Sie es vor dem Einreichen.",
+    "uploadMissing": "Die Datei ist nicht im Speicher angekommen. Laden Sie sie erneut hoch.",
+    "uploadMismatch": "Die gespeicherte Datei entspricht nicht der angekündigten. Entfernen Sie sie und laden Sie sie erneut hoch.",
+    "documentSubmitted": "Ein eingereichtes Dokument kann nicht entfernt werden.",
+    "uploadFailed": "Die Datei konnte nicht hochgeladen werden. Prüfen Sie Ihre Verbindung und prüfen Sie dann den Upload oder entfernen Sie die Datei.",
+    "limitReached": "Sie haben die maximale Anzahl an Dokumenten erreicht.",
+    "draft": "Schließen Sie zuerst die Einrichtung des Studios ab.",
+    "storageUnavailable": "Der Dokumentenspeicher ist vorübergehend nicht verfügbar. Versuchen Sie es in Kürze erneut.",
+    "limited": "Zu viele Änderungen. Versuchen Sie es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
+    "limitedLater": "Zu viele Änderungen. Versuchen Sie es später erneut.",
+    "forbidden": "Nur der Inhaber des Studios kann dies tun.",
+    "gone": "Dieses Element existiert nicht mehr. Die neueste Version wird angezeigt.",
+    "session": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an.",
+    "invalid": "Prüfen Sie die markierten Angaben.",
+    "unknown": "Wir konnten diese Aktion nicht bestätigen. Der aktuelle Stand wird angezeigt. Versuchen Sie es bei Bedarf erneut.",
+    "loadFailed": "Die Verifizierung konnte nicht geladen werden. Versuchen Sie es erneut.",
+    "failed": "Etwas ist schiefgelaufen. Versuchen Sie es erneut."
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "metaTitle": "Ustawienia społeczności",
+  "lead": "Członkowie zawsze sami decydują o swojej widoczności. Gdy te funkcje będą dostępne, ustawienia pozwolą klubowi wybrać, co oferuje.",
+  "future": {
+    "title": "Dostępne później",
+    "soon": "Dostępne później",
+    "note": "Żadna z tych funkcji nie jest jeszcze dostępna, więc nic nie jest włączone i żaden członek nie jest nikomu pokazywany.",
+    "items": {
+      "communityFeed": {
+        "title": "Tablica społeczności klubu",
+        "body": "Posty treningowe tylko dla członków."
+      },
+      "challenges": {
+        "title": "Miesięczne wyzwania",
+        "body": "Dobrowolne wyzwania i rankingi."
+      },
+      "publicProfile": {
+        "title": "Publiczna strona klubu",
+        "body": "Grafik i trenerzy na publicznej stronie."
+      },
+      "memberVisibility": {
+        "title": "Członkowie widzą się nawzajem",
+        "body": "Tylko jeśli obaj członkowie wyrażą zgodę."
+      },
+      "discoverability": {
+        "title": "Widoczność w wyszukiwaniu",
+        "body": "Strona klubu w sekcji Odkrywaj."
+      },
+      "openSparring": {
+        "title": "Otwarty sparing z gośćmi",
+        "body": "Prośby gości zatwierdzane przez trenera."
+      },
+      "sharedSessions": {
+        "title": "Wspólne treningi członków",
+        "body": "Członkowie zapraszają członków."
+      },
+      "leaderboards": {
+        "title": "Publiczne rankingi",
+        "body": "Tylko dla członków, którzy wyrażą zgodę."
+      }
+    }
+  },
+  "enrollment": {
+    "title": "Prośby o dołączenie",
+    "body": "To, czy prośby o dołączenie są zatwierdzane automatycznie, ustawisz na stronie Członkowie.",
+    "link": "Przejdź do Członków"
+  },
+  "guarantees": {
+    "sees": "Co widzi klub",
+    "seesItems": {
+      "attendance": "Rezerwacje, obecności i wejścia",
+      "membership": "Status członkostwa",
+      "contact": "Dane kontaktowe potrzebne obsłudze w recepcji"
+    },
+    "never": "Nigdy, niezależnie od ustawień",
+    "neverItems": {
+      "messages": "Prywatne wiadomości",
+      "training": "Prywatne dzienniki treningowe",
+      "health": "Waga, RPE, ból ani dane medyczne",
+      "coachNotes": "Prywatne notatki trenerów",
+      "location": "Dokładna lokalizacja kogokolwiek"
+    },
+    "note": "Gwarantuje to platforma. To nie jest ustawienie."
+  }
+}

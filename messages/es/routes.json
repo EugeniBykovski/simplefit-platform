@@ -99,6 +99,8 @@
     "web/app/gyms/_gym-id/settings/integrations": "Integraciones",
     "web/app/gyms/_gym-id/settings/locations": "Ubicaciones",
     "web/app/gyms/_gym-id/settings/plan": "Plan de SimpleFit",
+    "web/app/gyms/_gym-id/settings/verification": "Verificación del negocio",
+    "web/app/gyms/_gym-id/settings/go-live": "Lanzamiento",
     "web/app/gyms/_gym-id/settings/roles": "Roles",
     "web/app/gyms/_gym-id/shared": "Sesiones compartidas",
     "web/app/gyms/_gym-id/staff": "Entrenadores y personal",

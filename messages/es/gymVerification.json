@@ -1,0 +1,139 @@
+{
+  "metaTitle": "Verificación del negocio",
+  "retry": "Reintentar",
+  "restricted": {
+    "title": "Solo el propietario del gimnasio gestiona la verificación del negocio",
+    "body": "La solicitud y sus documentos solo los puede ver el propietario."
+  },
+  "status": {
+    "label": "Verificación del negocio",
+    "badge": {
+      "not_started": "Sin empezar",
+      "draft": "Borrador",
+      "submitted": "En revisión",
+      "changes_requested": "Cambios solicitados",
+      "approved": "Verificado",
+      "rejected": "No aprobado",
+      "revoked": "Revocado"
+    },
+    "body": {
+      "not_started": "Añade los datos de tu negocio y un documento, y envíalos a revisión.",
+      "draft": "Tu borrador está guardado. Añade al menos un documento y envíalo cuando estés listo.",
+      "submitted": "El equipo de revisión de SimpleFit está comprobando tu solicitud. No puedes modificarla mientras está en revisión.",
+      "changes_requested": "El equipo de revisión ha pedido cambios. Actualiza tus datos o añade documentos y vuelve a enviarla.",
+      "approved": "El equipo de revisión de SimpleFit ha verificado tu negocio.",
+      "rejected": "Esta solicitud no se ha aprobado. Puedes iniciar una nueva.",
+      "revoked": "Se ha retirado la verificación de tu negocio. Puedes iniciar una nueva solicitud."
+    },
+    "reason": "Motivo:",
+    "decidedAt": "Resuelto el {date}",
+    "reasons": {
+      "document_unreadable": "No se ha podido leer un documento. Sube una copia más clara.",
+      "document_missing": "Falta un documento necesario para la revisión.",
+      "document_mismatch": "Un documento no coincide con los datos del negocio.",
+      "details_incomplete": "Algunos datos del negocio están incompletos.",
+      "details_mismatch": "Los datos del negocio no coinciden con los registros oficiales.",
+      "other": "Consulta el mensaje del equipo de revisión de SimpleFit.",
+      "business_not_verifiable": "No se ha podido verificar el negocio con la información proporcionada.",
+      "ineligible_business": "Este negocio no cumple los requisitos para la verificación.",
+      "suspected_fraud": "La solicitud ha planteado un problema de seguridad.",
+      "business_closed": "Parece que el negocio está cerrado.",
+      "details_changed": "Los datos del negocio cambiaron después de la aprobación.",
+      "owner_request": "Retirada a petición del propietario."
+    }
+  },
+  "details": {
+    "title": "Datos del negocio",
+    "start": "Guardar e iniciar solicitud",
+    "save": "Guardar borrador",
+    "saved": "Guardado",
+    "legal_name": {
+      "label": "Razón social"
+    },
+    "registration_country": {
+      "label": "País de registro",
+      "placeholder": "Elige un país",
+      "search": "Buscar países",
+      "empty": "No se ha encontrado ningún país"
+    },
+    "registration_number": {
+      "label": "Número de registro (opcional)"
+    },
+    "address_line": {
+      "label": "Domicilio social (opcional)"
+    },
+    "postal_code": {
+      "label": "Código postal"
+    },
+    "city": {
+      "label": "Ciudad"
+    },
+    "website": {
+      "label": "Sitio web (opcional)"
+    }
+  },
+  "documents": {
+    "title": "Documentos",
+    "lead": "Sube un documento que demuestre que el negocio existe, como un extracto del registro mercantil.",
+    "none": "Aún no hay documentos.",
+    "kindLabel": "Tipo de documento",
+    "kinds": {
+      "registration_extract": "Extracto del registro",
+      "proof_of_address": "Justificante de domicilio",
+      "other": "Otro documento"
+    },
+    "add": "Subir documento",
+    "uploading": "Subiendo…",
+    "fileLabel": "Archivo del documento",
+    "limits": "PDF, JPEG o PNG, hasta {megabytes} MB. Hasta {count} documentos.",
+    "refusals": {
+      "type": "Elige un archivo PDF, JPEG o PNG.",
+      "size": "Elige un archivo de hasta {megabytes} MB."
+    },
+    "states": {
+      "pending_upload": "Subiendo",
+      "uploaded": "Subido",
+      "submitted": "Enviado"
+    },
+    "check": "Comprobar subida",
+    "remove": "Eliminar {name}",
+    "size": "{size} KB"
+  },
+  "submit": {
+    "title": "Enviar a revisión",
+    "body": "El equipo de revisión de SimpleFit comprueba tus datos y documentos. Enviarlos no verifica tu gimnasio por sí solo.",
+    "missing": "Aún falta:",
+    "missingEvidence": "un documento",
+    "action": "Enviar a revisión",
+    "resubmit": "Volver a enviar"
+  },
+  "about": {
+    "title": "Qué significa la verificación",
+    "review": "Una persona del equipo de revisión de SimpleFit comprueba que tu negocio es real.",
+    "notPublish": "No publica tu gimnasio ni lo hace visible para nadie.",
+    "notPayments": "No activa los pagos ni las liquidaciones.",
+    "notPlan": "No cambia tu plan de SimpleFit.",
+    "privacy": "Solo el equipo de revisión de SimpleFit puede abrir tus documentos. Nunca se muestran en una página pública."
+  },
+  "problems": {
+    "stale": "Tu solicitud ha cambiado en otra pestaña o en otro dispositivo. Se muestra la versión más reciente; revísala y vuelve a intentarlo.",
+    "frozen": "Esta solicitud no se puede modificar en su estado actual.",
+    "uploadPending": "Todavía se está subiendo un documento. Compruébalo o elimínalo antes de enviar.",
+    "uploadMissing": "El archivo no llegó al almacenamiento. Vuelve a subirlo.",
+    "uploadMismatch": "El archivo almacenado no coincide con el que se indicó. Elimínalo y vuelve a subirlo.",
+    "documentSubmitted": "No se puede eliminar un documento enviado.",
+    "uploadFailed": "No se ha podido subir el archivo. Revisa tu conexión y luego comprueba la subida o elimínalo.",
+    "limitReached": "Has alcanzado el número máximo de documentos.",
+    "draft": "Primero termina de configurar el gimnasio.",
+    "storageUnavailable": "El almacenamiento de documentos no está disponible temporalmente. Inténtalo de nuevo en breve.",
+    "limited": "Demasiados cambios. Inténtalo de nuevo en {minutes, plural, one {# minuto} other {# minutos}}.",
+    "limitedLater": "Demasiados cambios. Inténtalo de nuevo más tarde.",
+    "forbidden": "Solo el propietario del gimnasio puede hacer esto.",
+    "gone": "Este elemento ya no existe. Se muestra la versión más reciente.",
+    "session": "Tu sesión ha finalizado. Vuelve a iniciar sesión.",
+    "invalid": "Revisa los datos marcados.",
+    "unknown": "No hemos podido confirmar esta acción. Se muestra el estado más reciente; vuelve a intentarlo si es necesario.",
+    "loadFailed": "No hemos podido cargar la verificación. Inténtalo de nuevo.",
+    "failed": "Algo ha salido mal. Inténtalo de nuevo."
+  }
+}

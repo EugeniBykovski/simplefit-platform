@@ -11,6 +11,9 @@
     "roles": "Roles y permisos",
     "integrations": "Integraciones",
     "plan": "Plan de SimpleFit",
+    "verification": "Verificación",
+    "community": "Comunidad",
+    "goLive": "Lanzamiento",
     "danger": "Zona de peligro",
     "soon": "Pronto"
   },
@@ -20,6 +23,9 @@
     "roles": "Qué puede hacer cada rol del personal.",
     "integrations": "Aplicaciones y servicios conectados.",
     "plan": "Tu plan de SimpleFit, pagos y facturas.",
+    "verification": "Verifica tu negocio con el equipo de revisión de SimpleFit.",
+    "community": "Garantías de privacidad y funciones de comunidad.",
+    "goLive": "Lo que está hecho y lo que aún falta.",
     "danger": "Transferir la propiedad o cerrar el gimnasio."
   },
   "restricted": {

@@ -171,6 +171,30 @@ The emailed code is read with `mix e2e.email_code <address>`, a Mix task that
 runs only in dev and test. It opens the API's queued, encrypted email the way
 the delivery worker does. The development email adapter never logs codes.
 
+`gym-verification.spec.ts` (SF-103) drives business verification, community
+defaults and go-live, journeys A–AD: the owner creates a gym, drafts, uploads
+a real PDF to the presigned URL (the backend confirms it with a presigned
+HEAD) and submits; staff are refused and no approval route exists; the
+operator task (`mix gyms.verification`, same database) lists, downloads the
+stored document, refuses gym staff as operators and a stale revision, and
+approves; Stripe tables stay empty; community stores nothing; go-live reads
+staff, members and a class; revocation fails go-live closed and keeps every
+record; another gym's owner gets 404; a switched account keeps nothing; the
+API log holds no business detail, file name or signed URL. It needs an API
+whose storage points at a local S3-compatible server with a private bucket
+and CORS for `http://127.0.0.1:3100`, e.g.:
+
+```bash
+env -u RESEND_API_KEY MIX_ENV=dev PORT=4203 DATABASE_URL=$E2E_DB PHX_SERVER=true \
+  CORS_ALLOWED_ORIGINS=http://127.0.0.1:3100 WEB_APP_URL=http://127.0.0.1:3100 \
+  AWS_S3_BUCKET=$BUCKET AWS_REGION=us-east-1 AWS_ACCESS_KEY_ID=$KEY \
+  AWS_SECRET_ACCESS_KEY=$SECRET AWS_S3_ENDPOINT=http://127.0.0.1:4566 mix phx.server
+```
+
+and the same values for the spec (`E2E_S3_BUCKET`, `E2E_S3_ACCESS_KEY_ID`,
+`E2E_S3_SECRET_ACCESS_KEY`, `E2E_S3_ENDPOINT`), plus `E2E_API_LOG` (the API's
+log file) for journey AC.
+
 `gym-billing.spec.ts` (SF-102) drives the SimpleFit plan page: the owner
 reaches Settings → SimpleFit plan, sees the backend's provider state, chooses
 the published plan (the intent is recorded; checkout is refused before any

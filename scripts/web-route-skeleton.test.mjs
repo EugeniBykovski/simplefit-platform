@@ -46,6 +46,10 @@ const REAL_SCREENS = [
   // SF-102: the gym settings entry (WG22) and the SimpleFit plan (WG25).
   "web.app.gyms._gym-id.settings",
   "web.app.gyms._gym-id.settings.plan",
+  // SF-103: business verification (OG7), community defaults (WG10 / OG13) and go-live (OG14).
+  "web.app.gyms._gym-id.settings.verification",
+  "web.app.gyms._gym-id.settings.community",
+  "web.app.gyms._gym-id.settings.go-live",
   // SF-100: the member's gyms (WMG1), one gym's classes (WMG2) and bookings (WMG3).
   "web.app.me.gyms",
   "web.app.me.gyms._gym-id.classes",
