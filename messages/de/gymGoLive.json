@@ -1,0 +1,89 @@
+{
+  "metaTitle": "Livegang",
+  "retry": "Erneut versuchen",
+  "restricted": {
+    "title": "Nur Inhaber und Manager sehen die Bereitschaft für den Livegang",
+    "body": "Fragen Sie den Inhaber des Studios oder einen Manager nach dem aktuellen Status."
+  },
+  "summary": {
+    "met": "Alle erforderlichen Schritte sind erledigt. Veröffentlichen ist noch nicht verfügbar, daher passiert vorerst nichts weiter.",
+    "notMet": "Einige erforderliche Schritte sind noch nicht erledigt."
+  },
+  "groups": {
+    "required": "Erforderlich",
+    "recommended": "Empfohlen",
+    "optional": "Optional",
+    "future": "Folgt später"
+  },
+  "evaluated": "Geprüft am {date} · Richtlinie {policy}",
+  "publication": {
+    "title": "Veröffentlichung",
+    "unavailable": "Noch nicht verfügbar",
+    "body": "SimpleFit hat noch keine öffentlichen Studioseiten. Ihr Studio bleibt privat, unabhängig davon, was diese Checkliste anzeigt."
+  },
+  "checks": {
+    "setup_completed": {
+      "title": "Studio-Grundlagen"
+    },
+    "primary_location": {
+      "title": "Hauptstandort"
+    },
+    "business_verification": {
+      "title": "Unternehmensverifizierung"
+    },
+    "upcoming_class": {
+      "title": "Anstehende Kurse"
+    },
+    "staff": {
+      "title": "Team"
+    },
+    "members": {
+      "title": "Mitglieder"
+    },
+    "member_products": {
+      "title": "Mitgliedschaften und Karten"
+    },
+    "member_payments": {
+      "title": "Mitgliederzahlungen"
+    },
+    "public_profile": {
+      "title": "Öffentliche Studioseite"
+    },
+    "community_settings": {
+      "title": "Community-Einstellungen"
+    }
+  },
+  "reasons": {
+    "setup_completed": "Die Einrichtung ist abgeschlossen.",
+    "setup_incomplete": "Die Einrichtung ist nicht abgeschlossen.",
+    "location_set": "Ein Hauptstandort ist festgelegt.",
+    "location_missing": "Fügen Sie einen Hauptstandort hinzu.",
+    "approved": "Vom Prüfteam von SimpleFit verifiziert.",
+    "in_review": "Wird vom Prüfteam von SimpleFit geprüft.",
+    "not_started": "Nicht begonnen.",
+    "draft": "Entwurf noch nicht eingereicht.",
+    "changes_requested": "Das Prüfteam hat Änderungen angefordert.",
+    "rejected": "Nicht genehmigt. Stellen Sie einen neuen Antrag.",
+    "revoked": "Die Verifizierung wurde widerrufen.",
+    "class_scheduled": "Ein Kurs ist geplant.",
+    "no_upcoming_class": "Es ist kein anstehender Kurs geplant.",
+    "staff_active": "Eine weitere Person ist dem Team beigetreten.",
+    "no_active_staff": "Noch ist niemand sonst dem Team beigetreten.",
+    "members_active": "Mitglieder sind beigetreten.",
+    "no_active_members": "Noch keine aktiven Mitglieder.",
+    "product_published": "Eine Mitgliedschaft oder Karte ist veröffentlicht.",
+    "no_published_product": "Keine Mitgliedschaft oder Karte ist veröffentlicht.",
+    "decisions_not_approved": "Noch nicht verfügbar. Nicht erforderlich.",
+    "public_surface_not_available": "Noch nicht verfügbar.",
+    "community_features_not_available": "Noch nicht verfügbar."
+  },
+  "status": {
+    "passed": "Erledigt",
+    "failed": "Offen",
+    "pending": "In Prüfung",
+    "blocked": "Nicht verfügbar",
+    "unavailable": "Folgt später"
+  },
+  "open": "{check} öffnen",
+  "openShort": "Öffnen"
+}

@@ -1,0 +1,89 @@
+{
+  "metaTitle": "Uruchomienie",
+  "retry": "Spróbuj ponownie",
+  "restricted": {
+    "title": "Gotowość do uruchomienia widzą tylko właściciel i menedżerowie",
+    "body": "Zapytaj właściciela klubu lub menedżera o aktualny status."
+  },
+  "summary": {
+    "met": "Wszystkie wymagane kroki są ukończone. Publikowanie nie jest jeszcze dostępne, więc na razie nic więcej się nie dzieje.",
+    "notMet": "Niektóre wymagane kroki nie są jeszcze ukończone."
+  },
+  "groups": {
+    "required": "Wymagane",
+    "recommended": "Zalecane",
+    "optional": "Opcjonalne",
+    "future": "Dostępne później"
+  },
+  "evaluated": "Sprawdzono {date} · zasady {policy}",
+  "publication": {
+    "title": "Publikowanie",
+    "unavailable": "Jeszcze niedostępne",
+    "body": "SimpleFit nie ma jeszcze publicznych stron klubów. Twój klub pozostaje prywatny, niezależnie od tej listy kontrolnej."
+  },
+  "checks": {
+    "setup_completed": {
+      "title": "Podstawowe dane klubu"
+    },
+    "primary_location": {
+      "title": "Główna lokalizacja"
+    },
+    "business_verification": {
+      "title": "Weryfikacja firmy"
+    },
+    "upcoming_class": {
+      "title": "Nadchodzące zajęcia"
+    },
+    "staff": {
+      "title": "Zespół"
+    },
+    "members": {
+      "title": "Członkowie"
+    },
+    "member_products": {
+      "title": "Karnety i wejściówki"
+    },
+    "member_payments": {
+      "title": "Płatności członków"
+    },
+    "public_profile": {
+      "title": "Publiczna strona klubu"
+    },
+    "community_settings": {
+      "title": "Ustawienia społeczności"
+    }
+  },
+  "reasons": {
+    "setup_completed": "Konfiguracja jest ukończona.",
+    "setup_incomplete": "Konfiguracja nie jest ukończona.",
+    "location_set": "Główna lokalizacja jest ustawiona.",
+    "location_missing": "Dodaj główną lokalizację.",
+    "approved": "Zweryfikowano przez zespół weryfikacji SimpleFit.",
+    "in_review": "W trakcie weryfikacji przez zespół SimpleFit.",
+    "not_started": "Nie rozpoczęto.",
+    "draft": "Wersja robocza nie została jeszcze przesłana.",
+    "changes_requested": "Zespół weryfikacji poprosił o zmiany.",
+    "rejected": "Nie zatwierdzono. Złóż nowy wniosek.",
+    "revoked": "Weryfikacja została cofnięta.",
+    "class_scheduled": "Zajęcia są zaplanowane.",
+    "no_upcoming_class": "Brak zaplanowanych nadchodzących zajęć.",
+    "staff_active": "Ktoś jeszcze dołączył do zespołu.",
+    "no_active_staff": "Nikt jeszcze nie dołączył do zespołu.",
+    "members_active": "Członkowie dołączyli.",
+    "no_active_members": "Brak aktywnych członków.",
+    "product_published": "Karnet lub wejściówka są opublikowane.",
+    "no_published_product": "Brak opublikowanego karnetu lub wejściówki.",
+    "decisions_not_approved": "Jeszcze niedostępne. Niewymagane.",
+    "public_surface_not_available": "Jeszcze niedostępne.",
+    "community_features_not_available": "Jeszcze niedostępne."
+  },
+  "status": {
+    "passed": "Gotowe",
+    "failed": "Do zrobienia",
+    "pending": "W weryfikacji",
+    "blocked": "Niedostępne",
+    "unavailable": "Dostępne później"
+  },
+  "open": "Otwórz: {check}",
+  "openShort": "Otwórz"
+}

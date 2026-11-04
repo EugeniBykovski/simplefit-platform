@@ -1,0 +1,139 @@
+{
+  "metaTitle": "Business verification",
+  "retry": "Try again",
+  "restricted": {
+    "title": "Only the gym's owner manages business verification",
+    "body": "The application and its documents are visible to the owner only."
+  },
+  "status": {
+    "label": "Business verification",
+    "badge": {
+      "not_started": "Not started",
+      "draft": "Draft",
+      "submitted": "In review",
+      "changes_requested": "Changes requested",
+      "approved": "Verified",
+      "rejected": "Not approved",
+      "revoked": "Revoked"
+    },
+    "body": {
+      "not_started": "Add your business details and a document, then submit them for review.",
+      "draft": "Your draft is saved. Add at least one document and submit when you're ready.",
+      "submitted": "SimpleFit's review team is checking your application. You can't change it while it's in review.",
+      "changes_requested": "The review team asked for changes. Update your details or add documents, then submit again.",
+      "approved": "SimpleFit's review team verified your business.",
+      "rejected": "This application was not approved. You can start a new one.",
+      "revoked": "The verification of your business was withdrawn. You can start a new application."
+    },
+    "reason": "Reason:",
+    "decidedAt": "Decided on {date}",
+    "reasons": {
+      "document_unreadable": "A document could not be read. Upload a clearer copy.",
+      "document_missing": "A document the review needs is missing.",
+      "document_mismatch": "A document does not match the business details.",
+      "details_incomplete": "Some business details are incomplete.",
+      "details_mismatch": "The business details do not match the official records.",
+      "other": "See the message from SimpleFit's review team.",
+      "business_not_verifiable": "The business could not be verified from the information provided.",
+      "ineligible_business": "This business is not eligible for verification.",
+      "suspected_fraud": "The application raised a security concern.",
+      "business_closed": "The business appears to be closed.",
+      "details_changed": "The business details changed after approval.",
+      "owner_request": "Withdrawn at the owner's request."
+    }
+  },
+  "details": {
+    "title": "Business details",
+    "start": "Save and start application",
+    "save": "Save draft",
+    "saved": "Saved",
+    "legal_name": {
+      "label": "Legal name"
+    },
+    "registration_country": {
+      "label": "Country of registration",
+      "placeholder": "Choose a country",
+      "search": "Search countries",
+      "empty": "No country found"
+    },
+    "registration_number": {
+      "label": "Registration number (optional)"
+    },
+    "address_line": {
+      "label": "Registered address (optional)"
+    },
+    "postal_code": {
+      "label": "Postal code"
+    },
+    "city": {
+      "label": "City"
+    },
+    "website": {
+      "label": "Website (optional)"
+    }
+  },
+  "documents": {
+    "title": "Documents",
+    "lead": "Upload a document that shows the business exists, such as a registry extract.",
+    "none": "No documents yet.",
+    "kindLabel": "Document type",
+    "kinds": {
+      "registration_extract": "Registry extract",
+      "proof_of_address": "Proof of address",
+      "other": "Other document"
+    },
+    "add": "Upload document",
+    "uploading": "Uploading…",
+    "fileLabel": "Document file",
+    "limits": "PDF, JPEG or PNG, up to {megabytes} MB. Up to {count} documents.",
+    "refusals": {
+      "type": "Choose a PDF, JPEG or PNG file.",
+      "size": "Choose a file of up to {megabytes} MB."
+    },
+    "states": {
+      "pending_upload": "Uploading",
+      "uploaded": "Uploaded",
+      "submitted": "Submitted"
+    },
+    "check": "Check upload",
+    "remove": "Remove {name}",
+    "size": "{size} KB"
+  },
+  "submit": {
+    "title": "Submit for review",
+    "body": "SimpleFit's review team checks your details and documents. Submitting doesn't verify your gym by itself.",
+    "missing": "Still needed:",
+    "missingEvidence": "a document",
+    "action": "Submit for review",
+    "resubmit": "Submit again"
+  },
+  "about": {
+    "title": "What verification means",
+    "review": "A person on SimpleFit's review team checks that your business is real.",
+    "notPublish": "It doesn't publish your gym or make it visible to anyone.",
+    "notPayments": "It doesn't turn on payments or payouts.",
+    "notPlan": "It doesn't change your SimpleFit plan.",
+    "privacy": "Only SimpleFit's review team can open your documents. They are never shown on a public page."
+  },
+  "problems": {
+    "stale": "Your application changed in another tab or on another device. The latest version is shown; check it and try again.",
+    "frozen": "This application can't be changed in its current state.",
+    "uploadPending": "A document is still uploading. Check or remove it before submitting.",
+    "uploadMissing": "The file didn't reach storage. Upload it again.",
+    "uploadMismatch": "The stored file doesn't match what was announced. Remove it and upload it again.",
+    "documentSubmitted": "A submitted document can't be removed.",
+    "uploadFailed": "The file couldn't be uploaded. Check your connection, then check the upload or remove it.",
+    "limitReached": "You've reached the maximum number of documents.",
+    "draft": "Finish the gym setup first.",
+    "storageUnavailable": "Document storage is temporarily unavailable. Try again shortly.",
+    "limited": "Too many changes. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+    "limitedLater": "Too many changes. Try again later.",
+    "forbidden": "Only the gym's owner can do this.",
+    "gone": "This item no longer exists. The latest version is shown.",
+    "session": "Your session ended. Sign in again.",
+    "invalid": "Check the highlighted details.",
+    "unknown": "We couldn't confirm this action. The latest state is shown; try again if needed.",
+    "loadFailed": "We couldn't load the verification. Try again.",
+    "failed": "Something went wrong. Try again."
+  }
+}

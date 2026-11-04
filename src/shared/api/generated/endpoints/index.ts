@@ -10,6 +10,7 @@ export * from './gym-member-products/gym-member-products';
 export * from './gym-members/gym-members';
 export * from './gym-staff/gym-staff';
 export * from './gym-timetable/gym-timetable';
+export * from './gym-verification/gym-verification';
 export * from './gyms/gyms';
 export * from './legal/legal';
 export * from './payment-provider-webhooks/payment-provider-webhooks';

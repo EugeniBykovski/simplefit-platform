@@ -1,0 +1,89 @@
+{
+  "metaTitle": "Go live",
+  "retry": "Try again",
+  "restricted": {
+    "title": "Only the owner and managers see go-live readiness",
+    "body": "Ask the gym's owner or a manager for the current status."
+  },
+  "summary": {
+    "met": "Every required step is done. Publishing isn't available yet, so nothing else happens for now.",
+    "notMet": "Some required steps aren't done yet."
+  },
+  "groups": {
+    "required": "Required",
+    "recommended": "Recommended",
+    "optional": "Optional",
+    "future": "Coming later"
+  },
+  "evaluated": "Checked {date} · policy {policy}",
+  "publication": {
+    "title": "Publishing",
+    "unavailable": "Not available yet",
+    "body": "SimpleFit doesn't have public gym pages yet. Your gym stays private, whatever this checklist says."
+  },
+  "checks": {
+    "setup_completed": {
+      "title": "Gym basics"
+    },
+    "primary_location": {
+      "title": "Main location"
+    },
+    "business_verification": {
+      "title": "Business verification"
+    },
+    "upcoming_class": {
+      "title": "Upcoming classes"
+    },
+    "staff": {
+      "title": "Team"
+    },
+    "members": {
+      "title": "Members"
+    },
+    "member_products": {
+      "title": "Memberships and passes"
+    },
+    "member_payments": {
+      "title": "Member payments"
+    },
+    "public_profile": {
+      "title": "Public gym page"
+    },
+    "community_settings": {
+      "title": "Community settings"
+    }
+  },
+  "reasons": {
+    "setup_completed": "Setup is complete.",
+    "setup_incomplete": "Setup isn't complete.",
+    "location_set": "A main location is set.",
+    "location_missing": "Add a main location.",
+    "approved": "Verified by SimpleFit's review team.",
+    "in_review": "In review by SimpleFit's review team.",
+    "not_started": "Not started.",
+    "draft": "Draft not submitted yet.",
+    "changes_requested": "The review team asked for changes.",
+    "rejected": "Not approved. Start a new application.",
+    "revoked": "Verification was withdrawn.",
+    "class_scheduled": "A class is scheduled.",
+    "no_upcoming_class": "No upcoming class is scheduled.",
+    "staff_active": "Someone else has joined the team.",
+    "no_active_staff": "No one else has joined the team yet.",
+    "members_active": "Members have joined.",
+    "no_active_members": "No active members yet.",
+    "product_published": "A membership or pass is published.",
+    "no_published_product": "No membership or pass is published.",
+    "decisions_not_approved": "Not available yet. Not required.",
+    "public_surface_not_available": "Not available yet.",
+    "community_features_not_available": "Not available yet."
+  },
+  "status": {
+    "passed": "Done",
+    "failed": "To do",
+    "pending": "In review",
+    "blocked": "Not available",
+    "unavailable": "Coming later"
+  },
+  "open": "Open {check}",
+  "openShort": "Open"
+}

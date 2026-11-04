@@ -1,0 +1,89 @@
+{
+  "metaTitle": "Lancement",
+  "retry": "Réessayer",
+  "restricted": {
+    "title": "Seuls le propriétaire et les responsables voient l'état de préparation au lancement",
+    "body": "Demandez l'état actuel au propriétaire de la salle ou à un responsable."
+  },
+  "summary": {
+    "met": "Toutes les étapes obligatoires sont terminées. La publication n'est pas encore disponible : rien d'autre ne se passe pour l'instant.",
+    "notMet": "Certaines étapes obligatoires ne sont pas encore terminées."
+  },
+  "groups": {
+    "required": "Obligatoire",
+    "recommended": "Recommandé",
+    "optional": "Facultatif",
+    "future": "Plus tard"
+  },
+  "evaluated": "Vérifié le {date} · règle {policy}",
+  "publication": {
+    "title": "Publication",
+    "unavailable": "Pas encore disponible",
+    "body": "SimpleFit ne propose pas encore de pages publiques pour les salles. Votre salle reste privée, quoi qu'indique cette liste."
+  },
+  "checks": {
+    "setup_completed": {
+      "title": "Informations de base de la salle"
+    },
+    "primary_location": {
+      "title": "Site principal"
+    },
+    "business_verification": {
+      "title": "Vérification de l'entreprise"
+    },
+    "upcoming_class": {
+      "title": "Cours à venir"
+    },
+    "staff": {
+      "title": "Équipe"
+    },
+    "members": {
+      "title": "Membres"
+    },
+    "member_products": {
+      "title": "Abonnements et cartes"
+    },
+    "member_payments": {
+      "title": "Paiements des membres"
+    },
+    "public_profile": {
+      "title": "Page publique de la salle"
+    },
+    "community_settings": {
+      "title": "Paramètres de la communauté"
+    }
+  },
+  "reasons": {
+    "setup_completed": "La configuration est terminée.",
+    "setup_incomplete": "La configuration n'est pas terminée.",
+    "location_set": "Un site principal est défini.",
+    "location_missing": "Ajoutez un site principal.",
+    "approved": "Vérifiée par l'équipe de vérification de SimpleFit.",
+    "in_review": "En cours d'examen par l'équipe de vérification de SimpleFit.",
+    "not_started": "Non commencée.",
+    "draft": "Brouillon pas encore soumis.",
+    "changes_requested": "L'équipe de vérification a demandé des modifications.",
+    "rejected": "Non approuvée. Commencez une nouvelle demande.",
+    "revoked": "La vérification a été retirée.",
+    "class_scheduled": "Un cours est programmé.",
+    "no_upcoming_class": "Aucun cours à venir n'est programmé.",
+    "staff_active": "Une autre personne a rejoint l'équipe.",
+    "no_active_staff": "Personne d'autre n'a encore rejoint l'équipe.",
+    "members_active": "Des membres ont rejoint la salle.",
+    "no_active_members": "Aucun membre actif pour l'instant.",
+    "product_published": "Un abonnement ou une carte est publié.",
+    "no_published_product": "Aucun abonnement ni aucune carte n'est publié.",
+    "decisions_not_approved": "Pas encore disponible. Non obligatoire.",
+    "public_surface_not_available": "Pas encore disponible.",
+    "community_features_not_available": "Pas encore disponible."
+  },
+  "status": {
+    "passed": "Terminé",
+    "failed": "À faire",
+    "pending": "En cours d'examen",
+    "blocked": "Indisponible",
+    "unavailable": "Plus tard"
+  },
+  "open": "Ouvrir {check}",
+  "openShort": "Ouvrir"
+}

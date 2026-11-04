@@ -19,8 +19,11 @@ import type fighterOnboarding from "../../../messages/en/fighterOnboarding.json"
 import type fighterTraining from "../../../messages/en/fighterTraining.json";
 import type gymBilling from "../../../messages/en/gymBilling.json";
 import type gymBooking from "../../../messages/en/gymBooking.json";
+import type gymCommunity from "../../../messages/en/gymCommunity.json";
 import type gymConsole from "../../../messages/en/gymConsole.json";
+import type gymGoLive from "../../../messages/en/gymGoLive.json";
 import type gymOnboarding from "../../../messages/en/gymOnboarding.json";
+import type gymVerification from "../../../messages/en/gymVerification.json";
 import type navigation from "../../../messages/en/navigation.json";
 import type roleSelection from "../../../messages/en/roleSelection.json";
 import type routes from "../../../messages/en/routes.json";
@@ -54,6 +57,9 @@ export const namespaces = [
   "gymConsole",
   "gymBooking",
   "gymBilling",
+  "gymVerification",
+  "gymGoLive",
+  "gymCommunity",
   "accountRegistration",
   "roleSelection",
   "fighterHome",
@@ -90,6 +96,9 @@ export type Messages = {
   gymConsole: typeof gymConsole;
   gymBooking: typeof gymBooking;
   gymBilling: typeof gymBilling;
+  gymVerification: typeof gymVerification;
+  gymGoLive: typeof gymGoLive;
+  gymCommunity: typeof gymCommunity;
   accountRegistration: typeof accountRegistration;
   roleSelection: typeof roleSelection;
   fighterHome: typeof fighterHome;

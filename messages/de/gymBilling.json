@@ -11,6 +11,9 @@
     "roles": "Rollen & Berechtigungen",
     "integrations": "Integrationen",
     "plan": "SimpleFit-Tarif",
+    "verification": "Verifizierung",
+    "community": "Community",
+    "goLive": "Livegang",
     "danger": "Gefahrenzone",
     "soon": "Bald"
   },
@@ -20,6 +23,9 @@
     "roles": "Was jede Personalrolle darf.",
     "integrations": "Verbundene Apps und Dienste.",
     "plan": "Dein SimpleFit-Tarif, Zahlungen und Rechnungen.",
+    "verification": "Lassen Sie Ihr Unternehmen vom Prüfteam von SimpleFit verifizieren.",
+    "community": "Datenschutzgarantien und Community-Funktionen.",
+    "goLive": "Was erledigt ist und was noch fehlt.",
     "danger": "Inhaberschaft übertragen oder das Studio schließen."
   },
   "restricted": {

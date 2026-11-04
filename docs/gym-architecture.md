@@ -409,3 +409,13 @@ mapping), `widgets/gym-billing` (WG25 and the settings header/sections). All
 data from the generated client (`simplefit-plans` endpoints); keys name the
 gym. Leaving for Stripe goes through `leaveForStripe` (an `https:` URL the
 backend answered, never stored). See `docs/gym-console-web.md#sf-102`.
+
+## SF-103: business verification, community defaults and go-live
+
+`entities/gym-verification` (verification and go-live reads,
+`canManageVerification`, `canViewGoLive`), `features/gym-verification-manage`
+(save, submit, document announce → direct upload → confirm, remove, problem
+mapping), `widgets/gym-verification` (OG7, WG10 / OG13, OG14). The settings
+header in `widgets/gym-billing` links the new tabs. Keys name the gym; the
+session boundary clears the cache on sign-out and account switch. See
+`docs/gym-console-web.md#sf-103`.

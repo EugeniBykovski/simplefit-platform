@@ -11,6 +11,9 @@
     "roles": "Rôles et autorisations",
     "integrations": "Intégrations",
     "plan": "Offre SimpleFit",
+    "verification": "Vérification",
+    "community": "Communauté",
+    "goLive": "Lancement",
     "danger": "Zone sensible",
     "soon": "Bientôt"
   },
@@ -20,6 +23,9 @@
     "roles": "Ce que chaque rôle de l'équipe peut faire.",
     "integrations": "Applications et services connectés.",
     "plan": "Votre offre SimpleFit, vos paiements et vos factures.",
+    "verification": "Faites vérifier votre entreprise par l'équipe de vérification de SimpleFit.",
+    "community": "Garanties de confidentialité et fonctionnalités communautaires.",
+    "goLive": "Ce qui est fait et ce qui reste à faire.",
     "danger": "Transférer la propriété ou fermer la salle."
   },
   "restricted": {

@@ -99,6 +99,8 @@
     "web/app/gyms/_gym-id/settings/integrations": "Интеграции",
     "web/app/gyms/_gym-id/settings/locations": "Локации",
     "web/app/gyms/_gym-id/settings/plan": "Тариф SimpleFit",
+    "web/app/gyms/_gym-id/settings/verification": "Верификация бизнеса",
+    "web/app/gyms/_gym-id/settings/go-live": "Запуск",
     "web/app/gyms/_gym-id/settings/roles": "Роли",
     "web/app/gyms/_gym-id/shared": "Совместные тренировки",
     "web/app/gyms/_gym-id/staff": "Тренеры и персонал",

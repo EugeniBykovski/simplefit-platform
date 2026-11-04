@@ -1991,14 +1991,11 @@
         "OG5",
         "OG6",
         "OG6b",
-        "OG7",
         "OG8",
         "OG9",
         "OG10",
         "OG11",
-        "OG12",
-        "OG13",
-        "OG14"
+        "OG12"
       ],
       "discrepancies": ["D-ONBOARDING-ENTRY-CAPABILITY", "D-WEB-GYM-ONBOARDING-FLOW"]
     },
@@ -6045,9 +6042,9 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/app/gyms/[gymId]/settings/community/page.tsx",
-        "note": "SF-32 placeholder (FeaturePlaceholder) inside the gym console of the gym in the path (SF-88: id-based, D-G23); its sidebar item is marked Soon and not linked until the feature ticket builds the screen."
+        "note": "SF-103: WG10 / OG13 (Claude Design 1793198527-a0fc, WebCommunitySettings and WebSetupCommunity, FUTURE boards built with adaptations, D-WEB-GYM-VERIFICATION-GO-LIVE): the platform privacy guarantees and the designed community settings marked coming later. No setting has an enforcing backend domain, so none is stored or shown as a working switch; auto-approval of join requests stays on the Members page."
       },
-      "screens": ["WG10", "x-web-member-discoverability"]
+      "screens": ["WG10", "x-web-member-discoverability", "OG13"]
     },
     {
       "id": "web.app.gyms._gym-id.challenges.new",
@@ -6250,6 +6247,56 @@
         "note": "SF-102: WG25 (Claude Design 1793198527-a0fc, FUTURE board built with adaptations): the gym's SimpleFit plan on the SF-101/SF-102 API (getGymBillingSummary, listSaasPlans, listGymBillingInvoices, requestGymSaasSubscription, createGymSaasCheckoutSession, reconcileGymSaasSubscription, createGymBillingPortalSession, cancelGymSaasSubscription). The owner only (manage_billing); other staff see the role restriction and nothing is read for them. Payment states come from the backend's Stripe reconciliation, never from a browser redirect; checkout and billing management are Stripe-hosted (no card field). Usage meters, card on file and plan comparison have no domain and are not shown."
       },
       "screens": ["WG25"]
+    },
+    {
+      "id": "web.app.gyms._gym-id.settings.verification",
+      "platform": "web",
+      "path": "/app/gyms/:gymId/settings/verification",
+      "params": ["gymId"],
+      "name": "Business verification",
+      "surface": "GYM",
+      "shell": "web.app.gym",
+      "parent": "web.app.gyms._gym-id.settings",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "GYM_WORKSPACE",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gyms/[gymId]/settings/verification/page.tsx",
+        "note": "SF-103: OG7 (Claude Design 1793198527-a0fc, WebSetupVerify, FUTURE board built with adaptations, D-WEB-GYM-VERIFICATION-GO-LIVE): the gym's business-verification application on the SF-103 API (getGymBusinessVerification, saveGymBusinessVerification, createGymVerificationEvidence, confirmGymVerificationEvidence, removeGymVerificationEvidence, submitGymBusinessVerification). The owner only (manage_business_verification); other staff see the role restriction and nothing is read for them. Documents go to private storage through a presigned upload checked by the backend; only SimpleFit operators decide (outside the API). No identity-verified badge, per-document acceptance or review-time promise."
+      },
+      "screens": ["OG7"]
+    },
+    {
+      "id": "web.app.gyms._gym-id.settings.go-live",
+      "platform": "web",
+      "path": "/app/gyms/:gymId/settings/go-live",
+      "params": ["gymId"],
+      "name": "Go live",
+      "surface": "GYM",
+      "shell": "web.app.gym",
+      "parent": "web.app.gyms._gym-id.settings",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "GYM_WORKSPACE",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/gyms/[gymId]/settings/go-live/page.tsx",
+        "note": "SF-103: OG14 (Claude Design 1793198527-a0fc, WebSetupLaunch, FUTURE board built with adaptations, D-WEB-GYM-VERIFICATION-GO-LIVE): the backend-derived go-live readiness checklist (getGymGoLive) for the owner and managers (view_go_live). Publication is shown as not available (no approved public gym surface); there is no Publish action."
+      },
+      "screens": ["OG14"]
     },
     {
       "id": "web.app.gyms._gym-id.settings.danger",
@@ -10480,10 +10527,7 @@
       "id": "OG7",
       "code": "OG7",
       "name": "Verify business",
-      "route": "web.app.onboarding.gym",
-      "query": {
-        "step": "verify"
-      },
+      "route": "web.app.gyms._gym-id.settings.verification",
       "states": ["saved"],
       "design": {
         "gallery": "gallery-1",
@@ -10492,9 +10536,7 @@
         "step": "5.37",
         "tag": "WEB_APP",
         "artboard": "WebSetupVerify.dc.html"
-      },
-      "status": "DEFERRED",
-      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
+      }
     },
     {
       "id": "OG8",
@@ -10600,10 +10642,7 @@
       "id": "OG13",
       "code": "OG13",
       "name": "Community",
-      "route": "web.app.onboarding.gym",
-      "query": {
-        "step": "community"
-      },
+      "route": "web.app.gyms._gym-id.settings.community",
       "states": ["saved"],
       "design": {
         "gallery": "gallery-1",
@@ -10612,18 +10651,13 @@
         "step": "5.43",
         "tag": "WEB_APP",
         "artboard": "WebSetupCommunity.dc.html"
-      },
-      "status": "DEFERRED",
-      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
+      }
     },
     {
       "id": "OG14",
       "code": "OG14",
       "name": "Go live",
-      "route": "web.app.onboarding.gym",
-      "query": {
-        "step": "launch"
-      },
+      "route": "web.app.gyms._gym-id.settings.go-live",
       "states": ["saved"],
       "design": {
         "gallery": "gallery-1",
@@ -10632,9 +10666,7 @@
         "step": "5.44",
         "tag": "WEB_APP",
         "artboard": "WebSetupLaunch.dc.html"
-      },
-      "status": "DEFERRED",
-      "discrepancies": ["D-WEB-GYM-ONBOARDING-FLOW"]
+      }
     },
     {
       "id": "GRW1",
@@ -17987,7 +18019,7 @@
       "decidedOn": "2026-10-27",
       "status": "DEFERRED",
       "routes": ["web.app.onboarding.gym"],
-      "screens": ["OG4", "OG5", "OG6", "OG7", "OG8", "OG9", "OG10", "OG11", "OG12", "OG13", "OG14"]
+      "screens": ["OG4", "OG5", "OG6", "OG8", "OG9", "OG10", "OG11", "OG12"]
     },
     {
       "id": "D-MOBILE-GYM-ONBOARDING-FLOW",
@@ -18326,6 +18358,22 @@
         "mobile.gyms._gym-id.classes._class-id.roster"
       ],
       "screens": ["WG5", "G08", "G03"]
+    },
+    {
+      "id": "D-WEB-GYM-VERIFICATION-GO-LIVE",
+      "title": "Gym business verification, community defaults and go-live built on the SF-103 domain",
+      "sourceA": "Claude Design 1793198527-a0fc: OG7 WebSetupVerify (Tax ID / KRS fields, an owner identity marked VERIFIED by a payments partner, per-document ACCEPTED / IN REVIEW, review under 24 h, payouts and Discover badge claims), OG13 WebSetupCommunity and WG10 WebCommunitySettings (working community, discovery and sparring switches, visitor counts), OG14 WebSetupLaunch (everything DONE, Publish gym, Discover listing, invites sent tomorrow, E05)",
+      "sourceB": "SF-103 backend (simplefit-api ADR 0026 amendment SF-103): owner-submitted application with documents, decided only by a SimpleFit operator outside the API; a derived go-live checklist; no publication (no approved public gym surface) and no persisted community setting (no enforcing domain)",
+      "mismatch": "The design's identity verification, per-document decisions, review-time promise, publishing, payouts and community switches have no approved domain or policy",
+      "impact": "OG7, OG13 and OG14 live under gym settings (verification, community, go-live) instead of onboarding steps 7, 13 and 14; illustrative claims are not shown",
+      "resolution": "OG7: generic business fields (legal name, registration country and number, registered address, website), documents with upload and backend-confirmed status, submit, and backend statuses with reason codes. OG13: platform privacy guarantees and the designed settings marked coming later. OG14: the backend's checks grouped by requiredness, publication shown as not available, no Publish action",
+      "status": "RESOLVED",
+      "routes": [
+        "web.app.gyms._gym-id.settings.verification",
+        "web.app.gyms._gym-id.settings.community",
+        "web.app.gyms._gym-id.settings.go-live"
+      ],
+      "screens": ["OG7", "OG13", "OG14", "WG10"]
     }
   ]
 }

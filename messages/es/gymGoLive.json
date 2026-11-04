@@ -1,0 +1,89 @@
+{
+  "metaTitle": "Lanzamiento",
+  "retry": "Reintentar",
+  "restricted": {
+    "title": "Solo el propietario y los gerentes ven el estado de preparación para el lanzamiento",
+    "body": "Pide el estado actual al propietario del gimnasio o a un gerente."
+  },
+  "summary": {
+    "met": "Todos los pasos obligatorios están completados. La publicación aún no está disponible, así que por ahora no ocurre nada más.",
+    "notMet": "Aún hay pasos obligatorios sin completar."
+  },
+  "groups": {
+    "required": "Obligatorio",
+    "recommended": "Recomendado",
+    "optional": "Opcional",
+    "future": "Más adelante"
+  },
+  "evaluated": "Comprobado el {date} · política {policy}",
+  "publication": {
+    "title": "Publicación",
+    "unavailable": "Aún no disponible",
+    "body": "SimpleFit aún no tiene páginas públicas de gimnasios. Tu gimnasio sigue siendo privado, diga lo que diga esta lista."
+  },
+  "checks": {
+    "setup_completed": {
+      "title": "Datos básicos del gimnasio"
+    },
+    "primary_location": {
+      "title": "Sede principal"
+    },
+    "business_verification": {
+      "title": "Verificación del negocio"
+    },
+    "upcoming_class": {
+      "title": "Próximas clases"
+    },
+    "staff": {
+      "title": "Equipo"
+    },
+    "members": {
+      "title": "Socios"
+    },
+    "member_products": {
+      "title": "Membresías y bonos"
+    },
+    "member_payments": {
+      "title": "Pagos de socios"
+    },
+    "public_profile": {
+      "title": "Página pública del gimnasio"
+    },
+    "community_settings": {
+      "title": "Ajustes de comunidad"
+    }
+  },
+  "reasons": {
+    "setup_completed": "La configuración está completa.",
+    "setup_incomplete": "La configuración no está completa.",
+    "location_set": "Hay una sede principal definida.",
+    "location_missing": "Añade una sede principal.",
+    "approved": "Verificado por el equipo de revisión de SimpleFit.",
+    "in_review": "En revisión por el equipo de revisión de SimpleFit.",
+    "not_started": "Sin empezar.",
+    "draft": "Borrador aún no enviado.",
+    "changes_requested": "El equipo de revisión ha pedido cambios.",
+    "rejected": "No aprobado. Inicia una nueva solicitud.",
+    "revoked": "Se ha retirado la verificación.",
+    "class_scheduled": "Hay una clase programada.",
+    "no_upcoming_class": "No hay ninguna clase próxima programada.",
+    "staff_active": "Alguien más se ha unido al equipo.",
+    "no_active_staff": "Aún no se ha unido nadie más al equipo.",
+    "members_active": "Se han unido socios.",
+    "no_active_members": "Aún no hay socios activos.",
+    "product_published": "Hay una membresía o un bono publicado.",
+    "no_published_product": "No hay ninguna membresía ni bono publicado.",
+    "decisions_not_approved": "Aún no disponible. No es obligatorio.",
+    "public_surface_not_available": "Aún no disponible.",
+    "community_features_not_available": "Aún no disponible."
+  },
+  "status": {
+    "passed": "Hecho",
+    "failed": "Pendiente",
+    "pending": "En revisión",
+    "blocked": "No disponible",
+    "unavailable": "Más adelante"
+  },
+  "open": "Abrir {check}",
+  "openShort": "Abrir"
+}
