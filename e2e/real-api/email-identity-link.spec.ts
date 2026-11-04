@@ -69,6 +69,9 @@ function seed(...args: string[]): Record<string, string> {
   );
 }
 
+// Timestamps are `timestamp without time zone` in UTC: compare and write them
+// as `now() AT TIME ZONE 'UTC'`, so the spec does not depend on the
+// PostgreSQL server's time zone (SF-104: a CET server shifted them an hour).
 function sql(query: string): string {
   return execFileSync("psql", [disposableDatabase(), "-Atc", query], { encoding: "utf8" }).trim();
 }
@@ -264,7 +267,7 @@ test.describe("SF-78 verify the invited email, real API", () => {
     let field = await sendCode(page, email);
     const first = emailedCode(email);
     sql(
-      `UPDATE email_auth_challenges SET inserted_at = inserted_at - interval '1 hour', expires_at = now() - interval '1 second' WHERE purpose='identity_link' AND closed_at IS NULL`,
+      `UPDATE email_auth_challenges SET inserted_at = inserted_at - interval '1 hour', expires_at = (now() AT TIME ZONE 'UTC') - interval '1 second' WHERE purpose='identity_link' AND closed_at IS NULL`,
     );
     await field.fill(first);
     await expect(
@@ -439,7 +442,7 @@ test.describe("SF-78 invitation changed during verification, real API", () => {
       page,
       context,
     }) => {
-      const since = sql("SELECT now()");
+      const since = sql("SELECT now() AT TIME ZONE 'UTC'");
       const email = address(change);
       const subject = `sf78-${change}-${test.info().project.name}-${Date.now()}`;
       const { INVITE } = seed("invite", email);
@@ -463,7 +466,7 @@ test.describe("SF-78 invitation changed during verification, real API", () => {
         );
       } else if (change === "cancelled") {
         sql(
-          `UPDATE coach_invitations SET status='cancelled', responded_at=now() WHERE id='${invitation}'`,
+          `UPDATE coach_invitations SET status='cancelled', responded_at=(now() AT TIME ZONE 'UTC') WHERE id='${invitation}'`,
         );
       } else {
         // Answered elsewhere by the same, now verified, recipient.
@@ -505,7 +508,7 @@ test.describe("SF-78 with sharing off, real API", () => {
     page,
     context,
   }) => {
-    const since = sql("SELECT now()");
+    const since = sql("SELECT now() AT TIME ZONE 'UTC'");
     const email = address("gateoff");
     const subject = `sf78-gateoff-${test.info().project.name}-${Date.now()}`;
     const { INVITE } = seed("invite", email);

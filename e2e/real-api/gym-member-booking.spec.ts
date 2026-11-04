@@ -847,11 +847,16 @@ test("A–AC: member booking and staff attendance on the web against the real SF
   expect(JSON.stringify(rosterBody.body)).not.toContain("@");
   expect(count("training_sessions")).toBe(before.trainingSessions);
   expect(count("coach_fighter_relationships")).toBe(before.relationships);
+  // Booking has no commercial side: no waitlist, credit or QR table exists,
+  // and no member product subscription (SF-101, a separate domain) was
+  // created for the gym by booking or attendance.
   expect(
     sql(
-      "SELECT coalesce(string_agg(tablename, ','), 'none') FROM pg_tables WHERE schemaname = 'public' AND tablename ~ '(payment|subscription|entitlement|credit|waitlist|qr)'",
+      "SELECT coalesce(string_agg(tablename, ','), 'none') FROM pg_tables WHERE schemaname = 'public' AND tablename ~ '(credit|waitlist|qr)'",
     ),
   ).toBe("none");
+  expect(count("gym_member_product_subscriptions", `gym_id = '${a}'`)).toBe(0);
+  expect(count("gym_saas_subscriptions", `gym_id = '${a}'`)).toBe(0);
   expect(count("gym_class_bookings", `gym_id = '${a}'`)).toBe(
     count("gym_audit_events", `gym_id = '${a}' AND event_type = 'class_booking_created'`),
   );

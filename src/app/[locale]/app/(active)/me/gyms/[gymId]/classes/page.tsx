@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
 import { resolveLocaleParam } from "@/shared/i18n/params";
+import { isUuid } from "@/shared/lib/utils";
 import { MemberClasses } from "@/widgets/gym-member-booking";
 
 export async function generateMetadata({
@@ -22,5 +24,7 @@ export default async function MemberClassesPage({
 }: PageProps<"/[locale]/app/me/gyms/[gymId]/classes">) {
   await resolveLocaleParam(params);
   const { gymId } = await params;
+  // A segment that is not a UUID never reaches an API path (SF-104).
+  if (!isUuid(gymId)) notFound();
   return <MemberClasses key={gymId} gymId={gymId} />;
 }

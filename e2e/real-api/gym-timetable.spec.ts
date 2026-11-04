@@ -759,12 +759,14 @@ test("A–AJ: the gym timetable on the web against the real SF-97 backend", asyn
   expect(statuses["AA coach cancels a class they don't teach"]).toBe(403);
   expect(statuses["AA coach changes a class"]).toBe(403);
 
-  // AB · the front desk reads the timetable without any mutation control.
+  // AB · the front desk reads the timetable without any mutation control. Its
+  // one control is the roster (SF-100: the front desk reads rosters), which
+  // changes no class.
   await go(desk, `/en/app/gyms/${a}/timetable`);
   await expect(desk.getByRole("button", { name: "Class", exact: true })).toHaveCount(0);
   await listWeek(desk, "2026-11-26");
   details = await openClass(desk, "2026-11-26T18:00:00");
-  await expect(details.getByRole("button")).toHaveCount(0);
+  await expect(details.getByRole("button")).toHaveText(["Roster"]);
   await desk.getByRole("tab", { name: "Venues" }).click();
   await expect(desk.getByRole("button", { name: "New venue" })).toHaveCount(0);
   statuses["AB front desk creates a venue"] = (
@@ -927,11 +929,9 @@ test("A–AJ: the gym timetable on the web against the real SF-97 backend", asyn
   expect(count("training_sessions")).toBe(before.trainingSessions);
   expect(count("gym_members")).toBe(before.gymMembers);
   expect(count("coach_fighter_relationships")).toBe(before.relationships);
-  expect(
-    sql(
-      "SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public' AND (table_name LIKE '%booking%' OR table_name LIKE '%attendance%' OR table_name LIKE '%check_in%')",
-    ),
-  ).toBe("0");
+  // Bookings and check-ins exist since SF-99; scheduling created none.
+  expect(count("gym_class_bookings", `gym_id = '${a}'`)).toBe(0);
+  expect(count("gym_class_check_ins", `gym_id = '${a}'`)).toBe(0);
 
   // The audit trail of Gym A's timetable (event types and counts only).
   evidence.audit = sql(

@@ -465,9 +465,21 @@ test("J: a Coach who is also a Fighter gains Gym ownership and keeps both contex
   await page.getByText("Personal Training").click();
   await page.getByRole("button", { name: "Finish" }).click();
   await expect(heading(page, "Your coach profile is ready.")).toBeVisible();
+  // The completion step records itself in the URL; let that navigation land
+  // before leaving, or it interrupts the next one (SF-104: WebKit timing).
+  await page.waitForURL((url) => url.searchParams.get("step") === "complete");
 
-  // Then Fighter (WF0 → WF1 → WF6).
-  await page.goto("/en/app/onboarding/fighter?intent=fighter");
+  // Then Fighter (WF0 → WF1 → WF6). WebKit may still be finishing the
+  // completion step's own navigation: retry the interrupted one (bounded).
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      await page.goto("/en/app/onboarding/fighter?intent=fighter");
+      break;
+    } catch (error) {
+      if (attempt >= 3 || !/interrupted/.test(String(error))) throw error;
+      await page.waitForLoadState();
+    }
+  }
   await page.getByLabel("Name", { exact: true }).fill("Alex K.");
   await page.getByRole("textbox", { name: "Username" }).fill(`g${run()}`);
   await page.getByRole("combobox", { name: "Country" }).click();
