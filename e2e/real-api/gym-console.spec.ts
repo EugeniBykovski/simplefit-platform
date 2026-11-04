@@ -154,9 +154,27 @@ async function signIn(page: Page, email: string) {
   await codeInput(page).pressSequentially(emailedCode(email));
 }
 
-/** The console's own Sign out (SF-28): back to the plain sign-in route. */
+/**
+ * The console's shell controls (gym switcher, Sign out): the sidebar on wide
+ * screens, the navigation sheet on phones (SF-104: the spec only knew the
+ * sidebar, so its phone projects always failed here).
+ */
+const wide = (page: Page) => (page.viewportSize()?.width ?? 0) >= 768;
+
+async function shell(page: Page) {
+  // The shell's `md` breakpoint (768 px) decides, not a momentary visibility.
+  if (wide(page)) return page.getByRole("complementary");
+  await page.getByRole("button", { name: "Open navigation" }).click();
+  return page.getByRole("dialog");
+}
+
+/**
+ * The console's own Sign out (SF-28): back to the plain sign-in route. On
+ * phone widths the sidebar is hidden and Sign out sits in the navigation
+ * sheet (SF-104: the helper only knew the sidebar).
+ */
 async function signOut(page: Page) {
-  await page.getByRole("complementary").getByRole("button", { name: "Sign out" }).click();
+  await (await shell(page)).getByRole("button", { name: "Sign out" }).click();
   await page.waitForURL((url) => url.pathname === "/en/login");
 }
 
@@ -256,10 +274,7 @@ test("A–F: a new owner lands on the console; one gym enters directly; two are 
   await page.waitForURL(`**/en/app/gyms/${a}`);
   await expect(gymName(page)).toHaveText(GYM_A);
   expect(sql(`SELECT gym_id FROM entry_context_choices WHERE user_id = '${owner.user}'`)).toBe(a);
-  await page
-    .getByRole("complementary")
-    .getByRole("button", { name: new RegExp(`${GYM_A}, Owner`) })
-    .click();
+  await (await shell(page)).getByRole("button", { name: new RegExp(`${GYM_A}, Owner`) }).click();
   await page.getByRole("menuitemradio", { name: new RegExp(GYM_B) }).click();
   await page.waitForURL(`**/en/app/gyms/${b}`);
   await expect(gymName(page)).toHaveText(GYM_B);
@@ -397,10 +412,7 @@ test("M, N, O, P, Q: account switching, two tabs, a late answer and an outage st
     await route.continue().catch(() => undefined);
   });
   await focus(page);
-  await page
-    .getByRole("complementary")
-    .getByRole("button", { name: new RegExp(`${GYM_A}, Owner`) })
-    .click();
+  await (await shell(page)).getByRole("button", { name: new RegExp(`${GYM_A}, Owner`) }).click();
   await page.getByRole("menuitemradio", { name: new RegExp(GYM_B) }).click();
   await page.waitForURL(`**/en/app/gyms/${b}`);
   await expect(gymName(page)).toHaveText(GYM_B);
@@ -426,10 +438,7 @@ test("M, N, O, P, Q: account switching, two tabs, a late answer and an outage st
   await page.waitForURL(`**/en/app/gyms/${c}`);
   await expect(gymName(page)).toHaveText(GYM_C);
   for (const name of [GYM_A, GYM_B, DRAFT]) await expect(page.getByText(name)).toHaveCount(0);
-  await page
-    .getByRole("complementary")
-    .getByRole("button", { name: new RegExp(`${GYM_C}, Owner`) })
-    .click();
+  await (await shell(page)).getByRole("button", { name: new RegExp(`${GYM_C}, Owner`) }).click();
   const menu = page.getByRole("menu");
   await expect(menu.getByRole("menuitemradio", { name: new RegExp(GYM_C) })).toBeVisible();
   for (const name of [GYM_A, GYM_B]) await expect(menu.getByText(name)).toHaveCount(0);
@@ -502,10 +511,7 @@ test("H, I, J, R: Fighter + Coach + Gym keeps every context; a Coach without sta
   expect((entry.body.entry as { capabilities: string[] }).capabilities).toEqual(
     expect.arrayContaining(["FIGHTER", "COACH", "GYM_WORKSPACE"]),
   );
-  await coach
-    .getByRole("complementary")
-    .getByRole("button", { name: /Owner\. Switch gym or profile/ })
-    .click();
+  await (await shell(coach)).getByRole("button", { name: /Owner\. Switch gym or profile/ }).click();
   const menu = coach.getByRole("menu");
   await expect(menu.getByRole("menuitemradio", { name: /Fighter/ })).toBeVisible();
   await expect(menu.getByRole("menuitemradio", { name: /Coach/ })).toBeVisible();

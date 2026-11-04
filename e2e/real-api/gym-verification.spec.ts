@@ -248,7 +248,8 @@ const GYM = `Ring Verify ${run}`;
 const LEGAL = `Ring Verify ${run} Sp. z o.o.`;
 const REGISTRATION = `KRS${run}`;
 const FILE = `registry-extract-${run}.pdf`;
-const REVIEWER = `reviewer-${run}@trust.simplefit.test`;
+/** The operator on the API's GYM_VERIFICATION_OPERATORS list (SF-104: review is fail-closed). */
+const REVIEWER = process.env.E2E_OPERATOR ?? "reviewer@trust.simplefit.test";
 
 const state = {
   gymId: "",
@@ -384,11 +385,13 @@ test("G–H: staff cannot approve or reach the application; there is no approval
     ).not.toBe(200);
   }
 
-  // The operator path refuses gym staff (by their verified email) and the owner.
+  // The operator path refuses gym staff and the owner: they are not on the
+  // configured operator list (SF-104), and even a listed staff member would be
+  // refused as not independent (API tests cover that case).
   for (const address of [OWNER, MANAGER, COACH]) {
     const refused = operator("approve", state.appId, "--revision", "4", "--operator", address);
     expect(refused.ok).toBe(false);
-    expect(refused.out).toContain("not_independent");
+    expect(refused.out).toMatch(/forbidden|not_independent/);
   }
   expect(sql(`SELECT status FROM gym_verification_applications WHERE id = '${state.appId}'`)).toBe(
     "submitted",
@@ -401,10 +404,14 @@ test("I–M: an independent operator reviews the stored document and approves; S
 }) => {
   only();
   // I: the operator's queue and the application.
-  const list = operator("list");
+  // SF-104: an address outside the configured operator list is never an operator.
+  const impostor = operator("list", "--operator", `impostor-${run}@trust.simplefit.test`);
+  expect(impostor.ok).toBe(false);
+  expect(impostor.out).toContain("forbidden");
+  const list = operator("list", "--operator", REVIEWER);
   expect(list.ok).toBe(true);
   expect(list.out).toContain(state.appId);
-  const shown = operator("show", state.appId);
+  const shown = operator("show", state.appId, "--operator", REVIEWER);
   expect(shown.out).toContain(LEGAL);
   expect(shown.out).toContain(FILE);
 
