@@ -50,6 +50,8 @@ const REAL_SCREENS = [
   "web.app.gyms._gym-id.settings.verification",
   "web.app.gyms._gym-id.settings.community",
   "web.app.gyms._gym-id.settings.go-live",
+  // SF-133: the E06 link's page.
+  "web.invite.staff",
   // SF-100: the member's gyms (WMG1), one gym's classes (WMG2) and bookings (WMG3).
   "web.app.me.gyms",
   "web.app.me.gyms._gym-id.classes",

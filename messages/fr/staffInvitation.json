@@ -1,0 +1,106 @@
+{
+  "metaTitle": "Invitation d’équipe",
+  "eyebrow": "Invitation d’équipe",
+  "loading": "Chargement de l’invitation",
+  "checking": "Vérification de ton compte",
+  "title": "Rejoins {gym} sur SimpleFit.",
+  "joinAs": "Tu es invité à rejoindre l’équipe en tant que",
+  "invitedBy": "Invité par",
+  "inviter": "{name} ({role})",
+  "sentTo": "Envoyée à",
+  "expires": "Expire le",
+  "roles": {
+    "owner": "Propriétaire",
+    "manager": "Manager",
+    "coach": "Coach",
+    "front_desk": "Accueil"
+  },
+  "abilities": {
+    "title": "Avec ce rôle, tu peux",
+    "edit": "Modifier les infos et l’adresse de la salle",
+    "invite": "Inviter des coachs et le personnel d’accueil",
+    "workspace": "Ouvrir l’espace de travail de la salle",
+    "team": "Voir l’équipe de la salle",
+    "private": "Aucun rôle de la salle ne voit les données d’entraînement privées, les messages ou les notes de coach des membres."
+  },
+  "accept": "Accepter l’invitation",
+  "accepting": "Acceptation…",
+  "acceptHint": "Tu ne rejoins la salle que lorsque tu acceptes. Ton compte et tes données personnelles restent à toi si tu pars.",
+  "decline": {
+    "action": "Refuser",
+    "pending": "Refus…",
+    "keep": "Garder l’invitation",
+    "confirm": "Refuser l’invitation à {gym} ? Tu ne rejoindras pas l’équipe, et la salle devrait t’inviter à nouveau."
+  },
+  "backToInvitation": "Retour à l’invitation",
+  "linkDoneHint": "Cette adresse e-mail est maintenant sur ton compte. Consulte ensuite l’invitation.",
+  "actions": {
+    "retry": "Réessayer",
+    "home": "Aller sur SimpleFit",
+    "site": "Aller à la page d’accueil de SimpleFit"
+  },
+  "signedOut": {
+    "body": "Pour répondre, connecte-toi ou crée un compte. Tu confirmeras l’adresse e-mail invitée avec un code ; ouvrir ce lien ne te connecte pas.",
+    "signIn": "Se connecter",
+    "signUp": "Créer un compte"
+  },
+  "missing": {
+    "title": "Ouvre l’invitation depuis ton e-mail",
+    "body": "Nous n’avons trouvé aucune invitation dans ce lien, ou la session de cet onglet a pris fin. Rouvre le lien de ton e-mail d’invitation."
+  },
+  "mismatch": {
+    "title": "Cette invitation est pour une autre adresse e-mail.",
+    "body": "Vérifie l’adresse e-mail invitée sur ce compte, ou connecte-toi avec le compte qui l’utilise.",
+    "verify": "Vérifier l’e-mail invité",
+    "switch": "Utiliser un autre compte"
+  },
+  "registration": {
+    "title": "Termine d’abord ton compte.",
+    "body": "Tu pourras accepter une fois ton compte configuré. Nous te ramènerons ici.",
+    "action": "Terminer mon compte"
+  },
+  "states": {
+    "unavailable": {
+      "title": "Cette invitation n’est pas disponible",
+      "body": "Elle a peut-être expiré ou été annulée, ou elle est destinée à quelqu’un d’autre. Demande à la salle de t’inviter à nouveau.",
+      "signedOut": "Elle a peut-être expiré ou été annulée. Si elle t’a été envoyée, connecte-toi pour voir ce qui s’est passé, ou demande à la salle de t’inviter à nouveau."
+    },
+    "expired": {
+      "title": "Cette invitation a expiré",
+      "body": "L’invitation à {gym} n’est plus valable. Demande à la salle d’en envoyer une nouvelle."
+    },
+    "cancelled": {
+      "title": "Cette invitation a été annulée",
+      "body": "{gym} a annulé cette invitation. Demande à la salle si tu penses que c’est une erreur."
+    },
+    "declined": {
+      "title": "Tu as refusé cette invitation",
+      "body": "Tu as refusé l’invitation à {gym} et tu n’as pas rejoint l’équipe. La salle peut t’inviter à nouveau.",
+      "justNow": "Tu n’as pas rejoint {gym}. La salle peut t’inviter à nouveau si tu changes d’avis."
+    },
+    "accepted": {
+      "title": "Tu fais partie de l’équipe de {gym}",
+      "body": "Tu as déjà accepté cette invitation.",
+      "action": "Ouvrir la salle"
+    },
+    "accessEnded": {
+      "title": "Tu n’as plus accès à cette salle",
+      "body": "Tu as accepté cette invitation, mais ton accès à {gym} a pris fin depuis. Demande à la salle si tu penses que c’est une erreur."
+    },
+    "alreadyStaff": {
+      "title": "Tu travailles déjà à {gym}",
+      "body": "Ton compte fait déjà partie de l’équipe de cette salle, rien n’a donc changé."
+    }
+  },
+  "problems": {
+    "limited": {
+      "title": "Trop de tentatives.",
+      "body": "Attends quelques minutes, puis réessaie."
+    },
+    "failed": {
+      "title": "Nous n’avons pas pu le confirmer.",
+      "body": "Vérifie ta connexion et réessaie. Rien n’est affiché comme terminé tant que le serveur ne l’a pas confirmé."
+    }
+  },
+  "entering": "Ouverture de la salle"
+}

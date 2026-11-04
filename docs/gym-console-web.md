@@ -259,31 +259,32 @@ SF-82 corrections R4, R7, R10, R11 and C10–C16 apply (`D-WEB-GYM-STAFF`).
 
 ### Design inventory
 
-| Artboard / state                                 | Route                    | API operation                                          | Permission                                        | Status                       | Implementation                                                     |
-| ------------------------------------------------ | ------------------------ | ------------------------------------------------------ | ------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------ |
-| WG16 header: eyebrow, title                      | `/app/gyms/:gymId/staff` | `getGym` (console)                                     | `view_staff`                                      | MVP                          | Built                                                              |
-| WG16 header: Invite                              | same                     | `createGymStaffInvitation`                             | `invite_staff` (+ `invite_manager` for manager)   | MVP                          | Dialog: email, role                                                |
-| WG16 header: search                              | —                        | none                                                   | —                                                 | FUTURE                       | Not built (no search domain)                                       |
-| WG16 header: Roles & permissions → WG17          | `/settings/roles`        | none                                                   | —                                                 | FUTURE                       | Not linked; the roles card says the matrix in words                |
-| WG16 tile TEAM + breakdown                       | same                     | `listGymStaff` (active)                                | `view_staff`                                      | MVP                          | Shown once the list is complete                                    |
-| WG16 tile ON SHIFT NOW                           | —                        | none                                                   | —                                                 | FUTURE                       | Not built (R11)                                                    |
-| WG16 tile PENDING INVITES                        | same                     | `listGymStaffInvitations`                              | `view_staff_records`                              | MVP                          | Shown once the list is complete                                    |
-| WG16 roster: person, role, status                | same                     | `listGymStaff`                                         | `view_staff`                                      | MVP                          | Person, role, joined, status                                       |
-| WG16 roster: LOCATION, LAST ACTIVE               | —                        | none                                                   | —                                                 | FUTURE                       | Not built                                                          |
-| WG16 roster: INVITED rows                        | same                     | `listGymStaffInvitations`                              | `view_staff_records`                              | MVP PARTIAL                  | Their own Invitations card, never roster rows                      |
-| WG16 roster: ON SHIFT, Head coach                | —                        | none                                                   | —                                                 | FUTURE                       | Not built (R11, D-G03)                                             |
-| WG16 roster: ended staff                         | same                     | `listGymStaff?status=ended`                            | `view_staff_records`                              | MVP                          | Ended view                                                         |
-| WG16 detail panel: name, role, since             | same                     | `listGymStaff`                                         | `view_staff`                                      | MVP                          | Built                                                              |
-| WG16 detail panel: permission checklist          | —                        | none                                                   | —                                                 | MVP PARTIAL                  | The role in words (C10); no fighter notes, sparring, payments (R7) |
-| WG16 detail: Change role                         | dialog                   | `changeGymStaffRole`                                   | `change_staff_role` (manager: coach ⇄ front desk) | MVP                          | Built                                                              |
-| WG16 detail: Remove from team                    | dialog                   | `endGymStaffMembership`                                | `remove_staff` (manager: coach, front desk)       | MVP                          | Built; Leave for one's own row                                     |
-| OG11 invite row: email, role                     | dialog                   | `createGymStaffInvitation`                             | as above                                          | MVP                          | Built                                                              |
-| OG11 invite row: location                        | —                        | none                                                   | —                                                 | FUTURE                       | Not built (no per-member location)                                 |
-| OG11 roles panel                                 | staff page               | none (copy)                                            | —                                                 | MVP PARTIAL                  | Roles card from the MVP matrix (C10)                               |
-| Invitation resend / cancel                       | staff page               | `resendGymStaffInvitation`, `cancelGymStaffInvitation` | as inviting that role                             | MVP                          | Built; cancel confirmed                                            |
-| Loading, empty, error, retry                     | staff page               | —                                                      | —                                                 | MVP                          | Built                                                              |
-| Not available (404), role-restricted (403)       | console                  | `getGym`                                               | —                                                 | MVP                          | The console's shared states                                        |
-| E06 recipient page `/invite/staff`, mobile inbox | —                        | SF-93 recipient operations                             | —                                                 | BLOCKED (not in this ticket) | Not built; the invitations card says acceptance opens later        |
+| Artboard / state                           | Route                    | API operation                                          | Permission                                        | Status                       | Implementation                                                     |
+| ------------------------------------------ | ------------------------ | ------------------------------------------------------ | ------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------ |
+| WG16 header: eyebrow, title                | `/app/gyms/:gymId/staff` | `getGym` (console)                                     | `view_staff`                                      | MVP                          | Built                                                              |
+| WG16 header: Invite                        | same                     | `createGymStaffInvitation`                             | `invite_staff` (+ `invite_manager` for manager)   | MVP                          | Dialog: email, role                                                |
+| WG16 header: search                        | —                        | none                                                   | —                                                 | FUTURE                       | Not built (no search domain)                                       |
+| WG16 header: Roles & permissions → WG17    | `/settings/roles`        | none                                                   | —                                                 | FUTURE                       | Not linked; the roles card says the matrix in words                |
+| WG16 tile TEAM + breakdown                 | same                     | `listGymStaff` (active)                                | `view_staff`                                      | MVP                          | Shown once the list is complete                                    |
+| WG16 tile ON SHIFT NOW                     | —                        | none                                                   | —                                                 | FUTURE                       | Not built (R11)                                                    |
+| WG16 tile PENDING INVITES                  | same                     | `listGymStaffInvitations`                              | `view_staff_records`                              | MVP                          | Shown once the list is complete                                    |
+| WG16 roster: person, role, status          | same                     | `listGymStaff`                                         | `view_staff`                                      | MVP                          | Person, role, joined, status                                       |
+| WG16 roster: LOCATION, LAST ACTIVE         | —                        | none                                                   | —                                                 | FUTURE                       | Not built                                                          |
+| WG16 roster: INVITED rows                  | same                     | `listGymStaffInvitations`                              | `view_staff_records`                              | MVP PARTIAL                  | Their own Invitations card, never roster rows                      |
+| WG16 roster: ON SHIFT, Head coach          | —                        | none                                                   | —                                                 | FUTURE                       | Not built (R11, D-G03)                                             |
+| WG16 roster: ended staff                   | same                     | `listGymStaff?status=ended`                            | `view_staff_records`                              | MVP                          | Ended view                                                         |
+| WG16 detail panel: name, role, since       | same                     | `listGymStaff`                                         | `view_staff`                                      | MVP                          | Built                                                              |
+| WG16 detail panel: permission checklist    | —                        | none                                                   | —                                                 | MVP PARTIAL                  | The role in words (C10); no fighter notes, sparring, payments (R7) |
+| WG16 detail: Change role                   | dialog                   | `changeGymStaffRole`                                   | `change_staff_role` (manager: coach ⇄ front desk) | MVP                          | Built                                                              |
+| WG16 detail: Remove from team              | dialog                   | `endGymStaffMembership`                                | `remove_staff` (manager: coach, front desk)       | MVP                          | Built; Leave for one's own row                                     |
+| OG11 invite row: email, role               | dialog                   | `createGymStaffInvitation`                             | as above                                          | MVP                          | Built                                                              |
+| OG11 invite row: location                  | —                        | none                                                   | —                                                 | FUTURE                       | Not built (no per-member location)                                 |
+| OG11 roles panel                           | staff page               | none (copy)                                            | —                                                 | MVP PARTIAL                  | Roles card from the MVP matrix (C10)                               |
+| Invitation resend / cancel                 | staff page               | `resendGymStaffInvitation`, `cancelGymStaffInvitation` | as inviting that role                             | MVP                          | Built; cancel confirmed                                            |
+| Loading, empty, error, retry               | staff page               | —                                                      | —                                                 | MVP                          | Built                                                              |
+| Not available (404), role-restricted (403) | console                  | `getGym`                                               | —                                                 | MVP                          | The console's shared states                                        |
+| E06 recipient page `/invite/staff`         | `/invite/staff`          | SF-93 recipient operations                             | the invited address                               | MVP                          | Built by SF-133 (below); no web artboard                           |
+| Mobile inbox                               | —                        | SF-93 recipient operations                             | —                                                 | BLOCKED (not in this ticket) | Not built on the web                                               |
 
 ### Behaviour
 
@@ -646,3 +647,70 @@ unchanged since baseline 112):
   dark/light; axe; 375–1920 px), and the real-backend
   `e2e/real-api/gym-verification.spec.ts` (journeys A–AD with a local
   S3-compatible server and the operator task).
+
+## SF-133: the staff invitation recipient page (`/invite/staff`)
+
+The E06 email's link now has a page: an invited person can preview, sign up
+or sign in, verify the invited address, and accept or decline on the web. SF-93
+remains the domain; the only API addition is `resolveStaffInvitation`.
+
+### Design inventory
+
+Claude Design 112 (`1793198527-a0fc`) was read, not edited.
+
+| Artboard       | What it is                        | Used here                                          |
+| -------------- | --------------------------------- | -------------------------------------------------- |
+| OS1            | Staff invitation, mobile (390 pt) | Content: gym, role, inviter, abilities             |
+| OS1b           | Confirm email, mobile             | Content: "this is for another email", verify       |
+| OS2, OS3       | Mobile staff onboarding           | Not used: no web equivalent in this ticket         |
+| INV2           | Mobile invitation rows            | Not used: the inbox stays mobile                   |
+| E06            | The email itself                  | Unchanged; the link's fragment contract is kept    |
+| WFI1           | Coach invitation, web             | Composition: the column, frame and action layout   |
+| Web staff page | **Does not exist**                | `D-WEB-STAFF-INVITATION`, needs a product decision |
+
+This is an interim composition, not design parity. Proposed missing artboard:
+**WSI1 Staff invitation · web**, with the states below, in the WFI1 column.
+Nothing was added to Claude Design; that needs separate approval.
+
+### The token
+
+- It arrives only in the fragment (`/invite/staff#token=sfs_…`). The page reads
+  it in the browser, removes the fragment at once, and sends it only in request
+  bodies. The page sets `referrer: no-referrer` and `noindex`.
+- It is kept in this tab's `sessionStorage` so that it survives sign-up, the
+  code step and account registration. **This is a deliberate exception to "no
+  browser storage"**: the same approved pattern as the SF-60 coach invitation,
+  scoped to the tab, kept for an hour at most, bound to the first signed-in
+  viewer and dropped at any session boundary and on every final answer. It is
+  never in `localStorage`, a cookie, a URL, `returnTo`, a query key or a log.
+- A switched account drops it: the next person reopens the link from the email.
+
+### Who sees what
+
+| Viewer                                        | State (`data-invitation-state`)                                        |
+| --------------------------------------------- | ---------------------------------------------------------------------- |
+| No or malformed token                         | `missing`, no request                                                  |
+| Signed out, pending                           | `signed-out`: gym, role, inviter's first name, expiry                  |
+| Signed out, anything else                     | `unavailable`: one state for every other case, no oracle               |
+| Signed in, invited address not on the account | `wrong-account`: verify in place (SF-77/SF-78) or use another account  |
+| Recipient, account not finished               | `registration`: nothing is offered until it is done                    |
+| Recipient, pending                            | `pending`, `decline-confirm`: explicit answers only                    |
+| Recipient, already ended                      | `expired`, `cancelled`, `declined`                                     |
+| Recipient, accepted                           | `already-accepted`, or `access-ended` once the gym no longer grants it |
+| Recipient, already on the team (409)          | `already-staff`                                                        |
+| Too many requests, 5xx, dropped connection    | A notice with a retry; nothing is claimed until the server confirms it |
+
+An acceptance refreshes `resolveMyEntry` and `listMyGyms`, then opens the
+console of the gym the backend answered. Permissions come from the membership,
+so the page grants nothing itself. `/invite/coach` is unchanged; it shares only
+the extracted `shared/lib/pending-invitation-token` factory.
+
+### Delivery gate
+
+Sending E06 is off unless `GYM_STAFF_INVITATIONS=enabled` (on in dev and test).
+While off, `createGymStaffInvitation` and resend answer 409
+`staff_invitation: recipient_flow_unavailable`, and the invite dialog says
+nothing was created or sent. E05, E07 and coach invitations are not affected.
+
+Activation order: backend compatibility, then the recipient page deployed, then
+a production smoke test, then sending enabled under explicit release approval.

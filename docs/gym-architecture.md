@@ -185,8 +185,15 @@ OS2 and the mobile invitation inbox are the next frontend ticket.
   linking flow). The web page of the E06 link (`/invite/staff#token=…`, read
   once from the fragment) uses `previewStaffInvitation` (anonymous: gym name,
   role, inviter first name, expiry), `acceptStaffInvitation` and
-  `declineStaffInvitation` with the token in the body. Never put the token in
-  a route, query, storage or log.
+  `declineStaffInvitation` with the token in the body, and, signed in,
+  `resolveStaffInvitation` (SF-133: the viewer's own view in any status; 403
+  if the address isn't theirs, 410 if nothing is there). Never put the token
+  in a route, query, log, cookie or `localStorage`. The one exception is the
+  tab-scoped `sessionStorage` of SF-60 and SF-133, bound to one viewer (see
+  `gym-console-web.md`).
+- **Delivery gate (SF-133):** creating or resending answers `409
+staff_invitation: recipient_flow_unavailable` unless
+  `GYM_STAFF_INVITATIONS=enabled` (on in dev and test).
 - **Answers:** `410 invitation_unavailable` (expired, cancelled, declined,
   used token), `403 invitation_recipient_mismatch` (token of another address:
   offer to verify that address), `404` (an id not in the viewer's inbox),

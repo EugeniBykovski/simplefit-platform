@@ -366,7 +366,7 @@
       "failed": "Die Einladungen konnten nicht geladen werden.",
       "retry": "Erneut versuchen",
       "more": "Mehr anzeigen",
-      "notice": "Eingeladene können annehmen, sobald Team-Einladungen in SimpleFit freigeschaltet sind. Eine Einladung bleibt offen, bis sie abläuft, und du kannst sie erneut senden.",
+      "notice": "Eine Einladung bleibt offen, bis die Person antwortet oder sie abläuft. Du kannst sie erneut senden.",
       "status": {
         "pending": "Offen",
         "accepted": "Angenommen",
@@ -432,6 +432,7 @@
     "problems": {
       "limited": "Zu viele Anfragen. Versuch es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
       "limitedLater": "Zu viele Anfragen. Versuch es später erneut.",
+      "invitationsUnavailable": "Einladungen fürs Team sind noch nicht verfügbar. Es wurde nichts erstellt oder gesendet.",
       "pendingOtherRole": "Für diese Adresse ist schon eine Einladung für eine andere Rolle offen. Zieh sie zuerst zurück.",
       "alreadyActive": "Diese Person arbeitet schon in diesem Gym.",
       "noResends": "Keine erneuten Sendungen mehr. Zieh sie zurück und lade erneut ein.",

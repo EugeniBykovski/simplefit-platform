@@ -1,0 +1,106 @@
+{
+  "metaTitle": "Invitación de equipo",
+  "eyebrow": "Invitación de equipo",
+  "loading": "Cargando la invitación",
+  "checking": "Comprobando tu cuenta",
+  "title": "Únete a {gym} en SimpleFit.",
+  "joinAs": "Te invitan a unirte como",
+  "invitedBy": "Invitado por",
+  "inviter": "{name} ({role})",
+  "sentTo": "Enviada a",
+  "expires": "Caduca el",
+  "roles": {
+    "owner": "Propietario",
+    "manager": "Gerente",
+    "coach": "Entrenador",
+    "front_desk": "Recepción"
+  },
+  "abilities": {
+    "title": "Con este rol puedes",
+    "edit": "Editar los datos y la ubicación del gimnasio",
+    "invite": "Invitar a entrenadores y personal de recepción",
+    "workspace": "Abrir el espacio de trabajo del gimnasio",
+    "team": "Ver el equipo del gimnasio",
+    "private": "Ningún rol del gimnasio ve los datos privados de entrenamiento, los mensajes ni las notas de entrenador de los miembros."
+  },
+  "accept": "Aceptar invitación",
+  "accepting": "Aceptando…",
+  "acceptHint": "Solo te unes al gimnasio cuando aceptas. Tu cuenta y tus datos personales siguen siendo tuyos si te vas.",
+  "decline": {
+    "action": "Rechazar",
+    "pending": "Rechazando…",
+    "keep": "Conservar la invitación",
+    "confirm": "¿Rechazar la invitación a {gym}? No te unirás al equipo y el gimnasio tendría que invitarte de nuevo."
+  },
+  "backToInvitation": "Volver a la invitación",
+  "linkDoneHint": "Este correo ya está en tu cuenta. Ahora, revisa la invitación.",
+  "actions": {
+    "retry": "Reintentar",
+    "home": "Ir a SimpleFit",
+    "site": "Ir a la página de inicio de SimpleFit"
+  },
+  "signedOut": {
+    "body": "Para responder, inicia sesión o crea una cuenta. Confirmarás el correo invitado con un código; abrir este enlace no inicia tu sesión.",
+    "signIn": "Iniciar sesión",
+    "signUp": "Crear una cuenta"
+  },
+  "missing": {
+    "title": "Abre la invitación desde tu correo",
+    "body": "No encontramos ninguna invitación en este enlace, o la sesión de esta pestaña terminó. Vuelve a abrir el enlace del correo de invitación."
+  },
+  "mismatch": {
+    "title": "Esta invitación es para otro correo electrónico.",
+    "body": "Verifica el correo invitado en esta cuenta o inicia sesión con la cuenta que lo usa.",
+    "verify": "Verificar el correo invitado",
+    "switch": "Usar otra cuenta"
+  },
+  "registration": {
+    "title": "Primero termina tu cuenta.",
+    "body": "Podrás aceptar cuando tu cuenta esté configurada. Te traeremos de vuelta aquí.",
+    "action": "Terminar mi cuenta"
+  },
+  "states": {
+    "unavailable": {
+      "title": "Esta invitación no está disponible",
+      "body": "Puede que haya caducado o se haya cancelado, o que sea para otra persona. Pide al gimnasio que te invite de nuevo.",
+      "signedOut": "Puede que haya caducado o se haya cancelado. Si te la enviaron a ti, inicia sesión para ver qué pasó, o pide al gimnasio que te invite de nuevo."
+    },
+    "expired": {
+      "title": "Esta invitación ha caducado",
+      "body": "La invitación a {gym} ya no es válida. Pide al gimnasio que envíe una nueva."
+    },
+    "cancelled": {
+      "title": "Esta invitación se canceló",
+      "body": "{gym} canceló esta invitación. Pregunta al gimnasio si crees que es un error."
+    },
+    "declined": {
+      "title": "Rechazaste esta invitación",
+      "body": "Rechazaste la invitación a {gym} y no te uniste al equipo. El gimnasio puede invitarte de nuevo.",
+      "justNow": "No te uniste a {gym}. El gimnasio puede invitarte de nuevo si cambias de opinión."
+    },
+    "accepted": {
+      "title": "Estás en el equipo de {gym}",
+      "body": "Ya aceptaste esta invitación.",
+      "action": "Abrir el gimnasio"
+    },
+    "accessEnded": {
+      "title": "Ya no tienes acceso a este gimnasio",
+      "body": "Aceptaste esta invitación, pero tu acceso a {gym} ya terminó. Pregunta al gimnasio si crees que es un error."
+    },
+    "alreadyStaff": {
+      "title": "Ya trabajas en {gym}",
+      "body": "Tu cuenta ya está en el equipo de este gimnasio, así que no cambió nada."
+    }
+  },
+  "problems": {
+    "limited": {
+      "title": "Demasiados intentos.",
+      "body": "Espera unos minutos e inténtalo de nuevo."
+    },
+    "failed": {
+      "title": "No pudimos confirmarlo.",
+      "body": "Revisa tu conexión e inténtalo de nuevo. Nada se muestra como hecho hasta que el servidor lo confirme."
+    }
+  },
+  "entering": "Abriendo el gimnasio"
+}

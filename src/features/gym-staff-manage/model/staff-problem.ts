@@ -9,6 +9,7 @@ import { isApiError } from "@/shared/api/http/api-error";
  */
 export type StaffProblem =
   | { kind: "limited"; minutes: number | null }
+  | { kind: "invitationsUnavailable" }
   | { kind: "pendingOtherRole" }
   | { kind: "alreadyActive" }
   | { kind: "noResends" }
@@ -32,6 +33,10 @@ export function staffProblem(error: unknown): StaffProblem {
     };
   }
   if (error.code === "conflict") {
+    // SF-133: sending stays off until the recipient page is deployed and approved.
+    if (details["staff_invitation"] === "recipient_flow_unavailable") {
+      return { kind: "invitationsUnavailable" };
+    }
     if (details["staff_invitation"] === "pending_other_role") return { kind: "pendingOtherRole" };
     if (details["staff_membership"] === "already_active") return { kind: "alreadyActive" };
     if (details["staff_membership"] === "owner_requires_transfer") return { kind: "ownerTransfer" };

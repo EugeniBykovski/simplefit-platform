@@ -1,0 +1,106 @@
+{
+  "metaTitle": "Zaproszenie do zespołu",
+  "eyebrow": "Zaproszenie do zespołu",
+  "loading": "Ładujemy zaproszenie",
+  "checking": "Sprawdzamy Twoje konto",
+  "title": "Dołącz do {gym} w SimpleFit.",
+  "joinAs": "Zaproszenie do dołączenia jako",
+  "invitedBy": "Zaprasza",
+  "inviter": "{name} ({role})",
+  "sentTo": "Wysłano na adres",
+  "expires": "Wygasa",
+  "roles": {
+    "owner": "Właściciel",
+    "manager": "Menedżer",
+    "coach": "Trener",
+    "front_desk": "Recepcja"
+  },
+  "abilities": {
+    "title": "Z tą rolą możesz",
+    "edit": "Zmieniać dane i lokalizację klubu",
+    "invite": "Zapraszać trenerów i pracowników recepcji",
+    "workspace": "Otwierać przestrzeń roboczą klubu",
+    "team": "Widzieć zespół klubu",
+    "private": "Żadna rola w klubie nie widzi prywatnych danych treningowych członków, ich wiadomości ani notatek trenerów."
+  },
+  "accept": "Przyjmij zaproszenie",
+  "accepting": "Przyjmowanie…",
+  "acceptHint": "Dołączasz do klubu dopiero po przyjęciu zaproszenia. Jeśli odejdziesz, Twoje konto i dane osobowe zostają przy Tobie.",
+  "decline": {
+    "action": "Odrzuć",
+    "pending": "Odrzucanie…",
+    "keep": "Zostaw zaproszenie",
+    "confirm": "Odrzucić zaproszenie do {gym}? Nie dołączysz do zespołu, a klub będzie musiał zaprosić Cię ponownie."
+  },
+  "backToInvitation": "Wróć do zaproszenia",
+  "linkDoneHint": "Ten adres e-mail jest już przypisany do Twojego konta. Teraz sprawdź zaproszenie.",
+  "actions": {
+    "retry": "Spróbuj ponownie",
+    "home": "Przejdź do SimpleFit",
+    "site": "Przejdź na stronę główną SimpleFit"
+  },
+  "signedOut": {
+    "body": "Aby odpowiedzieć, zaloguj się lub utwórz konto. Zaproszony adres e-mail potwierdzisz kodem; samo otwarcie tego linku nie loguje.",
+    "signIn": "Zaloguj się",
+    "signUp": "Utwórz konto"
+  },
+  "missing": {
+    "title": "Otwórz zaproszenie z e-maila",
+    "body": "Nie znaleźliśmy zaproszenia w tym linku albo sesja tej karty się zakończyła. Otwórz ponownie link z e-maila z zaproszeniem."
+  },
+  "mismatch": {
+    "title": "To zaproszenie dotyczy innego adresu e-mail.",
+    "body": "Potwierdź zaproszony adres na tym koncie albo zaloguj się na konto, które go używa.",
+    "verify": "Potwierdź zaproszony adres",
+    "switch": "Użyj innego konta"
+  },
+  "registration": {
+    "title": "Najpierw dokończ konto.",
+    "body": "Zaproszenie przyjmiesz, gdy konto będzie gotowe. Potem wrócisz tutaj.",
+    "action": "Dokończ konto"
+  },
+  "states": {
+    "unavailable": {
+      "title": "To zaproszenie jest niedostępne",
+      "body": "Mogło wygasnąć, zostać wycofane albo być przeznaczone dla kogoś innego. Poproś klub o ponowne zaproszenie.",
+      "signedOut": "Mogło wygasnąć lub zostać wycofane. Jeśli wysłano je do Ciebie, zaloguj się, aby zobaczyć, co się stało, albo poproś klub o ponowne zaproszenie."
+    },
+    "expired": {
+      "title": "To zaproszenie wygasło",
+      "body": "Zaproszenie do {gym} już nie obowiązuje. Poproś klub o wysłanie nowego."
+    },
+    "cancelled": {
+      "title": "To zaproszenie zostało wycofane",
+      "body": "{gym} wycofał to zaproszenie. Jeśli to pomyłka, skontaktuj się z klubem."
+    },
+    "declined": {
+      "title": "Odrzucono to zaproszenie",
+      "body": "Zaproszenie do {gym} zostało odrzucone i nie dołączono do zespołu. Klub może zaprosić Cię ponownie.",
+      "justNow": "Nie dołączono do {gym}. Jeśli zmienisz zdanie, klub może zaprosić Cię ponownie."
+    },
+    "accepted": {
+      "title": "Jesteś w zespole {gym}",
+      "body": "To zaproszenie zostało już przyjęte.",
+      "action": "Otwórz klub"
+    },
+    "accessEnded": {
+      "title": "Nie masz już dostępu do tego klubu",
+      "body": "To zaproszenie zostało przyjęte, ale dostęp do {gym} już się skończył. Jeśli to pomyłka, skontaktuj się z klubem."
+    },
+    "alreadyStaff": {
+      "title": "Już pracujesz w {gym}",
+      "body": "Twoje konto jest już w zespole tego klubu, więc nic się nie zmieniło."
+    }
+  },
+  "problems": {
+    "limited": {
+      "title": "Zbyt wiele prób.",
+      "body": "Poczekaj kilka minut i spróbuj ponownie."
+    },
+    "failed": {
+      "title": "Nie udało się tego potwierdzić.",
+      "body": "Sprawdź połączenie i spróbuj ponownie. Nic nie jest pokazane jako zrobione, dopóki serwer tego nie potwierdzi."
+    }
+  },
+  "entering": "Otwieramy klub"
+}

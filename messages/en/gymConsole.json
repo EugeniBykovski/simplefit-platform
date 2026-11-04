@@ -366,7 +366,7 @@
       "failed": "We couldn’t load the invitations.",
       "retry": "Try again",
       "more": "Show more",
-      "notice": "Invited people can accept once staff invitations open in SimpleFit. An invitation stays pending until it expires, and you can resend it.",
+      "notice": "An invitation stays pending until the person answers or it expires. You can resend it.",
       "status": {
         "pending": "Pending",
         "accepted": "Accepted",
@@ -432,6 +432,7 @@
     "problems": {
       "limited": "Too many requests. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
       "limitedLater": "Too many requests. Try again later.",
+      "invitationsUnavailable": "Staff invitations aren't available yet. Nothing was created or sent.",
       "pendingOtherRole": "This address already has a pending invitation for another role. Cancel it first.",
       "alreadyActive": "This person already works at this gym.",
       "noResends": "No resends left. Cancel it and invite again.",
