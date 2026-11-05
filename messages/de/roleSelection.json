@@ -54,6 +54,11 @@
   "member": {
     "title": "Gym-Mitgliedschaften in deinem Konto: {count}",
     "body": "Du kannst Kurse buchen und deine Buchungen ansehen, ohne eine Rolle zu wählen.",
-    "action": "Meine Gyms öffnen"
+    "action": "Meine Gyms öffnen",
+    "join": {
+      "title": "Einem Gym als Mitglied beitreten?",
+      "body": "Gib den Code deines Gyms ein. Du musst vorher keine Rolle wählen.",
+      "action": "Gym-Code eingeben"
+    }
   }
 }

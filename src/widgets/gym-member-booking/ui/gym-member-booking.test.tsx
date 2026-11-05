@@ -343,7 +343,7 @@ describe("MemberClasses (F13 on the web, SF-100)", () => {
 });
 
 describe("MemberGyms (SF-100)", () => {
-  it("lists active memberships and pending requests only, without a profile", async () => {
+  it("lists active memberships, pending requests and history, without a profile", async () => {
     api({
       [`GET ${MEMBERSHIPS}`]: [
         list([
@@ -356,6 +356,8 @@ describe("MemberGyms (SF-100)", () => {
           membership({
             gym_member_id: "8b1b2c3d-0000-4000-8000-000000000003",
             status: "ended",
+            ended_at: "2026-10-31T10:00:00Z",
+            ended_reason: "left",
             gym: { gym_id: "3d0a7f52-1c8e-4b6a-9f20-5e7d1b3c9a66", name: "Old Gym" },
           }),
         ]),
@@ -366,7 +368,12 @@ describe("MemberGyms (SF-100)", () => {
     expect(link).toHaveAttribute("href", `/app/me/gyms/${GYM}/classes`);
     expect(screen.getByText("Kraków Boxing")).toBeVisible();
     expect(screen.getByText("Waiting for the gym to approve your request")).toBeVisible();
-    expect(screen.queryByText("Old Gym")).toBeNull();
+    // SF-134: history is listed, opens nothing and offers no action.
+    const old = screen.getByText("Old Gym").closest("li")!;
+    expect(old).toHaveAttribute("data-membership-status", "ended");
+    expect(within(old).getByText(/You left this gym/)).toBeVisible();
+    expect(within(old).queryByRole("link")).toBeNull();
+    expect(within(old).queryByRole("button")).toBeNull();
   });
 
   it("says when the account is not a member of any gym", async () => {

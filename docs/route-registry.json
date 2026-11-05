@@ -11,8 +11,8 @@
         "id": "gallery-1",
         "artboard": "GalleryIndex.dc.html",
         "title": "route gallery 1 / 3 · onboarding & fighter mobile",
-        "rows": 257,
-        "rowsNote": "242 Route Gallery rows + WCX1 (SF-54: added with its artboard WebContextSelect.dc.html, not yet listed in GalleryIndex) + FC1 and FC2 (SF-59: added with their artboard FighterCoaches.dc.html, not yet listed in GalleryIndex) + FCI1 and FCI2 (SF-76: added to FighterCoaches.dc.html, not yet listed in GalleryIndex) + FT1 and FT2 (SF-66: added to TrainingHub.dc.html and SessionDetail.dc.html in 1792569354-73b2, not yet listed in GalleryIndex) + FCI3 (SF-79: added to FighterCoaches.dc.html in 1792675284-1046, not yet listed in GalleryIndex) + WGC1 (SF-88: the web gym chooser in the WCX1 composition of WebContextSelect.dc.html, no artboard of its own; D-WEB-GYM-CONSOLE-MVP) + MGC1 (SF-89: the mobile gym chooser in the A04 composition of Workspaces.dc.html, no artboard of its own; D-MOBILE-GYM-SHELL-MVP) + WMG1, WMG2 and WMG3 (SF-100: the web member pages, no web artboard; F16 and F13 content; D-WEB-GYM-MEMBER-BOOKING) + MMG1 (SF-100: F16's 'My gyms' rows on mobile without the pass; D-MOBILE-GYM-MEMBER-BOOKING) + WSI1 (SF-133: the web staff invitation page, no web artboard; OS1 and OS1b content; D-WEB-STAFF-INVITATION)"
+        "rows": 260,
+        "rowsNote": "242 Route Gallery rows + WCX1 (SF-54: added with its artboard WebContextSelect.dc.html, not yet listed in GalleryIndex) + FC1 and FC2 (SF-59: added with their artboard FighterCoaches.dc.html, not yet listed in GalleryIndex) + FCI1 and FCI2 (SF-76: added to FighterCoaches.dc.html, not yet listed in GalleryIndex) + FT1 and FT2 (SF-66: added to TrainingHub.dc.html and SessionDetail.dc.html in 1792569354-73b2, not yet listed in GalleryIndex) + FCI3 (SF-79: added to FighterCoaches.dc.html in 1792675284-1046, not yet listed in GalleryIndex) + WGC1 (SF-88: the web gym chooser in the WCX1 composition of WebContextSelect.dc.html, no artboard of its own; D-WEB-GYM-CONSOLE-MVP) + MGC1 (SF-89: the mobile gym chooser in the A04 composition of Workspaces.dc.html, no artboard of its own; D-MOBILE-GYM-SHELL-MVP) + WMG1, WMG2 and WMG3 (SF-100: the web member pages, no web artboard; F16 and F13 content; D-WEB-GYM-MEMBER-BOOKING) + MMG1 (SF-100: F16's 'My gyms' rows on mobile without the pass; D-MOBILE-GYM-MEMBER-BOOKING) + WSI1 (SF-133: the web staff invitation page, no web artboard; OS1 and OS1b content; D-WEB-STAFF-INVITATION) + WMI1, WMG4 and WMG5 (SF-134: the member invitation page, join by code and the invitation inbox, no web artboard; A03, OF6 and E07 content; D-WEB-GYM-MEMBER-JOIN)"
       },
       {
         "id": "gallery-2",
@@ -8702,6 +8702,32 @@
       "screens": ["WSI1"]
     },
     {
+      "id": "web.invite.gym",
+      "platform": "web",
+      "path": "/invite/gym",
+      "params": [],
+      "name": "Gym invitation",
+      "surface": "GYM",
+      "shell": "web.minimal",
+      "parent": null,
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "PUBLIC",
+        "capability": null,
+        "phase": null
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(minimal)/invite/gym/page.tsx",
+        "note": "SF-134: the E07 link (/invite/gym#token=…); no web artboard (D-WEB-GYM-MEMBER-JOIN): an interim composition of WFI1 with the E07 content. The one-time token is read from the fragment in the browser only, the fragment removed, and the token kept in this tab's sessionStorage bound to the first signed-in viewer, never in a URL, returnTo or log. Anonymous preview (previewGymInvitation); sign-in, registration and WA5 continue back here with the token-free returnTo /invite/gym; signed in, resolveGymInvitation gives the viewer's own view in any status, and a 403 offers verifying the invited email in place (SF-77/SF-78) or another account. Explicit acceptGymInvitation or declineGymInvitation; an acceptance opens the classes of the gym the backend answered and creates a membership only."
+      },
+      "screens": ["WMI1"],
+      "discrepancies": ["D-WEB-GYM-MEMBER-JOIN"]
+    },
+    {
       "id": "web.app.me.gyms",
       "platform": "web",
       "path": "/app/me/gyms",
@@ -8722,10 +8748,62 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/app/(active)/me/gyms/page.tsx",
-        "note": "SF-100: the viewer's gyms as a member, account-level (ADR 0026 D-G07): no Fighter or Coach profile and no gym workspace is needed. Every row is the backend's (GET /api/v1/me/gym-memberships, every page): an active membership opens its classes, a pending request says it waits for the gym; ended, rejected and cancelled memberships book nothing and are not offered. F16's pass, plan, renewal, credits, PT pack and visit counts have no contract and are not built. Reached from the context switcher of every workspace sidebar and from WA6 role selection when the account holds a membership (D-WEB-GYM-MEMBER-BOOKING)."
+        "note": "SF-100: the viewer's gyms as a member, account-level (ADR 0026 D-G07): no Fighter or Coach profile and no gym workspace is needed. Every row is the backend's (GET /api/v1/me/gym-memberships, every page): an active membership opens its classes and can be left, a pending request says it waits for the gym and can be cancelled, and rejected, cancelled and ended memberships are listed as history and book nothing (SF-134). F16's pass, plan, renewal, credits, PT pack and visit counts have no contract and are not built. Reached from the context switcher of every workspace sidebar and from WA6 role selection (D-WEB-GYM-MEMBER-BOOKING)."
       },
       "discrepancies": ["D-WEB-GYM-MEMBER-BOOKING"],
       "screens": ["WMG1"]
+    },
+    {
+      "id": "web.app.me.gyms.join",
+      "platform": "web",
+      "path": "/app/me/gyms/join",
+      "params": [],
+      "name": "Join a gym",
+      "surface": "SHARED",
+      "shell": "web.app.active",
+      "parent": "web.app.me.gyms",
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": null
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/me/gyms/join/page.tsx",
+        "note": "SF-134: joining by code, account-level (D-G07). previewGymJoin shows the gym's name and whether it needs approval; joinGym is a separate press, sent once. An unknown, malformed, disabled or rotated code gets one answer; the code is sent only in request bodies, and no route carries it. The result is the backend's: requested, or active with the gym's explicit auto-approval. No web artboard (D-WEB-GYM-MEMBER-JOIN)."
+      },
+      "discrepancies": ["D-WEB-GYM-MEMBER-JOIN"],
+      "screens": ["WMG4"]
+    },
+    {
+      "id": "web.app.me.gyms.invitations",
+      "platform": "web",
+      "path": "/app/me/gyms/invitations",
+      "params": [],
+      "name": "Gym invitations",
+      "surface": "SHARED",
+      "shell": "web.app.active",
+      "parent": "web.app.me.gyms",
+      "nav": {
+        "type": "STANDALONE",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": null,
+        "phase": null
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/app/(active)/me/gyms/invitations/page.tsx",
+        "note": "SF-134: the viewer's pending member invitations (listMyGymInvitations, every page), token-free, matched by the backend to this account's verified addresses. Opening it accepts nothing; accept and decline are explicit, by id. Staff invitations are another domain and never appear. No web artboard (D-WEB-GYM-MEMBER-JOIN)."
+      },
+      "discrepancies": ["D-WEB-GYM-MEMBER-JOIN"],
+      "screens": ["WMG5"]
     },
     {
       "id": "web.app.me.gyms._gym-id.classes",
@@ -16419,7 +16497,14 @@
       "code": "WMG1",
       "name": "My gyms · web",
       "route": "web.app.me.gyms",
-      "states": ["active and pending", "no membership", "loading", "failed"],
+      "states": [
+        "active, pending and history",
+        "no membership",
+        "loading",
+        "failed",
+        "leave confirm",
+        "cancel request confirm"
+      ],
       "design": {
         "gallery": "gallery-1",
         "page": "fighter-mobile",
@@ -16520,6 +16605,81 @@
         "tag": "WEB_APP",
         "artboard": "OnbSInvite.dc.html",
         "note": "SF-133: no web artboard; OS1 and OS1b content in WFI1's column. Needs design approval (D-WEB-STAFF-INVITATION)."
+      }
+    },
+    {
+      "id": "WMI1",
+      "code": "WMI1",
+      "name": "Member invitation · web",
+      "route": "web.invite.gym",
+      "states": [
+        "loading",
+        "signed out",
+        "pending",
+        "decline confirm",
+        "wrong account",
+        "registration",
+        "expired",
+        "cancelled",
+        "declined",
+        "already accepted",
+        "membership ended",
+        "already member",
+        "unavailable",
+        "missing",
+        "limited",
+        "failed"
+      ],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "onboarding",
+        "section": "1 · Sign-in & identity · mobile",
+        "step": "1.7a",
+        "tag": "WEB_APP",
+        "artboard": "JoinInvite.dc.html",
+        "note": "SF-134: no web artboard; E07's content in WFI1's column. A03's QR, six letters, role and group have no contract. Needs design approval (D-WEB-GYM-MEMBER-JOIN)."
+      }
+    },
+    {
+      "id": "WMG4",
+      "code": "WMG4",
+      "name": "Join a gym · web",
+      "route": "web.app.me.gyms.join",
+      "states": [
+        "code",
+        "not found",
+        "limited",
+        "preview needing approval",
+        "preview with auto-approval",
+        "requested",
+        "active",
+        "already member",
+        "registration"
+      ],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "onboarding",
+        "section": "1 · Sign-in & identity · mobile",
+        "step": "1.7b",
+        "tag": "WEB_APP",
+        "artboard": "JoinInvite.dc.html",
+        "note": "SF-134: no web artboard; A03's code entry with eight symbols, and OF6's Send join request. Needs design approval (D-WEB-GYM-MEMBER-JOIN)."
+      }
+    },
+    {
+      "id": "WMG5",
+      "code": "WMG5",
+      "name": "Gym invitations · web",
+      "route": "web.app.me.gyms.invitations",
+      "states": ["list", "empty", "loading", "failed", "decline confirm", "accepted", "declined"],
+      "design": {
+        "gallery": "gallery-1",
+        "page": "onboarding",
+        "section": "1 · Sign-in & identity · mobile",
+        "step": "1.7c",
+        "tag": "WEB_APP",
+        "artboard": "JoinInvite.dc.html",
+        "note": "SF-134: no board for an in-app member inbox at all. Needs design approval (D-WEB-GYM-MEMBER-JOIN)."
       }
     }
   ],
@@ -18444,6 +18604,18 @@
       "status": "NEEDS_PRODUCT_DECISION",
       "routes": ["web.invite.staff"],
       "screens": ["WSI1"]
+    },
+    {
+      "id": "D-WEB-GYM-MEMBER-JOIN",
+      "title": "Web member join by code, E07 page and invitation inbox built without web artboards",
+      "sourceA": "Claude Design 1793198527-a0fc: A03 Join with invite (390 px: QR scan, six-letter code, role FIGHTER, group, 'Join as fighter'), OF6 (390 px: 'Send join request' inside Fighter onboarding, with prices), E07 (older 'claim your membership' copy linking to A03). No web board for join by code, the E07 page or an in-app member inbox, and no pending, rejected or ended membership states",
+      "sourceB": "SF-95 backend: eight symbols of the Crockford alphabet shown ABCD-EFGH, previewGymJoin, joinGym (requested, or active with auto-approval), no role, group, QR, plan or price; a fragment-token E07 link and a token-free inbox",
+      "mismatch": "The boards show a mobile, Fighter-onboarding, six-letter, QR, plan-priced flow; the domain is account-level, eight symbols, request-based and needs no Fighter profile",
+      "impact": "Web pages exist in an interim composition, not in an approved design",
+      "resolution": "Interim: WFI1's column for /invite/gym; the member page frame of SF-100 for /app/me/gyms/join and /app/me/gyms/invitations; approved tokens and components only. Proposed artboards: WMI1, WMG4, WMG5 and the WMG1 state sheet (docs/gym-console-web.md). Claude Design is unchanged and needs separate approval",
+      "status": "NEEDS_PRODUCT_DECISION",
+      "routes": ["web.invite.gym", "web.app.me.gyms.join", "web.app.me.gyms.invitations"],
+      "screens": ["WMI1", "WMG4", "WMG5"]
     }
   ]
 }

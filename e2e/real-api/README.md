@@ -149,6 +149,16 @@ where a refusal is the point. Google and Apple sign-in are not covered: see
 API as for the coach journeys; `E2E_API_LOG` makes the spec scan the log for
 tokens and codes, and `E2E_EVIDENCE` is a directory for its result file.
 
+## Member join and invitation (SF-134)
+
+`gym-member-join.spec.ts` runs journeys A–E through the browser: a new user joins by
+code and the owner approves in the console; auto-approval; the E07 link read from the
+queued email with `mix e2e.member_invitation_token --link` and opened as written; one
+person in two gyms; and the security cases. Classes are API fixtures with the owner's
+session, SQL only moves an expiry, resets rate limits and reads results, and direct
+member API calls appear only where a refusal or another client's view is the point.
+Member invitations must be on, as in dev. Google and Apple sign-in are not covered.
+
 ## Run
 
 ```bash

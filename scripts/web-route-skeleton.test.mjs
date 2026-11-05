@@ -52,8 +52,11 @@ const REAL_SCREENS = [
   "web.app.gyms._gym-id.settings.go-live",
   // SF-133: the E06 link's page.
   "web.invite.staff",
+  "web.invite.gym",
   // SF-100: the member's gyms (WMG1), one gym's classes (WMG2) and bookings (WMG3).
   "web.app.me.gyms",
+  "web.app.me.gyms.join",
+  "web.app.me.gyms.invitations",
   "web.app.me.gyms._gym-id.classes",
   "web.app.me.bookings",
   // SF-54: the Coach dashboard (WC1) and the context chooser (WCX1).

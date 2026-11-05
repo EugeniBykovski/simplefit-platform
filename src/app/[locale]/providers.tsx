@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 import { useEffect, type ReactNode } from "react";
 
 import { pendingCoachInvitation } from "@/entities/pending-coach-invitation";
+import { pendingGymInvitation } from "@/entities/pending-gym-invitation";
 import { pendingStaffInvitation } from "@/entities/pending-staff-invitation";
 import { onSessionBoundary } from "@/entities/session";
 import { getQueryClient } from "@/shared/api/query-client";
@@ -50,6 +51,7 @@ export function Providers({ children }: { children: ReactNode }) {
         // the next (SF-60): a token bound to an identity ends with it.
         pendingCoachInvitation.crossBoundary();
         pendingStaffInvitation.crossBoundary();
+        pendingGymInvitation.crossBoundary();
       }),
     [queryClient],
   );

@@ -85,7 +85,7 @@
       "loading": "Wczytywanie Twoich klubów",
       "empty": {
         "title": "Nie jesteś członkiem żadnego klubu",
-        "body": "Gdy klub zaakceptuje Cię jako członka, pojawi się tutaj i będziesz mieć możliwość rezerwowania jego zajęć. Dołączanie do klubu nie jest jeszcze dostępne w wersji webowej."
+        "body": "Dołącz do klubu za pomocą jego kodu albo przyjmij wysłane przez niego zaproszenie. Gdy już dołączysz, możesz tu rezerwować jego zajęcia."
       },
       "unnamedGym": "Klub",
       "activeLine": "Rezerwuj zajęcia i przeglądaj swoje rezerwacje",

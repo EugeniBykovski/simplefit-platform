@@ -54,6 +54,11 @@
   "member": {
     "title": "Gym memberships on your account: {count}",
     "body": "You can book classes and see your bookings without choosing a role.",
-    "action": "Open my gyms"
+    "action": "Open my gyms",
+    "join": {
+      "title": "Joining a gym as a member?",
+      "body": "Enter your gym's code. You don't need to choose a role first.",
+      "action": "Enter a gym code"
+    }
   }
 }

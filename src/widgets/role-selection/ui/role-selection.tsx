@@ -237,6 +237,7 @@ export function RoleSelection() {
           <Notice tone="muted" icon={InfoIcon}>
             {t("notSaved")}
           </Notice>
+          <MemberJoinShortcut />
         </aside>
       </OnboardingGrid>
     </OnboardingFrame>
@@ -271,6 +272,31 @@ function MemberShortcut() {
       <span className="flex flex-col gap-0.5">
         <b>{t("title", { count })}</b>
         <span>{t("body")}</span>
+      </span>
+    </Notice>
+  );
+}
+
+/**
+ * A person who only wants to join a gym needs no role first (SF-134). In the
+ * aside, under the artboard's own content, so WA6's cards and Continue stay where
+ * the design puts them. An account that holds a membership gets `MemberShortcut`.
+ */
+function MemberJoinShortcut() {
+  const t = useTranslations("roleSelection.member.join");
+  const list = useMyGymMemberships();
+  if (!list.complete || currentMemberships(list.memberships).length > 0) return null;
+  return (
+    <Notice tone="muted" icon={CalendarCheckIcon} data-member-join-shortcut>
+      <span className="flex flex-col items-start gap-0.5">
+        <b>{t("title")}</b>
+        <span>{t("body")}</span>
+        <Link
+          href={routeHref("web.app.me.gyms.join")}
+          className="rounded-xs type-caption font-extrabold underline outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          {t("action")}
+        </Link>
       </span>
     </Notice>
   );

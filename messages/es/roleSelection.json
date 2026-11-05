@@ -54,6 +54,11 @@
   "member": {
     "title": "Membresías de gimnasio en tu cuenta: {count}",
     "body": "Puedes reservar clases y ver tus reservas sin elegir un rol.",
-    "action": "Abrir mis gimnasios"
+    "action": "Abrir mis gimnasios",
+    "join": {
+      "title": "¿Te unes a un gimnasio como miembro?",
+      "body": "Ingresa el código de tu gimnasio. No necesitas elegir un rol antes.",
+      "action": "Ingresar un código de gimnasio"
+    }
   }
 }

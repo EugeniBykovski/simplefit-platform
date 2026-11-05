@@ -1130,7 +1130,7 @@ resolution and a status; the full text is in `discrepancies` of the registry.
 The 18 product decisions approved on 2026-10-06, the SF-27 decision of
 2026-10-07, the SF-45 decisions of 2026-10-08, the SF-52 decisions of
 2026-10-13 and the SF-53 and SF-54 decisions of 2026-10-14 carry `decision`
-and `decidedOn`. Four discrepancies await a product decision (marked in the table below); ten are `DEFERRED`.
+and `decidedOn`. Five discrepancies await a product decision (marked in the table below); ten are `DEFERRED`.
 
 | Id                                   | Status                 | Decision / summary                                                                                                                      |
 | ------------------------------------ | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
@@ -1176,6 +1176,7 @@ and `decidedOn`. Four discrepancies await a product decision (marked in the tabl
 | `D-WEB-GYM-ONBOARDING-FLOW`          | DEFERRED               | Web Gym owner registration: OG1, OG2, OG3, OG6b current; OG4–OG6, OG8–OG12 future; OG7, OG13, OG14 in gym settings; session-only access |
 | `D-WEB-GYM-VERIFICATION-GO-LIVE`     | RESOLVED               | OG7, WG10/OG13, OG14 in gym settings on SF-103: operator-decided verification, no publishing or switches                                |
 | `D-WEB-STAFF-INVITATION`             | NEEDS_PRODUCT_DECISION | /invite/staff (SF-133) has no web artboard: WFI1 composition with OS1/OS1b content                                                      |
+| `D-WEB-GYM-MEMBER-JOIN`              | NEEDS_PRODUCT_DECISION | /invite/gym, /app/me/gyms/join and /invitations (SF-134) have no web artboards: interim compositions with A03, OF6 and E07 content      |
 | `D-MOBILE-GYM-ONBOARDING-FLOW`       | DEFERRED               | Mobile Gym owner registration: the web steps natively, no mobile artboards; OG0 handoff superseded                                      |
 | `D-MOBILE-GYM-SHELL-MVP`             | DEFERRED               | Mobile gym shell: G01 with real data, gym rows in A04, MGC1 chooser, Pulse the only linked tab                                          |
 | `D-MOBILE-GYM-FIRST-RUN`             | RESOLVED               | Mobile gym owner first run: GR1 + four MVP GR2 steps on measured targets; FUTURE steps not built                                        |

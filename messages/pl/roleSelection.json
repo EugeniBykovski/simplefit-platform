@@ -54,6 +54,11 @@
   "member": {
     "title": "Członkostwa w klubach na Twoim koncie: {count}",
     "body": "Możesz rezerwować zajęcia i przeglądać swoje rezerwacje bez wybierania roli.",
-    "action": "Otwórz moje kluby"
+    "action": "Otwórz moje kluby",
+    "join": {
+      "title": "Dołączasz do klubu w roli członka?",
+      "body": "Wpisz kod dołączenia od swojego klubu. Nie musisz wcześniej wybierać roli.",
+      "action": "Wpisz kod dołączenia"
+    }
   }
 }

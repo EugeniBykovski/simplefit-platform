@@ -601,7 +601,7 @@
       },
       "unavailable": {
         "title": "Member invitations aren’t available yet",
-        "body": "Invited people can’t accept member invitations in SimpleFit yet, so they’re switched off. Nothing was created and no email was sent.",
+        "body": "Member invitations are switched off for now. Nothing was created and no email was sent.",
         "note": "Share your join code instead: people who enter it send you a join request.",
         "done": "OK"
       }

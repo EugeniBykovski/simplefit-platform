@@ -85,7 +85,7 @@
       "loading": "Loading your gyms",
       "empty": {
         "title": "You’re not a member of a gym",
-        "body": "When a gym approves you as a member, it appears here and you can book its classes. Joining a gym isn’t available on the web yet."
+        "body": "Join a gym with its code, or accept an invitation it sent you. Once you’re a member, you can book its classes here."
       },
       "unnamedGym": "Gym",
       "activeLine": "Book classes and see your bookings",

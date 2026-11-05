@@ -714,3 +714,86 @@ nothing was created or sent. E05, E07 and coach invitations are not affected.
 
 Activation order: backend compatibility, then the recipient page deployed, then
 a production smoke test, then sending enabled under explicit release approval.
+
+## SF-134: joining a gym as a member (`/invite/gym`, `/app/me/gyms/join`, `/invitations`)
+
+A person can now join a gym on the web with its code or an E07 invitation, see
+every state of their memberships, and answer invitations in an inbox. SF-95
+remains the domain; the only API addition is `resolveGymInvitation`.
+
+### Design inventory
+
+Claude Design 112 (`1793198527-a0fc`) was read, not edited, and is still the latest
+version.
+
+| Artboard                           | What it is                                  | Used here                                                         |
+| ---------------------------------- | ------------------------------------------- | ----------------------------------------------------------------- |
+| A03 `JoinInvite`                   | Mobile: QR, six-letter code, role, group    | Code entry only: QR, six letters, role and group have no contract |
+| OF6 `OnbFMembership`               | Mobile Fighter onboarding step, with prices | "Send join request" wording only                                  |
+| E07 `EmailMemberInvite`            | Email, older "claim" copy                   | Unchanged template; its approved content on the page              |
+| F13, F16                           | Mobile booking and pass                     | As in SF-100; no pass, plan or credits                            |
+| GC1                                | Mobile plans with prices                    | Not used: no such product here                                    |
+| WFI1                               | Coach invitation, web                       | The column of `/invite/gym`                                       |
+| StatesSheet, RouteGym, FlowGym     | No member join entries                      | Not applicable                                                    |
+| Web join, inbox, membership states | **Do not exist**                            | `D-WEB-GYM-MEMBER-JOIN`, needs a product decision                 |
+
+These are interim compositions from approved components, not design parity.
+Nothing was added to Claude Design; that needs separate approval.
+
+**Proposed artboards:**
+
+- **WMI1 Member invitation · web:** loading, signed out, pending, decline confirm,
+  wrong account, registration, expired, cancelled, declined, already accepted,
+  membership ended, already member, unavailable, missing, limited, failed.
+- **WMG4 Join a gym · web:** code, not found, limited, preview (approval or
+  auto-approval), requested, active, already member, registration.
+- **WMG5 Gym invitations · web:** list, empty, loading, failed, decline confirm,
+  accepted, declined.
+- **WMG1 state sheet:** active, requested, rejected, cancelled, ended (with reason),
+  leave and cancel confirmations.
+
+### Join by code
+
+The code is held only while it is typed and is sent only in request bodies: never
+a URL, query key, stored value or retry, and no route carries it. The backend reads
+it forgivingly, so this page checks only that something was typed; an unknown,
+malformed, disabled or rotated code gets one answer. The preview changes nothing.
+Joining is a separate press, sent once. Whether it is `requested` or `active` is the
+backend's answer, even when the preview hinted otherwise.
+
+### The invitation token
+
+As in SF-133: read from the fragment, removed at once, sent only in bodies.
+`/invite/gym` sets `referrer: no-referrer` and `noindex`.
+
+**Security trade-off:** the token stays in this tab's `sessionStorage` so that it
+survives sign-up, the code step and account registration, which leave the page. It
+is scoped to the tab, kept for an hour at most, bound to the first signed-in viewer
+and dropped at any session boundary and on every final answer. Script running in the
+page could read it, but it grants nothing alone: the backend still requires a session
+of the verified invited address. It is never in `localStorage`, a cookie, a URL,
+`returnTo`, a query key or a log. A switched account drops it, and the next person
+reopens the email. A malformed fragment opened in the same tab leaves an earlier valid
+token in place until its hour or session ends.
+
+### My gyms and the inbox
+
+My gyms lists `active`, `requested` and history (`rejected`, `cancelled`, `ended` with
+its reason), each from the backend, and offers only what the contract allows: open
+classes, leave, cancel a request. Leaving is asked first, ends only that membership,
+and the backend releases its upcoming bookings. Rejoining creates a new record.
+
+The inbox is `listMyGymInvitations` with `status=pending`, every page, token-free.
+Opening it accepts nothing. Staff invitations never appear in it.
+
+A membership grants no gym workspace, and joining creates no Fighter or Coach profile,
+staff membership or Coach–Fighter relationship. Entry points: the My gyms page, the
+context switcher of every workspace, and WA6 role selection.
+
+### Delivery gate
+
+E07 stays off in production: creating and resending answer 409
+`member_invitation: recipient_flow_unavailable` unless
+`GYM_MEMBER_INVITATIONS=enabled`. Activation order: compatible backend, then the
+recipient page deployed, then the production URL and token transport verified, then a
+production-safe smoke test, then sending enabled under explicit release approval.

@@ -121,6 +121,8 @@ test("no accessibility violations in the light theme · pending", async ({ page 
   await expect(page.getByRole("button", { name: "Accept invitation" })).toBeVisible({
     timeout: 15_000,
   });
+  // The theme's colour transition settles first, as in every axe test here.
+  await page.waitForTimeout(300);
   expect(await axe(page)).toEqual([]);
 });
 

@@ -1,0 +1,134 @@
+{
+  "actions": {
+    "join": "Rejoindre une salle",
+    "invitations": "Invitations",
+    "invitationsCount": "Invitations ({count})"
+  },
+  "sections": {
+    "active": "Actives",
+    "requests": "En attente de validation",
+    "history": "Précédentes"
+  },
+  "cancelRequest": {
+    "action": "Annuler la demande",
+    "label": "Annuler la demande pour rejoindre {gym}",
+    "title": "Annuler cette demande ?",
+    "body": "{gym} ne verra plus ta demande. Tu pourras demander à rejoindre la salle à nouveau avec son code.",
+    "keep": "Garder la demande",
+    "confirm": "Annuler la demande",
+    "pending": "Annulation…"
+  },
+  "leave": {
+    "action": "Quitter",
+    "label": "Quitter {gym}",
+    "title": "Quitter {gym} ?",
+    "body": "Ton adhésion prend fin maintenant, et tes prochaines réservations dans cette salle sont annulées. Pour revenir, tu auras besoin de son code d’accès ou d’une nouvelle invitation. Ton compte SimpleFit reste tel quel.",
+    "keep": "Rester membre",
+    "confirm": "Quitter la salle",
+    "pending": "Départ…"
+  },
+  "history": {
+    "rejected": "La salle a refusé cette demande",
+    "cancelled": "Tu as annulé cette demande",
+    "ended": {
+      "left": "Tu as quitté cette salle",
+      "removed": "La salle a mis fin à cette adhésion",
+      "account_deleted": "Cette adhésion est terminée",
+      "gym_closed": "Cette salle a fermé",
+      "unknown": "Cette adhésion est terminée"
+    },
+    "status": {
+      "rejected": "Refusée",
+      "cancelled": "Annulée",
+      "ended": "Terminée"
+    }
+  },
+  "problems": {
+    "notFound": "Ce n’est plus disponible. La liste a été actualisée.",
+    "alreadyMember": "Tu es déjà membre de cette salle.",
+    "changed": "Cela a changé entre-temps. La liste a été actualisée.",
+    "registration": "Termine d’abord la configuration de ton compte.",
+    "limited": "Trop de tentatives. Réessaie dans {minutes, plural, one {# minute} other {# minutes}}.",
+    "limitedLater": "Trop de tentatives. Réessaie plus tard.",
+    "session": "Ta session a pris fin. Reconnecte-toi.",
+    "unknown": "Nous n’avons pas pu le confirmer. Vérifie ta connexion et réessaie."
+  },
+  "join": {
+    "metaTitle": "Rejoindre une salle",
+    "eyebrow": "Adhésion",
+    "title": "Rejoindre une salle",
+    "lead": "Saisis le code que ta salle t’a donné. Tu verras le nom de la salle avant que quoi que ce soit soit envoyé.",
+    "label": "Code de la salle",
+    "hint": "Huit caractères, comme ABCD-EFGH. Les majuscules et les tirets sont facultatifs.",
+    "required": "Saisis le code de ta salle.",
+    "find": "Trouver la salle",
+    "finding": "Recherche…",
+    "notFound": "Nous n’avons trouvé aucune salle avec ce code. Vérifie-le auprès de ta salle : il a peut-être changé.",
+    "preview": {
+      "heading": "Est-ce bien ta salle ?",
+      "approval": "La salle valide ta demande avant que tu puisses réserver des cours.",
+      "instant": "Cette salle accepte les membres immédiatement lorsque ton identité est vérifiée. Sinon, elle valide d’abord ta demande.",
+      "submitApproval": "Envoyer la demande",
+      "submitInstant": "Rejoindre la salle",
+      "submitting": "Envoi…",
+      "other": "Utiliser un autre code"
+    },
+    "privacy": "La salle voit ton nom, tes réservations et ta présence. Ton journal d’entraînement reste privé, sauf si tu le partages. Rejoindre une salle ne crée aucun profil Fighter ou Coach ni aucun rôle d’équipe.",
+    "requested": {
+      "title": "Demande envoyée à {gym}",
+      "body": "C’est la salle qui décide. D’ici là, ta demande reste dans Mes salles, et tu peux l’y annuler.",
+      "action": "Aller à mes salles"
+    },
+    "active": {
+      "title": "Tu es membre de {gym}",
+      "body": "Tu peux voir ses cours et réserver une place.",
+      "action": "Ouvrir les cours"
+    },
+    "already": {
+      "title": "Tu es déjà membre de cette salle",
+      "body": "Ton compte est déjà membre, rien n’a donc changé.",
+      "action": "Aller à mes salles"
+    },
+    "registration": {
+      "title": "Termine d’abord ton compte.",
+      "body": "Tu pourras rejoindre une salle une fois ton compte configuré.",
+      "action": "Terminer mon compte"
+    },
+    "back": "Retour à mes salles"
+  },
+  "invitations": {
+    "metaTitle": "Invitations de salles",
+    "eyebrow": "Adhésion",
+    "title": "Invitations de salles",
+    "loading": "Chargement de tes invitations",
+    "retry": "Réessayer",
+    "lead": "Invitations envoyées aux adresses e-mail vérifiées de ton compte. Rien ne se passe tant que tu n’as pas répondu.",
+    "unnamedGym": "Salle",
+    "empty": {
+      "title": "Aucune invitation pour le moment",
+      "body": "Quand une salle invite l’une de tes adresses vérifiées, l’invitation apparaît ici. Tu peux aussi rejoindre une salle avec son code.",
+      "action": "Rejoindre une salle"
+    },
+    "invitedBy": "Invité par {name}",
+    "sentTo": "Envoyée à {address}",
+    "expires": "Expire le {date}",
+    "accept": "Accepter",
+    "accepting": "Acceptation…",
+    "acceptLabel": "Accepter l’invitation de {gym}",
+    "decline": {
+      "action": "Refuser",
+      "label": "Refuser l’invitation de {gym}",
+      "title": "Refuser cette invitation ?",
+      "body": "Tu ne rejoindras pas {gym}, et la salle devrait t’inviter à nouveau.",
+      "keep": "Garder l’invitation",
+      "confirm": "Refuser",
+      "pending": "Refus…"
+    },
+    "accepted": {
+      "text": "Tu es membre de {gym}.",
+      "action": "Ouvrir les cours"
+    },
+    "declined": "Tu as refusé l’invitation de {gym}.",
+    "back": "Retour à mes salles"
+  }
+}

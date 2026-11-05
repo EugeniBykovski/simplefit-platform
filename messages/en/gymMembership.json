@@ -1,0 +1,134 @@
+{
+  "actions": {
+    "join": "Join a gym",
+    "invitations": "Invitations",
+    "invitationsCount": "Invitations ({count})"
+  },
+  "sections": {
+    "active": "Active",
+    "requests": "Waiting for approval",
+    "history": "Earlier"
+  },
+  "cancelRequest": {
+    "action": "Cancel request",
+    "label": "Cancel the request to join {gym}",
+    "title": "Cancel this request?",
+    "body": "{gym} won't see your request any more. You can ask to join again with its code.",
+    "keep": "Keep the request",
+    "confirm": "Cancel request",
+    "pending": "Cancelling…"
+  },
+  "leave": {
+    "action": "Leave",
+    "label": "Leave {gym}",
+    "title": "Leave {gym}?",
+    "body": "Your membership ends now, and your upcoming bookings at this gym are cancelled. To come back, you'd need its join code or a new invitation. Your SimpleFit account stays as it is.",
+    "keep": "Stay a member",
+    "confirm": "Leave gym",
+    "pending": "Leaving…"
+  },
+  "history": {
+    "rejected": "The gym declined this request",
+    "cancelled": "You cancelled this request",
+    "ended": {
+      "left": "You left this gym",
+      "removed": "The gym ended this membership",
+      "account_deleted": "This membership has ended",
+      "gym_closed": "This gym has closed",
+      "unknown": "This membership has ended"
+    },
+    "status": {
+      "rejected": "Declined",
+      "cancelled": "Cancelled",
+      "ended": "Ended"
+    }
+  },
+  "problems": {
+    "notFound": "This is no longer available. The list has been refreshed.",
+    "alreadyMember": "You're already a member of this gym.",
+    "changed": "This changed in the meantime. The list has been refreshed.",
+    "registration": "Finish setting up your account first.",
+    "limited": "Too many attempts. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+    "limitedLater": "Too many attempts. Try again later.",
+    "session": "Your session ended. Sign in again.",
+    "unknown": "We couldn't confirm that. Check your connection and try again."
+  },
+  "join": {
+    "metaTitle": "Join a gym",
+    "eyebrow": "Membership",
+    "title": "Join a gym",
+    "lead": "Enter the code your gym gave you. You'll see the gym's name before anything is sent.",
+    "label": "Gym code",
+    "hint": "Eight characters, like ABCD-EFGH. Capital letters and hyphens are optional.",
+    "required": "Enter your gym's code.",
+    "find": "Find gym",
+    "finding": "Looking…",
+    "notFound": "We couldn't find a gym with that code. Check it with your gym: it may have changed.",
+    "preview": {
+      "heading": "Is this your gym?",
+      "approval": "The gym approves your request before you can book classes.",
+      "instant": "This gym accepts members straight away when your identity is verified. Otherwise it approves your request first.",
+      "submitApproval": "Send join request",
+      "submitInstant": "Join gym",
+      "submitting": "Sending…",
+      "other": "Use another code"
+    },
+    "privacy": "The gym sees your name, bookings and attendance. Your training log stays private unless you share it. Joining creates no Fighter or Coach profile and no staff role.",
+    "requested": {
+      "title": "Request sent to {gym}",
+      "body": "The gym decides. Your request is in My gyms until then, and you can cancel it there.",
+      "action": "Go to my gyms"
+    },
+    "active": {
+      "title": "You're a member of {gym}",
+      "body": "You can see its classes and book a place.",
+      "action": "Open classes"
+    },
+    "already": {
+      "title": "You're already a member of this gym",
+      "body": "Your account is already a member, so nothing changed.",
+      "action": "Go to my gyms"
+    },
+    "registration": {
+      "title": "Finish your account first.",
+      "body": "You can join a gym once your account is set up.",
+      "action": "Finish my account"
+    },
+    "back": "Back to my gyms"
+  },
+  "invitations": {
+    "metaTitle": "Gym invitations",
+    "eyebrow": "Membership",
+    "title": "Gym invitations",
+    "loading": "Loading your invitations",
+    "retry": "Try again",
+    "lead": "Invitations sent to the verified email addresses on your account. Nothing happens until you answer.",
+    "unnamedGym": "Gym",
+    "empty": {
+      "title": "No invitations right now",
+      "body": "When a gym invites one of your verified addresses, it appears here. You can also join with a gym's code.",
+      "action": "Join a gym"
+    },
+    "invitedBy": "Invited by {name}",
+    "sentTo": "Sent to {address}",
+    "expires": "Expires {date}",
+    "accept": "Accept",
+    "accepting": "Accepting…",
+    "acceptLabel": "Accept the invitation from {gym}",
+    "decline": {
+      "action": "Decline",
+      "label": "Decline the invitation from {gym}",
+      "title": "Decline this invitation?",
+      "body": "You won't join {gym}, and it would need to invite you again.",
+      "keep": "Keep the invitation",
+      "confirm": "Decline",
+      "pending": "Declining…"
+    },
+    "accepted": {
+      "text": "You're a member of {gym}.",
+      "action": "Open classes"
+    },
+    "declined": "You declined the invitation from {gym}.",
+    "back": "Back to my gyms"
+  }
+}

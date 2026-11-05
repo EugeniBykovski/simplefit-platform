@@ -42,6 +42,7 @@
   "memberships": {
     "heading": "Gym-Mitgliedschaft",
     "title": "Meine Gym-Kurse",
-    "line": "{count, plural, one {# Gym} other {# Gyms}} · buchen und Buchungen ansehen"
+    "line": "{count, plural, one {# Gym} other {# Gyms}} · buchen und Buchungen ansehen",
+    "join": "Einem Gym beitreten oder eine Einladung beantworten"
   }
 }
