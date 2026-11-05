@@ -2492,6 +2492,129 @@ export function useDeclineGymInvitation<TData = Awaited<ReturnType<typeof declin
 
 
 
+export const getResolveGymInvitationUrl = () => {
+
+
+
+
+  return `/api/v1/me/gym-invitations/resolve`
+}
+
+/**
+ * The invitation of an E07 token in any status (`pending`, `accepted`, `declined`, `cancelled`, `expired`), for
+ * a viewer whose verified email identity is the invited address, so the web page can say what became of it.
+ * Nothing is accepted, linked or changed. `previewGymInvitation` answers an anonymous holder and never reveals
+ * a status.
+ *
+ * * `invitation_recipient_mismatch` (403) - a current token of another address; verify that address
+ *   (`requestEmailIdentityLink`) or use the account that owns it.
+ * * `invitation_unavailable` (410) - an unknown token, or a used one of another address.
+ * * `rate_limited` - 30 previews and answers per 10 minutes per client.
+ * @summary A member invitation link, for its signed-in recipient
+ */
+export const resolveGymInvitation = async (gymInvitationTokenRequest: GymInvitationTokenRequest, options?: Parameters<typeof apiFetch>[1]): Promise<MyGymInvitationResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<MyGymInvitationResponse>(getResolveGymInvitationUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(gymInvitationTokenRequest)
+  }
+);}
+
+
+
+
+
+export const getResolveGymInvitationQueryKey = (gymInvitationTokenRequest?: BodyType<GymInvitationTokenRequest>,) => {
+    return [
+    'POST', `/api/v1/me/gym-invitations/resolve`, gymInvitationTokenRequest
+    ] as const;
+    }
+
+
+export const getResolveGymInvitationQueryOptions = <TData = Awaited<ReturnType<typeof resolveGymInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(gymInvitationTokenRequest: BodyType<GymInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof resolveGymInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getResolveGymInvitationQueryKey(gymInvitationTokenRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof resolveGymInvitation>>> = ({ signal }) => resolveGymInvitation(gymInvitationTokenRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof resolveGymInvitation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ResolveGymInvitationQueryResult = NonNullable<Awaited<ReturnType<typeof resolveGymInvitation>>>
+export type ResolveGymInvitationQueryError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function useResolveGymInvitation<TData = Awaited<ReturnType<typeof resolveGymInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
+ gymInvitationTokenRequest: BodyType<GymInvitationTokenRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof resolveGymInvitation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof resolveGymInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof resolveGymInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useResolveGymInvitation<TData = Awaited<ReturnType<typeof resolveGymInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
+ gymInvitationTokenRequest: BodyType<GymInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof resolveGymInvitation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof resolveGymInvitation>>,
+          TError,
+          Awaited<ReturnType<typeof resolveGymInvitation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useResolveGymInvitation<TData = Awaited<ReturnType<typeof resolveGymInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
+ gymInvitationTokenRequest: BodyType<GymInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof resolveGymInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary A member invitation link, for its signed-in recipient
+ */
+
+export function useResolveGymInvitation<TData = Awaited<ReturnType<typeof resolveGymInvitation>>, TError = ErrorType<UnauthorizedResponse | InvitationRecipientMismatchResponse | InvitationUnavailableResponse | ErrorResponse | InternalErrorResponse>>(
+ gymInvitationTokenRequest: BodyType<GymInvitationTokenRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof resolveGymInvitation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getResolveGymInvitationQueryOptions(gymInvitationTokenRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
 export const getGetMyGymInvitationUrl = (invitationId: string,) => {
 
 

@@ -253,7 +253,30 @@ function MemberShortcut() {
   const t = useTranslations("roleSelection.member");
   const list = useMyGymMemberships();
   const count = currentMemberships(list.memberships).length;
-  if (!list.complete || count === 0) return null;
+  if (!list.complete) return null;
+  if (count === 0) {
+    // A person who only wants to join a gym needs no role first (SF-134).
+    return (
+      <Notice
+        tone="muted"
+        icon={CalendarCheckIcon}
+        data-member-join-shortcut
+        action={
+          <Link
+            href={routeHref("web.app.me.gyms.join")}
+            className="rounded-xs type-caption font-extrabold whitespace-nowrap underline outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            {t("join.action")}
+          </Link>
+        }
+      >
+        <span className="flex flex-col gap-0.5">
+          <b>{t("join.title")}</b>
+          <span>{t("join.body")}</span>
+        </span>
+      </Notice>
+    );
+  }
   return (
     <Notice
       tone="olive"

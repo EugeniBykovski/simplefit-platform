@@ -42,6 +42,7 @@
   "memberships": {
     "heading": "Gym membership",
     "title": "My gym classes",
-    "line": "{count, plural, one {# gym} other {# gyms}} · book and see bookings"
+    "line": "{count, plural, one {# gym} other {# gyms}} · book and see bookings",
+    "join": "Join a gym or answer an invitation"
   }
 }

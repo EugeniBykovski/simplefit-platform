@@ -42,6 +42,7 @@
   "memberships": {
     "heading": "Członkostwo w klubie",
     "title": "Moje zajęcia w klubie",
-    "line": "{count, plural, one {# klub} few {# kluby} many {# klubów} other {# klubu}} · rezerwuj i przeglądaj rezerwacje"
+    "line": "{count, plural, one {# klub} few {# kluby} many {# klubów} other {# klubu}} · rezerwuj i przeglądaj rezerwacje",
+    "join": "Dołącz do klubu lub odpowiedz na zaproszenie"
   }
 }

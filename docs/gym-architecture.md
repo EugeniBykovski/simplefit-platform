@@ -240,7 +240,8 @@ account_registration`, `429` (20 per 10 min per client, 10 per user).
   `disableGymJoinCode`, `updateGymEnrollmentSettings` (`{auto_approve}`).
   New permission `manage_enrollment_settings` (owner, manager); the front
   desk reads the code. Auto-approval is off by default.
-- **Member invitations (E07):** off in production until `/invite/gym` exists
+- **Member invitations (E07):** the web page exists (SF-134), and sending stays
+  off in production until its release approval
   (`createGymMemberInvitation` and `resendGymMemberInvitation` answer `409
 member_invitation: recipient_flow_unavailable`; on in dev and test).
   gym side `createGymMemberInvitation`

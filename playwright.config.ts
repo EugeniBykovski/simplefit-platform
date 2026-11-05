@@ -186,6 +186,17 @@ export default defineConfig({
       testMatch: ["staff-invitation-storybook.spec.ts"],
       use: { ...device, baseURL: "http://127.0.0.1:3100", viewport: { width: 1440, height: 900 } },
     })),
+    // SF-134: member join, the invitation page and My gyms in their stories, in Firefox and WebKit too.
+    ...(
+      [
+        ["firefox", devices["Desktop Firefox"]],
+        ["webkit", devices["Desktop Safari"]],
+      ] as const
+    ).map(([engine, device]) => ({
+      name: `sf134-${engine}`,
+      testMatch: ["gym-membership-storybook.spec.ts"],
+      use: { ...device, baseURL: "http://127.0.0.1:3100", viewport: { width: 1440, height: 900 } },
+    })),
     // SF-38, SF-46: browser-engine portability of production behaviour that
     // rests on the engine (the country list comes from each engine's region
     // names; the date of birth from each engine's date input).

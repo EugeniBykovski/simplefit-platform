@@ -1,0 +1,134 @@
+{
+  "actions": {
+    "join": "Unirme a un gimnasio",
+    "invitations": "Invitaciones",
+    "invitationsCount": "Invitaciones ({count})"
+  },
+  "sections": {
+    "active": "Activas",
+    "requests": "Esperando aprobación",
+    "history": "Anteriores"
+  },
+  "cancelRequest": {
+    "action": "Cancelar solicitud",
+    "label": "Cancelar la solicitud para unirte a {gym}",
+    "title": "¿Cancelar esta solicitud?",
+    "body": "{gym} dejará de ver tu solicitud. Puedes volver a pedir unirte con su código.",
+    "keep": "Mantener la solicitud",
+    "confirm": "Cancelar solicitud",
+    "pending": "Cancelando…"
+  },
+  "leave": {
+    "action": "Salir",
+    "label": "Salir de {gym}",
+    "title": "¿Salir de {gym}?",
+    "body": "Tu membresía termina ahora y se cancelan tus próximas reservas en este gimnasio. Para volver, necesitarás su código de unión o una nueva invitación. Tu cuenta de SimpleFit sigue igual.",
+    "keep": "Seguir como miembro",
+    "confirm": "Salir del gimnasio",
+    "pending": "Saliendo…"
+  },
+  "history": {
+    "rejected": "El gimnasio rechazó esta solicitud",
+    "cancelled": "Cancelaste esta solicitud",
+    "ended": {
+      "left": "Saliste de este gimnasio",
+      "removed": "El gimnasio terminó esta membresía",
+      "account_deleted": "Esta membresía ha terminado",
+      "gym_closed": "Este gimnasio ha cerrado",
+      "unknown": "Esta membresía ha terminado"
+    },
+    "status": {
+      "rejected": "Rechazada",
+      "cancelled": "Cancelada",
+      "ended": "Terminada"
+    }
+  },
+  "problems": {
+    "notFound": "Esto ya no está disponible. Se actualizó la lista.",
+    "alreadyMember": "Ya eres miembro de este gimnasio.",
+    "changed": "Esto cambió mientras tanto. Se actualizó la lista.",
+    "registration": "Primero termina de configurar tu cuenta.",
+    "limited": "Demasiados intentos. Inténtalo de nuevo en {minutes, plural, one {# minuto} other {# minutos}}.",
+    "limitedLater": "Demasiados intentos. Inténtalo más tarde.",
+    "session": "Tu sesión terminó. Vuelve a iniciar sesión.",
+    "unknown": "No pudimos confirmarlo. Revisa tu conexión e inténtalo de nuevo."
+  },
+  "join": {
+    "metaTitle": "Unirme a un gimnasio",
+    "eyebrow": "Membresía",
+    "title": "Unirme a un gimnasio",
+    "lead": "Ingresa el código que te dio tu gimnasio. Verás el nombre del gimnasio antes de enviar nada.",
+    "label": "Código del gimnasio",
+    "hint": "Ocho caracteres, como ABCD-EFGH. Las mayúsculas y los guiones son opcionales.",
+    "required": "Ingresa el código de tu gimnasio.",
+    "find": "Buscar gimnasio",
+    "finding": "Buscando…",
+    "notFound": "No encontramos ningún gimnasio con ese código. Compruébalo con tu gimnasio: puede que haya cambiado.",
+    "preview": {
+      "heading": "¿Es este tu gimnasio?",
+      "approval": "El gimnasio aprueba tu solicitud antes de que puedas reservar clases.",
+      "instant": "Este gimnasio acepta miembros de inmediato cuando tu identidad está verificada. Si no, aprueba tu solicitud primero.",
+      "submitApproval": "Enviar solicitud",
+      "submitInstant": "Unirme al gimnasio",
+      "submitting": "Enviando…",
+      "other": "Usar otro código"
+    },
+    "privacy": "El gimnasio ve tu nombre, tus reservas y tu asistencia. Tu registro de entrenamiento sigue siendo privado a menos que lo compartas. Unirte no crea ningún perfil de Fighter o Coach ni rol de equipo.",
+    "requested": {
+      "title": "Solicitud enviada a {gym}",
+      "body": "El gimnasio decide. Mientras tanto, tu solicitud está en Mis gimnasios y puedes cancelarla allí.",
+      "action": "Ir a mis gimnasios"
+    },
+    "active": {
+      "title": "Eres miembro de {gym}",
+      "body": "Ya puedes ver sus clases y reservar una plaza.",
+      "action": "Abrir clases"
+    },
+    "already": {
+      "title": "Ya eres miembro de este gimnasio",
+      "body": "Tu cuenta ya es miembro, así que no cambió nada.",
+      "action": "Ir a mis gimnasios"
+    },
+    "registration": {
+      "title": "Primero termina tu cuenta.",
+      "body": "Podrás unirte a un gimnasio cuando tu cuenta esté configurada.",
+      "action": "Terminar mi cuenta"
+    },
+    "back": "Volver a mis gimnasios"
+  },
+  "invitations": {
+    "metaTitle": "Invitaciones a gimnasios",
+    "eyebrow": "Membresía",
+    "title": "Invitaciones a gimnasios",
+    "loading": "Cargando tus invitaciones",
+    "retry": "Reintentar",
+    "lead": "Invitaciones enviadas a los correos verificados de tu cuenta. No pasa nada hasta que respondas.",
+    "unnamedGym": "Gimnasio",
+    "empty": {
+      "title": "No hay invitaciones por ahora",
+      "body": "Cuando un gimnasio invite a uno de tus correos verificados, aparecerá aquí. También puedes unirte con el código de un gimnasio.",
+      "action": "Unirme a un gimnasio"
+    },
+    "invitedBy": "Invitado por {name}",
+    "sentTo": "Enviada a {address}",
+    "expires": "Caduca el {date}",
+    "accept": "Aceptar",
+    "accepting": "Aceptando…",
+    "acceptLabel": "Aceptar la invitación de {gym}",
+    "decline": {
+      "action": "Rechazar",
+      "label": "Rechazar la invitación de {gym}",
+      "title": "¿Rechazar esta invitación?",
+      "body": "No te unirás a {gym} y el gimnasio tendría que invitarte de nuevo.",
+      "keep": "Conservar la invitación",
+      "confirm": "Rechazar",
+      "pending": "Rechazando…"
+    },
+    "accepted": {
+      "text": "Eres miembro de {gym}.",
+      "action": "Abrir clases"
+    },
+    "declined": "Rechazaste la invitación de {gym}.",
+    "back": "Volver a mis gimnasios"
+  }
+}

@@ -85,7 +85,7 @@
       "loading": "Cargando tus gimnasios",
       "empty": {
         "title": "No eres miembro de ningún gimnasio",
-        "body": "Cuando un gimnasio te apruebe como miembro, aparecerá aquí y podrás reservar sus clases. Unirse a un gimnasio aún no está disponible en la web."
+        "body": "Únete a un gimnasio con su código o acepta una invitación que te haya enviado. Cuando seas miembro, podrás reservar sus clases aquí."
       },
       "unnamedGym": "Gimnasio",
       "activeLine": "Reserva clases y consulta tus reservas",

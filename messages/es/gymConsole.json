@@ -601,7 +601,7 @@
       },
       "unavailable": {
         "title": "Las invitaciones a miembros aún no están disponibles",
-        "body": "Las personas invitadas todavía no pueden aceptar invitaciones de miembro en SimpleFit, así que están desactivadas. No se creó nada ni se envió ningún correo.",
+        "body": "Las invitaciones a miembros están desactivadas por ahora. No se creó nada ni se envió ningún correo.",
         "note": "Comparte tu código de unión: quien lo ingrese te enviará una solicitud.",
         "done": "Entendido"
       }

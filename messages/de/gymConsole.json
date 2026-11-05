@@ -601,7 +601,7 @@
       },
       "unavailable": {
         "title": "Mitglieder-Einladungen sind noch nicht verfügbar",
-        "body": "Eingeladene können Mitglieder-Einladungen in SimpleFit noch nicht annehmen, deshalb sind sie ausgeschaltet. Es wurde nichts erstellt und keine E-Mail verschickt.",
+        "body": "Mitglieder-Einladungen sind vorerst ausgeschaltet. Es wurde nichts erstellt und keine E-Mail verschickt.",
         "note": "Teile stattdessen deinen Beitrittscode: Wer ihn eingibt, schickt dir eine Beitrittsanfrage.",
         "done": "OK"
       }

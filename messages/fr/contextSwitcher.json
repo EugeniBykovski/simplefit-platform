@@ -42,6 +42,7 @@
   "memberships": {
     "heading": "Adhésion en salle",
     "title": "Mes cours en salle",
-    "line": "{count, plural, one {# salle} other {# salles}} · réserve et consulte tes réservations"
+    "line": "{count, plural, one {# salle} other {# salles}} · réserve et consulte tes réservations",
+    "join": "Rejoindre une salle ou répondre à une invitation"
   }
 }

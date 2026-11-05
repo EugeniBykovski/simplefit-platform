@@ -1,0 +1,134 @@
+{
+  "actions": {
+    "join": "Dołącz do klubu",
+    "invitations": "Zaproszenia",
+    "invitationsCount": "Zaproszenia ({count})"
+  },
+  "sections": {
+    "active": "Aktywne",
+    "requests": "Czeka na akceptację",
+    "history": "Wcześniej"
+  },
+  "cancelRequest": {
+    "action": "Anuluj prośbę",
+    "label": "Anuluj prośbę o dołączenie do {gym}",
+    "title": "Anulować tę prośbę?",
+    "body": "{gym} nie zobaczy już Twojej prośby. Możesz poprosić ponownie, używając kodu klubu.",
+    "keep": "Zostaw prośbę",
+    "confirm": "Anuluj prośbę",
+    "pending": "Anulowanie…"
+  },
+  "leave": {
+    "action": "Opuść",
+    "label": "Opuść {gym}",
+    "title": "Opuścić {gym}?",
+    "body": "Twoje członkostwo kończy się teraz, a nadchodzące rezerwacje w tym klubie zostaną anulowane. Aby wrócić, potrzebujesz kodu dołączenia lub nowego zaproszenia. Twoje konto SimpleFit pozostaje bez zmian.",
+    "keep": "Zostań w klubie",
+    "confirm": "Opuść klub",
+    "pending": "Opuszczanie…"
+  },
+  "history": {
+    "rejected": "Klub odrzucił tę prośbę",
+    "cancelled": "Anulowano tę prośbę",
+    "ended": {
+      "left": "Opuszczono ten klub",
+      "removed": "Klub zakończył to członkostwo",
+      "account_deleted": "To członkostwo się zakończyło",
+      "gym_closed": "Ten klub został zamknięty",
+      "unknown": "To członkostwo się zakończyło"
+    },
+    "status": {
+      "rejected": "Odrzucono",
+      "cancelled": "Anulowano",
+      "ended": "Zakończono"
+    }
+  },
+  "problems": {
+    "notFound": "To nie jest już dostępne. Lista została odświeżona.",
+    "alreadyMember": "Należysz już do tego klubu.",
+    "changed": "W międzyczasie coś się zmieniło. Lista została odświeżona.",
+    "registration": "Najpierw dokończ konfigurację konta.",
+    "limited": "Zbyt wiele prób. Spróbuj ponownie za {minutes, plural, one {# minutę} few {# minuty} many {# minut} other {# minuty}}.",
+    "limitedLater": "Zbyt wiele prób. Spróbuj ponownie później.",
+    "session": "Sesja się zakończyła. Zaloguj się ponownie.",
+    "unknown": "Nie udało się tego potwierdzić. Sprawdź połączenie i spróbuj ponownie."
+  },
+  "join": {
+    "metaTitle": "Dołącz do klubu",
+    "eyebrow": "Członkostwo",
+    "title": "Dołącz do klubu",
+    "lead": "Wpisz kod, który dał Ci klub. Nazwę klubu zobaczysz, zanim cokolwiek zostanie wysłane.",
+    "label": "Kod klubu",
+    "hint": "Osiem znaków, np. ABCD-EFGH. Wielkie litery i myślniki są opcjonalne.",
+    "required": "Wpisz kod swojego klubu.",
+    "find": "Znajdź klub",
+    "finding": "Szukamy…",
+    "notFound": "Nie znaleźliśmy klubu z takim kodem. Sprawdź go w klubie: mógł się zmienić.",
+    "preview": {
+      "heading": "Czy to Twój klub?",
+      "approval": "Klub zaakceptuje Twoją prośbę, dopiero potem możesz rezerwować zajęcia.",
+      "instant": "Ten klub przyjmuje członków od razu, gdy Twoja tożsamość jest zweryfikowana. W przeciwnym razie najpierw akceptuje prośbę.",
+      "submitApproval": "Wyślij prośbę o dołączenie",
+      "submitInstant": "Dołącz do klubu",
+      "submitting": "Wysyłanie…",
+      "other": "Użyj innego kodu"
+    },
+    "privacy": "Klub widzi Twoje imię, rezerwacje i obecność. Dziennik treningów pozostaje prywatny, dopóki go nie udostępnisz. Dołączenie nie tworzy profilu zawodnika ani trenera, ani roli pracownika.",
+    "requested": {
+      "title": "Prośba wysłana do {gym}",
+      "body": "Decyzja należy do klubu. Do tego czasu prośba jest w sekcji Moje kluby i możesz ją tam anulować.",
+      "action": "Przejdź do moich klubów"
+    },
+    "active": {
+      "title": "Jesteś w klubie {gym}",
+      "body": "Możesz przeglądać jego zajęcia i rezerwować miejsce.",
+      "action": "Otwórz zajęcia"
+    },
+    "already": {
+      "title": "Już jesteś w tym klubie",
+      "body": "Twoje konto już należy do tego klubu, więc nic się nie zmieniło.",
+      "action": "Przejdź do moich klubów"
+    },
+    "registration": {
+      "title": "Najpierw dokończ konto.",
+      "body": "Dołączysz do klubu, gdy konto będzie gotowe.",
+      "action": "Dokończ konto"
+    },
+    "back": "Wróć do moich klubów"
+  },
+  "invitations": {
+    "metaTitle": "Zaproszenia do klubów",
+    "eyebrow": "Członkostwo",
+    "title": "Zaproszenia do klubów",
+    "loading": "Ładujemy Twoje zaproszenia",
+    "retry": "Spróbuj ponownie",
+    "lead": "Zaproszenia wysłane na zweryfikowane adresy e-mail Twojego konta. Nic się nie stanie, dopóki nie odpowiesz.",
+    "unnamedGym": "Klub",
+    "empty": {
+      "title": "Brak zaproszeń",
+      "body": "Gdy klub zaprosi jeden z Twoich zweryfikowanych adresów, zaproszenie pojawi się tutaj. Możesz też dołączyć za pomocą kodu klubu.",
+      "action": "Dołącz do klubu"
+    },
+    "invitedBy": "Zaprasza {name}",
+    "sentTo": "Wysłano na {address}",
+    "expires": "Wygasa {date}",
+    "accept": "Przyjmij",
+    "accepting": "Przyjmowanie…",
+    "acceptLabel": "Przyjmij zaproszenie od {gym}",
+    "decline": {
+      "action": "Odrzuć",
+      "label": "Odrzuć zaproszenie od {gym}",
+      "title": "Odrzucić to zaproszenie?",
+      "body": "Nie dołączysz do {gym}, a klub będzie musiał zaprosić Cię ponownie.",
+      "keep": "Zostaw zaproszenie",
+      "confirm": "Odrzuć",
+      "pending": "Odrzucanie…"
+    },
+    "accepted": {
+      "text": "Jesteś w klubie {gym}.",
+      "action": "Otwórz zajęcia"
+    },
+    "declined": "Odrzucono zaproszenie od {gym}.",
+    "back": "Wróć do moich klubów"
+  }
+}

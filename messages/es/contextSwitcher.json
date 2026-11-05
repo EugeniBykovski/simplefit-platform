@@ -42,6 +42,7 @@
   "memberships": {
     "heading": "Membresía de gimnasio",
     "title": "Mis clases del gimnasio",
-    "line": "{count, plural, one {# gimnasio} other {# gimnasios}} · reserva y consulta tus reservas"
+    "line": "{count, plural, one {# gimnasio} other {# gimnasios}} · reserva y consulta tus reservas",
+    "join": "Unirme a un gimnasio o responder a una invitación"
   }
 }

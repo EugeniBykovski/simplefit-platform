@@ -1,0 +1,134 @@
+{
+  "actions": {
+    "join": "Einem Gym beitreten",
+    "invitations": "Einladungen",
+    "invitationsCount": "Einladungen ({count})"
+  },
+  "sections": {
+    "active": "Aktiv",
+    "requests": "Wartet auf Freigabe",
+    "history": "Früher"
+  },
+  "cancelRequest": {
+    "action": "Anfrage zurückziehen",
+    "label": "Die Anfrage an {gym} zurückziehen",
+    "title": "Diese Anfrage zurückziehen?",
+    "body": "{gym} sieht deine Anfrage dann nicht mehr. Mit dem Code des Gyms kannst du erneut anfragen.",
+    "keep": "Anfrage behalten",
+    "confirm": "Anfrage zurückziehen",
+    "pending": "Wird zurückgezogen…"
+  },
+  "leave": {
+    "action": "Verlassen",
+    "label": "{gym} verlassen",
+    "title": "{gym} verlassen?",
+    "body": "Deine Mitgliedschaft endet sofort, und deine anstehenden Buchungen in diesem Gym werden storniert. Um zurückzukommen, brauchst du seinen Beitrittscode oder eine neue Einladung. Dein SimpleFit-Konto bleibt, wie es ist.",
+    "keep": "Mitglied bleiben",
+    "confirm": "Gym verlassen",
+    "pending": "Wird verlassen…"
+  },
+  "history": {
+    "rejected": "Das Gym hat diese Anfrage abgelehnt",
+    "cancelled": "Du hast diese Anfrage zurückgezogen",
+    "ended": {
+      "left": "Du hast dieses Gym verlassen",
+      "removed": "Das Gym hat diese Mitgliedschaft beendet",
+      "account_deleted": "Diese Mitgliedschaft ist beendet",
+      "gym_closed": "Dieses Gym hat geschlossen",
+      "unknown": "Diese Mitgliedschaft ist beendet"
+    },
+    "status": {
+      "rejected": "Abgelehnt",
+      "cancelled": "Zurückgezogen",
+      "ended": "Beendet"
+    }
+  },
+  "problems": {
+    "notFound": "Das ist nicht mehr verfügbar. Die Liste wurde aktualisiert.",
+    "alreadyMember": "Du bist bereits Mitglied dieses Gyms.",
+    "changed": "Das hat sich zwischenzeitlich geändert. Die Liste wurde aktualisiert.",
+    "registration": "Richte zuerst dein Konto fertig ein.",
+    "limited": "Zu viele Versuche. Versuche es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
+    "limitedLater": "Zu viele Versuche. Versuche es später erneut.",
+    "session": "Deine Sitzung ist abgelaufen. Melde dich erneut an.",
+    "unknown": "Das konnten wir nicht bestätigen. Prüfe deine Verbindung und versuche es erneut."
+  },
+  "join": {
+    "metaTitle": "Einem Gym beitreten",
+    "eyebrow": "Mitgliedschaft",
+    "title": "Einem Gym beitreten",
+    "lead": "Gib den Code ein, den du von deinem Gym bekommen hast. Du siehst den Namen des Gyms, bevor etwas gesendet wird.",
+    "label": "Gym-Code",
+    "hint": "Acht Zeichen, zum Beispiel ABCD-EFGH. Großbuchstaben und Bindestriche sind optional.",
+    "required": "Gib den Code deines Gyms ein.",
+    "find": "Gym suchen",
+    "finding": "Wird gesucht…",
+    "notFound": "Wir haben kein Gym mit diesem Code gefunden. Prüfe ihn bei deinem Gym: Er könnte sich geändert haben.",
+    "preview": {
+      "heading": "Ist das dein Gym?",
+      "approval": "Das Gym gibt deine Anfrage frei, bevor du Kurse buchen kannst.",
+      "instant": "Dieses Gym nimmt Mitglieder sofort auf, wenn deine Identität bestätigt ist. Sonst gibt es deine Anfrage zuerst frei.",
+      "submitApproval": "Beitrittsanfrage senden",
+      "submitInstant": "Gym beitreten",
+      "submitting": "Wird gesendet…",
+      "other": "Anderen Code verwenden"
+    },
+    "privacy": "Das Gym sieht deinen Namen, deine Buchungen und deine Anwesenheit. Dein Trainingslog bleibt privat, solange du ihn nicht teilst. Der Beitritt erstellt kein Fighter- oder Coach-Profil und keine Team-Rolle.",
+    "requested": {
+      "title": "Anfrage an {gym} gesendet",
+      "body": "Das Gym entscheidet. Bis dahin steht deine Anfrage unter Meine Gyms, und du kannst sie dort zurückziehen.",
+      "action": "Zu meinen Gyms"
+    },
+    "active": {
+      "title": "Du bist Mitglied bei {gym}",
+      "body": "Du kannst die Kurse sehen und einen Platz buchen.",
+      "action": "Kurse öffnen"
+    },
+    "already": {
+      "title": "Du bist bereits Mitglied dieses Gyms",
+      "body": "Dein Konto ist schon Mitglied, daher hat sich nichts geändert.",
+      "action": "Zu meinen Gyms"
+    },
+    "registration": {
+      "title": "Schließe zuerst dein Konto ab.",
+      "body": "Einem Gym beitreten kannst du, sobald dein Konto eingerichtet ist.",
+      "action": "Mein Konto abschließen"
+    },
+    "back": "Zurück zu meinen Gyms"
+  },
+  "invitations": {
+    "metaTitle": "Gym-Einladungen",
+    "eyebrow": "Mitgliedschaft",
+    "title": "Gym-Einladungen",
+    "loading": "Deine Einladungen werden geladen",
+    "retry": "Erneut versuchen",
+    "lead": "Einladungen an die bestätigten E-Mail-Adressen deines Kontos. Es passiert nichts, bis du antwortest.",
+    "unnamedGym": "Gym",
+    "empty": {
+      "title": "Gerade keine Einladungen",
+      "body": "Wenn ein Gym eine deiner bestätigten Adressen einlädt, erscheint die Einladung hier. Du kannst auch mit dem Code eines Gyms beitreten.",
+      "action": "Einem Gym beitreten"
+    },
+    "invitedBy": "Eingeladen von {name}",
+    "sentTo": "Gesendet an {address}",
+    "expires": "Läuft ab am {date}",
+    "accept": "Annehmen",
+    "accepting": "Wird angenommen…",
+    "acceptLabel": "Die Einladung von {gym} annehmen",
+    "decline": {
+      "action": "Ablehnen",
+      "label": "Die Einladung von {gym} ablehnen",
+      "title": "Diese Einladung ablehnen?",
+      "body": "Du trittst {gym} nicht bei, und das Gym müsste dich erneut einladen.",
+      "keep": "Einladung behalten",
+      "confirm": "Ablehnen",
+      "pending": "Wird abgelehnt…"
+    },
+    "accepted": {
+      "text": "Du bist Mitglied bei {gym}.",
+      "action": "Kurse öffnen"
+    },
+    "declined": "Du hast die Einladung von {gym} abgelehnt.",
+    "back": "Zurück zu meinen Gyms"
+  }
+}

@@ -265,7 +265,7 @@ async function joinStaff(
   );
 }
 
-/** A member joins by the gym's code and the owner approves (SF-95 API; no recipient UI exists). */
+/** A member joins by the gym's code and the owner approves (SF-95 API; the UI journey is gym-member-join.spec.ts). */
 async function joinMember(
   request: APIRequestContext,
   ownerBearer: string,

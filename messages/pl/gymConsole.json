@@ -601,7 +601,7 @@
       },
       "unavailable": {
         "title": "Zaproszenia dla członków nie są jeszcze dostępne",
-        "body": "Zaproszone osoby nie mogą jeszcze przyjmować zaproszeń w SimpleFit, dlatego są wyłączone. Nic nie zostało utworzone i nie wysłano żadnego e-maila.",
+        "body": "Zaproszenia dla członków są na razie wyłączone. Nic nie zostało utworzone i nie wysłano żadnego e-maila.",
         "note": "Zamiast tego udostępnij kod dołączenia: kto go wpisze, wyśle ci prośbę o dołączenie.",
         "done": "OK"
       }

@@ -54,6 +54,11 @@
   "member": {
     "title": "Adhésions à une salle sur votre compte : {count}",
     "body": "Vous pouvez réserver des cours et voir vos réservations sans choisir de rôle.",
-    "action": "Ouvrir mes salles"
+    "action": "Ouvrir mes salles",
+    "join": {
+      "title": "Vous rejoignez une salle en tant que membre ?",
+      "body": "Saisissez le code de votre salle. Vous n’avez pas besoin de choisir un rôle avant.",
+      "action": "Saisir un code de salle"
+    }
   }
 }

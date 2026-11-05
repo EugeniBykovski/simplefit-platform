@@ -85,7 +85,7 @@
       "loading": "Chargement de tes salles",
       "empty": {
         "title": "Tu n’es membre d’aucune salle",
-        "body": "Quand une salle valide ton adhésion, elle apparaît ici et tu peux réserver ses cours. Rejoindre une salle n’est pas encore possible sur le web."
+        "body": "Rejoins une salle avec son code, ou accepte une invitation qu’elle t’a envoyée. Une fois membre, tu peux réserver ses cours ici."
       },
       "unnamedGym": "Salle",
       "activeLine": "Réserve des cours et consulte tes réservations",

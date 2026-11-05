@@ -85,7 +85,7 @@
       "loading": "Deine Gyms werden geladen",
       "empty": {
         "title": "Du bist in keinem Gym Mitglied",
-        "body": "Sobald ein Gym dich als Mitglied bestätigt, erscheint es hier, und du kannst seine Kurse buchen. Einem Gym beitreten geht im Web noch nicht."
+        "body": "Tritt einem Gym mit seinem Code bei oder nimm eine Einladung an, die es dir geschickt hat. Sobald du Mitglied bist, kannst du hier seine Kurse buchen."
       },
       "unnamedGym": "Gym",
       "activeLine": "Kurse buchen und deine Buchungen ansehen",
