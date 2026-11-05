@@ -1,9 +1,9 @@
 /**
  * Verified invitation links (SF-80; simplefit-mobile docs/invitation-app-links.md).
  *
- * The E08 email links to `<this origin>/invite/coach#token=…` (SF-57). The
- * SimpleFit Boxing app may open that one path instead of the browser when
- * this domain says so in two association files:
+ * The E08 and E07 emails link to `<this origin>/invite/coach#token=…` (SF-57) and
+ * `/invite/gym#token=…` (SF-95). The SimpleFit Boxing app may open those two paths
+ * instead of the browser when this domain says so in two association files:
  *
  * - `/.well-known/apple-app-site-association` (iOS Universal Links) names the
  *   app as `<Apple Team ID>.com.simplefit.boxing`;
@@ -24,8 +24,9 @@
 /** The app identity both platforms use (simplefit-mobile app.config.ts, permanent). */
 export const APP_ID = "com.simplefit.boxing";
 
-/** The only path the app claims: the E08 invitation link. */
+/** The only paths the app claims: the E08 and E07 invitation links. */
 export const INVITATION_LINK_PATH = "/invite/coach";
+export const GYM_INVITATION_LINK_PATH = "/invite/gym";
 
 const TEAM_ID = /^[A-Z0-9]{10}$/;
 const SHA256_FINGERPRINT = /^[0-9A-F]{2}(?::[0-9A-F]{2}){31}$/;
@@ -73,8 +74,8 @@ export function appLinksEnv(): AppLinksEnv {
 
 /**
  * The apple-app-site-association document: the app handles exactly
- * `/invite/coach` (any query or fragment; the app never reads the fragment)
- * and nothing else on this domain.
+ * `/invite/coach` and `/invite/gym` (any query or fragment; the app never reads
+ * the fragment) and nothing else on this domain.
  */
 export function appleAppSiteAssociation(teamId: string) {
   return {
@@ -82,7 +83,10 @@ export function appleAppSiteAssociation(teamId: string) {
       details: [
         {
           appIDs: [`${teamId}.${APP_ID}`],
-          components: [{ "/": INVITATION_LINK_PATH, comment: "E08 coach invitation (SF-80)" }],
+          components: [
+            { "/": INVITATION_LINK_PATH, comment: "E08 coach invitation (SF-80)" },
+            { "/": GYM_INVITATION_LINK_PATH, comment: "E07 member invitation (SF-135)" },
+          ],
         },
       ],
     },
