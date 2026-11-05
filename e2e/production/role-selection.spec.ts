@@ -544,6 +544,8 @@ test.describe("geometry at the artboard size (1440 × 980)", () => {
     const account = page.locator("aside section");
     await expectBox(account, { x: 1056, y: 120, w: 320 });
     expect(await account.evaluate((el) => getComputedStyle(el).borderTopLeftRadius)).toBe("22px");
+    // SF-134: joining a gym is offered in the aside, leaving the artboard's cards in place.
+    await expect(page.locator("aside [data-member-join-shortcut]")).toBeVisible();
     expect(await overflow(page)).toBeLessThanOrEqual(0);
     await expect(cta(page)).toBeInViewport();
     expect(await axeViolations(page)).toEqual([]);
