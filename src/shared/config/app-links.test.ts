@@ -42,7 +42,10 @@ describe("association documents (SF-80)", () => {
         details: [
           {
             appIDs: [`${TEAM_ID}.com.simplefit.boxing`],
-            components: [{ "/": "/invite/coach", comment: "E08 coach invitation (SF-80)" }],
+            components: [
+              { "/": "/invite/coach", comment: "E08 coach invitation (SF-80)" },
+              { "/": "/invite/gym", comment: "E07 member invitation (SF-135)" },
+            ],
           },
         ],
       },
