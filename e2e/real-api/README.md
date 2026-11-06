@@ -197,9 +197,9 @@ the delivery worker does. The development email adapter never logs codes.
 defaults and go-live, journeys A–AD: the owner creates a gym, drafts, uploads
 a real PDF to the presigned URL (the backend confirms it with a presigned
 HEAD) and submits; staff are refused and no approval route exists; the
-operator task (`mix gyms.verification`, same database) lists, downloads the
-stored document, refuses gym staff as operators and a stale revision, and
-approves; Stripe tables stay empty; community stores nothing; go-live reads
+operator task (`mix gyms.verification`, same database, the dev build's fixture
+authority, SF-136) lists, downloads the stored document, refuses `--operator` and a
+stale revision, and approves; Stripe tables stay empty; community stores nothing; go-live reads
 staff, members and a class; revocation fails go-live closed and keeps every
 record; another gym's owner gets 404; a switched account keeps nothing; the
 API log holds no business detail, file name or signed URL. It needs an API

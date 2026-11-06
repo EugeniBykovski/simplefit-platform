@@ -626,7 +626,8 @@ unchanged since baseline 112):
 
 - **Authority:** every status, missing item and check is the backend's;
   verification and go-live are read again on focus (a revoked approval never
-  stays shown as Verified). Only an operator decides; no button approves.
+  stays shown as Verified). Only an operator decides; no button approves. In production no one can decide until
+  SF-110 (API ADR 0026, SF-136), so a submitted application waits.
 - **Draft:** saved against the application's revision (no revision starts an
   application, also after a rejection or revocation); a stale revision shows
   the conflict and reads the latest state; field errors map with
