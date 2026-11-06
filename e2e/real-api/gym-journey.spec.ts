@@ -444,6 +444,19 @@ test("N: a creation key replayed after its draft was discarded is refused; no gy
   await page.context().close();
 });
 
+/** WebKit may still be finishing a completion step's own navigation: retry the interrupted one (bounded). */
+async function gotoPastCompletion(page: Page, path: string) {
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      await page.goto(path);
+      return;
+    } catch (error) {
+      if (attempt >= 3 || !/interrupted/.test(String(error))) throw error;
+      await page.waitForLoadState();
+    }
+  }
+}
+
 test("J: a Coach who is also a Fighter gains Gym ownership and keeps both contexts", async ({
   browser,
   request,
@@ -469,17 +482,8 @@ test("J: a Coach who is also a Fighter gains Gym ownership and keeps both contex
   // before leaving, or it interrupts the next one (SF-104: WebKit timing).
   await page.waitForURL((url) => url.searchParams.get("step") === "complete");
 
-  // Then Fighter (WF0 → WF1 → WF6). WebKit may still be finishing the
-  // completion step's own navigation: retry the interrupted one (bounded).
-  for (let attempt = 0; ; attempt += 1) {
-    try {
-      await page.goto("/en/app/onboarding/fighter?intent=fighter");
-      break;
-    } catch (error) {
-      if (attempt >= 3 || !/interrupted/.test(String(error))) throw error;
-      await page.waitForLoadState();
-    }
-  }
+  // Then Fighter (WF0 → WF1 → WF6).
+  await gotoPastCompletion(page, "/en/app/onboarding/fighter?intent=fighter");
   await page.getByLabel("Name", { exact: true }).fill("Alex K.");
   await page.getByRole("textbox", { name: "Username" }).fill(`g${run()}`);
   await page.getByRole("combobox", { name: "Country" }).click();
@@ -493,7 +497,7 @@ test("J: a Coach who is also a Fighter gains Gym ownership and keeps both contex
   await expect(page.getByRole("link", { name: "Go to my home" })).toBeVisible();
 
   // Now a gym.
-  await page.goto("/en/app/onboarding/gym?intent=gym");
+  await gotoPastCompletion(page, "/en/app/onboarding/gym?intent=gym");
   await fillOg1(page, "Coach Alex Gym");
   await page.getByRole("button", { name: "Continue" }).click();
   await fillOg2(page);
