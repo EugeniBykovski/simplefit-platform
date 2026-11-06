@@ -1,7 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
 import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { gymBookingKey } from "@/entities/gym-booking";
 import { jsonResponse, renderWithProviders } from "@/test/render";
 
 import { EmailIdentityLinkFlow } from "./email-identity-link-flow";
@@ -143,6 +145,28 @@ describe("email identity link flow (SF-78)", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "Back to the invitation" }));
     expect(props.onDone).toHaveBeenCalledTimes(1);
+  });
+
+  it("SF-137: linking reads the gym inbox again, since it lists by verified address", async () => {
+    server({ [REQUEST]: ACCEPTED(), [CONFIRM]: LINKED() });
+    const read = vi.fn(() => Promise.resolve([]));
+    function GymInbox() {
+      useQuery({ queryKey: [...gymBookingKey, "invitations"], queryFn: read, staleTime: Infinity });
+      return null;
+    }
+    await renderWithProviders(
+      <>
+        <GymInbox />
+        <EmailIdentityLinkFlow {...handlers()} backLabel="Back" doneHint="Review it." />
+      </>,
+    );
+    await waitFor(() => expect(read).toHaveBeenCalledTimes(1));
+
+    await userEvent.click(await sendCode());
+    await userEvent.paste(CODE);
+    await screen.findByRole("heading", { name: "Email verified" });
+
+    await waitFor(() => expect(read).toHaveBeenCalledTimes(2));
   });
 
   it("sends the address that is in the field when the form is submitted", async () => {
