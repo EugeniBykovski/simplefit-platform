@@ -19,6 +19,8 @@ import { expect, type APIRequestContext, type Browser, type Page, test } from "@
  *   E2E_LEG=book      the member (E2E_EMAIL) books a class on the web
  *   E2E_LEG=bookings  the member's web My bookings shows E2E_EXPECT, or nothing
  *   E2E_LEG=gyms      the member's web My gyms shows a gym's status (E2E_STATUS)
+ *   E2E_LEG=join      the member (E2E_EMAIL, a new account) joins a gym by code on the web
+ *   E2E_LEG=checkin   the owner checks a member (E2E_NAME) in from the class roster
  *
  * State between legs is a file (E2E_STATE); it holds join codes, so it stays in
  * the test's scratch directory. Skipped without E2E_LEG: it runs only from the
@@ -318,6 +320,29 @@ test("the leg", async ({ browser, request }) => {
     await expect(
       page.locator(`[data-member-gym="${gym === "a" ? state.a : state.b}"]`).first(),
     ).toHaveAttribute("data-membership-status", process.env.E2E_STATUS ?? "active");
+  } else if (LEG === "join") {
+    const state = load();
+    const page = await newPage(browser);
+    await signIn(page, email);
+    await page.goto("/en/app/me/gyms/join");
+    await page.getByLabel("Gym code").fill(gym === "a" ? state.codeA : state.codeB);
+    await page.getByRole("button", { name: "Find gym" }).click();
+    await page.getByRole("button", { name: "Send join request" }).click();
+    await expect(page.locator('[data-join-state="requested"]')).toBeVisible();
+  } else if (LEG === "checkin") {
+    const { page, state } = await asOwner(browser, gym);
+    await page.goto(`/en/app/gyms/${gym === "a" ? state.a : state.b}/timetable`);
+    await page.getByRole("button", { name: "List", exact: true }).click();
+    const title = gym === "a" ? state.classA : state.classB;
+    await page
+      .locator("[data-list-view] [data-local-start]")
+      .filter({ hasText: title })
+      .first()
+      .click();
+    await page.locator("[data-occurrence-details]").getByRole("button", { name: "Roster" }).click();
+    const roster = page.getByRole("dialog", { name: title });
+    await roster.getByRole("button", { name: `Check in ${process.env.E2E_NAME}` }).click();
+    await expect(roster.locator("[data-check-in-done]")).toBeVisible();
   } else {
     throw new Error(`unknown leg ${LEG}`);
   }

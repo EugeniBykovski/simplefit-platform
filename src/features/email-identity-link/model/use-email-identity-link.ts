@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { gymBookingKey } from "@/entities/gym-booking";
 import { callWithSession, onSessionBoundary, SessionChangedError } from "@/entities/session";
 import {
   confirmMyEmailIdentityLink,
@@ -154,6 +155,8 @@ export function useEmailIdentityLink() {
     (outcome: LinkOutcome, address: string) => {
       setCode("");
       void client.invalidateQueries({ queryKey: getListMyEmailIdentitiesQueryKey() });
+      // The gym inbox lists invitations by verified address (SF-137).
+      void client.invalidateQueries({ queryKey: gymBookingKey });
       setState({ step: "linked", outcome, email: address });
     },
     [client],

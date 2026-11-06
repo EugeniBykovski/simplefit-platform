@@ -12,16 +12,16 @@ import { expect, type APIRequestContext, type Browser, type Page, test } from "@
  *
  *   new owner (UI) → gym setup (UI) → sign out / in → the same gym, no
  *   duplicate → staff invitation (UI) → the recipient's emailed link →
- *   acceptance → member enrollment → owner approval (UI) → a class → member
- *   booking (UI) → My bookings after a reload → roster check-in (UI) → the
+ *   acceptance (UI) → member join by code (UI) → owner approval (UI) → a class
+ *   (UI) → member booking (UI) → My bookings after a reload → roster check-in (UI) → the
  *   first-run checklist → multi-gym / multi-context identity → forged and
  *   foreign gym ids → revoked access while a page is open → account switch.
  *
- * Steps marked API-ASSISTED have no client UI in the product (SF-104 finding
- * F-01/F-02): accepting a staff invitation and joining a gym by code exist
- * only as API operations, so the recipient calls them with their own
- * session; the spec first proves that the emailed link reaches no
- * acceptance page. Everything else goes through the web UI. Backend facts
+ * Since SF-137 every recipient step is the real UI: the staff recipient opens the
+ * link from the queued E06 email and accepts on the page (SF-133), a member enters
+ * the gym's code (SF-134), and the owner creates the venue, template and class in the
+ * timetable. Direct API calls remain where a refusal or an idempotent repeat is the
+ * point, and for a second gym that is scenery for the isolation step. Backend facts
  * are read from the disposable database.
  */
 
@@ -130,6 +130,22 @@ async function register(page: Page, email: string, fullName: string, intent?: st
   await page.getByRole("checkbox", { name: /Privacy Policy/ }).click();
   await page.getByRole("button", { name: "Continue" }).click();
   await page.waitForURL((url) => url.pathname !== "/en/app/onboarding/account");
+}
+
+/** The link exactly as the queued E06 email carries it. */
+function emailedStaffLink(address: string): string {
+  const out = execFileSync("mix", ["e2e.staff_invitation_token", "--link", address], {
+    cwd: API_DIR,
+    env: { ...process.env, MIX_ENV: "dev", DATABASE_URL: disposableDatabase() },
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+  });
+  const link = out
+    .split("\n")
+    .map((line) => line.trim())
+    .find((line) => line.includes("/invite/staff#token="));
+  if (!link) throw new Error("no invitation was emailed");
+  return link;
 }
 
 async function signIn(page: Page, email: string) {
@@ -286,12 +302,16 @@ test("1–17: a new owner registers, sets up a gym, signs out and in, and reopen
   evidence.owner = { gym: state.a, gyms: 1, ownerMemberships: 1 };
 });
 
-test("staff: the owner invites a coach (UI); the emailed link reaches no acceptance page; acceptance is API-only", async ({
+test("staff: the owner invites a coach (UI); the recipient accepts on the emailed link's page (UI)", async ({
   browser,
   request,
 }) => {
   only();
-  state.coachBearer = await registerApi(request, people.coach.email, people.coach.name);
+  const recipient = await newPage(browser);
+  const coachBearer = sessionOf(recipient);
+  await register(recipient, people.coach.email, people.coach.name);
+  await expect.poll(() => coachBearer()).not.toBe("");
+
   const page = await newPage(browser);
   await signIn(page, people.owner.email);
   await go(page, `/en/app/gyms/${state.a}/staff`);
@@ -303,59 +323,55 @@ test("staff: the owner invites a coach (UI); the emailed link reaches no accepta
   await expect(dialog.getByRole("status")).toContainText("is pending until");
   await dialog.getByRole("button", { name: "Done" }).click();
   expect(count("gym_staff_invitations", `gym_id = '${state.a}' AND status = 'pending'`)).toBe(1);
+  const invitation = sql(
+    `SELECT id FROM gym_staff_invitations WHERE gym_id = '${state.a}' AND status = 'pending'`,
+  );
 
-  // The recipient's E06 link: <web>/invite/staff#token=… (the token stays in the fragment).
-  const recipient = await newPage(browser);
-  await signIn(recipient, people.coach.email);
-  await go(recipient, "/en/invite/staff#token=sf104-no-token-is-ever-sent-to-the-server");
-  const accept = recipient.getByRole("button", { name: /accept/i });
-  evidence.staffAcceptancePage = {
-    url: "/en/invite/staff",
-    acceptButtons: await accept.count(),
-    notFound: await recipient.getByText(/not found|doesn.t exist|couldn.t find/i).count(),
-  };
-  // F-01: no acceptance UI exists on the web.
-  await expect(accept).toHaveCount(0);
+  // The E06 link as the email carries it. The owner's session can't take the invitation.
+  const link = emailedStaffLink(people.coach.email);
+  expect(new URL(link).pathname).toBe("/invite/staff");
+  expect(
+    [403, 404].includes(
+      (
+        await call(
+          request,
+          state.ownerBearer,
+          "POST",
+          `/api/v1/me/staff-invitations/${invitation}/accept`,
+        )
+      ).status,
+    ),
+  ).toBe(true);
 
-  // API-ASSISTED: the recipient accepts from their own inbox (token-free, bound to the verified email).
-  const inbox = await call(
-    request,
-    state.coachBearer,
-    "GET",
-    "/api/v1/me/staff-invitations?status=pending",
-  );
-  const item = (inbox.body.invitations as { invitation_id: string }[])[0]!;
-  const stolen = await call(
-    request,
-    state.ownerBearer,
-    "POST",
-    `/api/v1/me/staff-invitations/${item.invitation_id}/accept`,
-  );
-  expect([403, 404]).toContain(stolen.status);
-  const accepted = await call(
-    request,
-    state.coachBearer,
-    "POST",
-    `/api/v1/me/staff-invitations/${item.invitation_id}/accept`,
-  );
-  expect(accepted.status).toBe(200);
-  const replay = await call(
-    request,
-    state.coachBearer,
-    "POST",
-    `/api/v1/me/staff-invitations/${item.invitation_id}/accept`,
-  );
-  expect([200, 409]).toContain(replay.status);
+  // Opening accepts nothing; the recipient accepts explicitly, on the page.
+  await recipient.goto(link);
+  const accept = recipient.getByRole("button", { name: "Accept invitation" });
+  await expect(accept).toBeVisible();
+  expect(recipient.url()).not.toContain("#token");
+  const coach = userId(people.coach.email);
+  expect(count("gym_staff_memberships", `gym_id = '${state.a}' AND user_id = '${coach}'`)).toBe(0);
+  await accept.click();
+  await recipient.waitForURL(`**/en/app/gyms/${state.a}`);
   expect(
     count(
       "gym_staff_memberships",
-      `gym_id = '${state.a}' AND user_id = '${userId(people.coach.email)}' AND status = 'active'`,
+      `gym_id = '${state.a}' AND user_id = '${coach}' AND status = 'active'`,
     ),
   ).toBe(1);
 
-  // The staff workspace appears for the coach, with role-limited permissions.
+  // A replay of the link changes nothing and says what happened.
+  await recipient.goto(link);
+  await expect(recipient.locator('[data-invitation-state="already-accepted"]')).toBeVisible();
+  expect(count("gym_staff_memberships", `gym_id = '${state.a}' AND user_id = '${coach}'`)).toBe(1);
+
+  // The owner sees the coach on the roster.
+  await go(page, `/en/app/gyms/${state.a}/staff`);
+  await expect(page.getByRole("table", { name: "Active staff" })).toContainText("Tomasz");
+
+  // The staff workspace, with role-limited permissions.
   await go(recipient, `/en/app/gyms/${state.a}`);
   await expect(recipient.getByText(GYM_A).first()).toBeVisible();
+  state.coachBearer = coachBearer();
   expect(
     (await call(request, state.coachBearer, "GET", `/api/v1/gyms/${state.a}/business-verification`))
       .status,
@@ -370,9 +386,8 @@ test("staff: the owner invites a coach (UI); the emailed link reaches no accepta
   ).toBe(403);
 });
 
-test("members: a member without a profile joins (API-ASSISTED), the owner approves in the UI", async ({
+test("members: a member without a profile joins by code (UI), the owner approves (UI)", async ({
   browser,
-  request,
 }) => {
   only();
   const memberPage = await newPage(browser);
@@ -380,32 +395,35 @@ test("members: a member without a profile joins (API-ASSISTED), the owner approv
   await register(memberPage, people.member.email, people.member.name);
   await expect.poll(() => memberBearer()).not.toBe("");
   state.memberBearer = memberBearer();
-  // F-02: no client offers joining by code; the member calls the API with their own session.
-  const rotated = await call(
-    request,
-    state.ownerBearer,
-    "POST",
-    `/api/v1/gyms/${state.a}/join-code/rotate`,
-  );
-  const code = (rotated.body.enrollment as { join_code: string }).join_code;
-  resetRateLimits();
-  const joined = await call(
-    request,
-    state.memberBearer,
-    "POST",
-    "/api/v1/me/gym-memberships/join",
-    { code },
-  );
-  expect(joined.status).toBe(201);
-  state.memberId = (joined.body.membership as { gym_member_id: string }).gym_member_id;
-  const again = await call(request, state.memberBearer, "POST", "/api/v1/me/gym-memberships/join", {
-    code,
-  });
-  expect([200, 409]).toContain(again.status);
 
+  // The owner turns the code on in the console and reads it from the screen.
   const owner = await newPage(browser);
   await signIn(owner, people.owner.email);
   await go(owner, `/en/app/gyms/${state.a}/members`);
+  await owner.getByRole("tab", { name: "Join code & approval" }).click();
+  await owner.getByRole("button", { name: "Turn on joining by code" }).click();
+  const code = (await owner.locator("[data-join-code]").textContent())?.trim() ?? "";
+  expect(code).toMatch(/^[0-9A-Z]{4}-[0-9A-Z]{4}$/);
+
+  const enter = async () => {
+    resetRateLimits();
+    await go(memberPage, "/en/app/me/gyms/join");
+    await memberPage.getByLabel("Gym code").fill(code);
+    await memberPage.getByRole("button", { name: "Find gym" }).click();
+    await expect(memberPage.locator("[data-join-gym]")).toHaveText(GYM_A);
+    await memberPage.getByRole("button", { name: "Send join request" }).click();
+    await expect(memberPage.locator('[data-join-state="requested"]')).toBeVisible();
+  };
+  await enter();
+  // Asking again returns the same request.
+  await enter();
+  const memberUser = userId(people.member.email);
+  state.memberId = sql(
+    `SELECT id FROM gym_members WHERE gym_id = '${state.a}' AND user_id = '${memberUser}'`,
+  );
+  expect(state.memberId).toMatch(/^[0-9a-f-]{36}$/);
+
+  await owner.reload();
   await owner.getByRole("tab", { name: /^Join requests/ }).click();
   await owner
     .locator("[data-members-requests]")
@@ -414,6 +432,13 @@ test("members: a member without a profile joins (API-ASSISTED), the owner approv
   await expect
     .poll(() => sql(`SELECT status FROM gym_members WHERE id = '${state.memberId}'`))
     .toBe("active");
+
+  // The member sees it in My gyms, and the classes open.
+  await go(memberPage, "/en/app/me/gyms");
+  await expect(memberPage.locator(`[data-member-gym="${state.a}"]`)).toHaveAttribute(
+    "data-membership-status",
+    "active",
+  );
 
   const member = userId(people.member.email);
   expect(
@@ -428,49 +453,48 @@ test("members: a member without a profile joins (API-ASSISTED), the owner approv
   expect(relationships()).toBe(relationshipsBefore);
 });
 
-test("class → booking (UI) → My bookings after reload → roster check-in (UI) → first-run checklist", async ({
+test("class (UI) → booking (UI) → My bookings after reload → roster check-in (UI) → first-run checklist", async ({
   browser,
   request,
 }) => {
   only();
   const a = state.a;
-  const venue = await call(request, state.ownerBearer, "POST", `/api/v1/gyms/${a}/venues`, {
-    client_request_id: randomUUID(),
-    gym_location_id: sql(`SELECT id FROM gym_locations WHERE gym_id = '${a}' LIMIT 1`),
-    name: "Ring 1",
-    capacity: 20,
-    time_zone: "Europe/Warsaw",
-  });
-  expect(venue.status).toBe(201);
-  const template = await call(
-    request,
-    state.ownerBearer,
-    "POST",
-    `/api/v1/gyms/${a}/class-templates`,
-    {
-      client_request_id: randomUUID(),
-      title: "Release boxing",
-      default_duration_minutes: 45,
-      default_capacity: 2,
-      default_venue_id: (venue.body.venue as { venue_id: string }).venue_id,
-    },
-  );
   const when = warsawSoon(60);
   expect(when.date, "run before 22:40 Warsaw time").toBe(warsaw(new Date()).date);
-  const occurrence = await call(
-    request,
-    state.ownerBearer,
-    "POST",
-    `/api/v1/gyms/${a}/class-occurrences`,
-    {
-      client_request_id: randomUUID(),
-      template_id: (template.body.template as { template_id: string }).template_id,
-      starts_at: when.instant,
-      capacity: 2,
-    },
+
+  // The owner creates the venue, template and class in the timetable.
+  const scheduler = await newPage(browser);
+  await signIn(scheduler, people.owner.email);
+  await go(scheduler, `/en/app/gyms/${a}/timetable`);
+  await scheduler.getByRole("button", { name: "Add a venue" }).click();
+  const venueForm = scheduler.getByRole("dialog", { name: "New venue" });
+  await venueForm.getByLabel("Name").fill("Ring 1");
+  await venueForm.getByRole("combobox", { name: "Time zone" }).click();
+  await scheduler.getByRole("combobox", { name: "Search time zones" }).fill("Europe/Warsaw");
+  await scheduler.keyboard.press("Enter");
+  await venueForm.getByLabel("Capacity (optional)").fill("20");
+  await venueForm.getByRole("button", { name: "Add venue" }).click();
+  await scheduler.getByRole("button", { name: "Add a class template" }).click();
+  const templateForm = scheduler.getByRole("dialog", { name: "New class template" });
+  await templateForm.getByLabel("Class name").fill("Release boxing");
+  await templateForm.getByLabel("Default length").fill("45");
+  await templateForm.getByLabel("Default capacity").fill("2");
+  await templateForm
+    .getByRole("combobox", { name: "Default venue (optional)", exact: true })
+    .click();
+  await scheduler.getByRole("option", { name: /^Ring 1/ }).click();
+  await templateForm.getByRole("button", { name: "Add template" }).click();
+  await expect(templateForm).toBeHidden();
+  await scheduler.getByRole("button", { name: "Class", exact: true }).click();
+  const classForm = scheduler.getByRole("dialog", { name: "New class" });
+  await classForm.getByLabel("Date", { exact: true }).fill(when.date);
+  await classForm.getByLabel(/^Start time/).fill(when.time);
+  await classForm.getByRole("button", { name: "Schedule class" }).click();
+  await expect(classForm).toBeHidden();
+  state.occurrence = sql(
+    `SELECT id FROM gym_class_occurrences WHERE gym_id = '${a}' AND series_id IS NULL ORDER BY inserted_at DESC LIMIT 1`,
   );
-  expect(occurrence.status).toBe(201);
-  state.occurrence = (occurrence.body.occurrence as { occurrence_id: string }).occurrence_id;
+  expect(state.occurrence).toMatch(/^[0-9a-f-]{36}$/);
 
   // The member books in the web UI.
   const member = await newPage(browser);
