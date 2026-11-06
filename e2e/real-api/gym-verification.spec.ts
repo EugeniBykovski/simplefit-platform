@@ -248,8 +248,8 @@ const GYM = `Ring Verify ${run}`;
 const LEGAL = `Ring Verify ${run} Sp. z o.o.`;
 const REGISTRATION = `KRS${run}`;
 const FILE = `registry-extract-${run}.pdf`;
-/** The operator on the API's GYM_VERIFICATION_OPERATORS list (SF-104: review is fail-closed). */
-const REVIEWER = process.env.E2E_OPERATOR ?? "reviewer@trust.simplefit.test";
+/** The dev build's fixture authority (SF-136): recorded as `local_fixture`, not a trusted operator. */
+const REVIEWER = "33333333-3333-4333-8333-333333333333";
 
 const state = {
   gymId: "",
@@ -385,13 +385,12 @@ test("G–H: staff cannot approve or reach the application; there is no approval
     ).not.toBe(200);
   }
 
-  // The operator path refuses gym staff and the owner: they are not on the
-  // configured operator list (SF-104), and even a listed staff member would be
-  // refused as not independent (API tests cover that case).
+  // SF-136: no one becomes an operator by naming themselves or anyone else; the flag is
+  // gone. API tests cover conflicts of interest by user id.
   for (const address of [OWNER, MANAGER, COACH]) {
     const refused = operator("approve", state.appId, "--revision", "4", "--operator", address);
     expect(refused.ok).toBe(false);
-    expect(refused.out).toMatch(/forbidden|not_independent/);
+    expect(refused.out).toContain("operators aren't named on the command line");
   }
   expect(sql(`SELECT status FROM gym_verification_applications WHERE id = '${state.appId}'`)).toBe(
     "submitted",
@@ -404,14 +403,14 @@ test("I–M: an independent operator reviews the stored document and approves; S
 }) => {
   only();
   // I: the operator's queue and the application.
-  // SF-104: an address outside the configured operator list is never an operator.
+  // SF-136: an address is never an operator, whoever it names.
   const impostor = operator("list", "--operator", `impostor-${run}@trust.simplefit.test`);
   expect(impostor.ok).toBe(false);
-  expect(impostor.out).toContain("forbidden");
-  const list = operator("list", "--operator", REVIEWER);
+  expect(impostor.out).toContain("operators aren't named on the command line");
+  const list = operator("list");
   expect(list.ok).toBe(true);
   expect(list.out).toContain(state.appId);
-  const shown = operator("show", state.appId, "--operator", REVIEWER);
+  const shown = operator("show", state.appId);
   expect(shown.out).toContain(LEGAL);
   expect(shown.out).toContain(FILE);
 
@@ -419,7 +418,7 @@ test("I–M: an independent operator reviews the stored document and approves; S
   const evidenceId = sql(
     `SELECT id FROM gym_verification_evidence WHERE application_id = '${state.appId}'`,
   );
-  const link = operator("document-url", state.appId, evidenceId, "--operator", REVIEWER);
+  const link = operator("document-url", state.appId, evidenceId);
   expect(link.ok).toBe(true);
   const url = link.out.split("\n").find((line) => line.startsWith("http"))!;
   const stored = await request.get(url);
@@ -436,14 +435,12 @@ test("I–M: an independent operator reviews the stored document and approves; S
   const revision = sql(
     `SELECT revision FROM gym_verification_applications WHERE id = '${state.appId}'`,
   );
-  expect(operator("approve", state.appId, "--revision", "1", "--operator", REVIEWER).out).toContain(
-    "stale",
-  );
-  const approved = operator("approve", state.appId, "--revision", revision, "--operator", REVIEWER);
+  expect(operator("approve", state.appId, "--revision", "1").out).toContain("stale");
+  const approved = operator("approve", state.appId, "--revision", revision);
   expect(approved.ok).toBe(true);
   expect(
     sql(
-      `SELECT event || '|' || operator || '|' || application_revision FROM gym_verification_events WHERE application_id = '${state.appId}' AND event = 'approved'`,
+      `SELECT event || '|' || operator_actor_id || '|' || application_revision FROM gym_verification_events WHERE application_id = '${state.appId}' AND event = 'approved'`,
     ),
   ).toBe(`approved|${REVIEWER}|${revision}`);
 
@@ -607,14 +604,7 @@ test("X–Z: revocation fails go-live closed and keeps every gym record", async 
             (SELECT count(*) FROM gym_verification_evidence WHERE gym_id = '${state.gymId}')`,
   );
 
-  const revoked = operator(
-    "revoke",
-    state.appId,
-    "--reason",
-    "business_closed",
-    "--operator",
-    REVIEWER,
-  );
+  const revoked = operator("revoke", state.appId, "--reason", "business_closed");
   expect(revoked.ok).toBe(true);
 
   const readiness = (
@@ -715,7 +705,7 @@ test("AC–AD: the API's log holds no document, business detail or signed URL; n
   expect(
     count(
       "gym_verification_events",
-      `application_id = '${state.appId}' AND event <> 'submitted' AND operator <> '${REVIEWER}'`,
+      `application_id = '${state.appId}' AND event <> 'submitted' AND (operator IS NOT NULL OR operator_actor_id <> '${REVIEWER}' OR operator_authority <> 'local_fixture')`,
     ),
   ).toBe(0);
 });
