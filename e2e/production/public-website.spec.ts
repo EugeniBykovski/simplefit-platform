@@ -136,10 +136,12 @@ const ROUTES: readonly PublicRoute[] = [
   {
     path: "/en/partners/apply",
     artboard: "BecomeSponsor",
-    designHeight: 420,
-    // The application cannot start yet, and the page says so under the action.
-    deviation: { px: 28, why: "application unavailable note" },
-    h1: "Apply in 5 minutes. No account needed to start.",
+    // SF-115: the current BecomeSponsor (SF-108), whose shorter title and copy no longer
+    // wrap: eyebrow 15.8, title 55, three 44 px steps with 22 px gaps (176), the 52 px
+    // action and three 22 px gaps between them = 364.8 (the old board measured 420).
+    // Start application opens the application.
+    designHeight: 365,
+    h1: "Apply to work with SimpleFit.",
     nav: "Partners",
   },
 ];

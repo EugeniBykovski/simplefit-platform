@@ -7,7 +7,7 @@
 import type { SponsorApplicationReviewResponseApplication } from './sponsorApplicationReviewResponseApplication';
 
 /**
- * A submitted sponsor application as a reviewer sees it (SF-114): exactly what was last sent, the open change request and the submitted documents' metadata. No storage keys or file names.
+ * A submitted sponsor application as a reviewer sees it (SF-114): exactly what was last sent, the open change request and the submitted documents' metadata. No storage keys or file names. SF-116 adds the decision time, the organization an approval created and the status history (who acted: applicant or operator, never which person).
  */
 export interface SponsorApplicationReviewResponse {
   application: SponsorApplicationReviewResponseApplication;

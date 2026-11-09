@@ -15,4 +15,8 @@ export const GrantOperatorPermissionPreviewRequestPermission = {
   sponsorsapplicationsread: 'sponsors.applications.read',
   sponsorsapplicationsclaim: 'sponsors.applications.claim',
   sponsorsapplicationsrequest_changes: 'sponsors.applications.request_changes',
+  sponsorsapplicationsapprove: 'sponsors.applications.approve',
+  sponsorsapplicationsreject: 'sponsors.applications.reject',
+  sponsorsapplicationsread_files: 'sponsors.applications.read_files',
+  sponsorsrestrict: 'sponsors.restrict',
 } as const;

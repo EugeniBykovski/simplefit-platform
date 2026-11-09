@@ -139,7 +139,7 @@ test.describe("choosing a journey", () => {
     ["coach", "/en/app/onboarding/coach", "Your coach profile"],
     ["gym", "/en/app/onboarding/gym", "Gym name & type"],
     // SPX2, the public sponsor page (SF-43).
-    ["sponsor", "/en/partners/apply", "Apply in 5 minutes. No account needed to start."],
+    ["sponsor", "/en/partners/apply", "Apply to work with SimpleFit."],
   ] as const) {
     test(`6, 9–16, 33 · ${intent}: the resolver is asked with intent=${intent}; its destination opens, nothing is written`, async ({
       page,
