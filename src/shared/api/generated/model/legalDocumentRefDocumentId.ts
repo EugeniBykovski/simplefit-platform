@@ -11,4 +11,5 @@ export type LegalDocumentRefDocumentId = typeof LegalDocumentRefDocumentId[keyof
 export const LegalDocumentRefDocumentId = {
   'fighter-coach-disclosure': 'fighter-coach-disclosure',
   'coach-data-rules': 'coach-data-rules',
+  'sponsor-application-declaration': 'sponsor-application-declaration',
 } as const;

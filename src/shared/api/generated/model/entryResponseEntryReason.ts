@@ -33,4 +33,9 @@ export const EntryResponseEntryReason = {
   gym_choice_required: 'gym_choice_required',
   sponsor_workspace_active: 'sponsor_workspace_active',
   sponsor_choice_required: 'sponsor_choice_required',
+  sponsor_application_draft: 'sponsor_application_draft',
+  sponsor_application_submitted: 'sponsor_application_submitted',
+  sponsor_application_under_review: 'sponsor_application_under_review',
+  sponsor_application_changes_requested: 'sponsor_application_changes_requested',
+  sponsor_application_closed: 'sponsor_application_closed',
 } as const;

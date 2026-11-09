@@ -13,8 +13,10 @@
  * once completed. `gym_onboarding`: start Gym setup (`gym_id` null; nothing is created) or resume the
  * draft gym the user owns (`gym_id`). `gym_home`: the gym workspace `gym_id` (a completed gym where the
  * user is active staff). `gym_selection`: the user chooses among their gym workspaces
- * (`gym_workspaces`). `sponsor_application`: begin a sponsor application; nothing is created and no
- * application state is implied. `sponsor_home`: the sponsor workspace `sponsor_id` (an active
+ * (`gym_workspaces`). `sponsor_application`: begin a sponsor application; nothing is created.
+ * `sponsor_application_draft`: resume the viewer's draft application. `sponsor_application_status`: the
+ * viewer's application status (submitted, under review, changes requested, or a closed one; read it
+ * with `getMySponsorApplication`). An application grants nothing. `sponsor_home`: the sponsor workspace `sponsor_id` (an active
  * organization where the user is an active member; SF-112). `context_selection` also answers a
  * `sponsor` intent with several sponsor workspaces and no valid remembered one. A client that does not
  * know a destination must fail visibly, never guess.
@@ -34,5 +36,7 @@ export const EntryResponseEntryDestination = {
   gym_home: 'gym_home',
   gym_selection: 'gym_selection',
   sponsor_application: 'sponsor_application',
+  sponsor_application_draft: 'sponsor_application_draft',
+  sponsor_application_status: 'sponsor_application_status',
   sponsor_home: 'sponsor_home',
 } as const;
