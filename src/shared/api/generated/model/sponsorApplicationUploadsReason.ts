@@ -5,7 +5,10 @@
  * SimpleFit API 0.1.0
  */
 
-export type SponsorApplicationUploadsReason = typeof SponsorApplicationUploadsReason[keyof typeof SponsorApplicationUploadsReason];
+/**
+ * @nullable
+ */
+export type SponsorApplicationUploadsReason = typeof SponsorApplicationUploadsReason[keyof typeof SponsorApplicationUploadsReason] | null;
 
 
 export const SponsorApplicationUploadsReason = {

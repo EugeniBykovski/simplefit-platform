@@ -12,4 +12,7 @@ export const GrantOperatorPermissionRequestPermission = {
   operatorsread: 'operators.read',
   operatorsmanage: 'operators.manage',
   auditread: 'audit.read',
+  sponsorsapplicationsread: 'sponsors.applications.read',
+  sponsorsapplicationsclaim: 'sponsors.applications.claim',
+  sponsorsapplicationsrequest_changes: 'sponsors.applications.request_changes',
 } as const;

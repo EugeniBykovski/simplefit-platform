@@ -14,4 +14,6 @@ export const OperatorActionPreviewResponsePreviewAction = {
   operatorsuspend: 'operator.suspend',
   operatorreinstate: 'operator.reinstate',
   operatorrevoke: 'operator.revoke',
+  sponsor_applicationclaim: 'sponsor_application.claim',
+  sponsor_applicationrequest_changes: 'sponsor_application.request_changes',
 } as const;
