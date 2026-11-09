@@ -229,3 +229,24 @@ Run it twice against the API on a disposable database: `E2E_STRIPE=disabled`
 `E2E_STRIPE_WEBHOOK_SECRET` (API with `STRIPE_BILLING_ENABLED=true
 STRIPE_MODE=test` and placeholder test credentials), with a published plan
 (`mix billing.catalog seed-provisional` and `publish`).
+
+`sponsor-application.spec.ts` (SF-115) drives the public Partners pages and the sponsor application:
+
+- **A, the public pages:** SPX1 and SPX2 open anonymously, with no invented brands or figures, pass axe, and don't overflow from 375 to 1920 px.
+- **B, registration:** registration started from SPA0 comes back to it and creates nothing.
+- **C, the full journey:** an email sign-in returns to SPA0, then the eight steps run with the backend's missing answers and a format error. A real upload follows: the first `PUT` is aborted and the retry is confirmed by the API. Then a refresh, Back and Forward, the declaration enforced, and a single submission. No organization, membership or `SPONSOR_WORKSPACE` results, and form URLs are corrected to the status.
+- **D, refusals:** a second submission is refused. Another user gets `404` for the application and the document, and the same browser signed in as that user shows nothing of the first.
+- **E, two tabs:** a stale revision is refused without overwriting anything, and the refused tab's text is kept.
+
+It needs the test-only legal fixtures (the published declaration), sponsor uploads on (the dev default), and storage on an S3-compatible server with CORS for `http://127.0.0.1:3100`. Without an emulator, `node e2e/real-api/fixtures/s3-stub.mjs` serves one on 4566. It's a stand-in that checks no signatures, so this is not a real-S3 test. For example:
+
+```bash
+node e2e/real-api/fixtures/s3-stub.mjs &
+env -u RESEND_API_KEY MIX_ENV=dev PORT=4115 DATABASE_URL=$E2E_DB PHX_SERVER=true \
+  CORS_ALLOWED_ORIGINS=http://127.0.0.1:3100 WEB_APP_URL=http://127.0.0.1:3100 \
+  AWS_S3_BUCKET=sf115-e2e AWS_REGION=us-east-1 AWS_ACCESS_KEY_ID=stub AWS_SECRET_ACCESS_KEY=stub \
+  AWS_S3_ENDPOINT=http://127.0.0.1:4566 \
+  mix run --no-halt -e 'Application.put_env(:simple_fit, SimpleFit.Legal, registry_path: "test/support/legal", allow_test_fixtures: true); SimpleFit.Legal.Registry.load()'
+```
+
+Operator review (claim, request changes) needs a WebAuthn step-up ceremony, so the changes-requested journey is covered by the component tests and stories, not here.

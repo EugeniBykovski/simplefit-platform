@@ -1,0 +1,440 @@
+{
+  "frameLabel": "Sponsorbewerbung",
+  "about": "Über Partnerschaften",
+  "loading": "Deine Bewerbung wird geladen…",
+  "rail": {
+    "label": "Schritte der Bewerbung",
+    "title": "Sponsorbewerbung",
+    "note": "Dein Entwurf bleibt in deinem SimpleFit-Konto.",
+    "done": "erledigt"
+  },
+  "progress": {
+    "step": "Schritt {step} von {total}",
+    "narrow": "Schritt {step} von {total} · {title}"
+  },
+  "steps": {
+    "company": {
+      "title": "Unternehmen",
+      "lead": "Erzähl uns, wer ihr seid."
+    },
+    "contact": {
+      "title": "Ansprechperson",
+      "lead": "Mit wem sollen wir sprechen?"
+    },
+    "interests": {
+      "title": "Partnerschaftsinteressen",
+      "lead": "Was möchtest du mit der Box-Community machen?"
+    },
+    "markets": {
+      "title": "Märkte",
+      "lead": "Wo bist du interessiert?"
+    },
+    "budget": {
+      "title": "Geschätztes Budget",
+      "lead": "Eine Spanne reicht."
+    },
+    "goals": {
+      "title": "Ziele",
+      "lead": "Erzähl uns von deiner Marke und was du vorhast."
+    },
+    "uploads": {
+      "title": "Uploads",
+      "lead": "Optional. Du kannst dich auch ohne Dateien bewerben."
+    },
+    "review": {
+      "title": "Prüfen und absenden",
+      "lead": "Prüfe deine Antworten. SimpleFit prüft jede Bewerbung."
+    }
+  },
+  "changes": {
+    "title": "SimpleFit bittet um Änderungen:",
+    "rest": "Deine anderen Antworten bleiben, wie sie sind.",
+    "locked": "Jetzt können nur die Antworten geändert werden, nach denen SimpleFit gefragt hat."
+  },
+  "actions": {
+    "back": "Zurück",
+    "next": "Speichern und weiter",
+    "submit": "Bewerbung absenden",
+    "submitting": "Wird gesendet…",
+    "resubmit": "An SimpleFit zurücksenden"
+  },
+  "save": {
+    "saving": "Wird gespeichert…",
+    "saved": "In deinem Konto gespeichert",
+    "failed": "Nicht gespeichert",
+    "unsaved": "Ungespeicherte Änderungen"
+  },
+  "errors": {
+    "required": {
+      "company_name": "Gib den Namen deines Unternehmens ein.",
+      "website": "Gib deine Website ein.",
+      "country_code": "Wähle ein Land.",
+      "industry": "Wähle eine Branche.",
+      "contact_full_name": "Gib deinen Namen ein.",
+      "contact_position": "Gib deine Position ein.",
+      "contact_email": "Gib eine E-Mail-Adresse wie name@company.com ein.",
+      "contact_phone": "Gib eine Telefonnummer ein.",
+      "interests": "Wähle mindestens ein Interesse.",
+      "market_scope": "Wähle, wo du interessiert bist.",
+      "market_countries": "Füge mindestens ein Land hinzu.",
+      "market_cities": "Füge mindestens eine Stadt hinzu.",
+      "budget_band": "Wähle eine Spanne.",
+      "goals": "Erzähl uns von deinen Zielen."
+    },
+    "requiredGeneric": "Beantworte diese Frage.",
+    "tooLong": "Das ist zu lang.",
+    "invalidChoice": "Wähle eine der Optionen.",
+    "invalidFormat": "Prüfe das Format dieser Antwort.",
+    "notRequested": "SimpleFit hat nicht darum gebeten, diese Antwort zu ändern.",
+    "invalid": "Prüfe diese Antwort.",
+    "invalidEmail": "Gib eine E-Mail-Adresse wie name@company.com ein.",
+    "invalidPhone": "Gib die Nummer im internationalen Format ein, z. B. +48221234567.",
+    "invalidWebsite": "Gib eine Adresse ein, die mit https:// beginnt."
+  },
+  "fields": {
+    "optional": "optional",
+    "companyName": "Name des Unternehmens",
+    "website": "Website",
+    "websiteHelp": "Beginnt mit https://",
+    "country": "Land",
+    "countryPlaceholder": "Land auswählen",
+    "countrySearch": "Länder suchen",
+    "countryEmpty": "Kein Land gefunden.",
+    "logo": "Logo",
+    "industry": "Branche",
+    "fullName": "Vollständiger Name",
+    "position": "Position",
+    "workEmail": "Geschäftliche E-Mail",
+    "workEmailHelp": "Wir nutzen sie, um über deine Bewerbung zu sprechen. Sie ändert nichts an deiner Anmeldung.",
+    "phone": "Telefon",
+    "phoneHelp": "Internationales Format, z. B. +48221234567.",
+    "contactPrivacy": "Wir nutzen diese Angaben nur, um über deine Bewerbung zu sprechen. Athleten und Gyms sehen sie nie.",
+    "interests": "Wähle mindestens eins",
+    "interestsHelp": "So erfahren wir, was dich interessiert. Es wird nichts reserviert oder zugesagt.",
+    "sponsoredLabel": "Alles, was künftig gesponsert wird, wäre als „Gesponsert“ gekennzeichnet und bliebe außerhalb von Workouts, privaten Nachrichten und Zahlungen.",
+    "scope": "Wo bist du interessiert?",
+    "countries": "Länder",
+    "cities": "Schwerpunktstädte",
+    "addCountry": "Land hinzufügen",
+    "addCity": "Stadt hinzufügen",
+    "add": "Hinzufügen",
+    "removeItem": "{label} entfernen",
+    "budget": "Geschätztes Jahresbudget, ohne MwSt.",
+    "budgetNoteTitle": "Das ist eine Schätzung, keine Verpflichtung.",
+    "budgetNote": "Es ist kein Preis, keine Rechnung, kein Kauf und keine Vereinbarung. Es hilft uns, die Größenordnung zu verstehen, und wird nie öffentlich gezeigt.",
+    "goals": "Deine Ziele",
+    "goalsPlaceholder": "Was möchtest du mit der Box-Community machen?",
+    "goalsCount": "{count} / {max}"
+  },
+  "codes": {
+    "industry": {
+      "boxing_equipment": "Boxausrüstung",
+      "sports_apparel": "Sportbekleidung",
+      "nutrition": "Ernährung",
+      "recovery": "Regeneration",
+      "fitness_technology": "Fitnesstechnologie",
+      "events": "Events",
+      "other": "Sonstiges"
+    },
+    "interest": {
+      "sponsored_challenges": "Gesponserte Challenges",
+      "sponsored_events": "Gesponserte Events",
+      "equipment_partnerships": "Ausrüstungspartnerschaften",
+      "gym_partnerships": "Gym-Partnerschaften",
+      "coach_partnerships": "Coach-Partnerschaften",
+      "marketplace": "Marktplatz",
+      "community_campaigns": "Community-Kampagnen",
+      "content": "Content",
+      "other": "Sonstiges"
+    },
+    "scope": {
+      "global": "Weltweit",
+      "countries": "Länder",
+      "cities": "Städte"
+    },
+    "budget": {
+      "to_be_discussed": "Lass uns darüber sprechen"
+    },
+    "budgetUnder": "Unter {max}",
+    "budgetOver": "{min}+",
+    "budgetBetween": "{min}–{max}"
+  },
+  "summary": {
+    "company": "Unternehmen",
+    "countryIndustry": "Land und Branche",
+    "contact": "Kontakt",
+    "interests": "Interessen",
+    "markets": "Märkte",
+    "budget": "Geschätztes Budget",
+    "budgetShort": "Budgetschätzung",
+    "goals": "Ziele",
+    "empty": "—",
+    "estimate": "{range} (Schätzung)",
+    "asideLabel": "Deine Bewerbung",
+    "asideTitle": "Deine Bewerbung"
+  },
+  "problems": {
+    "check": "{count, plural, one {# Antwort prüfen} other {# Antworten prüfen}}",
+    "retry": "Erneut versuchen",
+    "reload": "Neu laden",
+    "viewApplication": "Bewerbung ansehen",
+    "finishAccount": "Kontoeinrichtung abschließen",
+    "saveFailed": {
+      "title": "Wir konnten deine letzte Änderung nicht speichern.",
+      "body": "Bleib auf dieser Seite und versuche es erneut. Deine früheren Antworten sind sicher."
+    },
+    "submitFailed": {
+      "title": "Wir konnten deine Bewerbung nicht absenden.",
+      "body": "Es wurde nichts gesendet, und deine Antworten sind noch da. Versuche es erneut."
+    },
+    "stale": {
+      "title": "Dieser Entwurf wurde woanders geändert.",
+      "body": "Lade neu, um die neueste Version zu sehen. Deine ungespeicherten Antworten bleiben hier."
+    },
+    "duplicate": {
+      "title": "Du hast diese Bewerbung bereits abgesendet.",
+      "body": "Es wurde nichts Neues gesendet."
+    },
+    "moved": {
+      "title": "Diese Bewerbung kann jetzt nicht geändert werden.",
+      "body": "Ihr Status hat sich geändert. Deine Antworten wurden nicht gespeichert."
+    },
+    "declaration": {
+      "title": "Die Erklärung hat sich geändert.",
+      "body": "Lies sie erneut und bestätige sie, bevor du absendest."
+    },
+    "account": {
+      "title": "Dein Konto ist noch nicht fertig.",
+      "body": "Füge zuerst deinen Namen, dein Geburtsdatum und deine Einwilligungen hinzu. Danach kommst du hierher zurück."
+    },
+    "rateLimited": {
+      "title": "Zu viele Versuche.",
+      "body": "Warte ein paar Minuten und versuche es dann erneut."
+    },
+    "conflict": {
+      "title": "Das hat nicht geklappt.",
+      "body": "Es hat sich nichts geändert. Lade die Seite neu und versuche es erneut."
+    }
+  },
+  "review": {
+    "nothingSaved": "Du hast noch keine Antworten gespeichert.",
+    "goTo": "Zu {step} wechseln",
+    "stepNames": {
+      "company": "Unternehmen",
+      "contact": "Ansprechperson",
+      "interests": "Partnerschaftsinteressen",
+      "markets": "Märkte",
+      "budget": "Geschätztes Budget",
+      "goals": "Ziele",
+      "uploads": "Uploads",
+      "review": "Prüfen"
+    },
+    "documents": "Dokumente",
+    "noDocuments": "Keine",
+    "missing": "Einige Pflichtantworten fehlen.",
+    "declarationLoading": "Die Erklärung wird geladen…",
+    "declarationFailed": "Wir konnten die Erklärung nicht laden, daher kannst du noch nicht absenden.",
+    "retry": "Erneut versuchen",
+    "declarationRequired": "Bestätige die Erklärung, um abzusenden.",
+    "declarationRead": "Vollständige Erklärung lesen",
+    "closedTitle": "Bewerbungen können noch nicht abgesendet werden.",
+    "closedBody": "Dein Entwurf ist gespeichert, und du kannst ihn weiter bearbeiten.",
+    "whatSubmitTitle": "Was das Absenden bewirkt:",
+    "whatSubmitBody": "Deine Antworten werden zur Prüfung an SimpleFit gesendet. Es entsteht kein Sponsor-Workspace, keine Partnerschaft, keine Zahlung und keine Vereinbarung."
+  },
+  "uploads": {
+    "unavailable": {
+      "title": "Uploads sind noch nicht verfügbar.",
+      "body": "Dateien brauchen einen Sicherheitsscan, den SimpleFit heute noch nicht hat. Du kannst dich auch ohne Dateien bewerben.",
+      "note": "PDF, PNG oder JPEG. Nur das SimpleFit-Team könnte sie sehen."
+    },
+    "dropTitle": "Brand Deck oder Briefing hinzufügen",
+    "addLogo": "Logo hinzufügen",
+    "rules": "{types}, bis zu {size} pro Datei, höchstens {count} Dateien.",
+    "needsDraft": "Speichere zuerst eine Antwort: Dateien werden an eine gespeicherte Bewerbung angehängt.",
+    "listLabel": "Deine Dokumente",
+    "kindLegend": "Was ist das?",
+    "kinds": {
+      "logo": "Logo",
+      "brand_deck": "Brand Deck",
+      "campaign_brief": "Kampagnenbriefing",
+      "other": "Sonstiges"
+    },
+    "types": {
+      "pdf": "PDF",
+      "jpeg": "JPEG",
+      "png": "PNG"
+    },
+    "status": {
+      "submitted": "Mit deiner Bewerbung gesendet",
+      "uploaded": "Hochgeladen",
+      "pending": "Wird hochgeladen",
+      "unfinished": "Upload nicht abgeschlossen"
+    },
+    "remove": "Entfernen",
+    "removeNamed": "{name} entfernen",
+    "retry": "Erneut versuchen",
+    "privacy": "Nur das SimpleFit-Team kann deine Dokumente sehen.",
+    "phase": {
+      "uploading": "{name} wird hochgeladen…",
+      "verifying": "{name} wird geprüft…",
+      "done": "{name} hochgeladen."
+    },
+    "problems": {
+      "type": "Wähle eine Datei vom Typ {types}.",
+      "size": "Wähle eine Datei mit höchstens {size}.",
+      "name": "Benenne die Datei in höchstens 120 Zeichen um und versuche es dann erneut.",
+      "limit": "Du kannst höchstens {count} Dateien hinzufügen. Entferne zuerst eine.",
+      "storage": "Die Datei wurde nicht hochgeladen. Prüfe deine Verbindung und versuche es erneut.",
+      "mismatch": "Die hochgeladene Datei entsprach nicht dem Erwarteten und wurde daher entfernt. Versuche es erneut.",
+      "unavailable": "Der Dateispeicher ist gerade nicht verfügbar. Versuche es in ein paar Minuten erneut.",
+      "unconfirmed": "Wir konnten den Upload nicht bestätigen. Versuche es erneut.",
+      "stale": "Deine Bewerbung wurde woanders geändert. Wir haben sie neu geladen: Versuche es erneut.",
+      "session": "Du wurdest abgemeldet. Melde dich erneut an, um hochzuladen.",
+      "rateLimited": "Zu viele Uploads. Warte ein paar Minuten und versuche es dann erneut.",
+      "failed": "Diese Datei konnte nicht hinzugefügt werden."
+    }
+  },
+  "entry": {
+    "signed_out": {
+      "title": "Melde dich an, um deine Bewerbung zu starten",
+      "body": "Nutze dein SimpleFit-Konto oder erstelle eins. Dein Entwurf wird im Konto gespeichert, sodass du von jedem Gerät aus weitermachen kannst."
+    },
+    "registration": {
+      "title": "Schließe zuerst dein Konto ab",
+      "body": "Dein SimpleFit-Konto braucht deinen Namen, dein Geburtsdatum und deine Einwilligungen. Danach kommst du direkt zu deiner Bewerbung zurück."
+    },
+    "ready": {
+      "title": "Du kannst loslegen",
+      "body": "Du bist angemeldet. Deine Antworten werden laufend in diesem Konto gespeichert."
+    },
+    "resume": {
+      "title": "Bewerbung fortsetzen?",
+      "body": "Du hast einen Entwurf in diesem Konto. Mach dort weiter, wo du aufgehört hast."
+    },
+    "exists": {
+      "title": "Du hast dich bereits beworben",
+      "body": "Du kannst sehen, wo deine Bewerbung steht, oder sie ändern, falls wir dich darum gebeten haben."
+    },
+    "member": {
+      "title": "Du bist bereits Partner",
+      "body": "Du gehörst in diesem Konto zu einer Sponsor-Organisation."
+    },
+    "expired": {
+      "title": "Du wurdest abgemeldet",
+      "body": "Melde dich erneut an, um fortzufahren. Deine zuletzt gespeicherte Version ist sicher."
+    },
+    "error": {
+      "title": "Wir konnten dein Konto nicht prüfen",
+      "body": "Es hat sich nichts geändert. Prüfe deine Verbindung und versuche es erneut."
+    },
+    "how": {
+      "title": "So funktioniert es",
+      "account": {
+        "label": "Dein Konto",
+        "value": "Ein SimpleFit-Konto für alles"
+      },
+      "application": {
+        "label": "Deine Bewerbung",
+        "value": "Bis zum Absenden als Entwurf gespeichert"
+      },
+      "review": {
+        "label": "Unsere Prüfung",
+        "value": "Ein Mensch bei SimpleFit entscheidet"
+      },
+      "approval": {
+        "label": "Bei Freigabe",
+        "value": "Ein Workspace für deine Organisation"
+      },
+      "note": "Wenn du Sponsor wählst, erhält dein Konto keine zusätzlichen Zugriffsrechte. Nur eine freigegebene Bewerbung erstellt einen Workspace, und das ist kein Vertrag."
+    },
+    "retry": "Erneut versuchen",
+    "email": "Mit E-Mail fortfahren",
+    "signInNote": "Neu bei SimpleFit? Du kannst bei der Anmeldung per E-Mail ein Konto erstellen. Die Anmeldung erstellt keinen Sponsor-Workspace.",
+    "finishAccount": "Kontoeinrichtung abschließen",
+    "anotherAccount": "Anderes Konto verwenden",
+    "openWorkspace": "Workspace öffnen",
+    "applyAnother": "Für eine andere Organisation bewerben",
+    "start": "Bewerbung starten",
+    "continue": "Entwurf fortsetzen",
+    "view": "Bewerbung ansehen"
+  },
+  "submitted": {
+    "badge": "Abgesendet",
+    "title": "Bewerbung erhalten",
+    "body": "Danke für dein Interesse an SimpleFit Boxing. Ein Mensch aus unserem Team prüft jede Bewerbung.",
+    "view": "Bewerbung ansehen",
+    "back": "Zurück zu SimpleFit",
+    "cardTitle": "Bewerbung",
+    "company": "Unternehmen",
+    "submittedAt": "Abgesendet",
+    "status": "Status",
+    "statusValue": "Wartet auf Prüfung",
+    "note": "Dadurch entsteht kein Sponsor-Workspace, keine Partnerschaft und keine Vereinbarung."
+  },
+  "status": {
+    "draft": {
+      "badge": "Entwurf",
+      "title": "Dein Entwurf ist nicht abgesendet",
+      "body": "Nur du kannst ihn sehen. Bei SimpleFit hat noch niemand etwas geprüft."
+    },
+    "submitted": {
+      "badge": "Abgesendet",
+      "title": "Wir haben deine Bewerbung erhalten",
+      "body": "Sie wartet darauf, dass jemand bei SimpleFit sie prüft."
+    },
+    "under_review": {
+      "badge": "In Prüfung",
+      "title": "Wir prüfen deine Bewerbung",
+      "body": "Ein Mensch bei SimpleFit sieht sie sich an. Während der Prüfung kannst du sie nicht bearbeiten."
+    },
+    "changes_requested": {
+      "badge": "Änderungen erbeten",
+      "title": "Wir brauchen ein paar Änderungen",
+      "body": "Aktualisiere deine Antworten und sende sie zurück. Der Rest deiner Bewerbung bleibt, wie er ist."
+    },
+    "approved": {
+      "badge": "Freigegeben",
+      "title": "Deine Bewerbung ist freigegeben",
+      "body": "Deine Organisation hat einen Workspace.",
+      "note": "Mit der Freigabe kannst du den Workspace nutzen. Sie ist kein Vertrag, keine Kampagne und keine Verpflichtung für eine der beiden Seiten."
+    },
+    "rejected": {
+      "badge": "Nicht freigegeben",
+      "title": "Wir können mit dieser Bewerbung nicht weitermachen",
+      "body": "Diese Entscheidung gilt für diese Bewerbung."
+    },
+    "withdrawn": {
+      "badge": "Zurückgezogen",
+      "title": "Diese Bewerbung wurde zurückgezogen",
+      "body": "Sie wird nicht geprüft."
+    },
+    "unknown": {
+      "badge": "Status",
+      "title": "Diesen Status können wir hier noch nicht anzeigen",
+      "body": "Deine Bewerbung ist sicher. Schau später wieder vorbei."
+    },
+    "fromSimpleFit": "Von SimpleFit:",
+    "answersTitle": "Was du abgesendet hast",
+    "readOnly": "Nur lesen",
+    "progress": {
+      "title": "Fortschritt",
+      "label": "Fortschritt der Prüfung",
+      "submitted": "Abgesendet",
+      "reviewed": "Von SimpleFit geprüft",
+      "decision": "Entscheidung",
+      "done": "Erledigt",
+      "now": "Jetzt",
+      "later": "Noch nicht"
+    },
+    "history": {
+      "title": "Verlauf",
+      "submitted": "Abgesendet",
+      "resubmitted": "Zurückgesendet",
+      "changesRequested": "Änderungen erbeten"
+    },
+    "update": "Antworten aktualisieren",
+    "continue": "Entwurf fortsetzen",
+    "openWorkspace": "Workspace öffnen"
+  }
+}

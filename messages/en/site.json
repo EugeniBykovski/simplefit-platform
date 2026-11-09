@@ -722,7 +722,7 @@
   "partners": {
     "eyebrow": "SimpleFit Partners",
     "title": "Partner with the global boxing community.",
-    "lead": "Reach fighters, coaches and gyms through challenges, events and equipment partnerships — native to boxing, never banner ads.",
+    "lead": "Tell us how you’d like to work with fighters, coaches and gyms. SimpleFit reviews every application. Partnership formats below are ideas, not live offers.",
     "become": "Become a Sponsor",
     "download": "Download Partnership Overview",
     "downloadNote": "The partnership overview isn’t published yet.",
@@ -757,32 +757,30 @@
       },
       "privacy": {
         "title": "Privacy-first",
-        "body": "Aggregate analytics only"
+        "body": "No athlete data shared"
       }
     },
-    "campaignsLabel": "Example campaigns · mock data",
+    "campaignsLabel": "Illustrations · not real campaigns",
     "sponsored": "Sponsored",
     "campaigns": {
-      "haymaker": {
-        "brand": "Haymaker",
-        "title": "1,000 Round Challenge",
-        "meta": "Oct 1–31 · PL · CZ · DE · 12,482 participants"
+      "challenge": {
+        "title": "Example challenge",
+        "meta": "Example format"
       },
-      "korda": {
-        "brand": "Korda",
-        "title": "Open Sparring Warsaw",
-        "meta": "Sat Oct 10 · Warsaw BC · 48 places"
+      "event": {
+        "title": "Example event",
+        "meta": "Example format"
       },
-      "ringfuel": {
-        "brand": "RingFuel",
-        "title": "Gym Partnership",
-        "meta": "10 partner gyms · recovery bar"
+      "gym": {
+        "title": "Example gym partnership",
+        "meta": "Example format"
       }
-    }
+    },
+    "campaignBrand": "Your brand"
   },
   "apply": {
     "eyebrow": "Become a sponsor",
-    "title": "Apply in 5 minutes. No account needed to start.",
+    "title": "Apply to work with SimpleFit.",
     "steps": {
       "brand": {
         "title": "Tell us about your brand",
@@ -790,23 +788,22 @@
       },
       "review": {
         "title": "We review",
-        "body": "A partner manager replies within 5 business days"
+        "body": "A person at SimpleFit reviews every application"
       },
-      "campaign": {
-        "title": "Plan your first campaign",
-        "body": "Challenges, events or gym partnerships — always approved by SimpleFit before going live"
+      "approval": {
+        "title": "If approved, get a workspace",
+        "body": "For your organization. It isn’t a contract or a campaign"
       }
     },
     "start": "Start application",
-    "unavailable": "Sponsor applications aren’t open yet, so an application can’t be started here.",
     "signIn": "Already applied? Sign in",
     "gets": {
-      "label": "What sponsors get",
+      "label": "What approval gives you",
       "items": {
-        "1": "Labelled, native placements in Community, Discover, Marketplace, Challenges, Events",
-        "2": "Aggregate analytics: reach, participation, completion, clicks",
-        "3": "A named partner manager",
-        "4": "Invoices in EUR, USD, GBP or PLN"
+        "1": "A workspace for your organization",
+        "2": "Teammates you choose to invite",
+        "3": "Your application and its decision, on record",
+        "4": "No payment, plan or contract"
       }
     },
     "never": {

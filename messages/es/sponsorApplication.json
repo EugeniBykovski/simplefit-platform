@@ -1,0 +1,440 @@
+{
+  "frameLabel": "Solicitud de patrocinio",
+  "about": "Sobre las alianzas",
+  "loading": "Cargando tu solicitud…",
+  "rail": {
+    "label": "Pasos de la solicitud",
+    "title": "Solicitud de patrocinio",
+    "note": "Tu borrador se queda en tu cuenta de SimpleFit.",
+    "done": "completado"
+  },
+  "progress": {
+    "step": "Paso {step} de {total}",
+    "narrow": "Paso {step} de {total} · {title}"
+  },
+  "steps": {
+    "company": {
+      "title": "Empresa",
+      "lead": "Cuéntanos quiénes sois."
+    },
+    "contact": {
+      "title": "Persona de contacto",
+      "lead": "¿Con quién debemos hablar?"
+    },
+    "interests": {
+      "title": "Intereses de colaboración",
+      "lead": "¿Qué te gustaría hacer con la comunidad del boxeo?"
+    },
+    "markets": {
+      "title": "Mercados",
+      "lead": "¿Dónde te interesa?"
+    },
+    "budget": {
+      "title": "Presupuesto estimado",
+      "lead": "Basta con un rango."
+    },
+    "goals": {
+      "title": "Objetivos",
+      "lead": "Cuéntanos sobre tu marca y lo que esperas hacer."
+    },
+    "uploads": {
+      "title": "Archivos",
+      "lead": "Opcional. Puedes enviar la solicitud sin archivos."
+    },
+    "review": {
+      "title": "Revisar y enviar",
+      "lead": "Revisa tus respuestas. SimpleFit revisa todas las solicitudes."
+    }
+  },
+  "changes": {
+    "title": "SimpleFit ha pedido cambios:",
+    "rest": "Tus demás respuestas se quedan como están.",
+    "locked": "Ahora solo puedes cambiar las respuestas sobre las que preguntó SimpleFit."
+  },
+  "actions": {
+    "back": "Atrás",
+    "next": "Guardar y continuar",
+    "submit": "Enviar solicitud",
+    "submitting": "Enviando…",
+    "resubmit": "Reenviar a SimpleFit"
+  },
+  "save": {
+    "saving": "Guardando…",
+    "saved": "Guardado en tu cuenta",
+    "failed": "No guardado",
+    "unsaved": "Cambios sin guardar"
+  },
+  "errors": {
+    "required": {
+      "company_name": "Escribe el nombre de tu empresa.",
+      "website": "Escribe tu sitio web.",
+      "country_code": "Elige un país.",
+      "industry": "Elige un sector.",
+      "contact_full_name": "Escribe tu nombre.",
+      "contact_position": "Escribe tu cargo.",
+      "contact_email": "Escribe un correo electrónico como name@company.com.",
+      "contact_phone": "Escribe un número de teléfono.",
+      "interests": "Elige al menos un interés.",
+      "market_scope": "Elige dónde te interesa.",
+      "market_countries": "Añade al menos un país.",
+      "market_cities": "Añade al menos una ciudad.",
+      "budget_band": "Elige un rango.",
+      "goals": "Cuéntanos tus objetivos."
+    },
+    "requiredGeneric": "Responde a esta pregunta.",
+    "tooLong": "Es demasiado largo.",
+    "invalidChoice": "Elige una de las opciones.",
+    "invalidFormat": "Revisa el formato de esta respuesta.",
+    "notRequested": "SimpleFit no pidió cambiar esta respuesta.",
+    "invalid": "Revisa esta respuesta.",
+    "invalidEmail": "Escribe un correo electrónico como name@company.com.",
+    "invalidPhone": "Escribe el número en formato internacional, como +48221234567.",
+    "invalidWebsite": "Escribe una dirección que empiece por https://."
+  },
+  "fields": {
+    "optional": "opcional",
+    "companyName": "Nombre de la empresa",
+    "website": "Sitio web",
+    "websiteHelp": "Empieza por https://",
+    "country": "País",
+    "countryPlaceholder": "Selecciona un país",
+    "countrySearch": "Buscar países",
+    "countryEmpty": "Ningún país coincide.",
+    "logo": "Logotipo",
+    "industry": "Sector",
+    "fullName": "Nombre completo",
+    "position": "Cargo",
+    "workEmail": "Correo de trabajo",
+    "workEmailHelp": "Lo usamos para hablar de tu solicitud. No cambia cómo inicias sesión.",
+    "phone": "Teléfono",
+    "phoneHelp": "Formato internacional, como +48221234567.",
+    "contactPrivacy": "Solo usamos estos datos para hablar de tu solicitud. Nunca se muestran a atletas ni gimnasios.",
+    "interests": "Elige al menos uno",
+    "interestsHelp": "Esto nos dice qué te interesa. No reserva ni promete nada.",
+    "sponsoredLabel": "Todo lo que se patrocine en el futuro llevaría la etiqueta «Patrocinado» y quedaría fuera de los entrenamientos, los mensajes privados y los pagos.",
+    "scope": "¿Dónde te interesa?",
+    "countries": "Países",
+    "cities": "Ciudades principales",
+    "addCountry": "Añadir un país",
+    "addCity": "Añadir una ciudad",
+    "add": "Añadir",
+    "removeItem": "Quitar {label}",
+    "budget": "Presupuesto anual estimado, sin IVA",
+    "budgetNoteTitle": "Es una estimación, no un compromiso.",
+    "budgetNote": "No es un precio, una factura, una compra ni un acuerdo. Nos ayuda a entender la escala y nunca se muestra públicamente.",
+    "goals": "Tus objetivos",
+    "goalsPlaceholder": "¿Qué te gustaría hacer con la comunidad del boxeo?",
+    "goalsCount": "{count} / {max}"
+  },
+  "codes": {
+    "industry": {
+      "boxing_equipment": "Equipamiento de boxeo",
+      "sports_apparel": "Ropa deportiva",
+      "nutrition": "Nutrición",
+      "recovery": "Recuperación",
+      "fitness_technology": "Tecnología fitness",
+      "events": "Eventos",
+      "other": "Otro"
+    },
+    "interest": {
+      "sponsored_challenges": "Retos patrocinados",
+      "sponsored_events": "Eventos patrocinados",
+      "equipment_partnerships": "Alianzas de equipamiento",
+      "gym_partnerships": "Alianzas con gimnasios",
+      "coach_partnerships": "Alianzas con entrenadores",
+      "marketplace": "Marketplace",
+      "community_campaigns": "Campañas en la comunidad",
+      "content": "Contenido",
+      "other": "Otro"
+    },
+    "scope": {
+      "global": "Global",
+      "countries": "Países",
+      "cities": "Ciudades"
+    },
+    "budget": {
+      "to_be_discussed": "Lo hablamos"
+    },
+    "budgetUnder": "Menos de {max}",
+    "budgetOver": "{min}+",
+    "budgetBetween": "{min}–{max}"
+  },
+  "summary": {
+    "company": "Empresa",
+    "countryIndustry": "País y sector",
+    "contact": "Contacto",
+    "interests": "Intereses",
+    "markets": "Mercados",
+    "budget": "Presupuesto estimado",
+    "budgetShort": "Presupuesto estimado",
+    "goals": "Objetivos",
+    "empty": "—",
+    "estimate": "{range} (estimación)",
+    "asideLabel": "Tu solicitud",
+    "asideTitle": "Tu solicitud"
+  },
+  "problems": {
+    "check": "{count, plural, one {# respuesta por revisar} other {# respuestas por revisar}}",
+    "retry": "Reintentar",
+    "reload": "Recargar",
+    "viewApplication": "Ver solicitud",
+    "finishAccount": "Terminar de configurar la cuenta",
+    "saveFailed": {
+      "title": "No pudimos guardar tu último cambio.",
+      "body": "Quédate en esta página e inténtalo de nuevo. Tus respuestas anteriores están a salvo."
+    },
+    "submitFailed": {
+      "title": "No pudimos enviar tu solicitud.",
+      "body": "No se envió nada y tus respuestas siguen aquí. Inténtalo de nuevo."
+    },
+    "stale": {
+      "title": "Este borrador cambió en otro lugar.",
+      "body": "Recarga para ver la última versión. Tus respuestas sin guardar se quedan aquí."
+    },
+    "duplicate": {
+      "title": "Ya enviaste esta solicitud.",
+      "body": "No se envió nada nuevo."
+    },
+    "moved": {
+      "title": "Esta solicitud ya no se puede cambiar.",
+      "body": "Su estado cambió. Tus respuestas no se guardaron."
+    },
+    "declaration": {
+      "title": "La declaración cambió.",
+      "body": "Vuelve a leerla y confírmala antes de enviar."
+    },
+    "account": {
+      "title": "Tu cuenta no está terminada.",
+      "body": "Primero añade tu nombre, tu fecha de nacimiento y tus consentimientos. Después volverás aquí."
+    },
+    "rateLimited": {
+      "title": "Demasiados intentos.",
+      "body": "Espera unos minutos y vuelve a intentarlo."
+    },
+    "conflict": {
+      "title": "Eso no funcionó.",
+      "body": "No cambió nada. Recarga la página e inténtalo de nuevo."
+    }
+  },
+  "review": {
+    "nothingSaved": "Aún no has guardado ninguna respuesta.",
+    "goTo": "Ir a {step}",
+    "stepNames": {
+      "company": "Empresa",
+      "contact": "Persona de contacto",
+      "interests": "Intereses de colaboración",
+      "markets": "Mercados",
+      "budget": "Presupuesto estimado",
+      "goals": "Objetivos",
+      "uploads": "Archivos",
+      "review": "Revisión"
+    },
+    "documents": "Documentos",
+    "noDocuments": "Ninguno",
+    "missing": "Faltan algunas respuestas obligatorias.",
+    "declarationLoading": "Cargando la declaración…",
+    "declarationFailed": "No pudimos cargar la declaración, así que aún no puedes enviar.",
+    "retry": "Reintentar",
+    "declarationRequired": "Confirma la declaración para enviar.",
+    "declarationRead": "Leer la declaración completa",
+    "closedTitle": "Aún no se pueden enviar solicitudes.",
+    "closedBody": "Tu borrador está guardado y puedes seguir editándolo.",
+    "whatSubmitTitle": "Qué hace el envío:",
+    "whatSubmitBody": "envía tus respuestas a SimpleFit para su revisión. No crea un espacio de trabajo de patrocinador, una alianza, un pago ni un acuerdo."
+  },
+  "uploads": {
+    "unavailable": {
+      "title": "La subida de archivos aún no está disponible.",
+      "body": "Los archivos necesitan un análisis de seguridad que SimpleFit todavía no tiene. Puedes enviar la solicitud sin archivos.",
+      "note": "PDF, PNG o JPEG. Solo el equipo de SimpleFit podría verlos."
+    },
+    "dropTitle": "Añade una presentación de marca o un brief",
+    "addLogo": "Añadir un logotipo",
+    "rules": "{types}, hasta {size} cada uno, {count} archivos como máximo.",
+    "needsDraft": "Primero guarda una respuesta: los archivos se adjuntan a una solicitud guardada.",
+    "listLabel": "Tus documentos",
+    "kindLegend": "¿Qué es?",
+    "kinds": {
+      "logo": "Logotipo",
+      "brand_deck": "Presentación de marca",
+      "campaign_brief": "Brief de campaña",
+      "other": "Otro"
+    },
+    "types": {
+      "pdf": "PDF",
+      "jpeg": "JPEG",
+      "png": "PNG"
+    },
+    "status": {
+      "submitted": "Enviado con tu solicitud",
+      "uploaded": "Subido",
+      "pending": "Subiendo",
+      "unfinished": "La subida no terminó"
+    },
+    "remove": "Quitar",
+    "removeNamed": "Quitar {name}",
+    "retry": "Reintentar",
+    "privacy": "Solo el equipo de SimpleFit puede ver tus documentos.",
+    "phase": {
+      "uploading": "Subiendo {name}…",
+      "verifying": "Comprobando {name}…",
+      "done": "{name} subido."
+    },
+    "problems": {
+      "type": "Elige un archivo {types}.",
+      "size": "Elige un archivo de {size} o menos.",
+      "name": "Cambia el nombre del archivo a 120 caracteres o menos e inténtalo de nuevo.",
+      "limit": "Puedes añadir {count} archivos como máximo. Quita uno primero.",
+      "storage": "El archivo no se subió. Revisa tu conexión e inténtalo de nuevo.",
+      "mismatch": "El archivo subido no coincidía con lo esperado, así que se eliminó. Inténtalo de nuevo.",
+      "unavailable": "El almacenamiento de archivos no está disponible ahora mismo. Inténtalo de nuevo en unos minutos.",
+      "unconfirmed": "No pudimos confirmar la subida. Inténtalo de nuevo.",
+      "stale": "Tu solicitud cambió en otro lugar. La hemos recargado: inténtalo de nuevo.",
+      "session": "Se cerró tu sesión. Vuelve a iniciar sesión para subir archivos.",
+      "rateLimited": "Demasiadas subidas. Espera unos minutos y vuelve a intentarlo.",
+      "failed": "No se pudo añadir ese archivo."
+    }
+  },
+  "entry": {
+    "signed_out": {
+      "title": "Inicia sesión para empezar tu solicitud",
+      "body": "Usa tu cuenta de SimpleFit o crea una. Tu borrador se guarda en la cuenta, así que puedes volver desde cualquier dispositivo."
+    },
+    "registration": {
+      "title": "Primero, termina tu cuenta",
+      "body": "Tu cuenta de SimpleFit necesita tu nombre, tu fecha de nacimiento y tus consentimientos. Después volverás directamente a tu solicitud."
+    },
+    "ready": {
+      "title": "Todo listo para empezar",
+      "body": "Has iniciado sesión. Las respuestas se guardan en esta cuenta sobre la marcha."
+    },
+    "resume": {
+      "title": "¿Continuar tu solicitud?",
+      "body": "Tienes un borrador en esta cuenta. Sigue donde lo dejaste."
+    },
+    "exists": {
+      "title": "Ya enviaste una solicitud",
+      "body": "Puedes ver en qué punto está tu solicitud o cambiarla si te lo hemos pedido."
+    },
+    "member": {
+      "title": "Ya eres socio",
+      "body": "Perteneces a una organización patrocinadora en esta cuenta."
+    },
+    "expired": {
+      "title": "Se cerró tu sesión",
+      "body": "Vuelve a iniciar sesión para continuar. Tu última versión guardada está a salvo."
+    },
+    "error": {
+      "title": "No pudimos comprobar tu cuenta",
+      "body": "No cambió nada. Revisa tu conexión e inténtalo de nuevo."
+    },
+    "how": {
+      "title": "Cómo funciona",
+      "account": {
+        "label": "Tu cuenta",
+        "value": "Una cuenta de SimpleFit para todo"
+      },
+      "application": {
+        "label": "Tu solicitud",
+        "value": "Guardada como borrador hasta que la envíes"
+      },
+      "review": {
+        "label": "Nuestra revisión",
+        "value": "Decide una persona de SimpleFit"
+      },
+      "approval": {
+        "label": "Si se aprueba",
+        "value": "Un espacio de trabajo para tu organización"
+      },
+      "note": "Elegir Patrocinador no da a tu cuenta ningún acceso adicional. Solo una solicitud aprobada crea un espacio de trabajo, y no es un contrato."
+    },
+    "retry": "Reintentar",
+    "email": "Continuar con correo electrónico",
+    "signInNote": "¿Eres nuevo en SimpleFit? Puedes crear una cuenta desde el inicio de sesión por correo. Iniciar sesión no crea un espacio de trabajo de patrocinador.",
+    "finishAccount": "Terminar de configurar la cuenta",
+    "anotherAccount": "Usar otra cuenta",
+    "openWorkspace": "Abrir espacio de trabajo",
+    "applyAnother": "Solicitar para otra organización",
+    "start": "Iniciar solicitud",
+    "continue": "Continuar borrador",
+    "view": "Ver solicitud"
+  },
+  "submitted": {
+    "badge": "Enviada",
+    "title": "Solicitud recibida",
+    "body": "Gracias por tu interés en SimpleFit Boxing. Una persona de nuestro equipo revisa cada solicitud.",
+    "view": "Ver solicitud",
+    "back": "Volver a SimpleFit",
+    "cardTitle": "Solicitud",
+    "company": "Empresa",
+    "submittedAt": "Enviada",
+    "status": "Estado",
+    "statusValue": "Pendiente de revisión",
+    "note": "Esto no crea un espacio de trabajo de patrocinador, una alianza ni un acuerdo."
+  },
+  "status": {
+    "draft": {
+      "badge": "Borrador",
+      "title": "Tu borrador no se ha enviado",
+      "body": "Solo tú puedes verlo. Nadie en SimpleFit ha revisado nada todavía."
+    },
+    "submitted": {
+      "badge": "Enviada",
+      "title": "Hemos recibido tu solicitud",
+      "body": "Está esperando a que alguien de SimpleFit la revise."
+    },
+    "under_review": {
+      "badge": "En revisión",
+      "title": "Estamos revisando tu solicitud",
+      "body": "Una persona de SimpleFit la está mirando. No puedes editarla durante la revisión."
+    },
+    "changes_requested": {
+      "badge": "Cambios solicitados",
+      "title": "Necesitamos algunos cambios",
+      "body": "Actualiza tus respuestas y reenvíalas. El resto de tu solicitud se queda como está."
+    },
+    "approved": {
+      "badge": "Aprobada",
+      "title": "Tu solicitud está aprobada",
+      "body": "Tu organización tiene un espacio de trabajo.",
+      "note": "La aprobación te permite usar el espacio de trabajo. No es un contrato, una campaña ni un compromiso de ninguna de las partes."
+    },
+    "rejected": {
+      "badge": "No aprobada",
+      "title": "No podemos seguir adelante con esta solicitud",
+      "body": "Esta decisión se aplica a esta solicitud."
+    },
+    "withdrawn": {
+      "badge": "Retirada",
+      "title": "Esta solicitud se retiró",
+      "body": "No se está revisando."
+    },
+    "unknown": {
+      "badge": "Estado",
+      "title": "Aún no podemos mostrar este estado aquí",
+      "body": "Tu solicitud está a salvo. Vuelve a consultarla más tarde."
+    },
+    "fromSimpleFit": "De SimpleFit:",
+    "answersTitle": "Lo que enviaste",
+    "readOnly": "Solo lectura",
+    "progress": {
+      "title": "Progreso",
+      "label": "Progreso de la revisión",
+      "submitted": "Enviada",
+      "reviewed": "Revisada por SimpleFit",
+      "decision": "Decisión",
+      "done": "Hecho",
+      "now": "Ahora",
+      "later": "Todavía no"
+    },
+    "history": {
+      "title": "Historial",
+      "submitted": "Enviada",
+      "resubmitted": "Reenviada",
+      "changesRequested": "Cambios solicitados"
+    },
+    "update": "Actualizar respuestas",
+    "continue": "Continuar borrador",
+    "openWorkspace": "Abrir espacio de trabajo"
+  }
+}

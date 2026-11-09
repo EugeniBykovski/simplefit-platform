@@ -722,7 +722,7 @@
   "partners": {
     "eyebrow": "SimpleFit Partner",
     "title": "Werde Partner der weltweiten Box-Community.",
-    "lead": "Erreiche Boxer, Coaches und Gyms mit Challenges, Events und Ausrüstungspartnerschaften – nativ im Boxen, niemals Bannerwerbung.",
+    "lead": "Erzähl uns, wie du mit Boxern, Coaches und Gyms zusammenarbeiten möchtest. SimpleFit prüft jede Bewerbung. Die Partnerschaftsformate unten sind Ideen, keine aktiven Angebote.",
     "become": "Sponsor werden",
     "download": "Partnerschaftsübersicht herunterladen",
     "downloadNote": "Die Partnerschaftsübersicht ist noch nicht veröffentlicht.",
@@ -757,32 +757,30 @@
       },
       "privacy": {
         "title": "Datenschutz zuerst",
-        "body": "Nur aggregierte Auswertungen"
+        "body": "Es werden keine Athletendaten weitergegeben"
       }
     },
-    "campaignsLabel": "Beispielkampagnen · Musterdaten",
+    "campaignsLabel": "Illustrationen · keine echten Kampagnen",
     "sponsored": "Gesponsert",
     "campaigns": {
-      "haymaker": {
-        "brand": "Haymaker",
-        "title": "1.000-Runden-Challenge",
-        "meta": "1.–31. Okt. · PL · CZ · DE · 12.482 Teilnehmende"
+      "challenge": {
+        "title": "Beispiel-Challenge",
+        "meta": "Beispielformat"
       },
-      "korda": {
-        "brand": "Korda",
-        "title": "Offenes Sparring Warschau",
-        "meta": "Sa., 10. Okt. · Warsaw BC · 48 Plätze"
+      "event": {
+        "title": "Beispiel-Event",
+        "meta": "Beispielformat"
       },
-      "ringfuel": {
-        "brand": "RingFuel",
-        "title": "Gym-Partnerschaft",
-        "meta": "10 Partner-Gyms · Recovery-Bar"
+      "gym": {
+        "title": "Beispiel-Gym-Partnerschaft",
+        "meta": "Beispielformat"
       }
-    }
+    },
+    "campaignBrand": "Deine Marke"
   },
   "apply": {
     "eyebrow": "Sponsor werden",
-    "title": "Bewerbung in 5 Minuten. Zum Start ist kein Konto nötig.",
+    "title": "Bewirb dich für eine Zusammenarbeit mit SimpleFit.",
     "steps": {
       "brand": {
         "title": "Erzähl uns von deiner Marke",
@@ -790,23 +788,22 @@
       },
       "review": {
         "title": "Wir prüfen",
-        "body": "Ein Partnermanager antwortet innerhalb von 5 Werktagen"
+        "body": "Ein Mensch bei SimpleFit prüft jede Bewerbung"
       },
-      "campaign": {
-        "title": "Plane deine erste Kampagne",
-        "body": "Challenges, Events oder Gym-Partnerschaften – immer von SimpleFit freigegeben, bevor sie live gehen"
+      "approval": {
+        "title": "Bei Freigabe erhältst du einen Workspace",
+        "body": "Für deine Organisation. Das ist kein Vertrag und keine Kampagne"
       }
     },
     "start": "Bewerbung starten",
-    "unavailable": "Sponsorbewerbungen sind noch nicht möglich, daher kann hier keine Bewerbung gestartet werden.",
     "signIn": "Schon beworben? Anmelden",
     "gets": {
-      "label": "Das erhalten Sponsoren",
+      "label": "Was dir die Freigabe gibt",
       "items": {
-        "1": "Gekennzeichnete, native Platzierungen in Community, Entdecken, Marktplatz, Challenges, Events",
-        "2": "Aggregierte Auswertungen: Reichweite, Teilnahme, Abschlüsse, Klicks",
-        "3": "Ein persönlicher Partnermanager",
-        "4": "Rechnungen in EUR, USD, GBP oder PLN"
+        "1": "Einen Workspace für deine Organisation",
+        "2": "Teammitglieder, die du selbst einlädst",
+        "3": "Deine Bewerbung und die Entscheidung dazu, dokumentiert",
+        "4": "Keine Zahlung, kein Tarif, kein Vertrag"
       }
     },
     "never": {

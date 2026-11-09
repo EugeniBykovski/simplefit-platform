@@ -722,7 +722,7 @@
   "partners": {
     "eyebrow": "Socios de SimpleFit",
     "title": "Colabora con la comunidad mundial del boxeo.",
-    "lead": "Llega a boxeadores, entrenadores y gimnasios mediante retos, eventos y alianzas de equipamiento: nativo del boxeo, nunca banners publicitarios.",
+    "lead": "Cuéntanos cómo te gustaría colaborar con boxeadores, entrenadores y gimnasios. SimpleFit revisa cada solicitud. Los formatos de colaboración de abajo son ideas, no ofertas activas.",
     "become": "Hazte patrocinador",
     "download": "Descargar la presentación de alianzas",
     "downloadNote": "La presentación de alianzas aún no está publicada.",
@@ -757,32 +757,30 @@
       },
       "privacy": {
         "title": "Privacidad primero",
-        "body": "Solo estadísticas agregadas"
+        "body": "No se comparten datos de atletas"
       }
     },
-    "campaignsLabel": "Campañas de ejemplo · datos ficticios",
+    "campaignsLabel": "Ilustraciones · no son campañas reales",
     "sponsored": "Patrocinado",
     "campaigns": {
-      "haymaker": {
-        "brand": "Haymaker",
-        "title": "Reto de 1000 asaltos",
-        "meta": "1–31 oct · PL · CZ · DE · 12 482 participantes"
+      "challenge": {
+        "title": "Reto de ejemplo",
+        "meta": "Formato de ejemplo"
       },
-      "korda": {
-        "brand": "Korda",
-        "title": "Sparring abierto Varsovia",
-        "meta": "sáb 10 oct · Warsaw BC · 48 plazas"
+      "event": {
+        "title": "Evento de ejemplo",
+        "meta": "Formato de ejemplo"
       },
-      "ringfuel": {
-        "brand": "RingFuel",
-        "title": "Alianza con gimnasios",
-        "meta": "10 gimnasios aliados · barra de recuperación"
+      "gym": {
+        "title": "Alianza con gimnasio de ejemplo",
+        "meta": "Formato de ejemplo"
       }
-    }
+    },
+    "campaignBrand": "Tu marca"
   },
   "apply": {
     "eyebrow": "Hazte patrocinador",
-    "title": "Solicítalo en 5 minutos. No necesitas cuenta para empezar.",
+    "title": "Solicita colaborar con SimpleFit.",
     "steps": {
       "brand": {
         "title": "Cuéntanos sobre tu marca",
@@ -790,23 +788,22 @@
       },
       "review": {
         "title": "Lo revisamos",
-        "body": "Un gestor de alianzas responde en un plazo de 5 días hábiles"
+        "body": "Una persona de SimpleFit revisa cada solicitud"
       },
-      "campaign": {
-        "title": "Planifica tu primera campaña",
-        "body": "Retos, eventos o alianzas con gimnasios, siempre aprobados por SimpleFit antes de publicarse"
+      "approval": {
+        "title": "Si se aprueba, recibes un espacio de trabajo",
+        "body": "Para tu organización. No es un contrato ni una campaña"
       }
     },
     "start": "Iniciar solicitud",
-    "unavailable": "Las solicitudes de patrocinio aún no están abiertas, así que no se puede iniciar una solicitud aquí.",
     "signIn": "¿Ya lo solicitaste? Inicia sesión",
     "gets": {
-      "label": "Qué obtienen los patrocinadores",
+      "label": "Qué te da la aprobación",
       "items": {
-        "1": "Espacios nativos y señalados en Comunidad, Descubrir, Marketplace, Retos y Eventos",
-        "2": "Estadísticas agregadas: alcance, participación, finalización, clics",
-        "3": "Un gestor de alianzas asignado",
-        "4": "Facturas en EUR, USD, GBP o PLN"
+        "1": "Un espacio de trabajo para tu organización",
+        "2": "Compañeros de equipo que tú decides invitar",
+        "3": "Tu solicitud y su decisión, registradas",
+        "4": "Sin pago, plan ni contrato"
       }
     },
     "never": {

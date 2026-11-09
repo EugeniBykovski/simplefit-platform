@@ -722,7 +722,7 @@
   "partners": {
     "eyebrow": "Partnerzy SimpleFit",
     "title": "Współpracuj z globalną społecznością bokserską.",
-    "lead": "Docieraj do zawodników, trenerów i klubów przez wyzwania, wydarzenia i partnerstwa sprzętowe — naturalnie dla boksu, nigdy banery reklamowe.",
+    "lead": "Napisz nam, jak chcesz współpracować z zawodnikami, trenerami i klubami. SimpleFit weryfikuje każde zgłoszenie. Poniższe formaty współpracy to pomysły, a nie aktywne oferty.",
     "become": "Zostań sponsorem",
     "download": "Pobierz opis współpracy",
     "downloadNote": "Opis współpracy nie został jeszcze opublikowany.",
@@ -757,32 +757,30 @@
       },
       "privacy": {
         "title": "Prywatność przede wszystkim",
-        "body": "Wyłącznie zbiorcze statystyki"
+        "body": "Bez udostępniania danych zawodników"
       }
     },
-    "campaignsLabel": "Przykładowe kampanie · dane poglądowe",
+    "campaignsLabel": "Ilustracje · nie prawdziwe kampanie",
     "sponsored": "Sponsorowane",
     "campaigns": {
-      "haymaker": {
-        "brand": "Haymaker",
-        "title": "Wyzwanie 1000 rund",
-        "meta": "1–31 paź · PL · CZ · DE · 12 482 uczestników"
+      "challenge": {
+        "title": "Przykładowe wyzwanie",
+        "meta": "Przykładowy format"
       },
-      "korda": {
-        "brand": "Korda",
-        "title": "Otwarte sparingi Warszawa",
-        "meta": "sob. 10 paź · Warsaw BC · 48 miejsc"
+      "event": {
+        "title": "Przykładowe wydarzenie",
+        "meta": "Przykładowy format"
       },
-      "ringfuel": {
-        "brand": "RingFuel",
-        "title": "Partnerstwo z klubami",
-        "meta": "10 klubów partnerskich · bar regeneracyjny"
+      "gym": {
+        "title": "Przykładowe partnerstwo z klubem",
+        "meta": "Przykładowy format"
       }
-    }
+    },
+    "campaignBrand": "Twoja marka"
   },
   "apply": {
     "eyebrow": "Zostań sponsorem",
-    "title": "Zgłoszenie w 5 minut. Na start nie potrzebujesz konta.",
+    "title": "Złóż zgłoszenie do współpracy z SimpleFit.",
     "steps": {
       "brand": {
         "title": "Opowiedz nam o swojej marce",
@@ -790,23 +788,22 @@
       },
       "review": {
         "title": "Weryfikujemy",
-        "body": "Opiekun partnera odpowiada w ciągu 5 dni roboczych"
+        "body": "Każde zgłoszenie weryfikuje osoba z SimpleFit"
       },
-      "campaign": {
-        "title": "Zaplanuj pierwszą kampanię",
-        "body": "Wyzwania, wydarzenia lub partnerstwa z klubami — zawsze zatwierdzane przez SimpleFit przed publikacją"
+      "approval": {
+        "title": "Po zatwierdzeniu dostajesz przestrzeń roboczą",
+        "body": "Dla Twojej organizacji. To nie umowa ani kampania"
       }
     },
     "start": "Rozpocznij zgłoszenie",
-    "unavailable": "Zgłoszenia sponsorów nie są jeszcze przyjmowane, więc nie można tu rozpocząć zgłoszenia.",
     "signIn": "Masz już zgłoszenie? Zaloguj się",
     "gets": {
-      "label": "Co otrzymują sponsorzy",
+      "label": "Co daje zatwierdzenie",
       "items": {
-        "1": "Oznaczone, natywne miejsca w Społeczności, Odkrywaj, Marketplace, Wyzwaniach i Wydarzeniach",
-        "2": "Zbiorcze statystyki: zasięg, udział, ukończenia, kliknięcia",
-        "3": "Imienny opiekun partnera",
-        "4": "Faktury w EUR, USD, GBP lub PLN"
+        "1": "Przestrzeń roboczą dla Twojej organizacji",
+        "2": "Członków zespołu, których zaprosisz",
+        "3": "Zapis Twojego zgłoszenia i decyzji",
+        "4": "Bez płatności, planu i umowy"
       }
     },
     "never": {

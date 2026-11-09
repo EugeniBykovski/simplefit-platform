@@ -58,6 +58,8 @@ describe("destinationRoute", () => {
       gym_home: "web.app.gyms._gym-id",
       gym_selection: "web.app.gyms",
       sponsor_application: "web.partners.apply",
+      sponsor_application_draft: "web.partners.apply",
+      sponsor_application_status: "web.partners.apply",
     });
     expect(routeHref(destinationRoute("account_registration"))).toBe("/app/onboarding/account");
     expect(routeHref(destinationRoute("role_selection"))).toBe("/app/onboarding/role");

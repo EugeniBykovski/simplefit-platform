@@ -76,3 +76,25 @@ export const ChoiceGroup: Story = {
     </ChoiceField>
   ),
 };
+
+/** The required mark of SPA1 (SF-115): amber, after the label, hidden from assistive technology. */
+export const Required: Story = {
+  args: { id: "company", label: "Company name", required: true, children: null },
+  render: (args) => (
+    <div className="flex flex-col gap-4">
+      <FormField {...args}>
+        <Input id="company" fieldSize="lg" aria-required />
+      </FormField>
+      <ChoiceField id="industry" legend="Industry" required>
+        <div className="flex gap-2">
+          {["Nutrition", "Recovery"].map((industry) => (
+            <label key={industry} className="flex items-center gap-1.5 type-body-sm">
+              <input type="radio" name="industry" />
+              {industry}
+            </label>
+          ))}
+        </div>
+      </ChoiceField>
+    </div>
+  ),
+};
