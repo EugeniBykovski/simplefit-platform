@@ -19,10 +19,20 @@ export interface OperatorAuditEvent {
   authority: OperatorAuditEventAuthority;
   /** @nullable */
   ceremony_id?: string | null;
+  /**
+     * The admin action or read projection id (SF-111).
+     * @nullable
+     */
+  command?: string | null;
+  /** @nullable */
+  confirmation_id?: string | null;
+  /** @nullable */
+  from_state?: string | null;
   id: string;
   occurred_at: string;
   /** @nullable */
   operation_id?: string | null;
+  /** `allowed`; `refused` before anything changed; `conflict` with the current state; `invalid` input or confirmation; `failed` mutation (SF-111). */
   outcome: OperatorAuditEventOutcome;
   /** @nullable */
   permission?: string | null;
@@ -30,10 +40,22 @@ export interface OperatorAuditEvent {
   reason_code?: string | null;
   /** @nullable */
   request_id?: string | null;
+  /**
+     * Why an attempt didn't succeed, e.g. `step_up_required`, `revision_stale`.
+     * @nullable
+     */
+  result_code?: string | null;
+  /**
+     * The target's revision after an allowed change.
+     * @nullable
+     */
+  revision?: number | null;
   /** @nullable */
   session_id?: string | null;
   /** @nullable */
   target_id?: string | null;
   /** @nullable */
   target_type?: string | null;
+  /** @nullable */
+  to_state?: string | null;
 }

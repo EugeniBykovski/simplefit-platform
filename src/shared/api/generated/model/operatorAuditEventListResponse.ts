@@ -8,4 +8,9 @@ import type { OperatorAuditEvent } from './operatorAuditEvent';
 
 export interface OperatorAuditEventListResponse {
   events: OperatorAuditEvent[];
+  /**
+     * Opaque. Valid only with the same filters, for the same operator, for an hour. `null` on the last page.
+     * @nullable
+     */
+  next_cursor: string | null;
 }

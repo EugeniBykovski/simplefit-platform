@@ -5,10 +5,16 @@
  * SimpleFit API 0.1.0
  */
 
+/**
+ * `allowed`; `refused` before anything changed; `conflict` with the current state; `invalid` input or confirmation; `failed` mutation (SF-111).
+ */
 export type OperatorAuditEventOutcome = typeof OperatorAuditEventOutcome[keyof typeof OperatorAuditEventOutcome];
 
 
 export const OperatorAuditEventOutcome = {
   allowed: 'allowed',
   refused: 'refused',
+  conflict: 'conflict',
+  invalid: 'invalid',
+  failed: 'failed',
 } as const;
