@@ -20,6 +20,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ApproveSponsorApplicationRequest,
   ClaimSponsorApplicationRequest,
   ConfirmationRequiredResponse,
   ConflictResponse,
@@ -29,6 +30,7 @@ import type {
   GrantOperatorPermissionRequest,
   InternalErrorResponse,
   ListOperatorAuditEventsParams,
+  ListSponsorApplicationsForReviewParams,
   NotFoundResponse,
   OperatorActionPreviewResponse,
   OperatorActionRequest,
@@ -46,6 +48,8 @@ import type {
   RegisterOperatorCredentialRequest,
   ReinstateOperatorPreviewRequest,
   ReinstateOperatorRequest,
+  ReinstateSponsorOrganizationRequest,
+  RejectSponsorApplicationRequest,
   RequestSponsorApplicationChangesRequest,
   RevokeOperatorPermissionPreviewRequest,
   RevokeOperatorPermissionRequest,
@@ -53,10 +57,13 @@ import type {
   RevokeOperatorRequest,
   SecurityKeyRejectedResponse,
   ServiceUnavailableResponse,
+  SponsorApplicationDocumentDownloadResponse,
+  SponsorApplicationQueueResponse,
   SponsorApplicationReviewResponse,
   StepUpRequiredResponse,
   SuspendOperatorPreviewRequest,
   SuspendOperatorRequest,
+  SuspendSponsorOrganizationRequest,
   UnauthorizedResponse,
   ValidationErrorResponse,
   VerifyOperatorStepUpRequest,
@@ -2697,6 +2704,122 @@ export function usePreviewSuspendOperator<TData = Awaited<ReturnType<typeof prev
 
 
 
+export const getListSponsorApplicationsForReviewUrl = (params?: ListSponsorApplicationsForReviewParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/sponsor-applications?${stringifiedParams}` : `/api/v1/admin/sponsor-applications`
+}
+
+/**
+ * Needs `sponsors.applications.read` and a key check. Submitted applications (never drafts), oldest
+ * submission first, with what the latest submission says about the company and nothing about the contact.
+ * `limit` 1..100 (default 50); `cursor` from the previous page, valid only for the same filters and reader.
+ * Each query is audited.
+ *
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary The sponsor application review queue
+ */
+export const listSponsorApplicationsForReview = async (params?: ListSponsorApplicationsForReviewParams, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationQueueResponse> => {
+
+  return apiFetch<SponsorApplicationQueueResponse>(getListSponsorApplicationsForReviewUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListSponsorApplicationsForReviewQueryKey = (params?: ListSponsorApplicationsForReviewParams,) => {
+    return [
+    `/api/v1/admin/sponsor-applications`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListSponsorApplicationsForReviewQueryOptions = <TData = Awaited<ReturnType<typeof listSponsorApplicationsForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(params?: ListSponsorApplicationsForReviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorApplicationsForReview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListSponsorApplicationsForReviewQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listSponsorApplicationsForReview>>> = ({ signal }) => listSponsorApplicationsForReview(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listSponsorApplicationsForReview>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListSponsorApplicationsForReviewQueryResult = NonNullable<Awaited<ReturnType<typeof listSponsorApplicationsForReview>>>
+export type ListSponsorApplicationsForReviewQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useListSponsorApplicationsForReview<TData = Awaited<ReturnType<typeof listSponsorApplicationsForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: undefined |  ListSponsorApplicationsForReviewParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorApplicationsForReview>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listSponsorApplicationsForReview>>,
+          TError,
+          Awaited<ReturnType<typeof listSponsorApplicationsForReview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListSponsorApplicationsForReview<TData = Awaited<ReturnType<typeof listSponsorApplicationsForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params?: ListSponsorApplicationsForReviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorApplicationsForReview>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listSponsorApplicationsForReview>>,
+          TError,
+          Awaited<ReturnType<typeof listSponsorApplicationsForReview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListSponsorApplicationsForReview<TData = Awaited<ReturnType<typeof listSponsorApplicationsForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params?: ListSponsorApplicationsForReviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorApplicationsForReview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary The sponsor application review queue
+ */
+
+export function useListSponsorApplicationsForReview<TData = Awaited<ReturnType<typeof listSponsorApplicationsForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params?: ListSponsorApplicationsForReviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorApplicationsForReview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getListSponsorApplicationsForReviewQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
 export const getGetSponsorApplicationForReviewUrl = (applicationId: string,) => {
 
 
@@ -2792,6 +2915,264 @@ export function useGetSponsorApplicationForReview<TData = Awaited<ReturnType<typ
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetSponsorApplicationForReviewQueryOptions(applicationId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getApproveSponsorApplicationUrl = (applicationId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}/approve`
+}
+
+/**
+ * Needs `sponsors.applications.approve` and a fresh key check. `under_review` -> `approved`. In one transaction: the organization (from exactly what was last submitted) and the applicant as its owner, the audit event and the applicant's email intent. A repeat makes no second organization. Grants no contract, plan, placement, entitlement, payment or public listing.
+ *
+ * Needs a one-time `confirmation_token` from a preview of exactly this request (same operator, session,
+ * application, revision and reason), with `reason_code`, `expected_revision` and `operation_id` (a repeat of
+ * the same request returns the current state and changes nothing).
+ * * `confirmation_required`, `confirmation_invalid` - missing, expired, used or for another request.
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary Approve a sponsor application
+ */
+export const approveSponsorApplication = async (applicationId: string,
+    approveSponsorApplicationRequest: ApproveSponsorApplicationRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationReviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorApplicationReviewResponse>(getApproveSponsorApplicationUrl(applicationId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(approveSponsorApplicationRequest)
+  }
+);}
+
+
+
+
+
+export const getApproveSponsorApplicationQueryKey = (applicationId: string,
+    approveSponsorApplicationRequest?: BodyType<ApproveSponsorApplicationRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-applications/${applicationId}/approve`, approveSponsorApplicationRequest
+    ] as const;
+    }
+
+
+export const getApproveSponsorApplicationQueryOptions = <TData = Awaited<ReturnType<typeof approveSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(applicationId: string,
+    approveSponsorApplicationRequest: BodyType<ApproveSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof approveSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getApproveSponsorApplicationQueryKey(applicationId,approveSponsorApplicationRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof approveSponsorApplication>>> = ({ signal }) => approveSponsorApplication(applicationId,approveSponsorApplicationRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof approveSponsorApplication>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ApproveSponsorApplicationQueryResult = NonNullable<Awaited<ReturnType<typeof approveSponsorApplication>>>
+export type ApproveSponsorApplicationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useApproveSponsorApplication<TData = Awaited<ReturnType<typeof approveSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    approveSponsorApplicationRequest: BodyType<ApproveSponsorApplicationRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof approveSponsorApplication>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof approveSponsorApplication>>,
+          TError,
+          Awaited<ReturnType<typeof approveSponsorApplication>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useApproveSponsorApplication<TData = Awaited<ReturnType<typeof approveSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    approveSponsorApplicationRequest: BodyType<ApproveSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof approveSponsorApplication>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof approveSponsorApplication>>,
+          TError,
+          Awaited<ReturnType<typeof approveSponsorApplication>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useApproveSponsorApplication<TData = Awaited<ReturnType<typeof approveSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    approveSponsorApplicationRequest: BodyType<ApproveSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof approveSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Approve a sponsor application
+ */
+
+export function useApproveSponsorApplication<TData = Awaited<ReturnType<typeof approveSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    approveSponsorApplicationRequest: BodyType<ApproveSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof approveSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getApproveSponsorApplicationQueryOptions(applicationId,approveSponsorApplicationRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewApproveSponsorApplicationUrl = (applicationId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}/approve/preview`
+}
+
+/**
+ * Needs `sponsors.applications.approve` and a fresh key check. Changes nothing; returns the impact and a one-time confirmation.
+ *
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary Preview: approve a sponsor application
+ */
+export const previewApproveSponsorApplication = async (applicationId: string,
+    approveSponsorApplicationRequest: ApproveSponsorApplicationRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewApproveSponsorApplicationUrl(applicationId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(approveSponsorApplicationRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewApproveSponsorApplicationQueryKey = (applicationId: string,
+    approveSponsorApplicationRequest?: BodyType<ApproveSponsorApplicationRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-applications/${applicationId}/approve/preview`, approveSponsorApplicationRequest
+    ] as const;
+    }
+
+
+export const getPreviewApproveSponsorApplicationQueryOptions = <TData = Awaited<ReturnType<typeof previewApproveSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(applicationId: string,
+    approveSponsorApplicationRequest: BodyType<ApproveSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewApproveSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewApproveSponsorApplicationQueryKey(applicationId,approveSponsorApplicationRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewApproveSponsorApplication>>> = ({ signal }) => previewApproveSponsorApplication(applicationId,approveSponsorApplicationRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewApproveSponsorApplication>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewApproveSponsorApplicationQueryResult = NonNullable<Awaited<ReturnType<typeof previewApproveSponsorApplication>>>
+export type PreviewApproveSponsorApplicationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewApproveSponsorApplication<TData = Awaited<ReturnType<typeof previewApproveSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    approveSponsorApplicationRequest: BodyType<ApproveSponsorApplicationRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewApproveSponsorApplication>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewApproveSponsorApplication>>,
+          TError,
+          Awaited<ReturnType<typeof previewApproveSponsorApplication>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewApproveSponsorApplication<TData = Awaited<ReturnType<typeof previewApproveSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    approveSponsorApplicationRequest: BodyType<ApproveSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewApproveSponsorApplication>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewApproveSponsorApplication>>,
+          TError,
+          Awaited<ReturnType<typeof previewApproveSponsorApplication>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewApproveSponsorApplication<TData = Awaited<ReturnType<typeof previewApproveSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    approveSponsorApplicationRequest: BodyType<ApproveSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewApproveSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview: approve a sponsor application
+ */
+
+export function usePreviewApproveSponsorApplication<TData = Awaited<ReturnType<typeof previewApproveSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    approveSponsorApplicationRequest: BodyType<ApproveSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewApproveSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewApproveSponsorApplicationQueryOptions(applicationId,approveSponsorApplicationRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -3057,6 +3438,639 @@ export function usePreviewClaimSponsorApplication<TData = Awaited<ReturnType<typ
 
 
 
+export const getDownloadSponsorApplicationDocumentUrl = (applicationId: string,
+    evidenceId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}/documents/${evidenceId}/download`
+}
+
+/**
+ * Needs `sponsors.applications.read_files` and a fresh key check. A presigned `GET` valid for 5 minutes that
+ * always downloads as an attachment (`application/octet-stream`); only documents that were part of a
+ * submission; never the operator's own application. Audited before the URL is returned. The URL is a
+ * credential: never log, store or share it. Documents are not scanned for malware.
+ *
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary Download a submitted document of a sponsor application
+ */
+export const downloadSponsorApplicationDocument = async (applicationId: string,
+    evidenceId: string, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationDocumentDownloadResponse> => {
+
+  return apiFetch<SponsorApplicationDocumentDownloadResponse>(getDownloadSponsorApplicationDocumentUrl(applicationId,evidenceId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getDownloadSponsorApplicationDocumentQueryKey = (applicationId: string,
+    evidenceId: string,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-applications/${applicationId}/documents/${evidenceId}/download`
+    ] as const;
+    }
+
+
+export const getDownloadSponsorApplicationDocumentQueryOptions = <TData = Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(applicationId: string,
+    evidenceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getDownloadSponsorApplicationDocumentQueryKey(applicationId,evidenceId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>> = ({ signal }) => downloadSponsorApplicationDocument(applicationId,evidenceId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined && evidenceId !== null && evidenceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type DownloadSponsorApplicationDocumentQueryResult = NonNullable<Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>>
+export type DownloadSponsorApplicationDocumentQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+export function useDownloadSponsorApplicationDocument<TData = Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ applicationId: string,
+    evidenceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>,
+          TError,
+          Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDownloadSponsorApplicationDocument<TData = Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ applicationId: string,
+    evidenceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>,
+          TError,
+          Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDownloadSponsorApplicationDocument<TData = Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ applicationId: string,
+    evidenceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Download a submitted document of a sponsor application
+ */
+
+export function useDownloadSponsorApplicationDocument<TData = Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ applicationId: string,
+    evidenceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadSponsorApplicationDocument>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getDownloadSponsorApplicationDocumentQueryOptions(applicationId,evidenceId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getReinstateSponsorApplicationOrganizationUrl = (applicationId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}/reinstate-organization`
+}
+
+/**
+ * Needs `sponsors.restrict` and a fresh key check. The organization this approval created: `suspended` -> `active`.
+ *
+ * Needs a one-time `confirmation_token` from a preview of exactly this request (same operator, session,
+ * application, revision and reason), with `reason_code`, `expected_revision` and `operation_id` (a repeat of
+ * the same request returns the current state and changes nothing).
+ * * `confirmation_required`, `confirmation_invalid` - missing, expired, used or for another request.
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary Reinstate the organization of an approved application
+ */
+export const reinstateSponsorApplicationOrganization = async (applicationId: string,
+    reinstateSponsorOrganizationRequest: ReinstateSponsorOrganizationRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationReviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorApplicationReviewResponse>(getReinstateSponsorApplicationOrganizationUrl(applicationId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(reinstateSponsorOrganizationRequest)
+  }
+);}
+
+
+
+
+
+export const getReinstateSponsorApplicationOrganizationQueryKey = (applicationId: string,
+    reinstateSponsorOrganizationRequest?: BodyType<ReinstateSponsorOrganizationRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-applications/${applicationId}/reinstate-organization`, reinstateSponsorOrganizationRequest
+    ] as const;
+    }
+
+
+export const getReinstateSponsorApplicationOrganizationQueryOptions = <TData = Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(applicationId: string,
+    reinstateSponsorOrganizationRequest: BodyType<ReinstateSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReinstateSponsorApplicationOrganizationQueryKey(applicationId,reinstateSponsorOrganizationRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>> = ({ signal }) => reinstateSponsorApplicationOrganization(applicationId,reinstateSponsorOrganizationRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ReinstateSponsorApplicationOrganizationQueryResult = NonNullable<Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>>
+export type ReinstateSponsorApplicationOrganizationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useReinstateSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    reinstateSponsorOrganizationRequest: BodyType<ReinstateSponsorOrganizationRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>,
+          TError,
+          Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useReinstateSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    reinstateSponsorOrganizationRequest: BodyType<ReinstateSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>,
+          TError,
+          Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useReinstateSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    reinstateSponsorOrganizationRequest: BodyType<ReinstateSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Reinstate the organization of an approved application
+ */
+
+export function useReinstateSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    reinstateSponsorOrganizationRequest: BodyType<ReinstateSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateSponsorApplicationOrganization>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getReinstateSponsorApplicationOrganizationQueryOptions(applicationId,reinstateSponsorOrganizationRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewReinstateSponsorApplicationOrganizationUrl = (applicationId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}/reinstate-organization/preview`
+}
+
+/**
+ * Needs `sponsors.restrict` and a fresh key check. Changes nothing; returns the impact and a one-time confirmation.
+ *
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary Preview: reinstate the organization of an approved application
+ */
+export const previewReinstateSponsorApplicationOrganization = async (applicationId: string,
+    reinstateSponsorOrganizationRequest: ReinstateSponsorOrganizationRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewReinstateSponsorApplicationOrganizationUrl(applicationId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(reinstateSponsorOrganizationRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewReinstateSponsorApplicationOrganizationQueryKey = (applicationId: string,
+    reinstateSponsorOrganizationRequest?: BodyType<ReinstateSponsorOrganizationRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-applications/${applicationId}/reinstate-organization/preview`, reinstateSponsorOrganizationRequest
+    ] as const;
+    }
+
+
+export const getPreviewReinstateSponsorApplicationOrganizationQueryOptions = <TData = Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(applicationId: string,
+    reinstateSponsorOrganizationRequest: BodyType<ReinstateSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewReinstateSponsorApplicationOrganizationQueryKey(applicationId,reinstateSponsorOrganizationRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>> = ({ signal }) => previewReinstateSponsorApplicationOrganization(applicationId,reinstateSponsorOrganizationRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewReinstateSponsorApplicationOrganizationQueryResult = NonNullable<Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>>
+export type PreviewReinstateSponsorApplicationOrganizationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewReinstateSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    reinstateSponsorOrganizationRequest: BodyType<ReinstateSponsorOrganizationRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>,
+          TError,
+          Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewReinstateSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    reinstateSponsorOrganizationRequest: BodyType<ReinstateSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>,
+          TError,
+          Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewReinstateSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    reinstateSponsorOrganizationRequest: BodyType<ReinstateSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview: reinstate the organization of an approved application
+ */
+
+export function usePreviewReinstateSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    reinstateSponsorOrganizationRequest: BodyType<ReinstateSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewReinstateSponsorApplicationOrganization>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewReinstateSponsorApplicationOrganizationQueryOptions(applicationId,reinstateSponsorOrganizationRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getRejectSponsorApplicationUrl = (applicationId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}/reject`
+}
+
+/**
+ * Needs `sponsors.applications.reject` and a fresh key check. `under_review` -> `rejected`, final. Nothing is created; the reason is internal and never shown to the applicant.
+ *
+ * Needs a one-time `confirmation_token` from a preview of exactly this request (same operator, session,
+ * application, revision and reason), with `reason_code`, `expected_revision` and `operation_id` (a repeat of
+ * the same request returns the current state and changes nothing).
+ * * `confirmation_required`, `confirmation_invalid` - missing, expired, used or for another request.
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary Reject a sponsor application
+ */
+export const rejectSponsorApplication = async (applicationId: string,
+    rejectSponsorApplicationRequest: RejectSponsorApplicationRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationReviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorApplicationReviewResponse>(getRejectSponsorApplicationUrl(applicationId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(rejectSponsorApplicationRequest)
+  }
+);}
+
+
+
+
+
+export const getRejectSponsorApplicationQueryKey = (applicationId: string,
+    rejectSponsorApplicationRequest?: BodyType<RejectSponsorApplicationRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-applications/${applicationId}/reject`, rejectSponsorApplicationRequest
+    ] as const;
+    }
+
+
+export const getRejectSponsorApplicationQueryOptions = <TData = Awaited<ReturnType<typeof rejectSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(applicationId: string,
+    rejectSponsorApplicationRequest: BodyType<RejectSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof rejectSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getRejectSponsorApplicationQueryKey(applicationId,rejectSponsorApplicationRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof rejectSponsorApplication>>> = ({ signal }) => rejectSponsorApplication(applicationId,rejectSponsorApplicationRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof rejectSponsorApplication>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type RejectSponsorApplicationQueryResult = NonNullable<Awaited<ReturnType<typeof rejectSponsorApplication>>>
+export type RejectSponsorApplicationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useRejectSponsorApplication<TData = Awaited<ReturnType<typeof rejectSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    rejectSponsorApplicationRequest: BodyType<RejectSponsorApplicationRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof rejectSponsorApplication>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof rejectSponsorApplication>>,
+          TError,
+          Awaited<ReturnType<typeof rejectSponsorApplication>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRejectSponsorApplication<TData = Awaited<ReturnType<typeof rejectSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    rejectSponsorApplicationRequest: BodyType<RejectSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof rejectSponsorApplication>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof rejectSponsorApplication>>,
+          TError,
+          Awaited<ReturnType<typeof rejectSponsorApplication>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRejectSponsorApplication<TData = Awaited<ReturnType<typeof rejectSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    rejectSponsorApplicationRequest: BodyType<RejectSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof rejectSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Reject a sponsor application
+ */
+
+export function useRejectSponsorApplication<TData = Awaited<ReturnType<typeof rejectSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    rejectSponsorApplicationRequest: BodyType<RejectSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof rejectSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getRejectSponsorApplicationQueryOptions(applicationId,rejectSponsorApplicationRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewRejectSponsorApplicationUrl = (applicationId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}/reject/preview`
+}
+
+/**
+ * Needs `sponsors.applications.reject` and a fresh key check. Changes nothing; returns the impact and a one-time confirmation.
+ *
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary Preview: reject a sponsor application
+ */
+export const previewRejectSponsorApplication = async (applicationId: string,
+    rejectSponsorApplicationRequest: RejectSponsorApplicationRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewRejectSponsorApplicationUrl(applicationId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(rejectSponsorApplicationRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewRejectSponsorApplicationQueryKey = (applicationId: string,
+    rejectSponsorApplicationRequest?: BodyType<RejectSponsorApplicationRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-applications/${applicationId}/reject/preview`, rejectSponsorApplicationRequest
+    ] as const;
+    }
+
+
+export const getPreviewRejectSponsorApplicationQueryOptions = <TData = Awaited<ReturnType<typeof previewRejectSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(applicationId: string,
+    rejectSponsorApplicationRequest: BodyType<RejectSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRejectSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewRejectSponsorApplicationQueryKey(applicationId,rejectSponsorApplicationRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewRejectSponsorApplication>>> = ({ signal }) => previewRejectSponsorApplication(applicationId,rejectSponsorApplicationRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewRejectSponsorApplication>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewRejectSponsorApplicationQueryResult = NonNullable<Awaited<ReturnType<typeof previewRejectSponsorApplication>>>
+export type PreviewRejectSponsorApplicationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewRejectSponsorApplication<TData = Awaited<ReturnType<typeof previewRejectSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    rejectSponsorApplicationRequest: BodyType<RejectSponsorApplicationRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRejectSponsorApplication>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewRejectSponsorApplication>>,
+          TError,
+          Awaited<ReturnType<typeof previewRejectSponsorApplication>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewRejectSponsorApplication<TData = Awaited<ReturnType<typeof previewRejectSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    rejectSponsorApplicationRequest: BodyType<RejectSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRejectSponsorApplication>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewRejectSponsorApplication>>,
+          TError,
+          Awaited<ReturnType<typeof previewRejectSponsorApplication>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewRejectSponsorApplication<TData = Awaited<ReturnType<typeof previewRejectSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    rejectSponsorApplicationRequest: BodyType<RejectSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRejectSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview: reject a sponsor application
+ */
+
+export function usePreviewRejectSponsorApplication<TData = Awaited<ReturnType<typeof previewRejectSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    rejectSponsorApplicationRequest: BodyType<RejectSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRejectSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewRejectSponsorApplicationQueryOptions(applicationId,rejectSponsorApplicationRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
 export const getRequestSponsorApplicationChangesUrl = (applicationId: string,) => {
 
 
@@ -3302,6 +4316,264 @@ export function usePreviewRequestSponsorApplicationChanges<TData = Awaited<Retur
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getPreviewRequestSponsorApplicationChangesQueryOptions(applicationId,requestSponsorApplicationChangesRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getSuspendSponsorApplicationOrganizationUrl = (applicationId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}/suspend-organization`
+}
+
+/**
+ * Needs `sponsors.restrict` and a fresh key check. The organization this approval created: `active` -> `suspended` (read-only for its members, no workspace entry). The application stays approved; nothing is deleted; no other organization or membership changes. `conflict` with `details.organization` when it isn't active.
+ *
+ * Needs a one-time `confirmation_token` from a preview of exactly this request (same operator, session,
+ * application, revision and reason), with `reason_code`, `expected_revision` and `operation_id` (a repeat of
+ * the same request returns the current state and changes nothing).
+ * * `confirmation_required`, `confirmation_invalid` - missing, expired, used or for another request.
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary Suspend the organization of an approved application
+ */
+export const suspendSponsorApplicationOrganization = async (applicationId: string,
+    suspendSponsorOrganizationRequest: SuspendSponsorOrganizationRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationReviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorApplicationReviewResponse>(getSuspendSponsorApplicationOrganizationUrl(applicationId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(suspendSponsorOrganizationRequest)
+  }
+);}
+
+
+
+
+
+export const getSuspendSponsorApplicationOrganizationQueryKey = (applicationId: string,
+    suspendSponsorOrganizationRequest?: BodyType<SuspendSponsorOrganizationRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-applications/${applicationId}/suspend-organization`, suspendSponsorOrganizationRequest
+    ] as const;
+    }
+
+
+export const getSuspendSponsorApplicationOrganizationQueryOptions = <TData = Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(applicationId: string,
+    suspendSponsorOrganizationRequest: BodyType<SuspendSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSuspendSponsorApplicationOrganizationQueryKey(applicationId,suspendSponsorOrganizationRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>> = ({ signal }) => suspendSponsorApplicationOrganization(applicationId,suspendSponsorOrganizationRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type SuspendSponsorApplicationOrganizationQueryResult = NonNullable<Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>>
+export type SuspendSponsorApplicationOrganizationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useSuspendSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    suspendSponsorOrganizationRequest: BodyType<SuspendSponsorOrganizationRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>,
+          TError,
+          Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSuspendSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    suspendSponsorOrganizationRequest: BodyType<SuspendSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>,
+          TError,
+          Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSuspendSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    suspendSponsorOrganizationRequest: BodyType<SuspendSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Suspend the organization of an approved application
+ */
+
+export function useSuspendSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    suspendSponsorOrganizationRequest: BodyType<SuspendSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendSponsorApplicationOrganization>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getSuspendSponsorApplicationOrganizationQueryOptions(applicationId,suspendSponsorOrganizationRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewSuspendSponsorApplicationOrganizationUrl = (applicationId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}/suspend-organization/preview`
+}
+
+/**
+ * Needs `sponsors.restrict` and a fresh key check. Changes nothing; returns the impact and a one-time confirmation.
+ *
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary Preview: suspend the organization of an approved application
+ */
+export const previewSuspendSponsorApplicationOrganization = async (applicationId: string,
+    suspendSponsorOrganizationRequest: SuspendSponsorOrganizationRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewSuspendSponsorApplicationOrganizationUrl(applicationId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(suspendSponsorOrganizationRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewSuspendSponsorApplicationOrganizationQueryKey = (applicationId: string,
+    suspendSponsorOrganizationRequest?: BodyType<SuspendSponsorOrganizationRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-applications/${applicationId}/suspend-organization/preview`, suspendSponsorOrganizationRequest
+    ] as const;
+    }
+
+
+export const getPreviewSuspendSponsorApplicationOrganizationQueryOptions = <TData = Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(applicationId: string,
+    suspendSponsorOrganizationRequest: BodyType<SuspendSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewSuspendSponsorApplicationOrganizationQueryKey(applicationId,suspendSponsorOrganizationRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>> = ({ signal }) => previewSuspendSponsorApplicationOrganization(applicationId,suspendSponsorOrganizationRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewSuspendSponsorApplicationOrganizationQueryResult = NonNullable<Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>>
+export type PreviewSuspendSponsorApplicationOrganizationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewSuspendSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    suspendSponsorOrganizationRequest: BodyType<SuspendSponsorOrganizationRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>,
+          TError,
+          Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewSuspendSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    suspendSponsorOrganizationRequest: BodyType<SuspendSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>,
+          TError,
+          Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewSuspendSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    suspendSponsorOrganizationRequest: BodyType<SuspendSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview: suspend the organization of an approved application
+ */
+
+export function usePreviewSuspendSponsorApplicationOrganization<TData = Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    suspendSponsorOrganizationRequest: BodyType<SuspendSponsorOrganizationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendSponsorApplicationOrganization>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewSuspendSponsorApplicationOrganizationQueryOptions(applicationId,suspendSponsorOrganizationRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

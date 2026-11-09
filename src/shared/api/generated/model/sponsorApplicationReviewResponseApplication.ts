@@ -6,16 +6,27 @@
  */
 import type { SponsorApplicationChangeRequest } from './sponsorApplicationChangeRequest';
 import type { SponsorApplicationReviewResponseApplicationEvidenceItem } from './sponsorApplicationReviewResponseApplicationEvidenceItem';
+import type { SponsorApplicationReviewResponseApplicationHistoryItem } from './sponsorApplicationReviewResponseApplicationHistoryItem';
 import type { SponsorApplicationReviewResponseApplicationLatestSubmission } from './sponsorApplicationReviewResponseApplicationLatestSubmission';
+import type { SponsorApplicationReviewResponseApplicationOrganization } from './sponsorApplicationReviewResponseApplicationOrganization';
 import type { SponsorApplicationReviewResponseApplicationStatus } from './sponsorApplicationReviewResponseApplicationStatus';
 
 export type SponsorApplicationReviewResponseApplication = {
   application_id: string;
   /** @nullable */
   change_request: SponsorApplicationChangeRequest | null;
+  /** @nullable */
+  decided_at: string | null;
   evidence: SponsorApplicationReviewResponseApplicationEvidenceItem[];
+  /** Status changes, oldest first. Codes only. */
+  history: SponsorApplicationReviewResponseApplicationHistoryItem[];
   /** @nullable */
   latest_submission: SponsorApplicationReviewResponseApplicationLatestSubmission;
+  /**
+     * The organization an approval provisioned (SF-116), or `null`. Approval grants no contract, plan, placement, entitlement or payment.
+     * @nullable
+     */
+  organization: SponsorApplicationReviewResponseApplicationOrganization;
   /** @minimum 1 */
   revision: number;
   status: SponsorApplicationReviewResponseApplicationStatus;
