@@ -7,12 +7,15 @@
 import type { EntryContextChoiceRequestContext } from './entryContextChoiceRequestContext';
 
 /**
- * The context the viewer chose: a completed profile, or a gym workspace (with `gym_id`) with a completed setup
- * where the viewer is active staff.
+ * The context the viewer chose: a completed profile, a gym workspace (with `gym_id`) with a completed setup
+ * where the viewer is active staff, or a sponsor workspace (with `sponsor_id`) where the viewer is an active
+ * member of the active organization.
  */
 export interface EntryContextChoiceRequest {
-  /** `fighter`, `coach` or `gym` (with `gym_id`). */
+  /** `fighter`, `coach`, `gym` (with `gym_id`) or `sponsor` (with `sponsor_id`). */
   context: EntryContextChoiceRequestContext;
   /** Required with `context: gym`, rejected otherwise. */
   gym_id?: string;
+  /** Required with `context: sponsor`, rejected otherwise. */
+  sponsor_id?: string;
 }

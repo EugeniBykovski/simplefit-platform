@@ -12,4 +12,5 @@ export const ResolveMyEntryContext = {
   fighter: 'fighter',
   coach: 'coach',
   gym: 'gym',
+  sponsor: 'sponsor',
 } as const;

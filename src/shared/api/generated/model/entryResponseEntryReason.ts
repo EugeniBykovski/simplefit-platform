@@ -31,4 +31,6 @@ export const EntryResponseEntryReason = {
   gym_setup_in_progress: 'gym_setup_in_progress',
   gym_workspace_completed: 'gym_workspace_completed',
   gym_choice_required: 'gym_choice_required',
+  sponsor_workspace_active: 'sponsor_workspace_active',
+  sponsor_choice_required: 'sponsor_choice_required',
 } as const;

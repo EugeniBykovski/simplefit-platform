@@ -38,6 +38,9 @@ const entry = (overrides: Partial<EntryResponseEntry>): EntryResponseEntry => ({
   gym_id: null,
   gym_workspaces: [],
   gym_workspace_count: 0,
+  sponsor_id: null,
+  sponsor_workspaces: [],
+  sponsor_workspace_count: 0,
   ...overrides,
 });
 const E11 = entry({
@@ -139,6 +142,9 @@ describe("WCX1 with gym workspaces (SF-88)", () => {
       },
     ],
     gym_workspace_count: 1,
+    sponsor_id: null,
+    sponsor_workspaces: [],
+    sponsor_workspace_count: 0,
   });
 
   it("lists the gym next to the Fighter profile and opens its console by recording the choice", async () => {

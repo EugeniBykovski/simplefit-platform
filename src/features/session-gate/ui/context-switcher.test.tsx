@@ -48,6 +48,9 @@ const entry = (overrides: Partial<EntryResponseEntry>): EntryResponseEntry => ({
   gym_id: null,
   gym_workspaces: [],
   gym_workspace_count: 0,
+  sponsor_id: null,
+  sponsor_workspaces: [],
+  sponsor_workspace_count: 0,
   ...overrides,
 });
 const BOTH = entry({ fighter_profile: "completed", capabilities: ["FIGHTER", "COACH"] });
@@ -241,6 +244,9 @@ describe("gym workspaces in the switcher (SF-88)", () => {
       gym(ANNEX, "Annex Club", "manager", ["enter"]),
     ],
     gym_workspace_count: 3,
+    sponsor_id: null,
+    sponsor_workspaces: [],
+    sponsor_workspace_count: 0,
   });
 
   it("lists the gyms the backend lets the user enter, with their roles, in the Coach shell", async () => {
