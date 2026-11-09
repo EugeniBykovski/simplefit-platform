@@ -6,8 +6,9 @@
  */
 
 /**
- * The requested `context` when it was applied (a completed profile, or `gym` with the `gym_id` of a
- * completed gym where the user is active staff; no `intent`; registration complete); otherwise `null`.
+ * The requested `context` when it was applied (a completed profile, `gym` with the `gym_id` of a
+ * completed gym where the user is active staff, or `sponsor` with the `sponsor_id` of an active
+ * organization where the user is an active member; no `intent`; registration complete); otherwise `null`.
  * Never stored.
  * @nullable
  */
@@ -18,4 +19,5 @@ export const EntryResponseEntryContext = {
   fighter: 'fighter',
   coach: 'coach',
   gym: 'gym',
+  sponsor: 'sponsor',
 } as const;

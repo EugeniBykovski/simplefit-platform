@@ -21,4 +21,8 @@ context?: ResolveMyEntryContext;
  * With `context=gym`: the gym workspace to open. Ignored unless the viewer is active staff there.
  */
 gym_id?: string;
+/**
+ * With `context=sponsor`: the sponsor organization to open. Ignored unless the viewer is an active member of that active organization.
+ */
+sponsor_id?: string;
 };

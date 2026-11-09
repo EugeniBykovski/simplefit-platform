@@ -19,6 +19,9 @@ const entry = (overrides: Partial<KnownEntry>): KnownEntry => ({
   gym_id: null,
   gym_workspaces: [],
   gym_workspace_count: 0,
+  sponsor_id: null,
+  sponsor_workspaces: [],
+  sponsor_workspace_count: 0,
   ...overrides,
 });
 
@@ -211,6 +214,9 @@ describe("gym destinations (SF-84, SF-88)", () => {
     gym_id: GYM,
     gym_workspaces: [workspace(GYM, ["enter"])],
     gym_workspace_count: 1,
+    sponsor_id: null,
+    sponsor_workspaces: [],
+    sponsor_workspace_count: 0,
   });
 
   it("opens the console of the entry's gym_id, never a guessed gym", () => {
@@ -230,6 +236,9 @@ describe("gym destinations (SF-84, SF-88)", () => {
       capabilities: ["GYM_WORKSPACE"],
       gym_workspaces: [workspace(GYM, ["enter"]), workspace(OTHER, ["enter"])],
       gym_workspace_count: 2,
+      sponsor_id: null,
+      sponsor_workspaces: [],
+      sponsor_workspace_count: 0,
     });
     expect(isKnownEntry(choice)).toBe(true);
     expect(entryHref(choice)).toBe("/app/gyms");

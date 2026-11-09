@@ -70,6 +70,9 @@ const entry = (overrides: Partial<EntryResponseEntry>): EntryResponseEntry => ({
   gym_id: null,
   gym_workspaces: [],
   gym_workspace_count: 0,
+  sponsor_id: null,
+  sponsor_workspaces: [],
+  sponsor_workspace_count: 0,
   ...overrides,
 });
 
@@ -143,6 +146,9 @@ describe("GymChooser (SF-88)", () => {
           workspace(2, "Annex Club", { role: "manager" }),
         ],
         gym_workspace_count: 3,
+        sponsor_id: null,
+        sponsor_workspaces: [],
+        sponsor_workspace_count: 0,
       }),
     );
     await renderWithProviders(<GymChooser />);
@@ -172,6 +178,9 @@ describe("GymChooser (SF-88)", () => {
           workspace(1, "Ring One"),
         ],
         gym_workspace_count: 2,
+        sponsor_id: null,
+        sponsor_workspaces: [],
+        sponsor_workspace_count: 0,
       }),
     );
     await renderWithProviders(<GymChooser />);
@@ -211,6 +220,9 @@ describe("GymChooser (SF-88)", () => {
         fighter_profile: "completed",
         gym_workspaces: [workspace(1, "Ring One"), workspace(2, "Annex Club")],
         gym_workspace_count: 2,
+        sponsor_id: null,
+        sponsor_workspaces: [],
+        sponsor_workspace_count: 0,
       }),
     );
     await renderWithProviders(<GymChooser />);

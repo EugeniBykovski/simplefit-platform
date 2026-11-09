@@ -6,7 +6,7 @@
  */
 
 /**
- * `fighter`, `coach` or `gym` (with `gym_id`).
+ * `fighter`, `coach`, `gym` (with `gym_id`) or `sponsor` (with `sponsor_id`).
  */
 export type EntryContextChoiceRequestContext = typeof EntryContextChoiceRequestContext[keyof typeof EntryContextChoiceRequestContext];
 
@@ -15,4 +15,5 @@ export const EntryContextChoiceRequestContext = {
   fighter: 'fighter',
   coach: 'coach',
   gym: 'gym',
+  sponsor: 'sponsor',
 } as const;

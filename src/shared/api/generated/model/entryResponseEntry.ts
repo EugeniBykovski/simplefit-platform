@@ -13,6 +13,7 @@ import type { EntryResponseEntryDestination } from './entryResponseEntryDestinat
 import type { EntryResponseEntryFighterProfile } from './entryResponseEntryFighterProfile';
 import type { EntryResponseEntryIntent } from './entryResponseEntryIntent';
 import type { EntryResponseEntryReason } from './entryResponseEntryReason';
+import type { EntrySponsorWorkspace } from './entrySponsorWorkspace';
 
 export type EntryResponseEntry = {
   /** Shared account registration status (see `getMyAccountProfile`). */
@@ -20,16 +21,18 @@ export type EntryResponseEntry = {
   /**
      * Capabilities derived from real backend state, in the client route registry's vocabulary
      * (`FIGHTER` once Fighter onboarding is complete, `COACH` once Coach onboarding is complete,
-     * `GYM_WORKSPACE` while the viewer is active staff at a gym with a completed setup; any combination can
-     * be held). A routing projection, not an authorization grant: `COACH` opens the user's own Coach
+     * `GYM_WORKSPACE` while the viewer is active staff at a gym with a completed setup, `SPONSOR_WORKSPACE`
+     * while the viewer is an active member of an active sponsor organization; any combination can be held).
+     * Registration intent never grants `SPONSOR_WORKSPACE`. A routing projection, not an authorization grant: `COACH` opens the user's own Coach
      * application only, and gym access is decided per gym by its path.
      */
   capabilities: EntryResponseEntryCapabilitiesItem[];
   /** Coach onboarding status (see `getMyCoachProfile`). */
   coach_profile: EntryResponseEntryCoachProfile;
   /**
-     * The requested `context` when it was applied (a completed profile, or `gym` with the `gym_id` of a
-     * completed gym where the user is active staff; no `intent`; registration complete); otherwise `null`.
+     * The requested `context` when it was applied (a completed profile, `gym` with the `gym_id` of a
+     * completed gym where the user is active staff, or `sponsor` with the `sponsor_id` of an active
+     * organization where the user is an active member; no `intent`; registration complete); otherwise `null`.
      * Never stored.
      * @nullable
      */
@@ -42,8 +45,11 @@ export type EntryResponseEntry = {
      * once completed. `gym_onboarding`: start Gym setup (`gym_id` null; nothing is created) or resume the
      * draft gym the user owns (`gym_id`). `gym_home`: the gym workspace `gym_id` (a completed gym where the
      * user is active staff). `gym_selection`: the user chooses among their gym workspaces
-     * (`gym_workspaces`). `sponsor_application`: that journey's entry point; nothing is created. A client
-     * that does not know a destination must fail visibly, never guess.
+     * (`gym_workspaces`). `sponsor_application`: begin a sponsor application; nothing is created and no
+     * application state is implied. `sponsor_home`: the sponsor workspace `sponsor_id` (an active
+     * organization where the user is an active member; SF-112). `context_selection` also answers a
+     * `sponsor` intent with several sponsor workspaces and no valid remembered one. A client that does not
+     * know a destination must fail visibly, never guess.
      */
   destination: EntryResponseEntryDestination;
   /** Fighter onboarding status (see `getMyFighterProfile`). */
@@ -78,4 +84,23 @@ export type EntryResponseEntry = {
   mandatory: boolean;
   /** Why this destination was chosen. For diagnostics and copy, not branching. */
   reason: EntryResponseEntryReason;
+  /**
+     * The sponsor organization `destination` refers to (`sponsor_home`); otherwise `null`. Navigation only:
+     * every sponsor operation authorizes the id in its own path (`/api/v1/sponsor-organizations/{sponsor_id}`).
+     * @nullable
+     */
+  sponsor_id: string | null;
+  /**
+     * How many active memberships of active sponsor organizations the viewer holds.
+     * @minimum 0
+     */
+  sponsor_workspace_count: number;
+  /**
+     * The viewer's sponsor workspaces (active memberships of active organizations), at most 25, oldest
+     * membership first. `sponsor_workspace_count` is the total; read them all with
+     * `listMySponsorOrganizations`. Re-read on every resolution: a revoked or suspended membership is gone
+     * from the next answer.
+     * @maxItems 25
+     */
+  sponsor_workspaces: EntrySponsorWorkspace[];
 };
