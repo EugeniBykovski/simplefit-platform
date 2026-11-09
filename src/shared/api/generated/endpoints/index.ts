@@ -14,6 +14,7 @@ export * from './gym-verification/gym-verification';
 export * from './gyms/gyms';
 export * from './legal/legal';
 export * from './payment-provider-webhooks/payment-provider-webhooks';
+export * from './platform-operators/platform-operators';
 export * from './simplefit-plans/simplefit-plans';
 export * from './system/system';
 export * from './training/training';
