@@ -242,9 +242,9 @@ describe("public website pages (SF-43)", () => {
     expect(form).toHaveAccessibleDescription(/White label requests aren’t open yet/);
   });
 
-  it("SPX1 partners: no invented reach figures; the overview is not downloadable yet", async () => {
+  it("SPX1 partners: no invented figures or brands; the overview is not downloadable yet", async () => {
     await renderWithProviders(<PartnersPage />);
-    for (const figure of ["48K", "312", "31%"]) {
+    for (const figure of ["48K", "312", "31%", "Haymaker", "Korda", "RingFuel"]) {
       expect(screen.queryByText(figure, { exact: true })).not.toBeInTheDocument();
     }
     expect(hrefOf("Become a Sponsor")).toEqual(["/partners/apply"]);
@@ -252,20 +252,23 @@ describe("public website pages (SF-43)", () => {
     expect(download).toBeDisabled();
     expect(download).toHaveAccessibleDescription("The partnership overview isn’t published yet.");
     expect(screen.getAllByRole("listitem").length).toBeGreaterThanOrEqual(8 + 3);
-    expect(screen.getByRole("region", { name: /Example campaigns/ })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: /not real campaigns/ })).toBeInTheDocument();
+    expect(screen.queryByText(/participants|partner gyms|places/)).not.toBeInTheDocument();
   });
 
-  it("SPX2 become a sponsor: the steps, an application that cannot start yet, and sign-in", async () => {
+  it("SPX2 become a sponsor: the steps, the application entry, and sign-in to the status", async () => {
     await renderWithProviders(<PartnersApplyPage />);
-    for (const step of ["Tell us about your brand", "We review", "Plan your first campaign"]) {
+    for (const step of ["Tell us about your brand", "We review", "If approved, get a workspace"]) {
       expect(screen.getByText(step)).toBeInTheDocument();
     }
-    const start = screen.getByRole("button", { name: "Start application" });
-    expect(start).toBeDisabled();
-    expect(start).toHaveAccessibleDescription(/Sponsor applications aren’t open yet/);
-    // The artboard's sponsor sign-in (SponsorLogin), not the member one.
-    expect(hrefOf("Already applied? Sign in")).toEqual(["/sponsor/login"]);
-    expect(screen.getByRole("heading", { name: "What sponsors get" })).toBeInTheDocument();
+    // Intent only: the link opens SPA0, which creates nothing.
+    expect(hrefOf("Start application")).toEqual(["/partners/apply?step=start"]);
+    // SPX3 is a placeholder: sign-in returns to the application's status instead (SF-115).
+    expect(hrefOf("Already applied? Sign in")).toEqual([
+      `/login?returnTo=${encodeURIComponent("/partners/apply?step=status")}`,
+    ]);
+    expect(screen.queryByText(/business days|partner manager|Invoices/)).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "What approval gives you" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "What we never do" })).toBeInTheDocument();
   });
 });

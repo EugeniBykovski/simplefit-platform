@@ -1,0 +1,440 @@
+{
+  "frameLabel": "Sponsor application",
+  "about": "About partnerships",
+  "loading": "Loading your application…",
+  "rail": {
+    "label": "Application steps",
+    "title": "Sponsor application",
+    "note": "Your draft stays on your SimpleFit account.",
+    "done": "complete"
+  },
+  "progress": {
+    "step": "Step {step} of {total}",
+    "narrow": "Step {step} of {total} · {title}"
+  },
+  "steps": {
+    "company": {
+      "title": "Company",
+      "lead": "Tell us who you are."
+    },
+    "contact": {
+      "title": "Contact person",
+      "lead": "Who should we talk to?"
+    },
+    "interests": {
+      "title": "Partnership interests",
+      "lead": "What would you like to do with the boxing community?"
+    },
+    "markets": {
+      "title": "Markets",
+      "lead": "Where are you interested in?"
+    },
+    "budget": {
+      "title": "Estimated budget",
+      "lead": "A range is fine."
+    },
+    "goals": {
+      "title": "Goals",
+      "lead": "Tell us about your brand and what you hope to do."
+    },
+    "uploads": {
+      "title": "Uploads",
+      "lead": "Optional. You can apply without files."
+    },
+    "review": {
+      "title": "Review and submit",
+      "lead": "Check your answers. SimpleFit reviews every application."
+    }
+  },
+  "changes": {
+    "title": "SimpleFit asked for changes:",
+    "rest": "Your other answers stay as they are.",
+    "locked": "Only the answers SimpleFit asked about can change now."
+  },
+  "actions": {
+    "back": "Back",
+    "next": "Save and continue",
+    "submit": "Submit application",
+    "submitting": "Submitting…",
+    "resubmit": "Send back to SimpleFit"
+  },
+  "save": {
+    "saving": "Saving…",
+    "saved": "Saved to your account",
+    "failed": "Not saved",
+    "unsaved": "Unsaved changes"
+  },
+  "errors": {
+    "required": {
+      "company_name": "Enter your company name.",
+      "website": "Enter your website.",
+      "country_code": "Choose a country.",
+      "industry": "Choose an industry.",
+      "contact_full_name": "Enter your name.",
+      "contact_position": "Enter your position.",
+      "contact_email": "Enter an email address like name@company.com.",
+      "contact_phone": "Enter a phone number.",
+      "interests": "Choose at least one interest.",
+      "market_scope": "Choose where you’re interested.",
+      "market_countries": "Add at least one country.",
+      "market_cities": "Add at least one city.",
+      "budget_band": "Choose a range.",
+      "goals": "Tell us about your goals."
+    },
+    "requiredGeneric": "Answer this question.",
+    "tooLong": "That’s too long.",
+    "invalidChoice": "Choose one of the options.",
+    "invalidFormat": "Check the format of this answer.",
+    "notRequested": "SimpleFit didn’t ask to change this answer.",
+    "invalid": "Check this answer.",
+    "invalidEmail": "Enter an email address like name@company.com.",
+    "invalidPhone": "Enter the number in international format, like +48221234567.",
+    "invalidWebsite": "Enter an address that starts with https://."
+  },
+  "fields": {
+    "optional": "optional",
+    "companyName": "Company name",
+    "website": "Website",
+    "websiteHelp": "Starts with https://",
+    "country": "Country",
+    "countryPlaceholder": "Select a country",
+    "countrySearch": "Search countries",
+    "countryEmpty": "No country matches.",
+    "logo": "Logo",
+    "industry": "Industry",
+    "fullName": "Full name",
+    "position": "Position",
+    "workEmail": "Work email",
+    "workEmailHelp": "We use this to discuss your application. It doesn’t change how you sign in.",
+    "phone": "Phone",
+    "phoneHelp": "International format, like +48221234567.",
+    "contactPrivacy": "We only use these details to discuss your application. They’re never shown to athletes or gyms.",
+    "interests": "Choose at least one",
+    "interestsHelp": "This tells us what interests you. It doesn’t reserve or promise anything.",
+    "sponsoredLabel": "Anything sponsored in the future would be labelled “Sponsored” and kept out of workouts, private messages and payments.",
+    "scope": "Where are you interested in?",
+    "countries": "Countries",
+    "cities": "Focus cities",
+    "addCountry": "Add a country",
+    "addCity": "Add a city",
+    "add": "Add",
+    "removeItem": "Remove {label}",
+    "budget": "Estimated annual budget, excluding VAT",
+    "budgetNoteTitle": "This is an estimate, not a commitment.",
+    "budgetNote": "It isn’t a price, an invoice, a purchase or an agreement. It helps us understand scale, and it’s never shown publicly.",
+    "goals": "Your goals",
+    "goalsPlaceholder": "What would you like to do with the boxing community?",
+    "goalsCount": "{count} / {max}"
+  },
+  "codes": {
+    "industry": {
+      "boxing_equipment": "Boxing equipment",
+      "sports_apparel": "Sports apparel",
+      "nutrition": "Nutrition",
+      "recovery": "Recovery",
+      "fitness_technology": "Fitness technology",
+      "events": "Events",
+      "other": "Other"
+    },
+    "interest": {
+      "sponsored_challenges": "Sponsored challenges",
+      "sponsored_events": "Sponsored events",
+      "equipment_partnerships": "Equipment partnerships",
+      "gym_partnerships": "Gym partnerships",
+      "coach_partnerships": "Coach partnerships",
+      "marketplace": "Marketplace",
+      "community_campaigns": "Community campaigns",
+      "content": "Content",
+      "other": "Other"
+    },
+    "scope": {
+      "global": "Global",
+      "countries": "Countries",
+      "cities": "Cities"
+    },
+    "budget": {
+      "to_be_discussed": "Let’s discuss"
+    },
+    "budgetUnder": "Under {max}",
+    "budgetOver": "{min}+",
+    "budgetBetween": "{min}–{max}"
+  },
+  "summary": {
+    "company": "Company",
+    "countryIndustry": "Country and industry",
+    "contact": "Contact",
+    "interests": "Interests",
+    "markets": "Markets",
+    "budget": "Estimated budget",
+    "budgetShort": "Budget estimate",
+    "goals": "Goals",
+    "empty": "—",
+    "estimate": "{range} (estimate)",
+    "asideLabel": "Your application",
+    "asideTitle": "Your application"
+  },
+  "problems": {
+    "check": "{count, plural, one {# answer to check} other {# answers to check}}",
+    "retry": "Try again",
+    "reload": "Reload",
+    "viewApplication": "View application",
+    "finishAccount": "Finish account setup",
+    "saveFailed": {
+      "title": "We couldn’t save your last change.",
+      "body": "Stay on this page and try again. Your earlier answers are safe."
+    },
+    "submitFailed": {
+      "title": "We couldn’t submit your application.",
+      "body": "Nothing was sent, and your answers are still here. Try again."
+    },
+    "stale": {
+      "title": "This draft changed somewhere else.",
+      "body": "Reload to see the latest version. Your unsaved answers stay here."
+    },
+    "duplicate": {
+      "title": "You’ve already submitted this application.",
+      "body": "Nothing new was sent."
+    },
+    "moved": {
+      "title": "This application can’t be changed now.",
+      "body": "Its status changed. Your answers weren’t saved."
+    },
+    "declaration": {
+      "title": "The declaration changed.",
+      "body": "Read it again and confirm it before you submit."
+    },
+    "account": {
+      "title": "Your account isn’t finished.",
+      "body": "Add your name, date of birth and consents first. You’ll come back here."
+    },
+    "rateLimited": {
+      "title": "Too many attempts.",
+      "body": "Wait a few minutes, then try again."
+    },
+    "conflict": {
+      "title": "That didn’t work.",
+      "body": "Nothing changed. Reload the page and try again."
+    }
+  },
+  "review": {
+    "nothingSaved": "You haven’t saved any answers yet.",
+    "goTo": "Go to {step}",
+    "stepNames": {
+      "company": "Company",
+      "contact": "Contact person",
+      "interests": "Partnership interests",
+      "markets": "Markets",
+      "budget": "Estimated budget",
+      "goals": "Goals",
+      "uploads": "Uploads",
+      "review": "Review"
+    },
+    "documents": "Documents",
+    "noDocuments": "None",
+    "missing": "Some required answers are missing.",
+    "declarationLoading": "Loading the declaration…",
+    "declarationFailed": "We couldn’t load the declaration, so you can’t submit yet.",
+    "retry": "Try again",
+    "declarationRequired": "Confirm the declaration to submit.",
+    "declarationRead": "Read the full declaration",
+    "closedTitle": "Applications can’t be submitted yet.",
+    "closedBody": "Your draft is saved, and you can keep editing it.",
+    "whatSubmitTitle": "What submitting does:",
+    "whatSubmitBody": "it sends your answers to SimpleFit for review. It doesn’t create a Sponsor workspace, a partnership, a payment or an agreement."
+  },
+  "uploads": {
+    "unavailable": {
+      "title": "Uploads aren’t available yet.",
+      "body": "Files need a safety scan, which SimpleFit doesn’t have today. You can apply without files.",
+      "note": "PDF, PNG or JPEG. Only the SimpleFit team could see them."
+    },
+    "dropTitle": "Add a brand deck or brief",
+    "addLogo": "Add a logo",
+    "rules": "{types}, up to {size} each, {count} files at most.",
+    "needsDraft": "Save an answer first: files attach to a saved application.",
+    "listLabel": "Your documents",
+    "kindLegend": "What is it?",
+    "kinds": {
+      "logo": "Logo",
+      "brand_deck": "Brand deck",
+      "campaign_brief": "Campaign brief",
+      "other": "Other"
+    },
+    "types": {
+      "pdf": "PDF",
+      "jpeg": "JPEG",
+      "png": "PNG"
+    },
+    "status": {
+      "submitted": "Sent with your application",
+      "uploaded": "Uploaded",
+      "pending": "Uploading",
+      "unfinished": "Upload didn’t finish"
+    },
+    "remove": "Remove",
+    "removeNamed": "Remove {name}",
+    "retry": "Try again",
+    "privacy": "Only the SimpleFit team can see your documents.",
+    "phase": {
+      "uploading": "Uploading {name}…",
+      "verifying": "Checking {name}…",
+      "done": "{name} uploaded."
+    },
+    "problems": {
+      "type": "Choose a {types} file.",
+      "size": "Choose a file of {size} or less.",
+      "name": "Rename the file to 120 characters or fewer, then try again.",
+      "limit": "You can add {count} files at most. Remove one first.",
+      "storage": "The file didn’t upload. Check your connection and try again.",
+      "mismatch": "The uploaded file didn’t match what was expected, so it was removed. Try again.",
+      "unavailable": "File storage isn’t available right now. Try again in a few minutes.",
+      "unconfirmed": "We couldn’t confirm the upload. Try again.",
+      "stale": "Your application changed somewhere else. We’ve reloaded it: try again.",
+      "session": "You’ve been signed out. Sign in again to upload.",
+      "rateLimited": "Too many uploads. Wait a few minutes, then try again.",
+      "failed": "That file couldn’t be added."
+    }
+  },
+  "entry": {
+    "signed_out": {
+      "title": "Sign in to start your application",
+      "body": "Use your SimpleFit account, or create one. Your draft is saved to the account, so you can come back from any device."
+    },
+    "registration": {
+      "title": "First, finish your account",
+      "body": "Your SimpleFit account needs your name, date of birth and consents. You’ll come straight back to your application afterwards."
+    },
+    "ready": {
+      "title": "You’re ready to start",
+      "body": "You’re signed in. Answers save to this account as you go."
+    },
+    "resume": {
+      "title": "Continue your application?",
+      "body": "You have a draft on this account. Pick up where you left off."
+    },
+    "exists": {
+      "title": "You’ve already applied",
+      "body": "You can see where your application stands, or change it if we’ve asked you to."
+    },
+    "member": {
+      "title": "You’re already a partner",
+      "body": "You belong to a Sponsor organization on this account."
+    },
+    "expired": {
+      "title": "You’ve been signed out",
+      "body": "Sign in again to continue. Your last saved version is safe."
+    },
+    "error": {
+      "title": "We couldn’t check your account",
+      "body": "Nothing changed. Check your connection and try again."
+    },
+    "how": {
+      "title": "How this works",
+      "account": {
+        "label": "Your account",
+        "value": "One SimpleFit account, for everything"
+      },
+      "application": {
+        "label": "Your application",
+        "value": "Saved as a draft until you submit"
+      },
+      "review": {
+        "label": "Our review",
+        "value": "A person at SimpleFit decides"
+      },
+      "approval": {
+        "label": "If approved",
+        "value": "A workspace for your organization"
+      },
+      "note": "Choosing Sponsor gives your account no extra access. Only an approved application creates a workspace, and it isn’t a contract."
+    },
+    "retry": "Try again",
+    "email": "Continue with Email",
+    "signInNote": "New to SimpleFit? You can create an account from the email sign-in. Signing in doesn’t create a Sponsor workspace.",
+    "finishAccount": "Finish account setup",
+    "anotherAccount": "Use another account",
+    "openWorkspace": "Open workspace",
+    "applyAnother": "Apply for another organization",
+    "start": "Start application",
+    "continue": "Continue draft",
+    "view": "View application"
+  },
+  "submitted": {
+    "badge": "Submitted",
+    "title": "Application received",
+    "body": "Thank you for your interest in SimpleFit Boxing. A person on our team reviews every application.",
+    "view": "View application",
+    "back": "Back to SimpleFit",
+    "cardTitle": "Application",
+    "company": "Company",
+    "submittedAt": "Submitted",
+    "status": "Status",
+    "statusValue": "Waiting for review",
+    "note": "This doesn’t create a Sponsor workspace, a partnership or an agreement."
+  },
+  "status": {
+    "draft": {
+      "badge": "Draft",
+      "title": "Your draft isn’t submitted",
+      "body": "Only you can see it. Nobody at SimpleFit has reviewed anything yet."
+    },
+    "submitted": {
+      "badge": "Submitted",
+      "title": "We’ve received your application",
+      "body": "It’s waiting for someone at SimpleFit to review it."
+    },
+    "under_review": {
+      "badge": "Under review",
+      "title": "We’re reviewing your application",
+      "body": "A person at SimpleFit is looking at it. You can’t edit it during review."
+    },
+    "changes_requested": {
+      "badge": "Changes requested",
+      "title": "We need a few changes",
+      "body": "Update your answers and send them back. The rest of your application stays as it is."
+    },
+    "approved": {
+      "badge": "Approved",
+      "title": "Your application is approved",
+      "body": "Your organization has a workspace.",
+      "note": "Approval lets you use the workspace. It isn’t a contract, a campaign or a commitment by either side."
+    },
+    "rejected": {
+      "badge": "Not approved",
+      "title": "We can’t go ahead with this application",
+      "body": "This decision applies to this application."
+    },
+    "withdrawn": {
+      "badge": "Withdrawn",
+      "title": "This application was withdrawn",
+      "body": "It isn’t being reviewed."
+    },
+    "unknown": {
+      "badge": "Status",
+      "title": "We can’t show this status here yet",
+      "body": "Your application is safe. Check back later."
+    },
+    "fromSimpleFit": "From SimpleFit:",
+    "answersTitle": "What you submitted",
+    "readOnly": "Read only",
+    "progress": {
+      "title": "Progress",
+      "label": "Review progress",
+      "submitted": "Submitted",
+      "reviewed": "Reviewed by SimpleFit",
+      "decision": "Decision",
+      "done": "Done",
+      "now": "Now",
+      "later": "Not yet"
+    },
+    "history": {
+      "title": "History",
+      "submitted": "Submitted",
+      "resubmitted": "Sent back",
+      "changesRequested": "Changes requested"
+    },
+    "update": "Update answers",
+    "continue": "Continue draft",
+    "openWorkspace": "Open workspace"
+  }
+}

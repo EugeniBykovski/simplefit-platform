@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 
 import { Link } from "@/shared/i18n/navigation";
+import { withContinuation } from "@/shared/routes/continuation";
 import { routeHref } from "@/shared/routes/routes";
 import { Button } from "@/shared/ui/button";
 import { textLinkClass } from "@/shared/ui/text-link";
@@ -9,18 +10,18 @@ import { CheckList, Eyebrow, PageTitle, SectionLabel, SiteCard, SitePage } from 
 
 /**
  * SPX2 · Become a sponsor (`web.partners.apply`; Claude Design BecomeSponsor,
- * 1440 × 900): how a sponsor application works, what sponsors get and what
- * SimpleFit never does.
+ * 1440 × 900, as updated by SF-108): how a sponsor application works, what
+ * approval gives and what SimpleFit never does.
  *
- * The application itself (SP1–SP9) needs a sponsor-application domain that
- * does not exist yet, so "Start application" is disabled with a line saying
- * applications are not open (SF-43 decision): nothing is collected, stored
- * or shown as submitted. No sponsor workspace or capability is involved;
- * arriving here with `intent=sponsor` changes nothing.
+ * "Start application" opens the application (SF-115, `?step=start`, SPA0),
+ * which asks for an account first; "Already applied?" signs in and returns
+ * to the application's status. Choosing to start is intent only: nothing is
+ * created, and no Sponsor workspace or capability is involved.
  */
 export function PartnersApplyPage() {
   const t = useTranslations("site.apply");
-  const steps = ["brand", "review", "campaign"] as const;
+  const steps = ["brand", "review", "approval"] as const;
+  const status = routeHref("web.partners.apply", {}, { step: "status" });
   const list = (prefix: "gets.items" | "never.items", count: number) =>
     Array.from({ length: count }, (_, index) => t(`${prefix}.${index + 1}` as "gets.items.1"));
 
@@ -48,18 +49,18 @@ export function PartnersApplyPage() {
               </li>
             ))}
           </ol>
-          <div className="flex flex-col gap-2">
-            <div className="flex flex-wrap items-center gap-5">
-              <Button size="xl" disabled aria-describedby="apply-unavailable">
+          <div className="flex flex-wrap items-center gap-5">
+            <Button asChild size="xl">
+              <Link href={routeHref("web.partners.apply", {}, { step: "start" })}>
                 {t("start")}
-              </Button>
-              <Link href={routeHref("web.sponsor.login")} className={textLinkClass}>
-                {t("signIn")}
               </Link>
-            </div>
-            <p id="apply-unavailable" className="type-caption text-faint-foreground">
-              {t("unavailable")}
-            </p>
+            </Button>
+            <Link
+              href={withContinuation("web.login", { returnTo: status })}
+              className={textLinkClass}
+            >
+              {t("signIn")}
+            </Link>
           </div>
         </div>
         <div className="flex min-w-0 flex-col gap-3.5">

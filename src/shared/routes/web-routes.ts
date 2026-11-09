@@ -2351,5 +2351,7 @@ export const webGuards = {
     gym_home: "web.app.gyms._gym-id",
     gym_selection: "web.app.gyms",
     sponsor_application: "web.partners.apply",
+    sponsor_application_draft: "web.partners.apply",
+    sponsor_application_status: "web.partners.apply",
   },
 } as const;

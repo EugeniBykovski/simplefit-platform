@@ -124,7 +124,7 @@
     "returnToParam": "returnTo",
     "intentParam": "intent",
     "entryDestinations": {
-      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied. coach_home (SF-51, SF-52, SF-53) opens the Coach home of each platform, today its canonical placeholder. context_selection opens the context chooser of each platform: WCX1 on the web (web.app.context, SF-54) and A04 on mobile (mobile.workspaces, SF-55); never role selection (WA6 / O05) or a home (D-ENTRY-CONTEXT-SELECTION). gym_home (SF-84) opens the GYM_WORKSPACE home of each platform: on the web the id-based gym console of the entry answer's gym_id (web.app.gyms._gym-id, SF-88, ADR 0026 D-G23), on mobile the id-based Gym pulse of the entry answer's gym_id (mobile.gyms._gym-id.pulse, SF-89). gym_selection (SF-84) opens the gym chooser of each platform: web.app.gyms on the web (SF-88) and mobile.gyms on mobile (SF-89), listing the entry answer's gym_workspaces; never a gym home or A04. gym_onboarding starts Gym setup, or resumes the owned draft named by gym_id.",
+      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied. coach_home (SF-51, SF-52, SF-53) opens the Coach home of each platform, today its canonical placeholder. context_selection opens the context chooser of each platform: WCX1 on the web (web.app.context, SF-54) and A04 on mobile (mobile.workspaces, SF-55); never role selection (WA6 / O05) or a home (D-ENTRY-CONTEXT-SELECTION). gym_home (SF-84) opens the GYM_WORKSPACE home of each platform: on the web the id-based gym console of the entry answer's gym_id (web.app.gyms._gym-id, SF-88, ADR 0026 D-G23), on mobile the id-based Gym pulse of the entry answer's gym_id (mobile.gyms._gym-id.pulse, SF-89). gym_selection (SF-84) opens the gym chooser of each platform: web.app.gyms on the web (SF-88) and mobile.gyms on mobile (SF-89), listing the entry answer's gym_workspaces; never a gym home or A04. gym_onboarding starts Gym setup, or resumes the owned draft named by gym_id. sponsor_application_draft and sponsor_application_status (SF-113, ADR 0031 rule 7) open the same web partner application as sponsor_application (SF-115), which resolves the real application there: the draft to continue, or its status; neither implies a Sponsor capability or workspace.",
       "account_registration": {
         "web": "web.app.onboarding.account",
         "mobile": "mobile.signup.consent"
@@ -166,6 +166,14 @@
         "mobile": "mobile.gyms"
       },
       "sponsor_application": {
+        "web": "web.partners.apply",
+        "mobile": "mobile.onboarding.role"
+      },
+      "sponsor_application_draft": {
+        "web": "web.partners.apply",
+        "mobile": "mobile.onboarding.role"
+      },
+      "sponsor_application_status": {
         "web": "web.partners.apply",
         "mobile": "mobile.onboarding.role"
       }
@@ -2123,7 +2131,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(site)/partners/apply/page.tsx",
-        "note": "SF-43: SPX2 (BecomeSponsor): the three steps, what sponsors get and never get. Start application is disabled with a note (the SP1–SP9 application is its own ticket); Already applied leads to the sponsor sign-in."
+        "note": "SF-43: SPX2 (BecomeSponsor). SF-115: SPX2 server-rendered without a step; ?step= selects the client application on the SF-113 / SF-114 API: start (SPA0 entry and account continuation), company, contact, interests, markets, budget, goals, uploads, review (SPA1, the eight designed steps), submitted (SP9) and status (SPX5's applicant states, no portal navigation). The backend's application decides what a step may show: no draft before the first save, a submitted application opens its status, never a workspace. Sign-in returns here through returnTo; nothing is created by visiting, choosing Sponsor or signing in."
       },
       "screens": [
         "SPX2",

@@ -29,6 +29,7 @@ import type roleSelection from "../../../messages/en/roleSelection.json";
 import type routes from "../../../messages/en/routes.json";
 import type shells from "../../../messages/en/shells.json";
 import type site from "../../../messages/en/site.json";
+import type sponsorApplication from "../../../messages/en/sponsorApplication.json";
 import type gymInvitation from "../../../messages/en/gymInvitation.json";
 import type gymMembership from "../../../messages/en/gymMembership.json";
 import type staffInvitation from "../../../messages/en/staffInvitation.json";
@@ -79,6 +80,7 @@ export const namespaces = [
   "contextSwitcher",
   "contextSelection",
   "site",
+  "sponsorApplication",
 ] as const;
 
 export type Namespace = (typeof namespaces)[number];
@@ -121,6 +123,7 @@ export type Messages = {
   contextSwitcher: typeof contextSwitcher;
   contextSelection: typeof contextSelection;
   site: typeof site;
+  sponsorApplication: typeof sponsorApplication;
 };
 
 export type MessageTree = { [key: string]: string | MessageTree };

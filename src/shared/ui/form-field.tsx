@@ -14,6 +14,7 @@ export function FormField({
   help,
   error,
   helpTone = "faint",
+  required = false,
   className,
   children,
 }: {
@@ -21,6 +22,11 @@ export function FormField({
   label: string;
   help?: string;
   error?: string;
+  /**
+   * Draws the amber required mark after the label (SPA1, SF-115). Visual
+   * only: the control carries `aria-required` itself.
+   */
+  required?: boolean;
   /**
    * `muted` for fields on a raised surface (a dialog), where the faint help
    * colour falls below 4.5:1 against the popover background.
@@ -34,6 +40,7 @@ export function FormField({
     <div className={cn("flex min-w-0 flex-col gap-1.5", className)}>
       <label htmlFor={id} className="type-caption font-bold text-muted-foreground">
         {label}
+        {required ? <RequiredMark /> : null}
       </label>
       {children}
       {note !== undefined && (
@@ -57,6 +64,15 @@ export function FormField({
 
 export const describedBy = (id: string) => `${id}-note`;
 
+/** The amber " *" of a required answer; hidden from assistive technology (the control says it). */
+function RequiredMark() {
+  return (
+    <span aria-hidden className="text-warning">
+      {" *"}
+    </span>
+  );
+}
+
 /**
  * A group of choices (Experience, Stance, Goals; coaching formats): a
  * fieldset whose legend is the 12 px label. `hint` follows the label on its
@@ -69,6 +85,7 @@ export function ChoiceField({
   hint,
   hintInvalid = false,
   error,
+  required = false,
   className,
   children,
 }: {
@@ -77,18 +94,26 @@ export function ChoiceField({
   hint?: string;
   hintInvalid?: boolean;
   error?: string;
+  /** Draws the required mark after the legend (see `FormField`). */
+  required?: boolean;
   className?: string;
   children: ReactNode;
 }) {
   const invalid = error !== undefined || hintInvalid;
   return (
     <fieldset
+      id={id}
+      tabIndex={-1}
       aria-describedby={error === undefined ? undefined : describedBy(id)}
       aria-invalid={invalid ? true : undefined}
-      className={cn("flex min-w-0 flex-col gap-2", className)}
+      className={cn(
+        "flex min-w-0 flex-col gap-2 rounded-xs outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        className,
+      )}
     >
       <legend className="mb-2 type-caption font-bold text-muted-foreground">
         {legend}
+        {required ? <RequiredMark /> : null}
         {hint !== undefined && (
           <span
             className={cn(

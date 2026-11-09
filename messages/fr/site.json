@@ -722,7 +722,7 @@
   "partners": {
     "eyebrow": "Partenaires SimpleFit",
     "title": "Devenez partenaire de la communauté mondiale de la boxe.",
-    "lead": "Touchez boxeurs, coachs et salles via des défis, des événements et des partenariats matériel — natif de la boxe, jamais de bannières publicitaires.",
+    "lead": "Dites-nous comment vous aimeriez travailler avec les boxeurs, les coachs et les salles. SimpleFit étudie chaque candidature. Les formats de partenariat ci-dessous sont des idées, pas des offres actives.",
     "become": "Devenir sponsor",
     "download": "Télécharger la présentation des partenariats",
     "downloadNote": "La présentation des partenariats n’est pas encore publiée.",
@@ -757,32 +757,30 @@
       },
       "privacy": {
         "title": "Confidentialité d’abord",
-        "body": "Statistiques agrégées uniquement"
+        "body": "Aucune donnée d’athlète partagée"
       }
     },
-    "campaignsLabel": "Exemples de campagnes · données fictives",
+    "campaignsLabel": "Illustrations · pas de vraies campagnes",
     "sponsored": "Sponsorisé",
     "campaigns": {
-      "haymaker": {
-        "brand": "Haymaker",
-        "title": "Défi 1 000 rounds",
-        "meta": "1–31 oct. · PL · CZ · DE · 12 482 participants"
+      "challenge": {
+        "title": "Exemple de défi",
+        "meta": "Exemple de format"
       },
-      "korda": {
-        "brand": "Korda",
-        "title": "Sparring libre Varsovie",
-        "meta": "sam. 10 oct. · Warsaw BC · 48 places"
+      "event": {
+        "title": "Exemple d’événement",
+        "meta": "Exemple de format"
       },
-      "ringfuel": {
-        "brand": "RingFuel",
-        "title": "Partenariat salles",
-        "meta": "10 salles partenaires · bar de récupération"
+      "gym": {
+        "title": "Exemple de partenariat salle",
+        "meta": "Exemple de format"
       }
-    }
+    },
+    "campaignBrand": "Votre marque"
   },
   "apply": {
     "eyebrow": "Devenir sponsor",
-    "title": "Candidatez en 5 minutes. Aucun compte requis pour commencer.",
+    "title": "Candidatez pour travailler avec SimpleFit.",
     "steps": {
       "brand": {
         "title": "Parlez-nous de votre marque",
@@ -790,23 +788,22 @@
       },
       "review": {
         "title": "Nous étudions votre demande",
-        "body": "Un responsable partenariats répond sous 5 jours ouvrés"
+        "body": "Une personne chez SimpleFit étudie chaque candidature"
       },
-      "campaign": {
-        "title": "Préparez votre première campagne",
-        "body": "Défis, événements ou partenariats salles — toujours validés par SimpleFit avant leur mise en ligne"
+      "approval": {
+        "title": "En cas d’approbation, obtenez un espace de travail",
+        "body": "Pour votre organisation. Ce n’est ni un contrat ni une campagne"
       }
     },
     "start": "Commencer la candidature",
-    "unavailable": "Les candidatures sponsor ne sont pas encore ouvertes, il n’est donc pas possible d’en commencer une ici.",
     "signIn": "Déjà candidat ? Se connecter",
     "gets": {
-      "label": "Ce que reçoivent les sponsors",
+      "label": "Ce que vous apporte l’approbation",
       "items": {
-        "1": "Des emplacements natifs et signalés dans Communauté, Découvrir, Marketplace, Défis et Événements",
-        "2": "Statistiques agrégées : portée, participation, complétion, clics",
-        "3": "Un responsable partenariats dédié",
-        "4": "Factures en EUR, USD, GBP ou PLN"
+        "1": "Un espace de travail pour votre organisation",
+        "2": "Les coéquipiers que vous choisissez d’inviter",
+        "3": "Votre candidature et sa décision, conservées",
+        "4": "Aucun paiement, aucune formule, aucun contrat"
       }
     },
     "never": {

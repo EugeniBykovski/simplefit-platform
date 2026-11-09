@@ -647,6 +647,8 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
     "gym_home",
     "gym_selection",
     "sponsor_application",
+    "sponsor_application_draft",
+    "sponsor_application_status",
   ];
   /** Destinations with no route on a platform yet (they stay unknown there, never guessed). */
   const UNROUTED = {};
@@ -742,10 +744,17 @@ describe("entry resolution (SF-45, design 1791448557-b0b9)", () => {
   });
 
   it("opens O05 for the sponsor application on mobile, which has no sponsor surface", () => {
-    expect(entryDestinations.sponsor_application).toEqual({
-      web: "web.partners.apply",
-      mobile: "mobile.onboarding.role",
-    });
+    // SF-115: a draft and a status (SF-113) open the same web application, which reads the real one.
+    for (const destination of [
+      "sponsor_application",
+      "sponsor_application_draft",
+      "sponsor_application_status",
+    ]) {
+      expect(entryDestinations[destination]).toEqual({
+        web: "web.partners.apply",
+        mobile: "mobile.onboarding.role",
+      });
+    }
     const o05 = routeById.get("mobile.onboarding.role");
     expect(o05.access).toEqual({ session: "AUTHENTICATED", capability: null, phase: "ONBOARDING" });
     expect(o05.screens).toEqual(["O05"]);

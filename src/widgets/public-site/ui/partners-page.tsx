@@ -19,12 +19,12 @@ import {
 
 /**
  * SPX1 · Partners landing (`web.partners`; Claude Design PartnersLanding,
- * 1440 × 1140): the partnership pitch, the eight formats and three example
- * campaigns (the artboard's "Example campaigns · mock data").
+ * 1440 × 1140, as updated by SF-108): the partnership pitch, the eight
+ * formats as ideas (not live offers) and three illustrations labelled as
+ * not real campaigns: no brand, figure or participant count.
  *
- * SF-43 decisions: the hero's adoption figures are left out (nothing backs
- * them), so the hero is one column; the partnership overview is not
- * published, so its download is shown disabled with a line saying so.
+ * SF-43 decisions kept: the hero is one column; the partnership overview is
+ * not published, so its download is shown disabled with a line saying so.
  */
 export function PartnersPage() {
   const t = useTranslations("site.partners");
@@ -39,7 +39,7 @@ export function PartnersPage() {
     { key: "community", icon: Heart },
     { key: "privacy", icon: Shield },
   ] as const;
-  const campaigns = ["haymaker", "korda", "ringfuel"] as const;
+  const campaigns = ["challenge", "event", "gym"] as const;
 
   return (
     <SitePage gap="4">
@@ -91,13 +91,7 @@ export function PartnersPage() {
                     {t("sponsored")}
                   </Badge>
                 </span>
-                <span
-                  className={
-                    key === "ringfuel" ? "type-label text-highlight" : "type-label text-warning"
-                  }
-                >
-                  {t(`campaigns.${key}.brand`)}
-                </span>
+                <span className="type-label text-warning">{t("campaignBrand")}</span>
                 <h3 className="type-site-card-title-sm">{t(`campaigns.${key}.title`)}</h3>
                 <p className="type-caption text-muted-foreground">{t(`campaigns.${key}.meta`)}</p>
               </SiteCard>

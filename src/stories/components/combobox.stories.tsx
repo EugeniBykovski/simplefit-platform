@@ -58,3 +58,29 @@ export const KeyboardSearch: Story = {
     await expect(canvas.getByText("PL")).toBeVisible();
   },
 };
+
+/** An adder without a visible label (SPA1 markets, SF-115): `aria-label` names the trigger. */
+export const AddToList: Story = {
+  render: () => {
+    const options = countryOptions("en").map(({ code, name }) => ({ value: code, label: name }));
+    return (
+      <div className="max-w-80">
+        <Combobox
+          id="add-country"
+          aria-label="Add a country"
+          value={null}
+          onValueChange={() => undefined}
+          options={options}
+          placeholder="Add a country"
+          searchLabel="Search countries"
+          emptyLabel="No country matches."
+        />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    await expect(
+      within(canvasElement).getByRole("combobox", { name: "Add a country" }),
+    ).toBeVisible();
+  },
+};

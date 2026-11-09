@@ -51,6 +51,8 @@ function Combobox({
   invalid?: boolean;
   className?: string;
   "aria-describedby"?: string;
+  /** The trigger's name when no `<label for={id}>` names it (e.g. an "Add a country" picker). */
+  "aria-label"?: string;
 }) {
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
@@ -121,6 +123,7 @@ function Combobox({
           aria-controls={open ? listId : undefined}
           aria-invalid={invalid || undefined}
           aria-describedby={aria["aria-describedby"]}
+          aria-label={aria["aria-label"]}
           data-slot="combobox"
           className={cn(
             "flex h-11 w-full min-w-0 items-center gap-1.5 rounded-md border border-input bg-background px-3.5 text-left type-body font-semibold text-foreground transition-colors outline-none focus-visible:border-primary focus-visible:ring-3 focus-visible:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/25",
