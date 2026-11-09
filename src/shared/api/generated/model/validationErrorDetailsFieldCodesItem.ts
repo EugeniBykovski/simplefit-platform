@@ -23,5 +23,6 @@ export const ValidationErrorDetailsFieldCodesItem = {
   does_not_match: 'does_not_match',
   too_young: 'too_young',
   immutable: 'immutable',
+  not_requested: 'not_requested',
   invalid: 'invalid',
 } as const;

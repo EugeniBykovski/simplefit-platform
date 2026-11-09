@@ -20,6 +20,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ClaimSponsorApplicationRequest,
   ConfirmationRequiredResponse,
   ConflictResponse,
   EnrollmentRequiredResponse,
@@ -45,12 +46,14 @@ import type {
   RegisterOperatorCredentialRequest,
   ReinstateOperatorPreviewRequest,
   ReinstateOperatorRequest,
+  RequestSponsorApplicationChangesRequest,
   RevokeOperatorPermissionPreviewRequest,
   RevokeOperatorPermissionRequest,
   RevokeOperatorPreviewRequest,
   RevokeOperatorRequest,
   SecurityKeyRejectedResponse,
   ServiceUnavailableResponse,
+  SponsorApplicationReviewResponse,
   StepUpRequiredResponse,
   SuspendOperatorPreviewRequest,
   SuspendOperatorRequest,
@@ -2683,6 +2686,622 @@ export function usePreviewSuspendOperator<TData = Awaited<ReturnType<typeof prev
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getPreviewSuspendOperatorQueryOptions(operatorId,suspendOperatorPreviewRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetSponsorApplicationForReviewUrl = (applicationId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}`
+}
+
+/**
+ * Needs `sponsors.applications.read` and a key check. Exactly what was last submitted. Each view is audited.
+ *
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary A sponsor application for review
+ */
+export const getSponsorApplicationForReview = async (applicationId: string, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationReviewResponse> => {
+
+  return apiFetch<SponsorApplicationReviewResponse>(getGetSponsorApplicationForReviewUrl(applicationId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSponsorApplicationForReviewQueryKey = (applicationId: string,) => {
+    return [
+    `/api/v1/admin/sponsor-applications/${applicationId}`
+    ] as const;
+    }
+
+
+export const getGetSponsorApplicationForReviewQueryOptions = <TData = Awaited<ReturnType<typeof getSponsorApplicationForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(applicationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorApplicationForReview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSponsorApplicationForReviewQueryKey(applicationId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSponsorApplicationForReview>>> = ({ signal }) => getSponsorApplicationForReview(applicationId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSponsorApplicationForReview>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSponsorApplicationForReviewQueryResult = NonNullable<Awaited<ReturnType<typeof getSponsorApplicationForReview>>>
+export type GetSponsorApplicationForReviewQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useGetSponsorApplicationForReview<TData = Awaited<ReturnType<typeof getSponsorApplicationForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorApplicationForReview>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSponsorApplicationForReview>>,
+          TError,
+          Awaited<ReturnType<typeof getSponsorApplicationForReview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSponsorApplicationForReview<TData = Awaited<ReturnType<typeof getSponsorApplicationForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorApplicationForReview>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSponsorApplicationForReview>>,
+          TError,
+          Awaited<ReturnType<typeof getSponsorApplicationForReview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSponsorApplicationForReview<TData = Awaited<ReturnType<typeof getSponsorApplicationForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorApplicationForReview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary A sponsor application for review
+ */
+
+export function useGetSponsorApplicationForReview<TData = Awaited<ReturnType<typeof getSponsorApplicationForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorApplicationForReview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSponsorApplicationForReviewQueryOptions(applicationId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getClaimSponsorApplicationUrl = (applicationId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}/claim`
+}
+
+/**
+ * Needs `sponsors.applications.claim` and a fresh key check: `submitted` -> `under_review`. Takes `reason_code`, `expected_revision` and `operation_id` (a repeat changes nothing).
+ *
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary Claim a sponsor application for review
+ */
+export const claimSponsorApplication = async (applicationId: string,
+    claimSponsorApplicationRequest: ClaimSponsorApplicationRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationReviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorApplicationReviewResponse>(getClaimSponsorApplicationUrl(applicationId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(claimSponsorApplicationRequest)
+  }
+);}
+
+
+
+
+
+export const getClaimSponsorApplicationQueryKey = (applicationId: string,
+    claimSponsorApplicationRequest?: BodyType<ClaimSponsorApplicationRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-applications/${applicationId}/claim`, claimSponsorApplicationRequest
+    ] as const;
+    }
+
+
+export const getClaimSponsorApplicationQueryOptions = <TData = Awaited<ReturnType<typeof claimSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(applicationId: string,
+    claimSponsorApplicationRequest: BodyType<ClaimSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof claimSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getClaimSponsorApplicationQueryKey(applicationId,claimSponsorApplicationRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof claimSponsorApplication>>> = ({ signal }) => claimSponsorApplication(applicationId,claimSponsorApplicationRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof claimSponsorApplication>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ClaimSponsorApplicationQueryResult = NonNullable<Awaited<ReturnType<typeof claimSponsorApplication>>>
+export type ClaimSponsorApplicationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useClaimSponsorApplication<TData = Awaited<ReturnType<typeof claimSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    claimSponsorApplicationRequest: BodyType<ClaimSponsorApplicationRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof claimSponsorApplication>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof claimSponsorApplication>>,
+          TError,
+          Awaited<ReturnType<typeof claimSponsorApplication>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useClaimSponsorApplication<TData = Awaited<ReturnType<typeof claimSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    claimSponsorApplicationRequest: BodyType<ClaimSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof claimSponsorApplication>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof claimSponsorApplication>>,
+          TError,
+          Awaited<ReturnType<typeof claimSponsorApplication>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useClaimSponsorApplication<TData = Awaited<ReturnType<typeof claimSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    claimSponsorApplicationRequest: BodyType<ClaimSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof claimSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Claim a sponsor application for review
+ */
+
+export function useClaimSponsorApplication<TData = Awaited<ReturnType<typeof claimSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    claimSponsorApplicationRequest: BodyType<ClaimSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof claimSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getClaimSponsorApplicationQueryOptions(applicationId,claimSponsorApplicationRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewClaimSponsorApplicationUrl = (applicationId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}/claim/preview`
+}
+
+/**
+ * Needs `sponsors.applications.claim` and a fresh key check. Changes nothing.
+ *
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary Preview claiming a sponsor application
+ */
+export const previewClaimSponsorApplication = async (applicationId: string,
+    claimSponsorApplicationRequest: ClaimSponsorApplicationRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewClaimSponsorApplicationUrl(applicationId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(claimSponsorApplicationRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewClaimSponsorApplicationQueryKey = (applicationId: string,
+    claimSponsorApplicationRequest?: BodyType<ClaimSponsorApplicationRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-applications/${applicationId}/claim/preview`, claimSponsorApplicationRequest
+    ] as const;
+    }
+
+
+export const getPreviewClaimSponsorApplicationQueryOptions = <TData = Awaited<ReturnType<typeof previewClaimSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(applicationId: string,
+    claimSponsorApplicationRequest: BodyType<ClaimSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewClaimSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewClaimSponsorApplicationQueryKey(applicationId,claimSponsorApplicationRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewClaimSponsorApplication>>> = ({ signal }) => previewClaimSponsorApplication(applicationId,claimSponsorApplicationRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewClaimSponsorApplication>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewClaimSponsorApplicationQueryResult = NonNullable<Awaited<ReturnType<typeof previewClaimSponsorApplication>>>
+export type PreviewClaimSponsorApplicationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewClaimSponsorApplication<TData = Awaited<ReturnType<typeof previewClaimSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    claimSponsorApplicationRequest: BodyType<ClaimSponsorApplicationRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewClaimSponsorApplication>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewClaimSponsorApplication>>,
+          TError,
+          Awaited<ReturnType<typeof previewClaimSponsorApplication>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewClaimSponsorApplication<TData = Awaited<ReturnType<typeof previewClaimSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    claimSponsorApplicationRequest: BodyType<ClaimSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewClaimSponsorApplication>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewClaimSponsorApplication>>,
+          TError,
+          Awaited<ReturnType<typeof previewClaimSponsorApplication>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewClaimSponsorApplication<TData = Awaited<ReturnType<typeof previewClaimSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    claimSponsorApplicationRequest: BodyType<ClaimSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewClaimSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview claiming a sponsor application
+ */
+
+export function usePreviewClaimSponsorApplication<TData = Awaited<ReturnType<typeof previewClaimSponsorApplication>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    claimSponsorApplicationRequest: BodyType<ClaimSponsorApplicationRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewClaimSponsorApplication>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewClaimSponsorApplicationQueryOptions(applicationId,claimSponsorApplicationRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getRequestSponsorApplicationChangesUrl = (applicationId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}/request-changes`
+}
+
+/**
+ * Needs `sponsors.applications.request_changes` and a fresh key check: `under_review` -> `changes_requested`,
+ * with the answers the applicant may change and a plain-text message (also emailed where enabled). The
+ * applicant's next submission resolves it. Takes `reason_code`, `expected_revision` and `operation_id`.
+ *
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary Request changes to a sponsor application
+ */
+export const requestSponsorApplicationChanges = async (applicationId: string,
+    requestSponsorApplicationChangesRequest: RequestSponsorApplicationChangesRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationReviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorApplicationReviewResponse>(getRequestSponsorApplicationChangesUrl(applicationId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(requestSponsorApplicationChangesRequest)
+  }
+);}
+
+
+
+
+
+export const getRequestSponsorApplicationChangesQueryKey = (applicationId: string,
+    requestSponsorApplicationChangesRequest?: BodyType<RequestSponsorApplicationChangesRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-applications/${applicationId}/request-changes`, requestSponsorApplicationChangesRequest
+    ] as const;
+    }
+
+
+export const getRequestSponsorApplicationChangesQueryOptions = <TData = Awaited<ReturnType<typeof requestSponsorApplicationChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(applicationId: string,
+    requestSponsorApplicationChangesRequest: BodyType<RequestSponsorApplicationChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestSponsorApplicationChanges>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getRequestSponsorApplicationChangesQueryKey(applicationId,requestSponsorApplicationChangesRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof requestSponsorApplicationChanges>>> = ({ signal }) => requestSponsorApplicationChanges(applicationId,requestSponsorApplicationChangesRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof requestSponsorApplicationChanges>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type RequestSponsorApplicationChangesQueryResult = NonNullable<Awaited<ReturnType<typeof requestSponsorApplicationChanges>>>
+export type RequestSponsorApplicationChangesQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useRequestSponsorApplicationChanges<TData = Awaited<ReturnType<typeof requestSponsorApplicationChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    requestSponsorApplicationChangesRequest: BodyType<RequestSponsorApplicationChangesRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestSponsorApplicationChanges>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof requestSponsorApplicationChanges>>,
+          TError,
+          Awaited<ReturnType<typeof requestSponsorApplicationChanges>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRequestSponsorApplicationChanges<TData = Awaited<ReturnType<typeof requestSponsorApplicationChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    requestSponsorApplicationChangesRequest: BodyType<RequestSponsorApplicationChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestSponsorApplicationChanges>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof requestSponsorApplicationChanges>>,
+          TError,
+          Awaited<ReturnType<typeof requestSponsorApplicationChanges>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRequestSponsorApplicationChanges<TData = Awaited<ReturnType<typeof requestSponsorApplicationChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    requestSponsorApplicationChangesRequest: BodyType<RequestSponsorApplicationChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestSponsorApplicationChanges>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Request changes to a sponsor application
+ */
+
+export function useRequestSponsorApplicationChanges<TData = Awaited<ReturnType<typeof requestSponsorApplicationChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    requestSponsorApplicationChangesRequest: BodyType<RequestSponsorApplicationChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestSponsorApplicationChanges>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getRequestSponsorApplicationChangesQueryOptions(applicationId,requestSponsorApplicationChangesRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewRequestSponsorApplicationChangesUrl = (applicationId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-applications/${applicationId}/request-changes/preview`
+}
+
+/**
+ * Needs `sponsors.applications.request_changes` and a fresh key check. Changes nothing.
+ *
+ * * `not_found` - not a usable operator, or no such submitted application (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator's own application), or the application's status.
+ * * `revision_conflict` - the application changed since `expected_revision`.
+ * @summary Preview requesting changes
+ */
+export const previewRequestSponsorApplicationChanges = async (applicationId: string,
+    requestSponsorApplicationChangesRequest: RequestSponsorApplicationChangesRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewRequestSponsorApplicationChangesUrl(applicationId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(requestSponsorApplicationChangesRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewRequestSponsorApplicationChangesQueryKey = (applicationId: string,
+    requestSponsorApplicationChangesRequest?: BodyType<RequestSponsorApplicationChangesRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-applications/${applicationId}/request-changes/preview`, requestSponsorApplicationChangesRequest
+    ] as const;
+    }
+
+
+export const getPreviewRequestSponsorApplicationChangesQueryOptions = <TData = Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(applicationId: string,
+    requestSponsorApplicationChangesRequest: BodyType<RequestSponsorApplicationChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewRequestSponsorApplicationChangesQueryKey(applicationId,requestSponsorApplicationChangesRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>> = ({ signal }) => previewRequestSponsorApplicationChanges(applicationId,requestSponsorApplicationChangesRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: applicationId !== null && applicationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewRequestSponsorApplicationChangesQueryResult = NonNullable<Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>>
+export type PreviewRequestSponsorApplicationChangesQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewRequestSponsorApplicationChanges<TData = Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    requestSponsorApplicationChangesRequest: BodyType<RequestSponsorApplicationChangesRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>,
+          TError,
+          Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewRequestSponsorApplicationChanges<TData = Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    requestSponsorApplicationChangesRequest: BodyType<RequestSponsorApplicationChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>,
+          TError,
+          Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewRequestSponsorApplicationChanges<TData = Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    requestSponsorApplicationChangesRequest: BodyType<RequestSponsorApplicationChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview requesting changes
+ */
+
+export function usePreviewRequestSponsorApplicationChanges<TData = Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ applicationId: string,
+    requestSponsorApplicationChangesRequest: BodyType<RequestSponsorApplicationChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRequestSponsorApplicationChanges>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewRequestSponsorApplicationChangesQueryOptions(applicationId,requestSponsorApplicationChangesRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

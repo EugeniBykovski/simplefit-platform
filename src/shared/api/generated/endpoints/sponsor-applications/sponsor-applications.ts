@@ -20,15 +20,21 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  CodeInvalidResponse,
   ConflictResponse,
   InternalErrorResponse,
   NotFoundResponse,
   RateLimitedResponse,
+  ServiceUnavailableResponse,
+  SponsorApplicationEvidenceRequest,
+  SponsorApplicationEvidenceResponse,
   SponsorApplicationPolicyResponse,
   SponsorApplicationResponse,
+  SponsorApplicationRevisionRequest,
   SponsorApplicationSaveRequest,
   SponsorApplicationSubmissionResponse,
   SponsorApplicationSubmitRequest,
+  SponsorContactCodeRequest,
   UnauthorizedResponse,
   ValidationErrorResponse
 } from '../../model';
@@ -274,6 +280,584 @@ export function useSaveMySponsorApplication<TData = Awaited<ReturnType<typeof sa
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getSaveMySponsorApplicationQueryOptions(sponsorApplicationSaveRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getRequestMySponsorContactCodeUrl = () => {
+
+
+
+
+  return `/api/v1/me/sponsor-application/contact-verification`
+}
+
+/**
+ * Sends a 6-digit code (15 minutes) to the current contact email. A new request replaces the previous code.
+ * Confirming proves someone controls that mailbox; it gives them no access to anything.
+ *
+ * * `conflict` - no contact email yet, or the application isn't editable. `rate_limited`.
+ * * `service_unavailable` - sponsor application emails are off in this environment.
+ * @summary Send a code to my application's contact email
+ */
+export const requestMySponsorContactCode = async ( options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationResponse> => {
+
+  return apiFetch<SponsorApplicationResponse>(getRequestMySponsorContactCodeUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getRequestMySponsorContactCodeQueryKey = () => {
+    return [
+    'POST', `/api/v1/me/sponsor-application/contact-verification`
+    ] as const;
+    }
+
+
+export const getRequestMySponsorContactCodeQueryOptions = <TData = Awaited<ReturnType<typeof requestMySponsorContactCode>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestMySponsorContactCode>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getRequestMySponsorContactCodeQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof requestMySponsorContactCode>>> = ({ signal }) => requestMySponsorContactCode({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof requestMySponsorContactCode>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type RequestMySponsorContactCodeQueryResult = NonNullable<Awaited<ReturnType<typeof requestMySponsorContactCode>>>
+export type RequestMySponsorContactCodeQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+export function useRequestMySponsorContactCode<TData = Awaited<ReturnType<typeof requestMySponsorContactCode>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestMySponsorContactCode>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof requestMySponsorContactCode>>,
+          TError,
+          Awaited<ReturnType<typeof requestMySponsorContactCode>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRequestMySponsorContactCode<TData = Awaited<ReturnType<typeof requestMySponsorContactCode>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestMySponsorContactCode>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof requestMySponsorContactCode>>,
+          TError,
+          Awaited<ReturnType<typeof requestMySponsorContactCode>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRequestMySponsorContactCode<TData = Awaited<ReturnType<typeof requestMySponsorContactCode>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestMySponsorContactCode>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Send a code to my application's contact email
+ */
+
+export function useRequestMySponsorContactCode<TData = Awaited<ReturnType<typeof requestMySponsorContactCode>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestMySponsorContactCode>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getRequestMySponsorContactCodeQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getConfirmMySponsorContactCodeUrl = () => {
+
+
+
+
+  return `/api/v1/me/sponsor-application/contact-verification/confirm`
+}
+
+/**
+ * Confirms the code sent to the current contact email. Changing the contact email afterwards voids the
+ * confirmation.
+ *
+ * * `code_invalid` - wrong code (five attempts). `code_expired` - expired, used up, replaced, or the contact email
+ *   changed since it was sent. `rate_limited`. `service_unavailable` as above.
+ * @summary Confirm the contact email with its code
+ */
+export const confirmMySponsorContactCode = async (sponsorContactCodeRequest: SponsorContactCodeRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorApplicationResponse>(getConfirmMySponsorContactCodeUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sponsorContactCodeRequest)
+  }
+);}
+
+
+
+
+
+export const getConfirmMySponsorContactCodeQueryKey = (sponsorContactCodeRequest?: BodyType<SponsorContactCodeRequest>,) => {
+    return [
+    'POST', `/api/v1/me/sponsor-application/contact-verification/confirm`, sponsorContactCodeRequest
+    ] as const;
+    }
+
+
+export const getConfirmMySponsorContactCodeQueryOptions = <TData = Awaited<ReturnType<typeof confirmMySponsorContactCode>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | CodeInvalidResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(sponsorContactCodeRequest: BodyType<SponsorContactCodeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMySponsorContactCode>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getConfirmMySponsorContactCodeQueryKey(sponsorContactCodeRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof confirmMySponsorContactCode>>> = ({ signal }) => confirmMySponsorContactCode(sponsorContactCodeRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof confirmMySponsorContactCode>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ConfirmMySponsorContactCodeQueryResult = NonNullable<Awaited<ReturnType<typeof confirmMySponsorContactCode>>>
+export type ConfirmMySponsorContactCodeQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | CodeInvalidResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+export function useConfirmMySponsorContactCode<TData = Awaited<ReturnType<typeof confirmMySponsorContactCode>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | CodeInvalidResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ sponsorContactCodeRequest: BodyType<SponsorContactCodeRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMySponsorContactCode>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof confirmMySponsorContactCode>>,
+          TError,
+          Awaited<ReturnType<typeof confirmMySponsorContactCode>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useConfirmMySponsorContactCode<TData = Awaited<ReturnType<typeof confirmMySponsorContactCode>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | CodeInvalidResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ sponsorContactCodeRequest: BodyType<SponsorContactCodeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMySponsorContactCode>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof confirmMySponsorContactCode>>,
+          TError,
+          Awaited<ReturnType<typeof confirmMySponsorContactCode>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useConfirmMySponsorContactCode<TData = Awaited<ReturnType<typeof confirmMySponsorContactCode>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | CodeInvalidResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ sponsorContactCodeRequest: BodyType<SponsorContactCodeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMySponsorContactCode>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Confirm the contact email with its code
+ */
+
+export function useConfirmMySponsorContactCode<TData = Awaited<ReturnType<typeof confirmMySponsorContactCode>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | CodeInvalidResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ sponsorContactCodeRequest: BodyType<SponsorContactCodeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMySponsorContactCode>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getConfirmMySponsorContactCodeQueryOptions(sponsorContactCodeRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getAddMySponsorApplicationEvidenceUrl = () => {
+
+
+
+
+  return `/api/v1/me/sponsor-application/evidence`
+}
+
+/**
+ * Announces a document (PDF, JPEG or PNG; at most 10 MiB; at most five) at `expected_revision` and returns a
+ * presigned `PUT` (15 minutes) that storage accepts only with exactly that type and size. The server builds the
+ * private storage key; nothing is public. Then upload the bytes and confirm the document. Documents are optional
+ * and never scanned.
+ *
+ * * `revision_conflict`, `conflict` (`details.application: "not_editable"`, `details.evidence: "limit_reached"`).
+ * * `validation_error`, `rate_limited`, `not_found` (no current application).
+ * * `service_unavailable` - uploads are off in this environment (production until a file scanner or an accepted
+ *   risk is approved, D-SA09).
+ * @summary Announce a document for my sponsor application
+ */
+export const addMySponsorApplicationEvidence = async (sponsorApplicationEvidenceRequest: SponsorApplicationEvidenceRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationEvidenceResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorApplicationEvidenceResponse>(getAddMySponsorApplicationEvidenceUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sponsorApplicationEvidenceRequest)
+  }
+);}
+
+
+
+
+
+export const getAddMySponsorApplicationEvidenceQueryKey = (sponsorApplicationEvidenceRequest?: BodyType<SponsorApplicationEvidenceRequest>,) => {
+    return [
+    'POST', `/api/v1/me/sponsor-application/evidence`, sponsorApplicationEvidenceRequest
+    ] as const;
+    }
+
+
+export const getAddMySponsorApplicationEvidenceQueryOptions = <TData = Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(sponsorApplicationEvidenceRequest: BodyType<SponsorApplicationEvidenceRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAddMySponsorApplicationEvidenceQueryKey(sponsorApplicationEvidenceRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>> = ({ signal }) => addMySponsorApplicationEvidence(sponsorApplicationEvidenceRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type AddMySponsorApplicationEvidenceQueryResult = NonNullable<Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>>
+export type AddMySponsorApplicationEvidenceQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+export function useAddMySponsorApplicationEvidence<TData = Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ sponsorApplicationEvidenceRequest: BodyType<SponsorApplicationEvidenceRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>,
+          TError,
+          Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAddMySponsorApplicationEvidence<TData = Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ sponsorApplicationEvidenceRequest: BodyType<SponsorApplicationEvidenceRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>,
+          TError,
+          Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAddMySponsorApplicationEvidence<TData = Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ sponsorApplicationEvidenceRequest: BodyType<SponsorApplicationEvidenceRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Announce a document for my sponsor application
+ */
+
+export function useAddMySponsorApplicationEvidence<TData = Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ sponsorApplicationEvidenceRequest: BodyType<SponsorApplicationEvidenceRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof addMySponsorApplicationEvidence>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getAddMySponsorApplicationEvidenceQueryOptions(sponsorApplicationEvidenceRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getConfirmMySponsorApplicationEvidenceUrl = (evidenceId: string,) => {
+
+
+
+
+  return `/api/v1/me/sponsor-application/evidence/${evidenceId}/confirm`
+}
+
+/**
+ * The server reads the object's size and type from storage and attaches the document only if both match what was
+ * announced and the upload hasn't expired. Confirming again answers the same. A storage read is not a malware scan.
+ *
+ * * `conflict` - `details.upload`: `not_found`, `mismatch`, `expired`; `details.evidence: "removed"`.
+ * * `service_unavailable` - uploads are off in this environment (production until a file scanner or an accepted
+ *   risk is approved, D-SA09).
+ * @summary Confirm an uploaded document
+ */
+export const confirmMySponsorApplicationEvidence = async (evidenceId: string, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationResponse> => {
+
+  return apiFetch<SponsorApplicationResponse>(getConfirmMySponsorApplicationEvidenceUrl(evidenceId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getConfirmMySponsorApplicationEvidenceQueryKey = (evidenceId: string,) => {
+    return [
+    'POST', `/api/v1/me/sponsor-application/evidence/${evidenceId}/confirm`
+    ] as const;
+    }
+
+
+export const getConfirmMySponsorApplicationEvidenceQueryOptions = <TData = Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse | ServiceUnavailableResponse>>(evidenceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getConfirmMySponsorApplicationEvidenceQueryKey(evidenceId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>> = ({ signal }) => confirmMySponsorApplicationEvidence(evidenceId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: evidenceId !== null && evidenceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ConfirmMySponsorApplicationEvidenceQueryResult = NonNullable<Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>>
+export type ConfirmMySponsorApplicationEvidenceQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+export function useConfirmMySponsorApplicationEvidence<TData = Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ evidenceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>,
+          TError,
+          Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useConfirmMySponsorApplicationEvidence<TData = Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ evidenceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>,
+          TError,
+          Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useConfirmMySponsorApplicationEvidence<TData = Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ evidenceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Confirm an uploaded document
+ */
+
+export function useConfirmMySponsorApplicationEvidence<TData = Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ evidenceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmMySponsorApplicationEvidence>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getConfirmMySponsorApplicationEvidenceQueryOptions(evidenceId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getRemoveMySponsorApplicationEvidenceUrl = (evidenceId: string,) => {
+
+
+
+
+  return `/api/v1/me/sponsor-application/evidence/${evidenceId}/remove`
+}
+
+/**
+ * Removes a document that isn't part of a submission (also to replace it). Submitted documents are frozen
+ * (`conflict`, `details.evidence: "submitted"`). Removing again answers the same.
+ * * `service_unavailable` - uploads are off in this environment (production until a file scanner or an accepted
+ *   risk is approved, D-SA09).
+ * @summary Remove a document
+ */
+export const removeMySponsorApplicationEvidence = async (evidenceId: string,
+    sponsorApplicationRevisionRequest: SponsorApplicationRevisionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorApplicationResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorApplicationResponse>(getRemoveMySponsorApplicationEvidenceUrl(evidenceId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sponsorApplicationRevisionRequest)
+  }
+);}
+
+
+
+
+
+export const getRemoveMySponsorApplicationEvidenceQueryKey = (evidenceId: string,
+    sponsorApplicationRevisionRequest?: BodyType<SponsorApplicationRevisionRequest>,) => {
+    return [
+    'POST', `/api/v1/me/sponsor-application/evidence/${evidenceId}/remove`, sponsorApplicationRevisionRequest
+    ] as const;
+    }
+
+
+export const getRemoveMySponsorApplicationEvidenceQueryOptions = <TData = Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(evidenceId: string,
+    sponsorApplicationRevisionRequest: BodyType<SponsorApplicationRevisionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getRemoveMySponsorApplicationEvidenceQueryKey(evidenceId,sponsorApplicationRevisionRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>> = ({ signal }) => removeMySponsorApplicationEvidence(evidenceId,sponsorApplicationRevisionRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: evidenceId !== null && evidenceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type RemoveMySponsorApplicationEvidenceQueryResult = NonNullable<Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>>
+export type RemoveMySponsorApplicationEvidenceQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+export function useRemoveMySponsorApplicationEvidence<TData = Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ evidenceId: string,
+    sponsorApplicationRevisionRequest: BodyType<SponsorApplicationRevisionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>,
+          TError,
+          Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRemoveMySponsorApplicationEvidence<TData = Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ evidenceId: string,
+    sponsorApplicationRevisionRequest: BodyType<SponsorApplicationRevisionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>,
+          TError,
+          Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRemoveMySponsorApplicationEvidence<TData = Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ evidenceId: string,
+    sponsorApplicationRevisionRequest: BodyType<SponsorApplicationRevisionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Remove a document
+ */
+
+export function useRemoveMySponsorApplicationEvidence<TData = Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ evidenceId: string,
+    sponsorApplicationRevisionRequest: BodyType<SponsorApplicationRevisionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof removeMySponsorApplicationEvidence>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getRemoveMySponsorApplicationEvidenceQueryOptions(evidenceId,sponsorApplicationRevisionRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

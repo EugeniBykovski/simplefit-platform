@@ -6,7 +6,9 @@
  */
 import type { SponsorApplicationAllowedActionsItem } from './sponsorApplicationAllowedActionsItem';
 import type { SponsorApplicationAnswers } from './sponsorApplicationAnswers';
+import type { SponsorApplicationChangeRequest } from './sponsorApplicationChangeRequest';
 import type { SponsorApplicationDeclaration } from './sponsorApplicationDeclaration';
+import type { SponsorApplicationEvidence } from './sponsorApplicationEvidence';
 import type { SponsorApplicationMissingFieldsItem } from './sponsorApplicationMissingFieldsItem';
 import type { SponsorApplicationStatus } from './sponsorApplicationStatus';
 import type { SponsorApplicationSubmissionSummary } from './sponsorApplicationSubmissionSummary';
@@ -21,9 +23,13 @@ export interface SponsorApplication {
   allowed_actions: SponsorApplicationAllowedActionsItem[];
   answers: SponsorApplicationAnswers;
   application_id: string;
-  contact_email_verified: false;
+  /** @nullable */
+  change_request: SponsorApplicationChangeRequest | null;
+  /** The contact email was confirmed with a code and hasn't changed since. Grants nothing. */
+  contact_email_verified: boolean;
   created_at: string;
   declaration: SponsorApplicationDeclaration;
+  evidence: SponsorApplicationEvidence[];
   /** Answers a submission still needs, in step order. */
   missing_fields: SponsorApplicationMissingFieldsItem[];
   /** @minimum 1 */

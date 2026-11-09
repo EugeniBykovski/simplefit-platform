@@ -7,9 +7,17 @@
 import type { SponsorApplicationUploadsReason } from './sponsorApplicationUploadsReason';
 
 /**
- * Uploads (logo, files) are unavailable until a file scanner is approved (D-SA09). Optional.
+ * Evidence uploads (logo, files; SF-114): optional. `available: false` (`file_scanning_unavailable`) where
+ * uploads are off - production until a file scanner or an accepted risk is approved (D-SA09). Documents are
+ * never scanned for malware: `scanned` is always `false`.
  */
 export interface SponsorApplicationUploads {
-  available: false;
+  available: boolean;
+  content_types: string[];
+  kinds: string[];
+  max_bytes: number;
+  max_documents: number;
+  /** @nullable */
   reason: SponsorApplicationUploadsReason;
+  scanned: false;
 }
