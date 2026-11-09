@@ -20,15 +20,19 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ConfirmationRequiredResponse,
   ConflictResponse,
   EnrollmentRequiredResponse,
   ForbiddenResponse,
+  GrantOperatorPermissionPreviewRequest,
   GrantOperatorPermissionRequest,
   InternalErrorResponse,
   ListOperatorAuditEventsParams,
   NotFoundResponse,
+  OperatorActionPreviewResponse,
   OperatorActionRequest,
   OperatorAuditEventListResponse,
+  OperatorAuditEventResponse,
   OperatorCredentialListResponse,
   OperatorCredentialRegistered,
   OperatorCredentialResponse,
@@ -39,9 +43,17 @@ import type {
   ProvisionOperatorRequest,
   RateLimitedResponse,
   RegisterOperatorCredentialRequest,
+  ReinstateOperatorPreviewRequest,
+  ReinstateOperatorRequest,
+  RevokeOperatorPermissionPreviewRequest,
+  RevokeOperatorPermissionRequest,
+  RevokeOperatorPreviewRequest,
+  RevokeOperatorRequest,
   SecurityKeyRejectedResponse,
   ServiceUnavailableResponse,
   StepUpRequiredResponse,
+  SuspendOperatorPreviewRequest,
+  SuspendOperatorRequest,
   UnauthorizedResponse,
   ValidationErrorResponse,
   VerifyOperatorStepUpRequest,
@@ -87,7 +99,7 @@ export const getListOperatorAuditEventsUrl = (params?: ListOperatorAuditEventsPa
 }
 
 /**
- * Needs `audit.read`. Newest first; `before` pages back.
+ * Needs `audit.read`. Newest first, in a stable order (time, then id). Filters compare for equality; `occurred_after` is inclusive, `occurred_before` exclusive. Follow `next_cursor` with the same filters; a cursor is refused (`validation_error`, `cursor`) with other filters, for another operator, when altered or after an hour. `before` (time) can't be combined with `cursor`. Each query is audited.
  *
  * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
  *   operator.
@@ -174,6 +186,113 @@ export function useListOperatorAuditEvents<TData = Awaited<ReturnType<typeof lis
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getListOperatorAuditEventsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetOperatorAuditEventUrl = (eventId: string,) => {
+
+
+
+
+  return `/api/v1/admin/audit-events/${eventId}`
+}
+
+/**
+ * Needs `audit.read`. Each view is audited.
+ *
+ * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
+ *   operator.
+ * * `enrollment_required` - the viewer's security keys aren't registered yet.
+ * * `forbidden` - the permission isn't granted.
+ * * `step_up_required` - no key check in this session, or not fresh enough for this action.
+ * @summary One operator audit event
+ */
+export const getOperatorAuditEvent = async (eventId: string, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorAuditEventResponse> => {
+
+  return apiFetch<OperatorAuditEventResponse>(getGetOperatorAuditEventUrl(eventId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetOperatorAuditEventQueryKey = (eventId: string,) => {
+    return [
+    `/api/v1/admin/audit-events/${eventId}`
+    ] as const;
+    }
+
+
+export const getGetOperatorAuditEventQueryOptions = <TData = Awaited<ReturnType<typeof getOperatorAuditEvent>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(eventId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getOperatorAuditEvent>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetOperatorAuditEventQueryKey(eventId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getOperatorAuditEvent>>> = ({ signal }) => getOperatorAuditEvent(eventId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: eventId !== null && eventId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getOperatorAuditEvent>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetOperatorAuditEventQueryResult = NonNullable<Awaited<ReturnType<typeof getOperatorAuditEvent>>>
+export type GetOperatorAuditEventQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetOperatorAuditEvent<TData = Awaited<ReturnType<typeof getOperatorAuditEvent>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ eventId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getOperatorAuditEvent>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getOperatorAuditEvent>>,
+          TError,
+          Awaited<ReturnType<typeof getOperatorAuditEvent>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetOperatorAuditEvent<TData = Awaited<ReturnType<typeof getOperatorAuditEvent>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ eventId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getOperatorAuditEvent>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getOperatorAuditEvent>>,
+          TError,
+          Awaited<ReturnType<typeof getOperatorAuditEvent>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetOperatorAuditEvent<TData = Awaited<ReturnType<typeof getOperatorAuditEvent>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ eventId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getOperatorAuditEvent>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One operator audit event
+ */
+
+export function useGetOperatorAuditEvent<TData = Awaited<ReturnType<typeof getOperatorAuditEvent>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ eventId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getOperatorAuditEvent>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetOperatorAuditEventQueryOptions(eventId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1208,20 +1327,29 @@ export const getGrantOperatorPermissionUrl = (operatorId: string,) => {
 }
 
 /**
- * Needs `operators.manage` and a fresh key check. Never to oneself.
+ * Needs confirmation (`previewGrantOperatorPermission`). Never to oneself.
  *
+ * An admin action (SF-111, ADR 0029): needs `operators.manage` and a fresh key check, never targets
+ * oneself, takes a reason code from this action's list, the operator's `expected_revision` and an
+ * `operation_id`. Repeating the same request with the same `operation_id` changes nothing and answers
+ * with the current state.
+ *
+ * * `revision_conflict` (409) - the operator changed since `expected_revision`; `details.current_revision`.
+ * * `conflict` (409) - `details.target: "self"`, or the state (`details.status`, `details.permission`,
+ *   `details.operator`, `details.operation_id`).
+ * * `confirmation_required` (428) - the action needs the `confirmation_token` of its preview.
+ * * `confirmation_invalid` (422) - the token doesn't match this operator, session, action, target,
+ *   parameters and revision, expired, or was used.
+ * * `validation_error` (422) - a reason code not in this action's list, or a malformed field.
  * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
  *   operator.
  * * `enrollment_required` - the viewer's security keys aren't registered yet.
  * * `forbidden` - the permission isn't granted.
  * * `step_up_required` - no key check in this session, or not fresh enough for this action.
- * * `conflict` - `details.target: "self"`; `details.status`, `details.permission`, `details.operator`,
- *   `details.user` or `details.operation_id` name the conflict.
- * * `validation_error` - a malformed reason code, operation id or permission.
  * @summary Grant a permission
  */
 export const grantOperatorPermission = async (operatorId: string,
-    grantOperatorPermissionRequest?: GrantOperatorPermissionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorSummaryResponse> => {
+    grantOperatorPermissionRequest: GrantOperatorPermissionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorSummaryResponse> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -1258,8 +1386,8 @@ export const getGrantOperatorPermissionQueryKey = (operatorId: string,
     }
 
 
-export const getGrantOperatorPermissionQueryOptions = <TData = Awaited<ReturnType<typeof grantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(operatorId: string,
-    grantOperatorPermissionRequest?: BodyType<GrantOperatorPermissionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof grantOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+export const getGrantOperatorPermissionQueryOptions = <TData = Awaited<ReturnType<typeof grantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(operatorId: string,
+    grantOperatorPermissionRequest: BodyType<GrantOperatorPermissionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof grantOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -1278,12 +1406,12 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type GrantOperatorPermissionQueryResult = NonNullable<Awaited<ReturnType<typeof grantOperatorPermission>>>
-export type GrantOperatorPermissionQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+export type GrantOperatorPermissionQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
 
 
-export function useGrantOperatorPermission<TData = Awaited<ReturnType<typeof grantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useGrantOperatorPermission<TData = Awaited<ReturnType<typeof grantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    grantOperatorPermissionRequest: undefined |  BodyType<GrantOperatorPermissionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof grantOperatorPermission>>, TError, TData>> & Pick<
+    grantOperatorPermissionRequest: BodyType<GrantOperatorPermissionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof grantOperatorPermission>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof grantOperatorPermission>>,
           TError,
@@ -1292,9 +1420,9 @@ export function useGrantOperatorPermission<TData = Awaited<ReturnType<typeof gra
       >, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGrantOperatorPermission<TData = Awaited<ReturnType<typeof grantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useGrantOperatorPermission<TData = Awaited<ReturnType<typeof grantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    grantOperatorPermissionRequest?: BodyType<GrantOperatorPermissionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof grantOperatorPermission>>, TError, TData>> & Pick<
+    grantOperatorPermissionRequest: BodyType<GrantOperatorPermissionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof grantOperatorPermission>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof grantOperatorPermission>>,
           TError,
@@ -1303,22 +1431,154 @@ export function useGrantOperatorPermission<TData = Awaited<ReturnType<typeof gra
       >, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGrantOperatorPermission<TData = Awaited<ReturnType<typeof grantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useGrantOperatorPermission<TData = Awaited<ReturnType<typeof grantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    grantOperatorPermissionRequest?: BodyType<GrantOperatorPermissionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof grantOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+    grantOperatorPermissionRequest: BodyType<GrantOperatorPermissionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof grantOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Grant a permission
  */
 
-export function useGrantOperatorPermission<TData = Awaited<ReturnType<typeof grantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useGrantOperatorPermission<TData = Awaited<ReturnType<typeof grantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    grantOperatorPermissionRequest?: BodyType<GrantOperatorPermissionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof grantOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+    grantOperatorPermissionRequest: BodyType<GrantOperatorPermissionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof grantOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGrantOperatorPermissionQueryOptions(operatorId,grantOperatorPermissionRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewGrantOperatorPermissionUrl = (operatorId: string,) => {
+
+
+
+
+  return `/api/v1/admin/operators/${operatorId}/permissions/preview`
+}
+
+/**
+ * Previews an admin action (SF-111): the current and proposed state, the impact and what it needs,
+ * checked as execution would be. Changes nothing, sends nothing. When the action needs confirmation the
+ * answer carries a one-time `confirmation.token` (two minutes), bound to this operator, session, action,
+ * target, reason and revision. A preview authorizes nothing later: execution checks everything again.
+ *
+ *
+ * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
+ *   operator.
+ * * `enrollment_required` - the viewer's security keys aren't registered yet.
+ * * `forbidden` - the permission isn't granted.
+ * * `step_up_required` - no key check in this session, or not fresh enough for this action.
+ * @summary Preview granting a permission
+ */
+export const previewGrantOperatorPermission = async (operatorId: string,
+    grantOperatorPermissionPreviewRequest: GrantOperatorPermissionPreviewRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewGrantOperatorPermissionUrl(operatorId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(grantOperatorPermissionPreviewRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewGrantOperatorPermissionQueryKey = (operatorId: string,
+    grantOperatorPermissionPreviewRequest?: BodyType<GrantOperatorPermissionPreviewRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/operators/${operatorId}/permissions/preview`, grantOperatorPermissionPreviewRequest
+    ] as const;
+    }
+
+
+export const getPreviewGrantOperatorPermissionQueryOptions = <TData = Awaited<ReturnType<typeof previewGrantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(operatorId: string,
+    grantOperatorPermissionPreviewRequest: BodyType<GrantOperatorPermissionPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewGrantOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewGrantOperatorPermissionQueryKey(operatorId,grantOperatorPermissionPreviewRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewGrantOperatorPermission>>> = ({ signal }) => previewGrantOperatorPermission(operatorId,grantOperatorPermissionPreviewRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: operatorId !== null && operatorId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewGrantOperatorPermission>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewGrantOperatorPermissionQueryResult = NonNullable<Awaited<ReturnType<typeof previewGrantOperatorPermission>>>
+export type PreviewGrantOperatorPermissionQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewGrantOperatorPermission<TData = Awaited<ReturnType<typeof previewGrantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    grantOperatorPermissionPreviewRequest: BodyType<GrantOperatorPermissionPreviewRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewGrantOperatorPermission>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewGrantOperatorPermission>>,
+          TError,
+          Awaited<ReturnType<typeof previewGrantOperatorPermission>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewGrantOperatorPermission<TData = Awaited<ReturnType<typeof previewGrantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    grantOperatorPermissionPreviewRequest: BodyType<GrantOperatorPermissionPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewGrantOperatorPermission>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewGrantOperatorPermission>>,
+          TError,
+          Awaited<ReturnType<typeof previewGrantOperatorPermission>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewGrantOperatorPermission<TData = Awaited<ReturnType<typeof previewGrantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    grantOperatorPermissionPreviewRequest: BodyType<GrantOperatorPermissionPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewGrantOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview granting a permission
+ */
+
+export function usePreviewGrantOperatorPermission<TData = Awaited<ReturnType<typeof previewGrantOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    grantOperatorPermissionPreviewRequest: BodyType<GrantOperatorPermissionPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewGrantOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewGrantOperatorPermissionQueryOptions(operatorId,grantOperatorPermissionPreviewRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1340,21 +1600,30 @@ export const getRevokeOperatorPermissionUrl = (operatorId: string,
 }
 
 /**
- * Needs `operators.manage` and a fresh key check. Never one's own.
+ * Narrows access only, so no confirmation is needed. Never one's own.
  *
+ * An admin action (SF-111, ADR 0029): needs `operators.manage` and a fresh key check, never targets
+ * oneself, takes a reason code from this action's list, the operator's `expected_revision` and an
+ * `operation_id`. Repeating the same request with the same `operation_id` changes nothing and answers
+ * with the current state.
+ *
+ * * `revision_conflict` (409) - the operator changed since `expected_revision`; `details.current_revision`.
+ * * `conflict` (409) - `details.target: "self"`, or the state (`details.status`, `details.permission`,
+ *   `details.operator`, `details.operation_id`).
+ * * `confirmation_required` (428) - the action needs the `confirmation_token` of its preview.
+ * * `confirmation_invalid` (422) - the token doesn't match this operator, session, action, target,
+ *   parameters and revision, expired, or was used.
+ * * `validation_error` (422) - a reason code not in this action's list, or a malformed field.
  * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
  *   operator.
  * * `enrollment_required` - the viewer's security keys aren't registered yet.
  * * `forbidden` - the permission isn't granted.
  * * `step_up_required` - no key check in this session, or not fresh enough for this action.
- * * `conflict` - `details.target: "self"`; `details.status`, `details.permission`, `details.operator`,
- *   `details.user` or `details.operation_id` name the conflict.
- * * `validation_error` - a malformed reason code, operation id or permission.
  * @summary Revoke a permission
  */
 export const revokeOperatorPermission = async (operatorId: string,
     permission: string,
-    operatorActionRequest?: OperatorActionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorSummaryResponse> => {
+    revokeOperatorPermissionRequest: RevokeOperatorPermissionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorSummaryResponse> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -1375,7 +1644,7 @@ return apiFetch<OperatorSummaryResponse>(getRevokeOperatorPermissionUrl(operator
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
-    body: JSON.stringify(operatorActionRequest)
+    body: JSON.stringify(revokeOperatorPermissionRequest)
   }
 );}
 
@@ -1385,25 +1654,25 @@ return apiFetch<OperatorSummaryResponse>(getRevokeOperatorPermissionUrl(operator
 
 export const getRevokeOperatorPermissionQueryKey = (operatorId: string,
     permission: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>,) => {
+    revokeOperatorPermissionRequest?: BodyType<RevokeOperatorPermissionRequest>,) => {
     return [
-    'POST', `/api/v1/admin/operators/${operatorId}/permissions/${permission}/revoke`, operatorActionRequest
+    'POST', `/api/v1/admin/operators/${operatorId}/permissions/${permission}/revoke`, revokeOperatorPermissionRequest
     ] as const;
     }
 
 
-export const getRevokeOperatorPermissionQueryOptions = <TData = Awaited<ReturnType<typeof revokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(operatorId: string,
+export const getRevokeOperatorPermissionQueryOptions = <TData = Awaited<ReturnType<typeof revokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(operatorId: string,
     permission: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+    revokeOperatorPermissionRequest: BodyType<RevokeOperatorPermissionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getRevokeOperatorPermissionQueryKey(operatorId,permission,operatorActionRequest);
+  const queryKey =  queryOptions?.queryKey ?? getRevokeOperatorPermissionQueryKey(operatorId,permission,revokeOperatorPermissionRequest);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof revokeOperatorPermission>>> = ({ signal }) => revokeOperatorPermission(operatorId,permission,operatorActionRequest, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof revokeOperatorPermission>>> = ({ signal }) => revokeOperatorPermission(operatorId,permission,revokeOperatorPermissionRequest, { signal, ...requestOptions });
 
 
 
@@ -1413,13 +1682,13 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type RevokeOperatorPermissionQueryResult = NonNullable<Awaited<ReturnType<typeof revokeOperatorPermission>>>
-export type RevokeOperatorPermissionQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+export type RevokeOperatorPermissionQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
 
 
-export function useRevokeOperatorPermission<TData = Awaited<ReturnType<typeof revokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useRevokeOperatorPermission<TData = Awaited<ReturnType<typeof revokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
     permission: string,
-    operatorActionRequest: undefined |  BodyType<OperatorActionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperatorPermission>>, TError, TData>> & Pick<
+    revokeOperatorPermissionRequest: BodyType<RevokeOperatorPermissionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperatorPermission>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof revokeOperatorPermission>>,
           TError,
@@ -1428,10 +1697,10 @@ export function useRevokeOperatorPermission<TData = Awaited<ReturnType<typeof re
       >, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useRevokeOperatorPermission<TData = Awaited<ReturnType<typeof revokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useRevokeOperatorPermission<TData = Awaited<ReturnType<typeof revokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
     permission: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperatorPermission>>, TError, TData>> & Pick<
+    revokeOperatorPermissionRequest: BodyType<RevokeOperatorPermissionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperatorPermission>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof revokeOperatorPermission>>,
           TError,
@@ -1440,24 +1709,164 @@ export function useRevokeOperatorPermission<TData = Awaited<ReturnType<typeof re
       >, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useRevokeOperatorPermission<TData = Awaited<ReturnType<typeof revokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useRevokeOperatorPermission<TData = Awaited<ReturnType<typeof revokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
     permission: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+    revokeOperatorPermissionRequest: BodyType<RevokeOperatorPermissionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Revoke a permission
  */
 
-export function useRevokeOperatorPermission<TData = Awaited<ReturnType<typeof revokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useRevokeOperatorPermission<TData = Awaited<ReturnType<typeof revokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
     permission: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+    revokeOperatorPermissionRequest: BodyType<RevokeOperatorPermissionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getRevokeOperatorPermissionQueryOptions(operatorId,permission,operatorActionRequest,options)
+  const queryOptions = getRevokeOperatorPermissionQueryOptions(operatorId,permission,revokeOperatorPermissionRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewRevokeOperatorPermissionUrl = (operatorId: string,
+    permission: string,) => {
+
+
+
+
+  return `/api/v1/admin/operators/${operatorId}/permissions/${permission}/revoke/preview`
+}
+
+/**
+ * Previews an admin action (SF-111): the current and proposed state, the impact and what it needs,
+ * checked as execution would be. Changes nothing, sends nothing. When the action needs confirmation the
+ * answer carries a one-time `confirmation.token` (two minutes), bound to this operator, session, action,
+ * target, reason and revision. A preview authorizes nothing later: execution checks everything again.
+ *
+ *
+ * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
+ *   operator.
+ * * `enrollment_required` - the viewer's security keys aren't registered yet.
+ * * `forbidden` - the permission isn't granted.
+ * * `step_up_required` - no key check in this session, or not fresh enough for this action.
+ * @summary Preview revoking a permission
+ */
+export const previewRevokeOperatorPermission = async (operatorId: string,
+    permission: string,
+    revokeOperatorPermissionPreviewRequest: RevokeOperatorPermissionPreviewRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewRevokeOperatorPermissionUrl(operatorId,permission),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(revokeOperatorPermissionPreviewRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewRevokeOperatorPermissionQueryKey = (operatorId: string,
+    permission: string,
+    revokeOperatorPermissionPreviewRequest?: BodyType<RevokeOperatorPermissionPreviewRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/operators/${operatorId}/permissions/${permission}/revoke/preview`, revokeOperatorPermissionPreviewRequest
+    ] as const;
+    }
+
+
+export const getPreviewRevokeOperatorPermissionQueryOptions = <TData = Awaited<ReturnType<typeof previewRevokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(operatorId: string,
+    permission: string,
+    revokeOperatorPermissionPreviewRequest: BodyType<RevokeOperatorPermissionPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRevokeOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewRevokeOperatorPermissionQueryKey(operatorId,permission,revokeOperatorPermissionPreviewRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewRevokeOperatorPermission>>> = ({ signal }) => previewRevokeOperatorPermission(operatorId,permission,revokeOperatorPermissionPreviewRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: operatorId !== null && operatorId !== undefined && permission !== null && permission !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewRevokeOperatorPermission>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewRevokeOperatorPermissionQueryResult = NonNullable<Awaited<ReturnType<typeof previewRevokeOperatorPermission>>>
+export type PreviewRevokeOperatorPermissionQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewRevokeOperatorPermission<TData = Awaited<ReturnType<typeof previewRevokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    permission: string,
+    revokeOperatorPermissionPreviewRequest: BodyType<RevokeOperatorPermissionPreviewRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRevokeOperatorPermission>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewRevokeOperatorPermission>>,
+          TError,
+          Awaited<ReturnType<typeof previewRevokeOperatorPermission>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewRevokeOperatorPermission<TData = Awaited<ReturnType<typeof previewRevokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    permission: string,
+    revokeOperatorPermissionPreviewRequest: BodyType<RevokeOperatorPermissionPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRevokeOperatorPermission>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewRevokeOperatorPermission>>,
+          TError,
+          Awaited<ReturnType<typeof previewRevokeOperatorPermission>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewRevokeOperatorPermission<TData = Awaited<ReturnType<typeof previewRevokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    permission: string,
+    revokeOperatorPermissionPreviewRequest: BodyType<RevokeOperatorPermissionPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRevokeOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview revoking a permission
+ */
+
+export function usePreviewRevokeOperatorPermission<TData = Awaited<ReturnType<typeof previewRevokeOperatorPermission>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    permission: string,
+    revokeOperatorPermissionPreviewRequest: BodyType<RevokeOperatorPermissionPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRevokeOperatorPermission>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewRevokeOperatorPermissionQueryOptions(operatorId,permission,revokeOperatorPermissionPreviewRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1478,20 +1887,29 @@ export const getReinstateOperatorUrl = (operatorId: string,) => {
 }
 
 /**
- * Needs `operators.manage` and a fresh key check. Never oneself. Suspended operators only. With fewer keys than required they return to `pending_enrollment`.
+ * Needs confirmation (`previewReinstateOperator`). Suspended operators only; with fewer keys than required they return to `pending_enrollment`.
  *
+ * An admin action (SF-111, ADR 0029): needs `operators.manage` and a fresh key check, never targets
+ * oneself, takes a reason code from this action's list, the operator's `expected_revision` and an
+ * `operation_id`. Repeating the same request with the same `operation_id` changes nothing and answers
+ * with the current state.
+ *
+ * * `revision_conflict` (409) - the operator changed since `expected_revision`; `details.current_revision`.
+ * * `conflict` (409) - `details.target: "self"`, or the state (`details.status`, `details.permission`,
+ *   `details.operator`, `details.operation_id`).
+ * * `confirmation_required` (428) - the action needs the `confirmation_token` of its preview.
+ * * `confirmation_invalid` (422) - the token doesn't match this operator, session, action, target,
+ *   parameters and revision, expired, or was used.
+ * * `validation_error` (422) - a reason code not in this action's list, or a malformed field.
  * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
  *   operator.
  * * `enrollment_required` - the viewer's security keys aren't registered yet.
  * * `forbidden` - the permission isn't granted.
  * * `step_up_required` - no key check in this session, or not fresh enough for this action.
- * * `conflict` - `details.target: "self"`; `details.status`, `details.permission`, `details.operator`,
- *   `details.user` or `details.operation_id` name the conflict.
- * * `validation_error` - a malformed reason code, operation id or permission.
  * @summary Reinstate an operator
  */
 export const reinstateOperator = async (operatorId: string,
-    operatorActionRequest?: OperatorActionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorSummaryResponse> => {
+    reinstateOperatorRequest: ReinstateOperatorRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorSummaryResponse> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -1512,7 +1930,7 @@ return apiFetch<OperatorSummaryResponse>(getReinstateOperatorUrl(operatorId),
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
-    body: JSON.stringify(operatorActionRequest)
+    body: JSON.stringify(reinstateOperatorRequest)
   }
 );}
 
@@ -1521,24 +1939,24 @@ return apiFetch<OperatorSummaryResponse>(getReinstateOperatorUrl(operatorId),
 
 
 export const getReinstateOperatorQueryKey = (operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>,) => {
+    reinstateOperatorRequest?: BodyType<ReinstateOperatorRequest>,) => {
     return [
-    'POST', `/api/v1/admin/operators/${operatorId}/reinstate`, operatorActionRequest
+    'POST', `/api/v1/admin/operators/${operatorId}/reinstate`, reinstateOperatorRequest
     ] as const;
     }
 
 
-export const getReinstateOperatorQueryOptions = <TData = Awaited<ReturnType<typeof reinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+export const getReinstateOperatorQueryOptions = <TData = Awaited<ReturnType<typeof reinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(operatorId: string,
+    reinstateOperatorRequest: BodyType<ReinstateOperatorRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getReinstateOperatorQueryKey(operatorId,operatorActionRequest);
+  const queryKey =  queryOptions?.queryKey ?? getReinstateOperatorQueryKey(operatorId,reinstateOperatorRequest);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof reinstateOperator>>> = ({ signal }) => reinstateOperator(operatorId,operatorActionRequest, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reinstateOperator>>> = ({ signal }) => reinstateOperator(operatorId,reinstateOperatorRequest, { signal, ...requestOptions });
 
 
 
@@ -1548,12 +1966,12 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type ReinstateOperatorQueryResult = NonNullable<Awaited<ReturnType<typeof reinstateOperator>>>
-export type ReinstateOperatorQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+export type ReinstateOperatorQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
 
 
-export function useReinstateOperator<TData = Awaited<ReturnType<typeof reinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useReinstateOperator<TData = Awaited<ReturnType<typeof reinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    operatorActionRequest: undefined |  BodyType<OperatorActionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateOperator>>, TError, TData>> & Pick<
+    reinstateOperatorRequest: BodyType<ReinstateOperatorRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateOperator>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof reinstateOperator>>,
           TError,
@@ -1562,9 +1980,9 @@ export function useReinstateOperator<TData = Awaited<ReturnType<typeof reinstate
       >, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useReinstateOperator<TData = Awaited<ReturnType<typeof reinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useReinstateOperator<TData = Awaited<ReturnType<typeof reinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateOperator>>, TError, TData>> & Pick<
+    reinstateOperatorRequest: BodyType<ReinstateOperatorRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateOperator>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof reinstateOperator>>,
           TError,
@@ -1573,22 +1991,154 @@ export function useReinstateOperator<TData = Awaited<ReturnType<typeof reinstate
       >, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useReinstateOperator<TData = Awaited<ReturnType<typeof reinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useReinstateOperator<TData = Awaited<ReturnType<typeof reinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+    reinstateOperatorRequest: BodyType<ReinstateOperatorRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Reinstate an operator
  */
 
-export function useReinstateOperator<TData = Awaited<ReturnType<typeof reinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useReinstateOperator<TData = Awaited<ReturnType<typeof reinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+    reinstateOperatorRequest: BodyType<ReinstateOperatorRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof reinstateOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getReinstateOperatorQueryOptions(operatorId,operatorActionRequest,options)
+  const queryOptions = getReinstateOperatorQueryOptions(operatorId,reinstateOperatorRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewReinstateOperatorUrl = (operatorId: string,) => {
+
+
+
+
+  return `/api/v1/admin/operators/${operatorId}/reinstate/preview`
+}
+
+/**
+ * Previews an admin action (SF-111): the current and proposed state, the impact and what it needs,
+ * checked as execution would be. Changes nothing, sends nothing. When the action needs confirmation the
+ * answer carries a one-time `confirmation.token` (two minutes), bound to this operator, session, action,
+ * target, reason and revision. A preview authorizes nothing later: execution checks everything again.
+ *
+ *
+ * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
+ *   operator.
+ * * `enrollment_required` - the viewer's security keys aren't registered yet.
+ * * `forbidden` - the permission isn't granted.
+ * * `step_up_required` - no key check in this session, or not fresh enough for this action.
+ * @summary Preview reinstating an operator
+ */
+export const previewReinstateOperator = async (operatorId: string,
+    reinstateOperatorPreviewRequest: ReinstateOperatorPreviewRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewReinstateOperatorUrl(operatorId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(reinstateOperatorPreviewRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewReinstateOperatorQueryKey = (operatorId: string,
+    reinstateOperatorPreviewRequest?: BodyType<ReinstateOperatorPreviewRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/operators/${operatorId}/reinstate/preview`, reinstateOperatorPreviewRequest
+    ] as const;
+    }
+
+
+export const getPreviewReinstateOperatorQueryOptions = <TData = Awaited<ReturnType<typeof previewReinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(operatorId: string,
+    reinstateOperatorPreviewRequest: BodyType<ReinstateOperatorPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewReinstateOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewReinstateOperatorQueryKey(operatorId,reinstateOperatorPreviewRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewReinstateOperator>>> = ({ signal }) => previewReinstateOperator(operatorId,reinstateOperatorPreviewRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: operatorId !== null && operatorId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewReinstateOperator>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewReinstateOperatorQueryResult = NonNullable<Awaited<ReturnType<typeof previewReinstateOperator>>>
+export type PreviewReinstateOperatorQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewReinstateOperator<TData = Awaited<ReturnType<typeof previewReinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    reinstateOperatorPreviewRequest: BodyType<ReinstateOperatorPreviewRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewReinstateOperator>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewReinstateOperator>>,
+          TError,
+          Awaited<ReturnType<typeof previewReinstateOperator>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewReinstateOperator<TData = Awaited<ReturnType<typeof previewReinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    reinstateOperatorPreviewRequest: BodyType<ReinstateOperatorPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewReinstateOperator>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewReinstateOperator>>,
+          TError,
+          Awaited<ReturnType<typeof previewReinstateOperator>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewReinstateOperator<TData = Awaited<ReturnType<typeof previewReinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    reinstateOperatorPreviewRequest: BodyType<ReinstateOperatorPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewReinstateOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview reinstating an operator
+ */
+
+export function usePreviewReinstateOperator<TData = Awaited<ReturnType<typeof previewReinstateOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    reinstateOperatorPreviewRequest: BodyType<ReinstateOperatorPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewReinstateOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewReinstateOperatorQueryOptions(operatorId,reinstateOperatorPreviewRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1609,20 +2159,29 @@ export const getRevokeOperatorUrl = (operatorId: string,) => {
 }
 
 /**
- * Needs `operators.manage` and a fresh key check. Never oneself. Final. Their permissions, keys and key checks end in the same transaction.
+ * Needs confirmation (`previewRevokeOperator`). Final: their permissions, keys and key checks end in the same transaction.
  *
+ * An admin action (SF-111, ADR 0029): needs `operators.manage` and a fresh key check, never targets
+ * oneself, takes a reason code from this action's list, the operator's `expected_revision` and an
+ * `operation_id`. Repeating the same request with the same `operation_id` changes nothing and answers
+ * with the current state.
+ *
+ * * `revision_conflict` (409) - the operator changed since `expected_revision`; `details.current_revision`.
+ * * `conflict` (409) - `details.target: "self"`, or the state (`details.status`, `details.permission`,
+ *   `details.operator`, `details.operation_id`).
+ * * `confirmation_required` (428) - the action needs the `confirmation_token` of its preview.
+ * * `confirmation_invalid` (422) - the token doesn't match this operator, session, action, target,
+ *   parameters and revision, expired, or was used.
+ * * `validation_error` (422) - a reason code not in this action's list, or a malformed field.
  * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
  *   operator.
  * * `enrollment_required` - the viewer's security keys aren't registered yet.
  * * `forbidden` - the permission isn't granted.
  * * `step_up_required` - no key check in this session, or not fresh enough for this action.
- * * `conflict` - `details.target: "self"`; `details.status`, `details.permission`, `details.operator`,
- *   `details.user` or `details.operation_id` name the conflict.
- * * `validation_error` - a malformed reason code, operation id or permission.
  * @summary Revoke an operator
  */
 export const revokeOperator = async (operatorId: string,
-    operatorActionRequest?: OperatorActionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorSummaryResponse> => {
+    revokeOperatorRequest: RevokeOperatorRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorSummaryResponse> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -1643,7 +2202,7 @@ return apiFetch<OperatorSummaryResponse>(getRevokeOperatorUrl(operatorId),
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
-    body: JSON.stringify(operatorActionRequest)
+    body: JSON.stringify(revokeOperatorRequest)
   }
 );}
 
@@ -1652,24 +2211,24 @@ return apiFetch<OperatorSummaryResponse>(getRevokeOperatorUrl(operatorId),
 
 
 export const getRevokeOperatorQueryKey = (operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>,) => {
+    revokeOperatorRequest?: BodyType<RevokeOperatorRequest>,) => {
     return [
-    'POST', `/api/v1/admin/operators/${operatorId}/revoke`, operatorActionRequest
+    'POST', `/api/v1/admin/operators/${operatorId}/revoke`, revokeOperatorRequest
     ] as const;
     }
 
 
-export const getRevokeOperatorQueryOptions = <TData = Awaited<ReturnType<typeof revokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+export const getRevokeOperatorQueryOptions = <TData = Awaited<ReturnType<typeof revokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(operatorId: string,
+    revokeOperatorRequest: BodyType<RevokeOperatorRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getRevokeOperatorQueryKey(operatorId,operatorActionRequest);
+  const queryKey =  queryOptions?.queryKey ?? getRevokeOperatorQueryKey(operatorId,revokeOperatorRequest);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof revokeOperator>>> = ({ signal }) => revokeOperator(operatorId,operatorActionRequest, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof revokeOperator>>> = ({ signal }) => revokeOperator(operatorId,revokeOperatorRequest, { signal, ...requestOptions });
 
 
 
@@ -1679,12 +2238,12 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type RevokeOperatorQueryResult = NonNullable<Awaited<ReturnType<typeof revokeOperator>>>
-export type RevokeOperatorQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+export type RevokeOperatorQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
 
 
-export function useRevokeOperator<TData = Awaited<ReturnType<typeof revokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useRevokeOperator<TData = Awaited<ReturnType<typeof revokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    operatorActionRequest: undefined |  BodyType<OperatorActionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperator>>, TError, TData>> & Pick<
+    revokeOperatorRequest: BodyType<RevokeOperatorRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperator>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof revokeOperator>>,
           TError,
@@ -1693,9 +2252,9 @@ export function useRevokeOperator<TData = Awaited<ReturnType<typeof revokeOperat
       >, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useRevokeOperator<TData = Awaited<ReturnType<typeof revokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useRevokeOperator<TData = Awaited<ReturnType<typeof revokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperator>>, TError, TData>> & Pick<
+    revokeOperatorRequest: BodyType<RevokeOperatorRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperator>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof revokeOperator>>,
           TError,
@@ -1704,22 +2263,154 @@ export function useRevokeOperator<TData = Awaited<ReturnType<typeof revokeOperat
       >, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useRevokeOperator<TData = Awaited<ReturnType<typeof revokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useRevokeOperator<TData = Awaited<ReturnType<typeof revokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+    revokeOperatorRequest: BodyType<RevokeOperatorRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Revoke an operator
  */
 
-export function useRevokeOperator<TData = Awaited<ReturnType<typeof revokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useRevokeOperator<TData = Awaited<ReturnType<typeof revokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+    revokeOperatorRequest: BodyType<RevokeOperatorRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revokeOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getRevokeOperatorQueryOptions(operatorId,operatorActionRequest,options)
+  const queryOptions = getRevokeOperatorQueryOptions(operatorId,revokeOperatorRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewRevokeOperatorUrl = (operatorId: string,) => {
+
+
+
+
+  return `/api/v1/admin/operators/${operatorId}/revoke/preview`
+}
+
+/**
+ * Previews an admin action (SF-111): the current and proposed state, the impact and what it needs,
+ * checked as execution would be. Changes nothing, sends nothing. When the action needs confirmation the
+ * answer carries a one-time `confirmation.token` (two minutes), bound to this operator, session, action,
+ * target, reason and revision. A preview authorizes nothing later: execution checks everything again.
+ *
+ *
+ * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
+ *   operator.
+ * * `enrollment_required` - the viewer's security keys aren't registered yet.
+ * * `forbidden` - the permission isn't granted.
+ * * `step_up_required` - no key check in this session, or not fresh enough for this action.
+ * @summary Preview revoking an operator
+ */
+export const previewRevokeOperator = async (operatorId: string,
+    revokeOperatorPreviewRequest: RevokeOperatorPreviewRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewRevokeOperatorUrl(operatorId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(revokeOperatorPreviewRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewRevokeOperatorQueryKey = (operatorId: string,
+    revokeOperatorPreviewRequest?: BodyType<RevokeOperatorPreviewRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/operators/${operatorId}/revoke/preview`, revokeOperatorPreviewRequest
+    ] as const;
+    }
+
+
+export const getPreviewRevokeOperatorQueryOptions = <TData = Awaited<ReturnType<typeof previewRevokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(operatorId: string,
+    revokeOperatorPreviewRequest: BodyType<RevokeOperatorPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRevokeOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewRevokeOperatorQueryKey(operatorId,revokeOperatorPreviewRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewRevokeOperator>>> = ({ signal }) => previewRevokeOperator(operatorId,revokeOperatorPreviewRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: operatorId !== null && operatorId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewRevokeOperator>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewRevokeOperatorQueryResult = NonNullable<Awaited<ReturnType<typeof previewRevokeOperator>>>
+export type PreviewRevokeOperatorQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewRevokeOperator<TData = Awaited<ReturnType<typeof previewRevokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    revokeOperatorPreviewRequest: BodyType<RevokeOperatorPreviewRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRevokeOperator>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewRevokeOperator>>,
+          TError,
+          Awaited<ReturnType<typeof previewRevokeOperator>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewRevokeOperator<TData = Awaited<ReturnType<typeof previewRevokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    revokeOperatorPreviewRequest: BodyType<RevokeOperatorPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRevokeOperator>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewRevokeOperator>>,
+          TError,
+          Awaited<ReturnType<typeof previewRevokeOperator>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewRevokeOperator<TData = Awaited<ReturnType<typeof previewRevokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    revokeOperatorPreviewRequest: BodyType<RevokeOperatorPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRevokeOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview revoking an operator
+ */
+
+export function usePreviewRevokeOperator<TData = Awaited<ReturnType<typeof previewRevokeOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    revokeOperatorPreviewRequest: BodyType<RevokeOperatorPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRevokeOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewRevokeOperatorQueryOptions(operatorId,revokeOperatorPreviewRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1740,20 +2431,29 @@ export const getSuspendOperatorUrl = (operatorId: string,) => {
 }
 
 /**
- * Needs `operators.manage` and a fresh key check. Never oneself. Active operators only. Ends their key checks.
+ * Needs confirmation (`previewSuspendOperator`). Active operators only; ends their key checks.
  *
+ * An admin action (SF-111, ADR 0029): needs `operators.manage` and a fresh key check, never targets
+ * oneself, takes a reason code from this action's list, the operator's `expected_revision` and an
+ * `operation_id`. Repeating the same request with the same `operation_id` changes nothing and answers
+ * with the current state.
+ *
+ * * `revision_conflict` (409) - the operator changed since `expected_revision`; `details.current_revision`.
+ * * `conflict` (409) - `details.target: "self"`, or the state (`details.status`, `details.permission`,
+ *   `details.operator`, `details.operation_id`).
+ * * `confirmation_required` (428) - the action needs the `confirmation_token` of its preview.
+ * * `confirmation_invalid` (422) - the token doesn't match this operator, session, action, target,
+ *   parameters and revision, expired, or was used.
+ * * `validation_error` (422) - a reason code not in this action's list, or a malformed field.
  * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
  *   operator.
  * * `enrollment_required` - the viewer's security keys aren't registered yet.
  * * `forbidden` - the permission isn't granted.
  * * `step_up_required` - no key check in this session, or not fresh enough for this action.
- * * `conflict` - `details.target: "self"`; `details.status`, `details.permission`, `details.operator`,
- *   `details.user` or `details.operation_id` name the conflict.
- * * `validation_error` - a malformed reason code, operation id or permission.
  * @summary Suspend an operator
  */
 export const suspendOperator = async (operatorId: string,
-    operatorActionRequest?: OperatorActionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorSummaryResponse> => {
+    suspendOperatorRequest: SuspendOperatorRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorSummaryResponse> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -1774,7 +2474,7 @@ return apiFetch<OperatorSummaryResponse>(getSuspendOperatorUrl(operatorId),
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
-    body: JSON.stringify(operatorActionRequest)
+    body: JSON.stringify(suspendOperatorRequest)
   }
 );}
 
@@ -1783,24 +2483,24 @@ return apiFetch<OperatorSummaryResponse>(getSuspendOperatorUrl(operatorId),
 
 
 export const getSuspendOperatorQueryKey = (operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>,) => {
+    suspendOperatorRequest?: BodyType<SuspendOperatorRequest>,) => {
     return [
-    'POST', `/api/v1/admin/operators/${operatorId}/suspend`, operatorActionRequest
+    'POST', `/api/v1/admin/operators/${operatorId}/suspend`, suspendOperatorRequest
     ] as const;
     }
 
 
-export const getSuspendOperatorQueryOptions = <TData = Awaited<ReturnType<typeof suspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+export const getSuspendOperatorQueryOptions = <TData = Awaited<ReturnType<typeof suspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(operatorId: string,
+    suspendOperatorRequest: BodyType<SuspendOperatorRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getSuspendOperatorQueryKey(operatorId,operatorActionRequest);
+  const queryKey =  queryOptions?.queryKey ?? getSuspendOperatorQueryKey(operatorId,suspendOperatorRequest);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof suspendOperator>>> = ({ signal }) => suspendOperator(operatorId,operatorActionRequest, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof suspendOperator>>> = ({ signal }) => suspendOperator(operatorId,suspendOperatorRequest, { signal, ...requestOptions });
 
 
 
@@ -1810,12 +2510,12 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type SuspendOperatorQueryResult = NonNullable<Awaited<ReturnType<typeof suspendOperator>>>
-export type SuspendOperatorQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+export type SuspendOperatorQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
 
 
-export function useSuspendOperator<TData = Awaited<ReturnType<typeof suspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useSuspendOperator<TData = Awaited<ReturnType<typeof suspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    operatorActionRequest: undefined |  BodyType<OperatorActionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendOperator>>, TError, TData>> & Pick<
+    suspendOperatorRequest: BodyType<SuspendOperatorRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendOperator>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof suspendOperator>>,
           TError,
@@ -1824,9 +2524,9 @@ export function useSuspendOperator<TData = Awaited<ReturnType<typeof suspendOper
       >, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useSuspendOperator<TData = Awaited<ReturnType<typeof suspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useSuspendOperator<TData = Awaited<ReturnType<typeof suspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendOperator>>, TError, TData>> & Pick<
+    suspendOperatorRequest: BodyType<SuspendOperatorRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendOperator>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof suspendOperator>>,
           TError,
@@ -1835,22 +2535,154 @@ export function useSuspendOperator<TData = Awaited<ReturnType<typeof suspendOper
       >, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useSuspendOperator<TData = Awaited<ReturnType<typeof suspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useSuspendOperator<TData = Awaited<ReturnType<typeof suspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+    suspendOperatorRequest: BodyType<SuspendOperatorRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Suspend an operator
  */
 
-export function useSuspendOperator<TData = Awaited<ReturnType<typeof suspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+export function useSuspendOperator<TData = Awaited<ReturnType<typeof suspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
  operatorId: string,
-    operatorActionRequest?: BodyType<OperatorActionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+    suspendOperatorRequest: BodyType<SuspendOperatorRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getSuspendOperatorQueryOptions(operatorId,operatorActionRequest,options)
+  const queryOptions = getSuspendOperatorQueryOptions(operatorId,suspendOperatorRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewSuspendOperatorUrl = (operatorId: string,) => {
+
+
+
+
+  return `/api/v1/admin/operators/${operatorId}/suspend/preview`
+}
+
+/**
+ * Previews an admin action (SF-111): the current and proposed state, the impact and what it needs,
+ * checked as execution would be. Changes nothing, sends nothing. When the action needs confirmation the
+ * answer carries a one-time `confirmation.token` (two minutes), bound to this operator, session, action,
+ * target, reason and revision. A preview authorizes nothing later: execution checks everything again.
+ *
+ *
+ * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
+ *   operator.
+ * * `enrollment_required` - the viewer's security keys aren't registered yet.
+ * * `forbidden` - the permission isn't granted.
+ * * `step_up_required` - no key check in this session, or not fresh enough for this action.
+ * @summary Preview suspending an operator
+ */
+export const previewSuspendOperator = async (operatorId: string,
+    suspendOperatorPreviewRequest: SuspendOperatorPreviewRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewSuspendOperatorUrl(operatorId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(suspendOperatorPreviewRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewSuspendOperatorQueryKey = (operatorId: string,
+    suspendOperatorPreviewRequest?: BodyType<SuspendOperatorPreviewRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/operators/${operatorId}/suspend/preview`, suspendOperatorPreviewRequest
+    ] as const;
+    }
+
+
+export const getPreviewSuspendOperatorQueryOptions = <TData = Awaited<ReturnType<typeof previewSuspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(operatorId: string,
+    suspendOperatorPreviewRequest: BodyType<SuspendOperatorPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewSuspendOperatorQueryKey(operatorId,suspendOperatorPreviewRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewSuspendOperator>>> = ({ signal }) => previewSuspendOperator(operatorId,suspendOperatorPreviewRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: operatorId !== null && operatorId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewSuspendOperator>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewSuspendOperatorQueryResult = NonNullable<Awaited<ReturnType<typeof previewSuspendOperator>>>
+export type PreviewSuspendOperatorQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewSuspendOperator<TData = Awaited<ReturnType<typeof previewSuspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    suspendOperatorPreviewRequest: BodyType<SuspendOperatorPreviewRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendOperator>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewSuspendOperator>>,
+          TError,
+          Awaited<ReturnType<typeof previewSuspendOperator>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewSuspendOperator<TData = Awaited<ReturnType<typeof previewSuspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    suspendOperatorPreviewRequest: BodyType<SuspendOperatorPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendOperator>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewSuspendOperator>>,
+          TError,
+          Awaited<ReturnType<typeof previewSuspendOperator>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewSuspendOperator<TData = Awaited<ReturnType<typeof previewSuspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    suspendOperatorPreviewRequest: BodyType<SuspendOperatorPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview suspending an operator
+ */
+
+export function usePreviewSuspendOperator<TData = Awaited<ReturnType<typeof previewSuspendOperator>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ operatorId: string,
+    suspendOperatorPreviewRequest: BodyType<SuspendOperatorPreviewRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendOperator>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewSuspendOperatorQueryOptions(operatorId,suspendOperatorPreviewRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

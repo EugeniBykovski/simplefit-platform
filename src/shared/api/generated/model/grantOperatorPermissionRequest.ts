@@ -5,10 +5,19 @@
  * SimpleFit API 0.1.0
  */
 import type { GrantOperatorPermissionRequestPermission } from './grantOperatorPermissionRequestPermission';
+import type { GrantOperatorPermissionRequestReasonCode } from './grantOperatorPermissionRequestReasonCode';
 
 export interface GrantOperatorPermissionRequest {
+  /** From this action's preview. Required when the action needs confirmation (`428 confirmation_required` without it, `422 confirmation_invalid` when it doesn't match, expired or was used). */
+  confirmation_token: string;
+  /**
+     * The `revision` you saw (from the preview or the operator). A stale one is `409 revision_conflict`.
+     * @minimum 1
+     */
+  expected_revision: number;
+  /** Client-generated per intended change. Repeating the same request with it changes nothing and answers with the current state; using it for another request is `409 conflict`. */
   operation_id: string;
   permission: GrantOperatorPermissionRequestPermission;
-  /** @pattern ^[a-z][a-z0-9_]{1,59}$ */
-  reason_code: string;
+  /** Why. A code from this action's list; no free text. */
+  reason_code: GrantOperatorPermissionRequestReasonCode;
 }

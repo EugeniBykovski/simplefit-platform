@@ -4,6 +4,7 @@
  * Regenerate with `pnpm api:generate`; verify with `pnpm api:check`.
  * SimpleFit API 0.1.0
  */
+import type { ListOperatorAuditEventsOutcome } from './listOperatorAuditEventsOutcome';
 
 export type ListOperatorAuditEventsParams = {
 /**
@@ -11,5 +12,26 @@ export type ListOperatorAuditEventsParams = {
  * @maximum 100
  */
 limit?: number;
+/**
+ * @maxLength 1024
+ */
+cursor?: string;
 before?: string;
+actor_operator_id?: string;
+/**
+ * @pattern ^[a-z][a-z0-9_.]{1,79}$
+ */
+action?: string;
+/**
+ * @pattern ^[a-z][a-z0-9_.]{1,79}$
+ */
+command?: string;
+/**
+ * @pattern ^[a-z][a-z0-9_]{1,39}$
+ */
+target_type?: string;
+target_id?: string;
+outcome?: ListOperatorAuditEventsOutcome;
+occurred_after?: string;
+occurred_before?: string;
 };

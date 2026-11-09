@@ -21,6 +21,11 @@ export interface OperatorSummary {
   enrollment_expires_at: string | null;
   id: string;
   permissions: string[];
+  /**
+     * The operator's authority state (status and permissions) as a number. Admin actions send it as `expected_revision`; a stale one is `409 revision_conflict` (SF-111).
+     * @minimum 1
+     */
+  revision: number;
   /** @nullable */
   revoked_at: string | null;
   security_keys: OperatorSecurityKeys;
