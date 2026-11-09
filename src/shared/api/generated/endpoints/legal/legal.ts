@@ -50,7 +50,7 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export const getGetLegalDocumentUrl = (documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+export const getGetLegalDocumentUrl = (documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     params?: GetLegalDocumentParams,) => {
   const normalizedParams = new URLSearchParams();
 
@@ -70,7 +70,7 @@ export const getGetLegalDocumentUrl = (documentId: 'fighter-coach-disclosure' | 
  * The `published` version of a document. `not_found` while none is published (the current state).
  * @summary The current version of a legal document
  */
-export const getLegalDocument = async (documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+export const getLegalDocument = async (documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     params?: GetLegalDocumentParams, options?: Parameters<typeof apiFetch>[1]): Promise<LegalDocumentResponse> => {
 
   return apiFetch<LegalDocumentResponse>(getGetLegalDocumentUrl(documentId,params),
@@ -86,7 +86,7 @@ export const getLegalDocument = async (documentId: 'fighter-coach-disclosure' | 
 
 
 
-export const getGetLegalDocumentQueryKey = (documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+export const getGetLegalDocumentQueryKey = (documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     params?: GetLegalDocumentParams,) => {
     return [
     `/api/v1/legal-documents/${documentId}`, ...(params ? [params] : [])
@@ -94,7 +94,7 @@ export const getGetLegalDocumentQueryKey = (documentId: 'fighter-coach-disclosur
     }
 
 
-export const getGetLegalDocumentQueryOptions = <TData = Awaited<ReturnType<typeof getLegalDocument>>, TError = ErrorType<NotFoundResponse | InternalErrorResponse>>(documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+export const getGetLegalDocumentQueryOptions = <TData = Awaited<ReturnType<typeof getLegalDocument>>, TError = ErrorType<NotFoundResponse | InternalErrorResponse>>(documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     params?: GetLegalDocumentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLegalDocument>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
 
@@ -118,7 +118,7 @@ export type GetLegalDocumentQueryError = ErrorType<NotFoundResponse | InternalEr
 
 
 export function useGetLegalDocument<TData = Awaited<ReturnType<typeof getLegalDocument>>, TError = ErrorType<NotFoundResponse | InternalErrorResponse>>(
- documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+ documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     params: undefined |  GetLegalDocumentParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLegalDocument>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getLegalDocument>>,
@@ -129,7 +129,7 @@ export function useGetLegalDocument<TData = Awaited<ReturnType<typeof getLegalDo
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetLegalDocument<TData = Awaited<ReturnType<typeof getLegalDocument>>, TError = ErrorType<NotFoundResponse | InternalErrorResponse>>(
- documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+ documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     params?: GetLegalDocumentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLegalDocument>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getLegalDocument>>,
@@ -140,7 +140,7 @@ export function useGetLegalDocument<TData = Awaited<ReturnType<typeof getLegalDo
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetLegalDocument<TData = Awaited<ReturnType<typeof getLegalDocument>>, TError = ErrorType<NotFoundResponse | InternalErrorResponse>>(
- documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+ documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     params?: GetLegalDocumentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLegalDocument>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
@@ -149,7 +149,7 @@ export function useGetLegalDocument<TData = Awaited<ReturnType<typeof getLegalDo
  */
 
 export function useGetLegalDocument<TData = Awaited<ReturnType<typeof getLegalDocument>>, TError = ErrorType<NotFoundResponse | InternalErrorResponse>>(
- documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+ documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     params?: GetLegalDocumentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLegalDocument>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
@@ -166,7 +166,7 @@ export function useGetLegalDocument<TData = Awaited<ReturnType<typeof getLegalDo
 
 
 
-export const getGetLegalDocumentVersionUrl = (documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+export const getGetLegalDocumentVersionUrl = (documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     version: string,
     params?: GetLegalDocumentVersionParams,) => {
   const normalizedParams = new URLSearchParams();
@@ -187,7 +187,7 @@ export const getGetLegalDocumentVersionUrl = (documentId: 'fighter-coach-disclos
  * A `published` or `superseded` version (an archive whose text never changes). Anything else: `not_found`.
  * @summary One version of a legal document
  */
-export const getLegalDocumentVersion = async (documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+export const getLegalDocumentVersion = async (documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     version: string,
     params?: GetLegalDocumentVersionParams, options?: Parameters<typeof apiFetch>[1]): Promise<LegalDocumentResponse> => {
 
@@ -204,7 +204,7 @@ export const getLegalDocumentVersion = async (documentId: 'fighter-coach-disclos
 
 
 
-export const getGetLegalDocumentVersionQueryKey = (documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+export const getGetLegalDocumentVersionQueryKey = (documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     version: string,
     params?: GetLegalDocumentVersionParams,) => {
     return [
@@ -213,7 +213,7 @@ export const getGetLegalDocumentVersionQueryKey = (documentId: 'fighter-coach-di
     }
 
 
-export const getGetLegalDocumentVersionQueryOptions = <TData = Awaited<ReturnType<typeof getLegalDocumentVersion>>, TError = ErrorType<NotFoundResponse | InternalErrorResponse>>(documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+export const getGetLegalDocumentVersionQueryOptions = <TData = Awaited<ReturnType<typeof getLegalDocumentVersion>>, TError = ErrorType<NotFoundResponse | InternalErrorResponse>>(documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     version: string,
     params?: GetLegalDocumentVersionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLegalDocumentVersion>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
@@ -238,7 +238,7 @@ export type GetLegalDocumentVersionQueryError = ErrorType<NotFoundResponse | Int
 
 
 export function useGetLegalDocumentVersion<TData = Awaited<ReturnType<typeof getLegalDocumentVersion>>, TError = ErrorType<NotFoundResponse | InternalErrorResponse>>(
- documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+ documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     version: string,
     params: undefined |  GetLegalDocumentVersionParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLegalDocumentVersion>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
@@ -250,7 +250,7 @@ export function useGetLegalDocumentVersion<TData = Awaited<ReturnType<typeof get
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetLegalDocumentVersion<TData = Awaited<ReturnType<typeof getLegalDocumentVersion>>, TError = ErrorType<NotFoundResponse | InternalErrorResponse>>(
- documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+ documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     version: string,
     params?: GetLegalDocumentVersionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLegalDocumentVersion>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
@@ -262,7 +262,7 @@ export function useGetLegalDocumentVersion<TData = Awaited<ReturnType<typeof get
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetLegalDocumentVersion<TData = Awaited<ReturnType<typeof getLegalDocumentVersion>>, TError = ErrorType<NotFoundResponse | InternalErrorResponse>>(
- documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+ documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     version: string,
     params?: GetLegalDocumentVersionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLegalDocumentVersion>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
@@ -272,7 +272,7 @@ export function useGetLegalDocumentVersion<TData = Awaited<ReturnType<typeof get
  */
 
 export function useGetLegalDocumentVersion<TData = Awaited<ReturnType<typeof getLegalDocumentVersion>>, TError = ErrorType<NotFoundResponse | InternalErrorResponse>>(
- documentId: 'fighter-coach-disclosure' | 'coach-data-rules',
+ documentId: 'fighter-coach-disclosure' | 'coach-data-rules' | 'sponsor-application-declaration',
     version: string,
     params?: GetLegalDocumentVersionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLegalDocumentVersion>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
