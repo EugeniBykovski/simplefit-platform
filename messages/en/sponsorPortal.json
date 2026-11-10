@@ -150,5 +150,91 @@
     "title": "This isn’t part of SimpleFit yet",
     "body": "Campaigns, analytics and invoices don’t exist today. There’s nothing to set up here, and nothing is running.",
     "action": "Back to overview"
+  },
+  "firstRun": {
+    "loadFailed": "We couldn’t check your introduction to the portal. Everything else works.",
+    "retry": "Try again",
+    "welcome": {
+      "eyebrow": "Welcome",
+      "eyebrowInProgress": "Tour in progress",
+      "title": "Welcome to your workspace",
+      "body": "Your organization’s workspace is ready. Here’s where to begin.",
+      "steps": {
+        "details": "Check your organization’s details",
+        "members": "See who belongs to your organization",
+        "future": "See what isn’t available yet"
+      },
+      "start": "Take the tour",
+      "resume": "Continue the tour",
+      "starting": "Starting…",
+      "dismiss": "Dismiss",
+      "failed": "We couldn’t save that. Nothing changed. Try again.",
+      "completed": {
+        "title": "Tour finished",
+        "body": "You won’t see it again. Everything it showed is in the menu."
+      },
+      "dismissed": {
+        "title": "Introduction dismissed",
+        "body": "You won’t see it again. Everything it showed is in the menu."
+      }
+    },
+    "tour": {
+      "step": "Tour · {step} of {total}",
+      "complete": "Tour complete",
+      "end": "End tour",
+      "back": "Back",
+      "next": "Next",
+      "finish": "Finish",
+      "close": "Close",
+      "tryAgain": "Try again",
+      "failed": "We couldn’t save that. Nothing changed. Try again.",
+      "finishing": {
+        "title": "Finishing…",
+        "body": "Saving that you finished the tour.",
+        "button": "Finishing…"
+      },
+      "finishFailed": {
+        "title": "We couldn’t finish the tour",
+        "body": "Nothing was saved. Try again, or end the tour."
+      },
+      "confirm": {
+        "label": "End the tour",
+        "title": "End the tour?",
+        "body": "You won’t see it again. Everything it shows is in the menu.",
+        "keep": "Keep going",
+        "end": "End tour"
+      },
+      "steps": {
+        "start": {
+          "title": "Start here",
+          "body": "Your organization’s workspace is ready. This list is the place to begin."
+        },
+        "overview": {
+          "title": "Overview",
+          "body": "Your organization’s status and what your access lets you do, in one place."
+        },
+        "application": {
+          "title": "Application",
+          "body": "The answers submitted for this organization and SimpleFit’s decision. Only the person who applied can read them, and they’re read-only."
+        },
+        "organization": {
+          "title": "Organization",
+          "body": "Your company profile. It’s read-only for now.",
+          "bodyContacts": "Your company profile and business contact. They’re read-only for now."
+        },
+        "members": {
+          "title": "Members",
+          "body": "Who belongs to this organization, and their roles. Inviting people isn’t available yet."
+        },
+        "future": {
+          "title": "What isn’t here yet",
+          "body": "Campaigns, opportunities, analytics and invoices aren’t available. Nothing is running or being charged."
+        },
+        "done": {
+          "title": "You know your way around",
+          "body": "You won’t see this tour again. Everything it showed is in the menu."
+        }
+      }
+    }
   }
 }

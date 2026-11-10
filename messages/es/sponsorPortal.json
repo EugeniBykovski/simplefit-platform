@@ -150,5 +150,91 @@
     "title": "Esto aún no forma parte de SimpleFit",
     "body": "Las campañas, analíticas y facturas no existen hoy. Aquí no hay nada que configurar y nada está en marcha.",
     "action": "Volver al resumen"
+  },
+  "firstRun": {
+    "loadFailed": "No pudimos comprobar tu introducción al portal. Todo lo demás funciona.",
+    "retry": "Reintentar",
+    "welcome": {
+      "eyebrow": "Bienvenida",
+      "eyebrowInProgress": "Recorrido en curso",
+      "title": "Te damos la bienvenida a tu espacio de trabajo",
+      "body": "El espacio de trabajo de tu organización está listo. Empieza por aquí.",
+      "steps": {
+        "details": "Revisa los datos de tu organización",
+        "members": "Mira quién forma parte de tu organización",
+        "future": "Mira lo que aún no está disponible"
+      },
+      "start": "Hacer el recorrido",
+      "resume": "Continuar el recorrido",
+      "starting": "Iniciando…",
+      "dismiss": "Descartar",
+      "failed": "No pudimos guardarlo. No cambió nada. Inténtalo de nuevo.",
+      "completed": {
+        "title": "Recorrido terminado",
+        "body": "No volverás a verlo. Todo lo que mostró está en el menú."
+      },
+      "dismissed": {
+        "title": "Introducción descartada",
+        "body": "No volverás a verla. Todo lo que mostraba está en el menú."
+      }
+    },
+    "tour": {
+      "step": "Recorrido · {step} de {total}",
+      "complete": "Recorrido terminado",
+      "end": "Terminar recorrido",
+      "back": "Atrás",
+      "next": "Siguiente",
+      "finish": "Finalizar",
+      "close": "Cerrar",
+      "tryAgain": "Reintentar",
+      "failed": "No pudimos guardarlo. No cambió nada. Inténtalo de nuevo.",
+      "finishing": {
+        "title": "Finalizando…",
+        "body": "Guardando que terminaste el recorrido.",
+        "button": "Finalizando…"
+      },
+      "finishFailed": {
+        "title": "No pudimos finalizar el recorrido",
+        "body": "No se guardó nada. Inténtalo de nuevo o termina el recorrido."
+      },
+      "confirm": {
+        "label": "Terminar el recorrido",
+        "title": "¿Terminar el recorrido?",
+        "body": "No volverás a verlo. Todo lo que muestra está en el menú.",
+        "keep": "Seguir",
+        "end": "Terminar recorrido"
+      },
+      "steps": {
+        "start": {
+          "title": "Empieza aquí",
+          "body": "El espacio de trabajo de tu organización está listo. Esta lista es el punto de partida."
+        },
+        "overview": {
+          "title": "Resumen",
+          "body": "El estado de tu organización y lo que te permite tu acceso, en un solo lugar."
+        },
+        "application": {
+          "title": "Solicitud",
+          "body": "Las respuestas enviadas para esta organización y la decisión de SimpleFit. Solo puede leerlas quien presentó la solicitud y son de solo lectura."
+        },
+        "organization": {
+          "title": "Organización",
+          "body": "El perfil de tu empresa. Por ahora es de solo lectura.",
+          "bodyContacts": "El perfil de tu empresa y su contacto comercial. Por ahora son de solo lectura."
+        },
+        "members": {
+          "title": "Miembros",
+          "body": "Quién forma parte de esta organización y su rol. Aún no se puede invitar a personas."
+        },
+        "future": {
+          "title": "Lo que aún no está",
+          "body": "Las campañas, oportunidades, analíticas y facturas no están disponibles. Nada está en marcha ni se cobra."
+        },
+        "done": {
+          "title": "Ya sabes moverte por aquí",
+          "body": "No volverás a ver este recorrido. Todo lo que mostró está en el menú."
+        }
+      }
+    }
   }
 }

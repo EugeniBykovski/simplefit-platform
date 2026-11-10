@@ -20,11 +20,14 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ConflictResponse,
   ForbiddenResponse,
   InternalErrorResponse,
   ListSponsorMembersParams,
   NotFoundResponse,
   SponsorContactListResponse,
+  SponsorFirstRunResponse,
+  SponsorFirstRunTransitionRequest,
   SponsorMemberListResponse,
   SponsorOrganizationListResponse,
   SponsorOrganizationResponse,
@@ -33,7 +36,7 @@ import type {
 } from '../../model';
 
 import { apiFetch } from '../../../http/api-fetch';
-import type { ErrorType } from '../../../http/api-fetch';
+import type { ErrorType , BodyType } from '../../../http/api-fetch';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -356,6 +359,502 @@ export function useListSponsorContacts<TData = Awaited<ReturnType<typeof listSpo
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getListSponsorContactsQueryOptions(sponsorId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetSponsorFirstRunUrl = (sponsorId: string,) => {
+
+
+
+
+  return `/api/v1/sponsor-organizations/${sponsorId}/first-run`
+}
+
+/**
+ * The viewer's introduction to this organization's portal: `not_started`, `in_progress`, `completed` or
+ * `dismissed`, per organization and member, the same on every client and after any sign-in; `unavailable`
+ * while the organization is suspended. Reading creates nothing, and nothing here grants access.
+ *
+ * * `not_found` - no such organization, it is closed, or the viewer holds no active membership there (revoked,
+ *   suspended or never a member; existence is never revealed).
+ * @summary The viewer's partner portal first run
+ */
+export const getSponsorFirstRun = async (sponsorId: string, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorFirstRunResponse> => {
+
+  return apiFetch<SponsorFirstRunResponse>(getGetSponsorFirstRunUrl(sponsorId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSponsorFirstRunQueryKey = (sponsorId: string,) => {
+    return [
+    `/api/v1/sponsor-organizations/${sponsorId}/first-run`
+    ] as const;
+    }
+
+
+export const getGetSponsorFirstRunQueryOptions = <TData = Awaited<ReturnType<typeof getSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(sponsorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSponsorFirstRunQueryKey(sponsorId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSponsorFirstRun>>> = ({ signal }) => getSponsorFirstRun(sponsorId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sponsorId !== null && sponsorId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSponsorFirstRun>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSponsorFirstRunQueryResult = NonNullable<Awaited<ReturnType<typeof getSponsorFirstRun>>>
+export type GetSponsorFirstRunQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetSponsorFirstRun<TData = Awaited<ReturnType<typeof getSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorFirstRun>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSponsorFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof getSponsorFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSponsorFirstRun<TData = Awaited<ReturnType<typeof getSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorFirstRun>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSponsorFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof getSponsorFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSponsorFirstRun<TData = Awaited<ReturnType<typeof getSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary The viewer's partner portal first run
+ */
+
+export function useGetSponsorFirstRun<TData = Awaited<ReturnType<typeof getSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSponsorFirstRunQueryOptions(sponsorId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getCompleteSponsorFirstRunUrl = (sponsorId: string,) => {
+
+
+
+
+  return `/api/v1/sponsor-organizations/${sponsorId}/first-run/complete`
+}
+
+/**
+ * Records that the viewer finished the tour (`completed`, final). It changes nothing about the organization or
+ * anyone's access. Repeating it returns the same state with the first `completed_at`.
+ *
+ * * `not_found` - no such organization, it is closed, or the viewer holds no active membership there (revoked,
+ *   suspended or never a member; existence is never revealed).
+ *
+ * * `conflict` - the organization is suspended (`details.organization_status: "suspended"`), or the introduction
+ *   already ended the other way (`details.first_run: "completed"` or `"dismissed"`); nothing changes.
+ * * `validation_error` - the body has a field (none is accepted).
+ * @summary Finish the partner portal tour
+ */
+export const completeSponsorFirstRun = async (sponsorId: string,
+    sponsorFirstRunTransitionRequest?: SponsorFirstRunTransitionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorFirstRunResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorFirstRunResponse>(getCompleteSponsorFirstRunUrl(sponsorId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sponsorFirstRunTransitionRequest)
+  }
+);}
+
+
+
+
+
+export const getCompleteSponsorFirstRunQueryKey = (sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>,) => {
+    return [
+    'POST', `/api/v1/sponsor-organizations/${sponsorId}/first-run/complete`, sponsorFirstRunTransitionRequest
+    ] as const;
+    }
+
+
+export const getCompleteSponsorFirstRunQueryOptions = <TData = Awaited<ReturnType<typeof completeSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeSponsorFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getCompleteSponsorFirstRunQueryKey(sponsorId,sponsorFirstRunTransitionRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof completeSponsorFirstRun>>> = ({ signal }) => completeSponsorFirstRun(sponsorId,sponsorFirstRunTransitionRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sponsorId !== null && sponsorId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof completeSponsorFirstRun>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type CompleteSponsorFirstRunQueryResult = NonNullable<Awaited<ReturnType<typeof completeSponsorFirstRun>>>
+export type CompleteSponsorFirstRunQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useCompleteSponsorFirstRun<TData = Awaited<ReturnType<typeof completeSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    sponsorFirstRunTransitionRequest: undefined |  BodyType<SponsorFirstRunTransitionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeSponsorFirstRun>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof completeSponsorFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof completeSponsorFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCompleteSponsorFirstRun<TData = Awaited<ReturnType<typeof completeSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeSponsorFirstRun>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof completeSponsorFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof completeSponsorFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCompleteSponsorFirstRun<TData = Awaited<ReturnType<typeof completeSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeSponsorFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Finish the partner portal tour
+ */
+
+export function useCompleteSponsorFirstRun<TData = Awaited<ReturnType<typeof completeSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof completeSponsorFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getCompleteSponsorFirstRunQueryOptions(sponsorId,sponsorFirstRunTransitionRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getDismissSponsorFirstRunUrl = (sponsorId: string,) => {
+
+
+
+
+  return `/api/v1/sponsor-organizations/${sponsorId}/first-run/dismiss`
+}
+
+/**
+ * Records that the viewer dismissed the welcome or ended the tour (`dismissed`, final: it is not offered again
+ * and cannot be resumed). Repeating it returns the same state with the first `dismissed_at`.
+ *
+ * * `not_found` - no such organization, it is closed, or the viewer holds no active membership there (revoked,
+ *   suspended or never a member; existence is never revealed).
+ *
+ * * `conflict` - the organization is suspended (`details.organization_status: "suspended"`), or the introduction
+ *   already ended the other way (`details.first_run: "completed"` or `"dismissed"`); nothing changes.
+ * * `validation_error` - the body has a field (none is accepted).
+ * @summary Skip or end the partner portal introduction
+ */
+export const dismissSponsorFirstRun = async (sponsorId: string,
+    sponsorFirstRunTransitionRequest?: SponsorFirstRunTransitionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorFirstRunResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorFirstRunResponse>(getDismissSponsorFirstRunUrl(sponsorId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sponsorFirstRunTransitionRequest)
+  }
+);}
+
+
+
+
+
+export const getDismissSponsorFirstRunQueryKey = (sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>,) => {
+    return [
+    'POST', `/api/v1/sponsor-organizations/${sponsorId}/first-run/dismiss`, sponsorFirstRunTransitionRequest
+    ] as const;
+    }
+
+
+export const getDismissSponsorFirstRunQueryOptions = <TData = Awaited<ReturnType<typeof dismissSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof dismissSponsorFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getDismissSponsorFirstRunQueryKey(sponsorId,sponsorFirstRunTransitionRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof dismissSponsorFirstRun>>> = ({ signal }) => dismissSponsorFirstRun(sponsorId,sponsorFirstRunTransitionRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sponsorId !== null && sponsorId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof dismissSponsorFirstRun>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type DismissSponsorFirstRunQueryResult = NonNullable<Awaited<ReturnType<typeof dismissSponsorFirstRun>>>
+export type DismissSponsorFirstRunQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useDismissSponsorFirstRun<TData = Awaited<ReturnType<typeof dismissSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    sponsorFirstRunTransitionRequest: undefined |  BodyType<SponsorFirstRunTransitionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof dismissSponsorFirstRun>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof dismissSponsorFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof dismissSponsorFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDismissSponsorFirstRun<TData = Awaited<ReturnType<typeof dismissSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof dismissSponsorFirstRun>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof dismissSponsorFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof dismissSponsorFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDismissSponsorFirstRun<TData = Awaited<ReturnType<typeof dismissSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof dismissSponsorFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Skip or end the partner portal introduction
+ */
+
+export function useDismissSponsorFirstRun<TData = Awaited<ReturnType<typeof dismissSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof dismissSponsorFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getDismissSponsorFirstRunQueryOptions(sponsorId,sponsorFirstRunTransitionRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getStartSponsorFirstRunUrl = (sponsorId: string,) => {
+
+
+
+
+  return `/api/v1/sponsor-organizations/${sponsorId}/first-run/start`
+}
+
+/**
+ * Records that the viewer started the tour (`in_progress`), so another client can offer to resume it. Repeating
+ * it while in progress returns the same state with the first `started_at`.
+ *
+ * * `not_found` - no such organization, it is closed, or the viewer holds no active membership there (revoked,
+ *   suspended or never a member; existence is never revealed).
+ *
+ * * `conflict` - the organization is suspended (`details.organization_status: "suspended"`), or the introduction
+ *   already ended the other way (`details.first_run: "completed"` or `"dismissed"`); nothing changes.
+ * * `validation_error` - the body has a field (none is accepted).
+ * @summary Start the partner portal tour
+ */
+export const startSponsorFirstRun = async (sponsorId: string,
+    sponsorFirstRunTransitionRequest?: SponsorFirstRunTransitionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorFirstRunResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorFirstRunResponse>(getStartSponsorFirstRunUrl(sponsorId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sponsorFirstRunTransitionRequest)
+  }
+);}
+
+
+
+
+
+export const getStartSponsorFirstRunQueryKey = (sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>,) => {
+    return [
+    'POST', `/api/v1/sponsor-organizations/${sponsorId}/first-run/start`, sponsorFirstRunTransitionRequest
+    ] as const;
+    }
+
+
+export const getStartSponsorFirstRunQueryOptions = <TData = Awaited<ReturnType<typeof startSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof startSponsorFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getStartSponsorFirstRunQueryKey(sponsorId,sponsorFirstRunTransitionRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof startSponsorFirstRun>>> = ({ signal }) => startSponsorFirstRun(sponsorId,sponsorFirstRunTransitionRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sponsorId !== null && sponsorId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof startSponsorFirstRun>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type StartSponsorFirstRunQueryResult = NonNullable<Awaited<ReturnType<typeof startSponsorFirstRun>>>
+export type StartSponsorFirstRunQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useStartSponsorFirstRun<TData = Awaited<ReturnType<typeof startSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    sponsorFirstRunTransitionRequest: undefined |  BodyType<SponsorFirstRunTransitionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof startSponsorFirstRun>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof startSponsorFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof startSponsorFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useStartSponsorFirstRun<TData = Awaited<ReturnType<typeof startSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof startSponsorFirstRun>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof startSponsorFirstRun>>,
+          TError,
+          Awaited<ReturnType<typeof startSponsorFirstRun>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useStartSponsorFirstRun<TData = Awaited<ReturnType<typeof startSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof startSponsorFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Start the partner portal tour
+ */
+
+export function useStartSponsorFirstRun<TData = Awaited<ReturnType<typeof startSponsorFirstRun>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    sponsorFirstRunTransitionRequest?: BodyType<SponsorFirstRunTransitionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof startSponsorFirstRun>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getStartSponsorFirstRunQueryOptions(sponsorId,sponsorFirstRunTransitionRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
