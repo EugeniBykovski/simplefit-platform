@@ -11,7 +11,7 @@ import type { FirstRunExperienceStatus } from './firstRunExperienceStatus';
  * A one-time first-run experience and whether the viewer should still be offered it.
  */
 export interface FirstRunExperience {
-  /** `fighter_web_tour`: the Fighter web Home tour. `fighter_mobile_first_run`: the Fighter mobile introduction. Both are available once Fighter onboarding is complete; each keeps its own outcome. */
+  /** `fighter_web_tour`: the Fighter web Home tour. `fighter_mobile_first_run`: the Fighter mobile introduction. Both are available once Fighter onboarding is complete; each keeps its own outcome. `control_plane_web_tour` (SF-120): ARW1, the Control Plane first visit and tour, available to an active operator only; it grants and checks nothing. */
   experience: FirstRunExperienceExperience;
   /**
      * When the outcome was recorded; `null` until then.

@@ -1,0 +1,176 @@
+{
+  "entry": {
+    "header": "Steuerzentrale · jede Aktion wird protokolliert",
+    "checking": "Zugriff wird geprüft…",
+    "pill": {
+      "key": "Sicherheitsschlüssel",
+      "failed": "Nicht bestätigt",
+      "enroll": "Einrichtung · Schritt {step} von {total}",
+      "done": "Sicherheit eingerichtet",
+      "reverify": "Prüfung abgelaufen",
+      "recovery": "Wiederherstellung",
+      "problem": "Weiter nicht möglich"
+    },
+    "key": {
+      "title": "Nutze deinen Sicherheitsschlüssel",
+      "body": "Steck einen deiner registrierten Schlüssel ein oder tipp ihn an. Passkeys auf dem Handy werden hier nicht akzeptiert.",
+      "action": "Sicherheitsschlüssel verwenden",
+      "recovery": "Wiederherstellungsoptionen"
+    },
+    "waiting": {
+      "title": "Wir warten auf deinen Schlüssel…",
+      "body": "Folge der Anweisung deines Browsers.",
+      "status": "Warten auf den Schlüssel",
+      "cancel": "Abbrechen"
+    },
+    "failed": {
+      "title": "Dieser Schlüssel hat nicht funktioniert",
+      "body": "Nichts hat sich geändert. Versuch es noch einmal oder nutze deinen anderen Schlüssel.",
+      "retry": "Erneut versuchen"
+    },
+    "rateLimited": "Zu viele Versuche. Warte ein paar Minuten und versuch es dann noch einmal.",
+    "enroll": {
+      "title": "Registriere zwei Sicherheitsschlüssel",
+      "body": "Du brauchst zwei Schlüssel: einen zum Verwenden und einen als Reserve. Die Steuerzentrale öffnet sich erst, wenn beide registriert sind.",
+      "first": "Erster Schlüssel",
+      "backup": "Reserveschlüssel",
+      "notYet": "Noch nicht",
+      "registered": "Registriert",
+      "action": "Ersten Schlüssel registrieren"
+    },
+    "enrollSecond": {
+      "title": "Jetzt dein Reserveschlüssel",
+      "body": "Nutze einen anderen physischen Schlüssel. Bewahre ihn sicher auf.",
+      "action": "Reserveschlüssel registrieren"
+    },
+    "duplicate": "Dieser Schlüssel ist bereits registriert. Nutze einen anderen physischen Schlüssel.",
+    "rejected": "Dieser Schlüssel kann hier nicht verwendet werden. Nutze einen Hardware-Sicherheitsschlüssel, kein Handy und keinen synchronisierten Passkey.",
+    "enrollDone": {
+      "title": "Deine Schlüssel sind registriert",
+      "body": "Du kannst jetzt die Steuerzentrale öffnen. Was du siehst, hängt von den Berechtigungen ab, die dir ein Operator-Manager erteilt hat.",
+      "action": "Weiter"
+    },
+    "reverify": {
+      "title": "Bestätige noch einmal, dass du es bist",
+      "body": "Deine Sicherheitsprüfung ist abgelaufen. Nutze deinen Schlüssel, um dort weiterzumachen, wo du warst."
+    },
+    "recovery": {
+      "title": "Schlüssel verloren?",
+      "body": "Eine Wiederherstellung in Eigenregie gibt es nicht. Ein anderer Operator-Manager kann deine alten Schlüssel widerrufen und dich neue registrieren lassen. Gibt es niemanden sonst mit dieser Rolle, läuft die Wiederherstellung über ein geprüftes Verfahren mit den Maintainern von SimpleFit.",
+      "back": "Zurück"
+    },
+    "enrollmentExpired": {
+      "title": "Dein Einrichtungszeitraum ist abgelaufen",
+      "body": "Deine Sicherheitsschlüssel wurden nicht rechtzeitig registriert. Bitte einen Operator-Manager, deinen Zugang neu einzurichten."
+    },
+    "unsupported": {
+      "title": "Dieser Browser unterstützt keine Sicherheitsschlüssel",
+      "body": "Öffne SimpleFit in einem aktuellen Browser, der Hardware-Sicherheitsschlüssel unterstützt."
+    },
+    "serviceUnavailable": {
+      "title": "Sicherheitsschlüssel sind gerade nicht verfügbar",
+      "body": "Nichts hat sich geändert. Versuch es später noch einmal."
+    },
+    "loadFailed": {
+      "title": "Wir konnten deinen Zugriff nicht prüfen",
+      "body": "Nichts hat sich geändert. Versuch es noch einmal.",
+      "retry": "Erneut versuchen"
+    },
+    "unavailable": {
+      "title": "Diese Seite gibt es nicht",
+      "body": "Diese Seite existiert nicht oder ist für dein Konto nicht verfügbar.",
+      "action": "Zu SimpleFit"
+    }
+  },
+  "workspace": {
+    "operator": "Operator",
+    "keyChecked": "Schlüssel geprüft · noch {minutes, plural, one {# Min.} other {# Min.}}",
+    "permissions": "{count, plural, one {# Berechtigung} other {# Berechtigungen}} · jede einzeln erteilt",
+    "exit": "Steuerzentrale verlassen",
+    "exitFailed": "Wir konnten die Schlüsselprüfung nicht beenden. Versuch es noch einmal."
+  },
+  "welcome": {
+    "metaTitle": "Willkommen · Steuerzentrale",
+    "breadcrumb": "Steuerzentrale",
+    "title": "Willkommen",
+    "pill": "Erster Besuch",
+    "heading": "Willkommen in der Steuerzentrale",
+    "body": "Von hier aus wird SimpleFit betrieben. Du siehst nur, wofür du freigeschaltet bist.",
+    "access": {
+      "title": "Dein Zugriff",
+      "granted": "Erteilt",
+      "notGranted": "Nicht erteilt",
+      "rows": {
+        "sponsorOrganizations": "Sponsor-Organisationen",
+        "sponsorApplications": "Sponsor-Bewerbungen",
+        "audit": "Audit-Log",
+        "operators": "Operatoren"
+      },
+      "notYet": "Übersicht, Nutzer, Studios, Studio-Verifizierung und Systemzustand gehören noch nicht zur Steuerzentrale."
+    },
+    "note": "Eine Tour oder Checkliste erteilt nie Zugriff. Das kann nur ein Operator-Manager, und es wird protokolliert.",
+    "tour": "Tour starten",
+    "skip": "Überspringen",
+    "failed": "Das konnten wir nicht speichern. Nichts hat sich geändert. Versuch es noch einmal.",
+    "sensitive": {
+      "title": "So funktionieren sensible Aktionen",
+      "steps": {
+        "check": "Prüfe, was die Aktion bewirkt und wen sie betrifft.",
+        "reason": "Gib einen Begründungscode an.",
+        "key": "Bestätige mit deinem Sicherheitsschlüssel.",
+        "result": "Das Ergebnis oder ein ehrliches „Wissen wir noch nicht“, dazu ein Audit-Eintrag."
+      }
+    },
+    "error": {
+      "pill": "Nicht geladen",
+      "title": "Wir konnten deinen Zugriff nicht laden",
+      "body": "Nichts hat sich geändert. Versuch es noch einmal.",
+      "retry": "Erneut versuchen"
+    }
+  },
+  "tour": {
+    "step": "Tour · {step} von {total}",
+    "complete": "Tour abgeschlossen",
+    "end": "Tour überspringen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "finish": "Fertig",
+    "close": "Zur Übersicht",
+    "tryAgain": "Erneut versuchen",
+    "failed": "Das konnten wir nicht speichern. Nichts hat sich geändert. Versuch es noch einmal.",
+    "finishing": {
+      "title": "Wird abgeschlossen…",
+      "body": "Wir speichern, dass du die Tour abgeschlossen hast.",
+      "button": "Wird abgeschlossen…"
+    },
+    "finishFailed": {
+      "title": "Die Tour konnte nicht abgeschlossen werden",
+      "body": "Nichts wurde gespeichert. Versuch es noch einmal oder überspring die Tour."
+    },
+    "confirm": {
+      "label": "Tour überspringen",
+      "title": "Tour überspringen?",
+      "body": "Du siehst sie nicht wieder. Alles, was sie zeigt, bleibt auf dieser Seite.",
+      "keep": "Weitermachen",
+      "end": "Tour überspringen"
+    },
+    "steps": {
+      "welcome": {
+        "title": "Worum es geht",
+        "body": "Über die Steuerzentrale wird SimpleFit betrieben. Diese Karte zeigt genau, was du öffnen kannst."
+      },
+      "sensitive": {
+        "title": "Sensible Aktionen",
+        "body": "Begründung, Schlüsselprüfung, Bestätigung, dann ein Ergebnis, auf das du dich verlassen kannst."
+      },
+      "me": {
+        "title": "Schlüsselprüfung und Verlassen",
+        "body": "Hier siehst du deine Schlüsselprüfung und deine Berechtigungen. „Steuerzentrale verlassen“ beendet deine Schlüsselprüfung."
+      },
+      "done": {
+        "title": "Du bist startklar",
+        "body": "Du siehst diese Tour nicht wieder. Alles, was sie gezeigt hat, findest du im Menü."
+      }
+    }
+  }
+}

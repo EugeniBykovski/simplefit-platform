@@ -43,6 +43,7 @@ export function WorkspaceShell({
   shell,
   params = {},
   identity,
+  visibleItems,
   children,
 }: {
   shell: SidebarShellId;
@@ -50,6 +51,12 @@ export function WorkspaceShell({
   params?: Record<string, string>;
   /** The identity block above the navigation, when the shell supplies its own. */
   identity?: ReactNode;
+  /**
+   * The nav items to show (the admin shell lists only what the operator was granted,
+   * SF-120); sections left empty are hidden. Presentation only: every page is
+   * authorized by the backend on its own.
+   */
+  visibleItems?: readonly string[] | undefined;
   children: ReactNode;
 }) {
   const config = shellNavigation[shell];
@@ -59,23 +66,27 @@ export function WorkspaceShell({
   const message = (key: string) => t(key as Parameters<typeof t>[0]);
 
   const items = webShell(shell).navItems;
-  const sections: ShellNavSection[] = config.sections.map((section) => ({
-    key: section.key,
-    label: message(`${config.messages}.sections.${section.key}`),
-    items: section.items.map((key) => {
-      const item = items.find((candidate) => candidate.key === key);
-      if (!item?.route) throw new Error(`${shell} has no routed nav item ${key}`);
-      const Icon = config.icons[key];
-      if (!Icon) throw new Error(`${shell} has no icon for ${key}`);
-      return {
-        key,
-        href: routeHref(item.route, params, "query" in item ? item.query : {}),
-        label: message(`${config.messages}.nav.${key}`),
-        icon: <Icon aria-hidden className="size-4.5" />,
-        soon: config.soon?.includes(key) ? navigation("soon") : undefined,
-      };
-    }),
-  }));
+  const sections: ShellNavSection[] = config.sections
+    .map((section) => ({
+      key: section.key,
+      label: message(`${config.messages}.sections.${section.key}`),
+      items: section.items
+        .filter((key) => visibleItems === undefined || visibleItems.includes(key))
+        .map((key) => {
+          const item = items.find((candidate) => candidate.key === key);
+          if (!item?.route) throw new Error(`${shell} has no routed nav item ${key}`);
+          const Icon = config.icons[key];
+          if (!Icon) throw new Error(`${shell} has no icon for ${key}`);
+          return {
+            key,
+            href: routeHref(item.route, params, "query" in item ? item.query : {}),
+            label: message(`${config.messages}.nav.${key}`),
+            icon: <Icon aria-hidden className="size-4.5" />,
+            soon: config.soon?.includes(key) ? navigation("soon") : undefined,
+          };
+        }),
+    }))
+    .filter((section) => section.items.length > 0);
 
   const name = message(`${config.messages}.name`);
   const block =

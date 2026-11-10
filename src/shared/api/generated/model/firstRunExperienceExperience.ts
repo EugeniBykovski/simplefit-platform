@@ -6,7 +6,7 @@
  */
 
 /**
- * `fighter_web_tour`: the Fighter web Home tour. `fighter_mobile_first_run`: the Fighter mobile introduction. Both are available once Fighter onboarding is complete; each keeps its own outcome.
+ * `fighter_web_tour`: the Fighter web Home tour. `fighter_mobile_first_run`: the Fighter mobile introduction. Both are available once Fighter onboarding is complete; each keeps its own outcome. `control_plane_web_tour` (SF-120): ARW1, the Control Plane first visit and tour, available to an active operator only; it grants and checks nothing.
  */
 export type FirstRunExperienceExperience = typeof FirstRunExperienceExperience[keyof typeof FirstRunExperienceExperience];
 
@@ -14,4 +14,5 @@ export type FirstRunExperienceExperience = typeof FirstRunExperienceExperience[k
 export const FirstRunExperienceExperience = {
   fighter_web_tour: 'fighter_web_tour',
   fighter_mobile_first_run: 'fighter_mobile_first_run',
+  control_plane_web_tour: 'control_plane_web_tour',
 } as const;

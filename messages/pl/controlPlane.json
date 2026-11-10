@@ -1,0 +1,176 @@
+{
+  "entry": {
+    "header": "Panel sterowania · każda czynność jest rejestrowana",
+    "checking": "Sprawdzanie dostępu…",
+    "pill": {
+      "key": "Klucz bezpieczeństwa",
+      "failed": "Niezweryfikowano",
+      "enroll": "Konfiguracja · krok {step} z {total}",
+      "done": "Zabezpieczenia skonfigurowane",
+      "reverify": "Weryfikacja wygasła",
+      "recovery": "Odzyskiwanie",
+      "problem": "Nie można kontynuować"
+    },
+    "key": {
+      "title": "Użyj klucza bezpieczeństwa",
+      "body": "Włóż lub dotknij jednego z zarejestrowanych kluczy. Klucze dostępu z telefonu nie są tu akceptowane.",
+      "action": "Użyj klucza bezpieczeństwa",
+      "recovery": "Opcje odzyskiwania"
+    },
+    "waiting": {
+      "title": "Czekamy na Twój klucz…",
+      "body": "Postępuj zgodnie z komunikatem przeglądarki.",
+      "status": "Oczekiwanie na klucz",
+      "cancel": "Anuluj"
+    },
+    "failed": {
+      "title": "Ten klucz nie zadziałał",
+      "body": "Nic się nie zmieniło. Spróbuj ponownie lub użyj drugiego klucza.",
+      "retry": "Spróbuj ponownie"
+    },
+    "rateLimited": "Zbyt wiele prób. Odczekaj kilka minut i spróbuj ponownie.",
+    "enroll": {
+      "title": "Zarejestruj dwa klucze bezpieczeństwa",
+      "body": "Potrzebujesz dwóch kluczy: jednego do używania i jednego zapasowego. Panel sterowania otworzysz dopiero po zarejestrowaniu obu.",
+      "first": "Pierwszy klucz",
+      "backup": "Klucz zapasowy",
+      "notYet": "Jeszcze nie",
+      "registered": "Zarejestrowany",
+      "action": "Zarejestruj pierwszy klucz"
+    },
+    "enrollSecond": {
+      "title": "Teraz klucz zapasowy",
+      "body": "Użyj innego fizycznego klucza. Przechowuj go w bezpiecznym miejscu.",
+      "action": "Zarejestruj klucz zapasowy"
+    },
+    "duplicate": "Ten klucz jest już zarejestrowany. Użyj innego fizycznego klucza.",
+    "rejected": "Tego klucza nie można tu użyć. Użyj sprzętowego klucza bezpieczeństwa, a nie telefonu ani synchronizowanego klucza dostępu.",
+    "enrollDone": {
+      "title": "Twoje klucze są zarejestrowane",
+      "body": "Możesz teraz otworzyć Panel sterowania. To, co zobaczysz, zależy od uprawnień nadanych Ci przez menedżera operatorów.",
+      "action": "Kontynuuj"
+    },
+    "reverify": {
+      "title": "Potwierdź ponownie, że to Ty",
+      "body": "Twoja weryfikacja bezpieczeństwa wygasła. Użyj klucza, aby kontynuować od tego samego miejsca."
+    },
+    "recovery": {
+      "title": "Zgubione klucze?",
+      "body": "Nie ma samodzielnego odzyskiwania. Inny menedżer operatorów może unieważnić Twoje stare klucze i pozwolić Ci zarejestrować nowe. Jeśli nie ma już innych menedżerów, odzyskiwanie odbywa się według weryfikowanej procedury z opiekunami SimpleFit.",
+      "back": "Wstecz"
+    },
+    "enrollmentExpired": {
+      "title": "Czas na konfigurację minął",
+      "body": "Klucze bezpieczeństwa nie zostały zarejestrowane na czas. Poproś menedżera operatorów o ponowne skonfigurowanie Twojego dostępu."
+    },
+    "unsupported": {
+      "title": "Ta przeglądarka nie obsługuje kluczy bezpieczeństwa",
+      "body": "Otwórz SimpleFit w aktualnej przeglądarce obsługującej sprzętowe klucze bezpieczeństwa."
+    },
+    "serviceUnavailable": {
+      "title": "Klucze bezpieczeństwa są teraz niedostępne",
+      "body": "Nic się nie zmieniło. Spróbuj później."
+    },
+    "loadFailed": {
+      "title": "Nie udało się sprawdzić Twojego dostępu",
+      "body": "Nic się nie zmieniło. Spróbuj ponownie.",
+      "retry": "Spróbuj ponownie"
+    },
+    "unavailable": {
+      "title": "Nie znaleziono strony",
+      "body": "Ta strona nie istnieje lub nie jest dostępna dla Twojego konta.",
+      "action": "Przejdź do SimpleFit"
+    }
+  },
+  "workspace": {
+    "operator": "Operator",
+    "keyChecked": "Klucz zweryfikowany · zostało {minutes, plural, one {# min} few {# min} many {# min} other {# min}}",
+    "permissions": "{count, plural, one {# uprawnienie} few {# uprawnienia} many {# uprawnień} other {# uprawnienia}} · każde nadawane osobno",
+    "exit": "Wyjdź z panelu sterowania",
+    "exitFailed": "Nie udało się zakończyć weryfikacji klucza. Spróbuj ponownie."
+  },
+  "welcome": {
+    "metaTitle": "Witaj · Panel sterowania",
+    "breadcrumb": "Panel sterowania",
+    "title": "Witaj",
+    "pill": "Pierwsza wizyta",
+    "heading": "Witaj w Panelu sterowania",
+    "body": "Stąd zarządza się SimpleFit. Widzisz tylko to, do czego przyznano Ci dostęp.",
+    "access": {
+      "title": "Twój dostęp",
+      "granted": "Przyznany",
+      "notGranted": "Nieprzyznany",
+      "rows": {
+        "sponsorOrganizations": "Organizacje sponsorów",
+        "sponsorApplications": "Zgłoszenia sponsorów",
+        "audit": "Dziennik audytu",
+        "operators": "Operatorzy"
+      },
+      "notYet": "Przegląd, użytkownicy, kluby, weryfikacja klubów i stan systemu nie są jeszcze częścią Panelu sterowania."
+    },
+    "note": "Przewodnik ani lista kontrolna nigdy nie dodają dostępu. Może to zrobić tylko menedżer operatorów i jest to rejestrowane.",
+    "tour": "Zobacz przewodnik",
+    "skip": "Pomiń",
+    "failed": "Nie udało się zapisać. Nic się nie zmieniło. Spróbuj ponownie.",
+    "sensitive": {
+      "title": "Jak działają wrażliwe czynności",
+      "steps": {
+        "check": "Sprawdź, co robi czynność i kogo dotyczy.",
+        "reason": "Podaj kod przyczyny.",
+        "key": "Potwierdź kluczem bezpieczeństwa.",
+        "result": "Wynik albo uczciwe „jeszcze nie wiemy” oraz wpis w dzienniku audytu."
+      }
+    },
+    "error": {
+      "pill": "Nie wczytano",
+      "title": "Nie udało się wczytać Twojego dostępu",
+      "body": "Nic się nie zmieniło. Spróbuj ponownie.",
+      "retry": "Spróbuj ponownie"
+    }
+  },
+  "tour": {
+    "step": "Przewodnik · {step} z {total}",
+    "complete": "Przewodnik ukończony",
+    "end": "Pomiń przewodnik",
+    "back": "Wstecz",
+    "next": "Dalej",
+    "finish": "Zakończ",
+    "close": "Przejdź do przeglądu",
+    "tryAgain": "Spróbuj ponownie",
+    "failed": "Nie udało się zapisać. Nic się nie zmieniło. Spróbuj ponownie.",
+    "finishing": {
+      "title": "Kończenie…",
+      "body": "Zapisujemy, że ukończono przewodnik.",
+      "button": "Kończenie…"
+    },
+    "finishFailed": {
+      "title": "Nie udało się zakończyć przewodnika",
+      "body": "Nic nie zapisano. Spróbuj ponownie albo pomiń przewodnik."
+    },
+    "confirm": {
+      "label": "Pomijanie przewodnika",
+      "title": "Pominąć przewodnik?",
+      "body": "Nie zobaczysz go ponownie. Wszystko, co pokazuje, pozostaje na tej stronie.",
+      "keep": "Kontynuuj",
+      "end": "Pomiń przewodnik"
+    },
+    "steps": {
+      "welcome": {
+        "title": "Co to jest",
+        "body": "Panel sterowania służy do prowadzenia SimpleFit. Ta karta pokazuje dokładnie, co możesz otworzyć."
+      },
+      "sensitive": {
+        "title": "Wrażliwe czynności",
+        "body": "Przyczyna, weryfikacja klucza, potwierdzenie, a potem wynik, któremu można ufać."
+      },
+      "me": {
+        "title": "Weryfikacja klucza i wyjście",
+        "body": "Tutaj widać Twoją weryfikację klucza i uprawnienia. „Wyjdź z panelu sterowania” kończy weryfikację klucza."
+      },
+      "done": {
+        "title": "Wszystko gotowe",
+        "body": "Nie zobaczysz ponownie tego przewodnika. Wszystko, co pokazał, jest w menu."
+      }
+    }
+  }
+}

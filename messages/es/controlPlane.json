@@ -1,0 +1,176 @@
+{
+  "entry": {
+    "header": "Panel de control · cada acción queda registrada",
+    "checking": "Comprobando el acceso…",
+    "pill": {
+      "key": "Llave de seguridad",
+      "failed": "Sin verificar",
+      "enroll": "Configuración · paso {step} de {total}",
+      "done": "Seguridad configurada",
+      "reverify": "Verificación caducada",
+      "recovery": "Recuperación",
+      "problem": "No se puede continuar"
+    },
+    "key": {
+      "title": "Usa tu llave de seguridad",
+      "body": "Inserta o toca una de tus llaves registradas. Aquí no se aceptan llaves de acceso del teléfono.",
+      "action": "Usar llave de seguridad",
+      "recovery": "Opciones de recuperación"
+    },
+    "waiting": {
+      "title": "Esperando tu llave…",
+      "body": "Sigue las indicaciones del navegador.",
+      "status": "Esperando la llave",
+      "cancel": "Cancelar"
+    },
+    "failed": {
+      "title": "Esa llave no funcionó",
+      "body": "No cambió nada. Inténtalo de nuevo o usa tu otra llave.",
+      "retry": "Reintentar"
+    },
+    "rateLimited": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
+    "enroll": {
+      "title": "Registra dos llaves de seguridad",
+      "body": "Necesitas dos llaves: una para usar y otra de respaldo. No podrás abrir el Panel de control hasta registrar ambas.",
+      "first": "Primera llave",
+      "backup": "Llave de respaldo",
+      "notYet": "Todavía no",
+      "registered": "Registrada",
+      "action": "Registrar primera llave"
+    },
+    "enrollSecond": {
+      "title": "Ahora tu llave de respaldo",
+      "body": "Usa otra llave física. Guárdala en un lugar seguro.",
+      "action": "Registrar llave de respaldo"
+    },
+    "duplicate": "Esa llave ya está registrada. Usa otra llave física.",
+    "rejected": "Esa llave no se puede usar aquí. Usa una llave de seguridad de hardware, no un teléfono ni una llave de acceso sincronizada.",
+    "enrollDone": {
+      "title": "Tus llaves están registradas",
+      "body": "Ya puedes abrir el Panel de control. Lo que ves depende de los permisos que te dio un gestor de operadores.",
+      "action": "Continuar"
+    },
+    "reverify": {
+      "title": "Confirma de nuevo que eres tú",
+      "body": "Tu verificación de seguridad caducó. Usa tu llave para continuar donde estabas."
+    },
+    "recovery": {
+      "title": "¿Perdiste tus llaves?",
+      "body": "No hay recuperación por tu cuenta. Otro gestor de operadores puede revocar tus llaves antiguas y dejarte registrar nuevas. Si no queda nadie más con ese rol, la recuperación es un procedimiento revisado con los mantenedores de SimpleFit.",
+      "back": "Atrás"
+    },
+    "enrollmentExpired": {
+      "title": "Se acabó el plazo de configuración",
+      "body": "Tus llaves de seguridad no se registraron a tiempo. Pide a un gestor de operadores que vuelva a configurar tu acceso."
+    },
+    "unsupported": {
+      "title": "Este navegador no puede usar llaves de seguridad",
+      "body": "Abre SimpleFit en un navegador actual que admita llaves de seguridad de hardware."
+    },
+    "serviceUnavailable": {
+      "title": "Las llaves de seguridad no están disponibles ahora",
+      "body": "No cambió nada. Inténtalo más tarde."
+    },
+    "loadFailed": {
+      "title": "No pudimos comprobar tu acceso",
+      "body": "No cambió nada. Inténtalo de nuevo.",
+      "retry": "Reintentar"
+    },
+    "unavailable": {
+      "title": "No encontramos esa página",
+      "body": "Esta página no existe o no está disponible para tu cuenta.",
+      "action": "Ir a SimpleFit"
+    }
+  },
+  "workspace": {
+    "operator": "Operador",
+    "keyChecked": "Llave verificada · {minutes, plural, one {# min restante} other {# min restantes}}",
+    "permissions": "{count, plural, one {# permiso} other {# permisos}} · cada uno concedido por separado",
+    "exit": "Salir del panel de control",
+    "exitFailed": "No pudimos terminar la verificación de la llave. Inténtalo de nuevo."
+  },
+  "welcome": {
+    "metaTitle": "Bienvenida · Panel de control",
+    "breadcrumb": "Panel de control",
+    "title": "Bienvenida",
+    "pill": "Primera visita",
+    "heading": "Te damos la bienvenida al Panel de control",
+    "body": "Desde aquí se gestiona SimpleFit. Solo ves lo que se te ha concedido.",
+    "access": {
+      "title": "Tu acceso",
+      "granted": "Concedido",
+      "notGranted": "No concedido",
+      "rows": {
+        "sponsorOrganizations": "Organizaciones patrocinadoras",
+        "sponsorApplications": "Solicitudes de patrocinadores",
+        "audit": "Registro de auditoría",
+        "operators": "Operadores"
+      },
+      "notYet": "La vista general, los usuarios, los gimnasios, la verificación de gimnasios y el estado del sistema aún no forman parte del Panel de control."
+    },
+    "note": "Un recorrido o una lista de comprobación nunca añade acceso. Solo puede hacerlo un gestor de operadores, y queda registrado.",
+    "tour": "Hacer el recorrido",
+    "skip": "Omitir",
+    "failed": "No pudimos guardarlo. No cambió nada. Inténtalo de nuevo.",
+    "sensitive": {
+      "title": "Cómo funcionan las acciones sensibles",
+      "steps": {
+        "check": "Comprueba qué hace la acción y a quién afecta.",
+        "reason": "Indica un código de motivo.",
+        "key": "Confirma con tu llave de seguridad.",
+        "result": "El resultado, o un sincero «aún no lo sabemos», y una entrada de auditoría."
+      }
+    },
+    "error": {
+      "pill": "No se pudo cargar",
+      "title": "No pudimos cargar tu acceso",
+      "body": "No cambió nada. Inténtalo de nuevo.",
+      "retry": "Reintentar"
+    }
+  },
+  "tour": {
+    "step": "Recorrido · {step} de {total}",
+    "complete": "Recorrido terminado",
+    "end": "Omitir recorrido",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "finish": "Finalizar",
+    "close": "Ir a la vista general",
+    "tryAgain": "Reintentar",
+    "failed": "No pudimos guardarlo. No cambió nada. Inténtalo de nuevo.",
+    "finishing": {
+      "title": "Finalizando…",
+      "body": "Guardando que terminaste el recorrido.",
+      "button": "Finalizando…"
+    },
+    "finishFailed": {
+      "title": "No pudimos finalizar el recorrido",
+      "body": "No se guardó nada. Inténtalo de nuevo u omite el recorrido."
+    },
+    "confirm": {
+      "label": "Omitir el recorrido",
+      "title": "¿Omitir el recorrido?",
+      "body": "No volverás a verlo. Todo lo que muestra sigue en esta página.",
+      "keep": "Seguir",
+      "end": "Omitir recorrido"
+    },
+    "steps": {
+      "welcome": {
+        "title": "Qué es esto",
+        "body": "Desde el Panel de control se gestiona SimpleFit. Esta tarjeta indica exactamente lo que puedes abrir."
+      },
+      "sensitive": {
+        "title": "Acciones sensibles",
+        "body": "Motivo, verificación de la llave, confirmación y, después, un resultado fiable."
+      },
+      "me": {
+        "title": "Tu verificación y cómo salir",
+        "body": "Aquí ves tu verificación de llave y tus permisos. «Salir del panel de control» termina la verificación de la llave."
+      },
+      "done": {
+        "title": "Todo listo",
+        "body": "No volverás a ver este recorrido. Todo lo que mostró sigue en el menú."
+      }
+    }
+  }
+}

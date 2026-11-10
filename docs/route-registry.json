@@ -2264,7 +2264,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(admin)/admin/welcome/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-120: ARW1, the Control Plane first visit (FirstRunAdmin MVP): the operator's access from the backend's permissions, how sensitive actions work and an optional tour on real elements only (access card, sensitive-actions card, operator block); Skip, Finish and Skip tour record simplefit-api ADR 0018 control_plane_web_tour (account-wide, final). Design deviations: docs/admin-design/sf-120-design-register.md."
       },
       "screens": ["ARW1"]
     },
@@ -7076,7 +7076,7 @@
       "discrepancies": ["D-ADMIN-IDENTITY"],
       "production": {
         "file": "src/app/[locale]/(auth)/admin/login/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-120: AD0 handoff renders the one SimpleFit sign-in (WA1: Google, Apple, email code) with the validated continuation, so an operator returns to the Control Plane, whose gate then checks operator access and the security key. AD0's own handoff layout and copy are not built (docs/admin-design/sf-120-design-register.md)."
       },
       "screens": ["AD0"]
     },
@@ -7127,7 +7127,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(admin)/admin/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-120: the Control Plane shell behind the operator gate (AdminWorkspace): GET /api/v1/admin/me decides AD0 (checking, unavailable for a non-, suspended or revoked operator alike, enrolment of the required security keys, key check, reverify, recovery guidance) until an active operator holds a key check for this session; the nav lists only the overview and the granted sections (all Soon), and the operator block shows the key check time left and Exit control plane. The overview page itself stays the canonical feature placeholder (AD1 is built by its own ticket); while the backend offers control_plane_web_tour it sends the operator to ARW1 once."
       },
       "screens": ["AD1"]
     },

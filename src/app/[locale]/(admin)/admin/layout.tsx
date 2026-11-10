@@ -3,13 +3,15 @@ import type { ReactNode } from "react";
 import { RequireSession } from "@/features/session-gate";
 import { resolveLocaleParam } from "@/shared/i18n/params";
 import { signInRouteFor } from "@/shared/routes/routes";
+import { AdminWorkspace } from "@/widgets/admin-workspace";
 import { LaunchScreen, SessionFailure } from "@/widgets/system-states";
-import { WorkspaceShell } from "@/widgets/workspace-shell";
 
 /**
- * `web.admin`: the internal admin control plane. Admin is a backend-granted
- * staff capability on the same User (D-ADMIN-IDENTITY); its check (and any
- * step-up) arrives with the admin identity work, never as frontend state.
+ * `web.admin`: the Control Plane. Admin is a backend-granted operator capability
+ * on the same User (D-ADMIN-IDENTITY, simplefit-api ADR 0028). After sign-in,
+ * AdminWorkspace asks the backend (`GET /api/v1/admin/me`) and shows AD0 (key
+ * enrolment, key check, unavailable) until it reports an active operator with a
+ * key check for this session (SF-120); the frontend never holds that state.
  */
 export default async function AdminLayout({
   children,
@@ -25,7 +27,7 @@ export default async function AdminLayout({
       pending={<LaunchScreen />}
       unavailable={<SessionFailure />}
     >
-      <WorkspaceShell shell="web.admin">{children}</WorkspaceShell>
+      <AdminWorkspace>{children}</AdminWorkspace>
     </RequireSession>
   );
 }

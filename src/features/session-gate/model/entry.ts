@@ -1,10 +1,10 @@
 import { callWithSession } from "@/entities/session";
 import { resolveMyEntry } from "@/shared/api/generated/endpoints/entry/entry";
-import type {
-  EntryResponseEntry,
+import {
   EntryResponseEntryCapabilitiesItem,
-  EntryResponseEntryDestination,
-  ResolveMyEntryParams,
+  type EntryResponseEntry,
+  type EntryResponseEntryDestination,
+  type ResolveMyEntryParams,
 } from "@/shared/api/generated/model";
 import { continuationQuery, type Continuation } from "@/shared/routes/continuation";
 import { sanitizeReturnTo } from "@/shared/routes/return-to";
@@ -85,14 +85,27 @@ function destinationParams(entry: KnownEntry): Record<string, string> | undefine
  * (that would only resolve again) and not behind a capability the backend
  * does not report. Capabilities are a routing projection; the API still
  * authorizes every request.
+ *
+ * ADMIN is not in the entry's projection (simplefit-api ADR 0028 never reveals
+ * operator status there), so a Control Plane `returnTo` is kept: its own gate
+ * asks `GET /api/v1/admin/me` and answers a non-operator with the same
+ * "can't find that page" as anything else (SF-120).
  */
+const PROJECTED: ReadonlySet<string> = new Set(Object.values(EntryResponseEntryCapabilitiesItem));
+
 function usableReturnTo(returnTo: string | undefined, entry: Entry): string | undefined {
   const safe = sanitizeReturnTo(returnTo);
   if (safe === undefined) return undefined;
   const route = matchWebRoute(safe.split("?")[0] ?? safe);
   if (route === undefined || route.id === webGuards.entry) return undefined;
   const held: readonly string[] = entry.capabilities;
-  if (route.capability !== null && !held.includes(route.capability)) return undefined;
+  if (
+    route.capability !== null &&
+    PROJECTED.has(route.capability) &&
+    !held.includes(route.capability)
+  ) {
+    return undefined;
+  }
   return safe;
 }
 
