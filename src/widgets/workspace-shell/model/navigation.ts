@@ -192,6 +192,9 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
       settings: SlidersHorizontalIcon,
     },
   },
+  // The Control Plane (SF-120): AdminWorkspace shows only the items an operator was
+  // granted (sponsors, audit, staff) plus the overview; none of their pages exists
+  // yet, so every item but the overview is an unlinked "Soon" row.
   "web.admin": {
     messages: "admin",
     sections: [
@@ -227,5 +230,27 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
       markets: GlobeIcon,
       staff: UserCogIcon,
     },
+    soon: [
+      "tenants",
+      "users",
+      "revenue",
+      "subscriptions",
+      "transactions",
+      "payments",
+      "pricing",
+      "sponsors",
+      "campaigns",
+      "enterprise",
+      "moderation",
+      "enforcement",
+      "support",
+      "privacy",
+      "audit",
+      "flags",
+      "notifications",
+      "integrations",
+      "markets",
+      "staff",
+    ],
   },
 };

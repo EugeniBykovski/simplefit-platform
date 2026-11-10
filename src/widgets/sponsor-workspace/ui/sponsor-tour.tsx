@@ -1,394 +1,71 @@
 "use client";
 
-import { CheckIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Dialog as DialogPrimitive } from "radix-ui";
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type KeyboardEvent,
-} from "react";
+import { useMemo } from "react";
 
-import { cn } from "@/shared/lib/utils";
-import { placeCard, visibleBox, type Placement } from "@/shared/lib/tour";
-import { Button } from "@/shared/ui/button";
+import { GuidedTour, type TourCopy, type TourStep } from "@/features/product-tour";
 
-import {
-  DOCK_BELOW,
-  SPONSOR_TOUR_STEPS,
-  SPONSOR_TOUR_TARGETS,
-  type SponsorTourStep,
-} from "../model/tour";
+import { SPONSOR_TOUR_STEPS, SPONSOR_TOUR_TARGETS, type SponsorTourStepId } from "../model/tour";
+
+const STEPS: readonly TourStep<SponsorTourStepId>[] = SPONSOR_TOUR_STEPS.map((step) => ({
+  id: step.id,
+  selector: SPONSOR_TOUR_TARGETS[step.target],
+  placement: step.placement,
+  spot: step.spot,
+}));
 
 /**
  * SRW2, the partner portal tour (SF-119; Claude Design `FirstRunSponsorTour`, MVP):
- * six coach marks on real portal elements, then the done card. One modal dialog for
- * the whole tour: focus stays inside, the page behind is inert, each step re-measures
- * its target on open, resize and scroll. Below 1024 px, or when a target isn't visible
- * (the sidebar is a sheet below `md`), the card docks to the bottom over the dimmed
- * page, as the design's docked variant.
- *
- * Only explicit ends reach the backend, and only its answer moves the tour:
- *
- * - Finish (step 6) → `onComplete`: "Finishing…", then the done card; a failure keeps
- *   step 6 with "Try again".
- * - End tour or Escape → a confirmation in the card; "End tour" → `onDismiss`, then
- *   the tour closes; a failure keeps the confirmation with the error.
- *
- * Back and Next record nothing: the step is client-only (a resumed tour starts at
- * step 1 on any device).
+ * six coach marks on real portal elements, then the done card, rendered by the shared
+ * `GuidedTour` (SF-120). This wrapper only supplies the sponsor steps and copy; the
+ * Organization step names contacts only for members who can view them.
  */
-
-const SPOT_RADIUS = { xl: "rounded-xl", "3xl": "rounded-3xl", "4xl": "rounded-4xl" } as const;
-
-type View = number | "done" | "confirm";
-
-type Layout = { kind: "docked" } | { kind: "placed"; placement: Placement };
-
-function useLayout(step: SponsorTourStep | undefined, open: boolean, card: HTMLElement | null) {
-  const [layout, setLayout] = useState<Layout>({ kind: "docked" });
-  useLayoutEffect(() => {
-    if (!open) return;
-    const update = () => {
-      if (step === undefined || window.innerWidth < DOCK_BELOW) {
-        setLayout({ kind: "docked" });
-        return;
-      }
-      const box = visibleBox([SPONSOR_TOUR_TARGETS[step.target]]);
-      const placement =
-        box === undefined
-          ? undefined
-          : placeCard(
-              step.placement,
-              step.spot,
-              box,
-              { width: window.innerWidth, height: window.innerHeight },
-              card?.offsetHeight ?? 0,
-            );
-      setLayout(placement === undefined ? { kind: "docked" } : { kind: "placed", placement });
-    };
-    if (step !== undefined) {
-      const target = document.querySelector(SPONSOR_TOUR_TARGETS[step.target]);
-      if (target instanceof HTMLElement) target.scrollIntoView({ block: "nearest" });
-    }
-    update();
-    const observer = new ResizeObserver(update);
-    if (card) observer.observe(card);
-    window.addEventListener("resize", update);
-    window.addEventListener("scroll", update, true);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", update);
-      window.removeEventListener("scroll", update, true);
-    };
-  }, [step, open, card]);
-  return layout;
-}
-
 export function SponsorTour({
-  open,
   viewsContacts,
-  onComplete,
-  onDismiss,
-  onClose,
-  onClosed,
+  ...props
 }: {
   open: boolean;
-  /** The membership reports `view_contacts` (owner, manager): the Organization step names the contact. */
   viewsContacts: boolean;
-  /** `completeSponsorFirstRun`; rejects when the backend did not keep it. */
   onComplete: () => Promise<unknown>;
-  /** `dismissSponsorFirstRun`; rejects when the backend did not keep it. */
   onDismiss: () => Promise<unknown>;
-  /** Closes the dialog. */
   onClose: () => void;
-  /** After the dialog closed: where focus goes. */
   onClosed: () => void;
 }) {
   const t = useTranslations("sponsorPortal.firstRun.tour");
-  const [view, setView] = useState<View>(0);
-  const [returnTo, setReturnTo] = useState(0);
-  const [saving, setSaving] = useState<"complete" | "dismiss">();
-  const [failed, setFailed] = useState<"complete" | "dismiss">();
-  const [card, setCard] = useState<HTMLElement | null>(null);
-  const primary = useRef<HTMLButtonElement>(null);
-
-  const total = SPONSOR_TOUR_STEPS.length;
-  const index = typeof view === "number" ? view : undefined;
-  const step = view === "done" ? undefined : SPONSOR_TOUR_STEPS[index ?? returnTo];
-  const layout = useLayout(step, open, card);
-  const last = index === total - 1;
-
-  const close = useCallback(() => {
-    setView(0);
-    setReturnTo(0);
-    setFailed(undefined);
-    onClose();
-  }, [onClose]);
-
-  // A new step or view keeps focus in the card (Back disappears on step 1).
-  useEffect(() => {
-    if (open && card !== null && !card.contains(document.activeElement)) primary.current?.focus();
-  }, [view, open, card]);
-
-  const finish = async () => {
-    if (saving !== undefined) return;
-    setSaving("complete");
-    setFailed(undefined);
-    try {
-      await onComplete();
-      setView("done");
-    } catch {
-      setFailed("complete");
-    } finally {
-      setSaving(undefined);
-    }
-  };
-
-  const dismiss = async () => {
-    if (saving !== undefined) return;
-    setSaving("dismiss");
-    setFailed(undefined);
-    try {
-      await onDismiss();
-      close();
-    } catch {
-      setFailed("dismiss");
-    } finally {
-      setSaving(undefined);
-    }
-  };
-
-  const askEnd = () => {
-    if (index !== undefined) setReturnTo(index);
-    setFailed(undefined);
-    setView("confirm");
-  };
-
-  const go = (to: number) => {
-    setFailed(undefined);
-    setView(Math.min(Math.max(to, 0), total - 1));
-  };
-
-  const keys = (event: KeyboardEvent) => {
-    if (index === undefined || saving !== undefined) return;
-    if (event.key === "ArrowRight" && !last) go(index + 1);
-    if (event.key === "ArrowLeft" && index > 0) go(index - 1);
-  };
-
-  const label =
-    view === "done"
-      ? t("complete")
-      : view === "confirm"
-        ? t("confirm.label")
-        : t("step", { step: (index ?? 0) + 1, total });
-  const stepId = step?.id ?? "start";
-  const title =
-    view === "done"
-      ? t("steps.done.title")
-      : view === "confirm"
-        ? t("confirm.title")
-        : saving === "complete"
-          ? t("finishing.title")
-          : failed === "complete"
-            ? t("finishFailed.title")
-            : t(`steps.${stepId}.title`);
-  const body =
-    view === "done"
-      ? t("steps.done.body")
-      : view === "confirm"
-        ? t("confirm.body")
-        : saving === "complete"
-          ? t("finishing.body")
-          : failed === "complete"
-            ? t("finishFailed.body")
-            : stepId === "organization"
-              ? t(viewsContacts ? "steps.organization.bodyContacts" : "steps.organization.body")
-              : t(`steps.${stepId}.body`);
-
-  const placed = layout.kind === "placed" && view !== "done" ? layout.placement : undefined;
-
-  return (
-    <DialogPrimitive.Root open={open}>
-      <DialogPrimitive.Portal>
-        {placed === undefined ? (
-          <div aria-hidden data-tour-dim className="fixed inset-0 z-50 bg-overlay" />
-        ) : (
-          <span
-            aria-hidden
-            data-tour-spotlight={view === "confirm" ? "confirm" : stepId}
-            className={cn(
-              "pointer-events-none fixed z-50 border-2 shadow-[0_0_0_4000px_var(--overlay)] motion-safe:transition-all",
-              view === "confirm" ? "border-warning" : "border-highlight",
-              SPOT_RADIUS[step?.spot.radius ?? "xl"],
-            )}
-            style={placed.spot}
-          />
-        )}
-        <DialogPrimitive.Content
-          ref={setCard}
-          data-sponsor-tour={view === "done" || view === "confirm" ? view : stepId}
-          data-tour-layout={placed === undefined ? "docked" : "placed"}
-          aria-modal="true"
-          aria-busy={saving !== undefined || undefined}
-          aria-describedby="sponsor-tour-body"
-          onKeyDown={keys}
-          onEscapeKeyDown={(event) => {
-            event.preventDefault();
-            if (saving !== undefined) return;
-            if (view === "done") close();
-            else if (view === "confirm") setView(returnTo);
-            else askEnd();
-          }}
-          onInteractOutside={(event) => event.preventDefault()}
-          onCloseAutoFocus={(event) => {
-            event.preventDefault();
-            onClosed();
-          }}
-          style={placed?.card}
-          className={cn(
-            // The bone card of the artboards: the light theme's tokens, whatever the page's theme.
-            "light fixed z-50 flex max-h-[calc(100dvh-1.5rem)] flex-col gap-2.5 overflow-y-auto rounded-3xl bg-background p-4.5 text-foreground shadow-modal outline-none",
-            placed === undefined
-              ? view === "done"
-                ? "top-1/2 left-1/2 w-95 max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2"
-                : "inset-x-3 bottom-3 sm:left-1/2 sm:w-120 sm:-translate-x-1/2"
-              : "w-95 max-w-[calc(100vw-2rem)]",
-          )}
-        >
-          {placed?.arrow !== undefined && (
-            <span
-              aria-hidden
-              data-tour-arrow
-              className="fixed size-4 rotate-45 bg-background"
-              style={{ left: placed.arrow.x - 8, top: placed.arrow.y - 8 }}
-            />
-          )}
-          <div className="flex items-center justify-between gap-3">
-            <p
-              className={cn(
-                "type-label",
-                view === "confirm" ? "text-warning-subtle-foreground" : "text-highlight",
-              )}
-            >
-              {label}
-            </p>
-            {view === "done" ? (
-              <span
-                aria-hidden
-                className="flex size-5.5 items-center justify-center rounded-full bg-highlight text-background"
-              >
-                <CheckIcon className="size-3.5" strokeWidth={3} />
-              </span>
-            ) : index !== undefined ? (
-              <span aria-hidden data-tour-progress className="flex gap-1">
-                {SPONSOR_TOUR_STEPS.map((item, at) => (
-                  <span
-                    key={item.id}
-                    className={cn(
-                      "h-1 w-3.5 rounded-full",
-                      at <= index ? "bg-highlight" : "bg-input",
-                    )}
-                  />
-                ))}
-              </span>
-            ) : null}
-          </div>
-          <DialogPrimitive.Title className="type-h3 text-pretty">{title}</DialogPrimitive.Title>
-          <DialogPrimitive.Description
-            id="sponsor-tour-body"
-            className="type-body-sm text-pretty text-muted-foreground"
-          >
-            {body}
-          </DialogPrimitive.Description>
-          <p aria-live="polite" className="sr-only">
-            {`${label}: ${title}`}
-          </p>
-          {failed !== undefined && (
-            <p role="alert" className="type-caption font-bold text-destructive">
-              {t("failed")}
-            </p>
-          )}
-          <div className="mt-1 flex flex-wrap items-center justify-between gap-3">
-            {view === "done" ? (
-              <span />
-            ) : view === "confirm" ? (
-              <Button
-                variant="link"
-                className="type-body-sm text-muted-foreground"
-                disabled={saving !== undefined}
-                onClick={() => {
-                  setFailed(undefined);
-                  setView(returnTo);
-                }}
-              >
-                {t("confirm.keep")}
-              </Button>
-            ) : (
-              <Button
-                variant="link"
-                className="type-body-sm text-muted-foreground"
-                disabled={saving !== undefined}
-                onClick={askEnd}
-                data-sponsor-tour-end
-              >
-                {t("end")}
-              </Button>
-            )}
-            <span className="flex gap-2">
-              {index !== undefined && index > 0 && (
-                <Button
-                  variant="outline"
-                  className="h-11 rounded-md-lg border-input px-4 text-foreground hover:bg-muted hover:text-foreground"
-                  disabled={saving !== undefined}
-                  onClick={() => go(index - 1)}
-                >
-                  {t("back")}
-                </Button>
-              )}
-              {view === "confirm" ? (
-                <Button
-                  ref={primary}
-                  variant="warning"
-                  className="h-11 rounded-md-lg"
-                  loading={saving === "dismiss"}
-                  onClick={() => void dismiss()}
-                  data-sponsor-tour-dismiss
-                >
-                  {t("confirm.end")}
-                </Button>
-              ) : (
-                <Button
-                  ref={primary}
-                  variant="secondary"
-                  className="h-11 rounded-md-lg"
-                  disabled={saving !== undefined}
-                  loading={saving === "complete"}
-                  onClick={() => {
-                    if (view === "done") close();
-                    else if (last) void finish();
-                    else if (index !== undefined) go(index + 1);
-                  }}
-                  data-sponsor-tour-next
-                >
-                  {view === "done"
-                    ? t("close")
-                    : last
-                      ? saving === "complete"
-                        ? t("finishing.button")
-                        : failed === "complete"
-                          ? t("tryAgain")
-                          : t("finish")
-                      : t("next")}
-                </Button>
-              )}
-            </span>
-          </div>
-        </DialogPrimitive.Content>
-      </DialogPrimitive.Portal>
-    </DialogPrimitive.Root>
+  const copy = useMemo<TourCopy<SponsorTourStepId>>(
+    () => ({
+      step: (id) => ({
+        title: t(`steps.${id}.title`),
+        body:
+          id === "organization" && viewsContacts
+            ? t("steps.organization.bodyContacts")
+            : t(`steps.${id}.body`),
+      }),
+      progress: (step, total) => t("step", { step, total }),
+      complete: t("complete"),
+      done: { title: t("steps.done.title"), body: t("steps.done.body") },
+      confirm: {
+        label: t("confirm.label"),
+        title: t("confirm.title"),
+        body: t("confirm.body"),
+        keep: t("confirm.keep"),
+        end: t("confirm.end"),
+      },
+      finishing: {
+        title: t("finishing.title"),
+        body: t("finishing.body"),
+        button: t("finishing.button"),
+      },
+      finishFailed: { title: t("finishFailed.title"), body: t("finishFailed.body") },
+      failed: t("failed"),
+      end: t("end"),
+      back: t("back"),
+      next: t("next"),
+      finish: t("finish"),
+      close: t("close"),
+      tryAgain: t("tryAgain"),
+    }),
+    [t, viewsContacts],
   );
+  return <GuidedTour steps={STEPS} copy={copy} {...props} />;
 }

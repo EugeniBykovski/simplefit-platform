@@ -1,0 +1,176 @@
+{
+  "entry": {
+    "header": "Control plane · every action is recorded",
+    "checking": "Checking access…",
+    "pill": {
+      "key": "Security key",
+      "failed": "Not verified",
+      "enroll": "Set up · step {step} of {total}",
+      "done": "Security set up",
+      "reverify": "Check expired",
+      "recovery": "Recovery",
+      "problem": "Can’t continue"
+    },
+    "key": {
+      "title": "Use your security key",
+      "body": "Insert or tap one of your registered keys. Phone passkeys aren’t accepted here.",
+      "action": "Use security key",
+      "recovery": "Recovery options"
+    },
+    "waiting": {
+      "title": "Waiting for your key…",
+      "body": "Follow your browser’s prompt.",
+      "status": "Waiting for the key",
+      "cancel": "Cancel"
+    },
+    "failed": {
+      "title": "That key didn’t work",
+      "body": "Nothing changed. Try again, or use your other key.",
+      "retry": "Try again"
+    },
+    "rateLimited": "Too many attempts. Wait a few minutes, then try again.",
+    "enroll": {
+      "title": "Register two security keys",
+      "body": "You need two keys: one to use, one as a backup. You can’t open the Control Plane until both are registered.",
+      "first": "First key",
+      "backup": "Backup key",
+      "notYet": "Not yet",
+      "registered": "Registered",
+      "action": "Register first key"
+    },
+    "enrollSecond": {
+      "title": "Now your backup key",
+      "body": "Use a different physical key. Keep it somewhere safe.",
+      "action": "Register backup key"
+    },
+    "duplicate": "That key is already registered. Use a different physical key.",
+    "rejected": "That key can’t be used here. Use a hardware security key, not a phone or a synced passkey.",
+    "enrollDone": {
+      "title": "Your keys are registered",
+      "body": "You can now open the Control Plane. What you can see depends on the permissions an operator manager gave you.",
+      "action": "Continue"
+    },
+    "reverify": {
+      "title": "Confirm it’s you again",
+      "body": "Your security check has expired. Use your key to continue where you were."
+    },
+    "recovery": {
+      "title": "Lost your keys?",
+      "body": "There’s no self-service recovery. Another operator manager can revoke your old keys and let you register new ones. If you’re the last one, recovery is a reviewed procedure with SimpleFit’s maintainers.",
+      "back": "Back"
+    },
+    "enrollmentExpired": {
+      "title": "Your setup window has ended",
+      "body": "Your security keys weren’t registered in time. Ask an operator manager to set up your access again."
+    },
+    "unsupported": {
+      "title": "This browser can’t use security keys",
+      "body": "Open SimpleFit in a current browser that supports hardware security keys."
+    },
+    "serviceUnavailable": {
+      "title": "Security keys aren’t available right now",
+      "body": "Nothing changed. Try again later."
+    },
+    "loadFailed": {
+      "title": "We couldn’t check your access",
+      "body": "Nothing changed. Try again.",
+      "retry": "Try again"
+    },
+    "unavailable": {
+      "title": "We can’t find that page",
+      "body": "This page doesn’t exist, or it isn’t available to your account.",
+      "action": "Go to SimpleFit"
+    }
+  },
+  "workspace": {
+    "operator": "Operator",
+    "keyChecked": "Key checked · {minutes, plural, one {# min} other {# min}} left",
+    "permissions": "{count, plural, one {# permission} other {# permissions}} · each granted separately",
+    "exit": "Exit control plane",
+    "exitFailed": "We couldn’t end the key check. Try again."
+  },
+  "welcome": {
+    "metaTitle": "Welcome · Control plane",
+    "breadcrumb": "Control plane",
+    "title": "Welcome",
+    "pill": "First visit",
+    "heading": "Welcome to the Control Plane",
+    "body": "This is where SimpleFit is run. You see only what you’ve been granted.",
+    "access": {
+      "title": "Your access",
+      "granted": "Granted",
+      "notGranted": "Not granted",
+      "rows": {
+        "sponsorOrganizations": "Sponsor organizations",
+        "sponsorApplications": "Sponsor applications",
+        "audit": "Audit log",
+        "operators": "Operators"
+      },
+      "notYet": "Overview, users, gyms, gym verification and system health aren’t part of the Control Plane yet."
+    },
+    "note": "A tour or checklist never adds access. Only an operator manager can, and that’s recorded.",
+    "tour": "Take the tour",
+    "skip": "Skip",
+    "failed": "We couldn’t save that. Nothing changed. Try again.",
+    "sensitive": {
+      "title": "How sensitive actions work",
+      "steps": {
+        "check": "Check what the action does and to whom.",
+        "reason": "Give a reason code.",
+        "key": "Confirm with your security key.",
+        "result": "The result, or an honest “we don’t know yet”, and an audit entry."
+      }
+    },
+    "error": {
+      "pill": "Couldn’t load",
+      "title": "We couldn’t load your access",
+      "body": "Nothing changed. Try again.",
+      "retry": "Try again"
+    }
+  },
+  "tour": {
+    "step": "Tour · {step} of {total}",
+    "complete": "Tour complete",
+    "end": "Skip tour",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish",
+    "close": "Go to overview",
+    "tryAgain": "Try again",
+    "failed": "We couldn’t save that. Nothing changed. Try again.",
+    "finishing": {
+      "title": "Finishing…",
+      "body": "Saving that you finished the tour.",
+      "button": "Finishing…"
+    },
+    "finishFailed": {
+      "title": "We couldn’t finish the tour",
+      "body": "Nothing was saved. Try again, or skip the tour."
+    },
+    "confirm": {
+      "label": "Skip the tour",
+      "title": "Skip the tour?",
+      "body": "You won’t see it again. Everything it shows stays on this page.",
+      "keep": "Keep going",
+      "end": "Skip tour"
+    },
+    "steps": {
+      "welcome": {
+        "title": "What this is",
+        "body": "The Control Plane runs SimpleFit. This card lists exactly what you can open."
+      },
+      "sensitive": {
+        "title": "Sensitive actions",
+        "body": "Reason, key check, confirmation, then a result you can trust."
+      },
+      "me": {
+        "title": "Your key check and leaving",
+        "body": "Your key check and permissions are shown here. “Exit control plane” ends your key check."
+      },
+      "done": {
+        "title": "You’re ready",
+        "body": "You won’t see this again. Everything it showed stays in the menu."
+      }
+    }
+  }
+}

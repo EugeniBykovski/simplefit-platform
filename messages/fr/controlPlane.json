@@ -1,0 +1,176 @@
+{
+  "entry": {
+    "header": "Plan de contrôle · chaque action est enregistrée",
+    "checking": "Vérification de l’accès…",
+    "pill": {
+      "key": "Clé de sécurité",
+      "failed": "Non vérifié",
+      "enroll": "Configuration · étape {step} sur {total}",
+      "done": "Sécurité configurée",
+      "reverify": "Vérification expirée",
+      "recovery": "Récupération",
+      "problem": "Impossible de continuer"
+    },
+    "key": {
+      "title": "Utilisez votre clé de sécurité",
+      "body": "Insérez ou touchez l’une de vos clés enregistrées. Les clés d’accès sur téléphone ne sont pas acceptées ici.",
+      "action": "Utiliser la clé de sécurité",
+      "recovery": "Options de récupération"
+    },
+    "waiting": {
+      "title": "En attente de votre clé…",
+      "body": "Suivez les instructions de votre navigateur.",
+      "status": "En attente de la clé",
+      "cancel": "Annuler"
+    },
+    "failed": {
+      "title": "Cette clé n’a pas fonctionné",
+      "body": "Rien n’a changé. Réessayez ou utilisez votre autre clé.",
+      "retry": "Réessayer"
+    },
+    "rateLimited": "Trop de tentatives. Patientez quelques minutes, puis réessayez.",
+    "enroll": {
+      "title": "Enregistrez deux clés de sécurité",
+      "body": "Il vous faut deux clés : une à utiliser et une de secours. Vous ne pourrez ouvrir le Plan de contrôle qu’une fois les deux enregistrées.",
+      "first": "Première clé",
+      "backup": "Clé de secours",
+      "notYet": "Pas encore",
+      "registered": "Enregistrée",
+      "action": "Enregistrer la première clé"
+    },
+    "enrollSecond": {
+      "title": "Maintenant, votre clé de secours",
+      "body": "Utilisez une autre clé physique. Conservez-la en lieu sûr.",
+      "action": "Enregistrer la clé de secours"
+    },
+    "duplicate": "Cette clé est déjà enregistrée. Utilisez une autre clé physique.",
+    "rejected": "Cette clé ne peut pas être utilisée ici. Utilisez une clé de sécurité matérielle, pas un téléphone ni une clé d’accès synchronisée.",
+    "enrollDone": {
+      "title": "Vos clés sont enregistrées",
+      "body": "Vous pouvez maintenant ouvrir le Plan de contrôle. Ce que vous voyez dépend des autorisations qu’un responsable des opérateurs vous a accordées.",
+      "action": "Continuer"
+    },
+    "reverify": {
+      "title": "Confirmez à nouveau votre identité",
+      "body": "Votre vérification de sécurité a expiré. Utilisez votre clé pour reprendre là où vous en étiez."
+    },
+    "recovery": {
+      "title": "Clés perdues ?",
+      "body": "Il n’existe pas de récupération en libre-service. Un autre responsable des opérateurs peut révoquer vos anciennes clés et vous permettre d’en enregistrer de nouvelles. S’il n’en reste aucun autre, la récupération suit une procédure contrôlée avec les mainteneurs de SimpleFit.",
+      "back": "Retour"
+    },
+    "enrollmentExpired": {
+      "title": "Votre délai de configuration a expiré",
+      "body": "Vos clés de sécurité n’ont pas été enregistrées à temps. Demandez à un responsable des opérateurs de reconfigurer votre accès."
+    },
+    "unsupported": {
+      "title": "Ce navigateur ne prend pas en charge les clés de sécurité",
+      "body": "Ouvrez SimpleFit dans un navigateur récent compatible avec les clés de sécurité matérielles."
+    },
+    "serviceUnavailable": {
+      "title": "Les clés de sécurité sont indisponibles pour le moment",
+      "body": "Rien n’a changé. Réessayez plus tard."
+    },
+    "loadFailed": {
+      "title": "Nous n’avons pas pu vérifier votre accès",
+      "body": "Rien n’a changé. Réessayez.",
+      "retry": "Réessayer"
+    },
+    "unavailable": {
+      "title": "Page introuvable",
+      "body": "Cette page n’existe pas ou n’est pas disponible pour votre compte.",
+      "action": "Aller sur SimpleFit"
+    }
+  },
+  "workspace": {
+    "operator": "Opérateur",
+    "keyChecked": "Clé vérifiée · {minutes, plural, one {# min restante} other {# min restantes}}",
+    "permissions": "{count, plural, one {# autorisation} other {# autorisations}} · chacune accordée séparément",
+    "exit": "Quitter le plan de contrôle",
+    "exitFailed": "Nous n’avons pas pu mettre fin à la vérification de la clé. Réessayez."
+  },
+  "welcome": {
+    "metaTitle": "Bienvenue · Plan de contrôle",
+    "breadcrumb": "Plan de contrôle",
+    "title": "Bienvenue",
+    "pill": "Première visite",
+    "heading": "Bienvenue dans le Plan de contrôle",
+    "body": "C’est ici que SimpleFit est piloté. Vous ne voyez que ce qui vous a été accordé.",
+    "access": {
+      "title": "Votre accès",
+      "granted": "Accordé",
+      "notGranted": "Non accordé",
+      "rows": {
+        "sponsorOrganizations": "Organisations sponsors",
+        "sponsorApplications": "Candidatures de sponsors",
+        "audit": "Journal d’audit",
+        "operators": "Opérateurs"
+      },
+      "notYet": "La vue d’ensemble, les utilisateurs, les salles, la vérification des salles et l’état du système ne font pas encore partie du Plan de contrôle."
+    },
+    "note": "Une visite ou une liste de contrôle n’ajoute jamais d’accès. Seul un responsable des opérateurs le peut, et c’est enregistré.",
+    "tour": "Faire la visite",
+    "skip": "Passer",
+    "failed": "Nous n’avons pas pu l’enregistrer. Rien n’a changé. Réessayez.",
+    "sensitive": {
+      "title": "Fonctionnement des actions sensibles",
+      "steps": {
+        "check": "Vérifiez ce que fait l’action et qui elle concerne.",
+        "reason": "Indiquez un code de motif.",
+        "key": "Confirmez avec votre clé de sécurité.",
+        "result": "Le résultat, ou un honnête « nous ne savons pas encore », et une entrée d’audit."
+      }
+    },
+    "error": {
+      "pill": "Échec du chargement",
+      "title": "Nous n’avons pas pu charger votre accès",
+      "body": "Rien n’a changé. Réessayez.",
+      "retry": "Réessayer"
+    }
+  },
+  "tour": {
+    "step": "Visite · {step} sur {total}",
+    "complete": "Visite terminée",
+    "end": "Passer la visite",
+    "back": "Retour",
+    "next": "Suivant",
+    "finish": "Terminer",
+    "close": "Aller à la vue d’ensemble",
+    "tryAgain": "Réessayer",
+    "failed": "Nous n’avons pas pu l’enregistrer. Rien n’a changé. Réessayez.",
+    "finishing": {
+      "title": "Finalisation…",
+      "body": "Nous enregistrons que vous avez terminé la visite.",
+      "button": "Finalisation…"
+    },
+    "finishFailed": {
+      "title": "Nous n’avons pas pu terminer la visite",
+      "body": "Rien n’a été enregistré. Réessayez ou passez la visite."
+    },
+    "confirm": {
+      "label": "Passer la visite",
+      "title": "Passer la visite ?",
+      "body": "Vous ne la reverrez pas. Tout ce qu’elle montre reste sur cette page.",
+      "keep": "Continuer",
+      "end": "Passer la visite"
+    },
+    "steps": {
+      "welcome": {
+        "title": "En bref",
+        "body": "Le Plan de contrôle sert à piloter SimpleFit. Cette carte indique exactement ce que vous pouvez ouvrir."
+      },
+      "sensitive": {
+        "title": "Actions sensibles",
+        "body": "Motif, vérification de la clé, confirmation, puis un résultat fiable."
+      },
+      "me": {
+        "title": "Vérification de la clé et sortie",
+        "body": "Votre vérification de clé et vos autorisations s’affichent ici. « Quitter le plan de contrôle » met fin à la vérification de la clé."
+      },
+      "done": {
+        "title": "Tout est prêt",
+        "body": "Vous ne reverrez pas cette visite. Tout ce qu’elle a montré reste dans le menu."
+      }
+    }
+  }
+}

@@ -31,6 +31,7 @@ import type shells from "../../../messages/en/shells.json";
 import type site from "../../../messages/en/site.json";
 import type sponsorApplication from "../../../messages/en/sponsorApplication.json";
 import type sponsorPortal from "../../../messages/en/sponsorPortal.json";
+import type controlPlane from "../../../messages/en/controlPlane.json";
 import type gymInvitation from "../../../messages/en/gymInvitation.json";
 import type gymMembership from "../../../messages/en/gymMembership.json";
 import type staffInvitation from "../../../messages/en/staffInvitation.json";
@@ -83,6 +84,7 @@ export const namespaces = [
   "site",
   "sponsorApplication",
   "sponsorPortal",
+  "controlPlane",
 ] as const;
 
 export type Namespace = (typeof namespaces)[number];
@@ -127,6 +129,7 @@ export type Messages = {
   site: typeof site;
   sponsorApplication: typeof sponsorApplication;
   sponsorPortal: typeof sponsorPortal;
+  controlPlane: typeof controlPlane;
 };
 
 export type MessageTree = { [key: string]: string | MessageTree };

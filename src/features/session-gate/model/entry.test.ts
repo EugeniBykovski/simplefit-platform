@@ -86,6 +86,14 @@ describe("entryHref", () => {
     );
   });
 
+  it("a Control Plane returnTo is kept: ADMIN isn't projected, its own gate answers (SF-120)", () => {
+    expect(
+      entryHref(entry({ destination: "fighter_home", capabilities: ["FIGHTER"] }), {
+        returnTo: "/admin",
+      }),
+    ).toBe("/admin");
+  });
+
   it("a returnTo behind a capability the backend does not report is not usable", () => {
     // Kept as the continuation, resolved again once a role journey completes.
     expect(entryHref(entry({}), { returnTo: "/app/home" })).toBe(
