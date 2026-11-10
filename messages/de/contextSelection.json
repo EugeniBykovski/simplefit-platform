@@ -8,7 +8,8 @@
     "title": "Wohin möchtest du?",
     "lead": "Du hast ein Fighter- und ein Coach-Profil in einem Konto.",
     "note": "Beim nächsten Mal öffnen wir deine letzte Wahl. Wechseln kannst du jederzeit oben in der Seitenleiste.",
-    "leadMixed": "Deine Profile und Gyms liegen in einem Konto."
+    "leadMixed": "Deine Profile und Gyms liegen in einem Konto.",
+    "leadAll": "Deine Profile, Gyms und Sponsor-Organisationen liegen in einem Konto."
   },
   "setup": {
     "eyebrow": "Deine Einrichtung",

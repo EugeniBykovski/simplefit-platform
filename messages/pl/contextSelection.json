@@ -8,7 +8,8 @@
     "title": "Dokąd chcesz przejść?",
     "lead": "Masz profil zawodnika i profil trenera na jednym koncie.",
     "note": "Następnym razem otworzymy Twój ostatni wybór. Przełączaj się w każdej chwili u góry paska bocznego.",
-    "leadMixed": "Twoje profile i kluby są na jednym koncie."
+    "leadMixed": "Twoje profile i kluby są na jednym koncie.",
+    "leadAll": "Twoje profile, kluby i organizacje sponsorskie są na jednym koncie."
   },
   "setup": {
     "eyebrow": "Twoja rejestracja",

@@ -81,6 +81,9 @@ const entryFor = (profiles: Profiles, destination = "coach_home") => ({
     gym_id: null,
     gym_workspaces: [],
     gym_workspace_count: 0,
+    sponsor_id: null,
+    sponsor_workspaces: [],
+    sponsor_workspace_count: 0,
     capabilities:
       profiles === "both" ? ["FIGHTER", "COACH"] : profiles === "coach" ? ["COACH"] : ["FIGHTER"],
   },

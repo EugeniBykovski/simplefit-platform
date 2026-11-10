@@ -72,4 +72,56 @@ describe("Providers session-scoped cache", () => {
     expect(client.getQueryData(["/api/v1/me/first-run"])).toBeUndefined();
     vi.unstubAllGlobals();
   });
+
+  it("SF-117: one account's sponsor data never reaches the next account, nor does a late answer", async () => {
+    const { getQueryClient } = await import("@/shared/api/query-client");
+    const session = await import("@/entities/session");
+    const { sponsorOrganizationQueryKey, fetchSponsorOrganization } =
+      await import("@/entities/sponsor-organization");
+    const { jsonResponse } = await import("@/test/render");
+    const ORG = "4c2e8a1d-6b3f-4e7a-9c5d-2f1b8e3a7d60";
+    let releaseA: (response: Response) => void = () => {};
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((url: string) => {
+        if (url.endsWith("/api/auth/logout"))
+          return Promise.resolve(new Response(null, { status: 204 }));
+        if (url.includes(`/api/v1/sponsor-organizations/${ORG}`))
+          return new Promise<Response>((resolve) => (releaseA = resolve));
+        return Promise.resolve(
+          jsonResponse({ user: { id: "a", created_at: "2026-10-01T10:00:00Z" } }),
+        );
+      }),
+    );
+    render(
+      <Providers>
+        <p>content</p>
+      </Providers>,
+    );
+    const client = getQueryClient();
+    const tokens = {
+      access_token: "sfa_a",
+      access_token_expires_at: new Date(Date.now() + 3_600_000).toISOString(),
+    };
+    await session.completeAuthentication(tokens);
+    client.setQueryData(sponsorOrganizationQueryKey(ORG), {
+      organization: { display_name: "A's" },
+    });
+    client.setQueryData(["/api/v1/me/entry", "m"], { entry: { sponsor_id: ORG } });
+    client.setQueryData(["/api/v1/me/sponsor-application"], { owner: "a" });
+    // User A's read is still in flight when the account changes.
+    const lateRead = fetchSponsorOrganization(ORG);
+
+    await session.signOut();
+    await session.completeAuthentication({ ...tokens, access_token: "sfa_b" });
+    expect(client.getQueryData(sponsorOrganizationQueryKey(ORG))).toBeUndefined();
+    expect(client.getQueryData(["/api/v1/me/entry", "m"])).toBeUndefined();
+    expect(client.getQueryData(["/api/v1/me/sponsor-application"])).toBeUndefined();
+
+    // A's answer lands after B signed in: it is discarded, never handed over.
+    releaseA(jsonResponse({ organization: { display_name: "A's" } }));
+    await expect(lateRead).rejects.toMatchObject({ name: "SessionChangedError" });
+    expect(client.getQueryData(sponsorOrganizationQueryKey(ORG))).toBeUndefined();
+    vi.unstubAllGlobals();
+  });
 });

@@ -8,7 +8,8 @@
     "title": "Where do you want to go?",
     "lead": "You have a fighter and a coach profile on one account.",
     "note": "We open your last choice next time. Switch any time from the top of the sidebar.",
-    "leadMixed": "Your profiles and gyms live on one account."
+    "leadMixed": "Your profiles and gyms live on one account.",
+    "leadAll": "Your profiles, gyms and sponsor organizations live on one account."
   },
   "setup": {
     "eyebrow": "Your setup",

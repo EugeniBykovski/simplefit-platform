@@ -49,7 +49,8 @@ export function knowsDestination(destination: string): destination is KnownDesti
 /**
  * Whether this client maps the entry's destination (see `knowsDestination`)
  * and the entry names what that route needs: `gym_home` opens the console of
- * the entry's `gym_id` (SF-88), so a `gym_home` without one is not mapped.
+ * the entry's `gym_id` (SF-88) and `sponsor_home` the partner portal of its
+ * `sponsor_id` (SF-117), so either without its id is not mapped.
  */
 export function isKnownEntry(entry: Entry): entry is KnownEntry {
   if (!knowsDestination(entry.destination)) return false;
@@ -62,16 +63,19 @@ export function destinationRoute(destination: KnownDestination): WebRouteId {
 }
 
 /**
- * The route parameters of the entry's destination: the gym console is
- * id-based (`/app/gyms/:gymId`, ADR 0026 D-G23) and names the entry's
- * `gym_id`. Undefined when the entry lacks a parameter its route needs.
+ * The route parameters of the entry's destination: the gym console
+ * (`/app/gyms/:gymId`, ADR 0026 D-G23) and the partner portal
+ * (`/sponsor/:sponsorId`, D-SA26) are id-based and name the entry's `gym_id` or
+ * `sponsor_id`. Undefined when the entry lacks a parameter its route needs.
  */
 function destinationParams(entry: KnownEntry): Record<string, string> | undefined {
   const needed: readonly string[] = webRoute(destinationRoute(entry.destination)).params;
+  const ids: Record<string, string | null> = { gymId: entry.gym_id, sponsorId: entry.sponsor_id };
   const params: Record<string, string> = {};
   for (const name of needed) {
-    if (name !== "gymId" || entry.gym_id === null) return undefined;
-    params[name] = entry.gym_id;
+    const id = ids[name];
+    if (id === undefined || id === null) return undefined;
+    params[name] = id;
   }
   return params;
 }

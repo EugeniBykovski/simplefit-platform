@@ -34,6 +34,9 @@ const entry = (scenario: "completed" | "setup") => ({
     gym_id: null,
     gym_workspaces: [],
     gym_workspace_count: 0,
+    sponsor_id: null,
+    sponsor_workspaces: [],
+    sponsor_workspace_count: 0,
     capabilities: scenario === "completed" ? ["FIGHTER", "COACH"] : [],
   },
 });
@@ -122,3 +125,43 @@ export const Phone = {
   globals: { viewport: { value: "phone", isRotated: false } },
 } satisfies StoryObj;
 Phone.name = "WCX1 · phone 390";
+
+/** SF-117: a Sponsor intent with several organizations (sponsor_choice_required), beside a profile. */
+export const Sponsors = {
+  ...story("completed", undefined, async ({ canvasElement }) => {
+    await heading(canvasElement, "Where do you want to go?");
+    await expect(within(canvasElement).getByText("Northside Agency")).toBeVisible();
+  }),
+  beforeEach: () =>
+    installApi({
+      "/api/me": ok({ user: VIEWER }),
+      "/api/auth/session/refresh": ok(SESSION),
+      "/api/v1/me/entry": ok({
+        entry: {
+          ...entry("completed").entry,
+          reason: "sponsor_choice_required",
+          coach_profile: "not_started",
+          capabilities: ["FIGHTER", "SPONSOR_WORKSPACE"],
+          sponsor_id: null,
+          sponsor_workspaces: [
+            {
+              sponsor_id: "4c2e8a1d-6b3f-4e7a-9c5d-2f1b8e3a7d60",
+              display_name: "Haymaker Drinks",
+              role: "owner",
+              selected: false,
+            },
+            {
+              sponsor_id: "7e1d3b5f-9a2c-4d8e-b6f0-3a5c7e9b1d24",
+              display_name: "Northside Agency",
+              role: "member",
+              selected: false,
+            },
+          ],
+          sponsor_workspace_count: 2,
+        },
+      }),
+      "/api/v1/me/fighter-profile": ok({ fighter_profile: { display_name: "Alex N." } }),
+      "PUT /api/v1/me/entry/context": ok(undefined, 204),
+    }),
+} satisfies StoryObj;
+Sponsors.name = "WCX1 · sponsor organizations and a profile (SF-117)";

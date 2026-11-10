@@ -91,6 +91,10 @@ const REAL_SCREENS = [
   "web.white-label",
   "web.partners",
   "web.partners.apply",
+  // SF-117: the partner portal overview (SPX4 MVP) of the organization in the path.
+  "web.sponsor.dashboard",
+  // SF-117: the partner portal's sign-in target is the one sign-in (WA1).
+  "web.sponsor.login",
 ];
 
 const placeholderSource = (id) => `import { placeholderRoute } from "@/widgets/feature-placeholder";
@@ -210,7 +214,6 @@ describe("shells", () => {
     for (const [file, shell] of [
       ["src/app/[locale]/app/(fighter)/layout.tsx", "web.app.fighter"],
       ["src/app/[locale]/app/coach/layout.tsx", "web.app.coach"],
-      ["src/app/[locale]/(sponsor)/sponsor/layout.tsx", "web.sponsor"],
       ["src/app/[locale]/(admin)/admin/layout.tsx", "web.admin"],
     ]) {
       expect(read(file)).toContain(`<WorkspaceShell shell="${shell}">`);
@@ -218,6 +221,13 @@ describe("shells", () => {
     // SF-88: the gym console renders its shell around the gym the path names.
     expect(read("src/app/[locale]/app/gyms/[gymId]/layout.tsx")).toContain("<GymWorkspace gymId=");
     expect(read("src/widgets/gym-workspace/ui/gym-workspace.tsx")).toContain('shell="web.app.gym"');
+    // SF-117 (D-SA26): the partner portal renders its shell around the organization the path names.
+    expect(read("src/app/[locale]/(sponsor)/sponsor/[sponsorId]/layout.tsx")).toContain(
+      "<SponsorWorkspace sponsorId=",
+    );
+    expect(read("src/widgets/sponsor-workspace/ui/sponsor-workspace.tsx")).toContain(
+      'shell="web.sponsor"',
+    );
   });
 });
 

@@ -17,8 +17,8 @@ describe("routeHref", () => {
     expect(routeHref("web.app.coach.fighters._fighter-id", { fighterId: "f 1/2" })).toBe(
       "/app/coach/fighters/f%201%2F2",
     );
-    expect(routeHref("web.sponsor.campaigns", {}, { type: "challenge" })).toBe(
-      "/sponsor/campaigns?type=challenge",
+    expect(routeHref("web.sponsor.campaigns", { sponsorId: "s-1" }, { type: "challenge" })).toBe(
+      "/sponsor/s-1/campaigns?type=challenge",
     );
   });
 
@@ -40,8 +40,13 @@ describe("matchWebRoute", () => {
   });
 
   it("prefers static routes over parameters", () => {
-    expect(matchWebRoute("/sponsor/campaigns/new")?.id).toBe("web.sponsor.campaigns.new");
-    expect(matchWebRoute("/sponsor/campaigns/c-9")?.id).toBe("web.sponsor.campaigns._campaign-id");
+    expect(matchWebRoute("/sponsor/s-1/campaigns/new")?.id).toBe("web.sponsor.campaigns.new");
+    expect(matchWebRoute("/sponsor/s-1/campaigns/c-9")?.id).toBe(
+      "web.sponsor.campaigns._campaign-id",
+    );
+    // SF-117 (D-SA26): the portal names its organization; no session-held workspace path is left.
+    expect(matchWebRoute("/sponsor/s-1/dashboard")?.id).toBe("web.sponsor.dashboard");
+    expect(matchWebRoute("/sponsor/dashboard")).toBeUndefined();
     expect(matchWebRoute("/admin/sponsors/revenue")?.id).toBe("web.admin.sponsors.revenue");
   });
 

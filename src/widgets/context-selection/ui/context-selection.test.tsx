@@ -155,4 +155,37 @@ describe("WCX1 with gym workspaces (SF-88)", () => {
     await waitFor(() => expect(navigation.push).toHaveBeenCalledWith(`/app/gyms/${GYM}`));
     expect(calls.writes).toEqual([{ context: "gym", gym_id: GYM }]);
   });
+
+  it("SF-117: lists every sponsor organization the entry reports and opens the chosen portal", async () => {
+    const HAYMAKER = "4c2e8a1d-6b3f-4e7a-9c5d-2f1b8e3a7d60";
+    const AGENCY = "7e1d3b5f-9a2c-4d8e-b6f0-3a5c7e9b1d24";
+    const { writes } = api(
+      entry({
+        reason: "sponsor_choice_required",
+        intent: "sponsor",
+        fighter_profile: "completed",
+        coach_profile: "not_started",
+        capabilities: ["FIGHTER", "SPONSOR_WORKSPACE"],
+        sponsor_workspaces: [
+          { sponsor_id: HAYMAKER, display_name: "Haymaker Drinks", role: "owner", selected: false },
+          { sponsor_id: AGENCY, display_name: "Agency", role: "member", selected: false },
+        ],
+        sponsor_workspace_count: 2,
+      }),
+    );
+    await renderWithProviders(<ContextSelection />);
+    expect(await screen.findByText("Haymaker Drinks")).toBeVisible();
+    expect(screen.getByText("Owner · partner portal")).toBeVisible();
+    expect(screen.getByText("Member · partner portal")).toBeVisible();
+    // The other context stays: a sponsor organization never replaces a profile.
+    expect(screen.getByText("Fighter")).toBeVisible();
+    expect(
+      screen.getByText("Your profiles, gyms and sponsor organizations live on one account."),
+    ).toBeVisible();
+    await userEvent.setup().click(screen.getByRole("button", { name: /Agency/ }));
+    await waitFor(() =>
+      expect(navigation.push).toHaveBeenCalledExactlyOnceWith(`/sponsor/${AGENCY}/dashboard`),
+    );
+    expect(writes).toEqual([{ context: "sponsor", sponsor_id: AGENCY }]);
+  });
 });

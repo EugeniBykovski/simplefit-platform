@@ -1,0 +1,51 @@
+{
+  "announcement": "{name}, portal partnera",
+  "switcher": {
+    "trigger": "{name}, {role}. Zmień organizację lub profil",
+    "heading": "Twoje organizacje sponsorskie",
+    "line": "{role} · portal partnera",
+    "identity": "Sponsor · {status}"
+  },
+  "roles": {
+    "owner": "Właściciel",
+    "manager": "Menedżer",
+    "member": "Członek"
+  },
+  "statuses": {
+    "active": "Aktywna",
+    "suspended": "Zawieszona"
+  },
+  "states": {
+    "eyebrow": "Portal partnera",
+    "notAvailable": {
+      "heading": "Organizacja niedostępna",
+      "title": "Nie możemy znaleźć tej strony",
+      "body": "Ta organizacja nie istnieje albo Twoje konto do niej nie należy. Nie ma to wpływu na Twoje konto SimpleFit.",
+      "action": "Przejdź do SimpleFit"
+    },
+    "suspended": {
+      "title": "Ta organizacja jest zawieszona.",
+      "body": "Możesz czytać jej dane, ale nikt nie może ich zmieniać ani zapraszać osób."
+    }
+  },
+  "overview": {
+    "metaTitle": "Portal partnera",
+    "eyebrow": "Portal partnera",
+    "title": "Przegląd",
+    "organization": {
+      "label": "Organizacja",
+      "role": "Twoja rola: {role}"
+    },
+    "application": {
+      "label": "Zgłoszenie",
+      "title": "Rozpatrzone przez SimpleFit",
+      "status": "Zatwierdzone",
+      "body": "Przesłane odpowiedzi pozostają dostępne do odczytu.",
+      "action": "Zobacz zgłoszenie"
+    },
+    "notYet": {
+      "title": "Jeszcze niedostępne",
+      "body": "Kampanii, możliwości sponsorskich, analityki i faktur nie ma dziś w SimpleFit. Nie ma czego konfigurować i nic nie jest uruchomione."
+    }
+  }
+}

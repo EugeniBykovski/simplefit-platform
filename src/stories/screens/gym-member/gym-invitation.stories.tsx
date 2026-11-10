@@ -79,6 +79,9 @@ const entry = (registration: "complete" | "required") =>
       gym_id: null,
       gym_workspaces: [],
       gym_workspace_count: 0,
+      sponsor_id: null,
+      sponsor_workspaces: [],
+      sponsor_workspace_count: 0,
       capabilities: ["FIGHTER"],
     },
   });

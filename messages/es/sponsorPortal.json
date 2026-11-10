@@ -1,0 +1,51 @@
+{
+  "announcement": "{name}, portal de socios",
+  "switcher": {
+    "trigger": "{name}, {role}. Cambiar de organización o perfil",
+    "heading": "Tus organizaciones patrocinadoras",
+    "line": "{role} · portal de socios",
+    "identity": "Patrocinador · {status}"
+  },
+  "roles": {
+    "owner": "Propietario",
+    "manager": "Gestor",
+    "member": "Miembro"
+  },
+  "statuses": {
+    "active": "Activa",
+    "suspended": "Suspendida"
+  },
+  "states": {
+    "eyebrow": "Portal de socios",
+    "notAvailable": {
+      "heading": "Organización no disponible",
+      "title": "No encontramos esta página",
+      "body": "Esta organización no existe o tu cuenta no forma parte de ella. Tu cuenta de SimpleFit no se ve afectada.",
+      "action": "Ir a SimpleFit"
+    },
+    "suspended": {
+      "title": "Esta organización está suspendida.",
+      "body": "Puedes leer sus datos, pero nadie puede cambiarlos ni invitar a personas."
+    }
+  },
+  "overview": {
+    "metaTitle": "Portal de socios",
+    "eyebrow": "Portal de socios",
+    "title": "Resumen",
+    "organization": {
+      "label": "Organización",
+      "role": "Tu rol: {role}"
+    },
+    "application": {
+      "label": "Solicitud",
+      "title": "Revisada por SimpleFit",
+      "status": "Aprobada",
+      "body": "Las respuestas que enviaste siguen disponibles para leer.",
+      "action": "Ver solicitud"
+    },
+    "notYet": {
+      "title": "Aún no disponible",
+      "body": "Las campañas, oportunidades de patrocinio, analíticas y facturas no forman parte de SimpleFit hoy. No hay nada que configurar y nada está en marcha."
+    }
+  }
+}

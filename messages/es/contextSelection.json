@@ -8,7 +8,8 @@
     "title": "¿A dónde quieres ir?",
     "lead": "Tienes un perfil de boxeador y otro de entrenador en una sola cuenta.",
     "note": "La próxima vez abrimos tu última elección. Cambia cuando quieras desde la parte superior de la barra lateral.",
-    "leadMixed": "Tus perfiles y gimnasios están en una sola cuenta."
+    "leadMixed": "Tus perfiles y gimnasios están en una sola cuenta.",
+    "leadAll": "Tus perfiles, gimnasios y organizaciones patrocinadoras están en una sola cuenta."
   },
   "setup": {
     "eyebrow": "Tu registro",

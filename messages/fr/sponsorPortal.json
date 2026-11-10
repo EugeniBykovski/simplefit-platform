@@ -1,0 +1,51 @@
+{
+  "announcement": "{name}, portail partenaire",
+  "switcher": {
+    "trigger": "{name}, {role}. Changer d’organisation ou de profil",
+    "heading": "Vos organisations sponsors",
+    "line": "{role} · portail partenaire",
+    "identity": "Sponsor · {status}"
+  },
+  "roles": {
+    "owner": "Propriétaire",
+    "manager": "Gestionnaire",
+    "member": "Membre"
+  },
+  "statuses": {
+    "active": "Active",
+    "suspended": "Suspendue"
+  },
+  "states": {
+    "eyebrow": "Portail partenaire",
+    "notAvailable": {
+      "heading": "Organisation indisponible",
+      "title": "Nous ne trouvons pas cette page",
+      "body": "Cette organisation n’existe pas, ou votre compte n’en fait pas partie. Votre compte SimpleFit n’est pas concerné.",
+      "action": "Aller sur SimpleFit"
+    },
+    "suspended": {
+      "title": "Cette organisation est suspendue.",
+      "body": "Vous pouvez lire ses informations, mais personne ne peut les modifier ni inviter quelqu’un."
+    }
+  },
+  "overview": {
+    "metaTitle": "Portail partenaire",
+    "eyebrow": "Portail partenaire",
+    "title": "Vue d’ensemble",
+    "organization": {
+      "label": "Organisation",
+      "role": "Votre rôle : {role}"
+    },
+    "application": {
+      "label": "Candidature",
+      "title": "Examinée par SimpleFit",
+      "status": "Approuvée",
+      "body": "Les réponses envoyées restent consultables.",
+      "action": "Voir la candidature"
+    },
+    "notYet": {
+      "title": "Pas encore disponible",
+      "body": "Les campagnes, opportunités de sponsoring, analyses et factures ne font pas partie de SimpleFit aujourd’hui. Il n’y a rien à configurer, et rien n’est en cours."
+    }
+  }
+}

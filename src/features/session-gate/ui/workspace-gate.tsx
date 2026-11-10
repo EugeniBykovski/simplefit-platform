@@ -85,3 +85,15 @@ export function CoachGate(props: GateProps) {
 export function GymGate(props: GateProps) {
   return <WorkspaceGate capability="GYM_WORKSPACE" {...props} />;
 }
+
+/**
+ * The partner portal (`web.sponsor`, capability SPONSOR_WORKSPACE; SF-117): an
+ * active membership of at least one active sponsor organization. Which
+ * organization a page may show is decided per request by the backend for the
+ * organization in the path (D-SA26), never here: holding the capability for
+ * one organization opens no other, and a sponsor application, approved or not,
+ * never grants it.
+ */
+export function SponsorGate(props: GateProps) {
+  return <WorkspaceGate capability="SPONSOR_WORKSPACE" {...props} />;
+}

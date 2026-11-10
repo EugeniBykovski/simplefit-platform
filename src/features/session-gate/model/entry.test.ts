@@ -60,6 +60,7 @@ describe("destinationRoute", () => {
       sponsor_application: "web.partners.apply",
       sponsor_application_draft: "web.partners.apply",
       sponsor_application_status: "web.partners.apply",
+      sponsor_home: "web.sponsor.dashboard",
     });
     expect(routeHref(destinationRoute("account_registration"))).toBe("/app/onboarding/account");
     expect(routeHref(destinationRoute("role_selection"))).toBe("/app/onboarding/role");
@@ -249,5 +250,71 @@ describe("gym destinations (SF-84, SF-88)", () => {
   it("keeps a gym console returnTo only while the entry reports GYM_WORKSPACE", () => {
     expect(entryHref(GYM_HOME, { returnTo: `/app/gyms/${OTHER}` })).toBe(`/app/gyms/${OTHER}`);
     expect(entryHref(FIGHTER_HOME, { returnTo: `/app/gyms/${OTHER}` })).toBe("/app/home");
+  });
+});
+
+describe("sponsor destinations (SF-117, D-SA26)", () => {
+  const HAYMAKER = "4c2e8a1d-6b3f-4e7a-9c5d-2f1b8e3a7d60";
+  const OTHER = "7e1d3b5f-9a2c-4d8e-b6f0-3a5c7e9b1d24";
+  const PORTAL = entry({
+    destination: "sponsor_home",
+    reason: "sponsor_workspace_active",
+    capabilities: ["SPONSOR_WORKSPACE"],
+    sponsor_id: HAYMAKER,
+    sponsor_workspaces: [
+      { sponsor_id: HAYMAKER, display_name: "Haymaker", role: "owner", selected: false },
+    ],
+    sponsor_workspace_count: 1,
+  });
+  const APPLICANT = entry({
+    destination: "sponsor_application_status",
+    reason: "sponsor_application_submitted",
+    intent: "sponsor",
+  });
+
+  it("opens the portal of the entry's sponsor_id, never a guessed organization", () => {
+    expect(isKnownEntry(PORTAL)).toBe(true);
+    expect(entryHref(PORTAL)).toBe(`/sponsor/${HAYMAKER}/dashboard`);
+    expect(entryHref(PORTAL, { intent: "sponsor" })).toBe(`/sponsor/${HAYMAKER}/dashboard`);
+  });
+
+  it("does not map a sponsor_home without its sponsor_id (a controlled failure)", () => {
+    expect(isKnownEntry({ ...PORTAL, sponsor_id: null })).toBe(false);
+  });
+
+  it("an application, approved or not, opens the application, never a portal", () => {
+    expect(entryHref(APPLICANT, { intent: "sponsor" })).toBe("/partners/apply");
+    expect(
+      entryHref(
+        entry({ destination: "sponsor_application_draft", reason: "sponsor_application_draft" }),
+      ),
+    ).toBe("/partners/apply");
+  });
+
+  it("keeps a portal returnTo only while the entry reports SPONSOR_WORKSPACE; the portal still checks the id", () => {
+    const portalOf = (id: string) => `/sponsor/${id}/dashboard`;
+    // Valid path, capability held: the portal opens and authorizes the id itself (404 for a foreign one).
+    expect(
+      entryHref(
+        { ...PORTAL, destination: "fighter_home", capabilities: ["FIGHTER", "SPONSOR_WORKSPACE"] },
+        { returnTo: portalOf(OTHER) },
+      ),
+    ).toBe(portalOf(OTHER));
+    // No capability (applicant, revoked, suspended-only): the deep link is dropped for the entry's own destination.
+    expect(entryHref(FIGHTER_HOME, { returnTo: portalOf(HAYMAKER) })).toBe("/app/home");
+    expect(entryHref(APPLICANT, { returnTo: portalOf(HAYMAKER) })).toBe("/partners/apply");
+  });
+
+  it("never follows an unsafe returnTo: the canonical destination instead", () => {
+    for (const returnTo of [
+      "https://evil.example/sponsor",
+      "//evil.example/sponsor",
+      "/\\evil.example",
+      "%2F%2Fevil.example",
+      "/sponsor/not-a-route/elsewhere/x",
+      "/login",
+    ]) {
+      expect(entryHref(PORTAL, { returnTo })).toBe(`/sponsor/${HAYMAKER}/dashboard`);
+    }
   });
 });
