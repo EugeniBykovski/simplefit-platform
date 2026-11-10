@@ -150,5 +150,91 @@
     "title": "Das gibt es in SimpleFit noch nicht",
     "body": "Kampagnen, Analysen und Rechnungen gibt es heute nicht. Hier gibt es nichts einzurichten, und nichts läuft.",
     "action": "Zurück zur Übersicht"
+  },
+  "firstRun": {
+    "loadFailed": "Wir konnten deine Einführung ins Portal nicht prüfen. Alles andere funktioniert.",
+    "retry": "Erneut versuchen",
+    "welcome": {
+      "eyebrow": "Willkommen",
+      "eyebrowInProgress": "Tour begonnen",
+      "title": "Willkommen in deinem Arbeitsbereich",
+      "body": "Der Arbeitsbereich deiner Organisation ist bereit. Hier fängst du an.",
+      "steps": {
+        "details": "Angaben deiner Organisation prüfen",
+        "members": "Sehen, wer zu deiner Organisation gehört",
+        "future": "Sehen, was es noch nicht gibt"
+      },
+      "start": "Tour starten",
+      "resume": "Tour fortsetzen",
+      "starting": "Wird gestartet…",
+      "dismiss": "Ausblenden",
+      "failed": "Das konnten wir nicht speichern. Nichts hat sich geändert. Versuch es noch einmal.",
+      "completed": {
+        "title": "Tour abgeschlossen",
+        "body": "Du siehst sie nicht wieder. Alles, was sie gezeigt hat, findest du im Menü."
+      },
+      "dismissed": {
+        "title": "Einführung ausgeblendet",
+        "body": "Du siehst sie nicht wieder. Alles, was sie zeigt, findest du im Menü."
+      }
+    },
+    "tour": {
+      "step": "Tour · {step} von {total}",
+      "complete": "Tour abgeschlossen",
+      "end": "Tour beenden",
+      "back": "Zurück",
+      "next": "Weiter",
+      "finish": "Fertig",
+      "close": "Schließen",
+      "tryAgain": "Erneut versuchen",
+      "failed": "Das konnten wir nicht speichern. Nichts hat sich geändert. Versuch es noch einmal.",
+      "finishing": {
+        "title": "Wird abgeschlossen…",
+        "body": "Wir speichern, dass du die Tour abgeschlossen hast.",
+        "button": "Wird abgeschlossen…"
+      },
+      "finishFailed": {
+        "title": "Die Tour konnte nicht abgeschlossen werden",
+        "body": "Nichts wurde gespeichert. Versuch es noch einmal oder beende die Tour."
+      },
+      "confirm": {
+        "label": "Tour beenden",
+        "title": "Tour beenden?",
+        "body": "Du siehst sie nicht wieder. Alles, was sie zeigt, findest du im Menü.",
+        "keep": "Weitermachen",
+        "end": "Tour beenden"
+      },
+      "steps": {
+        "start": {
+          "title": "Hier anfangen",
+          "body": "Der Arbeitsbereich deiner Organisation ist bereit. Mit dieser Liste fängst du an."
+        },
+        "overview": {
+          "title": "Übersicht",
+          "body": "Der Status deiner Organisation und was dein Zugang erlaubt, an einem Ort."
+        },
+        "application": {
+          "title": "Bewerbung",
+          "body": "Die für diese Organisation eingereichten Antworten und die Entscheidung von SimpleFit. Nur die Person, die sich beworben hat, kann sie lesen; sie sind schreibgeschützt."
+        },
+        "organization": {
+          "title": "Organisation",
+          "body": "Dein Unternehmensprofil. Es ist vorerst schreibgeschützt.",
+          "bodyContacts": "Dein Unternehmensprofil und dein Geschäftskontakt. Sie sind vorerst schreibgeschützt."
+        },
+        "members": {
+          "title": "Mitglieder",
+          "body": "Wer zu dieser Organisation gehört und welche Rolle jede Person hat. Einladungen gibt es noch nicht."
+        },
+        "future": {
+          "title": "Was es hier noch nicht gibt",
+          "body": "Kampagnen, Möglichkeiten, Analysen und Rechnungen sind nicht verfügbar. Nichts läuft, und nichts wird berechnet."
+        },
+        "done": {
+          "title": "Du kennst dich jetzt aus",
+          "body": "Du siehst diese Tour nicht wieder. Alles, was sie gezeigt hat, findest du im Menü."
+        }
+      }
+    }
   }
 }

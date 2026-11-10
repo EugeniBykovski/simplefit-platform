@@ -91,3 +91,38 @@ transfer or leave control is drawn and nothing claims to save.
 
 Geometry checked at 1440 in `e2e/sponsor-portal-storybook.spec.ts`: 240 px sidebar, two overview columns, a settings
 column ≤ 800 px, five nav links; no pixel-parity claim beyond these measurements.
+
+## SF-119: first run (SRW1) and guided tour (SRW2)
+
+**Design:** `FirstRunSponsor` (SRW1, MVP) and `FirstRunSponsorTour` (SRW2, MVP, steps 1–6, done, docked), canvas
+`1794299393-d9d6`. The design's FUTURE variants (nine steps, campaign creation, partner manager, ad rules, replay)
+are not built.
+
+**Persistence:** `GET /api/v1/sponsor-organizations/{sponsor_id}/first-run` and `POST …/start | complete | dismiss`
+(simplefit-api ADR 0030, SF-119 amendment), per organization and member, the same on every device. Only explicit
+actions are sent: Take the tour (start), Finish (complete), Dismiss or a confirmed End tour (dismiss). Steps are
+client-only; a resumed tour starts at step 1. Nothing is kept in browser storage. A failed save is said, never
+claimed; a 409 shows the outcome another tab kept; a 404 (revoked meanwhile) closes the tour and the portal
+re-reads the organization.
+
+**Where:** SRW1 is a panel at the top of the overview (`[data-tour-target=sponsor-welcome]`), shown only once the
+backend answered `not_started` or `in_progress`, never while suspended (`unavailable`). SRW2 is one modal dialog;
+its targets are the welcome, the sidebar's Overview, Application, Organization and Members (`[data-nav-item]`) and
+the FUTURE card (`[data-tour-target=sponsor-future]`). Below 1024 px, or when a target isn't visible, the card docks
+to the bottom. The overview is keyed by organization id: switching closes the tour and reads the other
+organization's own state.
+
+### Design discrepancy register, SF-119
+
+| #   | Artboard       | Expected                                                                                  | Implemented                                                                | Reason                                                                                                   | Class                     | Status   |
+| --- | -------------- | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------- | -------- |
+| 14  | SRW1 list      | "Invite a teammate, if you'd like"                                                        | "See who belongs to your organization" (Members)                           | No invitation domain (D-SA12)                                                                            | Missing backend contract  | Open     |
+| 15  | SRW1 header    | "PARTNER PORTAL · APPROVED", APPROVED badge                                               | Eyebrow "Welcome"                                                          | An organization isn't necessarily from an approval (fixtures); approval is shown by the application card | Unapproved business claim | Accepted |
+| 16  | SRW1 below     | SPX4 cards incl. "Needs you", "What you can do"                                           | SF-118's real overview below the welcome                                   | As SF-118 #8                                                                                             | Missing backend contract  | Accepted |
+| 17  | SRW2 step 2    | "…your application and anything that needs you"                                           | "…status and what your access lets you do"                                 | No tasks domain                                                                                          | Missing backend contract  | Accepted |
+| 18  | SRW2 step 4    | "Owners and managers can edit them"                                                       | "…read-only for now"; names the business contact only with `view_contacts` | No organization write (D-SA08)                                                                           | Missing backend contract  | Open     |
+| 19  | SRW2 step 5    | "Invite teammates and set their roles. If you can't manage members, this step is skipped" | Shown to every member: "Who belongs … Inviting people isn't available yet" | Every role may read members; no invitations                                                              | Missing backend contract  | Open     |
+| 20  | SRW2 End tour  | Ends straight to the done card                                                            | A confirmation in the card, then dismissed (no done card)                  | The outcome is final; an accidental Escape mustn't end it                                                | Accessibility correction  | Accepted |
+| 21  | SRW2 docked    | No Back button                                                                            | Back kept                                                                  | Keyboard and touch users can go back                                                                     | Accessibility correction  | Accepted |
+| 22  | SRW2 placement | Card positions per step drawn at 1440                                                     | Computed beside the real target (shared geometry), docked below 1024       | Real targets move with content                                                                           | Responsive adaptation     | Accepted |
+| 23  | SRW1/SRW2      | No restricted, suspended, error states drawn                                              | Suspended: no welcome; read failure: a notice with retry, overview usable  | Not drawn                                                                                                | Missing design asset      | Accepted |

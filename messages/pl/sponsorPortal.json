@@ -150,5 +150,91 @@
     "title": "Tego jeszcze nie ma w SimpleFit",
     "body": "Kampanii, analityki i faktur dziś nie ma. Nie ma tu czego konfigurować i nic nie jest uruchomione.",
     "action": "Wróć do przeglądu"
+  },
+  "firstRun": {
+    "loadFailed": "Nie udało się sprawdzić Twojego wprowadzenia do portalu. Wszystko inne działa.",
+    "retry": "Spróbuj ponownie",
+    "welcome": {
+      "eyebrow": "Witaj",
+      "eyebrowInProgress": "Przewodnik w toku",
+      "title": "Witaj w swojej przestrzeni roboczej",
+      "body": "Przestrzeń robocza Twojej organizacji jest gotowa. Oto od czego zacząć.",
+      "steps": {
+        "details": "Sprawdź dane organizacji",
+        "members": "Zobacz, kto należy do organizacji",
+        "future": "Zobacz, czego jeszcze nie ma"
+      },
+      "start": "Rozpocznij przewodnik",
+      "resume": "Kontynuuj przewodnik",
+      "starting": "Uruchamianie…",
+      "dismiss": "Zamknij",
+      "failed": "Nie udało się zapisać. Nic się nie zmieniło. Spróbuj ponownie.",
+      "completed": {
+        "title": "Przewodnik ukończony",
+        "body": "Nie zobaczysz go ponownie. Wszystko, co pokazał, jest w menu."
+      },
+      "dismissed": {
+        "title": "Wprowadzenie zamknięte",
+        "body": "Nie zobaczysz go ponownie. Wszystko, co pokazywał, jest w menu."
+      }
+    },
+    "tour": {
+      "step": "Przewodnik · {step} z {total}",
+      "complete": "Przewodnik ukończony",
+      "end": "Zakończ przewodnik",
+      "back": "Wstecz",
+      "next": "Dalej",
+      "finish": "Zakończ",
+      "close": "Zamknij",
+      "tryAgain": "Spróbuj ponownie",
+      "failed": "Nie udało się zapisać. Nic się nie zmieniło. Spróbuj ponownie.",
+      "finishing": {
+        "title": "Kończenie…",
+        "body": "Zapisujemy, że ukończono przewodnik.",
+        "button": "Kończenie…"
+      },
+      "finishFailed": {
+        "title": "Nie udało się zakończyć przewodnika",
+        "body": "Nic nie zapisano. Spróbuj ponownie albo zakończ przewodnik."
+      },
+      "confirm": {
+        "label": "Kończenie przewodnika",
+        "title": "Zakończyć przewodnik?",
+        "body": "Nie zobaczysz go ponownie. Wszystko, co pokazuje, jest w menu.",
+        "keep": "Kontynuuj",
+        "end": "Zakończ przewodnik"
+      },
+      "steps": {
+        "start": {
+          "title": "Zacznij tutaj",
+          "body": "Przestrzeń robocza Twojej organizacji jest gotowa. Ta lista to dobry początek."
+        },
+        "overview": {
+          "title": "Przegląd",
+          "body": "Status Twojej organizacji i to, na co pozwala Twój dostęp, w jednym miejscu."
+        },
+        "application": {
+          "title": "Zgłoszenie",
+          "body": "Odpowiedzi przesłane dla tej organizacji i decyzja SimpleFit. Może je przeczytać tylko osoba, która złożyła zgłoszenie; są tylko do odczytu."
+        },
+        "organization": {
+          "title": "Organizacja",
+          "body": "Profil Twojej firmy. Na razie tylko do odczytu.",
+          "bodyContacts": "Profil Twojej firmy i kontakt biznesowy. Na razie tylko do odczytu."
+        },
+        "members": {
+          "title": "Członkowie",
+          "body": "Kto należy do tej organizacji i jakie ma role. Zapraszanie osób nie jest jeszcze dostępne."
+        },
+        "future": {
+          "title": "Czego tu jeszcze nie ma",
+          "body": "Kampanie, możliwości, analityka i faktury nie są dostępne. Nic nie działa i nic nie jest naliczane."
+        },
+        "done": {
+          "title": "Znasz już drogę",
+          "body": "Nie zobaczysz ponownie tego przewodnika. Wszystko, co pokazał, jest w menu."
+        }
+      }
+    }
   }
 }

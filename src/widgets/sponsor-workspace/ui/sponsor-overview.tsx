@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 
 import { useSponsorApplication } from "@/entities/sponsor-application";
 import type { SponsorOrganizationAccess } from "@/entities/sponsor-organization";
@@ -13,6 +13,7 @@ import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { PageBody, PageHeader } from "@/shared/ui/page";
 
+import { useSponsorFirstRunFlow } from "./sponsor-first-run";
 import { SponsorSuspendedNotice } from "./sponsor-states";
 import { useSponsorWorkspace } from "./sponsor-workspace";
 
@@ -28,7 +29,10 @@ import { useSponsorWorkspace } from "./sponsor-workspace";
  * the owner's actions (no domain yet).
  */
 export function SponsorOverview() {
-  return <SponsorOverviewView access={useSponsorWorkspace()} />;
+  const access = useSponsorWorkspace();
+  // One overview per organization: switching remounts it, so the first run and an open
+  // tour never carry over to another organization.
+  return <SponsorOverviewView key={access.organization.sponsor_id} access={access} />;
 }
 
 export function SponsorOverviewView({ access }: { access: SponsorOrganizationAccess }) {
@@ -36,6 +40,8 @@ export function SponsorOverviewView({ access }: { access: SponsorOrganizationAcc
   const locale = useLocale();
   const { organization, membership } = access;
   const sponsorId = organization.sponsor_id;
+  const heading = useRef<HTMLHeadingElement>(null);
+  const firstRun = useSponsorFirstRunFlow(access, heading);
   const suspended = organization.status === "suspended";
   const application = useSponsorApplication();
   const own =
@@ -51,12 +57,15 @@ export function SponsorOverviewView({ access }: { access: SponsorOrganizationAcc
       <PageHeader>
         <div className="flex min-w-0 flex-col gap-0.5">
           <p className="truncate type-label text-faint-foreground">{t("overview.eyebrow")}</p>
-          <h1 className="type-h3 font-display">{t("overview.title")}</h1>
+          <h1 ref={heading} tabIndex={-1} className="type-h3 font-display outline-none">
+            {t("overview.title")}
+          </h1>
         </div>
       </PageHeader>
       <PageBody className="grid content-start gap-4 pt-5.5 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
         <div className="flex min-w-0 flex-col gap-4">
           {suspended && <SponsorSuspendedNotice />}
+          {firstRun.panel}
           <Card
             id="sponsor-organization"
             title={t("overview.organization.label")}
@@ -128,7 +137,7 @@ export function SponsorOverviewView({ access }: { access: SponsorOrganizationAcc
               </Link>
             </Button>
           </Card>
-          <Card id="sponsor-not-yet" title={t("overview.notYet.title")}>
+          <Card id="sponsor-not-yet" title={t("overview.notYet.title")} tourTarget="sponsor-future">
             <p className="type-body-sm text-muted-foreground">{t("overview.notYet.body")}</p>
             {/* Not links and not buttons: these domains don't exist (D-SA21, D-SA23, D-SA24). */}
             <ul data-sponsor-future className="flex flex-col gap-2">
@@ -145,6 +154,7 @@ export function SponsorOverviewView({ access }: { access: SponsorOrganizationAcc
           </Card>
         </div>
       </PageBody>
+      {firstRun.overlays}
     </div>
   );
 }
@@ -165,16 +175,20 @@ function Card({
   id,
   title,
   aside,
+  tourTarget,
   children,
 }: {
   id: string;
   title: string;
   aside?: ReactNode;
+  /** The SRW2 anchor of this card (SF-119). */
+  tourTarget?: string;
   children: ReactNode;
 }) {
   return (
     <section
       aria-labelledby={id}
+      data-tour-target={tourTarget}
       className="flex min-w-0 flex-col gap-3.5 rounded-3xl border bg-surface px-5 py-4.5"
     >
       <div className="flex items-center justify-between gap-3">

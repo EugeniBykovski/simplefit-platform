@@ -150,5 +150,91 @@
     "title": "Cela ne fait pas encore partie de SimpleFit",
     "body": "Les campagnes, analyses et factures n’existent pas aujourd’hui. Il n’y a rien à configurer ici, et rien n’est en cours.",
     "action": "Retour à la vue d’ensemble"
+  },
+  "firstRun": {
+    "loadFailed": "Nous n’avons pas pu vérifier votre introduction au portail. Tout le reste fonctionne.",
+    "retry": "Réessayer",
+    "welcome": {
+      "eyebrow": "Bienvenue",
+      "eyebrowInProgress": "Visite en cours",
+      "title": "Bienvenue dans votre espace de travail",
+      "body": "L’espace de travail de votre organisation est prêt. Voici par où commencer.",
+      "steps": {
+        "details": "Vérifiez les informations de votre organisation",
+        "members": "Voyez qui fait partie de votre organisation",
+        "future": "Voyez ce qui n’est pas encore disponible"
+      },
+      "start": "Faire la visite",
+      "resume": "Reprendre la visite",
+      "starting": "Démarrage…",
+      "dismiss": "Ignorer",
+      "failed": "Nous n’avons pas pu l’enregistrer. Rien n’a changé. Réessayez.",
+      "completed": {
+        "title": "Visite terminée",
+        "body": "Vous ne la reverrez pas. Tout ce qu’elle a montré se trouve dans le menu."
+      },
+      "dismissed": {
+        "title": "Introduction ignorée",
+        "body": "Vous ne la reverrez pas. Tout ce qu’elle montrait se trouve dans le menu."
+      }
+    },
+    "tour": {
+      "step": "Visite · {step} sur {total}",
+      "complete": "Visite terminée",
+      "end": "Terminer la visite",
+      "back": "Retour",
+      "next": "Suivant",
+      "finish": "Terminer",
+      "close": "Fermer",
+      "tryAgain": "Réessayer",
+      "failed": "Nous n’avons pas pu l’enregistrer. Rien n’a changé. Réessayez.",
+      "finishing": {
+        "title": "Finalisation…",
+        "body": "Nous enregistrons que vous avez terminé la visite.",
+        "button": "Finalisation…"
+      },
+      "finishFailed": {
+        "title": "Nous n’avons pas pu terminer la visite",
+        "body": "Rien n’a été enregistré. Réessayez ou terminez la visite."
+      },
+      "confirm": {
+        "label": "Terminer la visite",
+        "title": "Terminer la visite ?",
+        "body": "Vous ne la reverrez pas. Tout ce qu’elle montre se trouve dans le menu.",
+        "keep": "Continuer",
+        "end": "Terminer la visite"
+      },
+      "steps": {
+        "start": {
+          "title": "Commencez ici",
+          "body": "L’espace de travail de votre organisation est prêt. Cette liste est le point de départ."
+        },
+        "overview": {
+          "title": "Vue d’ensemble",
+          "body": "Le statut de votre organisation et ce que votre accès vous permet, au même endroit."
+        },
+        "application": {
+          "title": "Candidature",
+          "body": "Les réponses envoyées pour cette organisation et la décision de SimpleFit. Seule la personne qui a candidaté peut les lire ; elles sont en lecture seule."
+        },
+        "organization": {
+          "title": "Organisation",
+          "body": "Le profil de votre entreprise. Il est en lecture seule pour l’instant.",
+          "bodyContacts": "Le profil de votre entreprise et son contact professionnel. Ils sont en lecture seule pour l’instant."
+        },
+        "members": {
+          "title": "Membres",
+          "body": "Qui fait partie de cette organisation, et leurs rôles. Il n’est pas encore possible d’inviter des personnes."
+        },
+        "future": {
+          "title": "Ce qui n’est pas encore là",
+          "body": "Les campagnes, opportunités, analyses et factures ne sont pas disponibles. Rien n’est en cours et rien n’est facturé."
+        },
+        "done": {
+          "title": "Vous connaissez les lieux",
+          "body": "Vous ne reverrez pas cette visite. Tout ce qu’elle a montré se trouve dans le menu."
+        }
+      }
+    }
   }
 }
