@@ -171,25 +171,24 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
       "branding",
     ],
   },
+  // The partner portal MVP (SF-117; SponsorNav mode=mvp, SPE1): the overview of
+  // the organization in the path, with its application and settings shown and
+  // marked Soon until their pages are built. Campaigns, challenges, events and
+  // invoices have no domain (D-SA21, D-SA23), so they are hidden, never linked
+  // to a placeholder; the registry keeps their routes. Creative and Analytics
+  // (GAP-SPONSOR-ANALYTICS-INDEX) have no route at all (route-architecture §14).
   "web.sponsor": {
     messages: "sponsor",
-    // Creative (a campaign wizard step) and Analytics (GAP-SPONSOR-ANALYTICS-INDEX)
-    // have no route in the registry, so they are not shown (route-architecture §14).
     sections: [
       { key: "partner", items: ["overview", "applications"] },
-      { key: "campaigns", items: ["campaigns", "challenges", "events"] },
-      { key: "results", items: ["invoices"] },
       { key: "account", items: ["settings"] },
     ],
     icons: {
       overview: LayoutGridIcon,
       applications: FileTextIcon,
-      campaigns: MegaphoneIcon,
-      challenges: FlagIcon,
-      events: CalendarIcon,
-      invoices: ReceiptIcon,
       settings: SlidersHorizontalIcon,
     },
+    soon: ["applications", "settings"],
   },
   "web.admin": {
     messages: "admin",

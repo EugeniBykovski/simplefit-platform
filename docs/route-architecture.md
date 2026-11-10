@@ -260,9 +260,10 @@ Backend-granted internal staff capability on the same User → ADMIN (D-ADMIN-ID
   of the web sidebars (an action, no route) or, on mobile, the A04 sheet of
   the Fighter and Coach homes and the Gym pulse (`/workspaces` is the same
   chooser as a screen). A
-  resource that belongs to another workspace resolves as not found. Workspace
-  ids may enter deep links later, only when an email or push feature needs
-  cross-workspace links (`D-WORKSPACE-NOT-IN-URL`,
+  resource that belongs to another workspace resolves as not found. The gym
+  consoles (SF-88, SF-89) and the partner portal (`/sponsor/:sponsorId`, SF-117,
+  D-SA26) name their workspace in the path, a lookup key the backend
+  authorizes on every request (`D-WORKSPACE-NOT-IN-URL`,
   `D-WEB-WORKSPACE-SWITCHER`).
 - **Admin** is a backend-granted internal-staff capability on the same global
   User; there is no separate admin user (`D-ADMIN-IDENTITY`). `/admin/login`
@@ -1148,7 +1149,7 @@ and `decidedOn`. Six discrepancies await a product decision (marked in the table
 | `D-WEB-WORKSPACE-SWITCHER`           | RESOLVED               | In-shell switcher action, no route                                                                                                      |
 | `D-SPONSOR-NAV`                      | RESOLVED               | Challenges/Events filter `/sponsor/campaigns`; no Creative route; analytics index is a gap                                              |
 | `D-NAV-DETAIL-TARGETS`               | RESOLVED               | Creator targets kept; list roots designed in `1791276973-ad1d` (G08, G09, WC7, WG27, AD21)                                              |
-| `D-WORKSPACE-NOT-IN-URL`             | RESOLVED               | Active workspace is session context; the gym consoles are id-based (web SF-88, mobile SF-89)                                            |
+| `D-WORKSPACE-NOT-IN-URL`             | RESOLVED               | Superseded by D-SA26 (SF-117): gym consoles and the partner portal are id-based, each id authorized per request                         |
 | `D-WEB-DEFAULT-WORKSPACE`            | RESOLVED               | `/app` resolves the active workspace; `/app/home` is fighter-only                                                                       |
 | `D-SHARED-ROUTES-ON-PERSONA-PAGES`   | RESOLVED               | Account-level routes need no capability                                                                                                 |
 | `D-TRIAL-AUDIENCE`                   | RESOLVED               | Shared signed-in trial/pricing; backend decides eligibility                                                                             |

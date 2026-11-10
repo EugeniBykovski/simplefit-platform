@@ -71,7 +71,7 @@
       },
       "onboarding": {
         "mobile": null,
-        "web": "web.sponsor.application"
+        "web": "web.partners.apply"
       },
       "mobile": "Listed in /workspaces with a continue-on-the-web action; no mobile sponsor surface (D-MOBILE-SPONSOR-ADMIN)"
     },
@@ -124,7 +124,7 @@
     "returnToParam": "returnTo",
     "intentParam": "intent",
     "entryDestinations": {
-      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied. coach_home (SF-51, SF-52, SF-53) opens the Coach home of each platform, today its canonical placeholder. context_selection opens the context chooser of each platform: WCX1 on the web (web.app.context, SF-54) and A04 on mobile (mobile.workspaces, SF-55); never role selection (WA6 / O05) or a home (D-ENTRY-CONTEXT-SELECTION). gym_home (SF-84) opens the GYM_WORKSPACE home of each platform: on the web the id-based gym console of the entry answer's gym_id (web.app.gyms._gym-id, SF-88, ADR 0026 D-G23), on mobile the id-based Gym pulse of the entry answer's gym_id (mobile.gyms._gym-id.pulse, SF-89). gym_selection (SF-84) opens the gym chooser of each platform: web.app.gyms on the web (SF-88) and mobile.gyms on mobile (SF-89), listing the entry answer's gym_workspaces; never a gym home or A04. gym_onboarding starts Gym setup, or resumes the owned draft named by gym_id. sponsor_application_draft and sponsor_application_status (SF-113, ADR 0031 rule 7) open the same web partner application as sponsor_application (SF-115), which resolves the real application there: the draft to continue, or its status; neither implies a Sponsor capability or workspace.",
+      "$comment": "Semantic destinations of GET /api/v1/me/entry (SF-45, simplefit-api ADR 0017) -> canonical route per platform. Mobile has no sponsor surface: sponsor_application opens O05, whose approved Sponsor / Brand choice continues to the web partner application (SPX2); never the workspace chooser (A04), and no Sponsor capability or workspace is implied. coach_home (SF-51, SF-52, SF-53) opens the Coach home of each platform, today its canonical placeholder. context_selection opens the context chooser of each platform: WCX1 on the web (web.app.context, SF-54) and A04 on mobile (mobile.workspaces, SF-55); never role selection (WA6 / O05) or a home (D-ENTRY-CONTEXT-SELECTION). gym_home (SF-84) opens the GYM_WORKSPACE home of each platform: on the web the id-based gym console of the entry answer's gym_id (web.app.gyms._gym-id, SF-88, ADR 0026 D-G23), on mobile the id-based Gym pulse of the entry answer's gym_id (mobile.gyms._gym-id.pulse, SF-89). gym_selection (SF-84) opens the gym chooser of each platform: web.app.gyms on the web (SF-88) and mobile.gyms on mobile (SF-89), listing the entry answer's gym_workspaces; never a gym home or A04. gym_onboarding starts Gym setup, or resumes the owned draft named by gym_id. sponsor_application_draft and sponsor_application_status (SF-113, ADR 0031 rule 7) open the same web partner application as sponsor_application (SF-115), which resolves the real application there: the draft to continue, or its status; neither implies a Sponsor capability or workspace. sponsor_home (SF-112, mapped by SF-117) opens the id-based partner portal of the entry answer's sponsor_id on the web (web.sponsor.dashboard, /sponsor/:sponsorId/dashboard, D-SA26); mobile has no sponsor surface (D-MOBILE-SPONSOR-ADMIN, D-SA27), so it stays unmapped there and fails visibly, never guessed. context_selection also lists sponsor workspaces on the web (WCX1).",
       "account_registration": {
         "web": "web.app.onboarding.account",
         "mobile": "mobile.signup.consent"
@@ -176,11 +176,15 @@
       "sponsor_application_status": {
         "web": "web.partners.apply",
         "mobile": "mobile.onboarding.role"
+      },
+      "sponsor_home": {
+        "web": "web.sponsor.dashboard",
+        "mobile": null
       }
     },
     "workspaceSwitcher": {
       "mobile": "A04 (SF-55): the 'One account, every role' sheet opened from the identity pill of the Fighter home (FR4) and Coach today (C01), with no route of its own; the same chooser is the screen at mobile.workspaces, where context_selection lands and where /workspaces opens. It records the SF-51 context choice (D-ENTRY-CONTEXT-SELECTION); Gym and Sponsor workspaces join it with their domains.",
-      "web": "In-shell action in the web.app.fighter / web.app.coach / web.app.gym sidebars; no route. During sign-in, the workspace step of web.login (WA2) chooses the first workspace (D-WEB-WORKSPACE-SWITCHER)."
+      "web": "In-shell action in the web.app.fighter / web.app.coach / web.app.gym / web.sponsor sidebars; no route. Sponsor organizations (SF-117, SPE1 organization switcher) are listed from the entry's sponsor_workspaces: switching records the context choice and opens the organization's id-based portal. During sign-in, the workspace step of web.login (WA2) chooses the first workspace (D-WEB-WORKSPACE-SWITCHER)."
     },
     "defaultDestinationFallback": {
       "mobile": "mobile.workspaces",
@@ -540,11 +544,11 @@
       "id": "web.sponsor",
       "platform": "web",
       "parent": "web.root",
-      "description": "Partner portal sidebar (/sponsor).",
+      "description": "Partner portal sidebar for the organization in the path (/sponsor/:sponsorId, SF-117, D-SA26): the organization identity block is the context switcher.",
       "design": "SponsorNav.dc.html",
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/(sponsor)/sponsor/layout.tsx"
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/layout.tsx"
       },
       "navItems": [
         {
@@ -604,7 +608,8 @@
           "label": "Settings",
           "route": "web.sponsor.settings"
         }
-      ]
+      ],
+      "params": ["sponsorId"]
     },
     {
       "id": "web.admin",
@@ -2168,15 +2173,15 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(auth)/sponsor/login/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-117: the partner portal's sign-in target renders the one SimpleFit sign-in (WA1: Google SF-22, Apple SF-23, email code SF-24) with the validated continuation, so a portal link (/sponsor/:sponsorId/…) returns there after sign-in once the entry resolver reports SPONSOR_WORKSPACE, else the entry's own destination. No separate sponsor sign-in exists; SPX3's own layout and copy are not built (design deviation, SF-117)."
       },
       "screens": ["SPX3"]
     },
     {
       "id": "web.sponsor.dashboard",
       "platform": "web",
-      "path": "/sponsor/dashboard",
-      "params": [],
+      "path": "/sponsor/:sponsorId/dashboard",
+      "params": ["sponsorId"],
       "name": "Sponsor dashboard",
       "surface": "SPONSOR",
       "shell": "web.sponsor",
@@ -2191,18 +2196,17 @@
         "phase": "ACTIVE"
       },
       "status": "IMPLEMENTED",
-      "discrepancies": ["D-WORKSPACE-NOT-IN-URL"],
       "production": {
-        "file": "src/app/[locale]/(sponsor)/sponsor/dashboard/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/dashboard/page.tsx",
+        "note": "SF-117: SPX4 (MVP) for the organization in the path (D-SA26, id-based). The layout resolves the entry (SPONSOR_WORKSPACE, else the entry's own destination) and reads the organization (GET /api/v1/sponsor-organizations/{sponsor_id}), authorized for this id on every request: an unknown, foreign, malformed or revoked organization answers 404 and renders one not-available state in the shell (existence never revealed); a suspended one renders read-only with the suspended notice (ADR 0030, ADR 0033). The page shows the real organization, the viewer's role and the approved application when it is this organization's; campaigns, opportunities, analytics and invoices are said not to exist, never shown as numbers. SRW1/SRW2 (first run) wait for their domain. The sidebar's identity block is the context switcher (SPE1 organization switcher): switching is navigation, each page checks the organization in its address."
       },
       "screens": ["SRW1", "SPX4", "x-web-application-approved"]
     },
     {
       "id": "web.sponsor.campaigns.new",
       "platform": "web",
-      "path": "/sponsor/campaigns/new",
-      "params": [],
+      "path": "/sponsor/:sponsorId/campaigns/new",
+      "params": ["sponsorId"],
       "name": "Create campaign",
       "surface": "SPONSOR",
       "shell": "web.sponsor",
@@ -2218,8 +2222,8 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/(sponsor)/sponsor/campaigns/new/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/campaigns/new/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26); the id stays (frozen)."
       },
       "screens": ["SRW2", "SPC1", "SPC2", "SPC3", "SPC4", "SPC5", "SPC6"]
     },
@@ -6885,8 +6889,8 @@
     {
       "id": "web.sponsor.application",
       "platform": "web",
-      "path": "/sponsor/application",
-      "params": [],
+      "path": "/sponsor/:sponsorId/application",
+      "params": ["sponsorId"],
       "name": "Application status",
       "surface": "SPONSOR",
       "shell": "web.sponsor",
@@ -6898,20 +6902,20 @@
       "access": {
         "session": "AUTHENTICATED",
         "capability": "SPONSOR_WORKSPACE",
-        "phase": "ONBOARDING"
+        "phase": "ACTIVE"
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/(sponsor)/sponsor/application/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/application/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26; the id stays, frozen) as the organization's application inside its portal (phase ACTIVE); an applicant's status before any organization exists is web.partners.apply?step=status (SF-115)."
       },
       "screens": ["SPX5"]
     },
     {
       "id": "web.sponsor.campaigns",
       "platform": "web",
-      "path": "/sponsor/campaigns",
-      "params": [],
+      "path": "/sponsor/:sponsorId/campaigns",
+      "params": ["sponsorId"],
       "name": "Sponsor campaigns",
       "surface": "SPONSOR",
       "shell": "web.sponsor",
@@ -6928,16 +6932,16 @@
       "status": "IMPLEMENTED",
       "discrepancies": ["D-SPONSOR-NAV"],
       "production": {
-        "file": "src/app/[locale]/(sponsor)/sponsor/campaigns/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/campaigns/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26); the id stays (frozen)."
       },
       "screens": ["SPX6"]
     },
     {
       "id": "web.sponsor.campaigns._campaign-id",
       "platform": "web",
-      "path": "/sponsor/campaigns/:campaignId",
-      "params": ["campaignId"],
+      "path": "/sponsor/:sponsorId/campaigns/:campaignId",
+      "params": ["sponsorId", "campaignId"],
       "name": "Campaign",
       "surface": "SPONSOR",
       "shell": "web.sponsor",
@@ -6953,16 +6957,16 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/(sponsor)/sponsor/campaigns/[campaignId]/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/campaigns/[campaignId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26); the id stays (frozen)."
       },
       "screens": ["SPC7"]
     },
     {
       "id": "web.sponsor.analytics._campaign-id",
       "platform": "web",
-      "path": "/sponsor/analytics/:campaignId",
-      "params": ["campaignId"],
+      "path": "/sponsor/:sponsorId/analytics/:campaignId",
+      "params": ["sponsorId", "campaignId"],
       "name": "Campaign analytics",
       "surface": "SPONSOR",
       "shell": "web.sponsor",
@@ -6979,16 +6983,16 @@
       "status": "IMPLEMENTED",
       "discrepancies": ["D-SPONSOR-NAV"],
       "production": {
-        "file": "src/app/[locale]/(sponsor)/sponsor/analytics/[campaignId]/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/analytics/[campaignId]/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26); the id stays (frozen)."
       },
       "screens": ["SPX7"]
     },
     {
       "id": "web.sponsor.invoices",
       "platform": "web",
-      "path": "/sponsor/invoices",
-      "params": [],
+      "path": "/sponsor/:sponsorId/invoices",
+      "params": ["sponsorId"],
       "name": "Sponsor invoices",
       "surface": "SPONSOR",
       "shell": "web.sponsor",
@@ -7004,16 +7008,16 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/(sponsor)/sponsor/invoices/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/invoices/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26); the id stays (frozen)."
       },
       "screens": ["SPX8"]
     },
     {
       "id": "web.sponsor.settings",
       "platform": "web",
-      "path": "/sponsor/settings",
-      "params": [],
+      "path": "/sponsor/:sponsorId/settings",
+      "params": ["sponsorId"],
       "name": "Sponsor settings",
       "surface": "SPONSOR",
       "shell": "web.sponsor",
@@ -7029,8 +7033,8 @@
       },
       "status": "IMPLEMENTED",
       "production": {
-        "file": "src/app/[locale]/(sponsor)/sponsor/settings/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/settings/page.tsx",
+        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26); the id stays (frozen)."
       },
       "screens": ["SPX9"]
     },
@@ -18043,10 +18047,10 @@
       "sourceB": "Identity model (User → WorkspaceMembership → Gym | Sponsor; a user may hold several)",
       "mismatch": "Paths do not say which gym or sponsor workspace they belong to (the gym console shows 'OWNER · 3 LOCATIONS').",
       "impact": "Links are only meaningful inside the active workspace; a user with two gym memberships cannot deep-link into a specific one.",
-      "resolution": "No path change for the Sponsor workspace. The gym consoles are id-based (ADR 0026 D-G23): the web /app/gyms/:gymId/** since SF-88 and the mobile gym tabs /gyms/:gymId/** since SF-89, the id a lookup key that the backend authorizes on every request.",
+      "resolution": "Id-based for the Sponsor workspace too since SF-117: D-SA26 (simplefit-api sponsor-admin-decision-register, approved 2026-11-10) replaced the session-context decision; /sponsor/:sponsorId/** names the organization, which the backend authorizes on every request, as the gym consoles do (ADR 0026 D-G23): the web /app/gyms/:gymId/** since SF-88 and the mobile gym tabs /gyms/:gymId/** since SF-89.",
       "status": "RESOLVED",
       "routes": ["web.sponsor.dashboard", "mobile.gyms._gym-id.pulse"],
-      "decision": "The active workspace is session context. Workspace ids are not added to URLs globally; cross-workspace deep links may be added later when email/push features need them.",
+      "decision": "Superseded (SF-117, D-SA26): workspace ids are in the path of the gym and sponsor workspaces, each a lookup key authorized per request, never authority. The remembered context is a server-side landing preference only.",
       "decidedOn": "2026-10-06"
     },
     {

@@ -4,9 +4,12 @@ import { RequireSession } from "@/features/session-gate";
 import { resolveLocaleParam } from "@/shared/i18n/params";
 import { signInRouteFor } from "@/shared/routes/routes";
 import { LaunchScreen, SessionFailure } from "@/widgets/system-states";
-import { WorkspaceShell } from "@/widgets/workspace-shell";
 
-/** `web.sponsor`: the partner portal. */
+/**
+ * `/sponsor`: the partner portal needs a session. Its shell (`web.sponsor`)
+ * belongs to one organization and renders in `[sponsorId]/layout.tsx`
+ * (SF-117, D-SA26).
+ */
 export default async function SponsorLayout({
   children,
   params,
@@ -21,7 +24,7 @@ export default async function SponsorLayout({
       pending={<LaunchScreen />}
       unavailable={<SessionFailure />}
     >
-      <WorkspaceShell shell="web.sponsor">{children}</WorkspaceShell>
+      {children}
     </RequireSession>
   );
 }

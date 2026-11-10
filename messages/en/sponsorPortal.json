@@ -1,0 +1,51 @@
+{
+  "announcement": "{name}, partner portal",
+  "switcher": {
+    "trigger": "{name}, {role}. Switch organization or profile",
+    "heading": "Your sponsor organizations",
+    "line": "{role} · partner portal",
+    "identity": "Sponsor · {status}"
+  },
+  "roles": {
+    "owner": "Owner",
+    "manager": "Manager",
+    "member": "Member"
+  },
+  "statuses": {
+    "active": "Active",
+    "suspended": "Suspended"
+  },
+  "states": {
+    "eyebrow": "Partner portal",
+    "notAvailable": {
+      "heading": "Organization not available",
+      "title": "We can’t find that page",
+      "body": "This organization doesn’t exist, or your account isn’t a member of it. Your SimpleFit account isn’t affected.",
+      "action": "Go to SimpleFit"
+    },
+    "suspended": {
+      "title": "This organization is suspended.",
+      "body": "You can read its details, but nobody can change them or invite people."
+    }
+  },
+  "overview": {
+    "metaTitle": "Partner portal",
+    "eyebrow": "Partner portal",
+    "title": "Overview",
+    "organization": {
+      "label": "Organization",
+      "role": "Your role: {role}"
+    },
+    "application": {
+      "label": "Application",
+      "title": "Reviewed by SimpleFit",
+      "status": "Approved",
+      "body": "Your submitted answers stay available to read.",
+      "action": "View application"
+    },
+    "notYet": {
+      "title": "Not available yet",
+      "body": "Campaigns, sponsorship opportunities, analytics and invoices aren’t part of SimpleFit today. There’s nothing to set up, and nothing is running."
+    }
+  }
+}

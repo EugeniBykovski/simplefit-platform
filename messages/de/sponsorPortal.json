@@ -1,0 +1,51 @@
+{
+  "announcement": "{name}, Partnerportal",
+  "switcher": {
+    "trigger": "{name}, {role}. Organisation oder Profil wechseln",
+    "heading": "Deine Sponsor-Organisationen",
+    "line": "{role} · Partnerportal",
+    "identity": "Sponsor · {status}"
+  },
+  "roles": {
+    "owner": "Inhaber",
+    "manager": "Manager",
+    "member": "Mitglied"
+  },
+  "statuses": {
+    "active": "Aktiv",
+    "suspended": "Gesperrt"
+  },
+  "states": {
+    "eyebrow": "Partnerportal",
+    "notAvailable": {
+      "heading": "Organisation nicht verfügbar",
+      "title": "Wir finden diese Seite nicht",
+      "body": "Diese Organisation gibt es nicht, oder dein Konto gehört nicht dazu. Dein SimpleFit-Konto ist davon nicht betroffen.",
+      "action": "Zu SimpleFit"
+    },
+    "suspended": {
+      "title": "Diese Organisation ist gesperrt.",
+      "body": "Du kannst ihre Angaben lesen, aber niemand kann sie ändern oder Personen einladen."
+    }
+  },
+  "overview": {
+    "metaTitle": "Partnerportal",
+    "eyebrow": "Partnerportal",
+    "title": "Übersicht",
+    "organization": {
+      "label": "Organisation",
+      "role": "Deine Rolle: {role}"
+    },
+    "application": {
+      "label": "Bewerbung",
+      "title": "Von SimpleFit geprüft",
+      "status": "Genehmigt",
+      "body": "Deine eingereichten Antworten bleiben lesbar.",
+      "action": "Bewerbung ansehen"
+    },
+    "notYet": {
+      "title": "Noch nicht verfügbar",
+      "body": "Kampagnen, Sponsoring-Möglichkeiten, Analysen und Rechnungen gibt es in SimpleFit heute nicht. Es gibt nichts einzurichten, und nichts läuft."
+    }
+  }
+}

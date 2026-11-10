@@ -1,6 +1,12 @@
 "use client";
 
-import { CalendarCheckIcon, CheckIcon, ChevronsUpDownIcon, PlusIcon } from "lucide-react";
+import {
+  Building2Icon,
+  CalendarCheckIcon,
+  CheckIcon,
+  ChevronsUpDownIcon,
+  PlusIcon,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, type ReactNode } from "react";
 
@@ -24,7 +30,8 @@ import { Spinner } from "@/shared/ui/spinner";
 import { contextOptions, type Journey, type ProfileContext } from "../model/contexts";
 import type { KnownEntry } from "../model/entry";
 import { gymWorkspaceOptions, type GymWorkspace } from "../model/gyms";
-import { gymTarget, useContextSwitch, type SwitchTarget } from "./context-switch";
+import { sponsorWorkspaceOptions, type SponsorWorkspace } from "../model/sponsors";
+import { gymTarget, sponsorTarget, useContextSwitch, type SwitchTarget } from "./context-switch";
 import { useWorkspaceEntry } from "./workspace-gate";
 
 /** Initials of a display name ("Alex Novak" → "AN"). */
@@ -42,9 +49,22 @@ export function initialsOf(name: string): string {
  */
 export type GymIdentity = { id: string; name: string; role: GymRole; locations: number };
 
-/** Where the switcher sits: a profile workspace, or the console of one gym. */
+/**
+ * The organization a partner portal shows (SF-117), as its identity block names
+ * it: the backend's answer for that organization (never the URL).
+ */
+export type SponsorIdentity = {
+  id: string;
+  name: string;
+  role: SponsorWorkspace["role"];
+  status: "active" | "suspended";
+};
+
+/** Where the switcher sits: a profile workspace, the console of one gym, or one partner portal. */
 export type SwitcherCurrent =
-  { kind: "profile"; context: ProfileContext } | { kind: "gym"; gym: GymIdentity };
+  | { kind: "profile"; context: ProfileContext }
+  | { kind: "gym"; gym: GymIdentity }
+  | { kind: "sponsor"; sponsor: SponsorIdentity };
 
 /**
  * The context switcher of the Fighter, Coach and Gym sidebars (Claude Design
@@ -55,28 +75,40 @@ export type SwitcherCurrent =
  * - gym workspaces the backend lets the user enter (completed gyms, any
  *   staff role) open that gym's console; the user's own draft continues its
  *   setup; more gyms than the entry lists are reached through the chooser;
+ * - sponsor organizations (SF-117; SPE1's organization switcher): active
+ *   memberships of active organizations, each opening its own portal. Only
+ *   real memberships are listed, and switching is navigation: each portal
+ *   page checks access for the organization in its address;
  * - completed profile contexts are opened by recording the choice with the
  *   backend; unfinished journeys are entered with their intent only.
  *
  * Choosing the current context or gym does nothing. A failure keeps the user
  * here, in this context, with a retry.
  */
-export function ContextSwitcher(props: { context: ProfileContext } | { gym: GymIdentity }) {
+export function ContextSwitcher(
+  props: { context: ProfileContext } | { gym: GymIdentity } | { sponsor: SponsorIdentity },
+) {
   const entry = useWorkspaceEntry();
   if (entry === undefined) return null;
   const current: SwitcherCurrent =
-    "gym" in props ? { kind: "gym", gym: props.gym } : { kind: "profile", context: props.context };
+    "gym" in props
+      ? { kind: "gym", gym: props.gym }
+      : "sponsor" in props
+        ? { kind: "sponsor", sponsor: props.sponsor }
+        : { kind: "profile", context: props.context };
   return <Switcher current={current} entry={entry} />;
 }
 
 function Switcher({ current, entry }: { current: SwitcherCurrent; entry: KnownEntry }) {
   const t = useTranslations("contextSwitcher");
   const g = useTranslations("gymConsole.switcher");
+  const sp = useTranslations("sponsorPortal");
   const [open, setOpen] = useState(false);
   const switching = useContextSwitch();
   const { state } = switching;
   const { completed, journeys } = contextOptions(entry);
   const gyms = gymWorkspaceOptions(entry);
+  const sponsors = sponsorWorkspaceOptions(entry);
   const names = useProfileNames(completed);
   // The account's gym memberships (SF-95), read with the page (never as the
   // menu opens, so opening it makes no request): a member's classes and
@@ -98,17 +130,28 @@ function Switcher({ current, entry }: { current: SwitcherCurrent; entry: KnownEn
             count: current.gym.locations,
           }),
         }
-      : (() => {
-          const name = names[current.context] ?? t(`contexts.${current.context}`);
-          return {
-            label: t("trigger", { name, context: t(`contexts.${current.context}`) }),
-            tile: <Initials name={name} context={current.context} />,
-            title: name,
-            line: t(`labels.${current.context}`),
-          };
-        })();
+      : current.kind === "sponsor"
+        ? {
+            label: sp("switcher.trigger", {
+              name: current.sponsor.name,
+              role: sp(`roles.${current.sponsor.role}`),
+            }),
+            tile: <SponsorTile />,
+            title: current.sponsor.name,
+            line: sp("switcher.identity", { status: sp(`statuses.${current.sponsor.status}`) }),
+          }
+        : (() => {
+            const name = names[current.context] ?? t(`contexts.${current.context}`);
+            return {
+              label: t("trigger", { name, context: t(`contexts.${current.context}`) }),
+              tile: <Initials name={name} context={current.context} />,
+              title: name,
+              line: t(`labels.${current.context}`),
+            };
+          })();
 
   const currentGym = current.kind === "gym" ? current.gym.id : undefined;
+  const currentSponsor = current.kind === "sponsor" ? current.sponsor.id : undefined;
   const currentProfile = current.kind === "profile" ? current.context : undefined;
   const hasGyms = gyms.enter.length > 0 || gyms.setup.length > 0;
 
@@ -175,6 +218,28 @@ function Switcher({ current, entry }: { current: SwitcherCurrent; entry: KnownEn
                 </Link>
               </DropdownMenuItem>
             )}
+            <DropdownMenuSeparator className="mx-1.5 my-1" />
+          </>
+        )}
+        {sponsors.enter.length > 0 && (
+          <>
+            <DropdownMenuLabel className="px-2 pt-2 pb-1 type-label text-faint-foreground">
+              {sp("switcher.heading")}
+            </DropdownMenuLabel>
+            {sponsors.enter.map((sponsor) => (
+              <SponsorItem
+                key={sponsor.sponsor_id}
+                sponsor={sponsor}
+                current={sponsor.sponsor_id === currentSponsor}
+                pending={pending}
+                opening={opening(sponsorTarget(sponsor.sponsor_id))}
+                onSelect={() =>
+                  sponsor.sponsor_id === currentSponsor
+                    ? setOpen(false)
+                    : void switching.openSponsor(sponsor.sponsor_id)
+                }
+              />
+            ))}
             <DropdownMenuSeparator className="mx-1.5 my-1" />
           </>
         )}
@@ -295,6 +360,43 @@ function GymItem({
   );
 }
 
+function SponsorItem({
+  sponsor,
+  current,
+  pending,
+  opening,
+  onSelect,
+}: {
+  sponsor: SponsorWorkspace;
+  current: boolean;
+  pending: boolean;
+  opening: boolean;
+  onSelect: () => void;
+}) {
+  const sp = useTranslations("sponsorPortal");
+  return (
+    <DropdownMenuItem
+      role="menuitemradio"
+      aria-checked={current}
+      disabled={pending && !opening}
+      onSelect={(event) => {
+        event.preventDefault();
+        onSelect();
+      }}
+      className={cn("min-h-12 gap-2.5 rounded-lg px-2 py-1.5", current && "bg-accent")}
+    >
+      <SponsorTile small />
+      <span className="flex min-w-0 flex-1 flex-col">
+        <span className="truncate type-body-sm font-extrabold">{sponsor.display_name}</span>
+        <span className="truncate type-caption text-muted-foreground">
+          {sp("switcher.line", { role: sp(`roles.${sponsor.role}`) })}
+        </span>
+      </span>
+      <State current={current} opening={opening} />
+    </DropdownMenuItem>
+  );
+}
+
 function MenuRow({
   pending,
   opening,
@@ -368,6 +470,21 @@ function PlusTile() {
       className="flex size-7 flex-none items-center justify-center rounded-full border-[1.5px] border-dashed border-primary-muted text-highlight"
     >
       <PlusIcon className="size-3.5" />
+    </span>
+  );
+}
+
+/** SponsorNav's organization tile: the building mark (no logo exists for an organization). */
+export function SponsorTile({ small = false }: { small?: boolean }) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "flex flex-none items-center justify-center rounded-md border-[1.5px] border-warning bg-background text-warning",
+        small ? "size-7" : "size-8",
+      )}
+    >
+      <Building2Icon className={small ? "size-3.5" : "size-4"} />
     </span>
   );
 }

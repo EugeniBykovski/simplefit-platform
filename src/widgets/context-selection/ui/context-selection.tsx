@@ -13,6 +13,8 @@ import {
   gymWorkspaceOptions,
   initialsOf,
   isKnownEntry,
+  sponsorTarget,
+  sponsorWorkspaceOptions,
   useContextSwitch,
   useEntry,
   type KnownEntry,
@@ -39,7 +41,11 @@ import { FailureView, LaunchScreen } from "@/widgets/system-states";
  *   the entry with its intent and goes to its onboarding; nothing is recorded;
  * - gym workspaces (SF-84 / SF-88), when completed contexts include gyms:
  *   a completed gym opens its console (the choice recorded), the user's own
- *   draft continues its setup.
+ *   draft continues its setup;
+ * - sponsor organizations (SF-117): every active membership of an active
+ *   organization, from the entry's `sponsor_workspaces` (also where a Sponsor
+ *   intent with several organizations lands); opening one records the choice
+ *   and opens its portal, which checks the organization in its address.
  *
  * Every option comes from the entry; nothing is stored in the browser. The
  * page shows only while the entry answers `context_selection`: any other
@@ -73,14 +79,17 @@ export function ContextChooser({ entry }: { entry: KnownEntry }) {
   const t = useTranslations("contextSelection");
   const contexts = useTranslations("contextSwitcher");
   const roles = useTranslations("gymConsole.switcher.roles");
+  const sponsor = useTranslations("sponsorPortal");
   const { completed, journeys } = contextOptions(entry);
   const gyms = gymWorkspaceOptions(entry);
+  const sponsors = sponsorWorkspaceOptions(entry);
   const switching = useContextSwitch();
   const { state } = switching;
   const names = useProfileNames(completed);
   const pending = state.status === "pending";
-  const scenario = completed.length + gyms.enter.length > 1 ? "completed" : "setup";
-  const mixed = gyms.enter.length + gyms.setup.length > 0;
+  const scenario =
+    completed.length + gyms.enter.length + sponsors.enter.length > 1 ? "completed" : "setup";
+  const mixed = gyms.enter.length + gyms.setup.length + sponsors.enter.length > 0;
 
   const rows: {
     target: SwitchTarget;
@@ -105,6 +114,14 @@ export function ContextChooser({ entry }: { entry: KnownEntry }) {
       action: t("open"),
       run: () => void switching.openGym(gym.gym_id),
       avatar: <ChoiceAvatar tone="gym">{initialsOf(gym.name)}</ChoiceAvatar>,
+    })),
+    ...sponsors.enter.map((organization) => ({
+      target: sponsorTarget(organization.sponsor_id),
+      title: organization.display_name,
+      line: sponsor("switcher.line", { role: sponsor(`roles.${organization.role}`) }),
+      action: t("open"),
+      run: () => void switching.openSponsor(organization.sponsor_id),
+      avatar: <ChoiceAvatar tone="gym">{initialsOf(organization.display_name)}</ChoiceAvatar>,
     })),
     ...journeys
       .filter((journey) => scenario === "setup" || journey.started)
@@ -146,7 +163,11 @@ export function ContextChooser({ entry }: { entry: KnownEntry }) {
           <p className="type-label text-faint-foreground">{t(`${scenario}.eyebrow`)}</p>
           <h1 className="type-h2 font-display">{t(`${scenario}.title`)}</h1>
           <p className="type-body text-muted-foreground">
-            {mixed ? t(`${scenario}.leadMixed`) : t(`${scenario}.lead`)}
+            {scenario === "completed" && sponsors.enter.length > 0
+              ? t("completed.leadAll")
+              : mixed
+                ? t(`${scenario}.leadMixed`)
+                : t(`${scenario}.lead`)}
           </p>
           <ul className="mt-1.5 flex flex-col gap-2.5">
             {rows.map((row) => (

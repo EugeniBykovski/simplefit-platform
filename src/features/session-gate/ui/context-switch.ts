@@ -12,13 +12,15 @@ import { entryHref, fetchEntry, isKnownEntry } from "../model/entry";
 import { chooseEntryContext } from "./entry-context";
 
 /**
- * What a move opens: a profile context, a gym workspace (`gym:<id>`) or the
- * setup of the user's own draft gym (`gym-setup`). Rows compare it with
- * their own target to show which one is opening or failed.
+ * What a move opens: a profile context, a gym workspace (`gym:<id>`), a
+ * sponsor organization (`sponsor:<id>`) or the setup of the user's own draft
+ * gym (`gym-setup`). Rows compare it with their own target to show which one
+ * is opening or failed.
  */
-export type SwitchTarget = ProfileContext | `gym:${string}` | "gym-setup";
+export type SwitchTarget = ProfileContext | `gym:${string}` | `sponsor:${string}` | "gym-setup";
 
 export const gymTarget = (gymId: string): SwitchTarget => `gym:${gymId}`;
+export const sponsorTarget = (sponsorId: string): SwitchTarget => `sponsor:${sponsorId}`;
 
 export type ContextSwitchState =
   | { status: "idle" }
@@ -43,6 +45,11 @@ class UnexpectedDestination extends Error {}
  *   URL names the gym. The record is a landing preference for `/app`, never
  *   authority: every console request is authorized for the gym in its path,
  *   so another tab keeps the gym its own URL names;
+ * - **open** a sponsor organization (SF-117): the same, with `context:
+ *   sponsor` and the organization id, accepted only for an active membership
+ *   of an active organization; the browser opens its portal
+ *   (`/sponsor/:sponsorId`, D-SA26). It changes no permission: the portal
+ *   authorizes the organization in its path on every request;
  * - **continue** an unfinished journey: the entry is resolved with that
  *   journey's explicit intent and the browser goes to its onboarding;
  *   continuing the user's draft gym opens Gym setup, which resumes it.
@@ -100,6 +107,11 @@ export function useContextSwitch() {
       run(gymTarget(gymId), "open", async () => {
         await chooseEntryContext("gym", gymId);
         return routeHref("web.app.gyms._gym-id", { gymId });
+      }),
+    openSponsor: (sponsorId: string) =>
+      run(sponsorTarget(sponsorId), "open", async () => {
+        await chooseEntryContext("sponsor", sponsorId);
+        return routeHref("web.sponsor.dashboard", { sponsorId });
       }),
     continueGymSetup: () =>
       run("gym-setup", "continue", () =>

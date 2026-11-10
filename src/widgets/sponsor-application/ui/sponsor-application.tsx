@@ -337,7 +337,8 @@ function Start({
     actions = (
       <>
         <Button asChild size="lg" className="w-full sm:w-fit">
-          <Link href={routeHref("web.sponsor.dashboard")}>{t("openWorkspace")}</Link>
+          {/* The entry resolver picks the organization (one, the remembered one, or the chooser). */}
+          <Link href={routeHref("web.app", {}, { intent: "sponsor" })}>{t("openWorkspace")}</Link>
         </Button>
         <Button
           type="button"
@@ -406,7 +407,9 @@ function StatusActions({
   if (application.status === "approved" && application.sponsor_id !== null) {
     return (
       <Button asChild size="lg">
-        <Link href={routeHref("web.sponsor.dashboard")}>{t("openWorkspace")}</Link>
+        <Link href={routeHref("web.sponsor.dashboard", { sponsorId: application.sponsor_id })}>
+          {t("openWorkspace")}
+        </Link>
       </Button>
     );
   }
