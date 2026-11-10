@@ -285,5 +285,187 @@
       "retry": "Try again"
     },
     "updating": "Updating…"
+  },
+  "users": {
+    "metaTitle": "Users · Control plane",
+    "breadcrumb": "Control plane",
+    "title": "Users",
+    "search": {
+      "label": "Exact email or user ID",
+      "placeholder": "Exact email or user ID",
+      "reason": "Reason",
+      "reasonPlaceholder": "Choose a reason",
+      "submit": "Search",
+      "note": "Search is exact by design: there’s no list of everyone. Each search is recorded with its reason.",
+      "idle": "Enter an exact email or user ID, and a reason.",
+      "noMatch": {
+        "pill": "No match",
+        "title": "No account matches",
+        "body": "Check the address or ID. Search doesn’t do partial matches."
+      },
+      "result": "Search result",
+      "columns": {
+        "account": "Account",
+        "email": "Email",
+        "contexts": "Contexts",
+        "state": "State",
+        "joined": "Joined"
+      },
+      "rateLimited": "Too many searches. Wait a while, then try again."
+    },
+    "reasons": {
+      "support_request": "Support request",
+      "account_security": "Account security",
+      "abuse_report": "Abuse report",
+      "legal_request": "Legal request",
+      "account_compromise": "Account compromise",
+      "fraud": "Fraud",
+      "terms_violation": "Terms violation",
+      "appeal_upheld": "Appeal upheld",
+      "issue_resolved": "Issue resolved",
+      "suspended_in_error": "Suspended in error",
+      "user_request": "The person asked",
+      "security_review": "Security review"
+    },
+    "status": {
+      "active": "Active",
+      "suspended": "Suspended"
+    },
+    "contexts": {
+      "fighter": "Fighter",
+      "coach": "Coach",
+      "gymStaff": "Gym staff",
+      "gymMember": "Gym member",
+      "sponsor": "Sponsor",
+      "operator": "Platform operator",
+      "none": "None"
+    },
+    "restricted": {
+      "pill": "No access",
+      "title": "You don’t have access to this section",
+      "body": "Your operator permissions don’t include it. An operator manager can grant it, with a reason that’s recorded.",
+      "back": "Back to overview"
+    },
+    "error": {
+      "pill": "Couldn’t load",
+      "title": "We couldn’t load this",
+      "body": "Nothing has changed. Try again.",
+      "retry": "Try again"
+    },
+    "searching": "Searching",
+    "detail": {
+      "metaTitle": "Account · Control plane",
+      "breadcrumb": "Users",
+      "title": "Account",
+      "reasonTitle": "Why are you opening this account?",
+      "reasonBody": "Every view is recorded with its reason.",
+      "open": "Open account",
+      "loading": "Loading account",
+      "noName": "No name yet",
+      "joined": "{id} · joined {date}",
+      "notFound": {
+        "pill": "Not found",
+        "title": "No such account",
+        "body": "Check the ID, or search again."
+      },
+      "suspendedBanner": "Suspended since {date}: {reason}.",
+      "contexts": {
+        "title": "Contexts",
+        "fighter": "Fighter profile",
+        "coach": "Coach profile",
+        "gymStaff": "Gym staff",
+        "gymMember": "Gym member",
+        "sponsor": "Sponsor memberships",
+        "operator": "Platform operator",
+        "count": "{count, plural, one {# active} other {# active}}",
+        "profile": {
+          "not_started": "Not started",
+          "in_progress": "In progress",
+          "completed": "Completed"
+        },
+        "operatorYes": "Yes: managed in operator administration",
+        "operatorNo": "No",
+        "never": "Never shown here: passwords, codes, tokens, provider data, training sessions, coach notes, weight, health and messages."
+      },
+      "security": {
+        "title": "Account and security",
+        "email": "Email",
+        "noEmail": "No email sign-in",
+        "methods": "Sign-in methods",
+        "providers": {
+          "email": "Email code",
+          "google": "Google",
+          "apple": "Apple"
+        },
+        "verification": "A sign-in method means the person proved control of it. No identity or document check exists.",
+        "registration": "Account registration",
+        "registrationStates": {
+          "not_started": "Not started",
+          "in_progress": "In progress",
+          "complete": "Complete"
+        },
+        "sessions": "Active sessions",
+        "sessionLine": "Started {start} · ends {end}",
+        "noSessions": "No active session",
+        "lastSignIn": "Last sign-in",
+        "never": "Never"
+      },
+      "recovery": "There’s no account recovery to run here: sign-in is passwordless. Operators can’t change sign-in methods, verify anything or act as the person.",
+      "actions": {
+        "reveal": "Reveal email",
+        "suspend": "Suspend account",
+        "lift": "Lift suspension",
+        "signOut": "Sign out everywhere",
+        "smallScreen": "High-risk actions need a larger screen and a security key. Reading works here.",
+        "operatorTarget": "This account is a platform operator: it’s managed in operator administration.",
+        "self": "This is your own account."
+      },
+      "reveal": {
+        "title": "Reveal this email address?",
+        "body": "Needs users.reveal_email and a fresh key check. Recorded with your reason.",
+        "reveal": "Reveal",
+        "cancel": "Cancel",
+        "failed": "We couldn’t reveal it. Nothing was shown."
+      }
+    },
+    "action": {
+      "risk": "High risk",
+      "needs": "Needs {permission}",
+      "target": "Target",
+      "impact": "What happens",
+      "reason": "Reason",
+      "reasonPlaceholder": "Choose a reason code",
+      "titles": {
+        "suspend": "Suspend {account}?",
+        "lift_suspension": "Lift the suspension of {account}?",
+        "sign_out_everywhere": "Sign {account} out everywhere?"
+      },
+      "impacts": {
+        "signed_out_everywhere": "They’re signed out on every device now.",
+        "sign_in_refused": "They can’t sign in with any method until the suspension is lifted.",
+        "data_kept": "Their data stays.",
+        "memberships_unchanged": "Gym and Sponsor memberships aren’t changed.",
+        "sign_in_allowed": "They can sign in again.",
+        "sessions_stay_revoked": "Sessions ended by the suspension stay ended."
+      },
+      "preview": "Review",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "close": "Close",
+      "reload": "Reload",
+      "stepUp": "Confirm with your security key. High-risk actions need a key check in the last few minutes.",
+      "useKey": "Use security key",
+      "submitting": "Working… Don’t close this window.",
+      "working": "Working…",
+      "success": "Done. Recorded in the audit log.",
+      "conflict": "Someone else changed this first. Nothing was changed. Reload to see the current state.",
+      "unknown": "We don’t know if this went through. Don’t retry yet. Reload the account to check.",
+      "failed": "That didn’t work. Nothing changed. Try again.",
+      "denied": "You no longer have permission for this. Nothing changed.",
+      "protected": {
+        "self": "You can’t do this to your own account.",
+        "operator": "This account is a platform operator: use operator administration."
+      }
+    }
   }
 }

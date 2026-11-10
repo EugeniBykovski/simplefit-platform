@@ -7202,7 +7202,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(admin)/admin/users/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-122: AD7, exact account search (exact email address or user id, with a recorded reason code; at most one masked result, never a list) from GET /api/v1/admin/users (users.read). Design deviations: docs/admin-design/sf-122-design-register.md."
       },
       "screens": ["AD7", "AD10"]
     },
@@ -7227,7 +7227,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(admin)/admin/users/[userId]/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-122: AD8, one account from GET /api/v1/admin/users/:id (users.read, reason recorded): masked addresses, sign-in methods, registration, state, active sessions, context counts; reveal email (users.reveal_email), and the AD9 actions suspend / lift suspension (users.restrict) and sign out everywhere (users.sessions.revoke) through the SF-111 preview, fresh key check and confirmation. Never against the operator's own account or a platform operator's account. No recovery or act-as-user."
       },
       "screens": ["AD8", "AD9"]
     },

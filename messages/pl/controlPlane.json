@@ -285,5 +285,187 @@
       "retry": "Spróbuj ponownie"
     },
     "updating": "Aktualizowanie…"
+  },
+  "users": {
+    "metaTitle": "Użytkownicy · Panel sterowania",
+    "breadcrumb": "Panel sterowania",
+    "title": "Użytkownicy",
+    "search": {
+      "label": "Dokładny e-mail lub ID użytkownika",
+      "placeholder": "Dokładny e-mail lub ID użytkownika",
+      "reason": "Przyczyna",
+      "reasonPlaceholder": "Wybierz przyczynę",
+      "submit": "Szukaj",
+      "note": "Wyszukiwanie celowo działa tylko po dokładnej wartości: nie ma listy wszystkich użytkowników. Każde wyszukiwanie jest rejestrowane wraz z przyczyną.",
+      "idle": "Wpisz dokładny e-mail lub ID użytkownika i podaj przyczynę.",
+      "noMatch": {
+        "pill": "Brak wyników",
+        "title": "Żadne konto nie pasuje",
+        "body": "Sprawdź adres lub ID. Wyszukiwanie nie obsługuje częściowych dopasowań."
+      },
+      "result": "Wynik wyszukiwania",
+      "columns": {
+        "account": "Konto",
+        "email": "E-mail",
+        "contexts": "Konteksty",
+        "state": "Stan",
+        "joined": "Dołączenie"
+      },
+      "rateLimited": "Zbyt wiele wyszukiwań. Odczekaj chwilę i spróbuj ponownie."
+    },
+    "reasons": {
+      "support_request": "Zgłoszenie do pomocy",
+      "account_security": "Bezpieczeństwo konta",
+      "abuse_report": "Zgłoszenie nadużycia",
+      "legal_request": "Żądanie prawne",
+      "account_compromise": "Przejęcie konta",
+      "fraud": "Oszustwo",
+      "terms_violation": "Naruszenie warunków",
+      "appeal_upheld": "Odwołanie uwzględnione",
+      "issue_resolved": "Problem rozwiązany",
+      "suspended_in_error": "Zawieszone omyłkowo",
+      "user_request": "Prośba tej osoby",
+      "security_review": "Kontrola bezpieczeństwa"
+    },
+    "status": {
+      "active": "Aktywne",
+      "suspended": "Zawieszone"
+    },
+    "contexts": {
+      "fighter": "Zawodnik",
+      "coach": "Trener",
+      "gymStaff": "Personel klubu",
+      "gymMember": "Członek klubu",
+      "sponsor": "Sponsor",
+      "operator": "Operator platformy",
+      "none": "Brak"
+    },
+    "restricted": {
+      "pill": "Brak dostępu",
+      "title": "Nie masz dostępu do tej sekcji",
+      "body": "Twoje uprawnienia operatora jej nie obejmują. Może je nadać menedżer operatorów, podając przyczynę, która jest rejestrowana.",
+      "back": "Wróć do przeglądu"
+    },
+    "error": {
+      "pill": "Nie wczytano",
+      "title": "Nie udało się tego wczytać",
+      "body": "Nic się nie zmieniło. Spróbuj ponownie.",
+      "retry": "Spróbuj ponownie"
+    },
+    "searching": "Wyszukiwanie",
+    "detail": {
+      "metaTitle": "Konto · Panel sterowania",
+      "breadcrumb": "Użytkownicy",
+      "title": "Konto",
+      "reasonTitle": "Dlaczego otwierasz to konto?",
+      "reasonBody": "Każde wyświetlenie jest rejestrowane wraz z przyczyną.",
+      "open": "Otwórz konto",
+      "loading": "Wczytywanie konta",
+      "noName": "Brak nazwy",
+      "joined": "{id} · dołączenie {date}",
+      "notFound": {
+        "pill": "Nie znaleziono",
+        "title": "Nie ma takiego konta",
+        "body": "Sprawdź ID lub wyszukaj ponownie."
+      },
+      "suspendedBanner": "Zawieszone od {date}: {reason}.",
+      "contexts": {
+        "title": "Konteksty",
+        "fighter": "Profil zawodnika",
+        "coach": "Profil trenera",
+        "gymStaff": "Personel klubu",
+        "gymMember": "Członek klubu",
+        "sponsor": "Członkostwa w organizacjach sponsorów",
+        "operator": "Operator platformy",
+        "count": "{count, plural, one {# aktywne} few {# aktywne} many {# aktywnych} other {# aktywnego}}",
+        "profile": {
+          "not_started": "Nierozpoczęty",
+          "in_progress": "W trakcie",
+          "completed": "Ukończony"
+        },
+        "operatorYes": "Tak: zarządzane w administracji operatorów",
+        "operatorNo": "Nie",
+        "never": "Nigdy nie pokazujemy tu: haseł, kodów, tokenów, danych dostawców, treningów, notatek trenera, wagi, danych o zdrowiu ani wiadomości."
+      },
+      "security": {
+        "title": "Konto i bezpieczeństwo",
+        "email": "E-mail",
+        "noEmail": "Brak logowania przez e-mail",
+        "methods": "Metody logowania",
+        "providers": {
+          "email": "Kod e-mail",
+          "google": "Google",
+          "apple": "Apple"
+        },
+        "verification": "Metoda logowania oznacza, że ta osoba udowodniła, że ją kontroluje. Nie istnieje żadna weryfikacja tożsamości ani dokumentów.",
+        "registration": "Rejestracja konta",
+        "registrationStates": {
+          "not_started": "Nierozpoczęta",
+          "in_progress": "W trakcie",
+          "complete": "Ukończona"
+        },
+        "sessions": "Aktywne sesje",
+        "sessionLine": "Rozpoczęta {start} · wygasa {end}",
+        "noSessions": "Brak aktywnej sesji",
+        "lastSignIn": "Ostatnie logowanie",
+        "never": "Nigdy"
+      },
+      "recovery": "Nie ma tu procedury odzyskiwania konta: logowanie odbywa się bez hasła. Operatorzy nie mogą zmieniać metod logowania, niczego weryfikować ani działać w imieniu tej osoby.",
+      "actions": {
+        "reveal": "Pokaż e-mail",
+        "suspend": "Zawieś konto",
+        "lift": "Znieś zawieszenie",
+        "signOut": "Wyloguj wszędzie",
+        "smallScreen": "Czynności wysokiego ryzyka wymagają większego ekranu i klucza bezpieczeństwa. Przeglądanie działa także tutaj.",
+        "operatorTarget": "To konto należy do operatora platformy: zarządza się nim w administracji operatorów.",
+        "self": "To Twoje własne konto."
+      },
+      "reveal": {
+        "title": "Pokazać ten adres e-mail?",
+        "body": "Wymaga uprawnienia users.reveal_email i świeżej weryfikacji klucza. Rejestrowane wraz z Twoją przyczyną.",
+        "reveal": "Pokaż",
+        "cancel": "Anuluj",
+        "failed": "Nie udało się go pokazać. Nic nie zostało wyświetlone."
+      }
+    },
+    "action": {
+      "risk": "Wysokie ryzyko",
+      "needs": "Wymaga {permission}",
+      "target": "Cel",
+      "impact": "Co się stanie",
+      "reason": "Przyczyna",
+      "reasonPlaceholder": "Wybierz kod przyczyny",
+      "titles": {
+        "suspend": "Zawiesić {account}?",
+        "lift_suspension": "Znieść zawieszenie {account}?",
+        "sign_out_everywhere": "Wylogować {account} wszędzie?"
+      },
+      "impacts": {
+        "signed_out_everywhere": "Ta osoba zostaje od razu wylogowana na każdym urządzeniu.",
+        "sign_in_refused": "Nie może zalogować się żadną metodą, dopóki zawieszenie nie zostanie zniesione.",
+        "data_kept": "Jej dane pozostają.",
+        "memberships_unchanged": "Członkostwa w klubach i u sponsorów nie zmieniają się.",
+        "sign_in_allowed": "Może ponownie się zalogować.",
+        "sessions_stay_revoked": "Sesje zakończone przez zawieszenie pozostają zakończone."
+      },
+      "preview": "Sprawdź",
+      "confirm": "Potwierdź",
+      "cancel": "Anuluj",
+      "close": "Zamknij",
+      "reload": "Odśwież",
+      "stepUp": "Potwierdź kluczem bezpieczeństwa. Czynności wysokiego ryzyka wymagają weryfikacji klucza w ciągu ostatnich kilku minut.",
+      "useKey": "Użyj klucza bezpieczeństwa",
+      "submitting": "Trwa wykonywanie… Nie zamykaj tego okna.",
+      "working": "Trwa wykonywanie…",
+      "success": "Gotowe. Zapisano w dzienniku audytu.",
+      "conflict": "Ktoś inny zmienił to wcześniej. Nic nie zostało zmienione. Odśwież, aby zobaczyć aktualny stan.",
+      "unknown": "Nie wiemy, czy to się udało. Nie ponawiaj jeszcze. Odśwież konto, aby sprawdzić.",
+      "failed": "To się nie udało. Nic się nie zmieniło. Spróbuj ponownie.",
+      "denied": "Nie masz już uprawnienia do tej czynności. Nic się nie zmieniło.",
+      "protected": {
+        "self": "Nie możesz tego zrobić z własnym kontem.",
+        "operator": "To konto należy do operatora platformy: użyj administracji operatorów."
+      }
+    }
   }
 }

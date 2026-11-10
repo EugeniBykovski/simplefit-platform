@@ -21,4 +21,8 @@ export const GrantOperatorPermissionPreviewRequestPermission = {
   sponsorsrestrict: 'sponsors.restrict',
   platformdashboardread: 'platform.dashboard.read',
   systemhealthread: 'system.health.read',
+  usersread: 'users.read',
+  usersreveal_email: 'users.reveal_email',
+  usersrestrict: 'users.restrict',
+  userssessionsrevoke: 'users.sessions.revoke',
 } as const;

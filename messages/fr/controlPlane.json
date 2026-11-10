@@ -285,5 +285,187 @@
       "retry": "Réessayer"
     },
     "updating": "Mise à jour…"
+  },
+  "users": {
+    "metaTitle": "Utilisateurs · Plan de contrôle",
+    "breadcrumb": "Plan de contrôle",
+    "title": "Utilisateurs",
+    "search": {
+      "label": "E-mail ou ID utilisateur exact",
+      "placeholder": "E-mail ou ID utilisateur exact",
+      "reason": "Motif",
+      "reasonPlaceholder": "Choisissez un motif",
+      "submit": "Rechercher",
+      "note": "La recherche est exacte par principe : il n’existe pas de liste de tout le monde. Chaque recherche est enregistrée avec son motif.",
+      "idle": "Saisissez un e-mail ou un ID utilisateur exact, et un motif.",
+      "noMatch": {
+        "pill": "Aucun résultat",
+        "title": "Aucun compte ne correspond",
+        "body": "Vérifiez l’adresse ou l’ID. La recherche ne trouve pas les correspondances partielles."
+      },
+      "result": "Résultat de recherche",
+      "columns": {
+        "account": "Compte",
+        "email": "E-mail",
+        "contexts": "Contextes",
+        "state": "État",
+        "joined": "Inscription"
+      },
+      "rateLimited": "Trop de recherches. Patientez un moment, puis réessayez."
+    },
+    "reasons": {
+      "support_request": "Demande d’assistance",
+      "account_security": "Sécurité du compte",
+      "abuse_report": "Signalement d’abus",
+      "legal_request": "Demande légale",
+      "account_compromise": "Compte compromis",
+      "fraud": "Fraude",
+      "terms_violation": "Violation des conditions",
+      "appeal_upheld": "Recours accepté",
+      "issue_resolved": "Problème résolu",
+      "suspended_in_error": "Suspendu par erreur",
+      "user_request": "Demande de la personne",
+      "security_review": "Contrôle de sécurité"
+    },
+    "status": {
+      "active": "Actif",
+      "suspended": "Suspendu"
+    },
+    "contexts": {
+      "fighter": "Boxeur",
+      "coach": "Coach",
+      "gymStaff": "Équipe de salle",
+      "gymMember": "Membre de salle",
+      "sponsor": "Sponsor",
+      "operator": "Opérateur de la plateforme",
+      "none": "Aucun"
+    },
+    "restricted": {
+      "pill": "Aucun accès",
+      "title": "Vous n’avez pas accès à cette section",
+      "body": "Vos autorisations d’opérateur ne l’incluent pas. Un responsable des opérateurs peut vous l’accorder, avec un motif qui est enregistré.",
+      "back": "Retour à la vue d’ensemble"
+    },
+    "error": {
+      "pill": "Échec du chargement",
+      "title": "Nous n’avons pas pu charger ceci",
+      "body": "Rien n’a changé. Réessayez.",
+      "retry": "Réessayer"
+    },
+    "searching": "Recherche en cours",
+    "detail": {
+      "metaTitle": "Compte · Plan de contrôle",
+      "breadcrumb": "Utilisateurs",
+      "title": "Compte",
+      "reasonTitle": "Pourquoi ouvrez-vous ce compte ?",
+      "reasonBody": "Chaque consultation est enregistrée avec son motif.",
+      "open": "Ouvrir le compte",
+      "loading": "Chargement du compte",
+      "noName": "Pas encore de nom",
+      "joined": "{id} · inscrit le {date}",
+      "notFound": {
+        "pill": "Introuvable",
+        "title": "Ce compte n’existe pas",
+        "body": "Vérifiez l’ID ou relancez la recherche."
+      },
+      "suspendedBanner": "Suspendu depuis le {date} : {reason}.",
+      "contexts": {
+        "title": "Contextes",
+        "fighter": "Profil de boxeur",
+        "coach": "Profil de coach",
+        "gymStaff": "Équipe de salle",
+        "gymMember": "Membre de salle",
+        "sponsor": "Adhésions à des sponsors",
+        "operator": "Opérateur de la plateforme",
+        "count": "{count, plural, one {# active} other {# actives}}",
+        "profile": {
+          "not_started": "Non commencé",
+          "in_progress": "En cours",
+          "completed": "Complété"
+        },
+        "operatorYes": "Oui : géré dans l’administration des opérateurs",
+        "operatorNo": "Non",
+        "never": "Jamais affichés ici : mots de passe, codes, jetons, données des fournisseurs, séances d’entraînement, notes du coach, poids, santé et messages."
+      },
+      "security": {
+        "title": "Compte et sécurité",
+        "email": "E-mail",
+        "noEmail": "Pas de connexion par e-mail",
+        "methods": "Méthodes de connexion",
+        "providers": {
+          "email": "Code par e-mail",
+          "google": "Google",
+          "apple": "Apple"
+        },
+        "verification": "Une méthode de connexion signifie que la personne a prouvé qu’elle la contrôle. Aucune vérification d’identité ni de documents n’existe.",
+        "registration": "Inscription du compte",
+        "registrationStates": {
+          "not_started": "Non commencée",
+          "in_progress": "En cours",
+          "complete": "Terminée"
+        },
+        "sessions": "Sessions actives",
+        "sessionLine": "Ouverte {start} · expire {end}",
+        "noSessions": "Aucune session active",
+        "lastSignIn": "Dernière connexion",
+        "never": "Jamais"
+      },
+      "recovery": "Il n’y a pas de récupération de compte à effectuer ici : la connexion se fait sans mot de passe. Les opérateurs ne peuvent pas modifier les méthodes de connexion, vérifier quoi que ce soit ni agir à la place de la personne.",
+      "actions": {
+        "reveal": "Afficher l’e-mail",
+        "suspend": "Suspendre le compte",
+        "lift": "Lever la suspension",
+        "signOut": "Déconnecter partout",
+        "smallScreen": "Les actions à haut risque nécessitent un écran plus grand et une clé de sécurité. La consultation fonctionne ici.",
+        "operatorTarget": "Ce compte est un opérateur de la plateforme : il est géré dans l’administration des opérateurs.",
+        "self": "C’est votre propre compte."
+      },
+      "reveal": {
+        "title": "Afficher cette adresse e-mail ?",
+        "body": "Nécessite users.reveal_email et une vérification de clé récente. Enregistré avec votre motif.",
+        "reveal": "Afficher",
+        "cancel": "Annuler",
+        "failed": "Nous n’avons pas pu l’afficher. Rien n’a été affiché."
+      }
+    },
+    "action": {
+      "risk": "Risque élevé",
+      "needs": "Nécessite {permission}",
+      "target": "Cible",
+      "impact": "Ce qui se passe",
+      "reason": "Motif",
+      "reasonPlaceholder": "Choisissez un code de motif",
+      "titles": {
+        "suspend": "Suspendre {account} ?",
+        "lift_suspension": "Lever la suspension de {account} ?",
+        "sign_out_everywhere": "Déconnecter {account} partout ?"
+      },
+      "impacts": {
+        "signed_out_everywhere": "La personne est déconnectée immédiatement sur tous les appareils.",
+        "sign_in_refused": "Elle ne peut se connecter par aucune méthode tant que la suspension n’est pas levée.",
+        "data_kept": "Ses données sont conservées.",
+        "memberships_unchanged": "Les adhésions aux salles et aux sponsors ne sont pas modifiées.",
+        "sign_in_allowed": "Elle peut de nouveau se connecter.",
+        "sessions_stay_revoked": "Les sessions fermées par la suspension restent fermées."
+      },
+      "preview": "Vérifier",
+      "confirm": "Confirmer",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "reload": "Recharger",
+      "stepUp": "Confirmez avec votre clé de sécurité. Les actions à haut risque nécessitent une vérification de clé datant de quelques minutes au plus.",
+      "useKey": "Utiliser la clé de sécurité",
+      "submitting": "Traitement… Ne fermez pas cette fenêtre.",
+      "working": "Traitement…",
+      "success": "C’est fait. Enregistré dans le journal d’audit.",
+      "conflict": "Quelqu’un d’autre l’a modifié avant vous. Rien n’a été modifié. Rechargez pour voir l’état actuel.",
+      "unknown": "Nous ne savons pas si l’action a abouti. Ne réessayez pas encore. Rechargez le compte pour vérifier.",
+      "failed": "Cela n’a pas fonctionné. Rien n’a changé. Réessayez.",
+      "denied": "Vous n’avez plus l’autorisation pour cela. Rien n’a changé.",
+      "protected": {
+        "self": "Vous ne pouvez pas faire cela sur votre propre compte.",
+        "operator": "Ce compte est un opérateur de la plateforme : utilisez l’administration des opérateurs."
+      }
+    }
   }
 }

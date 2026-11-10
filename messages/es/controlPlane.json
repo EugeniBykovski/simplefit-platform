@@ -285,5 +285,187 @@
       "retry": "Reintentar"
     },
     "updating": "Actualizando…"
+  },
+  "users": {
+    "metaTitle": "Usuarios · Panel de control",
+    "breadcrumb": "Panel de control",
+    "title": "Usuarios",
+    "search": {
+      "label": "Correo o ID de usuario exactos",
+      "placeholder": "Correo o ID de usuario exactos",
+      "reason": "Motivo",
+      "reasonPlaceholder": "Elige un motivo",
+      "submit": "Buscar",
+      "note": "La búsqueda es exacta a propósito: no hay una lista de todo el mundo. Cada búsqueda queda registrada con su motivo.",
+      "idle": "Introduce un correo o ID de usuario exactos y un motivo.",
+      "noMatch": {
+        "pill": "Sin coincidencias",
+        "title": "Ninguna cuenta coincide",
+        "body": "Revisa la dirección o el ID. La búsqueda no admite coincidencias parciales."
+      },
+      "result": "Resultado de la búsqueda",
+      "columns": {
+        "account": "Cuenta",
+        "email": "Correo",
+        "contexts": "Contextos",
+        "state": "Estado",
+        "joined": "Alta"
+      },
+      "rateLimited": "Demasiadas búsquedas. Espera un rato y vuelve a intentarlo."
+    },
+    "reasons": {
+      "support_request": "Solicitud de soporte",
+      "account_security": "Seguridad de la cuenta",
+      "abuse_report": "Denuncia de abuso",
+      "legal_request": "Requerimiento legal",
+      "account_compromise": "Cuenta comprometida",
+      "fraud": "Fraude",
+      "terms_violation": "Incumplimiento de términos",
+      "appeal_upheld": "Apelación aceptada",
+      "issue_resolved": "Problema resuelto",
+      "suspended_in_error": "Suspendida por error",
+      "user_request": "Lo pidió la persona",
+      "security_review": "Revisión de seguridad"
+    },
+    "status": {
+      "active": "Activa",
+      "suspended": "Suspendida"
+    },
+    "contexts": {
+      "fighter": "Boxeador",
+      "coach": "Entrenador",
+      "gymStaff": "Personal de gimnasio",
+      "gymMember": "Miembro de gimnasio",
+      "sponsor": "Patrocinador",
+      "operator": "Operador de la plataforma",
+      "none": "Ninguno"
+    },
+    "restricted": {
+      "pill": "Sin acceso",
+      "title": "No tienes acceso a esta sección",
+      "body": "Tus permisos de operador no la incluyen. Un gestor de operadores puede concedértela, con un motivo que queda registrado.",
+      "back": "Volver a la vista general"
+    },
+    "error": {
+      "pill": "No se pudo cargar",
+      "title": "No pudimos cargar esto",
+      "body": "No cambió nada. Inténtalo de nuevo.",
+      "retry": "Reintentar"
+    },
+    "searching": "Buscando",
+    "detail": {
+      "metaTitle": "Cuenta · Panel de control",
+      "breadcrumb": "Usuarios",
+      "title": "Cuenta",
+      "reasonTitle": "¿Por qué abres esta cuenta?",
+      "reasonBody": "Cada consulta queda registrada con su motivo.",
+      "open": "Abrir cuenta",
+      "loading": "Cargando la cuenta",
+      "noName": "Aún sin nombre",
+      "joined": "{id} · alta el {date}",
+      "notFound": {
+        "pill": "No encontrada",
+        "title": "No existe esa cuenta",
+        "body": "Revisa el ID o vuelve a buscar."
+      },
+      "suspendedBanner": "Suspendida desde el {date}: {reason}.",
+      "contexts": {
+        "title": "Contextos",
+        "fighter": "Perfil de boxeador",
+        "coach": "Perfil de entrenador",
+        "gymStaff": "Personal de gimnasio",
+        "gymMember": "Miembro de gimnasio",
+        "sponsor": "Membresías de patrocinadores",
+        "operator": "Operador de la plataforma",
+        "count": "{count, plural, one {# activa} other {# activas}}",
+        "profile": {
+          "not_started": "Sin empezar",
+          "in_progress": "En curso",
+          "completed": "Completado"
+        },
+        "operatorYes": "Sí: se gestiona en la administración de operadores",
+        "operatorNo": "No",
+        "never": "Nunca se muestra aquí: contraseñas, códigos, tokens, datos de proveedores, sesiones de entrenamiento, notas del entrenador, peso, salud ni mensajes."
+      },
+      "security": {
+        "title": "Cuenta y seguridad",
+        "email": "Correo",
+        "noEmail": "Sin inicio de sesión por correo",
+        "methods": "Métodos de inicio de sesión",
+        "providers": {
+          "email": "Código por correo",
+          "google": "Google",
+          "apple": "Apple"
+        },
+        "verification": "Un método de inicio de sesión significa que la persona demostró que lo controla. No existe ninguna verificación de identidad ni de documentos.",
+        "registration": "Registro de la cuenta",
+        "registrationStates": {
+          "not_started": "Sin empezar",
+          "in_progress": "En curso",
+          "complete": "Completo"
+        },
+        "sessions": "Sesiones activas",
+        "sessionLine": "Iniciada {start} · termina {end}",
+        "noSessions": "Ninguna sesión activa",
+        "lastSignIn": "Último inicio de sesión",
+        "never": "Nunca"
+      },
+      "recovery": "Aquí no hay recuperación de cuenta que hacer: el inicio de sesión es sin contraseña. Los operadores no pueden cambiar los métodos de inicio de sesión, verificar nada ni actuar como la persona.",
+      "actions": {
+        "reveal": "Mostrar correo",
+        "suspend": "Suspender cuenta",
+        "lift": "Levantar suspensión",
+        "signOut": "Cerrar sesión en todas partes",
+        "smallScreen": "Las acciones de alto riesgo necesitan una pantalla más grande y una llave de seguridad. Aquí puedes consultar.",
+        "operatorTarget": "Esta cuenta es de un operador de la plataforma: se gestiona en la administración de operadores.",
+        "self": "Esta es tu propia cuenta."
+      },
+      "reveal": {
+        "title": "¿Mostrar esta dirección de correo?",
+        "body": "Requiere users.reveal_email y una verificación de llave reciente. Queda registrado con tu motivo.",
+        "reveal": "Mostrar",
+        "cancel": "Cancelar",
+        "failed": "No pudimos mostrarla. No se mostró nada."
+      }
+    },
+    "action": {
+      "risk": "Alto riesgo",
+      "needs": "Requiere {permission}",
+      "target": "Objetivo",
+      "impact": "Qué pasa",
+      "reason": "Motivo",
+      "reasonPlaceholder": "Elige un código de motivo",
+      "titles": {
+        "suspend": "¿Suspender {account}?",
+        "lift_suspension": "¿Levantar la suspensión de {account}?",
+        "sign_out_everywhere": "¿Cerrar la sesión de {account} en todas partes?"
+      },
+      "impacts": {
+        "signed_out_everywhere": "Su sesión se cierra ya en todos los dispositivos.",
+        "sign_in_refused": "No puede iniciar sesión con ningún método hasta que se levante la suspensión.",
+        "data_kept": "Sus datos se conservan.",
+        "memberships_unchanged": "Las membresías de gimnasios y patrocinadores no cambian.",
+        "sign_in_allowed": "Puede volver a iniciar sesión.",
+        "sessions_stay_revoked": "Las sesiones cerradas por la suspensión siguen cerradas."
+      },
+      "preview": "Revisar",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "reload": "Recargar",
+      "stepUp": "Confirma con tu llave de seguridad. Las acciones de alto riesgo necesitan una verificación de llave de los últimos minutos.",
+      "useKey": "Usar llave de seguridad",
+      "submitting": "Procesando… No cierres esta ventana.",
+      "working": "Procesando…",
+      "success": "Hecho. Queda registrado en el registro de auditoría.",
+      "conflict": "Otra persona lo cambió antes. No se cambió nada. Recarga para ver el estado actual.",
+      "unknown": "No sabemos si se completó. No lo reintentes todavía. Recarga la cuenta para comprobarlo.",
+      "failed": "No funcionó. No cambió nada. Inténtalo de nuevo.",
+      "denied": "Ya no tienes permiso para esto. No cambió nada.",
+      "protected": {
+        "self": "No puedes hacer esto con tu propia cuenta.",
+        "operator": "Esta cuenta es de un operador de la plataforma: usa la administración de operadores."
+      }
+    }
   }
 }

@@ -21,6 +21,11 @@ import type {
 
 import type {
   AdminOverviewResponse,
+  AdminUserEmailResponse,
+  AdminUserReadRequest,
+  AdminUserResponse,
+  AdminUserSearchResponse,
+  AdminUserStateResponse,
   ApproveSponsorApplicationRequest,
   ClaimSponsorApplicationRequest,
   ConfirmationRequiredResponse,
@@ -28,9 +33,11 @@ import type {
   EnrollmentRequiredResponse,
   ForbiddenResponse,
   GetAdminOverviewParams,
+  GetAdminUserParams,
   GrantOperatorPermissionPreviewRequest,
   GrantOperatorPermissionRequest,
   InternalErrorResponse,
+  LiftUserSuspensionRequest,
   ListOperatorAuditEventsParams,
   ListSponsorApplicationsForReviewParams,
   NotFoundResponse,
@@ -57,8 +64,10 @@ import type {
   RevokeOperatorPermissionRequest,
   RevokeOperatorPreviewRequest,
   RevokeOperatorRequest,
+  SearchAdminUsersParams,
   SecurityKeyRejectedResponse,
   ServiceUnavailableResponse,
+  SignOutUserEverywhereRequest,
   SponsorApplicationDocumentDownloadResponse,
   SponsorApplicationQueueResponse,
   SponsorApplicationReviewResponse,
@@ -66,6 +75,7 @@ import type {
   SuspendOperatorPreviewRequest,
   SuspendOperatorRequest,
   SuspendSponsorOrganizationRequest,
+  SuspendUserRequest,
   UnauthorizedResponse,
   ValidationErrorResponse,
   VerifyOperatorStepUpRequest,
@@ -5022,6 +5032,1144 @@ export function useCreateOperatorStepUpOptions<TData = Awaited<ReturnType<typeof
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getCreateOperatorStepUpOptionsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getSearchAdminUsersUrl = (params: SearchAdminUsersParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/users?${stringifiedParams}` : `/api/v1/admin/users`
+}
+
+/**
+ * Needs `users.read` and a key check. Exact only: a full email address (case-insensitive) or a user id;
+ * never part of either, never a list. At most one account, with masked addresses. Every search is
+ * recorded with its `reason_code` (`user.searched`), found or not; 60 per operator and hour.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such account.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed query.
+ * * `rate_limited` - too many searches.
+ * @summary Find one account by exact email or user id
+ */
+export const searchAdminUsers = async (params: SearchAdminUsersParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminUserSearchResponse> => {
+
+  return apiFetch<AdminUserSearchResponse>(getSearchAdminUsersUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getSearchAdminUsersQueryKey = (params?: SearchAdminUsersParams,) => {
+    return [
+    `/api/v1/admin/users`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getSearchAdminUsersQueryOptions = <TData = Awaited<ReturnType<typeof searchAdminUsers>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(params: SearchAdminUsersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminUsers>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSearchAdminUsersQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof searchAdminUsers>>> = ({ signal }) => searchAdminUsers(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof searchAdminUsers>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type SearchAdminUsersQueryResult = NonNullable<Awaited<ReturnType<typeof searchAdminUsers>>>
+export type SearchAdminUsersQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useSearchAdminUsers<TData = Awaited<ReturnType<typeof searchAdminUsers>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: SearchAdminUsersParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminUsers>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof searchAdminUsers>>,
+          TError,
+          Awaited<ReturnType<typeof searchAdminUsers>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSearchAdminUsers<TData = Awaited<ReturnType<typeof searchAdminUsers>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: SearchAdminUsersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminUsers>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof searchAdminUsers>>,
+          TError,
+          Awaited<ReturnType<typeof searchAdminUsers>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSearchAdminUsers<TData = Awaited<ReturnType<typeof searchAdminUsers>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: SearchAdminUsersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminUsers>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Find one account by exact email or user id
+ */
+
+export function useSearchAdminUsers<TData = Awaited<ReturnType<typeof searchAdminUsers>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: SearchAdminUsersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminUsers>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getSearchAdminUsersQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetAdminUserUrl = (userId: string,
+    params: GetAdminUserParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/users/${userId}?${stringifiedParams}` : `/api/v1/admin/users/${userId}`
+}
+
+/**
+ * Needs `users.read` and a key check. Recorded with its `reason_code` (`user.viewed`).
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such account.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed query.
+ * @summary One account
+ */
+export const getAdminUser = async (userId: string,
+    params: GetAdminUserParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminUserResponse> => {
+
+  return apiFetch<AdminUserResponse>(getGetAdminUserUrl(userId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminUserQueryKey = (userId: string,
+    params?: GetAdminUserParams,) => {
+    return [
+    `/api/v1/admin/users/${userId}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetAdminUserQueryOptions = <TData = Awaited<ReturnType<typeof getAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(userId: string,
+    params: GetAdminUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminUserQueryKey(userId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminUser>>> = ({ signal }) => getAdminUser(userId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: userId !== null && userId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminUser>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminUserQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminUser>>>
+export type GetAdminUserQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useGetAdminUser<TData = Awaited<ReturnType<typeof getAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ userId: string,
+    params: GetAdminUserParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminUser>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminUser<TData = Awaited<ReturnType<typeof getAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ userId: string,
+    params: GetAdminUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminUser>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminUser<TData = Awaited<ReturnType<typeof getAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ userId: string,
+    params: GetAdminUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One account
+ */
+
+export function useGetAdminUser<TData = Awaited<ReturnType<typeof getAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ userId: string,
+    params: GetAdminUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminUserQueryOptions(userId,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getLiftSuspensionAdminUserUrl = (userId: string,) => {
+
+
+
+
+  return `/api/v1/admin/users/${userId}/lift-suspension`
+}
+
+/**
+ * Needs `users.restrict` and a fresh key check. `suspended` -> `active`: sign-in works again. Revoked sessions stay revoked.
+ *
+ * Needs a one-time `confirmation_token` from a preview of exactly this request (same operator, session,
+ * account, revision and reason), with `reason_code`, `expected_revision` and `operation_id` (a repeat of the
+ * same request returns the current state and changes nothing).
+ * * `conflict` - `details.target: "self"` (the operator's own account), `details.target: "operator"` (a
+ *   platform operator's account: use operator administration), or `details.status`.
+ * * `revision_conflict` - the account changed since `expected_revision`.
+ * * `confirmation_required`, `confirmation_invalid` - missing, expired, used or for another request.
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such account.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed query.
+ * @summary Lift an account's suspension
+ */
+export const liftSuspensionAdminUser = async (userId: string,
+    liftUserSuspensionRequest: LiftUserSuspensionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<AdminUserStateResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<AdminUserStateResponse>(getLiftSuspensionAdminUserUrl(userId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(liftUserSuspensionRequest)
+  }
+);}
+
+
+
+
+
+export const getLiftSuspensionAdminUserQueryKey = (userId: string,
+    liftUserSuspensionRequest?: BodyType<LiftUserSuspensionRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/users/${userId}/lift-suspension`, liftUserSuspensionRequest
+    ] as const;
+    }
+
+
+export const getLiftSuspensionAdminUserQueryOptions = <TData = Awaited<ReturnType<typeof liftSuspensionAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(userId: string,
+    liftUserSuspensionRequest: BodyType<LiftUserSuspensionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof liftSuspensionAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getLiftSuspensionAdminUserQueryKey(userId,liftUserSuspensionRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof liftSuspensionAdminUser>>> = ({ signal }) => liftSuspensionAdminUser(userId,liftUserSuspensionRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: userId !== null && userId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof liftSuspensionAdminUser>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type LiftSuspensionAdminUserQueryResult = NonNullable<Awaited<ReturnType<typeof liftSuspensionAdminUser>>>
+export type LiftSuspensionAdminUserQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useLiftSuspensionAdminUser<TData = Awaited<ReturnType<typeof liftSuspensionAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    liftUserSuspensionRequest: BodyType<LiftUserSuspensionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof liftSuspensionAdminUser>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof liftSuspensionAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof liftSuspensionAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useLiftSuspensionAdminUser<TData = Awaited<ReturnType<typeof liftSuspensionAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    liftUserSuspensionRequest: BodyType<LiftUserSuspensionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof liftSuspensionAdminUser>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof liftSuspensionAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof liftSuspensionAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useLiftSuspensionAdminUser<TData = Awaited<ReturnType<typeof liftSuspensionAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    liftUserSuspensionRequest: BodyType<LiftUserSuspensionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof liftSuspensionAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Lift an account's suspension
+ */
+
+export function useLiftSuspensionAdminUser<TData = Awaited<ReturnType<typeof liftSuspensionAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    liftUserSuspensionRequest: BodyType<LiftUserSuspensionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof liftSuspensionAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getLiftSuspensionAdminUserQueryOptions(userId,liftUserSuspensionRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewLiftSuspensionAdminUserUrl = (userId: string,) => {
+
+
+
+
+  return `/api/v1/admin/users/${userId}/lift-suspension/preview`
+}
+
+/**
+ * Needs `users.restrict` and a fresh key check. Changes nothing; returns the impact and a one-time confirmation.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such account.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed query.
+ * @summary Preview: lift an account's suspension
+ */
+export const previewLiftSuspensionAdminUser = async (userId: string,
+    liftUserSuspensionRequest: LiftUserSuspensionRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewLiftSuspensionAdminUserUrl(userId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(liftUserSuspensionRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewLiftSuspensionAdminUserQueryKey = (userId: string,
+    liftUserSuspensionRequest?: BodyType<LiftUserSuspensionRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/users/${userId}/lift-suspension/preview`, liftUserSuspensionRequest
+    ] as const;
+    }
+
+
+export const getPreviewLiftSuspensionAdminUserQueryOptions = <TData = Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(userId: string,
+    liftUserSuspensionRequest: BodyType<LiftUserSuspensionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewLiftSuspensionAdminUserQueryKey(userId,liftUserSuspensionRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>> = ({ signal }) => previewLiftSuspensionAdminUser(userId,liftUserSuspensionRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: userId !== null && userId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewLiftSuspensionAdminUserQueryResult = NonNullable<Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>>
+export type PreviewLiftSuspensionAdminUserQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewLiftSuspensionAdminUser<TData = Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    liftUserSuspensionRequest: BodyType<LiftUserSuspensionRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewLiftSuspensionAdminUser<TData = Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    liftUserSuspensionRequest: BodyType<LiftUserSuspensionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewLiftSuspensionAdminUser<TData = Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    liftUserSuspensionRequest: BodyType<LiftUserSuspensionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview: lift an account's suspension
+ */
+
+export function usePreviewLiftSuspensionAdminUser<TData = Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    liftUserSuspensionRequest: BodyType<LiftUserSuspensionRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewLiftSuspensionAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewLiftSuspensionAdminUserQueryOptions(userId,liftUserSuspensionRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getRevealAdminUserEmailUrl = (userId: string,) => {
+
+
+
+
+  return `/api/v1/admin/users/${userId}/reveal-email`
+}
+
+/**
+ * Needs `users.reveal_email` and a fresh key check. Recorded with its `reason_code` (`user.email_revealed`) before the addresses are returned.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such account.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed query.
+ * @summary Show an account's full email addresses
+ */
+export const revealAdminUserEmail = async (userId: string,
+    adminUserReadRequest: AdminUserReadRequest, options?: Parameters<typeof apiFetch>[1]): Promise<AdminUserEmailResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<AdminUserEmailResponse>(getRevealAdminUserEmailUrl(userId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(adminUserReadRequest)
+  }
+);}
+
+
+
+
+
+export const getRevealAdminUserEmailQueryKey = (userId: string,
+    adminUserReadRequest?: BodyType<AdminUserReadRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/users/${userId}/reveal-email`, adminUserReadRequest
+    ] as const;
+    }
+
+
+export const getRevealAdminUserEmailQueryOptions = <TData = Awaited<ReturnType<typeof revealAdminUserEmail>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(userId: string,
+    adminUserReadRequest: BodyType<AdminUserReadRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revealAdminUserEmail>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getRevealAdminUserEmailQueryKey(userId,adminUserReadRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof revealAdminUserEmail>>> = ({ signal }) => revealAdminUserEmail(userId,adminUserReadRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: userId !== null && userId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof revealAdminUserEmail>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type RevealAdminUserEmailQueryResult = NonNullable<Awaited<ReturnType<typeof revealAdminUserEmail>>>
+export type RevealAdminUserEmailQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useRevealAdminUserEmail<TData = Awaited<ReturnType<typeof revealAdminUserEmail>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ userId: string,
+    adminUserReadRequest: BodyType<AdminUserReadRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof revealAdminUserEmail>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof revealAdminUserEmail>>,
+          TError,
+          Awaited<ReturnType<typeof revealAdminUserEmail>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRevealAdminUserEmail<TData = Awaited<ReturnType<typeof revealAdminUserEmail>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ userId: string,
+    adminUserReadRequest: BodyType<AdminUserReadRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revealAdminUserEmail>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof revealAdminUserEmail>>,
+          TError,
+          Awaited<ReturnType<typeof revealAdminUserEmail>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRevealAdminUserEmail<TData = Awaited<ReturnType<typeof revealAdminUserEmail>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ userId: string,
+    adminUserReadRequest: BodyType<AdminUserReadRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revealAdminUserEmail>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Show an account's full email addresses
+ */
+
+export function useRevealAdminUserEmail<TData = Awaited<ReturnType<typeof revealAdminUserEmail>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ userId: string,
+    adminUserReadRequest: BodyType<AdminUserReadRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof revealAdminUserEmail>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getRevealAdminUserEmailQueryOptions(userId,adminUserReadRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getSignOutEverywhereAdminUserUrl = (userId: string,) => {
+
+
+
+
+  return `/api/v1/admin/users/${userId}/sign-out-everywhere`
+}
+
+/**
+ * Needs `users.sessions.revoke` and a fresh key check. Revokes every active session; the next request with any of them is refused. The account can sign in again.
+ *
+ * Needs a one-time `confirmation_token` from a preview of exactly this request (same operator, session,
+ * account, revision and reason), with `reason_code`, `expected_revision` and `operation_id` (a repeat of the
+ * same request returns the current state and changes nothing).
+ * * `conflict` - `details.target: "self"` (the operator's own account), `details.target: "operator"` (a
+ *   platform operator's account: use operator administration), or `details.status`.
+ * * `revision_conflict` - the account changed since `expected_revision`.
+ * * `confirmation_required`, `confirmation_invalid` - missing, expired, used or for another request.
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such account.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed query.
+ * @summary Sign an account out everywhere
+ */
+export const signOutEverywhereAdminUser = async (userId: string,
+    signOutUserEverywhereRequest: SignOutUserEverywhereRequest, options?: Parameters<typeof apiFetch>[1]): Promise<AdminUserStateResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<AdminUserStateResponse>(getSignOutEverywhereAdminUserUrl(userId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(signOutUserEverywhereRequest)
+  }
+);}
+
+
+
+
+
+export const getSignOutEverywhereAdminUserQueryKey = (userId: string,
+    signOutUserEverywhereRequest?: BodyType<SignOutUserEverywhereRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/users/${userId}/sign-out-everywhere`, signOutUserEverywhereRequest
+    ] as const;
+    }
+
+
+export const getSignOutEverywhereAdminUserQueryOptions = <TData = Awaited<ReturnType<typeof signOutEverywhereAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(userId: string,
+    signOutUserEverywhereRequest: BodyType<SignOutUserEverywhereRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof signOutEverywhereAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSignOutEverywhereAdminUserQueryKey(userId,signOutUserEverywhereRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof signOutEverywhereAdminUser>>> = ({ signal }) => signOutEverywhereAdminUser(userId,signOutUserEverywhereRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: userId !== null && userId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof signOutEverywhereAdminUser>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type SignOutEverywhereAdminUserQueryResult = NonNullable<Awaited<ReturnType<typeof signOutEverywhereAdminUser>>>
+export type SignOutEverywhereAdminUserQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useSignOutEverywhereAdminUser<TData = Awaited<ReturnType<typeof signOutEverywhereAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    signOutUserEverywhereRequest: BodyType<SignOutUserEverywhereRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof signOutEverywhereAdminUser>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof signOutEverywhereAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof signOutEverywhereAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSignOutEverywhereAdminUser<TData = Awaited<ReturnType<typeof signOutEverywhereAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    signOutUserEverywhereRequest: BodyType<SignOutUserEverywhereRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof signOutEverywhereAdminUser>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof signOutEverywhereAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof signOutEverywhereAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSignOutEverywhereAdminUser<TData = Awaited<ReturnType<typeof signOutEverywhereAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    signOutUserEverywhereRequest: BodyType<SignOutUserEverywhereRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof signOutEverywhereAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Sign an account out everywhere
+ */
+
+export function useSignOutEverywhereAdminUser<TData = Awaited<ReturnType<typeof signOutEverywhereAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    signOutUserEverywhereRequest: BodyType<SignOutUserEverywhereRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof signOutEverywhereAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getSignOutEverywhereAdminUserQueryOptions(userId,signOutUserEverywhereRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewSignOutEverywhereAdminUserUrl = (userId: string,) => {
+
+
+
+
+  return `/api/v1/admin/users/${userId}/sign-out-everywhere/preview`
+}
+
+/**
+ * Needs `users.sessions.revoke` and a fresh key check. Changes nothing; returns the impact and a one-time confirmation.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such account.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed query.
+ * @summary Preview: sign an account out everywhere
+ */
+export const previewSignOutEverywhereAdminUser = async (userId: string,
+    signOutUserEverywhereRequest: SignOutUserEverywhereRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewSignOutEverywhereAdminUserUrl(userId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(signOutUserEverywhereRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewSignOutEverywhereAdminUserQueryKey = (userId: string,
+    signOutUserEverywhereRequest?: BodyType<SignOutUserEverywhereRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/users/${userId}/sign-out-everywhere/preview`, signOutUserEverywhereRequest
+    ] as const;
+    }
+
+
+export const getPreviewSignOutEverywhereAdminUserQueryOptions = <TData = Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(userId: string,
+    signOutUserEverywhereRequest: BodyType<SignOutUserEverywhereRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewSignOutEverywhereAdminUserQueryKey(userId,signOutUserEverywhereRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>> = ({ signal }) => previewSignOutEverywhereAdminUser(userId,signOutUserEverywhereRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: userId !== null && userId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewSignOutEverywhereAdminUserQueryResult = NonNullable<Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>>
+export type PreviewSignOutEverywhereAdminUserQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewSignOutEverywhereAdminUser<TData = Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    signOutUserEverywhereRequest: BodyType<SignOutUserEverywhereRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewSignOutEverywhereAdminUser<TData = Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    signOutUserEverywhereRequest: BodyType<SignOutUserEverywhereRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewSignOutEverywhereAdminUser<TData = Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    signOutUserEverywhereRequest: BodyType<SignOutUserEverywhereRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview: sign an account out everywhere
+ */
+
+export function usePreviewSignOutEverywhereAdminUser<TData = Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    signOutUserEverywhereRequest: BodyType<SignOutUserEverywhereRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSignOutEverywhereAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewSignOutEverywhereAdminUserQueryOptions(userId,signOutUserEverywhereRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getSuspendAdminUserUrl = (userId: string,) => {
+
+
+
+
+  return `/api/v1/admin/users/${userId}/suspend`
+}
+
+/**
+ * Needs `users.restrict` and a fresh key check. `active` -> `suspended`: every session is revoked and no identity (email code, Google, Apple) can sign in until the suspension is lifted. Data, profiles and memberships stay as they are.
+ *
+ * Needs a one-time `confirmation_token` from a preview of exactly this request (same operator, session,
+ * account, revision and reason), with `reason_code`, `expected_revision` and `operation_id` (a repeat of the
+ * same request returns the current state and changes nothing).
+ * * `conflict` - `details.target: "self"` (the operator's own account), `details.target: "operator"` (a
+ *   platform operator's account: use operator administration), or `details.status`.
+ * * `revision_conflict` - the account changed since `expected_revision`.
+ * * `confirmation_required`, `confirmation_invalid` - missing, expired, used or for another request.
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such account.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed query.
+ * @summary Suspend an account
+ */
+export const suspendAdminUser = async (userId: string,
+    suspendUserRequest: SuspendUserRequest, options?: Parameters<typeof apiFetch>[1]): Promise<AdminUserStateResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<AdminUserStateResponse>(getSuspendAdminUserUrl(userId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(suspendUserRequest)
+  }
+);}
+
+
+
+
+
+export const getSuspendAdminUserQueryKey = (userId: string,
+    suspendUserRequest?: BodyType<SuspendUserRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/users/${userId}/suspend`, suspendUserRequest
+    ] as const;
+    }
+
+
+export const getSuspendAdminUserQueryOptions = <TData = Awaited<ReturnType<typeof suspendAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(userId: string,
+    suspendUserRequest: BodyType<SuspendUserRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSuspendAdminUserQueryKey(userId,suspendUserRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof suspendAdminUser>>> = ({ signal }) => suspendAdminUser(userId,suspendUserRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: userId !== null && userId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof suspendAdminUser>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type SuspendAdminUserQueryResult = NonNullable<Awaited<ReturnType<typeof suspendAdminUser>>>
+export type SuspendAdminUserQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useSuspendAdminUser<TData = Awaited<ReturnType<typeof suspendAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    suspendUserRequest: BodyType<SuspendUserRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendAdminUser>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof suspendAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof suspendAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSuspendAdminUser<TData = Awaited<ReturnType<typeof suspendAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    suspendUserRequest: BodyType<SuspendUserRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendAdminUser>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof suspendAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof suspendAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSuspendAdminUser<TData = Awaited<ReturnType<typeof suspendAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    suspendUserRequest: BodyType<SuspendUserRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Suspend an account
+ */
+
+export function useSuspendAdminUser<TData = Awaited<ReturnType<typeof suspendAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    suspendUserRequest: BodyType<SuspendUserRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getSuspendAdminUserQueryOptions(userId,suspendUserRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewSuspendAdminUserUrl = (userId: string,) => {
+
+
+
+
+  return `/api/v1/admin/users/${userId}/suspend/preview`
+}
+
+/**
+ * Needs `users.restrict` and a fresh key check. Changes nothing; returns the impact and a one-time confirmation.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such account.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed query.
+ * @summary Preview: suspend an account
+ */
+export const previewSuspendAdminUser = async (userId: string,
+    suspendUserRequest: SuspendUserRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewSuspendAdminUserUrl(userId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(suspendUserRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewSuspendAdminUserQueryKey = (userId: string,
+    suspendUserRequest?: BodyType<SuspendUserRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/users/${userId}/suspend/preview`, suspendUserRequest
+    ] as const;
+    }
+
+
+export const getPreviewSuspendAdminUserQueryOptions = <TData = Awaited<ReturnType<typeof previewSuspendAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(userId: string,
+    suspendUserRequest: BodyType<SuspendUserRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewSuspendAdminUserQueryKey(userId,suspendUserRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewSuspendAdminUser>>> = ({ signal }) => previewSuspendAdminUser(userId,suspendUserRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: userId !== null && userId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewSuspendAdminUser>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewSuspendAdminUserQueryResult = NonNullable<Awaited<ReturnType<typeof previewSuspendAdminUser>>>
+export type PreviewSuspendAdminUserQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewSuspendAdminUser<TData = Awaited<ReturnType<typeof previewSuspendAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    suspendUserRequest: BodyType<SuspendUserRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendAdminUser>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewSuspendAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof previewSuspendAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewSuspendAdminUser<TData = Awaited<ReturnType<typeof previewSuspendAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    suspendUserRequest: BodyType<SuspendUserRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendAdminUser>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewSuspendAdminUser>>,
+          TError,
+          Awaited<ReturnType<typeof previewSuspendAdminUser>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewSuspendAdminUser<TData = Awaited<ReturnType<typeof previewSuspendAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    suspendUserRequest: BodyType<SuspendUserRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview: suspend an account
+ */
+
+export function usePreviewSuspendAdminUser<TData = Awaited<ReturnType<typeof previewSuspendAdminUser>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ userId: string,
+    suspendUserRequest: BodyType<SuspendUserRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendAdminUser>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewSuspendAdminUserQueryOptions(userId,suspendUserRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

@@ -30,6 +30,7 @@ export function hasAccess(operator: Operator, row: AccessRow): boolean {
 export function visibleNavItems(operator: Operator): string[] {
   return [
     "overview",
+    ...(grants(operator, "users.read") ? ["users"] : []),
     ...(hasAccess(operator, "sponsorOrganizations") || hasAccess(operator, "sponsorApplications")
       ? ["sponsors"]
       : []),
