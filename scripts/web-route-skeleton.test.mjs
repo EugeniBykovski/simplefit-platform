@@ -96,6 +96,8 @@ const REAL_SCREENS = [
   // SF-117: the partner portal's sign-in target is the one sign-in (WA1).
   "web.sponsor.login",
   "web.admin",
+  "web.admin.users",
+  "web.admin.users._user-id",
   "web.admin.login",
   "web.admin.welcome",
   // SF-118: SPX9 settings, the organization's application, and SPE1's
