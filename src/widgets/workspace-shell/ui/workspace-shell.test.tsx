@@ -24,9 +24,14 @@ vi.mock("@/features/switch-theme", () => ({ ThemeSwitcher: () => null }));
 
 const SHELLS = Object.keys(shellNavigation) as SidebarShellId[];
 const GYM_ID = "6f1d2c4e-9a51-4b3e-8c0d-2b6a7e19f3a4";
-/** The gym console's links name its gym (SF-88). */
+const SPONSOR_ID = "0b6d1f3e-2c4a-4e5b-9d7f-8a1c2e3b4d5f";
+/** The gym console's links name its gym (SF-88), the partner portal's its organization (SF-117). */
 const paramsOf = (shell: SidebarShellId): Record<string, string> =>
-  shell === "web.app.gym" ? { gymId: GYM_ID } : {};
+  shell === "web.app.gym"
+    ? { gymId: GYM_ID }
+    : shell === "web.sponsor"
+      ? { sponsorId: SPONSOR_ID }
+      : {};
 
 async function renderShell(shell: SidebarShellId, pathname: string, search = "") {
   location.pathname = `/en${pathname}`;
@@ -42,7 +47,7 @@ async function renderShell(shell: SidebarShellId, pathname: string, search = "")
 }
 
 describe("WorkspaceShell navigation config", () => {
-  it.each(SHELLS.filter((shell) => shell !== "web.app.coach"))(
+  it.each(SHELLS.filter((shell) => shell !== "web.app.coach" && shell !== "web.sponsor"))(
     "%s lists exactly the routed registry nav items",
     (shell) => {
       const configured = shellNavigation[shell].sections.flatMap((section) => section.items);
@@ -65,6 +70,18 @@ describe("WorkspaceShell navigation config", () => {
     for (const key of configured) expect(routed).toContain(key);
     expect(shellNavigation[shell].soon).toEqual(["settings"]);
     expect(new Set(configured).size).toBe(configured.length);
+    for (const key of configured) expect(shellNavigation[shell].icons[key]).toBeDefined();
+  });
+
+  it("web.sponsor shows the partner portal MVP: Overview, then Application and Settings Soon; no campaign domain (SF-117)", () => {
+    const shell = "web.sponsor";
+    const configured = shellNavigation[shell].sections.flatMap((section) => section.items);
+    const routed = webShell(shell)
+      .navItems.filter((item) => item.route)
+      .map((item) => item.key);
+    expect(configured).toEqual(["overview", "applications", "settings"]);
+    for (const key of configured) expect(routed).toContain(key);
+    expect(shellNavigation[shell].soon).toEqual(["applications", "settings"]);
     for (const key of configured) expect(shellNavigation[shell].icons[key]).toBeDefined();
   });
 
@@ -184,19 +201,23 @@ describe("WorkspaceShell", () => {
     expect(screen.getAllByText("switcher:fighter").length).toBeGreaterThan(0);
   });
 
-  it("uses the query for sponsor Challenges and Events", async () => {
-    const nav = await renderShell("web.sponsor", "/sponsor/campaigns", "type=event");
-    expect(within(nav).getByRole("link", { name: "Events" })).toHaveAttribute(
+  it("links the partner portal of the organization in the path; nothing of campaigns (SF-117)", async () => {
+    const nav = await renderShell("web.sponsor", `/sponsor/${SPONSOR_ID}/dashboard`);
+    const links = within(nav).getAllByRole("link");
+    expect(links).toHaveLength(1);
+    expect(within(nav).getByRole("link", { name: "Overview" })).toHaveAttribute(
+      "href",
+      `/en/sponsor/${SPONSOR_ID}/dashboard`,
+    );
+    expect(within(nav).getByRole("link", { name: "Overview" })).toHaveAttribute(
       "aria-current",
       "page",
     );
-    expect(within(nav).getByRole("link", { name: "Events" })).toHaveAttribute(
-      "href",
-      "/en/sponsor/campaigns?type=event",
-    );
-    expect(within(nav).getByRole("link", { name: "Campaigns" })).not.toHaveAttribute(
-      "aria-current",
-    );
+    for (const label of ["Applications", "Settings"]) {
+      expect(within(nav).queryByRole("link", { name: label })).toBeNull();
+      expect(within(nav).getByText(label).closest("[aria-disabled]")).toHaveTextContent("Soon");
+    }
+    expect(within(nav).queryByText(/Campaigns|Challenges|Events|Invoices/)).toBeNull();
   });
 
   it("renders the design's sections, the content and a translated shell", async () => {

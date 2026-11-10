@@ -7,7 +7,7 @@ import type { EntryResponseEntry } from "@/shared/api/generated/model";
 import { jsonResponse, renderWithProviders } from "@/test/render";
 
 import { ContextSwitcher } from "./context-switcher";
-import { CoachGate, FighterGate, GymGate } from "./workspace-gate";
+import { CoachGate, FighterGate, GymGate, SponsorGate } from "./workspace-gate";
 
 /*
  * The Fighter / Coach context switcher (SF-54) inside a real workspace gate,
@@ -333,5 +333,112 @@ describe("gym workspaces in the switcher (SF-88)", () => {
       "href",
       "/en/app/gyms",
     );
+  });
+});
+
+describe("sponsor organizations in the switcher (SF-117, SPE1 organization switcher)", () => {
+  const HAYMAKER = "4c2e8a1d-6b3f-4e7a-9c5d-2f1b8e3a7d60";
+  const AGENCY = "7e1d3b5f-9a2c-4d8e-b6f0-3a5c7e9b1d24";
+  const SPONSORS = entry({
+    capabilities: ["COACH", "SPONSOR_WORKSPACE"],
+    sponsor_workspaces: [
+      { sponsor_id: HAYMAKER, display_name: "Haymaker Drinks", role: "owner", selected: false },
+      { sponsor_id: AGENCY, display_name: "Agency", role: "member", selected: false },
+    ],
+    sponsor_workspace_count: 2,
+  });
+
+  it("lists only the organizations the entry reports, with their roles, beside the profiles", async () => {
+    api({ initial: SPONSORS });
+    const menu = await renderCoach();
+    expect(
+      within(menu).getByRole("menuitemradio", { name: /Haymaker Drinks.*Owner/ }),
+    ).toHaveAttribute("aria-checked", "false");
+    expect(within(menu).getByRole("menuitemradio", { name: /Agency.*Member/ })).toBeVisible();
+    expect(within(menu).getByRole("menuitemradio", { name: /Coach/ })).toHaveAttribute(
+      "aria-checked",
+      "true",
+    );
+  });
+
+  it("shows no sponsor section to a user without an organization (an applicant included)", async () => {
+    api({ initial: entry({}) });
+    const menu = await renderCoach();
+    expect(within(menu).queryByText("Your sponsor organizations")).toBeNull();
+  });
+
+  it("records the sponsor choice, then opens the portal that names the organization", async () => {
+    const calls = api({ initial: SPONSORS });
+    const menu = await renderCoach();
+    await user.click(within(menu).getByRole("menuitemradio", { name: /Agency/ }));
+    await waitFor(() =>
+      expect(navigation.push).toHaveBeenCalledExactlyOnceWith(`/sponsor/${AGENCY}/dashboard`),
+    );
+    expect(calls.writes()).toEqual([
+      {
+        method: "PUT",
+        path: "/api/v1/me/entry/context",
+        body: { context: "sponsor", sponsor_id: AGENCY },
+      },
+    ]);
+  });
+
+  it("keeps the user here and re-reads the entry when the organization was suspended or revoked meanwhile (404)", async () => {
+    const calls = api({ initial: SPONSORS, choice: [{ status: 404 }] });
+    const menu = await renderCoach();
+    const before = calls.entryReads().length;
+    await user.click(within(menu).getByRole("menuitemradio", { name: /Haymaker Drinks/ }));
+    expect(await within(menu).findByRole("alert")).toHaveTextContent("We couldn’t switch.");
+    expect(navigation.push).not.toHaveBeenCalled();
+    await waitFor(() => expect(calls.entryReads().length).toBeGreaterThan(before));
+  });
+
+  it("is the partner portal's identity block: the organization, its status and the other contexts", async () => {
+    navigation.pathname = `/sponsor/${HAYMAKER}/dashboard`;
+    const calls = api({
+      initial: { ...SPONSORS, destination: "sponsor_home", sponsor_id: HAYMAKER },
+    });
+    await renderWithProviders(
+      <SponsorGate pending={<p>pending</p>} failure={<p>failure</p>}>
+        <ContextSwitcher
+          sponsor={{ id: HAYMAKER, name: "Haymaker Drinks", role: "owner", status: "active" }}
+        />
+      </SponsorGate>,
+    );
+    const trigger = await screen.findByRole("button", {
+      name: "Haymaker Drinks, Owner. Switch organization or profile",
+    });
+    expect(trigger).toHaveTextContent("Sponsor · Active");
+    await user.click(trigger);
+    const menu = await screen.findByRole("menu");
+    const current = within(menu).getByRole("menuitemradio", { name: /Haymaker Drinks/ });
+    expect(current).toHaveAttribute("aria-checked", "true");
+    await user.click(current);
+    expect(calls.writes()).toEqual([]);
+    expect(navigation.push).not.toHaveBeenCalled();
+    expect(within(menu).getByRole("menuitemradio", { name: /Coach/ })).toHaveAttribute(
+      "aria-checked",
+      "false",
+    );
+  });
+
+  it("sends a user without SPONSOR_WORKSPACE where the entry says, never into a portal", async () => {
+    navigation.pathname = `/sponsor/${HAYMAKER}/dashboard`;
+    api({
+      initial: entry({
+        destination: "sponsor_application_status",
+        reason: "sponsor_application_submitted",
+        capabilities: [],
+        coach_profile: "not_started",
+        context: null,
+      }),
+    });
+    await renderWithProviders(
+      <SponsorGate pending={<p>pending</p>} failure={<p>failure</p>}>
+        <p>portal</p>
+      </SponsorGate>,
+    );
+    await waitFor(() => expect(navigation.replace).toHaveBeenCalledWith("/partners/apply"));
+    expect(screen.queryByText("portal")).toBeNull();
   });
 });

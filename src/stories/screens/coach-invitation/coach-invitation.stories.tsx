@@ -82,6 +82,9 @@ const entry = (fighter: "completed" | "in_progress") =>
       gym_id: null,
       gym_workspaces: [],
       gym_workspace_count: 0,
+      sponsor_id: null,
+      sponsor_workspaces: [],
+      sponsor_workspace_count: 0,
       capabilities: fighter === "completed" ? ["FIGHTER"] : [],
     },
   });
