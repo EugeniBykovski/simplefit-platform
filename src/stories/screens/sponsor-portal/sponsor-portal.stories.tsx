@@ -140,6 +140,18 @@ const APPLICATION = ok({
   },
 });
 
+/** The viewer's first run (SF-119): stories that aren't about it show the kept outcome, so nothing opens. */
+const firstRun = (status: string) =>
+  ok({
+    first_run: {
+      sponsor_id: HAYMAKER,
+      status,
+      started_at: status === "not_started" ? null : "2026-11-10T10:00:00Z",
+      completed_at: status === "completed" ? "2026-11-10T10:05:00Z" : null,
+      dismissed_at: null,
+    },
+  });
+
 function story({
   read,
   role = "owner",
@@ -147,6 +159,7 @@ function story({
   page = <SponsorOverview />,
   path = "dashboard",
   contacts = CONTACTS,
+  run = firstRun("completed"),
   play,
 }: {
   read: Answer;
@@ -155,6 +168,7 @@ function story({
   page?: ReactNode;
   path?: string;
   contacts?: Answer;
+  run?: Answer;
   play?: StoryObj["play"];
 }): StoryObj {
   return {
@@ -175,6 +189,10 @@ function story({
         "/api/v1/me/sponsor-application": application,
         [`/api/v1/sponsor-organizations/${HAYMAKER}/members`]: MEMBERS,
         [`/api/v1/sponsor-organizations/${HAYMAKER}/contacts`]: contacts,
+        [`/api/v1/sponsor-organizations/${HAYMAKER}/first-run`]: run,
+        [`POST /api/v1/sponsor-organizations/${HAYMAKER}/first-run/start`]: firstRun("in_progress"),
+        [`POST /api/v1/sponsor-organizations/${HAYMAKER}/first-run/complete`]:
+          firstRun("completed"),
         "PUT /api/v1/me/entry/context": ok(undefined, 204),
       }),
     render: () => (
@@ -370,3 +388,89 @@ export const Unsupported = story({
   },
 });
 Unsupported.name = "SPE1 · unsupported feature (campaigns, analytics, invoices)";
+
+const welcome = (canvasElement: HTMLElement) =>
+  within(canvasElement).findByRole(
+    "region",
+    { name: "Welcome to your workspace" },
+    { timeout: 5000 },
+  );
+
+export const WelcomeOwner = story({
+  read: ok(organization("active", "owner")),
+  run: firstRun("not_started"),
+  play: async ({ canvasElement }) => {
+    await expect(await welcome(canvasElement)).toBeVisible();
+  },
+});
+WelcomeOwner.name = "SRW1 · welcome (owner)";
+
+export const WelcomeMember = story({
+  read: ok(organization("active", "member")),
+  role: "member",
+  run: firstRun("not_started"),
+  play: async ({ canvasElement }) => {
+    await expect(await welcome(canvasElement)).toBeVisible();
+  },
+});
+WelcomeMember.name = "SRW1 · welcome (member)";
+
+export const WelcomeInProgress = story({
+  read: ok(organization("active", "owner")),
+  run: firstRun("in_progress"),
+  play: async ({ canvasElement }) => {
+    await expect(
+      await within(canvasElement).findByRole(
+        "button",
+        { name: "Continue the tour" },
+        { timeout: 5000 },
+      ),
+    ).toBeVisible();
+  },
+});
+WelcomeInProgress.name = "SRW1 · tour started on another device";
+
+/** SRW2 at step `step` (1–6): the welcome's "Take the tour", then Next. */
+const tourAt =
+  (step: number): StoryObj["play"] =>
+  async ({ canvasElement }) => {
+    await userEvent.click(
+      within(await welcome(canvasElement)).getByRole("button", { name: "Take the tour" }),
+    );
+    const tour = await within(document.body).findByRole("dialog", {}, { timeout: 5000 });
+    for (let i = 1; i < step; i += 1) {
+      await userEvent.click(within(tour).getByRole("button", { name: "Next" }));
+    }
+  };
+
+export const TourStart = story({
+  read: ok(organization("active", "owner")),
+  run: firstRun("not_started"),
+  play: tourAt(1),
+});
+TourStart.name = "SRW2 · 1 of 6, start here";
+
+export const TourMenu = story({
+  read: ok(organization("active", "owner")),
+  run: firstRun("not_started"),
+  play: tourAt(2),
+});
+TourMenu.name = "SRW2 · 2 of 6, the overview in the menu";
+
+export const TourFuture = story({
+  read: ok(organization("active", "member")),
+  role: "member",
+  run: firstRun("not_started"),
+  play: tourAt(6),
+});
+TourFuture.name = "SRW2 · 6 of 6, what isn't here yet";
+
+export const TourPhone = {
+  ...story({
+    read: ok(organization("active", "owner")),
+    run: firstRun("not_started"),
+    play: tourAt(2),
+  }),
+  globals: { viewport: { value: "phone", isRotated: false } },
+} satisfies StoryObj;
+TourPhone.name = "SRW2 · docked, phone 390";
