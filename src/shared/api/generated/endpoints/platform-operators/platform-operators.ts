@@ -20,12 +20,14 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AdminOverviewResponse,
   ApproveSponsorApplicationRequest,
   ClaimSponsorApplicationRequest,
   ConfirmationRequiredResponse,
   ConflictResponse,
   EnrollmentRequiredResponse,
   ForbiddenResponse,
+  GetAdminOverviewParams,
   GrantOperatorPermissionPreviewRequest,
   GrantOperatorPermissionRequest,
   InternalErrorResponse,
@@ -2693,6 +2695,123 @@ export function usePreviewSuspendOperator<TData = Awaited<ReturnType<typeof prev
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getPreviewSuspendOperatorQueryOptions(operatorId,suspendOperatorPreviewRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetAdminOverviewUrl = (params?: GetAdminOverviewParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/overview?${stringifiedParams}` : `/api/v1/admin/overview`
+}
+
+/**
+ * Needs a key check of this session and at least one of `platform.dashboard.read` (platform counts;
+ * the operator count also `operators.read`), `sponsors.applications.read` (the sponsor review queue)
+ * or `system.health.read` (health). Each section the operator can't see is `restricted`, without a
+ * value. Not audited per load (counts only); refusals are.
+ *
+ * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route).
+ * * `enrollment_required` - the viewer's security keys aren't registered yet.
+ * * `forbidden` - none of the overview's permissions is granted.
+ * * `step_up_required` - no key check in this session.
+ * * `validation_error` - `period` isn't `24h`, `7d` or `30d`.
+ * @summary The Control Plane overview
+ */
+export const getAdminOverview = async (params?: GetAdminOverviewParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminOverviewResponse> => {
+
+  return apiFetch<AdminOverviewResponse>(getGetAdminOverviewUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminOverviewQueryKey = (params?: GetAdminOverviewParams,) => {
+    return [
+    `/api/v1/admin/overview`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetAdminOverviewQueryOptions = <TData = Awaited<ReturnType<typeof getAdminOverview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(params?: GetAdminOverviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminOverview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminOverviewQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminOverview>>> = ({ signal }) => getAdminOverview(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminOverview>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminOverviewQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminOverview>>>
+export type GetAdminOverviewQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useGetAdminOverview<TData = Awaited<ReturnType<typeof getAdminOverview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params: undefined |  GetAdminOverviewParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminOverview>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminOverview>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminOverview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminOverview<TData = Awaited<ReturnType<typeof getAdminOverview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: GetAdminOverviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminOverview>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminOverview>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminOverview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminOverview<TData = Awaited<ReturnType<typeof getAdminOverview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: GetAdminOverviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminOverview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary The Control Plane overview
+ */
+
+export function useGetAdminOverview<TData = Awaited<ReturnType<typeof getAdminOverview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: GetAdminOverviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminOverview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminOverviewQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

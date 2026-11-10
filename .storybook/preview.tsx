@@ -2,6 +2,7 @@ import type { Preview } from "@storybook/nextjs-vite";
 import { withThemeByClassName } from "@storybook/addon-themes";
 import { NextIntlClientProvider } from "next-intl";
 
+import { formats } from "@/shared/i18n/formats";
 import { fontVariables } from "@/shared/styles/fonts";
 import { Toaster } from "@/shared/ui/sonner";
 import { TooltipProvider } from "@/shared/ui/tooltip";
@@ -73,7 +74,7 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <NextIntlClientProvider locale="en" messages={messages} timeZone="UTC">
+      <NextIntlClientProvider locale="en" messages={messages} formats={formats} timeZone="UTC">
         <TooltipProvider>
           <Story />
           <Toaster />

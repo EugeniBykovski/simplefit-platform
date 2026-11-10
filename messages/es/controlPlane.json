@@ -172,5 +172,118 @@
         "body": "No volverás a ver este recorrido. Todo lo que mostró sigue en el menú."
       }
     }
+  },
+  "overview": {
+    "metaTitle": "Vista general · Panel de control",
+    "breadcrumb": "Panel de control",
+    "title": "Vista general",
+    "period": {
+      "label": "Novedades en",
+      "options": {
+        "24h": "24 horas",
+        "7d": "7 días",
+        "30d": "30 días"
+      },
+      "inPeriod": {
+        "24h": "en las últimas 24 horas",
+        "7d": "en los últimos 7 días",
+        "30d": "en los últimos 30 días"
+      }
+    },
+    "population": {
+      "title": "Recuento",
+      "asOf": "Estado a {time} · un recuento, no una tendencia",
+      "stats": {
+        "accounts": {
+          "label": "Cuentas",
+          "caption": "registradas · {notFinished, plural, one {# sin terminar} other {# sin terminar}}",
+          "period": "{count, plural, one {# registrada} other {# registradas}} {range}"
+        },
+        "fighter_profiles": {
+          "label": "Perfiles de boxeadores",
+          "caption": "perfiles completados",
+          "period": "{count, plural, one {# completado} other {# completados}} {range}"
+        },
+        "coach_profiles": {
+          "label": "Perfiles de entrenadores",
+          "caption": "perfiles completados",
+          "period": "{count, plural, one {# completado} other {# completados}} {range}"
+        },
+        "gyms": {
+          "label": "Gimnasios",
+          "caption": "configurados · {drafts, plural, one {# borrador} other {# borradores}}",
+          "period": "{count, plural, one {# completó la configuración} other {# completaron la configuración}} {range}"
+        },
+        "sponsor_organizations": {
+          "label": "Organizaciones patrocinadoras",
+          "caption": "activas · {suspended, plural, one {# suspendida} other {# suspendidas}}",
+          "period": "{count, plural, one {# aprobada} other {# aprobadas}} {range}"
+        },
+        "operators": {
+          "label": "Operadores",
+          "caption": "activos"
+        }
+      },
+      "restricted": "Sin acceso",
+      "restrictedHint": "Necesitas un permiso que no tienes"
+    },
+    "reviews": {
+      "title": "Pendiente de revisión",
+      "sponsorApplications": {
+        "label": "Solicitudes de patrocinadores",
+        "caption": "enviadas o en revisión",
+        "period": "{range}: {submitted} enviadas por primera vez · {approved} aprobadas · {rejected} rechazadas"
+      },
+      "gymVerifications": {
+        "label": "Verificaciones de gimnasios",
+        "unavailable": "Aún no disponible: los operadores no revisan gimnasios."
+      },
+      "moderation": "La moderación no está disponible: aún no existe un sistema de denuncias.",
+      "nothing": "No hay nada pendiente."
+    },
+    "health": {
+      "title": "Estado del sistema",
+      "checks": {
+        "database": "Base de datos",
+        "background_jobs": "Tareas en segundo plano",
+        "payments_webhooks": "Webhooks de pagos",
+        "email_provider": "Proveedor de correo"
+      },
+      "status": {
+        "healthy": "Correcto",
+        "degraded": "Degradado",
+        "unknown": "Desconocido",
+        "no_telemetry": "Sin telemetría",
+        "unavailable": "No disponible"
+      },
+      "jobs": "{waiting} en espera · {discarded} descartadas en 24 h",
+      "lastWebhook": "Último webhook {time}",
+      "noWebhook": "No se ha recibido ningún webhook",
+      "note": "«Desconocido» nunca se muestra como «Correcto». Nada de esto es una cifra de disponibilidad."
+    },
+    "banner": {
+      "provider": {
+        "title": "Un proveedor no está disponible.",
+        "body": "Consulta el estado del sistema."
+      },
+      "degraded": {
+        "title": "Algunas tareas en segundo plano fallaron en las últimas 24 horas.",
+        "body": "Consulta el estado del sistema."
+      }
+    },
+    "restricted": "Otras secciones requieren permisos que no tienes.",
+    "forbidden": {
+      "title": "La vista general requiere permisos que no tienes",
+      "body": "Un gestor de operadores puede concedértelos. Aquí nada se oculta como cero."
+    },
+    "unavailable": "—",
+    "loading": "Cargando la vista general",
+    "error": {
+      "pill": "No se pudo cargar",
+      "title": "No pudimos cargar esto",
+      "body": "No cambió nada. Inténtalo de nuevo.",
+      "retry": "Reintentar"
+    },
+    "updating": "Actualizando…"
   }
 }

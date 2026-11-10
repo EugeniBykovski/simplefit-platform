@@ -7127,7 +7127,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(admin)/admin/page.tsx",
-        "note": "SF-120: the Control Plane shell behind the operator gate (AdminWorkspace): GET /api/v1/admin/me decides AD0 (checking, unavailable for a non-, suspended or revoked operator alike, enrolment of the required security keys, key check, reverify, recovery guidance) until an active operator holds a key check for this session; the nav lists only the overview and the granted sections (all Soon), and the operator block shows the key check time left and Exit control plane. The overview page itself stays the canonical feature placeholder (AD1 is built by its own ticket); while the backend offers control_plane_web_tour it sends the operator to ARW1 once."
+        "note": "SF-121: AD1, the Control Plane overview (AdminOverview MVP) behind the SF-120 operator gate: platform counts, the sponsor review queue and system health from GET /api/v1/admin/overview, each section shown only with its permission and never as zero without it; a 24 h / 7 d / 30 d period drives only the explicit 'new in the last …' counts; no trends. While the backend offers control_plane_web_tour it sends the operator to ARW1 once. Metric definitions: simplefit-api docs/architecture/admin-overview-metrics.md; design deviations: docs/admin-design/sf-121-design-register.md."
       },
       "screens": ["AD1"]
     },

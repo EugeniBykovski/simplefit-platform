@@ -172,5 +172,118 @@
         "body": "Vous ne reverrez pas cette visite. Tout ce qu’elle a montré reste dans le menu."
       }
     }
+  },
+  "overview": {
+    "metaTitle": "Vue d’ensemble · Plan de contrôle",
+    "breadcrumb": "Plan de contrôle",
+    "title": "Vue d’ensemble",
+    "period": {
+      "label": "Nouveautés sur",
+      "options": {
+        "24h": "24 heures",
+        "7d": "7 jours",
+        "30d": "30 jours"
+      },
+      "inPeriod": {
+        "24h": "au cours des dernières 24 heures",
+        "7d": "au cours des 7 derniers jours",
+        "30d": "au cours des 30 derniers jours"
+      }
+    },
+    "population": {
+      "title": "Effectifs",
+      "asOf": "État à {time} · un décompte, pas une tendance",
+      "stats": {
+        "accounts": {
+          "label": "Comptes",
+          "caption": "inscrits · {notFinished, plural, one {# inachevé} other {# inachevés}}",
+          "period": "{count, plural, one {# inscrit} other {# inscrits}} {range}"
+        },
+        "fighter_profiles": {
+          "label": "Profils de boxeurs",
+          "caption": "profils complétés",
+          "period": "{count, plural, one {# complété} other {# complétés}} {range}"
+        },
+        "coach_profiles": {
+          "label": "Profils de coachs",
+          "caption": "profils complétés",
+          "period": "{count, plural, one {# complété} other {# complétés}} {range}"
+        },
+        "gyms": {
+          "label": "Salles",
+          "caption": "configurées · {drafts, plural, one {# brouillon} other {# brouillons}}",
+          "period": "{count, plural, one {# configuration terminée} other {# configurations terminées}} {range}"
+        },
+        "sponsor_organizations": {
+          "label": "Organisations sponsors",
+          "caption": "actives · {suspended, plural, one {# suspendue} other {# suspendues}}",
+          "period": "{count, plural, one {# approuvée} other {# approuvées}} {range}"
+        },
+        "operators": {
+          "label": "Opérateurs",
+          "caption": "actifs"
+        }
+      },
+      "restricted": "Aucun accès",
+      "restrictedHint": "Nécessite une autorisation que vous n’avez pas"
+    },
+    "reviews": {
+      "title": "En attente d’examen",
+      "sponsorApplications": {
+        "label": "Candidatures de sponsors",
+        "caption": "soumises ou en cours d’examen",
+        "period": "{range} : {submitted} soumises pour la première fois · {approved} approuvées · {rejected} refusées"
+      },
+      "gymVerifications": {
+        "label": "Vérifications de salles",
+        "unavailable": "Pas encore disponible : les opérateurs n’examinent pas les salles."
+      },
+      "moderation": "La modération n’est pas disponible : il n’existe pas encore de système de signalements.",
+      "nothing": "Rien n’est en attente."
+    },
+    "health": {
+      "title": "État du système",
+      "checks": {
+        "database": "Base de données",
+        "background_jobs": "Tâches en arrière-plan",
+        "payments_webhooks": "Webhooks de paiement",
+        "email_provider": "Fournisseur d’e-mail"
+      },
+      "status": {
+        "healthy": "Opérationnel",
+        "degraded": "Dégradé",
+        "unknown": "Inconnu",
+        "no_telemetry": "Aucune télémétrie",
+        "unavailable": "Indisponible"
+      },
+      "jobs": "{waiting} en attente · {discarded} abandonnées en 24 h",
+      "lastWebhook": "Dernier webhook {time}",
+      "noWebhook": "Aucun webhook reçu",
+      "note": "« Inconnu » n’est jamais affiché comme « Opérationnel ». Rien ici n’est un taux de disponibilité."
+    },
+    "banner": {
+      "provider": {
+        "title": "Un fournisseur est indisponible.",
+        "body": "Consultez l’état du système."
+      },
+      "degraded": {
+        "title": "Certaines tâches en arrière-plan ont échoué au cours des dernières 24 heures.",
+        "body": "Consultez l’état du système."
+      }
+    },
+    "restricted": "D’autres sections nécessitent des autorisations que vous n’avez pas.",
+    "forbidden": {
+      "title": "La vue d’ensemble nécessite des autorisations que vous n’avez pas",
+      "body": "Un responsable des opérateurs peut vous les accorder. Rien n’est masqué ici sous forme de zéro."
+    },
+    "unavailable": "—",
+    "loading": "Chargement de la vue d’ensemble",
+    "error": {
+      "pill": "Échec du chargement",
+      "title": "Nous n’avons pas pu charger ceci",
+      "body": "Rien n’a changé. Réessayez.",
+      "retry": "Réessayer"
+    },
+    "updating": "Mise à jour…"
   }
 }
