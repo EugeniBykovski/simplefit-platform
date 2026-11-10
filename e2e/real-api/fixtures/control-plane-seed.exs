@@ -2,7 +2,7 @@
 #
 # Run by the spec inside the simplefit-api checkout:
 #
-#     MIX_ENV=dev DATABASE_URL=<disposable e2e database> mix run <this file> user <email>
+#     MIX_ENV=dev DATABASE_URL=<disposable e2e database> mix run <this file> user <email> [coach]
 #
 # It only calls SimpleFit's public context functions, on a database whose name
 # contains "e2e" (anything else is refused before a write), and prints one line:
@@ -13,7 +13,7 @@
 # Test-only legal fixtures (simplefit-api/test/support/legal) are loaded in memory
 # for this process, as the API server of the run loads them.
 
-alias SimpleFit.{Accounts, Fighters, Repo}
+alias SimpleFit.{Accounts, Coaches, Fighters, Repo}
 
 %{rows: [[database]]} = Repo.query!("select current_database()")
 
@@ -29,7 +29,7 @@ Application.put_env(:simple_fit, SimpleFit.Legal,
 SimpleFit.Legal.Registry.load()
 
 case System.argv() do
-  ["user", email] ->
+  ["user", email | rest] ->
     {:ok, user} = Accounts.register_user(:email, email)
 
     {:ok, _} =
@@ -53,5 +53,20 @@ case System.argv() do
       })
 
     {:ok, _} = Fighters.complete_onboarding(user)
+
+    # SF-121: `coach` makes the same account a coach too (one user, two contexts).
+    if rest == ["coach"] do
+      {:ok, _} =
+        Coaches.update_profile(user, %{
+          "display_name" => "E2E Coach",
+          "brand_name" => "E2E Boxing",
+          "country_code" => "PL",
+          "city" => "Warsaw",
+          "coaching_formats" => ["personal_training"]
+        })
+
+      {:ok, _} = Coaches.complete_onboarding(user)
+    end
+
     IO.puts("USER #{user.id}")
 end

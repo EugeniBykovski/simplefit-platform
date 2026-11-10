@@ -183,6 +183,10 @@ development ceremony, which only bootstraps the first operator of a database
 SQL only ages a key check, revokes the operator (the client's answer to the 404 is
 under test) and reads results.
 
+`control-plane-overview.spec.ts` (SF-121) runs on the same setup (a fresh database each run) and
+checks every number the overview shows against SQL written from the metric catalog
+(simplefit-api `docs/architecture/admin-overview-metrics.md`).
+
 ## Run
 
 ```bash
