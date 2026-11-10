@@ -61,6 +61,3 @@ export const SPONSOR_TOUR_STEPS: readonly SponsorTourStep[] = [
   },
   { id: "future", target: "future", placement: "left", spot: { padX: 4, padY: 4, radius: "4xl" } },
 ];
-
-/** Below this width the card docks to the bottom of the viewport, without a spotlight (SRW2 docked). */
-export const DOCK_BELOW = 1024;
