@@ -172,5 +172,118 @@
         "body": "Nie zobaczysz ponownie tego przewodnika. Wszystko, co pokazał, jest w menu."
       }
     }
+  },
+  "overview": {
+    "metaTitle": "Przegląd · Panel sterowania",
+    "breadcrumb": "Panel sterowania",
+    "title": "Przegląd",
+    "period": {
+      "label": "Nowe w ciągu ostatnich",
+      "options": {
+        "24h": "24 godzin",
+        "7d": "7 dni",
+        "30d": "30 dni"
+      },
+      "inPeriod": {
+        "24h": "w ciągu ostatnich 24 godzin",
+        "7d": "w ciągu ostatnich 7 dni",
+        "30d": "w ciągu ostatnich 30 dni"
+      }
+    },
+    "population": {
+      "title": "Liczebność",
+      "asOf": "Stan na {time} · to liczba, nie trend",
+      "stats": {
+        "accounts": {
+          "label": "Konta",
+          "caption": "zarejestrowane · {notFinished, plural, one {# niedokończone} few {# niedokończone} many {# niedokończonych} other {# niedokończonego}}",
+          "period": "{count, plural, one {# zarejestrowane} few {# zarejestrowane} many {# zarejestrowanych} other {# zarejestrowanego}} {range}"
+        },
+        "fighter_profiles": {
+          "label": "Profile zawodników",
+          "caption": "ukończone profile",
+          "period": "{count, plural, one {# ukończony} few {# ukończone} many {# ukończonych} other {# ukończonego}} {range}"
+        },
+        "coach_profiles": {
+          "label": "Profile trenerów",
+          "caption": "ukończone profile",
+          "period": "{count, plural, one {# ukończony} few {# ukończone} many {# ukończonych} other {# ukończonego}} {range}"
+        },
+        "gyms": {
+          "label": "Kluby",
+          "caption": "skonfigurowane · {drafts, plural, one {# szkic} few {# szkice} many {# szkiców} other {# szkicu}}",
+          "period": "{count, plural, one {# skonfigurowany} few {# skonfigurowane} many {# skonfigurowanych} other {# skonfigurowanego}} {range}"
+        },
+        "sponsor_organizations": {
+          "label": "Organizacje sponsorów",
+          "caption": "aktywne · {suspended, plural, one {# zawieszona} few {# zawieszone} many {# zawieszonych} other {# zawieszonej}}",
+          "period": "{count, plural, one {# zatwierdzona} few {# zatwierdzone} many {# zatwierdzonych} other {# zatwierdzonej}} {range}"
+        },
+        "operators": {
+          "label": "Operatorzy",
+          "caption": "aktywni"
+        }
+      },
+      "restricted": "Brak dostępu",
+      "restrictedHint": "Wymaga uprawnienia, którego nie masz"
+    },
+    "reviews": {
+      "title": "Czeka na weryfikację",
+      "sponsorApplications": {
+        "label": "Zgłoszenia sponsorów",
+        "caption": "złożone lub w trakcie weryfikacji",
+        "period": "{range}: złożone po raz pierwszy: {submitted} · zatwierdzone: {approved} · odrzucone: {rejected}"
+      },
+      "gymVerifications": {
+        "label": "Weryfikacje klubów",
+        "unavailable": "Jeszcze niedostępne: operatorzy nie weryfikują klubów."
+      },
+      "moderation": "Moderacja jest niedostępna: nie ma jeszcze modułu zgłoszeń.",
+      "nothing": "Nic nie czeka."
+    },
+    "health": {
+      "title": "Stan systemu",
+      "checks": {
+        "database": "Baza danych",
+        "background_jobs": "Zadania w tle",
+        "payments_webhooks": "Webhooki płatności",
+        "email_provider": "Dostawca e-maili"
+      },
+      "status": {
+        "healthy": "Sprawny",
+        "degraded": "Zakłócenia",
+        "unknown": "Nieznany",
+        "no_telemetry": "Brak telemetrii",
+        "unavailable": "Niedostępny"
+      },
+      "jobs": "oczekujące: {waiting} · odrzucone w ciągu 24 h: {discarded}",
+      "lastWebhook": "Ostatni webhook {time}",
+      "noWebhook": "Nie odebrano żadnego webhooka",
+      "note": "Stan „Nieznany” nigdy nie jest pokazywany jako „Sprawny”. Nic tutaj nie jest wskaźnikiem dostępności."
+    },
+    "banner": {
+      "provider": {
+        "title": "Dostawca jest niedostępny.",
+        "body": "Zobacz stan systemu."
+      },
+      "degraded": {
+        "title": "Część zadań w tle nie powiodła się w ciągu ostatnich 24 godzin.",
+        "body": "Zobacz stan systemu."
+      }
+    },
+    "restricted": "Pozostałe sekcje wymagają uprawnień, których nie masz.",
+    "forbidden": {
+      "title": "Przegląd wymaga uprawnień, których nie masz",
+      "body": "Może je nadać menedżer operatorów. Nic tutaj nie jest ukrywane jako zero."
+    },
+    "unavailable": "—",
+    "loading": "Wczytywanie przeglądu",
+    "error": {
+      "pill": "Nie wczytano",
+      "title": "Nie udało się tego wczytać",
+      "body": "Nic się nie zmieniło. Spróbuj ponownie.",
+      "retry": "Spróbuj ponownie"
+    },
+    "updating": "Aktualizowanie…"
   }
 }

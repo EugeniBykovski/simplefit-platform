@@ -172,5 +172,118 @@
         "body": "You won’t see this again. Everything it showed stays in the menu."
       }
     }
+  },
+  "overview": {
+    "metaTitle": "Overview · Control plane",
+    "breadcrumb": "Control plane",
+    "title": "Overview",
+    "period": {
+      "label": "New in the last",
+      "options": {
+        "24h": "24 hours",
+        "7d": "7 days",
+        "30d": "30 days"
+      },
+      "inPeriod": {
+        "24h": "in the last 24 hours",
+        "7d": "in the last 7 days",
+        "30d": "in the last 30 days"
+      }
+    },
+    "population": {
+      "title": "Population",
+      "asOf": "As of {time} · a count, not a trend",
+      "stats": {
+        "accounts": {
+          "label": "Accounts",
+          "caption": "registered · {notFinished, plural, one {# not finished} other {# not finished}}",
+          "period": "{count, plural, one {# registered} other {# registered}} {range}"
+        },
+        "fighter_profiles": {
+          "label": "Fighter profiles",
+          "caption": "completed profiles",
+          "period": "{count, plural, one {# completed} other {# completed}} {range}"
+        },
+        "coach_profiles": {
+          "label": "Coach profiles",
+          "caption": "completed profiles",
+          "period": "{count, plural, one {# completed} other {# completed}} {range}"
+        },
+        "gyms": {
+          "label": "Gyms",
+          "caption": "completed · {drafts, plural, one {# draft} other {# drafts}}",
+          "period": "{count, plural, one {# completed setup} other {# completed setup}} {range}"
+        },
+        "sponsor_organizations": {
+          "label": "Sponsor orgs",
+          "caption": "active · {suspended, plural, one {# suspended} other {# suspended}}",
+          "period": "{count, plural, one {# approved} other {# approved}} {range}"
+        },
+        "operators": {
+          "label": "Operators",
+          "caption": "active"
+        }
+      },
+      "restricted": "No access",
+      "restrictedHint": "Needs a permission you don’t have"
+    },
+    "reviews": {
+      "title": "Waiting for review",
+      "sponsorApplications": {
+        "label": "Sponsor applications",
+        "caption": "submitted or under review",
+        "period": "{range}: {submitted} first submitted · {approved} approved · {rejected} rejected"
+      },
+      "gymVerifications": {
+        "label": "Gym verifications",
+        "unavailable": "Not available yet: there’s no operator review for gyms."
+      },
+      "moderation": "Moderation isn’t available: there’s no reports domain yet.",
+      "nothing": "Nothing is waiting."
+    },
+    "health": {
+      "title": "System health",
+      "checks": {
+        "database": "Database",
+        "background_jobs": "Background jobs",
+        "payments_webhooks": "Payments webhooks",
+        "email_provider": "Email provider"
+      },
+      "status": {
+        "healthy": "Healthy",
+        "degraded": "Degraded",
+        "unknown": "Unknown",
+        "no_telemetry": "No telemetry",
+        "unavailable": "Unavailable"
+      },
+      "jobs": "{waiting} waiting · {discarded} discarded in 24 h",
+      "lastWebhook": "Last webhook {time}",
+      "noWebhook": "No webhook received",
+      "note": "Unknown is never shown as healthy. Nothing here is an uptime figure."
+    },
+    "banner": {
+      "provider": {
+        "title": "A provider is unavailable.",
+        "body": "See system health."
+      },
+      "degraded": {
+        "title": "Some background jobs failed in the last 24 hours.",
+        "body": "See system health."
+      }
+    },
+    "restricted": "Other sections need permissions you don’t have.",
+    "forbidden": {
+      "title": "The overview needs permissions you don’t have",
+      "body": "An operator manager can grant them. Nothing here is hidden as zero."
+    },
+    "unavailable": "—",
+    "loading": "Loading overview",
+    "error": {
+      "pill": "Couldn’t load",
+      "title": "We couldn’t load this",
+      "body": "Nothing has changed. Try again.",
+      "retry": "Try again"
+    },
+    "updating": "Updating…"
   }
 }

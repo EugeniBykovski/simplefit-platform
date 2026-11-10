@@ -172,5 +172,118 @@
         "body": "Du siehst diese Tour nicht wieder. Alles, was sie gezeigt hat, findest du im Menü."
       }
     }
+  },
+  "overview": {
+    "metaTitle": "Übersicht · Steuerzentrale",
+    "breadcrumb": "Steuerzentrale",
+    "title": "Übersicht",
+    "period": {
+      "label": "Neu in den letzten",
+      "options": {
+        "24h": "24 Stunden",
+        "7d": "7 Tagen",
+        "30d": "30 Tagen"
+      },
+      "inPeriod": {
+        "24h": "in den letzten 24 Stunden",
+        "7d": "in den letzten 7 Tagen",
+        "30d": "in den letzten 30 Tagen"
+      }
+    },
+    "population": {
+      "title": "Bestand",
+      "asOf": "Stand {time} · eine Anzahl, kein Trend",
+      "stats": {
+        "accounts": {
+          "label": "Konten",
+          "caption": "registriert · {notFinished, plural, one {# nicht abgeschlossen} other {# nicht abgeschlossen}}",
+          "period": "{count, plural, one {# registriert} other {# registriert}} {range}"
+        },
+        "fighter_profiles": {
+          "label": "Kämpferprofile",
+          "caption": "abgeschlossene Profile",
+          "period": "{count, plural, one {# abgeschlossen} other {# abgeschlossen}} {range}"
+        },
+        "coach_profiles": {
+          "label": "Coach-Profile",
+          "caption": "abgeschlossene Profile",
+          "period": "{count, plural, one {# abgeschlossen} other {# abgeschlossen}} {range}"
+        },
+        "gyms": {
+          "label": "Studios",
+          "caption": "eingerichtet · {drafts, plural, one {# Entwurf} other {# Entwürfe}}",
+          "period": "{count, plural, one {# Einrichtung abgeschlossen} other {# Einrichtungen abgeschlossen}} {range}"
+        },
+        "sponsor_organizations": {
+          "label": "Sponsor-Organisationen",
+          "caption": "aktiv · {suspended, plural, one {# gesperrt} other {# gesperrt}}",
+          "period": "{count, plural, one {# genehmigt} other {# genehmigt}} {range}"
+        },
+        "operators": {
+          "label": "Operatoren",
+          "caption": "aktiv"
+        }
+      },
+      "restricted": "Kein Zugriff",
+      "restrictedHint": "Erfordert eine Berechtigung, die du nicht hast"
+    },
+    "reviews": {
+      "title": "Wartet auf Prüfung",
+      "sponsorApplications": {
+        "label": "Sponsor-Bewerbungen",
+        "caption": "eingereicht oder in Prüfung",
+        "period": "{range}: {submitted} erstmals eingereicht · {approved} genehmigt · {rejected} abgelehnt"
+      },
+      "gymVerifications": {
+        "label": "Studio-Verifizierungen",
+        "unavailable": "Noch nicht verfügbar: Es gibt keine Operator-Prüfung für Studios."
+      },
+      "moderation": "Moderation ist nicht verfügbar: Es gibt noch keinen Bereich für Meldungen.",
+      "nothing": "Nichts wartet."
+    },
+    "health": {
+      "title": "Systemzustand",
+      "checks": {
+        "database": "Datenbank",
+        "background_jobs": "Hintergrundjobs",
+        "payments_webhooks": "Zahlungs-Webhooks",
+        "email_provider": "E-Mail-Anbieter"
+      },
+      "status": {
+        "healthy": "Intakt",
+        "degraded": "Gestört",
+        "unknown": "Unbekannt",
+        "no_telemetry": "Keine Telemetrie",
+        "unavailable": "Nicht verfügbar"
+      },
+      "jobs": "{waiting} wartend · {discarded} verworfen in 24 Std.",
+      "lastWebhook": "Letzter Webhook {time}",
+      "noWebhook": "Kein Webhook empfangen",
+      "note": "„Unbekannt“ wird nie als „Intakt“ angezeigt. Nichts hier ist eine Uptime-Kennzahl."
+    },
+    "banner": {
+      "provider": {
+        "title": "Ein Anbieter ist nicht verfügbar.",
+        "body": "Sieh dir den Systemzustand an."
+      },
+      "degraded": {
+        "title": "Einige Hintergrundjobs sind in den letzten 24 Stunden fehlgeschlagen.",
+        "body": "Sieh dir den Systemzustand an."
+      }
+    },
+    "restricted": "Für andere Bereiche brauchst du Berechtigungen, die du nicht hast.",
+    "forbidden": {
+      "title": "Für die Übersicht brauchst du Berechtigungen, die du nicht hast",
+      "body": "Ein Operator-Manager kann sie dir erteilen. Nichts wird hier als Null ausgegeben."
+    },
+    "unavailable": "—",
+    "loading": "Übersicht wird geladen",
+    "error": {
+      "pill": "Nicht geladen",
+      "title": "Wir konnten das nicht laden",
+      "body": "Nichts hat sich geändert. Versuch es noch einmal.",
+      "retry": "Erneut versuchen"
+    },
+    "updating": "Wird aktualisiert…"
   }
 }
