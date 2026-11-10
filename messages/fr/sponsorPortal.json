@@ -34,7 +34,11 @@
     "title": "Vue d’ensemble",
     "organization": {
       "label": "Organisation",
-      "role": "Votre rôle : {role}"
+      "role": "Votre rôle : {role}",
+      "legalName": "Raison sociale",
+      "country": "Pays",
+      "website": "Site web",
+      "details": "Informations de l’organisation"
     },
     "application": {
       "label": "Candidature",
@@ -45,7 +49,106 @@
     },
     "notYet": {
       "title": "Pas encore disponible",
-      "body": "Les campagnes, opportunités de sponsoring, analyses et factures ne font pas partie de SimpleFit aujourd’hui. Il n’y a rien à configurer, et rien n’est en cours."
+      "body": "Les campagnes, opportunités de sponsoring, analyses et factures ne font pas partie de SimpleFit aujourd’hui. Il n’y a rien à configurer, et rien n’est en cours.",
+      "badge": "À venir",
+      "items": {
+        "campaigns": "Campagnes",
+        "opportunities": "Opportunités de sponsoring",
+        "analytics": "Analyses",
+        "invoices": "Factures"
+      }
+    },
+    "access": {
+      "title": "Votre accès",
+      "lead": "Ce que votre adhésion vous permet ici aujourd’hui :",
+      "members": "Membres"
     }
+  },
+  "memberStatuses": {
+    "active": "Actif",
+    "suspended": "Suspendu"
+  },
+  "permissions": {
+    "view_organization": "Lire les informations de l’organisation",
+    "view_members": "Voir ses membres",
+    "view_contacts": "Voir ses contacts professionnels"
+  },
+  "settings": {
+    "metaTitle": "Paramètres du portail partenaire",
+    "title": "Paramètres",
+    "sectionsLabel": "Sections des paramètres",
+    "sections": {
+      "organization": "Organisation",
+      "contact": "Contact",
+      "members": "Membres",
+      "application": "Candidature",
+      "account": "Votre compte"
+    },
+    "readOnly": "Ces informations ne peuvent pas encore être modifiées dans SimpleFit.",
+    "notProvided": "Non renseigné",
+    "organization": {
+      "title": "Profil de l’entreprise",
+      "legalName": "Raison sociale",
+      "brandName": "Nom de marque",
+      "website": "Site web",
+      "country": "Pays",
+      "status": "Statut",
+      "since": "Sur SimpleFit depuis"
+    },
+    "contact": {
+      "title": "Contact professionnel",
+      "lead": "La personne avec qui SimpleFit échange au sujet de cette organisation. Cela ne change pas la façon dont quiconque se connecte.",
+      "kinds": {
+        "primary": "Contact principal",
+        "additional": "Contact supplémentaire"
+      },
+      "name": "Nom",
+      "position": "Fonction",
+      "email": "E-mail professionnel",
+      "phone": "Téléphone",
+      "restricted": "Les contacts professionnels sont visibles par un propriétaire ou un gestionnaire de cette organisation.",
+      "empty": "Aucun contact professionnel enregistré."
+    },
+    "members": {
+      "title": "Membres",
+      "you": "vous",
+      "unnamed": "Membre SimpleFit",
+      "more": "Afficher plus de membres",
+      "empty": "Aucun membre à afficher.",
+      "readOnly": "Inviter des personnes, changer les rôles et transférer la propriété ne sont pas encore disponibles.",
+      "line": "{role} · {you}"
+    },
+    "application": {
+      "title": "Historique de la candidature",
+      "lead": "La candidature qui a créé cette organisation. Les réponses sont en lecture seule.",
+      "action": "Voir la candidature"
+    },
+    "account": {
+      "title": "Votre compte",
+      "lead": "Votre nom, vos méthodes de connexion et votre sécurité appartiennent à votre compte SimpleFit, pas à cette organisation.",
+      "action": "Paramètres du compte",
+      "soon": "Bientôt"
+    }
+  },
+  "application": {
+    "metaTitle": "Candidature",
+    "eyebrow": "Portail partenaire",
+    "title": "Candidature",
+    "own": {
+      "title": "Examinée par SimpleFit",
+      "status": "Approuvée",
+      "submitted": "Envoyée le {date}",
+      "answers": "Vos réponses envoyées"
+    },
+    "other": {
+      "title": "Seule la personne qui a candidaté peut la voir",
+      "body": "La candidature qui a créé cette organisation appartient au compte qui l’a envoyée. Elle n’est pas partagée avec les autres membres."
+    }
+  },
+  "unsupported": {
+    "metaTitle": "Indisponible",
+    "title": "Cela ne fait pas encore partie de SimpleFit",
+    "body": "Les campagnes, analyses et factures n’existent pas aujourd’hui. Il n’y a rien à configurer ici, et rien n’est en cours.",
+    "action": "Retour à la vue d’ensemble"
   }
 }

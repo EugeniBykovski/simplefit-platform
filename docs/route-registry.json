@@ -558,8 +558,24 @@
         },
         {
           "key": "applications",
-          "label": "Applications",
+          "label": "Application",
           "route": "web.sponsor.application"
+        },
+        {
+          "key": "organization",
+          "label": "Organization",
+          "route": "web.sponsor.settings",
+          "query": {
+            "section": "organization"
+          }
+        },
+        {
+          "key": "members",
+          "label": "Members",
+          "route": "web.sponsor.settings",
+          "query": {
+            "section": "members"
+          }
         },
         {
           "key": "campaigns",
@@ -2223,7 +2239,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/campaigns/new/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26); the id stays (frozen)."
+        "note": "SF-118: SPE1 'Unsupported feature' inside the partner portal: the page says the feature isn't part of SimpleFit yet (no campaign, analytics or invoice domain exists: D-SA21, D-SA23, D-SA24) and links back to the overview. Never mock data; hidden from the sidebar."
       },
       "screens": ["SRW2", "SPC1", "SPC2", "SPC3", "SPC4", "SPC5", "SPC6"]
     },
@@ -6907,7 +6923,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/application/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26; the id stays, frozen) as the organization's application inside its portal (phase ACTIVE); an applicant's status before any organization exists is web.partners.apply?step=status (SF-115)."
+        "note": "SF-118: the organization's application inside the portal: the viewer's own application (GET /api/v1/me/sponsor-application) when it created this organization, its status and its answers read-only; anyone else is told only the applicant can see it (no endpoint exposes an organization's application to its members). An applicant before approval uses web.partners.apply?step=status (SF-115)."
       },
       "screens": ["SPX5"]
     },
@@ -6933,7 +6949,7 @@
       "discrepancies": ["D-SPONSOR-NAV"],
       "production": {
         "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/campaigns/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26); the id stays (frozen)."
+        "note": "SF-118: SPE1 'Unsupported feature' inside the partner portal: the page says the feature isn't part of SimpleFit yet (no campaign, analytics or invoice domain exists: D-SA21, D-SA23, D-SA24) and links back to the overview. Never mock data; hidden from the sidebar."
       },
       "screens": ["SPX6"]
     },
@@ -6958,7 +6974,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/campaigns/[campaignId]/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26); the id stays (frozen)."
+        "note": "SF-118: SPE1 'Unsupported feature' inside the partner portal: the page says the feature isn't part of SimpleFit yet (no campaign, analytics or invoice domain exists: D-SA21, D-SA23, D-SA24) and links back to the overview. Never mock data; hidden from the sidebar."
       },
       "screens": ["SPC7"]
     },
@@ -6984,7 +7000,7 @@
       "discrepancies": ["D-SPONSOR-NAV"],
       "production": {
         "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/analytics/[campaignId]/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26); the id stays (frozen)."
+        "note": "SF-118: SPE1 'Unsupported feature' inside the partner portal: the page says the feature isn't part of SimpleFit yet (no campaign, analytics or invoice domain exists: D-SA21, D-SA23, D-SA24) and links back to the overview. Never mock data; hidden from the sidebar."
       },
       "screens": ["SPX7"]
     },
@@ -7009,7 +7025,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/invoices/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26); the id stays (frozen)."
+        "note": "SF-118: SPE1 'Unsupported feature' inside the partner portal: the page says the feature isn't part of SimpleFit yet (no campaign, analytics or invoice domain exists: D-SA21, D-SA23, D-SA24) and links back to the overview. Never mock data; hidden from the sidebar."
       },
       "screens": ["SPX8"]
     },
@@ -7024,7 +7040,7 @@
       "parent": null,
       "nav": {
         "type": "NAV_ITEM",
-        "from": ["web.sponsor#settings"]
+        "from": ["web.sponsor#settings", "web.sponsor#organization", "web.sponsor#members"]
       },
       "access": {
         "session": "AUTHENTICATED",
@@ -7034,7 +7050,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/settings/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket. SF-117: re-keyed under /sponsor/:sponsorId (D-SA26); the id stays (frozen)."
+        "note": "SF-118: SPX9 (MVP) for the organization in the path, sections as query state (?section=organization|contact|members|application|account; the sidebar's Organization and Members open theirs). Everything is read-only: the API has no organization, contact or membership write (D-SA08, D-SA12 undecided), so no edit, invite, role change, transfer or leave control is rendered. Organization from GET /api/v1/sponsor-organizations/{sponsor_id}; contacts from …/contacts for owner and manager only (view_contacts; 403 otherwise, never requested without the permission); members from …/members, paged. Your account explains that the account isn't the organization's; account settings show as Soon (WS1 isn't built). Notifications and Privacy are not built (they would state unapproved claims). A suspended organization shows the SPX9 suspended notice."
       },
       "screens": ["SPX9"]
     },

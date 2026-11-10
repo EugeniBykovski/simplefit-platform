@@ -34,7 +34,11 @@
     "title": "Übersicht",
     "organization": {
       "label": "Organisation",
-      "role": "Deine Rolle: {role}"
+      "role": "Deine Rolle: {role}",
+      "legalName": "Rechtlicher Name",
+      "country": "Land",
+      "website": "Website",
+      "details": "Angaben zur Organisation"
     },
     "application": {
       "label": "Bewerbung",
@@ -45,7 +49,106 @@
     },
     "notYet": {
       "title": "Noch nicht verfügbar",
-      "body": "Kampagnen, Sponsoring-Möglichkeiten, Analysen und Rechnungen gibt es in SimpleFit heute nicht. Es gibt nichts einzurichten, und nichts läuft."
+      "body": "Kampagnen, Sponsoring-Möglichkeiten, Analysen und Rechnungen gibt es in SimpleFit heute nicht. Es gibt nichts einzurichten, und nichts läuft.",
+      "badge": "Zukünftig",
+      "items": {
+        "campaigns": "Kampagnen",
+        "opportunities": "Sponsoring-Möglichkeiten",
+        "analytics": "Analysen",
+        "invoices": "Rechnungen"
+      }
+    },
+    "access": {
+      "title": "Dein Zugang",
+      "lead": "Was deine Mitgliedschaft hier heute erlaubt:",
+      "members": "Mitglieder"
     }
+  },
+  "memberStatuses": {
+    "active": "Aktiv",
+    "suspended": "Gesperrt"
+  },
+  "permissions": {
+    "view_organization": "Angaben der Organisation lesen",
+    "view_members": "Ihre Mitglieder sehen",
+    "view_contacts": "Ihre Geschäftskontakte sehen"
+  },
+  "settings": {
+    "metaTitle": "Einstellungen des Partnerportals",
+    "title": "Einstellungen",
+    "sectionsLabel": "Bereiche der Einstellungen",
+    "sections": {
+      "organization": "Organisation",
+      "contact": "Kontakt",
+      "members": "Mitglieder",
+      "application": "Bewerbung",
+      "account": "Dein Konto"
+    },
+    "readOnly": "Diese Angaben lassen sich in SimpleFit noch nicht ändern.",
+    "notProvided": "Nicht angegeben",
+    "organization": {
+      "title": "Unternehmensprofil",
+      "legalName": "Rechtlicher Name",
+      "brandName": "Markenname",
+      "website": "Website",
+      "country": "Land",
+      "status": "Status",
+      "since": "Bei SimpleFit seit"
+    },
+    "contact": {
+      "title": "Geschäftskontakt",
+      "lead": "Mit wem SimpleFit über diese Organisation spricht. Das ändert nichts daran, wie sich jemand anmeldet.",
+      "kinds": {
+        "primary": "Hauptkontakt",
+        "additional": "Weiterer Kontakt"
+      },
+      "name": "Name",
+      "position": "Position",
+      "email": "Geschäftliche E-Mail",
+      "phone": "Telefon",
+      "restricted": "Geschäftskontakte sehen Inhaber und Manager dieser Organisation.",
+      "empty": "Kein Geschäftskontakt hinterlegt."
+    },
+    "members": {
+      "title": "Mitglieder",
+      "you": "du",
+      "unnamed": "SimpleFit-Mitglied",
+      "more": "Weitere Mitglieder anzeigen",
+      "empty": "Keine Mitglieder anzuzeigen.",
+      "readOnly": "Einladungen, Rollenwechsel und Eigentümerübertragung sind noch nicht verfügbar.",
+      "line": "{role} · {you}"
+    },
+    "application": {
+      "title": "Bewerbungsverlauf",
+      "lead": "Die Bewerbung, aus der diese Organisation entstanden ist. Die Antworten sind schreibgeschützt.",
+      "action": "Bewerbung ansehen"
+    },
+    "account": {
+      "title": "Dein Konto",
+      "lead": "Dein Name, deine Anmeldemethoden und deine Sicherheit gehören zu deinem SimpleFit-Konto, nicht zu dieser Organisation.",
+      "action": "Kontoeinstellungen",
+      "soon": "Bald"
+    }
+  },
+  "application": {
+    "metaTitle": "Bewerbung",
+    "eyebrow": "Partnerportal",
+    "title": "Bewerbung",
+    "own": {
+      "title": "Von SimpleFit geprüft",
+      "status": "Genehmigt",
+      "submitted": "Eingereicht am {date}",
+      "answers": "Deine eingereichten Antworten"
+    },
+    "other": {
+      "title": "Nur die Person, die sich beworben hat, sieht sie",
+      "body": "Die Bewerbung, aus der diese Organisation entstanden ist, gehört zu dem Konto, das sie gesendet hat. Sie wird nicht mit anderen Mitgliedern geteilt."
+    }
+  },
+  "unsupported": {
+    "metaTitle": "Nicht verfügbar",
+    "title": "Das gibt es in SimpleFit noch nicht",
+    "body": "Kampagnen, Analysen und Rechnungen gibt es heute nicht. Hier gibt es nichts einzurichten, und nichts läuft.",
+    "action": "Zurück zur Übersicht"
   }
 }

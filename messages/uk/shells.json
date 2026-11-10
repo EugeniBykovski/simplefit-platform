@@ -89,7 +89,9 @@
     },
     "nav": {
       "overview": "Огляд",
-      "applications": "Заявки",
+      "applications": "Заявка",
+      "organization": "Організація",
+      "members": "Учасники",
       "campaigns": "Кампанії",
       "challenges": "Челенджі",
       "events": "Події",

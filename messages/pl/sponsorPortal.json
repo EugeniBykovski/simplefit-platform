@@ -34,7 +34,11 @@
     "title": "Przegląd",
     "organization": {
       "label": "Organizacja",
-      "role": "Twoja rola: {role}"
+      "role": "Twoja rola: {role}",
+      "legalName": "Nazwa prawna",
+      "country": "Kraj",
+      "website": "Strona internetowa",
+      "details": "Dane organizacji"
     },
     "application": {
       "label": "Zgłoszenie",
@@ -45,7 +49,106 @@
     },
     "notYet": {
       "title": "Jeszcze niedostępne",
-      "body": "Kampanii, możliwości sponsorskich, analityki i faktur nie ma dziś w SimpleFit. Nie ma czego konfigurować i nic nie jest uruchomione."
+      "body": "Kampanii, możliwości sponsorskich, analityki i faktur nie ma dziś w SimpleFit. Nie ma czego konfigurować i nic nie jest uruchomione.",
+      "badge": "W przyszłości",
+      "items": {
+        "campaigns": "Kampanie",
+        "opportunities": "Możliwości sponsorskie",
+        "analytics": "Analityka",
+        "invoices": "Faktury"
+      }
+    },
+    "access": {
+      "title": "Twój dostęp",
+      "lead": "Na co pozwala Ci tu dziś członkostwo:",
+      "members": "Członkowie"
     }
+  },
+  "memberStatuses": {
+    "active": "Aktywny",
+    "suspended": "Zawieszony"
+  },
+  "permissions": {
+    "view_organization": "Czytać dane organizacji",
+    "view_members": "Widzieć jej członków",
+    "view_contacts": "Widzieć jej kontakty biznesowe"
+  },
+  "settings": {
+    "metaTitle": "Ustawienia portalu partnera",
+    "title": "Ustawienia",
+    "sectionsLabel": "Sekcje ustawień",
+    "sections": {
+      "organization": "Organizacja",
+      "contact": "Kontakt",
+      "members": "Członkowie",
+      "application": "Zgłoszenie",
+      "account": "Twoje konto"
+    },
+    "readOnly": "Tych danych nie można jeszcze zmienić w SimpleFit.",
+    "notProvided": "Nie podano",
+    "organization": {
+      "title": "Profil firmy",
+      "legalName": "Nazwa prawna",
+      "brandName": "Nazwa marki",
+      "website": "Strona internetowa",
+      "country": "Kraj",
+      "status": "Status",
+      "since": "W SimpleFit od"
+    },
+    "contact": {
+      "title": "Kontakt biznesowy",
+      "lead": "Z kim SimpleFit rozmawia o tej organizacji. Nie zmienia to sposobu logowania nikogo.",
+      "kinds": {
+        "primary": "Kontakt główny",
+        "additional": "Kontakt dodatkowy"
+      },
+      "name": "Imię i nazwisko",
+      "position": "Stanowisko",
+      "email": "E-mail służbowy",
+      "phone": "Telefon",
+      "restricted": "Kontakty biznesowe widzi właściciel lub menedżer tej organizacji.",
+      "empty": "Nie zapisano kontaktu biznesowego."
+    },
+    "members": {
+      "title": "Członkowie",
+      "you": "Ty",
+      "unnamed": "Członek SimpleFit",
+      "more": "Pokaż więcej członków",
+      "empty": "Brak członków do pokazania.",
+      "readOnly": "Zapraszanie, zmiana ról i przekazanie własności nie są jeszcze dostępne.",
+      "line": "{role} · {you}"
+    },
+    "application": {
+      "title": "Historia zgłoszenia",
+      "lead": "Zgłoszenie, z którego powstała ta organizacja. Odpowiedzi są tylko do odczytu.",
+      "action": "Zobacz zgłoszenie"
+    },
+    "account": {
+      "title": "Twoje konto",
+      "lead": "Imię, metody logowania i bezpieczeństwo należą do Twojego konta SimpleFit, a nie do tej organizacji.",
+      "action": "Ustawienia konta",
+      "soon": "Wkrótce"
+    }
+  },
+  "application": {
+    "metaTitle": "Zgłoszenie",
+    "eyebrow": "Portal partnera",
+    "title": "Zgłoszenie",
+    "own": {
+      "title": "Rozpatrzone przez SimpleFit",
+      "status": "Zatwierdzone",
+      "submitted": "Wysłane {date}",
+      "answers": "Twoje przesłane odpowiedzi"
+    },
+    "other": {
+      "title": "Widzi je tylko osoba, która je złożyła",
+      "body": "Zgłoszenie, z którego powstała ta organizacja, należy do konta, które je wysłało. Nie jest udostępniane innym członkom."
+    }
+  },
+  "unsupported": {
+    "metaTitle": "Niedostępne",
+    "title": "Tego jeszcze nie ma w SimpleFit",
+    "body": "Kampanii, analityki i faktur dziś nie ma. Nie ma tu czego konfigurować i nic nie jest uruchomione.",
+    "action": "Wróć do przeglądu"
   }
 }

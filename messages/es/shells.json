@@ -89,7 +89,9 @@
     },
     "nav": {
       "overview": "Resumen",
-      "applications": "Solicitudes",
+      "applications": "Solicitud",
+      "organization": "Organización",
+      "members": "Miembros",
       "campaigns": "Campañas",
       "challenges": "Retos",
       "events": "Eventos",
