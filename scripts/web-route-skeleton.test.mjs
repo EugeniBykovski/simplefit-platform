@@ -95,6 +95,8 @@ const REAL_SCREENS = [
   "web.sponsor.dashboard",
   // SF-117: the partner portal's sign-in target is the one sign-in (WA1).
   "web.sponsor.login",
+  "web.admin.login",
+  "web.admin.welcome",
   // SF-118: SPX9 settings, the organization's application, and SPE1's
   // "isn't part of SimpleFit yet" for the pages without a domain.
   "web.sponsor.settings",
@@ -223,7 +225,6 @@ describe("shells", () => {
     for (const [file, shell] of [
       ["src/app/[locale]/app/(fighter)/layout.tsx", "web.app.fighter"],
       ["src/app/[locale]/app/coach/layout.tsx", "web.app.coach"],
-      ["src/app/[locale]/(admin)/admin/layout.tsx", "web.admin"],
     ]) {
       expect(read(file)).toContain(`<WorkspaceShell shell="${shell}">`);
     }
@@ -236,6 +237,11 @@ describe("shells", () => {
     );
     expect(read("src/widgets/sponsor-workspace/ui/sponsor-workspace.tsx")).toContain(
       'shell="web.sponsor"',
+    );
+    // SF-120: the Control Plane renders its shell behind the operator gate.
+    expect(read("src/app/[locale]/(admin)/admin/layout.tsx")).toContain("<AdminWorkspace>");
+    expect(read("src/widgets/admin-workspace/ui/admin-workspace.tsx")).toContain(
+      'shell="web.admin"',
     );
   });
 });

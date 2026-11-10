@@ -159,6 +159,30 @@ session, SQL only moves an expiry, resets rate limits and reads results, and dir
 member API calls appear only where a refusal or another client's view is the point.
 Member invitations must be on, as in dev. Google and Apple sign-in are not covered.
 
+## Control Plane (SF-120)
+
+`control-plane.spec.ts` runs the Control Plane entry and first visit in Chrome only:
+security keys are Chrome DevTools Protocol virtual authenticators (CTAP2 over USB,
+user verification, not backup-eligible; one backup-eligible key proves synced
+passkeys are refused). WebAuthn needs a hostname, not an IP, so the web runs at
+`http://localhost:3100` and the API must accept that origin:
+
+```bash
+env -u RESEND_API_KEY MIX_ENV=dev PORT=4120 DATABASE_URL=$E2E_DB PHX_SERVER=true \
+  CORS_ALLOWED_ORIGINS=http://localhost:3100 WEB_APP_URL=http://localhost:3100 \
+  SIMPLEFIT_DEV_WEBAUTHN_ORIGIN=http://localhost:3100 \
+  mix run --no-halt -e 'Application.put_env(:simple_fit, SimpleFit.Legal, registry_path: "test/support/legal", allow_test_fixtures: true); SimpleFit.Legal.Registry.load()'
+NEXT_PUBLIC_API_URL=http://localhost:4120 pnpm build
+```
+
+Run `MIX_ENV=dev mix operators.dev_ceremony …` once before starting the API so
+development trusts its key (`.operator-dev/`, outside Git). Accounts come from
+`fixtures/control-plane-seed.exs`; the spec bootstraps its operator with the
+development ceremony, which only bootstraps the first operator of a database
+(`operator_exists`), so every run needs a freshly migrated disposable database.
+SQL only ages a key check, revokes the operator (the client's answer to the 404 is
+under test) and reads results.
+
 ## Run
 
 ```bash

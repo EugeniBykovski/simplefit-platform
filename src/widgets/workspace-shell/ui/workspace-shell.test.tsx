@@ -246,4 +246,23 @@ describe("WorkspaceShell", () => {
     await renderShell("web.admin", "/admin/audit");
     expect(screen.getByText("Internal")).toBeInTheDocument();
   });
+
+  it("lists only the visible items and hides emptied sections (Control Plane, SF-120)", async () => {
+    location.pathname = "/en/admin";
+    location.search = "";
+    await renderWithProviders(
+      <WorkspaceShell shell="web.admin" visibleItems={["overview", "audit"]}>
+        <p>content</p>
+      </WorkspaceShell>,
+    );
+    const nav = screen.getAllByRole("navigation")[0];
+    if (!nav) throw new Error("no navigation rendered");
+    expect(within(nav).getByRole("link", { name: "Global overview" })).toBeVisible();
+    // Granted but not built yet: a labelled, unlinked "Soon" row.
+    expect(within(nav).getByText("Audit log")).toBeVisible();
+    expect(within(nav).queryByRole("link", { name: /Audit log/ })).toBeNull();
+    expect(within(nav).queryByText("Revenue")).toBeNull();
+    expect(within(nav).queryByRole("heading", { name: "Revenue" })).toBeNull();
+    expect(within(nav).queryByText("Internal access")).toBeNull();
+  });
 });
