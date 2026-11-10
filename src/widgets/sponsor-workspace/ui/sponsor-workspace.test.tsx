@@ -151,7 +151,7 @@ describe("SponsorWorkspace and the SPX4 overview (SF-117)", () => {
     expect(await screen.findByText("Reviewed by SimpleFit")).toBeVisible();
     expect(screen.getByRole("link", { name: "View application" })).toHaveAttribute(
       "href",
-      "/en/partners/apply?step=status",
+      `/en/sponsor/${HAYMAKER}/application`,
     );
   });
 

@@ -73,15 +73,15 @@ describe("WorkspaceShell navigation config", () => {
     for (const key of configured) expect(shellNavigation[shell].icons[key]).toBeDefined();
   });
 
-  it("web.sponsor shows the partner portal MVP: Overview, then Application and Settings Soon; no campaign domain (SF-117)", () => {
+  it("web.sponsor shows the partner portal MVP: Overview, Application, Organization, Members and Settings; no campaign domain (SF-118)", () => {
     const shell = "web.sponsor";
     const configured = shellNavigation[shell].sections.flatMap((section) => section.items);
     const routed = webShell(shell)
       .navItems.filter((item) => item.route)
       .map((item) => item.key);
-    expect(configured).toEqual(["overview", "applications", "settings"]);
+    expect(configured).toEqual(["overview", "applications", "organization", "members", "settings"]);
     for (const key of configured) expect(routed).toContain(key);
-    expect(shellNavigation[shell].soon).toEqual(["applications", "settings"]);
+    expect(shellNavigation[shell].soon).toBeUndefined();
     for (const key of configured) expect(shellNavigation[shell].icons[key]).toBeDefined();
   });
 
@@ -201,22 +201,25 @@ describe("WorkspaceShell", () => {
     expect(screen.getAllByText("switcher:fighter").length).toBeGreaterThan(0);
   });
 
-  it("links the partner portal of the organization in the path; nothing of campaigns (SF-117)", async () => {
-    const nav = await renderShell("web.sponsor", `/sponsor/${SPONSOR_ID}/dashboard`);
-    const links = within(nav).getAllByRole("link");
-    expect(links).toHaveLength(1);
-    expect(within(nav).getByRole("link", { name: "Overview" })).toHaveAttribute(
-      "href",
-      `/en/sponsor/${SPONSOR_ID}/dashboard`,
+  it("links the partner portal of the organization in the path; nothing of campaigns (SF-118)", async () => {
+    const nav = await renderShell(
+      "web.sponsor",
+      `/sponsor/${SPONSOR_ID}/settings`,
+      "section=members",
     );
-    expect(within(nav).getByRole("link", { name: "Overview" })).toHaveAttribute(
+    const href = (name: string) => within(nav).getByRole("link", { name }).getAttribute("href");
+    expect(within(nav).getAllByRole("link")).toHaveLength(5);
+    expect(href("Overview")).toBe(`/en/sponsor/${SPONSOR_ID}/dashboard`);
+    expect(href("Application")).toBe(`/en/sponsor/${SPONSOR_ID}/application`);
+    expect(href("Organization")).toBe(`/en/sponsor/${SPONSOR_ID}/settings?section=organization`);
+    expect(href("Members")).toBe(`/en/sponsor/${SPONSOR_ID}/settings?section=members`);
+    expect(href("Settings")).toBe(`/en/sponsor/${SPONSOR_ID}/settings`);
+    // The query decides between items of the same route.
+    expect(within(nav).getByRole("link", { name: "Members" })).toHaveAttribute(
       "aria-current",
       "page",
     );
-    for (const label of ["Applications", "Settings"]) {
-      expect(within(nav).queryByRole("link", { name: label })).toBeNull();
-      expect(within(nav).getByText(label).closest("[aria-disabled]")).toHaveTextContent("Soon");
-    }
+    expect(within(nav).getByRole("link", { name: "Settings" })).not.toHaveAttribute("aria-current");
     expect(within(nav).queryByText(/Campaigns|Challenges|Events|Invoices/)).toBeNull();
   });
 

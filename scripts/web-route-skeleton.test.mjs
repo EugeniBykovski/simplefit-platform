@@ -95,6 +95,15 @@ const REAL_SCREENS = [
   "web.sponsor.dashboard",
   // SF-117: the partner portal's sign-in target is the one sign-in (WA1).
   "web.sponsor.login",
+  // SF-118: SPX9 settings, the organization's application, and SPE1's
+  // "isn't part of SimpleFit yet" for the pages without a domain.
+  "web.sponsor.settings",
+  "web.sponsor.application",
+  "web.sponsor.campaigns",
+  "web.sponsor.campaigns.new",
+  "web.sponsor.campaigns._campaign-id",
+  "web.sponsor.analytics._campaign-id",
+  "web.sponsor.invoices",
 ];
 
 const placeholderSource = (id) => `import { placeholderRoute } from "@/widgets/feature-placeholder";

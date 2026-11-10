@@ -12,7 +12,16 @@ import {
   VIEWER,
   type Answer,
 } from "@/stories/support/auth-story-api";
-import { SponsorOverview, SponsorWorkspace } from "@/widgets/sponsor-workspace";
+import type { ReactNode } from "react";
+
+import {
+  SponsorApplicationPage,
+  SponsorOverview,
+  SponsorSettings,
+  SponsorUnsupported,
+  SponsorWorkspace,
+  type SettingsSection,
+} from "@/widgets/sponsor-workspace";
 import { EntryFailure, LaunchScreen, SessionFailure } from "@/widgets/system-states";
 
 /*
@@ -43,7 +52,11 @@ const organization = (status: "active" | "suspended", role: Role) => ({
   membership: {
     membership_id: "1a3c5e7f-2b4d-4f6a-8c0e-9d1b3f5a7c2e",
     role,
-    permissions: ["view_organization", "view_members"],
+    // As SimpleFit.Sponsors.Policy: business contacts for owner and manager only.
+    permissions:
+      role === "member"
+        ? ["view_organization", "view_members"]
+        : ["view_organization", "view_members", "view_contacts"],
     joined_at: "2026-11-09T10:00:00Z",
   },
 });
@@ -71,22 +84,84 @@ const entry = (role: Role) => ({
   },
 });
 
+const member = (id: string, name: string | null, role: Role, viewer = false) => ({
+  membership_id: id,
+  short_name: name,
+  role,
+  status: "active",
+  joined_at: "2026-11-09T10:00:00Z",
+  is_viewer: viewer,
+});
+
+const MEMBERS = ok({
+  members: [
+    member("6b1d0000-0000-4000-8000-000000000001", "Alex N.", "owner", true),
+    member("6b1d0000-0000-4000-8000-000000000002", "Ola K.", "manager"),
+    member("6b1d0000-0000-4000-8000-000000000003", null, "member"),
+  ],
+  next_cursor: null,
+});
+
+const CONTACTS = ok({
+  contacts: [
+    {
+      contact_id: "6c1d0000-0000-4000-8000-000000000001",
+      kind: "primary",
+      full_name: "Ada Nowak",
+      job_title: "Partnerships",
+      email: "ada@haymaker.example",
+      phone: "+48123456789",
+    },
+  ],
+});
+
+const APPLICATION = ok({
+  application: {
+    application_id: "6a1d0000-0000-4000-8000-000000000001",
+    status: "approved",
+    sponsor_id: HAYMAKER,
+    submitted_at: "2026-11-01T10:00:00Z",
+    answers: {
+      budget_band: null,
+      company_name: "Haymaker Drinks",
+      contact_email: "ada@haymaker.example",
+      contact_full_name: "Ada Nowak",
+      contact_phone: null,
+      contact_position: "Partnerships",
+      country_code: "PL",
+      goals: null,
+      industry: null,
+      interests: [],
+      market_cities: [],
+      market_countries: [],
+      market_scope: null,
+      website: null,
+    },
+  },
+});
+
 function story({
   read,
   role = "owner",
   application = apiError(404, "not_found"),
+  page = <SponsorOverview />,
+  path = "dashboard",
+  contacts = CONTACTS,
   play,
 }: {
   read: Answer;
   role?: Role;
   application?: Answer;
+  page?: ReactNode;
+  path?: string;
+  contacts?: Answer;
   play?: StoryObj["play"];
 }): StoryObj {
   return {
     parameters: {
       nextjs: {
         appDirectory: true,
-        navigation: { pathname: `/en/sponsor/${HAYMAKER}/dashboard`, segments: [] },
+        navigation: { pathname: `/en/sponsor/${HAYMAKER}/${path}`, segments: [] },
       },
     },
     beforeEach: () =>
@@ -98,6 +173,8 @@ function story({
         "/api/v1/me/gym-memberships": ok({ memberships: [], next_cursor: null }),
         [`/api/v1/sponsor-organizations/${HAYMAKER}`]: read,
         "/api/v1/me/sponsor-application": application,
+        [`/api/v1/sponsor-organizations/${HAYMAKER}/members`]: MEMBERS,
+        [`/api/v1/sponsor-organizations/${HAYMAKER}/contacts`]: contacts,
         "PUT /api/v1/me/entry/context": ok(undefined, 204),
       }),
     render: () => (
@@ -107,9 +184,7 @@ function story({
         unavailable={<SessionFailure />}
       >
         <SponsorGate pending={<LaunchScreen />} failure={<EntryFailure />}>
-          <SponsorWorkspace sponsorId={HAYMAKER}>
-            <SponsorOverview />
-          </SponsorWorkspace>
+          <SponsorWorkspace sponsorId={HAYMAKER}>{page}</SponsorWorkspace>
         </SponsorGate>
       </RequireSession>
     ),
@@ -202,3 +277,96 @@ export const Phone = {
   globals: { viewport: { value: "phone", isRotated: false } },
 } satisfies StoryObj;
 Phone.name = "SPX4 · phone 390";
+
+const settings = (
+  section: SettingsSection,
+  role: Role = "owner",
+  status: "active" | "suspended" = "active",
+  text?: string,
+) =>
+  story({
+    read: ok(organization(status, role)),
+    role,
+    page: <SponsorSettings section={section} />,
+    path: "settings",
+    play: async ({ canvasElement }) => {
+      await within(canvasElement).findByRole(
+        "heading",
+        { level: 1, name: "Settings" },
+        { timeout: 5000 },
+      );
+      if (text) await expect(await within(canvasElement).findByText(text)).toBeVisible();
+    },
+  });
+
+export const SettingsOrganization = settings("organization", "owner", "active", "Company profile");
+SettingsOrganization.name = "SPX9 · organization (read-only)";
+
+export const SettingsContact = settings("contact", "owner", "active", "Ada Nowak");
+SettingsContact.name = "SPX9 · contact (owner)";
+
+export const SettingsContactRestricted = settings(
+  "contact",
+  "member",
+  "active",
+  "Business contacts are visible to an owner or manager of this organization.",
+);
+SettingsContactRestricted.name = "SPX9 · contact (member: restricted)";
+
+export const SettingsMembers = settings("members", "owner", "active", "Ola K.");
+SettingsMembers.name = "SPX9 · members (read-only)";
+
+export const SettingsAccount = settings("account", "owner", "active", "Your account");
+SettingsAccount.name = "SPX9 · your account (settings Soon)";
+
+export const SettingsSuspended = settings(
+  "organization",
+  "owner",
+  "suspended",
+  "This organization is suspended.",
+);
+SettingsSuspended.name = "SPX9 · suspended";
+
+export const ApplicationOwn = story({
+  read: ok(organization("active", "owner")),
+  application: APPLICATION,
+  page: <SponsorApplicationPage />,
+  path: "application",
+  play: async ({ canvasElement }) => {
+    await expect(
+      await within(canvasElement).findByText("Reviewed by SimpleFit", {}, { timeout: 5000 }),
+    ).toBeVisible();
+  },
+});
+ApplicationOwn.name = "Application · the applicant's own";
+
+export const ApplicationOther = story({
+  read: ok(organization("active", "member")),
+  role: "member",
+  page: <SponsorApplicationPage />,
+  path: "application",
+  play: async ({ canvasElement }) => {
+    await expect(
+      await within(canvasElement).findByText(
+        "Only the person who applied can see it",
+        {},
+        { timeout: 5000 },
+      ),
+    ).toBeVisible();
+  },
+});
+ApplicationOther.name = "Application · another member";
+
+export const Unsupported = story({
+  read: ok(organization("active", "owner")),
+  page: <SponsorUnsupported />,
+  path: "campaigns",
+  play: async ({ canvasElement }) => {
+    await within(canvasElement).findByRole(
+      "heading",
+      { level: 1, name: "This isn’t part of SimpleFit yet" },
+      { timeout: 5000 },
+    );
+  },
+});
+Unsupported.name = "SPE1 · unsupported feature (campaigns, analytics, invoices)";
