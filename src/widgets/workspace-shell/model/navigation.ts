@@ -171,24 +171,26 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
       "branding",
     ],
   },
-  // The partner portal MVP (SF-117; SponsorNav mode=mvp, SPE1): the overview of
-  // the organization in the path, with its application and settings shown and
-  // marked Soon until their pages are built. Campaigns, challenges, events and
-  // invoices have no domain (D-SA21, D-SA23), so they are hidden, never linked
-  // to a placeholder; the registry keeps their routes. Creative and Analytics
-  // (GAP-SPONSOR-ANALYTICS-INDEX) have no route at all (route-architecture §14).
+  // The partner portal MVP (SponsorNav mode=mvp, SF-118): the organization in the
+  // path, its application, its organization profile and members (SPX9 sections
+  // as query state of the settings page) and settings, all read-only today.
+  // Campaigns, challenges, events and invoices have no domain (D-SA21, D-SA23),
+  // so they are hidden, never linked; a direct visit shows SPE1's "isn't part
+  // of SimpleFit yet". Creative and Analytics (GAP-SPONSOR-ANALYTICS-INDEX) have
+  // no route at all (route-architecture §14).
   "web.sponsor": {
     messages: "sponsor",
     sections: [
-      { key: "partner", items: ["overview", "applications"] },
+      { key: "partner", items: ["overview", "applications", "organization", "members"] },
       { key: "account", items: ["settings"] },
     ],
     icons: {
       overview: LayoutGridIcon,
       applications: FileTextIcon,
+      organization: Building2Icon,
+      members: UsersIcon,
       settings: SlidersHorizontalIcon,
     },
-    soon: ["applications", "settings"],
   },
   "web.admin": {
     messages: "admin",

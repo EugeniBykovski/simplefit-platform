@@ -1,12 +1,13 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import { useSponsorApplication } from "@/entities/sponsor-application";
 import type { SponsorOrganizationAccess } from "@/entities/sponsor-organization";
 import { SponsorTile } from "@/features/session-gate";
 import { Link } from "@/shared/i18n/navigation";
+import { countryName } from "@/shared/lib/countries";
 import { routeHref } from "@/shared/routes/routes";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
@@ -21,8 +22,10 @@ import { useSponsorWorkspace } from "./sponsor-workspace";
  * the organization (name, status), the viewer's role, and the approved
  * application only when it is the viewer's own and created this organization.
  * Campaigns, opportunities, analytics and invoices don't exist, so they are
- * said not to exist, never drawn as numbers. Not built: the first run and
- * tour (SRW1, SRW2), "Needs you" and the owner's actions (no domain yet).
+ * said not to exist, never drawn as numbers: SF-118 lists them as FUTURE,
+ * neither links nor buttons. The access card states the membership's real
+ * permissions. Not built: the first run and tour (SRW1, SRW2), "Needs you" and
+ * the owner's actions (no domain yet).
  */
 export function SponsorOverview() {
   return <SponsorOverviewView access={useSponsorWorkspace()} />;
@@ -30,7 +33,9 @@ export function SponsorOverview() {
 
 export function SponsorOverviewView({ access }: { access: SponsorOrganizationAccess }) {
   const t = useTranslations("sponsorPortal");
+  const locale = useLocale();
   const { organization, membership } = access;
+  const sponsorId = organization.sponsor_id;
   const suspended = organization.status === "suspended";
   const application = useSponsorApplication();
   const own =
@@ -67,9 +72,28 @@ export function SponsorOverviewView({ access }: { access: SponsorOrganizationAcc
                 {organization.display_name}
               </p>
             </div>
-            <p className="type-body-sm text-muted-foreground">
-              {t("overview.organization.role", { role: t(`roles.${membership.role}`) })}
-            </p>
+            <dl className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
+              <Detail label={t("overview.organization.legalName")}>
+                {organization.legal_name}
+              </Detail>
+              <Detail label={t("overview.organization.country")}>
+                {countryName(organization.country_code, locale)}
+              </Detail>
+              {organization.website !== null && (
+                <Detail label={t("overview.organization.website")}>
+                  <a href={organization.website} rel="noopener noreferrer nofollow" target="_blank">
+                    {organization.website}
+                  </a>
+                </Detail>
+              )}
+            </dl>
+            <Button asChild variant="quiet" className="w-fit">
+              <Link
+                href={routeHref("web.sponsor.settings", { sponsorId }, { section: "organization" })}
+              >
+                {t("overview.organization.details")}
+              </Link>
+            </Button>
           </Card>
           {own && (
             <Card
@@ -80,7 +104,7 @@ export function SponsorOverviewView({ access }: { access: SponsorOrganizationAcc
               <p className="type-body-sm font-extrabold">{t("overview.application.title")}</p>
               <p className="type-body-sm text-muted-foreground">{t("overview.application.body")}</p>
               <Button asChild variant="quiet" className="w-fit">
-                <Link href={routeHref("web.partners.apply", {}, { step: "status" })}>
+                <Link href={routeHref("web.sponsor.application", { sponsorId })}>
                   {t("overview.application.action")}
                 </Link>
               </Button>
@@ -88,11 +112,51 @@ export function SponsorOverviewView({ access }: { access: SponsorOrganizationAcc
           )}
         </div>
         <div className="flex min-w-0 flex-col gap-4">
+          <Card id="sponsor-access" title={t("overview.access.title")}>
+            <p className="type-body-sm font-extrabold">
+              {t("overview.organization.role", { role: t(`roles.${membership.role}`) })}
+            </p>
+            <p className="type-body-sm text-muted-foreground">{t("overview.access.lead")}</p>
+            <ul className="flex list-disc flex-col gap-1 pl-5 type-body-sm">
+              {membership.permissions.map((permission) => (
+                <li key={permission}>{t(`permissions.${permission}`)}</li>
+              ))}
+            </ul>
+            <Button asChild variant="quiet" className="w-fit">
+              <Link href={routeHref("web.sponsor.settings", { sponsorId }, { section: "members" })}>
+                {t("overview.access.members")}
+              </Link>
+            </Button>
+          </Card>
           <Card id="sponsor-not-yet" title={t("overview.notYet.title")}>
             <p className="type-body-sm text-muted-foreground">{t("overview.notYet.body")}</p>
+            {/* Not links and not buttons: these domains don't exist (D-SA21, D-SA23, D-SA24). */}
+            <ul data-sponsor-future className="flex flex-col gap-2">
+              {FUTURE.map((key) => (
+                <li
+                  key={key}
+                  className="flex items-center justify-between gap-3 rounded-xl border border-dashed px-3.5 py-2.5 type-body-sm text-muted-foreground"
+                >
+                  {t(`overview.notYet.items.${key}`)}
+                  <Badge variant="neutral">{t("overview.notYet.badge")}</Badge>
+                </li>
+              ))}
+            </ul>
           </Card>
         </div>
       </PageBody>
+    </div>
+  );
+}
+
+/** The FUTURE modules of SPX4 and SponsorNav (full), none of which has a domain today. */
+const FUTURE = ["campaigns", "opportunities", "analytics", "invoices"] as const;
+
+function Detail({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="flex min-w-0 flex-col gap-0.5">
+      <dt className="type-caption text-faint-foreground">{label}</dt>
+      <dd className="type-body-sm font-bold break-words">{children}</dd>
     </div>
   );
 }

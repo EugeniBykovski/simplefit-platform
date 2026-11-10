@@ -71,6 +71,19 @@ const STATES: [string, string][] = [
   ["sponsor-portal-overview--not-available", "We can’t find that page"],
   ["sponsor-portal-overview--failure", "Try again"],
   ["context-selection-choose-where-to-continue--sponsors", "Northside Agency"],
+  // SF-118: SPX9 settings, the application page and SPE1's unsupported feature.
+  ["sponsor-portal-overview--settings-organization", "Haymaker Drinks Sp. z o.o."],
+  ["sponsor-portal-overview--settings-contact", "ada@haymaker.example"],
+  [
+    "sponsor-portal-overview--settings-contact-restricted",
+    "Business contacts are visible to an owner or manager of this organization.",
+  ],
+  ["sponsor-portal-overview--settings-members", "Ola K."],
+  ["sponsor-portal-overview--settings-account", "Your account"],
+  ["sponsor-portal-overview--settings-suspended", "This organization is suspended."],
+  ["sponsor-portal-overview--application-own", "Reviewed by SimpleFit"],
+  ["sponsor-portal-overview--application-other", "Only the person who applied can see it"],
+  ["sponsor-portal-overview--unsupported", "This isn’t part of SimpleFit yet"],
 ];
 
 test.use({ viewport: { width: 1440, height: 900 } });
@@ -119,6 +132,37 @@ test("the organization switcher opens, moves and closes from the keyboard", asyn
   await expect(trigger).toBeFocused();
 });
 
+test("settings sections are links reached with Tab and opened with Enter; nothing is editable", async ({
+  page,
+}) => {
+  await story(page, "sponsor-portal-overview--settings-organization");
+  const sections = page.getByRole("navigation", { name: "Settings sections" });
+  await expect(sections.getByRole("link", { name: "Organization" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  await sections.getByRole("link", { name: "Organization" }).focus();
+  await page.keyboard.press("Tab");
+  await expect(sections.getByRole("link", { name: "Contact" })).toBeFocused();
+  await page.keyboard.press("Shift+Tab");
+  await expect(sections.getByRole("link", { name: "Organization" })).toBeFocused();
+  // Read-only: no input, no save, no member action anywhere on the page.
+  await expect(page.getByRole("textbox")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /save|invite|transfer|remove/i })).toHaveCount(0);
+});
+
+test("the settings 1440 composition: the 240 px sidebar and one readable column", async ({
+  page,
+}) => {
+  await story(page, "sponsor-portal-overview--settings-organization");
+  const aside = await page.locator("[data-shell='web.sponsor'] aside").boundingBox();
+  expect(aside?.width).toBe(240);
+  const card = await page.getByRole("region", { name: "Company profile" }).boundingBox();
+  expect(card && card.width <= 800).toBe(true);
+  const nav = page.getByRole("navigation").first();
+  await expect(nav.getByRole("link")).toHaveCount(5);
+});
+
 test("the overview's 1440 composition: a 240 px sidebar, two columns, no figures", async ({
   page,
 }) => {
@@ -130,8 +174,13 @@ test("the overview's 1440 composition: a 240 px sidebar, two columns, no figures
   const notYet = await page.getByRole("region", { name: "Not available yet" }).boundingBox();
   expect(organization && notYet && notYet.x > organization.x + organization.width).toBe(true);
   await expect(page.getByText(/\d+(\.\d+)?%|€|reach/i)).toHaveCount(0);
-  // Only real nav: the overview; application and settings marked Soon; no campaigns.
+  // SF-118: Overview, Application, Organization, Members, Settings; no campaigns.
   const nav = page.getByRole("navigation").first();
-  await expect(nav.getByRole("link")).toHaveCount(1);
+  await expect(nav.getByRole("link")).toHaveCount(5);
+  // FUTURE modules are listed, never linked or pressable.
+  const future = page.locator("[data-sponsor-future]");
+  await expect(future.getByRole("listitem")).toHaveCount(4);
+  await expect(future.getByRole("link")).toHaveCount(0);
+  await expect(future.getByRole("button")).toHaveCount(0);
   await expect(nav.getByText(/Campaigns|Invoices|Analytics/)).toHaveCount(0);
 });

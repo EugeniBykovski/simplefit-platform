@@ -34,7 +34,11 @@
     "title": "Overview",
     "organization": {
       "label": "Organization",
-      "role": "Your role: {role}"
+      "role": "Your role: {role}",
+      "legalName": "Legal name",
+      "country": "Country",
+      "website": "Website",
+      "details": "Organization details"
     },
     "application": {
       "label": "Application",
@@ -45,7 +49,106 @@
     },
     "notYet": {
       "title": "Not available yet",
-      "body": "Campaigns, sponsorship opportunities, analytics and invoices aren’t part of SimpleFit today. There’s nothing to set up, and nothing is running."
+      "body": "Campaigns, sponsorship opportunities, analytics and invoices aren’t part of SimpleFit today. There’s nothing to set up, and nothing is running.",
+      "badge": "Future",
+      "items": {
+        "campaigns": "Campaigns",
+        "opportunities": "Sponsorship opportunities",
+        "analytics": "Analytics",
+        "invoices": "Invoices"
+      }
+    },
+    "access": {
+      "title": "Your access",
+      "lead": "What your membership lets you do here today:",
+      "members": "Members"
     }
+  },
+  "memberStatuses": {
+    "active": "Active",
+    "suspended": "Suspended"
+  },
+  "permissions": {
+    "view_organization": "Read the organization’s details",
+    "view_members": "See its members",
+    "view_contacts": "See its business contacts"
+  },
+  "settings": {
+    "metaTitle": "Partner portal settings",
+    "title": "Settings",
+    "sectionsLabel": "Settings sections",
+    "sections": {
+      "organization": "Organization",
+      "contact": "Contact",
+      "members": "Members",
+      "application": "Application",
+      "account": "Your account"
+    },
+    "readOnly": "These details can’t be edited in SimpleFit yet.",
+    "notProvided": "Not provided",
+    "organization": {
+      "title": "Company profile",
+      "legalName": "Legal name",
+      "brandName": "Brand name",
+      "website": "Website",
+      "country": "Country",
+      "status": "Status",
+      "since": "In SimpleFit since"
+    },
+    "contact": {
+      "title": "Business contact",
+      "lead": "Who SimpleFit talks to about this organization. It doesn’t change how anyone signs in.",
+      "kinds": {
+        "primary": "Primary contact",
+        "additional": "Additional contact"
+      },
+      "name": "Contact name",
+      "position": "Position",
+      "email": "Work email",
+      "phone": "Phone",
+      "restricted": "Business contacts are visible to an owner or manager of this organization.",
+      "empty": "No business contact is recorded."
+    },
+    "members": {
+      "title": "Members",
+      "you": "you",
+      "unnamed": "SimpleFit member",
+      "more": "Show more members",
+      "empty": "No members to show.",
+      "readOnly": "Inviting people, changing roles and transferring ownership aren’t available yet.",
+      "line": "{role} · {you}"
+    },
+    "application": {
+      "title": "Application history",
+      "lead": "The application that created this organization. Answers are read-only.",
+      "action": "View application"
+    },
+    "account": {
+      "title": "Your account",
+      "lead": "Your name, sign-in methods and security belong to your SimpleFit account, not to this organization.",
+      "action": "Account settings",
+      "soon": "Soon"
+    }
+  },
+  "application": {
+    "metaTitle": "Application",
+    "eyebrow": "Partner portal",
+    "title": "Application",
+    "own": {
+      "title": "Reviewed by SimpleFit",
+      "status": "Approved",
+      "submitted": "Submitted on {date}",
+      "answers": "Your submitted answers"
+    },
+    "other": {
+      "title": "Only the person who applied can see it",
+      "body": "The application that created this organization belongs to the account that sent it. It isn’t shared with other members."
+    }
+  },
+  "unsupported": {
+    "metaTitle": "Not available",
+    "title": "This isn’t part of SimpleFit yet",
+    "body": "Campaigns, analytics and invoices don’t exist today. There’s nothing to set up here, and nothing is running.",
+    "action": "Back to overview"
   }
 }

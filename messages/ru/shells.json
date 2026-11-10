@@ -89,7 +89,9 @@
     },
     "nav": {
       "overview": "Обзор",
-      "applications": "Заявки",
+      "applications": "Заявка",
+      "organization": "Организация",
+      "members": "Участники",
       "campaigns": "Кампании",
       "challenges": "Челленджи",
       "events": "События",

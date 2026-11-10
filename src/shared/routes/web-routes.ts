@@ -2197,6 +2197,20 @@ export const webShells = [
         route: "web.sponsor.application",
       },
       {
+        key: "organization",
+        route: "web.sponsor.settings",
+        query: {
+          section: "organization",
+        },
+      },
+      {
+        key: "members",
+        route: "web.sponsor.settings",
+        query: {
+          section: "members",
+        },
+      },
+      {
         key: "campaigns",
         route: "web.sponsor.campaigns",
       },

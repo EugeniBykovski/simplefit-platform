@@ -1,6 +1,21 @@
-import { placeholderRoute } from "@/widgets/feature-placeholder";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
-const route = placeholderRoute("web.sponsor.campaigns._campaign-id");
+import { resolveLocaleParam } from "@/shared/i18n/params";
+import { SponsorUnsupported } from "@/widgets/sponsor-workspace";
 
-export const generateMetadata = route.generateMetadata;
-export default route.Page;
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/sponsor/[sponsorId]/campaigns/[campaignId]">): Promise<Metadata> {
+  const locale = await resolveLocaleParam(params);
+  const t = await getTranslations({ locale, namespace: "sponsorPortal" });
+  return { title: t("unsupported.metaTitle"), robots: { index: false } };
+}
+
+/** `web.sponsor.campaigns._campaign-id` (SF-118): SPE1 "isn't part of SimpleFit yet"; no such domain exists. */
+export default async function Page({
+  params,
+}: PageProps<"/[locale]/sponsor/[sponsorId]/campaigns/[campaignId]">) {
+  await resolveLocaleParam(params);
+  return <SponsorUnsupported />;
+}

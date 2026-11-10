@@ -34,7 +34,11 @@
     "title": "Resumen",
     "organization": {
       "label": "Organización",
-      "role": "Tu rol: {role}"
+      "role": "Tu rol: {role}",
+      "legalName": "Razón social",
+      "country": "País",
+      "website": "Sitio web",
+      "details": "Datos de la organización"
     },
     "application": {
       "label": "Solicitud",
@@ -45,7 +49,106 @@
     },
     "notYet": {
       "title": "Aún no disponible",
-      "body": "Las campañas, oportunidades de patrocinio, analíticas y facturas no forman parte de SimpleFit hoy. No hay nada que configurar y nada está en marcha."
+      "body": "Las campañas, oportunidades de patrocinio, analíticas y facturas no forman parte de SimpleFit hoy. No hay nada que configurar y nada está en marcha.",
+      "badge": "Próximamente",
+      "items": {
+        "campaigns": "Campañas",
+        "opportunities": "Oportunidades de patrocinio",
+        "analytics": "Analíticas",
+        "invoices": "Facturas"
+      }
+    },
+    "access": {
+      "title": "Tu acceso",
+      "lead": "Lo que tu membresía te permite hacer aquí hoy:",
+      "members": "Miembros"
     }
+  },
+  "memberStatuses": {
+    "active": "Activo",
+    "suspended": "Suspendido"
+  },
+  "permissions": {
+    "view_organization": "Leer los datos de la organización",
+    "view_members": "Ver sus miembros",
+    "view_contacts": "Ver sus contactos comerciales"
+  },
+  "settings": {
+    "metaTitle": "Ajustes del portal de socios",
+    "title": "Ajustes",
+    "sectionsLabel": "Secciones de ajustes",
+    "sections": {
+      "organization": "Organización",
+      "contact": "Contacto",
+      "members": "Miembros",
+      "application": "Solicitud",
+      "account": "Tu cuenta"
+    },
+    "readOnly": "Estos datos aún no se pueden editar en SimpleFit.",
+    "notProvided": "Sin indicar",
+    "organization": {
+      "title": "Perfil de la empresa",
+      "legalName": "Razón social",
+      "brandName": "Nombre comercial",
+      "website": "Sitio web",
+      "country": "País",
+      "status": "Estado",
+      "since": "En SimpleFit desde"
+    },
+    "contact": {
+      "title": "Contacto comercial",
+      "lead": "Con quién habla SimpleFit sobre esta organización. No cambia cómo inicia sesión nadie.",
+      "kinds": {
+        "primary": "Contacto principal",
+        "additional": "Contacto adicional"
+      },
+      "name": "Nombre",
+      "position": "Cargo",
+      "email": "Correo de trabajo",
+      "phone": "Teléfono",
+      "restricted": "Los contactos comerciales los ve un propietario o gestor de esta organización.",
+      "empty": "No hay contacto comercial registrado."
+    },
+    "members": {
+      "title": "Miembros",
+      "you": "tú",
+      "unnamed": "Miembro de SimpleFit",
+      "more": "Mostrar más miembros",
+      "empty": "No hay miembros que mostrar.",
+      "readOnly": "Invitar personas, cambiar roles y transferir la propiedad aún no están disponibles.",
+      "line": "{role} · {you}"
+    },
+    "application": {
+      "title": "Historial de la solicitud",
+      "lead": "La solicitud que creó esta organización. Las respuestas son de solo lectura.",
+      "action": "Ver solicitud"
+    },
+    "account": {
+      "title": "Tu cuenta",
+      "lead": "Tu nombre, tus métodos de inicio de sesión y tu seguridad pertenecen a tu cuenta de SimpleFit, no a esta organización.",
+      "action": "Ajustes de la cuenta",
+      "soon": "Pronto"
+    }
+  },
+  "application": {
+    "metaTitle": "Solicitud",
+    "eyebrow": "Portal de socios",
+    "title": "Solicitud",
+    "own": {
+      "title": "Revisada por SimpleFit",
+      "status": "Aprobada",
+      "submitted": "Enviada el {date}",
+      "answers": "Tus respuestas enviadas"
+    },
+    "other": {
+      "title": "Solo la persona que la presentó puede verla",
+      "body": "La solicitud que creó esta organización pertenece a la cuenta que la envió. No se comparte con otros miembros."
+    }
+  },
+  "unsupported": {
+    "metaTitle": "No disponible",
+    "title": "Esto aún no forma parte de SimpleFit",
+    "body": "Las campañas, analíticas y facturas no existen hoy. Aquí no hay nada que configurar y nada está en marcha.",
+    "action": "Volver al resumen"
   }
 }

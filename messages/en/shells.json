@@ -89,7 +89,9 @@
     },
     "nav": {
       "overview": "Overview",
-      "applications": "Applications",
+      "applications": "Application",
+      "organization": "Organization",
+      "members": "Members",
       "campaigns": "Campaigns",
       "challenges": "Challenges",
       "events": "Events",
