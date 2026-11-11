@@ -26,6 +26,9 @@ import type {
   AdminFighterSearchResponse,
   AdminGymListResponse,
   AdminGymResponse,
+  AdminJobListResponse,
+  AdminJobResponse,
+  AdminOperationsHealthResponse,
   AdminOverviewResponse,
   AdminUserEmailResponse,
   AdminUserReadRequest,
@@ -48,6 +51,7 @@ import type {
   InternalErrorResponse,
   LiftUserSuspensionRequest,
   ListAdminGymsParams,
+  ListAdminJobsParams,
   ListOperatorAuditEventsParams,
   ListSponsorApplicationsForReviewParams,
   NotFoundResponse,
@@ -1572,6 +1576,326 @@ export function useGetCurrentOperator<TData = Awaited<ReturnType<typeof getCurre
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetCurrentOperatorQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetAdminOperationsHealthUrl = () => {
+
+
+
+
+  return `/api/v1/admin/operations/health`
+}
+
+/**
+ * Needs `system.health.read` and a key check. Measured checks with their status and observation time, job counts per queue and state, applied migrations and the configured release. No uptime or SLA figure exists.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such job.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * @summary The system health page
+ */
+export const getAdminOperationsHealth = async ( options?: Parameters<typeof apiFetch>[1]): Promise<AdminOperationsHealthResponse> => {
+
+  return apiFetch<AdminOperationsHealthResponse>(getGetAdminOperationsHealthUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminOperationsHealthQueryKey = () => {
+    return [
+    `/api/v1/admin/operations/health`
+    ] as const;
+    }
+
+
+export const getGetAdminOperationsHealthQueryOptions = <TData = Awaited<ReturnType<typeof getAdminOperationsHealth>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminOperationsHealth>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminOperationsHealthQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminOperationsHealth>>> = ({ signal }) => getAdminOperationsHealth({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminOperationsHealth>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminOperationsHealthQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminOperationsHealth>>>
+export type GetAdminOperationsHealthQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetAdminOperationsHealth<TData = Awaited<ReturnType<typeof getAdminOperationsHealth>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminOperationsHealth>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminOperationsHealth>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminOperationsHealth>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminOperationsHealth<TData = Awaited<ReturnType<typeof getAdminOperationsHealth>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminOperationsHealth>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminOperationsHealth>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminOperationsHealth>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminOperationsHealth<TData = Awaited<ReturnType<typeof getAdminOperationsHealth>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminOperationsHealth>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary The system health page
+ */
+
+export function useGetAdminOperationsHealth<TData = Awaited<ReturnType<typeof getAdminOperationsHealth>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminOperationsHealth>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminOperationsHealthQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getListAdminJobsUrl = (params?: ListAdminJobsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/operations/jobs?${stringifiedParams}` : `/api/v1/admin/operations/jobs`
+}
+
+/**
+ * Needs `system.jobs.read` and a key check. Newest first; metadata only (never arguments, `meta` or error messages). Every query is recorded (`jobs.listed`).
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such job.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - an unknown filter value or an invalid cursor.
+ * @summary One page of background jobs
+ */
+export const listAdminJobs = async (params?: ListAdminJobsParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminJobListResponse> => {
+
+  return apiFetch<AdminJobListResponse>(getListAdminJobsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListAdminJobsQueryKey = (params?: ListAdminJobsParams,) => {
+    return [
+    `/api/v1/admin/operations/jobs`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListAdminJobsQueryOptions = <TData = Awaited<ReturnType<typeof listAdminJobs>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(params?: ListAdminJobsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminJobs>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListAdminJobsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listAdminJobs>>> = ({ signal }) => listAdminJobs(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listAdminJobs>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListAdminJobsQueryResult = NonNullable<Awaited<ReturnType<typeof listAdminJobs>>>
+export type ListAdminJobsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useListAdminJobs<TData = Awaited<ReturnType<typeof listAdminJobs>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params: undefined |  ListAdminJobsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminJobs>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listAdminJobs>>,
+          TError,
+          Awaited<ReturnType<typeof listAdminJobs>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListAdminJobs<TData = Awaited<ReturnType<typeof listAdminJobs>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListAdminJobsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminJobs>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listAdminJobs>>,
+          TError,
+          Awaited<ReturnType<typeof listAdminJobs>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListAdminJobs<TData = Awaited<ReturnType<typeof listAdminJobs>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListAdminJobsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminJobs>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One page of background jobs
+ */
+
+export function useListAdminJobs<TData = Awaited<ReturnType<typeof listAdminJobs>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListAdminJobsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminJobs>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getListAdminJobsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetAdminJobUrl = (jobId: number,) => {
+
+
+
+
+  return `/api/v1/admin/operations/jobs/${jobId}`
+}
+
+/**
+ * Needs `system.jobs.read` and a key check. Metadata only; recorded (`job.viewed`). No retry is offered.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such job.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * @summary One background job
+ */
+export const getAdminJob = async (jobId: number, options?: Parameters<typeof apiFetch>[1]): Promise<AdminJobResponse> => {
+
+  return apiFetch<AdminJobResponse>(getGetAdminJobUrl(jobId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminJobQueryKey = (jobId: number,) => {
+    return [
+    `/api/v1/admin/operations/jobs/${jobId}`
+    ] as const;
+    }
+
+
+export const getGetAdminJobQueryOptions = <TData = Awaited<ReturnType<typeof getAdminJob>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(jobId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminJob>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminJobQueryKey(jobId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminJob>>> = ({ signal }) => getAdminJob(jobId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: jobId !== null && jobId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminJob>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminJobQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminJob>>>
+export type GetAdminJobQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetAdminJob<TData = Awaited<ReturnType<typeof getAdminJob>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ jobId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminJob>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminJob>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminJob>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminJob<TData = Awaited<ReturnType<typeof getAdminJob>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ jobId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminJob>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminJob>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminJob>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminJob<TData = Awaited<ReturnType<typeof getAdminJob>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ jobId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminJob>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One background job
+ */
+
+export function useGetAdminJob<TData = Awaited<ReturnType<typeof getAdminJob>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ jobId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminJob>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminJobQueryOptions(jobId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

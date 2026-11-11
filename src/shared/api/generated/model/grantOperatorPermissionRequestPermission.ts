@@ -28,4 +28,5 @@ export const GrantOperatorPermissionRequestPermission = {
   gymsread: 'gyms.read',
   coachesread: 'coaches.read',
   fightersread: 'fighters.read',
+  systemjobsread: 'system.jobs.read',
 } as const;

@@ -976,5 +976,129 @@
       "notice": "Comment informer les personnes et leur permettre un recours (validation juridique requise)",
       "permissions": "Des permissions de modération distinctes pour consulter et agir"
     }
+  },
+  "operations": {
+    "metaTitle": "État du système · Plan de contrôle",
+    "breadcrumb": "Plan de contrôle / Système",
+    "title": "État du système",
+    "loading": "Chargement de l’état du système",
+    "checkedAt": "Vérifié {time} · mis à jour chaque minute tant que la page est ouverte",
+    "noHealthAccess": "L’état du système nécessite un accès dédié. Vos permissions n’incluent que la liste des tâches.",
+    "refresh": "Vérifier à nouveau",
+    "stale": "Impossible de vérifier à nouveau. Ceci est la réponse de {time}, pas l’état actuel.",
+    "unreachable": {
+      "title": "Impossible de joindre les vérifications.",
+      "body": "Tant qu’elles ne répondent pas, tout est affiché comme inconnu. Cela ne veut pas dire qu’un service est en panne."
+    },
+    "legend": {
+      "label": "Statuts",
+      "note": "L’inconnu n’est jamais affiché comme sain. Il n’y a ici aucun pourcentage de disponibilité : aucun n’est mesuré."
+    },
+    "status": {
+      "healthy": "Sain",
+      "degraded": "Dégradé",
+      "unavailable": "Indisponible",
+      "unknown": "Inconnu",
+      "no_telemetry": "Pas de télémétrie"
+    },
+    "services": {
+      "title": "État des services",
+      "caption": "État des services, chaque vérification avec sa source et l’heure de la mesure",
+      "service": "Service",
+      "source": "Source",
+      "status": "Statut",
+      "checked": "Vérifié"
+    },
+    "checks": {
+      "api": "API",
+      "database": "Base de données",
+      "background_jobs": "Tâches de fond",
+      "email": "E-mail",
+      "payments_webhooks": "Paiements (Stripe)",
+      "storage": "Stockage",
+      "error_monitoring": "Suivi des erreurs (Sentry)"
+    },
+    "sources": {
+      "api": "Cette requête a reçu une réponse",
+      "database": "Requête depuis l’app · {ms} ms",
+      "background_jobs": "Oban : {waiting} en attente, {executing} en cours, {failed} en échec sur 24 h",
+      "email": "Tâches d’envoi sur 24 h : {accepted} acceptées par le fournisseur, {failed} en échec, {pending} en attente. Acceptée ne veut pas dire livrée.",
+      "payments_webhooks": "Dernier webhook {time} · {received} reçus, {failed} en échec sur 24 h",
+      "webhooksNone": "Aucun webhook reçu",
+      "storage": "Aucune vérification n’existe",
+      "error_monitoring": "Non transmis à l’app"
+    },
+    "states": {
+      "available": "Prêtes",
+      "scheduled": "Planifiées",
+      "executing": "En cours",
+      "retryable": "En reprise",
+      "completed": "Terminées",
+      "discarded": "Abandonnées",
+      "cancelled": "Annulées"
+    },
+    "queues": {
+      "title": "Files",
+      "caption": "Tâches de fond par file et par état",
+      "queue": "File",
+      "limit": "Concurrence",
+      "unavailable": "Impossible de compter les tâches.",
+      "note": "Les tâches non terminées, plus celles terminées dans les dernières 24 heures : Oban les supprime après un jour."
+    },
+    "release": {
+      "title": "Version",
+      "release": "Version",
+      "environment": "Environnement",
+      "migrations": "Migrations",
+      "applied": "{count, plural, one {# appliquée} other {# appliquées}} · la plus récente {latest}",
+      "unavailable": "Impossible de les lire.",
+      "note": "Tel que configuré. Aucun déploiement, migration ou redémarrage ne peut être lancé ici.",
+      "source": {
+        "configured": "(définie par le déploiement)",
+        "default": "(non définie : la version de l’app la remplace)"
+      }
+    },
+    "jobs": {
+      "title": "Tâches de fond",
+      "noAccess": "La liste des tâches nécessite l’accès aux tâches.",
+      "loading": "Chargement des tâches",
+      "empty": "Aucune tâche ne correspond.",
+      "caption": "Tâches de fond, les plus récentes d’abord",
+      "columns": {
+        "job": "Tâche",
+        "worker": "Worker",
+        "state": "État",
+        "attempts": "Tentatives",
+        "failure": "Échec",
+        "when": "Dernier changement"
+      },
+      "pages": {
+        "label": "Pages",
+        "previous": "Précédente",
+        "next": "Suivante",
+        "page": "Page {page}"
+      },
+      "filters": {
+        "label": "Filtrer les tâches",
+        "state": "État",
+        "queue": "File",
+        "worker": "Worker",
+        "any": "Tous"
+      },
+      "note": "Métadonnées uniquement : les arguments des tâches et les messages d’erreur ne sont jamais affichés. L’échec indique seulement le type d’erreur. Chaque requête est enregistrée.",
+      "attempts": "{attempt} sur {max}",
+      "detail": {
+        "gone": "Cette tâche n’existe plus (les tâches terminées sont supprimées après un jour).",
+        "now": "Maintenant : {state}",
+        "inserted": "Créée",
+        "scheduled": "Planifiée pour",
+        "attempted": "Dernière tentative",
+        "completed": "Terminée",
+        "discarded": "Abandonnée",
+        "cancelled": "Annulée",
+        "errors": "Tentatives en erreur",
+        "retry": "Reprise indisponible : aucun worker n’a de règle de reprise approuvée."
+      }
+    }
   }
 }

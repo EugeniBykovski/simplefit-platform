@@ -976,5 +976,129 @@
       "notice": "How people are told and how they appeal (needs counsel)",
       "permissions": "Separate moderation permissions for reading and acting"
     }
+  },
+  "operations": {
+    "metaTitle": "System health · Control plane",
+    "breadcrumb": "Control plane / System",
+    "title": "System health",
+    "loading": "Loading system health",
+    "checkedAt": "Checked {time} · updates every minute while open",
+    "noHealthAccess": "System health needs health access. Your permissions include the job list only.",
+    "refresh": "Check again",
+    "stale": "Couldn’t check again. This is the answer from {time}, not the current state.",
+    "unreachable": {
+      "title": "We can’t reach the health checks.",
+      "body": "Everything shows as unknown until they answer. Nothing here means a service is down."
+    },
+    "legend": {
+      "label": "Statuses",
+      "note": "Unknown is never shown as healthy. Nothing here is an uptime percentage: none is measured."
+    },
+    "status": {
+      "healthy": "Healthy",
+      "degraded": "Degraded",
+      "unavailable": "Unavailable",
+      "unknown": "Unknown",
+      "no_telemetry": "No telemetry"
+    },
+    "services": {
+      "title": "Service health",
+      "caption": "Service health, each check with its source and when it was measured",
+      "service": "Service",
+      "source": "Source",
+      "status": "Status",
+      "checked": "Checked"
+    },
+    "checks": {
+      "api": "API",
+      "database": "Database",
+      "background_jobs": "Background jobs",
+      "email": "Email",
+      "payments_webhooks": "Payments (Stripe)",
+      "storage": "Storage",
+      "error_monitoring": "Error monitoring (Sentry)"
+    },
+    "sources": {
+      "api": "This request was answered",
+      "database": "Query from the app · {ms} ms",
+      "background_jobs": "Oban: {waiting} waiting, {executing} running, {failed} failed in 24 h",
+      "email": "Delivery jobs in 24 h: {accepted} accepted by the provider, {failed} failed, {pending} pending. Acceptance isn’t delivery.",
+      "payments_webhooks": "Last webhook {time} · {received} received, {failed} failed in 24 h",
+      "webhooksNone": "No webhook received",
+      "storage": "No check exists",
+      "error_monitoring": "Not reported to the app"
+    },
+    "states": {
+      "available": "Available",
+      "scheduled": "Scheduled",
+      "executing": "Running",
+      "retryable": "Retrying",
+      "completed": "Completed",
+      "discarded": "Discarded",
+      "cancelled": "Cancelled"
+    },
+    "queues": {
+      "title": "Queues",
+      "caption": "Background job counts per queue and state",
+      "queue": "Queue",
+      "limit": "Concurrency",
+      "unavailable": "Couldn’t count the jobs.",
+      "note": "Unfinished jobs, plus finished ones from the last 24 hours: Oban removes them after a day."
+    },
+    "release": {
+      "title": "Release",
+      "release": "Release",
+      "environment": "Environment",
+      "migrations": "Migrations",
+      "applied": "{count, plural, one {# applied} other {# applied}} · latest {latest}",
+      "unavailable": "Couldn’t read them.",
+      "note": "As configured. No deploy, migration or restart can be started here.",
+      "source": {
+        "configured": "(set by the deployment)",
+        "default": "(none set: the app version stands in)"
+      }
+    },
+    "jobs": {
+      "title": "Background jobs",
+      "noAccess": "The job list needs job access.",
+      "loading": "Loading jobs",
+      "empty": "No jobs match.",
+      "caption": "Background jobs, newest first",
+      "columns": {
+        "job": "Job",
+        "worker": "Worker",
+        "state": "State",
+        "attempts": "Attempts",
+        "failure": "Failure",
+        "when": "Last change"
+      },
+      "pages": {
+        "label": "Pages",
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page {page}"
+      },
+      "filters": {
+        "label": "Filter jobs",
+        "state": "State",
+        "queue": "Queue",
+        "worker": "Worker",
+        "any": "Any"
+      },
+      "note": "Metadata only: job arguments and error messages are never shown. Failure is the error’s type only. Each query is recorded.",
+      "attempts": "{attempt} of {max}",
+      "detail": {
+        "gone": "This job no longer exists (finished jobs are removed after a day).",
+        "now": "Now: {state}",
+        "inserted": "Created",
+        "scheduled": "Scheduled for",
+        "attempted": "Last attempt",
+        "completed": "Completed",
+        "discarded": "Discarded",
+        "cancelled": "Cancelled",
+        "errors": "Attempts with an error",
+        "retry": "Retry isn’t available: no worker has an approved retry policy."
+      }
+    }
   }
 }

@@ -40,6 +40,11 @@ export function visibleNavItems(operator: Operator): string[] {
       ? ["sponsors"]
       : []),
     ...(hasAccess(operator, "audit") ? ["audit"] : []),
+    ...(["system.health.read", "system.jobs.read"].some((permission) =>
+      grants(operator, permission),
+    )
+      ? ["integrations"]
+      : []),
     ...(hasAccess(operator, "operators") ? ["staff"] : []),
   ];
 }

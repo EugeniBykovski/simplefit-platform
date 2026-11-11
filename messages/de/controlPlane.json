@@ -976,5 +976,129 @@
       "notice": "Wie Betroffene informiert werden und Einspruch einlegen (juristisch zu klären)",
       "permissions": "Eigene Moderationsberechtigungen zum Lesen und Handeln"
     }
+  },
+  "operations": {
+    "metaTitle": "Systemzustand · Control Plane",
+    "breadcrumb": "Control Plane / System",
+    "title": "Systemzustand",
+    "loading": "Systemzustand wird geladen",
+    "checkedAt": "Geprüft {time} · aktualisiert sich jede Minute, solange geöffnet",
+    "noHealthAccess": "Der Systemzustand braucht Zugriff darauf. Deine Berechtigungen umfassen nur die Jobliste.",
+    "refresh": "Erneut prüfen",
+    "stale": "Erneute Prüfung fehlgeschlagen. Das ist die Antwort von {time}, nicht der aktuelle Zustand.",
+    "unreachable": {
+      "title": "Die Prüfungen sind nicht erreichbar.",
+      "body": "Bis sie antworten, wird alles als unbekannt gezeigt. Das heißt nicht, dass ein Dienst ausgefallen ist."
+    },
+    "legend": {
+      "label": "Status",
+      "note": "Unbekannt wird nie als gesund gezeigt. Hier gibt es keine Verfügbarkeitsquote: Es wird keine gemessen."
+    },
+    "status": {
+      "healthy": "Gesund",
+      "degraded": "Beeinträchtigt",
+      "unavailable": "Nicht verfügbar",
+      "unknown": "Unbekannt",
+      "no_telemetry": "Keine Telemetrie"
+    },
+    "services": {
+      "title": "Dienstzustand",
+      "caption": "Dienstzustand, jede Prüfung mit Quelle und Messzeit",
+      "service": "Dienst",
+      "source": "Quelle",
+      "status": "Status",
+      "checked": "Geprüft"
+    },
+    "checks": {
+      "api": "API",
+      "database": "Datenbank",
+      "background_jobs": "Hintergrundjobs",
+      "email": "E-Mail",
+      "payments_webhooks": "Zahlungen (Stripe)",
+      "storage": "Speicher",
+      "error_monitoring": "Fehlerüberwachung (Sentry)"
+    },
+    "sources": {
+      "api": "Diese Anfrage wurde beantwortet",
+      "database": "Abfrage aus der App · {ms} ms",
+      "background_jobs": "Oban: {waiting} wartend, {executing} laufend, {failed} fehlgeschlagen in 24 h",
+      "email": "Versandjobs in 24 h: {accepted} vom Anbieter angenommen, {failed} fehlgeschlagen, {pending} ausstehend. Annahme ist keine Zustellung.",
+      "payments_webhooks": "Letzter Webhook {time} · {received} empfangen, {failed} fehlgeschlagen in 24 h",
+      "webhooksNone": "Kein Webhook empfangen",
+      "storage": "Keine Prüfung vorhanden",
+      "error_monitoring": "Wird der App nicht gemeldet"
+    },
+    "states": {
+      "available": "Bereit",
+      "scheduled": "Geplant",
+      "executing": "Laufend",
+      "retryable": "Wird wiederholt",
+      "completed": "Abgeschlossen",
+      "discarded": "Verworfen",
+      "cancelled": "Abgebrochen"
+    },
+    "queues": {
+      "title": "Warteschlangen",
+      "caption": "Hintergrundjobs pro Warteschlange und Zustand",
+      "queue": "Warteschlange",
+      "limit": "Parallelität",
+      "unavailable": "Die Jobs konnten nicht gezählt werden.",
+      "note": "Offene Jobs sowie abgeschlossene der letzten 24 Stunden: Oban entfernt sie nach einem Tag."
+    },
+    "release": {
+      "title": "Release",
+      "release": "Release",
+      "environment": "Umgebung",
+      "migrations": "Migrationen",
+      "applied": "{count, plural, one {# angewendet} other {# angewendet}} · neueste {latest}",
+      "unavailable": "Konnten nicht gelesen werden.",
+      "note": "Wie konfiguriert. Hier lassen sich kein Deploy, keine Migration und kein Neustart starten.",
+      "source": {
+        "configured": "(vom Deployment gesetzt)",
+        "default": "(nicht gesetzt: die App-Version steht dafür)"
+      }
+    },
+    "jobs": {
+      "title": "Hintergrundjobs",
+      "noAccess": "Die Jobliste braucht Jobzugriff.",
+      "loading": "Jobs werden geladen",
+      "empty": "Keine passenden Jobs.",
+      "caption": "Hintergrundjobs, neueste zuerst",
+      "columns": {
+        "job": "Job",
+        "worker": "Worker",
+        "state": "Zustand",
+        "attempts": "Versuche",
+        "failure": "Fehler",
+        "when": "Letzte Änderung"
+      },
+      "pages": {
+        "label": "Seiten",
+        "previous": "Zurück",
+        "next": "Weiter",
+        "page": "Seite {page}"
+      },
+      "filters": {
+        "label": "Jobs filtern",
+        "state": "Zustand",
+        "queue": "Warteschlange",
+        "worker": "Worker",
+        "any": "Alle"
+      },
+      "note": "Nur Metadaten: Jobargumente und Fehlermeldungen werden nie gezeigt. Fehler ist nur der Fehlertyp. Jede Abfrage wird protokolliert.",
+      "attempts": "{attempt} von {max}",
+      "detail": {
+        "gone": "Diesen Job gibt es nicht mehr (abgeschlossene Jobs werden nach einem Tag entfernt).",
+        "now": "Jetzt: {state}",
+        "inserted": "Erstellt",
+        "scheduled": "Geplant für",
+        "attempted": "Letzter Versuch",
+        "completed": "Abgeschlossen",
+        "discarded": "Verworfen",
+        "cancelled": "Abgebrochen",
+        "errors": "Versuche mit Fehler",
+        "retry": "Wiederholen ist nicht verfügbar: Für keinen Worker gibt es genehmigte Regeln."
+      }
+    }
   }
 }
