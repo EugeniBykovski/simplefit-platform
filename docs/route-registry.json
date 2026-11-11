@@ -7478,7 +7478,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(admin)/admin/integrations/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-126: AD17 (MVP reduced), system health from GET /api/v1/admin/operations/health (system.health.read): measured checks with status and observation time (unknown and no telemetry never healthy, no uptime), job counts per queue and state, applied migrations and the configured release; with system.jobs.read the background job list from GET /api/v1/admin/operations/jobs (metadata only, never arguments or error messages). No retry or control exists (D-SA33). Design deviations: docs/admin-design/sf-126-design-register.md."
       },
       "screens": ["AD17"]
     },

@@ -107,6 +107,8 @@ const REAL_SCREENS = [
   // SF-125: AD4 and AD11, truthful "not available" screens (no reports or enforcement domain).
   "web.admin.moderation",
   "web.admin.enforcement",
+  // SF-126: AD17, system health from measurements and the background job list.
+  "web.admin.integrations",
   "web.admin.login",
   "web.admin.welcome",
   // SF-118: SPX9 settings, the organization's application, and SPE1's

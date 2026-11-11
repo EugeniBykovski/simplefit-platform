@@ -976,5 +976,129 @@
       "notice": "Jak powiadamiać ludzi i jak mogą się odwołać (wymaga prawników)",
       "permissions": "Osobne uprawnienia do przeglądania i działań moderacji"
     }
+  },
+  "operations": {
+    "metaTitle": "Stan systemu · Panel sterowania",
+    "breadcrumb": "Panel sterowania / System",
+    "title": "Stan systemu",
+    "loading": "Wczytujemy stan systemu",
+    "checkedAt": "Sprawdzono {time} · odświeża się co minutę, gdy strona jest otwarta",
+    "noHealthAccess": "Stan systemu wymaga dostępu do niego. Twoje uprawnienia obejmują tylko listę zadań.",
+    "refresh": "Sprawdź ponownie",
+    "stale": "Nie udało się sprawdzić ponownie. To odpowiedź z {time}, a nie obecny stan.",
+    "unreachable": {
+      "title": "Nie możemy połączyć się z kontrolami.",
+      "body": "Dopóki nie odpowiedzą, wszystko jest pokazane jako nieznane. Nie oznacza to, że usługa nie działa."
+    },
+    "legend": {
+      "label": "Statusy",
+      "note": "Nieznane nigdy nie jest pokazywane jako sprawne. Nie ma tu procentu dostępności: nie jest mierzony."
+    },
+    "status": {
+      "healthy": "Sprawne",
+      "degraded": "Problemy",
+      "unavailable": "Niedostępne",
+      "unknown": "Nieznane",
+      "no_telemetry": "Brak telemetrii"
+    },
+    "services": {
+      "title": "Stan usług",
+      "caption": "Stan usług: każda kontrola ze źródłem i czasem pomiaru",
+      "service": "Usługa",
+      "source": "Źródło",
+      "status": "Status",
+      "checked": "Sprawdzono"
+    },
+    "checks": {
+      "api": "API",
+      "database": "Baza danych",
+      "background_jobs": "Zadania w tle",
+      "email": "E-mail",
+      "payments_webhooks": "Płatności (Stripe)",
+      "storage": "Magazyn plików",
+      "error_monitoring": "Monitorowanie błędów (Sentry)"
+    },
+    "sources": {
+      "api": "To żądanie otrzymało odpowiedź",
+      "database": "Zapytanie z aplikacji · {ms} ms",
+      "background_jobs": "Oban: {waiting} czeka, {executing} w toku, {failed} błędów w 24 h",
+      "email": "Zadania wysyłki w 24 h: {accepted} przyjętych przez dostawcę, {failed} błędów, {pending} czeka. Przyjęcie to nie doręczenie.",
+      "payments_webhooks": "Ostatni webhook {time} · {received} odebranych, {failed} błędów w 24 h",
+      "webhooksNone": "Nie odebrano żadnego webhooka",
+      "storage": "Brak kontroli",
+      "error_monitoring": "Nie jest przekazywane do aplikacji"
+    },
+    "states": {
+      "available": "Gotowe",
+      "scheduled": "Zaplanowane",
+      "executing": "W toku",
+      "retryable": "Ponawiane",
+      "completed": "Zakończone",
+      "discarded": "Odrzucone",
+      "cancelled": "Anulowane"
+    },
+    "queues": {
+      "title": "Kolejki",
+      "caption": "Liczba zadań w tle według kolejki i stanu",
+      "queue": "Kolejka",
+      "limit": "Współbieżność",
+      "unavailable": "Nie udało się policzyć zadań.",
+      "note": "Niezakończone zadania oraz zakończone z ostatnich 24 godzin: Oban usuwa je po dobie."
+    },
+    "release": {
+      "title": "Wydanie",
+      "release": "Wydanie",
+      "environment": "Środowisko",
+      "migrations": "Migracje",
+      "applied": "{count, plural, one {# zastosowana} few {# zastosowane} many {# zastosowanych} other {# zastosowanej}} · ostatnia {latest}",
+      "unavailable": "Nie udało się ich odczytać.",
+      "note": "Tak, jak skonfigurowano. Nie można tu uruchomić wdrożenia, migracji ani restartu.",
+      "source": {
+        "configured": "(ustawione przez wdrożenie)",
+        "default": "(nie ustawiono: użyto wersji aplikacji)"
+      }
+    },
+    "jobs": {
+      "title": "Zadania w tle",
+      "noAccess": "Lista zadań wymaga dostępu do zadań.",
+      "loading": "Wczytujemy zadania",
+      "empty": "Żadne zadanie nie pasuje.",
+      "caption": "Zadania w tle, od najnowszych",
+      "columns": {
+        "job": "Zadanie",
+        "worker": "Obsługa",
+        "state": "Stan",
+        "attempts": "Próby",
+        "failure": "Błąd",
+        "when": "Ostatnia zmiana"
+      },
+      "pages": {
+        "label": "Strony",
+        "previous": "Wstecz",
+        "next": "Dalej",
+        "page": "Strona {page}"
+      },
+      "filters": {
+        "label": "Filtruj zadania",
+        "state": "Stan",
+        "queue": "Kolejka",
+        "worker": "Obsługa",
+        "any": "Dowolna"
+      },
+      "note": "Tylko metadane: argumenty zadań i treści błędów nigdy nie są pokazywane. Błąd to tylko jego typ. Każde zapytanie jest zapisywane.",
+      "attempts": "{attempt} z {max}",
+      "detail": {
+        "gone": "To zadanie już nie istnieje (zakończone zadania są usuwane po dobie).",
+        "now": "Teraz: {state}",
+        "inserted": "Utworzono",
+        "scheduled": "Zaplanowano na",
+        "attempted": "Ostatnia próba",
+        "completed": "Zakończono",
+        "discarded": "Odrzucono",
+        "cancelled": "Anulowano",
+        "errors": "Próby z błędem",
+        "retry": "Ponowienie jest niedostępne: żadna obsługa nie ma zatwierdzonych zasad ponawiania."
+      }
+    }
   }
 }

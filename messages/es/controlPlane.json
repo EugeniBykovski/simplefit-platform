@@ -976,5 +976,129 @@
       "notice": "Cómo se informa a las personas y cómo apelan (requiere asesoría legal)",
       "permissions": "Permisos de moderación separados para leer y actuar"
     }
+  },
+  "operations": {
+    "metaTitle": "Estado del sistema · Panel de control",
+    "breadcrumb": "Panel de control / Sistema",
+    "title": "Estado del sistema",
+    "loading": "Cargando el estado del sistema",
+    "checkedAt": "Comprobado {time} · se actualiza cada minuto mientras está abierto",
+    "noHealthAccess": "El estado del sistema requiere acceso. Tus permisos solo incluyen la lista de tareas.",
+    "refresh": "Comprobar de nuevo",
+    "stale": "No se pudo comprobar de nuevo. Esta es la respuesta de {time}, no el estado actual.",
+    "unreachable": {
+      "title": "No podemos contactar con las comprobaciones.",
+      "body": "Hasta que respondan, todo aparece como desconocido. No significa que un servicio esté caído."
+    },
+    "legend": {
+      "label": "Estados",
+      "note": "Lo desconocido nunca se muestra como correcto. Aquí no hay porcentaje de disponibilidad: no se mide."
+    },
+    "status": {
+      "healthy": "Correcto",
+      "degraded": "Con fallos",
+      "unavailable": "No disponible",
+      "unknown": "Desconocido",
+      "no_telemetry": "Sin telemetría"
+    },
+    "services": {
+      "title": "Estado de los servicios",
+      "caption": "Estado de los servicios: cada comprobación con su fuente y cuándo se midió",
+      "service": "Servicio",
+      "source": "Fuente",
+      "status": "Estado",
+      "checked": "Comprobado"
+    },
+    "checks": {
+      "api": "API",
+      "database": "Base de datos",
+      "background_jobs": "Tareas en segundo plano",
+      "email": "Email",
+      "payments_webhooks": "Pagos (Stripe)",
+      "storage": "Almacenamiento",
+      "error_monitoring": "Monitorización de errores (Sentry)"
+    },
+    "sources": {
+      "api": "Esta petición obtuvo respuesta",
+      "database": "Consulta desde la app · {ms} ms",
+      "background_jobs": "Oban: {waiting} en espera, {executing} en curso, {failed} fallidas en 24 h",
+      "email": "Tareas de envío en 24 h: {accepted} aceptadas por el proveedor, {failed} fallidas, {pending} pendientes. Aceptar no es entregar.",
+      "payments_webhooks": "Último webhook {time} · {received} recibidos, {failed} fallidos en 24 h",
+      "webhooksNone": "No se recibió ningún webhook",
+      "storage": "No existe comprobación",
+      "error_monitoring": "No se informa a la app"
+    },
+    "states": {
+      "available": "Disponibles",
+      "scheduled": "Programadas",
+      "executing": "En curso",
+      "retryable": "Reintentando",
+      "completed": "Completadas",
+      "discarded": "Descartadas",
+      "cancelled": "Canceladas"
+    },
+    "queues": {
+      "title": "Colas",
+      "caption": "Tareas en segundo plano por cola y estado",
+      "queue": "Cola",
+      "limit": "Concurrencia",
+      "unavailable": "No se pudieron contar las tareas.",
+      "note": "Tareas sin terminar y las terminadas en las últimas 24 horas: Oban las elimina tras un día."
+    },
+    "release": {
+      "title": "Versión",
+      "release": "Versión",
+      "environment": "Entorno",
+      "migrations": "Migraciones",
+      "applied": "{count, plural, one {# aplicada} other {# aplicadas}} · última {latest}",
+      "unavailable": "No se pudieron leer.",
+      "note": "Tal como está configurado. Aquí no se puede iniciar un despliegue, una migración ni un reinicio.",
+      "source": {
+        "configured": "(fijada por el despliegue)",
+        "default": "(sin fijar: se usa la versión de la app)"
+      }
+    },
+    "jobs": {
+      "title": "Tareas en segundo plano",
+      "noAccess": "La lista de tareas requiere acceso a tareas.",
+      "loading": "Cargando tareas",
+      "empty": "Ninguna tarea coincide.",
+      "caption": "Tareas en segundo plano, las más nuevas primero",
+      "columns": {
+        "job": "Tarea",
+        "worker": "Worker",
+        "state": "Estado",
+        "attempts": "Intentos",
+        "failure": "Fallo",
+        "when": "Último cambio"
+      },
+      "pages": {
+        "label": "Páginas",
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "page": "Página {page}"
+      },
+      "filters": {
+        "label": "Filtrar tareas",
+        "state": "Estado",
+        "queue": "Cola",
+        "worker": "Worker",
+        "any": "Cualquiera"
+      },
+      "note": "Solo metadatos: nunca se muestran los argumentos de las tareas ni los mensajes de error. El fallo es solo el tipo de error. Cada consulta queda registrada.",
+      "attempts": "{attempt} de {max}",
+      "detail": {
+        "gone": "Esta tarea ya no existe (las tareas terminadas se eliminan tras un día).",
+        "now": "Ahora: {state}",
+        "inserted": "Creada",
+        "scheduled": "Programada para",
+        "attempted": "Último intento",
+        "completed": "Completada",
+        "discarded": "Descartada",
+        "cancelled": "Cancelada",
+        "errors": "Intentos con error",
+        "retry": "No se puede reintentar: ningún worker tiene una política de reintento aprobada."
+      }
+    }
   }
 }
