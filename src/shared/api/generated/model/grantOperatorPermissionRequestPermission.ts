@@ -25,4 +25,7 @@ export const GrantOperatorPermissionRequestPermission = {
   usersreveal_email: 'users.reveal_email',
   usersrestrict: 'users.restrict',
   userssessionsrevoke: 'users.sessions.revoke',
+  gymsread: 'gyms.read',
+  coachesread: 'coaches.read',
+  fightersread: 'fighters.read',
 } as const;

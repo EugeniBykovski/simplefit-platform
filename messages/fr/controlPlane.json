@@ -466,6 +466,206 @@
         "self": "Vous ne pouvez pas faire cela sur votre propre compte.",
         "operator": "Ce compte est un opérateur de la plateforme : utilisez l’administration des opérateurs."
       }
+    },
+    "tabs": {
+      "label": "Que rechercher",
+      "accounts": "Comptes",
+      "fighters": "Boxeurs",
+      "coaches": "Coachs"
+    },
+    "profiles": {
+      "note": "Recherche exacte uniquement, avec un motif enregistré. Les profils montrent ce que la personne partage, plus des nombres. Entraînements, notes, poids, santé et messages ne sont jamais affichés ici.",
+      "noName": "Pas encore de nom",
+      "show": "Voir le profil",
+      "hide": "Masquer le profil",
+      "loading": "Chargement du profil",
+      "gone": "Ce profil n’existe plus.",
+      "activeRelationships": "{count, plural, one {# relation active} other {# relations actives}}",
+      "profileStatus": {
+        "in_progress": "Inscription en cours",
+        "completed": "Inscription terminée"
+      },
+      "profile": "Profil",
+      "profileLabel": "Profil",
+      "name": "Nom affiché",
+      "location": "Lieu",
+      "created": "Créé",
+      "account": "Compte",
+      "accountState": "État du compte",
+      "accountLink": "Fiche du compte",
+      "openAccount": "Ouvrir le compte",
+      "noAccountAccess": "Accès aux comptes requis",
+      "accountNote": "Le compte et le profil sont distincts : un compte suspendu garde son profil et ses relations.",
+      "relationships": "Relations d’entraînement",
+      "relationshipsNote": "Nombres seulement. Qui est l’autre personne et ce qu’ils partagent reste entre eux.",
+      "active": "Actives",
+      "ended": "Terminées",
+      "count": "{count, number}",
+      "fighter": {
+        "label": "@pseudo, e-mail exact ou ID utilisateur",
+        "placeholder": "@pseudo, e-mail ou ID",
+        "idle": "Saisissez le @pseudo d’un boxeur, ou son e-mail ou ID utilisateur exact, et un motif.",
+        "noMatch": "Aucun boxeur ne correspond",
+        "username": "Pseudo",
+        "experience": "Expérience",
+        "stance": "Garde",
+        "gymMemberships": "Adhésions en salle",
+        "never": "Le poids, la taille, les objectifs, les combats, l’âge et la santé ne sont pas affichés : aucune permission n’existe pour eux."
+      },
+      "coach": {
+        "label": "E-mail exact ou ID utilisateur",
+        "placeholder": "E-mail exact ou ID utilisateur",
+        "idle": "Saisissez l’e-mail ou l’ID utilisateur exact d’un coach, et un motif.",
+        "noMatch": "Aucun coach ne correspond",
+        "brand": "Marque",
+        "formats": "Formats",
+        "levels": "Niveaux de compétition",
+        "languages": "Langues",
+        "invitations": "Invitations en attente",
+        "gyms": "Salles",
+        "gymCount": "Coache dans",
+        "gym": "Salle {n}",
+        "openGym": "Ouvrir la salle (depuis le {date})",
+        "since": "Depuis le {date}",
+        "gymsNote": "Salles où la personne fait partie de l’équipe comme coach. Ouvrir une salle nécessite l’accès aux salles.",
+        "never": "La bio, le planning, les tarifs, les séances et les notes ne sont pas affichés. Les coachs n’ont pas de vérification."
+      },
+      "experience": {
+        "new_to_boxing": "Débutant",
+        "recreational": "Loisir",
+        "amateur": "Amateur",
+        "competitive_amateur": "Amateur en compétition",
+        "professional": "Professionnel"
+      },
+      "stance": {
+        "orthodox": "Orthodoxe",
+        "southpaw": "Fausse garde",
+        "switch": "Alternée"
+      },
+      "formats": {
+        "personal_training": "Coaching individuel",
+        "group_coaching": "Coaching en groupe",
+        "online_coaching": "Coaching en ligne",
+        "fight_camps": "Camps d’entraînement"
+      },
+      "levels": {
+        "amateur": "Amateur",
+        "professional": "Professionnel"
+      },
+      "languages": {
+        "en": "Anglais",
+        "pl": "Polonais",
+        "ru": "Russe",
+        "be": "Biélorusse",
+        "uk": "Ukrainien"
+      }
+    }
+  },
+  "gyms": {
+    "metaTitle": "Salles · Plan de contrôle",
+    "breadcrumb": "Plan de contrôle / Salles",
+    "title": "Salles",
+    "loading": "Chargement des salles",
+    "note": "Uniquement les salles : leur état, leur lieu et la taille de l’équipe. Les noms et coordonnées des membres ne font pas partie de cette liste. Chaque requête est enregistrée.",
+    "publicationNote": "La publication des salles n’est pas encore disponible (SF-139 est une proposition), donc aucune salle n’est publique.",
+    "noLocation": "Pas encore de lieu",
+    "filters": {
+      "label": "Filtrer les salles",
+      "name": "Le nom commence par",
+      "namePlaceholder": "Nom de la salle",
+      "lifecycle": "Configuration",
+      "verification": "Vérification",
+      "country": "Pays",
+      "countryPlaceholder": "PL",
+      "countryHint": "Code à deux lettres, p. ex. PL",
+      "any": "Tous"
+    },
+    "table": {
+      "caption": "Salles, les plus récentes d’abord",
+      "gym": "Salle",
+      "lifecycle": "Configuration",
+      "verification": "Vérification",
+      "location": "Lieu",
+      "staff": "Équipe",
+      "created": "Créée"
+    },
+    "empty": {
+      "pill": "Aucune salle",
+      "title": "Aucune salle ne correspond",
+      "body": "Essayez d’autres filtres."
+    },
+    "pages": {
+      "label": "Pages",
+      "previous": "Précédente",
+      "next": "Suivante",
+      "page": "Page {page}"
+    },
+    "lifecycle": {
+      "draft": "En configuration",
+      "completed": "Configurée"
+    },
+    "verification": {
+      "not_started": "Pas commencée",
+      "draft": "Brouillon",
+      "submitted": "Soumise",
+      "changes_requested": "Modifications demandées",
+      "approved": "Approuvée",
+      "rejected": "Refusée",
+      "revoked": "Révoquée"
+    },
+    "gymType": {
+      "boxing_gym": "Salle de boxe",
+      "boxing_club": "Club de boxe",
+      "amateur_club": "Club amateur",
+      "professional_team": "Équipe professionnelle",
+      "combat_sports_gym": "Salle de sports de combat",
+      "fitness_boxing_studio": "Studio de boxe fitness"
+    },
+    "detail": {
+      "metaTitle": "Salle · Plan de contrôle",
+      "breadcrumb": "Salles",
+      "title": "Salle",
+      "loading": "Chargement de la salle",
+      "reasonTitle": "Pourquoi ouvrez-vous cette salle ?",
+      "reasonBody": "L’ouverture d’une salle est enregistrée avec votre motif.",
+      "open": "Ouvrir la salle",
+      "header": "{id} · créée le {date} · {country}",
+      "noActions": "Lecture seule. Suspendre une salle, examiner sa vérification et la publier ne font pas partie du plan de contrôle.",
+      "count": "{count, number}",
+      "notFound": {
+        "pill": "Introuvable",
+        "title": "Cette salle n’existe pas",
+        "body": "Vérifiez le lien. La salle n’a peut-être jamais existé."
+      },
+      "people": {
+        "title": "Personnes",
+        "owner": "Propriétaire",
+        "noOwner": "Aucun propriétaire",
+        "unnamed": "Nom non renseigné",
+        "managers": "Gérants",
+        "coaches": "Coachs",
+        "frontDesk": "Accueil",
+        "invitations": "Invitations d’équipe en attente",
+        "members": "Membres (nombre seulement)",
+        "requested": "Demandes d’adhésion (nombre seulement)",
+        "never": "Les noms et coordonnées des membres ne sont pas affichés ici."
+      },
+      "verification": {
+        "title": "Vérification de l’entreprise",
+        "status": "Statut",
+        "revision": "Version",
+        "submitted": "Soumise",
+        "decided": "Décidée",
+        "reviewNote": "Le statut de la demande de la salle. Les informations de l’entreprise et les documents ne sont pas affichés, et l’examen ne fait pas encore partie du plan de contrôle."
+      },
+      "profile": {
+        "title": "Salle",
+        "type": "Type",
+        "location": "Lieu principal",
+        "staff": "Équipe active",
+        "revision": "Version",
+        "publication": "Page publique : indisponible. La publication des salles est une proposition (SF-139) ; rien n’est public."
+      }
     }
   }
 }

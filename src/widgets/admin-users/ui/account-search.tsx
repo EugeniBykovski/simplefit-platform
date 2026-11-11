@@ -25,6 +25,26 @@ import { ReasonSelect } from "./reason-select";
  */
 export function AccountSearch() {
   const t = useTranslations("controlPlane.users");
+  return (
+    <div className="flex min-h-full flex-col">
+      <PageHeader>
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <nav aria-label="Breadcrumb">
+            <p className="type-label text-faint-foreground">{t("breadcrumb")}</p>
+          </nav>
+          <h1 className="truncate type-h3 font-display">{t("title")}</h1>
+        </div>
+      </PageHeader>
+      <PageBody className="flex flex-col gap-5 pt-5.5">
+        <AccountSearchPanel />
+      </PageBody>
+    </div>
+  );
+}
+
+/** AD7's account search without the page chrome, for `UserExplorer`'s Accounts tab. */
+export function AccountSearchPanel() {
+  const t = useTranslations("controlPlane.users");
   const format = useFormatter();
   const [query, setQuery] = useState("");
   const [reason, setReason] = useState<ReadReason>();
@@ -126,58 +146,48 @@ export function AccountSearch() {
   }
 
   return (
-    <div className="flex min-h-full flex-col">
-      <PageHeader>
-        <div className="flex min-w-0 flex-col gap-0.5">
-          <nav aria-label="Breadcrumb">
-            <p className="type-label text-faint-foreground">{t("breadcrumb")}</p>
-          </nav>
-          <h1 className="truncate type-h3 font-display">{t("title")}</h1>
+    <>
+      <form
+        role="search"
+        onSubmit={submit}
+        className="grid gap-3 rounded-3xl border bg-surface p-5 md:grid-cols-5 md:items-end"
+      >
+        <div className="flex min-w-0 flex-col gap-1.5 md:col-span-2">
+          <Label htmlFor="account-search-query">
+            {t("search.label")} <span aria-hidden>*</span>
+          </Label>
+          <Input
+            id="account-search-query"
+            value={query}
+            required
+            maxLength={320}
+            autoComplete="off"
+            spellCheck={false}
+            placeholder={t("search.placeholder")}
+            onChange={(event) => setQuery(event.target.value)}
+          />
         </div>
-      </PageHeader>
-      <PageBody className="flex flex-col gap-5 pt-5.5">
-        <form
-          role="search"
-          onSubmit={submit}
-          className="grid gap-3 rounded-3xl border bg-surface p-5 md:grid-cols-5 md:items-end"
+        <div className="md:col-span-2">
+          <ReasonSelect
+            id="account-search-reason"
+            label={t("search.reason")}
+            placeholder={t("search.reasonPlaceholder")}
+            reasons={READ_REASONS}
+            value={reason}
+            onChange={(value) => setReason(value as ReadReason)}
+          />
+        </div>
+        <Button
+          type="submit"
+          className="h-11"
+          disabled={query.trim() === "" || reason === undefined}
+          loading={search.isFetching}
         >
-          <div className="flex min-w-0 flex-col gap-1.5 md:col-span-2">
-            <Label htmlFor="account-search-query">
-              {t("search.label")} <span aria-hidden>*</span>
-            </Label>
-            <Input
-              id="account-search-query"
-              value={query}
-              required
-              maxLength={320}
-              autoComplete="off"
-              spellCheck={false}
-              placeholder={t("search.placeholder")}
-              onChange={(event) => setQuery(event.target.value)}
-            />
-          </div>
-          <div className="md:col-span-2">
-            <ReasonSelect
-              id="account-search-reason"
-              label={t("search.reason")}
-              placeholder={t("search.reasonPlaceholder")}
-              reasons={READ_REASONS}
-              value={reason}
-              onChange={(value) => setReason(value as ReadReason)}
-            />
-          </div>
-          <Button
-            type="submit"
-            className="h-11"
-            disabled={query.trim() === "" || reason === undefined}
-            loading={search.isFetching}
-          >
-            {t("search.submit")}
-          </Button>
-          <p className="type-caption text-faint-foreground md:col-span-5">{t("search.note")}</p>
-        </form>
-        {body}
-      </PageBody>
-    </div>
+          {t("search.submit")}
+        </Button>
+        <p className="type-caption text-faint-foreground md:col-span-5">{t("search.note")}</p>
+      </form>
+      {body}
+    </>
   );
 }

@@ -466,6 +466,206 @@
         "self": "Das kannst du nicht mit deinem eigenen Konto machen.",
         "operator": "Dieses Konto ist ein Plattform-Operator: Nutze die Operator-Verwaltung."
       }
+    },
+    "tabs": {
+      "label": "Was suchst du",
+      "accounts": "Konten",
+      "fighters": "Fighter",
+      "coaches": "Coaches"
+    },
+    "profiles": {
+      "note": "Nur exakte Suche, mit einem protokollierten Grund. Profile zeigen, was die Person teilt, plus Zahlen. Training, Notizen, Gewicht, Gesundheit und Nachrichten werden hier nie angezeigt.",
+      "noName": "Noch kein Name",
+      "show": "Profil anzeigen",
+      "hide": "Profil ausblenden",
+      "loading": "Profil wird geladen",
+      "gone": "Dieses Profil gibt es nicht mehr.",
+      "activeRelationships": "{count, plural, one {# aktive Beziehung} other {# aktive Beziehungen}}",
+      "profileStatus": {
+        "in_progress": "Onboarding läuft",
+        "completed": "Onboarding abgeschlossen"
+      },
+      "profile": "Profil",
+      "profileLabel": "Profil",
+      "name": "Anzeigename",
+      "location": "Ort",
+      "created": "Erstellt",
+      "account": "Konto",
+      "accountState": "Kontostatus",
+      "accountLink": "Kontodatensatz",
+      "openAccount": "Konto öffnen",
+      "noAccountAccess": "Kontozugriff nötig",
+      "accountNote": "Konto und Profil sind getrennt: Ein gesperrtes Konto behält Profil und Beziehungen.",
+      "relationships": "Coaching-Beziehungen",
+      "relationshipsNote": "Nur Zahlen. Wer die andere Seite ist und was geteilt wird, bleibt zwischen ihnen.",
+      "active": "Aktiv",
+      "ended": "Beendet",
+      "count": "{count, number}",
+      "fighter": {
+        "label": "@username, exakte E-Mail oder Nutzer-ID",
+        "placeholder": "@username, E-Mail oder ID",
+        "idle": "Gib den @username eines Fighters oder die exakte E-Mail oder Nutzer-ID und einen Grund ein.",
+        "noMatch": "Kein Fighter gefunden",
+        "username": "Benutzername",
+        "experience": "Erfahrung",
+        "stance": "Auslage",
+        "gymMemberships": "Studio-Mitgliedschaften",
+        "never": "Gewicht, Größe, Ziele, Kämpfe, Alter und Gesundheit werden nicht angezeigt: Dafür gibt es keine Berechtigung."
+      },
+      "coach": {
+        "label": "Exakte E-Mail oder Nutzer-ID",
+        "placeholder": "Exakte E-Mail oder Nutzer-ID",
+        "idle": "Gib die exakte E-Mail oder Nutzer-ID eines Coaches und einen Grund ein.",
+        "noMatch": "Kein Coach gefunden",
+        "brand": "Marke",
+        "formats": "Formate",
+        "levels": "Wettkampfniveaus",
+        "languages": "Sprachen",
+        "invitations": "Offene Einladungen",
+        "gyms": "Studios",
+        "gymCount": "Coacht in",
+        "gym": "Studio {n}",
+        "openGym": "Studio öffnen (seit {date})",
+        "since": "Seit {date}",
+        "gymsNote": "Studios, in denen die Person als Coach im Team ist. Zum Öffnen braucht es Studiozugriff.",
+        "never": "Bio, Zeitplan, Preise, Einheiten und Notizen werden nicht angezeigt. Coaches haben keine Verifizierung."
+      },
+      "experience": {
+        "new_to_boxing": "Neu im Boxen",
+        "recreational": "Freizeit",
+        "amateur": "Amateur",
+        "competitive_amateur": "Wettkampf-Amateur",
+        "professional": "Profi"
+      },
+      "stance": {
+        "orthodox": "Rechtsauslage",
+        "southpaw": "Linksauslage",
+        "switch": "Wechselnd"
+      },
+      "formats": {
+        "personal_training": "Personal Training",
+        "group_coaching": "Gruppentraining",
+        "online_coaching": "Online-Coaching",
+        "fight_camps": "Fight Camps"
+      },
+      "levels": {
+        "amateur": "Amateure",
+        "professional": "Profis"
+      },
+      "languages": {
+        "en": "Englisch",
+        "pl": "Polnisch",
+        "ru": "Russisch",
+        "be": "Belarussisch",
+        "uk": "Ukrainisch"
+      }
+    }
+  },
+  "gyms": {
+    "metaTitle": "Studios · Control Plane",
+    "breadcrumb": "Control Plane / Studios",
+    "title": "Studios",
+    "loading": "Studios werden geladen",
+    "note": "Nur Studios: Status, Standort und Teamgröße. Namen und Kontaktdaten von Mitgliedern gehören nicht zu dieser Liste. Jede Abfrage wird protokolliert.",
+    "publicationNote": "Die Veröffentlichung von Studios ist noch nicht verfügbar (SF-139 ist ein Vorschlag), daher ist kein Studio öffentlich.",
+    "noLocation": "Noch kein Standort",
+    "filters": {
+      "label": "Studios filtern",
+      "name": "Name beginnt mit",
+      "namePlaceholder": "Studioname",
+      "lifecycle": "Einrichtung",
+      "verification": "Verifizierung",
+      "country": "Land",
+      "countryPlaceholder": "PL",
+      "countryHint": "Zweistelliger Code, z. B. PL",
+      "any": "Alle"
+    },
+    "table": {
+      "caption": "Studios, neueste zuerst",
+      "gym": "Studio",
+      "lifecycle": "Einrichtung",
+      "verification": "Verifizierung",
+      "location": "Standort",
+      "staff": "Team",
+      "created": "Erstellt"
+    },
+    "empty": {
+      "pill": "Keine Studios",
+      "title": "Kein Studio passt",
+      "body": "Versuche andere Filter."
+    },
+    "pages": {
+      "label": "Seiten",
+      "previous": "Zurück",
+      "next": "Weiter",
+      "page": "Seite {page}"
+    },
+    "lifecycle": {
+      "draft": "In Einrichtung",
+      "completed": "Eingerichtet"
+    },
+    "verification": {
+      "not_started": "Nicht begonnen",
+      "draft": "Entwurf",
+      "submitted": "Eingereicht",
+      "changes_requested": "Änderungen angefragt",
+      "approved": "Genehmigt",
+      "rejected": "Abgelehnt",
+      "revoked": "Widerrufen"
+    },
+    "gymType": {
+      "boxing_gym": "Boxstudio",
+      "boxing_club": "Boxverein",
+      "amateur_club": "Amateurverein",
+      "professional_team": "Profiteam",
+      "combat_sports_gym": "Kampfsportstudio",
+      "fitness_boxing_studio": "Fitnessbox-Studio"
+    },
+    "detail": {
+      "metaTitle": "Studio · Control Plane",
+      "breadcrumb": "Studios",
+      "title": "Studio",
+      "loading": "Studio wird geladen",
+      "reasonTitle": "Warum öffnest du dieses Studio?",
+      "reasonBody": "Das Öffnen eines Studios wird mit deinem Grund protokolliert.",
+      "open": "Studio öffnen",
+      "header": "{id} · erstellt am {date} · {country}",
+      "noActions": "Nur lesen. Studios sperren, Verifizierungen prüfen und veröffentlichen gehören nicht zur Control Plane.",
+      "count": "{count, number}",
+      "notFound": {
+        "pill": "Nicht gefunden",
+        "title": "Dieses Studio gibt es nicht",
+        "body": "Prüfe den Link. Das Studio hat es vielleicht nie gegeben."
+      },
+      "people": {
+        "title": "Personen",
+        "owner": "Inhaber",
+        "noOwner": "Kein Inhaber",
+        "unnamed": "Kein Name angegeben",
+        "managers": "Manager",
+        "coaches": "Coaches",
+        "frontDesk": "Empfang",
+        "invitations": "Offene Team-Einladungen",
+        "members": "Mitglieder (nur Anzahl)",
+        "requested": "Beitrittsanfragen (nur Anzahl)",
+        "never": "Namen und Kontaktdaten von Mitgliedern werden hier nicht angezeigt."
+      },
+      "verification": {
+        "title": "Unternehmensverifizierung",
+        "status": "Status",
+        "revision": "Version",
+        "submitted": "Eingereicht",
+        "decided": "Entschieden",
+        "reviewNote": "Der Status des Antrags. Unternehmensangaben und Dokumente werden nicht angezeigt, und die Prüfung gehört noch nicht zur Control Plane."
+      },
+      "profile": {
+        "title": "Studio",
+        "type": "Art",
+        "location": "Hauptstandort",
+        "staff": "Aktives Team",
+        "revision": "Version",
+        "publication": "Öffentliche Seite: nicht verfügbar. Die Veröffentlichung von Studios ist ein Vorschlag (SF-139); nichts ist öffentlich."
+      }
     }
   }
 }
