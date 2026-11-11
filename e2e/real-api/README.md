@@ -192,6 +192,12 @@ with a session note, the fighter's body data). The gym list and detail, the coac
 grants and another person signing in on the same browser are checked against the database; the seeded canaries
 (member name, bio, note, weight, fight, full names, address, emails) must never show.
 
+`control-plane-sponsor-review.spec.ts` (SF-124) runs on the same setup (a fresh database each run) plus storage
+on the local S3 stand-in (`fixtures/s3-stub.mjs`, signatures unchecked) for both the API and the spec
+(`E2E_S3_BUCKET`, `E2E_S3_ACCESS_KEY_ID`, `E2E_S3_SECRET_ACCESS_KEY`, `E2E_S3_ENDPOINT`). Applicants submit through
+`fixtures/sponsor-review-seed.exs`; claim, approve, reject, request changes, suspend and reinstate run through the UI
+and are checked in the database, as are a stale second tab and an approval whose answer is lost.
+
 `control-plane-overview.spec.ts` (SF-121) runs on the same setup (a fresh database each run) and
 checks every number the overview shows against SQL written from the metric catalog
 (simplefit-api `docs/architecture/admin-overview-metrics.md`).

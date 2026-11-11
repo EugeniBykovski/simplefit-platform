@@ -194,7 +194,8 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
   },
   // The Control Plane (SF-120): AdminWorkspace shows only the items an operator was
   // granted plus the overview. Users (SF-122, SF-123: accounts, fighters, coaches) and
-  // Gyms (`tenants`, SF-123) are built; every other item is an unlinked "Soon" row.
+  // Gyms (`tenants`, SF-123) and Sponsors (application review, SF-124) are built; every
+  // other item is an unlinked "Soon" row.
   "web.admin": {
     messages: "admin",
     sections: [
@@ -236,7 +237,6 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
       "transactions",
       "payments",
       "pricing",
-      "sponsors",
       "campaigns",
       "enterprise",
       "moderation",
