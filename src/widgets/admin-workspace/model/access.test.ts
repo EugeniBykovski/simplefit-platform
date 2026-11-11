@@ -34,6 +34,14 @@ describe("Control Plane access (SF-120, presentation only)", () => {
     ]);
     expect(visibleNavItems(founder)).toEqual(["overview", "sponsors", "audit", "staff"]);
     expect(visibleNavItems(operator(["users.read"]))).toEqual(["overview", "users"]);
+    // SF-123: Gyms with gyms.read; Users with any of the three people permissions.
+    expect(visibleNavItems(operator(["gyms.read"]))).toEqual(["overview", "tenants"]);
+    expect(visibleNavItems(operator(["fighters.read"]))).toEqual(["overview", "users"]);
+    expect(visibleNavItems(operator(["coaches.read", "gyms.read"]))).toEqual([
+      "overview",
+      "tenants",
+      "users",
+    ]);
     expect(hasAccess(founder, "sponsorOrganizations")).toBe(true);
     expect(hasAccess(founder, "sponsorApplications")).toBe(false);
   });

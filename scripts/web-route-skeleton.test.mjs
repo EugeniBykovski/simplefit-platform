@@ -98,6 +98,9 @@ const REAL_SCREENS = [
   "web.admin",
   "web.admin.users",
   "web.admin.users._user-id",
+  // SF-123: AD2 and AD12, the gym list and one gym (`gyms.read`).
+  "web.admin.tenants",
+  "web.admin.tenants._tenant-id",
   "web.admin.login",
   "web.admin.welcome",
   // SF-118: SPX9 settings, the organization's application, and SPE1's

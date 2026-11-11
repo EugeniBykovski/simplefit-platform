@@ -186,6 +186,12 @@ under test) and reads results.
 `control-plane-users.spec.ts` (SF-122) runs on the same setup: account search, suspension, lift and sign-out
 checked in the target's own sessions (separate browser contexts) and in the database.
 
+`control-plane-oversight.spec.ts` (SF-123) runs on the same setup (a fresh database each run): its world comes
+from `fixtures/oversight-seed.exs` (a set-up gym with an owner and a member, a coach and a fighter in a relationship
+with a session note, the fighter's body data). The gym list and detail, the coach and fighter lookups, revoked
+grants and another person signing in on the same browser are checked against the database; the seeded canaries
+(member name, bio, note, weight, fight, full names, address, emails) must never show.
+
 `control-plane-overview.spec.ts` (SF-121) runs on the same setup (a fresh database each run) and
 checks every number the overview shows against SQL written from the metric catalog
 (simplefit-api `docs/architecture/admin-overview-metrics.md`).
