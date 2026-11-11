@@ -936,5 +936,45 @@
         "note": "Each download is a 5-minute link, recorded before it’s issued. Documents are what the applicant uploaded: not checked for authenticity or malware."
       }
     }
+  },
+  "trustSafety": {
+    "breadcrumb": "Control plane / Trust & safety",
+    "pill": "Not available",
+    "notState": "This isn’t an empty queue, a missing permission or an error: the feature doesn’t exist yet.",
+    "moderation": {
+      "metaTitle": "Moderation · Control plane",
+      "title": "Moderation",
+      "heading": "Moderation isn’t part of the Control Plane yet",
+      "body": "There’s nothing to review. SimpleFit has no reports, posts, comments, messages or public media, so no content can be reported, reviewed or hidden. No report is shown here because none exists."
+    },
+    "enforcement": {
+      "metaTitle": "Enforcement · Control plane",
+      "title": "Enforcement",
+      "heading": "Enforcement and appeals aren’t part of the Control Plane yet",
+      "body": "No enforcement case, strike or appeal exists. An account suspension can’t be appealed here: how people are told and how they appeal still needs counsel."
+    },
+    "exists": {
+      "title": "What exists today",
+      "accounts": {
+        "link": "Users",
+        "body": "Suspending an account or signing it out everywhere (needs account permissions)."
+      },
+      "sponsors": {
+        "link": "Sponsor applications",
+        "body": "Suspending a sponsor organization. That’s business review, not moderation."
+      },
+      "gyms": {
+        "title": "Gym verification",
+        "body": "A separate business review, not moderation. It isn’t part of the Control Plane yet."
+      }
+    },
+    "needs": {
+      "title": "Needed before moderation can be built",
+      "intake": "What can be reported, and by whom",
+      "reasons": "Report reasons and what evidence is kept",
+      "hiding": "What hiding means for each kind of content, and where it’s enforced",
+      "notice": "How people are told and how they appeal (needs counsel)",
+      "permissions": "Separate moderation permissions for reading and acting"
+    }
   }
 }

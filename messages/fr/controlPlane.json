@@ -936,5 +936,45 @@
         "note": "Chaque téléchargement est un lien de 5 minutes, enregistré avant d’être émis. Les documents ont été envoyés par la personne candidate : ni leur authenticité ni l’absence de logiciel malveillant ne sont vérifiées."
       }
     }
+  },
+  "trustSafety": {
+    "breadcrumb": "Plan de contrôle / Confiance et sécurité",
+    "pill": "Indisponible",
+    "notState": "Ce n’est ni une file vide, ni une permission manquante, ni une erreur : la fonctionnalité n’existe pas encore.",
+    "moderation": {
+      "metaTitle": "Modération · Plan de contrôle",
+      "title": "Modération",
+      "heading": "La modération ne fait pas encore partie du plan de contrôle",
+      "body": "Il n’y a rien à examiner. SimpleFit n’a ni signalements, ni publications, ni commentaires, ni messages, ni médias publics : aucun contenu ne peut être signalé, examiné ou masqué. Aucun signalement n’apparaît ici, car il n’en existe aucun."
+    },
+    "enforcement": {
+      "metaTitle": "Sanctions · Plan de contrôle",
+      "title": "Sanctions",
+      "heading": "Les sanctions et les recours ne font pas encore partie du plan de contrôle",
+      "body": "Il n’existe ni dossier, ni avertissement, ni recours. Une suspension de compte ne peut pas être contestée ici : la manière d’informer les personnes et de leur permettre un recours doit encore être validée juridiquement."
+    },
+    "exists": {
+      "title": "Ce qui existe aujourd’hui",
+      "accounts": {
+        "link": "Utilisateurs",
+        "body": "Suspendre un compte ou le déconnecter partout (permissions sur les comptes requises)."
+      },
+      "sponsors": {
+        "link": "Candidatures de sponsors",
+        "body": "Suspendre une organisation de sponsor. C’est un examen commercial, pas de la modération."
+      },
+      "gyms": {
+        "title": "Vérification des salles",
+        "body": "Un examen commercial distinct, pas de la modération. Il ne fait pas encore partie du plan de contrôle."
+      }
+    },
+    "needs": {
+      "title": "Nécessaire avant de construire la modération",
+      "intake": "Ce qui peut être signalé, et par qui",
+      "reasons": "Les motifs de signalement et les preuves conservées",
+      "hiding": "Ce que masquer signifie pour chaque type de contenu, et où c’est appliqué",
+      "notice": "Comment informer les personnes et leur permettre un recours (validation juridique requise)",
+      "permissions": "Des permissions de modération distinctes pour consulter et agir"
+    }
   }
 }

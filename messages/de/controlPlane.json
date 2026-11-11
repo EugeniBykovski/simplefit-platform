@@ -936,5 +936,45 @@
         "note": "Jeder Download ist ein 5-Minuten-Link, der vor der Ausgabe protokolliert wird. Die Dokumente haben die Bewerber hochgeladen: Echtheit und Schadsoftware werden nicht geprüft."
       }
     }
+  },
+  "trustSafety": {
+    "breadcrumb": "Control Plane / Vertrauen & Sicherheit",
+    "pill": "Nicht verfügbar",
+    "notState": "Das ist keine leere Warteschlange, keine fehlende Berechtigung und kein Fehler: Die Funktion gibt es noch nicht.",
+    "moderation": {
+      "metaTitle": "Moderation · Control Plane",
+      "title": "Moderation",
+      "heading": "Moderation gehört noch nicht zur Control Plane",
+      "body": "Es gibt nichts zu prüfen. SimpleFit hat keine Meldungen, Beiträge, Kommentare, Nachrichten oder öffentlichen Medien, also lässt sich kein Inhalt melden, prüfen oder ausblenden. Hier wird keine Meldung gezeigt, weil es keine gibt."
+    },
+    "enforcement": {
+      "metaTitle": "Durchsetzung · Control Plane",
+      "title": "Durchsetzung",
+      "heading": "Durchsetzung und Einsprüche gehören noch nicht zur Control Plane",
+      "body": "Es gibt keine Fälle, Verwarnungen oder Einsprüche. Eine Kontosperre lässt sich hier nicht anfechten: Wie Betroffene informiert werden und Einspruch einlegen, muss noch juristisch geklärt werden."
+    },
+    "exists": {
+      "title": "Was es heute gibt",
+      "accounts": {
+        "link": "Nutzer",
+        "body": "Ein Konto sperren oder überall abmelden (braucht Kontoberechtigungen)."
+      },
+      "sponsors": {
+        "link": "Sponsorbewerbungen",
+        "body": "Eine Sponsor-Organisation sperren. Das ist eine Geschäftsprüfung, keine Moderation."
+      },
+      "gyms": {
+        "title": "Studio-Verifizierung",
+        "body": "Eine eigene Geschäftsprüfung, keine Moderation. Sie gehört noch nicht zur Control Plane."
+      }
+    },
+    "needs": {
+      "title": "Nötig, bevor Moderation gebaut werden kann",
+      "intake": "Was gemeldet werden kann und von wem",
+      "reasons": "Meldegründe und welche Belege gespeichert werden",
+      "hiding": "Was Ausblenden für jede Inhaltsart bedeutet und wo es durchgesetzt wird",
+      "notice": "Wie Betroffene informiert werden und Einspruch einlegen (juristisch zu klären)",
+      "permissions": "Eigene Moderationsberechtigungen zum Lesen und Handeln"
+    }
   }
 }

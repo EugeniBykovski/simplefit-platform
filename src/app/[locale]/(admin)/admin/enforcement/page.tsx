@@ -1,6 +1,23 @@
-import { placeholderRoute } from "@/widgets/feature-placeholder";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
-const route = placeholderRoute("web.admin.enforcement");
+import { localeAlternates } from "@/shared/i18n/metadata";
+import { resolveLocaleParam } from "@/shared/i18n/params";
+import { TrustSafetyUnavailable } from "@/widgets/admin-trust-safety";
 
-export const generateMetadata = route.generateMetadata;
-export default route.Page;
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/admin/enforcement">): Promise<Metadata> {
+  const locale = await resolveLocaleParam(params);
+  const t = await getTranslations({ locale, namespace: "controlPlane.trustSafety.enforcement" });
+  return { title: t("metaTitle"), alternates: localeAlternates("/admin/enforcement", locale) };
+}
+
+/**
+ * `web.admin.enforcement` (SF-125): a truthful "not available" screen. No reports, content
+ * or enforcement domain exists to review (simplefit-api D-SA32); no data, no API call.
+ */
+export default async function Page({ params }: PageProps<"/[locale]/admin/enforcement">) {
+  await resolveLocaleParam(params);
+  return <TrustSafetyUnavailable area="enforcement" />;
+}
