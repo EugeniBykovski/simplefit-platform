@@ -20,6 +20,12 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AdminCoachResponse,
+  AdminCoachSearchResponse,
+  AdminFighterResponse,
+  AdminFighterSearchResponse,
+  AdminGymListResponse,
+  AdminGymResponse,
   AdminOverviewResponse,
   AdminUserEmailResponse,
   AdminUserReadRequest,
@@ -32,12 +38,16 @@ import type {
   ConflictResponse,
   EnrollmentRequiredResponse,
   ForbiddenResponse,
+  GetAdminCoachParams,
+  GetAdminFighterParams,
+  GetAdminGymParams,
   GetAdminOverviewParams,
   GetAdminUserParams,
   GrantOperatorPermissionPreviewRequest,
   GrantOperatorPermissionRequest,
   InternalErrorResponse,
   LiftUserSuspensionRequest,
+  ListAdminGymsParams,
   ListOperatorAuditEventsParams,
   ListSponsorApplicationsForReviewParams,
   NotFoundResponse,
@@ -64,6 +74,8 @@ import type {
   RevokeOperatorPermissionRequest,
   RevokeOperatorPreviewRequest,
   RevokeOperatorRequest,
+  SearchAdminCoachesParams,
+  SearchAdminFightersParams,
   SearchAdminUsersParams,
   SecurityKeyRejectedResponse,
   ServiceUnavailableResponse,
@@ -315,6 +327,242 @@ export function useGetOperatorAuditEvent<TData = Awaited<ReturnType<typeof getOp
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetOperatorAuditEventQueryOptions(eventId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getSearchAdminCoachesUrl = (params: SearchAdminCoachesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/coaches?${stringifiedParams}` : `/api/v1/admin/coaches`
+}
+
+/**
+ * Needs `coaches.read` and a key check. Exact only, never a list. Every search is recorded with its
+ * `reason_code` (`coach.searched`), found or not; 60 profile searches per operator and hour.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such record. The
+ *   permission is checked first, so an operator without it can't learn whether a record exists.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed parameter.
+ * * `rate_limited` - too many searches.
+ * @summary Find one coach by exact email or user id
+ */
+export const searchAdminCoaches = async (params: SearchAdminCoachesParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminCoachSearchResponse> => {
+
+  return apiFetch<AdminCoachSearchResponse>(getSearchAdminCoachesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getSearchAdminCoachesQueryKey = (params?: SearchAdminCoachesParams,) => {
+    return [
+    `/api/v1/admin/coaches`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getSearchAdminCoachesQueryOptions = <TData = Awaited<ReturnType<typeof searchAdminCoaches>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(params: SearchAdminCoachesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminCoaches>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSearchAdminCoachesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof searchAdminCoaches>>> = ({ signal }) => searchAdminCoaches(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof searchAdminCoaches>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type SearchAdminCoachesQueryResult = NonNullable<Awaited<ReturnType<typeof searchAdminCoaches>>>
+export type SearchAdminCoachesQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useSearchAdminCoaches<TData = Awaited<ReturnType<typeof searchAdminCoaches>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: SearchAdminCoachesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminCoaches>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof searchAdminCoaches>>,
+          TError,
+          Awaited<ReturnType<typeof searchAdminCoaches>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSearchAdminCoaches<TData = Awaited<ReturnType<typeof searchAdminCoaches>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: SearchAdminCoachesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminCoaches>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof searchAdminCoaches>>,
+          TError,
+          Awaited<ReturnType<typeof searchAdminCoaches>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSearchAdminCoaches<TData = Awaited<ReturnType<typeof searchAdminCoaches>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: SearchAdminCoachesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminCoaches>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Find one coach by exact email or user id
+ */
+
+export function useSearchAdminCoaches<TData = Awaited<ReturnType<typeof searchAdminCoaches>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: SearchAdminCoachesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminCoaches>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getSearchAdminCoachesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetAdminCoachUrl = (coachId: string,
+    params: GetAdminCoachParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/coaches/${coachId}?${stringifiedParams}` : `/api/v1/admin/coaches/${coachId}`
+}
+
+/**
+ * Needs `coaches.read` and a key check. Profile, account state, relationship counts and gym ids; never the bio, fighters, training, notes or messages. Recorded with its `reason_code` (`coach.viewed`).
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such record. The
+ *   permission is checked first, so an operator without it can't learn whether a record exists.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed parameter.
+ * @summary One coach
+ */
+export const getAdminCoach = async (coachId: string,
+    params: GetAdminCoachParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminCoachResponse> => {
+
+  return apiFetch<AdminCoachResponse>(getGetAdminCoachUrl(coachId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminCoachQueryKey = (coachId: string,
+    params?: GetAdminCoachParams,) => {
+    return [
+    `/api/v1/admin/coaches/${coachId}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetAdminCoachQueryOptions = <TData = Awaited<ReturnType<typeof getAdminCoach>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(coachId: string,
+    params: GetAdminCoachParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminCoach>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminCoachQueryKey(coachId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminCoach>>> = ({ signal }) => getAdminCoach(coachId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: coachId !== null && coachId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminCoach>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminCoachQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminCoach>>>
+export type GetAdminCoachQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useGetAdminCoach<TData = Awaited<ReturnType<typeof getAdminCoach>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ coachId: string,
+    params: GetAdminCoachParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminCoach>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminCoach>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminCoach>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminCoach<TData = Awaited<ReturnType<typeof getAdminCoach>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ coachId: string,
+    params: GetAdminCoachParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminCoach>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminCoach>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminCoach>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminCoach<TData = Awaited<ReturnType<typeof getAdminCoach>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ coachId: string,
+    params: GetAdminCoachParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminCoach>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One coach
+ */
+
+export function useGetAdminCoach<TData = Awaited<ReturnType<typeof getAdminCoach>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ coachId: string,
+    params: GetAdminCoachParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminCoach>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminCoachQueryOptions(coachId,params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -749,6 +997,478 @@ export function useRevokeOperatorCredential<TData = Awaited<ReturnType<typeof re
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getRevokeOperatorCredentialQueryOptions(credentialId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getSearchAdminFightersUrl = (params: SearchAdminFightersParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/fighters?${stringifiedParams}` : `/api/v1/admin/fighters`
+}
+
+/**
+ * Needs `fighters.read` and a key check. Exact only, never a list: `@username`, or the account's email
+ * address or user id. Every search is recorded with its `reason_code` (`fighter.searched`), found or
+ * not; shares the profile search limit.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such record. The
+ *   permission is checked first, so an operator without it can't learn whether a record exists.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed parameter.
+ * * `rate_limited` - too many searches.
+ * @summary Find one fighter by exact @username, email or user id
+ */
+export const searchAdminFighters = async (params: SearchAdminFightersParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminFighterSearchResponse> => {
+
+  return apiFetch<AdminFighterSearchResponse>(getSearchAdminFightersUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getSearchAdminFightersQueryKey = (params?: SearchAdminFightersParams,) => {
+    return [
+    `/api/v1/admin/fighters`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getSearchAdminFightersQueryOptions = <TData = Awaited<ReturnType<typeof searchAdminFighters>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(params: SearchAdminFightersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminFighters>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSearchAdminFightersQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof searchAdminFighters>>> = ({ signal }) => searchAdminFighters(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof searchAdminFighters>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type SearchAdminFightersQueryResult = NonNullable<Awaited<ReturnType<typeof searchAdminFighters>>>
+export type SearchAdminFightersQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useSearchAdminFighters<TData = Awaited<ReturnType<typeof searchAdminFighters>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: SearchAdminFightersParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminFighters>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof searchAdminFighters>>,
+          TError,
+          Awaited<ReturnType<typeof searchAdminFighters>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSearchAdminFighters<TData = Awaited<ReturnType<typeof searchAdminFighters>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: SearchAdminFightersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminFighters>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof searchAdminFighters>>,
+          TError,
+          Awaited<ReturnType<typeof searchAdminFighters>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSearchAdminFighters<TData = Awaited<ReturnType<typeof searchAdminFighters>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: SearchAdminFightersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminFighters>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Find one fighter by exact @username, email or user id
+ */
+
+export function useSearchAdminFighters<TData = Awaited<ReturnType<typeof searchAdminFighters>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: SearchAdminFightersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchAdminFighters>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getSearchAdminFightersQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetAdminFighterUrl = (fighterId: string,
+    params: GetAdminFighterParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/fighters/${fighterId}?${stringifiedParams}` : `/api/v1/admin/fighters/${fighterId}`
+}
+
+/**
+ * Needs `fighters.read` and a key check. Shared profile fields, account state and counts; never body, health, age, goals, training, notes or messages. Recorded with its `reason_code` (`fighter.viewed`).
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such record. The
+ *   permission is checked first, so an operator without it can't learn whether a record exists.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed parameter.
+ * @summary One fighter
+ */
+export const getAdminFighter = async (fighterId: string,
+    params: GetAdminFighterParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminFighterResponse> => {
+
+  return apiFetch<AdminFighterResponse>(getGetAdminFighterUrl(fighterId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminFighterQueryKey = (fighterId: string,
+    params?: GetAdminFighterParams,) => {
+    return [
+    `/api/v1/admin/fighters/${fighterId}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetAdminFighterQueryOptions = <TData = Awaited<ReturnType<typeof getAdminFighter>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(fighterId: string,
+    params: GetAdminFighterParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminFighter>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminFighterQueryKey(fighterId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminFighter>>> = ({ signal }) => getAdminFighter(fighterId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: fighterId !== null && fighterId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminFighter>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminFighterQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminFighter>>>
+export type GetAdminFighterQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useGetAdminFighter<TData = Awaited<ReturnType<typeof getAdminFighter>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ fighterId: string,
+    params: GetAdminFighterParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminFighter>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminFighter>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminFighter>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminFighter<TData = Awaited<ReturnType<typeof getAdminFighter>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ fighterId: string,
+    params: GetAdminFighterParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminFighter>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminFighter>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminFighter>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminFighter<TData = Awaited<ReturnType<typeof getAdminFighter>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ fighterId: string,
+    params: GetAdminFighterParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminFighter>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One fighter
+ */
+
+export function useGetAdminFighter<TData = Awaited<ReturnType<typeof getAdminFighter>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ fighterId: string,
+    params: GetAdminFighterParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminFighter>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminFighterQueryOptions(fighterId,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getListAdminGymsUrl = (params?: ListAdminGymsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/gyms?${stringifiedParams}` : `/api/v1/admin/gyms`
+}
+
+/**
+ * Needs `gyms.read` and a key check. Newest first; each gym's own state, the primary location's country
+ * and city and its active staff count. No member data. Every query is recorded (`gyms.listed`).
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such record. The
+ *   permission is checked first, so an operator without it can't learn whether a record exists.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed parameter.
+ * @summary One page of gyms
+ */
+export const listAdminGyms = async (params?: ListAdminGymsParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminGymListResponse> => {
+
+  return apiFetch<AdminGymListResponse>(getListAdminGymsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListAdminGymsQueryKey = (params?: ListAdminGymsParams,) => {
+    return [
+    `/api/v1/admin/gyms`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListAdminGymsQueryOptions = <TData = Awaited<ReturnType<typeof listAdminGyms>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(params?: ListAdminGymsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminGyms>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListAdminGymsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listAdminGyms>>> = ({ signal }) => listAdminGyms(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listAdminGyms>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListAdminGymsQueryResult = NonNullable<Awaited<ReturnType<typeof listAdminGyms>>>
+export type ListAdminGymsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useListAdminGyms<TData = Awaited<ReturnType<typeof listAdminGyms>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params: undefined |  ListAdminGymsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminGyms>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listAdminGyms>>,
+          TError,
+          Awaited<ReturnType<typeof listAdminGyms>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListAdminGyms<TData = Awaited<ReturnType<typeof listAdminGyms>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListAdminGymsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminGyms>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listAdminGyms>>,
+          TError,
+          Awaited<ReturnType<typeof listAdminGyms>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListAdminGyms<TData = Awaited<ReturnType<typeof listAdminGyms>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListAdminGymsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminGyms>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One page of gyms
+ */
+
+export function useListAdminGyms<TData = Awaited<ReturnType<typeof listAdminGyms>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListAdminGymsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminGyms>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getListAdminGymsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetAdminGymUrl = (gymId: string,
+    params: GetAdminGymParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/gyms/${gymId}?${stringifiedParams}` : `/api/v1/admin/gyms/${gymId}`
+}
+
+/**
+ * Needs `gyms.read` and a key check. Counts of people, the owner's short name and the verification status; never member names, contacts, business details or documents. Recorded with its `reason_code` (`gym.viewed`).
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such record. The
+ *   permission is checked first, so an operator without it can't learn whether a record exists.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - a missing or unknown `reason_code`, or a malformed parameter.
+ * @summary One gym
+ */
+export const getAdminGym = async (gymId: string,
+    params: GetAdminGymParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminGymResponse> => {
+
+  return apiFetch<AdminGymResponse>(getGetAdminGymUrl(gymId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminGymQueryKey = (gymId: string,
+    params?: GetAdminGymParams,) => {
+    return [
+    `/api/v1/admin/gyms/${gymId}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetAdminGymQueryOptions = <TData = Awaited<ReturnType<typeof getAdminGym>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(gymId: string,
+    params: GetAdminGymParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminGym>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminGymQueryKey(gymId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminGym>>> = ({ signal }) => getAdminGym(gymId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: gymId !== null && gymId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminGym>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminGymQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminGym>>>
+export type GetAdminGymQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useGetAdminGym<TData = Awaited<ReturnType<typeof getAdminGym>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    params: GetAdminGymParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminGym>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminGym>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminGym>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminGym<TData = Awaited<ReturnType<typeof getAdminGym>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    params: GetAdminGymParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminGym>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminGym>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminGym>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminGym<TData = Awaited<ReturnType<typeof getAdminGym>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    params: GetAdminGymParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminGym>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One gym
+ */
+
+export function useGetAdminGym<TData = Awaited<ReturnType<typeof getAdminGym>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ gymId: string,
+    params: GetAdminGymParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminGym>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminGymQueryOptions(gymId,params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

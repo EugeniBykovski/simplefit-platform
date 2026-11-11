@@ -466,6 +466,206 @@
         "self": "Nie możesz tego zrobić z własnym kontem.",
         "operator": "To konto należy do operatora platformy: użyj administracji operatorów."
       }
+    },
+    "tabs": {
+      "label": "Czego szukasz",
+      "accounts": "Konta",
+      "fighters": "Zawodnicy",
+      "coaches": "Trenerzy"
+    },
+    "profiles": {
+      "note": "Tylko dokładne wyszukiwanie, z zapisywanym powodem. Profil pokazuje to, czym osoba się dzieli, oraz liczby. Treningi, notatki, waga, zdrowie i wiadomości nigdy nie są tu pokazywane.",
+      "noName": "Brak nazwy",
+      "show": "Pokaż profil",
+      "hide": "Ukryj profil",
+      "loading": "Wczytujemy profil",
+      "gone": "Ten profil już nie istnieje.",
+      "activeRelationships": "{count, plural, one {# aktywna relacja} few {# aktywne relacje} many {# aktywnych relacji} other {# aktywnej relacji}}",
+      "profileStatus": {
+        "in_progress": "Wdrożenie w toku",
+        "completed": "Wdrożenie ukończone"
+      },
+      "profile": "Profil",
+      "profileLabel": "Profil",
+      "name": "Nazwa wyświetlana",
+      "location": "Lokalizacja",
+      "created": "Utworzono",
+      "account": "Konto",
+      "accountState": "Stan konta",
+      "accountLink": "Rekord konta",
+      "openAccount": "Otwórz konto",
+      "noAccountAccess": "Wymaga dostępu do kont",
+      "accountNote": "Konto i profil to osobne rzeczy: zawieszone konto zachowuje profil i relacje.",
+      "relationships": "Relacje trenerskie",
+      "relationshipsNote": "Tylko liczby. Kim jest druga strona i czym się dzielą, zostaje między nimi.",
+      "active": "Aktywne",
+      "ended": "Zakończone",
+      "count": "{count, number}",
+      "fighter": {
+        "label": "@username, dokładny e-mail lub ID użytkownika",
+        "placeholder": "@username, e-mail lub ID",
+        "idle": "Wpisz @username zawodnika albo jego dokładny e-mail lub ID użytkownika oraz powód.",
+        "noMatch": "Nie znaleziono zawodnika",
+        "username": "Nazwa użytkownika",
+        "experience": "Doświadczenie",
+        "stance": "Postawa",
+        "gymMemberships": "Członkostwa w klubach",
+        "never": "Waga, wzrost, cele, walki, wiek i zdrowie nie są pokazywane: nie ma do nich uprawnienia."
+      },
+      "coach": {
+        "label": "Dokładny e-mail lub ID użytkownika",
+        "placeholder": "Dokładny e-mail lub ID użytkownika",
+        "idle": "Wpisz dokładny e-mail lub ID użytkownika trenera oraz powód.",
+        "noMatch": "Nie znaleziono trenera",
+        "brand": "Marka",
+        "formats": "Formy treningu",
+        "levels": "Poziomy zawodów",
+        "languages": "Języki",
+        "invitations": "Oczekujące zaproszenia",
+        "gyms": "Kluby",
+        "gymCount": "Trenuje w",
+        "gym": "Klub {n}",
+        "openGym": "Otwórz klub (od {date})",
+        "since": "Od {date}",
+        "gymsNote": "Kluby, w których osoba jest trenerem. Otwarcie klubu wymaga dostępu do klubów.",
+        "never": "Opis, grafik, ceny, zajęcia i notatki nie są pokazywane. Trenerzy nie mają weryfikacji."
+      },
+      "experience": {
+        "new_to_boxing": "Początkujący",
+        "recreational": "Rekreacyjnie",
+        "amateur": "Amator",
+        "competitive_amateur": "Amator startujący w zawodach",
+        "professional": "Zawodowiec"
+      },
+      "stance": {
+        "orthodox": "Klasyczna",
+        "southpaw": "Odwrotna",
+        "switch": "Zmienna"
+      },
+      "formats": {
+        "personal_training": "Treningi indywidualne",
+        "group_coaching": "Treningi grupowe",
+        "online_coaching": "Treningi online",
+        "fight_camps": "Obozy przygotowawcze"
+      },
+      "levels": {
+        "amateur": "Amatorzy",
+        "professional": "Zawodowcy"
+      },
+      "languages": {
+        "en": "Angielski",
+        "pl": "Polski",
+        "ru": "Rosyjski",
+        "be": "Białoruski",
+        "uk": "Ukraiński"
+      }
+    }
+  },
+  "gyms": {
+    "metaTitle": "Kluby · Panel sterowania",
+    "breadcrumb": "Panel sterowania / Kluby",
+    "title": "Kluby",
+    "loading": "Wczytujemy kluby",
+    "note": "Tylko kluby: ich stan, lokalizacja i liczba pracowników. Imion i kontaktów członków nie ma na tej liście. Każde zapytanie jest zapisywane.",
+    "publicationNote": "Publikacja klubów nie jest jeszcze dostępna (SF-139 to propozycja), więc żaden klub nie jest publiczny.",
+    "noLocation": "Brak lokalizacji",
+    "filters": {
+      "label": "Filtruj kluby",
+      "name": "Nazwa zaczyna się od",
+      "namePlaceholder": "Nazwa klubu",
+      "lifecycle": "Konfiguracja",
+      "verification": "Weryfikacja",
+      "country": "Kraj",
+      "countryPlaceholder": "PL",
+      "countryHint": "Kod dwuliterowy, np. PL",
+      "any": "Dowolny"
+    },
+    "table": {
+      "caption": "Kluby, od najnowszych",
+      "gym": "Klub",
+      "lifecycle": "Konfiguracja",
+      "verification": "Weryfikacja",
+      "location": "Lokalizacja",
+      "staff": "Pracownicy",
+      "created": "Utworzono"
+    },
+    "empty": {
+      "pill": "Brak klubów",
+      "title": "Żaden klub nie pasuje",
+      "body": "Spróbuj innych filtrów."
+    },
+    "pages": {
+      "label": "Strony",
+      "previous": "Wstecz",
+      "next": "Dalej",
+      "page": "Strona {page}"
+    },
+    "lifecycle": {
+      "draft": "W konfiguracji",
+      "completed": "Skonfigurowany"
+    },
+    "verification": {
+      "not_started": "Nie rozpoczęto",
+      "draft": "Szkic",
+      "submitted": "Wysłano",
+      "changes_requested": "Potrzebne zmiany",
+      "approved": "Zatwierdzono",
+      "rejected": "Odrzucono",
+      "revoked": "Cofnięto"
+    },
+    "gymType": {
+      "boxing_gym": "Sala bokserska",
+      "boxing_club": "Klub bokserski",
+      "amateur_club": "Klub amatorski",
+      "professional_team": "Drużyna zawodowa",
+      "combat_sports_gym": "Klub sportów walki",
+      "fitness_boxing_studio": "Studio boksu fitness"
+    },
+    "detail": {
+      "metaTitle": "Klub · Panel sterowania",
+      "breadcrumb": "Kluby",
+      "title": "Klub",
+      "loading": "Wczytujemy klub",
+      "reasonTitle": "Dlaczego otwierasz ten klub?",
+      "reasonBody": "Otwarcie klubu jest zapisywane razem z powodem.",
+      "open": "Otwórz klub",
+      "header": "{id} · utworzono {date} · {country}",
+      "noActions": "Tylko odczyt. Zawieszenie klubu, przegląd weryfikacji i publikacja nie są częścią panelu.",
+      "count": "{count, number}",
+      "notFound": {
+        "pill": "Nie znaleziono",
+        "title": "Nie ma takiego klubu",
+        "body": "Sprawdź link. Taki klub mógł nigdy nie istnieć."
+      },
+      "people": {
+        "title": "Ludzie",
+        "owner": "Właściciel",
+        "noOwner": "Brak właściciela",
+        "unnamed": "Nie podano imienia",
+        "managers": "Menedżerowie",
+        "coaches": "Trenerzy",
+        "frontDesk": "Recepcja",
+        "invitations": "Oczekujące zaproszenia pracowników",
+        "members": "Członkowie (tylko liczba)",
+        "requested": "Prośby o dołączenie (tylko liczba)",
+        "never": "Imiona i kontakty członków nie są tu pokazywane."
+      },
+      "verification": {
+        "title": "Weryfikacja firmy",
+        "status": "Status",
+        "revision": "Wersja",
+        "submitted": "Wysłano",
+        "decided": "Decyzja",
+        "reviewNote": "Status wniosku klubu. Dane firmy i dokumenty nie są pokazywane, a przegląd nie jest jeszcze częścią panelu."
+      },
+      "profile": {
+        "title": "Klub",
+        "type": "Typ",
+        "location": "Główna lokalizacja",
+        "staff": "Aktywni pracownicy",
+        "revision": "Wersja",
+        "publication": "Strona publiczna: niedostępna. Publikacja klubów to propozycja (SF-139); nic nie jest publiczne."
+      }
     }
   }
 }

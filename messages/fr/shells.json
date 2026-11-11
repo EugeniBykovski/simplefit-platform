@@ -111,7 +111,7 @@
     },
     "nav": {
       "overview": "Vue d’ensemble",
-      "tenants": "Explorateur de locataires",
+      "tenants": "Salles",
       "users": "Explorateur d’utilisateurs",
       "revenue": "Revenus",
       "subscriptions": "Abonnements",

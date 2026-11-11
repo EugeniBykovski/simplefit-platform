@@ -7152,7 +7152,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(admin)/admin/tenants/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-123: AD2 (MVP), the gym list from GET /api/v1/admin/gyms (gyms.read, each query recorded): name prefix, setup, verification and country filters on the server, newest first in keyset pages; each gym's own state, primary location and staff count, never member data. Design deviations: docs/admin-design/sf-123-design-register.md."
       },
       "screens": ["AD2"]
     },
@@ -7177,7 +7177,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(admin)/admin/tenants/[tenantId]/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-123: AD12 (MVP reduced), one gym from GET /api/v1/admin/gyms/:id (gyms.read, reason recorded): setup, primary location, the owner's short name, staff counts by role, pending staff invitations, member counts (never names) and the business verification status. Read only: no suspension, verification review or publication exists in the Control Plane."
       },
       "screens": ["AD12"]
     },
@@ -7202,7 +7202,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(admin)/admin/users/page.tsx",
-        "note": "SF-122: AD7, exact account search (exact email address or user id, with a recorded reason code; at most one masked result, never a list) from GET /api/v1/admin/users (users.read). Design deviations: docs/admin-design/sf-122-design-register.md."
+        "note": "SF-122: AD7, exact account search (exact email address or user id, with a recorded reason code; at most one masked result, never a list) from GET /api/v1/admin/users (users.read). SF-123: the Fighters and Coaches tabs, an exact lookup (fighter @username, or the account's email or user id) from GET /api/v1/admin/fighters|coaches (fighters.read, coaches.read), each tab shown only with its permission; the result opens its profile in place: shared fields, onboarding and account state, relationship counts. Design deviations: docs/admin-design/sf-122-design-register.md, docs/admin-design/sf-123-design-register.md."
       },
       "screens": ["AD7", "AD10"]
     },

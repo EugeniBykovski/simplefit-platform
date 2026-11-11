@@ -466,6 +466,206 @@
         "self": "You can’t do this to your own account.",
         "operator": "This account is a platform operator: use operator administration."
       }
+    },
+    "tabs": {
+      "label": "What to look up",
+      "accounts": "Accounts",
+      "fighters": "Fighters",
+      "coaches": "Coaches"
+    },
+    "profiles": {
+      "note": "Exact lookup only, with a reason that’s recorded. Profiles show what the person shares, plus counts. Training, notes, weight, health and messages are never shown here.",
+      "noName": "No name yet",
+      "show": "Show profile",
+      "hide": "Hide profile",
+      "loading": "Loading the profile",
+      "gone": "This profile no longer exists.",
+      "activeRelationships": "{count, plural, one {# active relationship} other {# active relationships}}",
+      "profileStatus": {
+        "in_progress": "Onboarding in progress",
+        "completed": "Onboarding complete"
+      },
+      "profile": "Profile",
+      "profileLabel": "Profile",
+      "name": "Display name",
+      "location": "Location",
+      "created": "Created",
+      "account": "Account",
+      "accountState": "Account state",
+      "accountLink": "Account record",
+      "openAccount": "Open account",
+      "noAccountAccess": "Needs account access",
+      "accountNote": "The account and the profile are separate: a suspended account keeps its profile and relationships.",
+      "relationships": "Coaching relationships",
+      "relationshipsNote": "Counts only. Who the other person is and what they share stays between them.",
+      "active": "Active",
+      "ended": "Ended",
+      "count": "{count, number}",
+      "fighter": {
+        "label": "@username, exact email or user ID",
+        "placeholder": "@username, email or user ID",
+        "idle": "Enter a fighter’s @username, or their exact email or user ID, and a reason.",
+        "noMatch": "No fighter matches",
+        "username": "Username",
+        "experience": "Experience",
+        "stance": "Stance",
+        "gymMemberships": "Gym memberships",
+        "never": "Weight, height, goals, fights, age and health aren’t shown: no permission exists for them."
+      },
+      "coach": {
+        "label": "Exact email or user ID",
+        "placeholder": "Exact email or user ID",
+        "idle": "Enter a coach’s exact email or user ID, and a reason.",
+        "noMatch": "No coach matches",
+        "brand": "Brand",
+        "formats": "Coaching formats",
+        "levels": "Competition levels",
+        "languages": "Languages",
+        "invitations": "Invitations pending",
+        "gyms": "Gyms",
+        "gymCount": "Coaching at",
+        "gym": "Gym {n}",
+        "openGym": "Open gym (since {date})",
+        "since": "Since {date}",
+        "gymsNote": "Gyms where they’re staff as a coach. Opening a gym needs gym access.",
+        "never": "The bio, schedule, prices, sessions and notes aren’t shown. Coaches have no verification."
+      },
+      "experience": {
+        "new_to_boxing": "New to boxing",
+        "recreational": "Recreational",
+        "amateur": "Amateur",
+        "competitive_amateur": "Competitive amateur",
+        "professional": "Professional"
+      },
+      "stance": {
+        "orthodox": "Orthodox",
+        "southpaw": "Southpaw",
+        "switch": "Switch"
+      },
+      "formats": {
+        "personal_training": "Personal training",
+        "group_coaching": "Group coaching",
+        "online_coaching": "Online coaching",
+        "fight_camps": "Fight camps"
+      },
+      "levels": {
+        "amateur": "Amateur",
+        "professional": "Professional"
+      },
+      "languages": {
+        "en": "English",
+        "pl": "Polish",
+        "ru": "Russian",
+        "be": "Belarusian",
+        "uk": "Ukrainian"
+      }
+    }
+  },
+  "gyms": {
+    "metaTitle": "Gyms · Control plane",
+    "breadcrumb": "Control plane / Gyms",
+    "title": "Gyms",
+    "loading": "Loading gyms",
+    "note": "Gyms only: their state, location and staff count. Member names and contact details aren’t part of this list. Each query is recorded.",
+    "publicationNote": "Gym publication isn’t available yet (SF-139 is a proposal), so no gym is public.",
+    "noLocation": "No location yet",
+    "filters": {
+      "label": "Filter gyms",
+      "name": "Name starts with",
+      "namePlaceholder": "Gym name",
+      "lifecycle": "Setup",
+      "verification": "Verification",
+      "country": "Country",
+      "countryPlaceholder": "PL",
+      "countryHint": "Two-letter code, e.g. PL",
+      "any": "Any"
+    },
+    "table": {
+      "caption": "Gyms, newest first",
+      "gym": "Gym",
+      "lifecycle": "Setup",
+      "verification": "Verification",
+      "location": "Location",
+      "staff": "Staff",
+      "created": "Created"
+    },
+    "empty": {
+      "pill": "No gyms",
+      "title": "No gyms match",
+      "body": "Try other filters."
+    },
+    "pages": {
+      "label": "Pages",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {page}"
+    },
+    "lifecycle": {
+      "draft": "Setting up",
+      "completed": "Set up"
+    },
+    "verification": {
+      "not_started": "Not started",
+      "draft": "Draft",
+      "submitted": "Submitted",
+      "changes_requested": "Changes requested",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "revoked": "Revoked"
+    },
+    "gymType": {
+      "boxing_gym": "Boxing gym",
+      "boxing_club": "Boxing club",
+      "amateur_club": "Amateur club",
+      "professional_team": "Professional team",
+      "combat_sports_gym": "Combat sports gym",
+      "fitness_boxing_studio": "Fitness boxing studio"
+    },
+    "detail": {
+      "metaTitle": "Gym · Control plane",
+      "breadcrumb": "Gyms",
+      "title": "Gym",
+      "loading": "Loading the gym",
+      "reasonTitle": "Why are you opening this gym?",
+      "reasonBody": "Opening a gym is recorded with your reason.",
+      "open": "Open gym",
+      "header": "{id} · created {date} · {country}",
+      "noActions": "Read only. Suspending a gym, reviewing its verification and publishing it aren’t part of the Control Plane.",
+      "count": "{count, number}",
+      "notFound": {
+        "pill": "Not found",
+        "title": "No such gym",
+        "body": "Check the link. The gym may never have existed."
+      },
+      "people": {
+        "title": "People",
+        "owner": "Owner",
+        "noOwner": "No owner",
+        "unnamed": "Name not given",
+        "managers": "Managers",
+        "coaches": "Coaches",
+        "frontDesk": "Front desk",
+        "invitations": "Staff invitations pending",
+        "members": "Members (count only)",
+        "requested": "Join requests (count only)",
+        "never": "Member names and contact details aren’t shown here."
+      },
+      "verification": {
+        "title": "Business verification",
+        "status": "Status",
+        "revision": "Revision",
+        "submitted": "Submitted",
+        "decided": "Decided",
+        "reviewNote": "The status of the gym’s application. Its business details and documents aren’t shown, and reviewing isn’t part of the Control Plane yet."
+      },
+      "profile": {
+        "title": "Gym",
+        "type": "Type",
+        "location": "Primary location",
+        "staff": "Active staff",
+        "revision": "Revision",
+        "publication": "Public page: not available. Gym publication is a proposal (SF-139); nothing is public."
+      }
     }
   }
 }

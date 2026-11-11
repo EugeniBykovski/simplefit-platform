@@ -466,6 +466,206 @@
         "self": "No puedes hacer esto con tu propia cuenta.",
         "operator": "Esta cuenta es de un operador de la plataforma: usa la administración de operadores."
       }
+    },
+    "tabs": {
+      "label": "Qué buscar",
+      "accounts": "Cuentas",
+      "fighters": "Boxeadores",
+      "coaches": "Entrenadores"
+    },
+    "profiles": {
+      "note": "Solo búsqueda exacta, con un motivo que queda registrado. Los perfiles muestran lo que la persona comparte, más números. Entrenamientos, notas, peso, salud y mensajes nunca se muestran aquí.",
+      "noName": "Aún sin nombre",
+      "show": "Ver perfil",
+      "hide": "Ocultar perfil",
+      "loading": "Cargando el perfil",
+      "gone": "Este perfil ya no existe.",
+      "activeRelationships": "{count, plural, one {# relación activa} other {# relaciones activas}}",
+      "profileStatus": {
+        "in_progress": "Registro en curso",
+        "completed": "Registro completo"
+      },
+      "profile": "Perfil",
+      "profileLabel": "Perfil",
+      "name": "Nombre visible",
+      "location": "Ubicación",
+      "created": "Creado",
+      "account": "Cuenta",
+      "accountState": "Estado de la cuenta",
+      "accountLink": "Registro de la cuenta",
+      "openAccount": "Abrir cuenta",
+      "noAccountAccess": "Requiere acceso a cuentas",
+      "accountNote": "La cuenta y el perfil son distintos: una cuenta suspendida conserva su perfil y sus relaciones.",
+      "relationships": "Relaciones de entrenamiento",
+      "relationshipsNote": "Solo números. Quién es la otra parte y qué comparten queda entre ellos.",
+      "active": "Activas",
+      "ended": "Terminadas",
+      "count": "{count, number}",
+      "fighter": {
+        "label": "@usuario, email exacto o ID de usuario",
+        "placeholder": "@usuario, email o ID",
+        "idle": "Escribe el @usuario de un boxeador, o su email o ID de usuario exactos, y un motivo.",
+        "noMatch": "Ningún boxeador coincide",
+        "username": "Usuario",
+        "experience": "Experiencia",
+        "stance": "Guardia",
+        "gymMemberships": "Membresías de gimnasio",
+        "never": "El peso, la altura, los objetivos, los combates, la edad y la salud no se muestran: no existe permiso para ellos."
+      },
+      "coach": {
+        "label": "Email exacto o ID de usuario",
+        "placeholder": "Email exacto o ID de usuario",
+        "idle": "Escribe el email o el ID de usuario exactos de un entrenador, y un motivo.",
+        "noMatch": "Ningún entrenador coincide",
+        "brand": "Marca",
+        "formats": "Formatos",
+        "levels": "Niveles de competición",
+        "languages": "Idiomas",
+        "invitations": "Invitaciones pendientes",
+        "gyms": "Gimnasios",
+        "gymCount": "Entrena en",
+        "gym": "Gimnasio {n}",
+        "openGym": "Abrir gimnasio (desde {date})",
+        "since": "Desde {date}",
+        "gymsNote": "Gimnasios donde forma parte del personal como entrenador. Abrir un gimnasio requiere acceso a gimnasios.",
+        "never": "La biografía, el horario, los precios, las sesiones y las notas no se muestran. Los entrenadores no tienen verificación."
+      },
+      "experience": {
+        "new_to_boxing": "Nuevo en el boxeo",
+        "recreational": "Recreativo",
+        "amateur": "Amateur",
+        "competitive_amateur": "Amateur de competición",
+        "professional": "Profesional"
+      },
+      "stance": {
+        "orthodox": "Ortodoxa",
+        "southpaw": "Zurda",
+        "switch": "Cambiante"
+      },
+      "formats": {
+        "personal_training": "Entrenamiento personal",
+        "group_coaching": "Entrenamiento en grupo",
+        "online_coaching": "Entrenamiento online",
+        "fight_camps": "Campamentos de pelea"
+      },
+      "levels": {
+        "amateur": "Amateur",
+        "professional": "Profesional"
+      },
+      "languages": {
+        "en": "Inglés",
+        "pl": "Polaco",
+        "ru": "Ruso",
+        "be": "Bielorruso",
+        "uk": "Ucraniano"
+      }
+    }
+  },
+  "gyms": {
+    "metaTitle": "Gimnasios · Panel de control",
+    "breadcrumb": "Panel de control / Gimnasios",
+    "title": "Gimnasios",
+    "loading": "Cargando gimnasios",
+    "note": "Solo gimnasios: su estado, ubicación y número de personal. Los nombres y contactos de los miembros no forman parte de esta lista. Cada consulta queda registrada.",
+    "publicationNote": "La publicación de gimnasios aún no está disponible (SF-139 es una propuesta), así que ningún gimnasio es público.",
+    "noLocation": "Aún sin ubicación",
+    "filters": {
+      "label": "Filtrar gimnasios",
+      "name": "El nombre empieza por",
+      "namePlaceholder": "Nombre del gimnasio",
+      "lifecycle": "Configuración",
+      "verification": "Verificación",
+      "country": "País",
+      "countryPlaceholder": "PL",
+      "countryHint": "Código de dos letras, p. ej. PL",
+      "any": "Cualquiera"
+    },
+    "table": {
+      "caption": "Gimnasios, los más nuevos primero",
+      "gym": "Gimnasio",
+      "lifecycle": "Configuración",
+      "verification": "Verificación",
+      "location": "Ubicación",
+      "staff": "Personal",
+      "created": "Creado"
+    },
+    "empty": {
+      "pill": "Sin gimnasios",
+      "title": "Ningún gimnasio coincide",
+      "body": "Prueba otros filtros."
+    },
+    "pages": {
+      "label": "Páginas",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "page": "Página {page}"
+    },
+    "lifecycle": {
+      "draft": "En configuración",
+      "completed": "Configurado"
+    },
+    "verification": {
+      "not_started": "Sin empezar",
+      "draft": "Borrador",
+      "submitted": "Enviada",
+      "changes_requested": "Cambios solicitados",
+      "approved": "Aprobada",
+      "rejected": "Rechazada",
+      "revoked": "Revocada"
+    },
+    "gymType": {
+      "boxing_gym": "Gimnasio de boxeo",
+      "boxing_club": "Club de boxeo",
+      "amateur_club": "Club amateur",
+      "professional_team": "Equipo profesional",
+      "combat_sports_gym": "Gimnasio de deportes de combate",
+      "fitness_boxing_studio": "Estudio de boxeo fitness"
+    },
+    "detail": {
+      "metaTitle": "Gimnasio · Panel de control",
+      "breadcrumb": "Gimnasios",
+      "title": "Gimnasio",
+      "loading": "Cargando el gimnasio",
+      "reasonTitle": "¿Por qué abres este gimnasio?",
+      "reasonBody": "Abrir un gimnasio queda registrado con tu motivo.",
+      "open": "Abrir gimnasio",
+      "header": "{id} · creado el {date} · {country}",
+      "noActions": "Solo lectura. Suspender un gimnasio, revisar su verificación y publicarlo no forman parte del panel.",
+      "count": "{count, number}",
+      "notFound": {
+        "pill": "No encontrado",
+        "title": "Ese gimnasio no existe",
+        "body": "Revisa el enlace. Puede que el gimnasio nunca haya existido."
+      },
+      "people": {
+        "title": "Personas",
+        "owner": "Propietario",
+        "noOwner": "Sin propietario",
+        "unnamed": "Sin nombre",
+        "managers": "Gerentes",
+        "coaches": "Entrenadores",
+        "frontDesk": "Recepción",
+        "invitations": "Invitaciones de personal pendientes",
+        "members": "Miembros (solo el número)",
+        "requested": "Solicitudes de ingreso (solo el número)",
+        "never": "Aquí no se muestran nombres ni contactos de miembros."
+      },
+      "verification": {
+        "title": "Verificación del negocio",
+        "status": "Estado",
+        "revision": "Versión",
+        "submitted": "Enviada",
+        "decided": "Decidida",
+        "reviewNote": "El estado de la solicitud del gimnasio. Los datos de la empresa y los documentos no se muestran, y la revisión aún no forma parte del panel."
+      },
+      "profile": {
+        "title": "Gimnasio",
+        "type": "Tipo",
+        "location": "Ubicación principal",
+        "staff": "Personal activo",
+        "revision": "Versión",
+        "publication": "Página pública: no disponible. La publicación de gimnasios es una propuesta (SF-139); nada es público."
+      }
     }
   }
 }
