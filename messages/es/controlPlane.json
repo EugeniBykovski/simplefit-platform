@@ -667,5 +667,274 @@
         "publication": "Página pública: no disponible. La publicación de gimnasios es una propuesta (SF-139); nada es público."
       }
     }
+  },
+  "sponsorReview": {
+    "metaTitle": "Solicitudes de patrocinio · Panel de control",
+    "breadcrumb": "Panel de control / Revisiones",
+    "title": "Solicitudes de patrocinio",
+    "noName": "Sin nombre de empresa",
+    "status": {
+      "submitted": "Enviada",
+      "under_review": "En revisión",
+      "changes_requested": "Cambios solicitados",
+      "approved": "Aprobada",
+      "rejected": "Rechazada",
+      "withdrawn": "Retirada"
+    },
+    "organization": {
+      "none": "Ninguna",
+      "active": "Activa",
+      "suspended": "Suspendida",
+      "closed": "Cerrada"
+    },
+    "chips": {
+      "application": "Solicitud",
+      "organization": "Organización",
+      "verification": "Verificación",
+      "commercial": "Comercial",
+      "notOffered": "No ofrecida",
+      "none": "Ninguno"
+    },
+    "fields": {
+      "company_name": "Nombre de la empresa",
+      "website": "Sitio web",
+      "country_code": "País",
+      "industry": "Sector",
+      "contact_full_name": "Nombre de contacto",
+      "contact_position": "Cargo",
+      "contact_email": "Email de trabajo",
+      "contact_phone": "Teléfono",
+      "interests": "Intereses",
+      "market_scope": "Dónde",
+      "market_countries": "Países",
+      "market_cities": "Ciudades",
+      "budget_band": "Presupuesto",
+      "goals": "Objetivos"
+    },
+    "reasons": {
+      "review_started": "Revisión iniciada",
+      "missing_information": "Falta información",
+      "unclear_answers": "Respuestas poco claras",
+      "contact_details": "Datos de contacto",
+      "company_details": "Datos de la empresa",
+      "review_complete": "Revisión completa",
+      "not_a_business": "No es una empresa",
+      "outside_supported_categories": "Fuera de las categorías admitidas",
+      "insufficient_information": "Información insuficiente",
+      "duplicate_application": "Solicitud duplicada",
+      "approval_mistaken": "La aprobación fue un error",
+      "policy_concern": "Duda de política",
+      "under_investigation": "En investigación",
+      "concern_resolved": "Duda resuelta",
+      "approval_confirmed": "Aprobación confirmada",
+      "other": "Otro"
+    },
+    "queue": {
+      "loading": "Cargando solicitudes",
+      "caption": "Solicitudes de patrocinio, las más antiguas primero",
+      "columns": {
+        "organization": "Organización",
+        "country": "País",
+        "submitted": "Enviada",
+        "status": "Estado",
+        "documents": "Documentos"
+      },
+      "submissions": "{count, plural, one {# envío} other {# envíos}}",
+      "changeRequestOpen": "Cambios solicitados",
+      "empty": {
+        "pill": "Nada pendiente",
+        "title": "Ninguna solicitud coincide",
+        "body": "Los nuevos envíos aparecerán aquí. Prueba otros filtros."
+      },
+      "pages": {
+        "label": "Páginas",
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "page": "Página {page}"
+      },
+      "refresh": "Actualizar",
+      "filters": {
+        "label": "Filtrar solicitudes",
+        "status": "Estado",
+        "any": "Cualquiera",
+        "from": "Enviadas desde",
+        "to": "Enviadas hasta"
+      },
+      "note": "Los borradores no aparecen: nadie en SimpleFit los ve. Cada consulta queda registrada."
+    },
+    "action": {
+      "reason": "Código de motivo",
+      "reasonPlaceholder": "Elige un código de motivo",
+      "risk": "Riesgo alto",
+      "needs": "Requiere {permission}",
+      "titles": {
+        "claim": "¿Tomar la solicitud de {organization}?",
+        "request_changes": "Pedir cambios a {organization}",
+        "approve": "¿Aprobar la solicitud de {organization}?",
+        "reject": "¿Rechazar la solicitud de {organization}?",
+        "suspend_organization": "¿Suspender {organization}?",
+        "reinstate_organization": "¿Restablecer {organization}?"
+      },
+      "bodies": {
+        "claim": "Inicia la revisión. Después, cualquiera con los permisos de revisión puede decidir.",
+        "request_changes": "La persona solicitante verá tu mensaje, podrá editar las respuestas elegidas y volver a enviar.",
+        "approve": "Crea la organización y convierte a la persona solicitante en propietaria. Sin contrato, verificación, pago, campaña ni publicación. Requiere una verificación de clave.",
+        "reject": "Definitivo. No se crea nada. El motivo es interno: la persona solicitante no lo ve. Requiere una verificación de clave.",
+        "suspend_organization": "La organización queda en solo lectura para sus miembros y deja de ser un espacio de trabajo. No se borra nada. Requiere una verificación de clave.",
+        "reinstate_organization": "La organización vuelve a poder usarse. Requiere una verificación de clave."
+      },
+      "impact": "Qué pasa",
+      "transition": "{from} → {to}, versión {revision}",
+      "impacts": {
+        "review_started": "Empieza la revisión",
+        "applicant_can_edit_requested_answers": "La persona solicitante puede editar las respuestas elegidas",
+        "applicant_notified": "Se avisa a la persona solicitante (email solo donde esté activado)",
+        "organization_created": "Se crea la organización",
+        "applicant_becomes_owner": "La persona solicitante pasa a ser propietaria",
+        "no_commercial_rights": "Sin contrato, pago, campaña ni ubicación",
+        "final_decision": "La decisión es definitiva",
+        "nothing_created": "No se crea nada",
+        "organization_read_only": "La organización queda en solo lectura",
+        "no_entry_destination": "Los miembros no pueden abrir su espacio",
+        "nothing_deleted": "No se borra nada",
+        "organization_usable_again": "La organización vuelve a poder usarse"
+      },
+      "states": {
+        "submitted": "Enviada",
+        "under_review": "En revisión",
+        "changes_requested": "Cambios solicitados",
+        "approved": "Aprobada",
+        "rejected": "Rechazada",
+        "active": "Activa",
+        "suspended": "Suspendida"
+      },
+      "fields": "Respuestas que se pueden cambiar",
+      "message": "Mensaje para la persona solicitante",
+      "messageHelp": "Texto sin formato, hasta 2000 caracteres. La persona solicitante lo verá.",
+      "stepUp": "Confirma con tu clave de seguridad para continuar.",
+      "submitting": "Procesando…",
+      "success": "Hecho. Registrado en el registro de auditoría.",
+      "outcomes": {
+        "conflict": "Otra persona cambió esta solicitud antes, o su estado ya no lo permite. No se hizo nada.",
+        "expired": "La confirmación caducó o ya se usó. Revisa de nuevo.",
+        "unknown": "No sabemos si se completó. Comprueba el resultado: se envía la misma solicitud otra vez y nunca se aplica dos veces.",
+        "invalid": "Revisa el motivo, las respuestas y el mensaje.",
+        "failed": "No cambió nada. Inténtalo de nuevo.",
+        "denied": "Ya no tienes permiso para hacerlo.",
+        "party": "Eres parte de esta solicitud. Debe decidir otro operador."
+      },
+      "reload": "Recargar",
+      "close": "Cerrar",
+      "cancel": "Cancelar",
+      "useKey": "Usar clave de seguridad",
+      "checkOutcome": "Comprobar el resultado",
+      "previewAgain": "Revisar de nuevo",
+      "working": "Procesando…",
+      "preview": "Revisar",
+      "confirm": {
+        "claim": "Tomar",
+        "request_changes": "Enviar solicitud",
+        "approve": "Aprobar",
+        "reject": "Rechazar",
+        "suspend_organization": "Suspender",
+        "reinstate_organization": "Restablecer"
+      }
+    },
+    "detail": {
+      "metaTitle": "Solicitud de patrocinio · Panel de control",
+      "title": "Solicitud de patrocinio",
+      "loading": "Cargando la solicitud",
+      "heading": "{organization} · solicitud",
+      "notFound": {
+        "pill": "No encontrada",
+        "title": "Esa solicitud no existe",
+        "body": "Revisa el enlace. Los borradores no son visibles para los operadores."
+      },
+      "answers": {
+        "title": "Respuestas enviadas",
+        "meta": "Solo lectura · versión {revision}",
+        "none": "No se envió nada.",
+        "website": "Sitio web",
+        "email": "Email de trabajo",
+        "verified": "(verificado con un código)",
+        "notVerified": "(sin verificar)",
+        "phone": "Teléfono",
+        "submitted": "Envío",
+        "submission": "N.º {sequence}, {date}",
+        "declaration": "Declaración",
+        "declarationValue": "{version} ({language})",
+        "note": "Son las respuestas de la propia persona solicitante. Solo el email de trabajo se comprueba con un código; nada más está verificado."
+      },
+      "review": {
+        "title": "Revisión",
+        "party": "No puedes revisar esta solicitud: eres parte de ella. Debe decidir otro operador.",
+        "state": {
+          "submitted": "Nadie la ha tomado todavía.",
+          "under_review": "En revisión. Cualquiera con los permisos de decisión puede decidir.",
+          "changes_requested": "Esperando a que la persona solicitante vuelva a enviar.",
+          "approved": "Aprobada. Las decisiones no se reabren.",
+          "rejected": "Rechazada. Las decisiones no se reabren.",
+          "withdrawn": "Retirada por la persona solicitante."
+        },
+        "changeRequest": "Solicitud de cambios abierta",
+        "smallScreen": "Las acciones de alto riesgo requieren una pantalla más grande y una clave de seguridad. Puedes leer desde aquí.",
+        "actions": {
+          "claim": "Tomar",
+          "request_changes": "Pedir cambios",
+          "approve": "Aprobar",
+          "reject": "Rechazar…",
+          "suspend_organization": "Suspender la organización",
+          "reinstate_organization": "Restablecer la organización"
+        },
+        "notPermitted": "Algunas acciones no se muestran: tus permisos no las incluyen.",
+        "approvalNote": "Aprobar crea la organización y convierte a la persona solicitante en propietaria. No es un contrato, una verificación ni una alianza."
+      },
+      "organization": {
+        "title": "Organización",
+        "status": "Estado",
+        "approved": "Aprobada",
+        "notes": {
+          "active": "Los miembros pueden usar el espacio de trabajo.",
+          "suspended": "Solo lectura para sus miembros y no es un espacio de trabajo. No se borró nada.",
+          "closed": "Cerrada."
+        }
+      },
+      "history": {
+        "title": "Historial",
+        "actor": {
+          "applicant": "Solicitante",
+          "operator": "Operador"
+        },
+        "events": {
+          "created": "Iniciada",
+          "submitted": "Enviada",
+          "resubmitted": "Reenviada",
+          "claimed": "Tomada",
+          "changes_requested": "Cambios solicitados",
+          "approved": "Aprobada",
+          "rejected": "Rechazada"
+        },
+        "note": "Cambios de estado tal como los registró el servidor. Quién actuó se muestra solo como solicitante u operador."
+      },
+      "documents": {
+        "title": "Documentos",
+        "none": "No se enviaron documentos.",
+        "kinds": {
+          "logo": "Logotipo",
+          "brand_deck": "Presentación de marca",
+          "campaign_brief": "Brief de campaña",
+          "other": "Otro"
+        },
+        "meta": "{type} · {size} KB",
+        "download": "Descargar",
+        "noAccess": "Requiere acceso a documentos",
+        "errors": {
+          "step_up": "Confirma con tu clave de seguridad e inténtalo de nuevo.",
+          "failed": "No se pudo obtener el documento. Inténtalo de nuevo.",
+          "denied": "No puedes descargar este documento."
+        },
+        "note": "Cada descarga es un enlace de 5 minutos, registrado antes de emitirse. Los documentos los subió la persona solicitante: no se comprueba su autenticidad ni si contienen malware."
+      }
+    }
   }
 }

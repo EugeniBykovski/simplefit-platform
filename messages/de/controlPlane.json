@@ -667,5 +667,274 @@
         "publication": "Öffentliche Seite: nicht verfügbar. Die Veröffentlichung von Studios ist ein Vorschlag (SF-139); nichts ist öffentlich."
       }
     }
+  },
+  "sponsorReview": {
+    "metaTitle": "Sponsorbewerbungen · Control Plane",
+    "breadcrumb": "Control Plane / Prüfungen",
+    "title": "Sponsorbewerbungen",
+    "noName": "Kein Firmenname angegeben",
+    "status": {
+      "submitted": "Eingereicht",
+      "under_review": "In Prüfung",
+      "changes_requested": "Änderungen angefragt",
+      "approved": "Genehmigt",
+      "rejected": "Abgelehnt",
+      "withdrawn": "Zurückgezogen"
+    },
+    "organization": {
+      "none": "Keine",
+      "active": "Aktiv",
+      "suspended": "Gesperrt",
+      "closed": "Geschlossen"
+    },
+    "chips": {
+      "application": "Bewerbung",
+      "organization": "Organisation",
+      "verification": "Verifizierung",
+      "commercial": "Kommerziell",
+      "notOffered": "Nicht angeboten",
+      "none": "Keine"
+    },
+    "fields": {
+      "company_name": "Firmenname",
+      "website": "Website",
+      "country_code": "Land",
+      "industry": "Branche",
+      "contact_full_name": "Kontaktname",
+      "contact_position": "Position",
+      "contact_email": "Geschäftliche E-Mail",
+      "contact_phone": "Telefon",
+      "interests": "Interessen",
+      "market_scope": "Wo",
+      "market_countries": "Länder",
+      "market_cities": "Städte",
+      "budget_band": "Budget",
+      "goals": "Ziele"
+    },
+    "reasons": {
+      "review_started": "Prüfung begonnen",
+      "missing_information": "Fehlende Angaben",
+      "unclear_answers": "Unklare Antworten",
+      "contact_details": "Kontaktdaten",
+      "company_details": "Firmendaten",
+      "review_complete": "Prüfung abgeschlossen",
+      "not_a_business": "Kein Unternehmen",
+      "outside_supported_categories": "Außerhalb der unterstützten Kategorien",
+      "insufficient_information": "Zu wenig Informationen",
+      "duplicate_application": "Doppelte Bewerbung",
+      "approval_mistaken": "Genehmigung war ein Fehler",
+      "policy_concern": "Richtlinienbedenken",
+      "under_investigation": "Wird untersucht",
+      "concern_resolved": "Bedenken ausgeräumt",
+      "approval_confirmed": "Genehmigung bestätigt",
+      "other": "Sonstiges"
+    },
+    "queue": {
+      "loading": "Bewerbungen werden geladen",
+      "caption": "Sponsorbewerbungen, älteste zuerst",
+      "columns": {
+        "organization": "Organisation",
+        "country": "Land",
+        "submitted": "Eingereicht",
+        "status": "Status",
+        "documents": "Dokumente"
+      },
+      "submissions": "{count, plural, one {# Einreichung} other {# Einreichungen}}",
+      "changeRequestOpen": "Änderungen angefragt",
+      "empty": {
+        "pill": "Nichts wartet",
+        "title": "Keine passenden Bewerbungen",
+        "body": "Neue Einreichungen erscheinen hier. Versuche andere Filter."
+      },
+      "pages": {
+        "label": "Seiten",
+        "previous": "Zurück",
+        "next": "Weiter",
+        "page": "Seite {page}"
+      },
+      "refresh": "Aktualisieren",
+      "filters": {
+        "label": "Bewerbungen filtern",
+        "status": "Status",
+        "any": "Alle",
+        "from": "Eingereicht ab",
+        "to": "Eingereicht bis"
+      },
+      "note": "Entwürfe werden nicht aufgeführt: Bei SimpleFit sieht sie niemand. Jede Abfrage wird protokolliert."
+    },
+    "action": {
+      "reason": "Grundcode",
+      "reasonPlaceholder": "Grundcode wählen",
+      "risk": "Hohes Risiko",
+      "needs": "Braucht {permission}",
+      "titles": {
+        "claim": "Bewerbung von {organization} übernehmen?",
+        "request_changes": "Änderungen von {organization} anfragen",
+        "approve": "Bewerbung von {organization} genehmigen?",
+        "reject": "Bewerbung von {organization} ablehnen?",
+        "suspend_organization": "{organization} sperren?",
+        "reinstate_organization": "{organization} wiederherstellen?"
+      },
+      "bodies": {
+        "claim": "Startet die Prüfung. Danach kann jede Person mit den Prüfberechtigungen entscheiden.",
+        "request_changes": "Die Bewerber sehen deine Nachricht, können die gewählten Antworten ändern und erneut einreichen.",
+        "approve": "Erstellt die Organisation und macht die Bewerber zu ihren Inhabern. Kein Vertrag, keine Verifizierung, Zahlung, Kampagne oder Listung. Braucht eine Schlüsselprüfung.",
+        "reject": "Endgültig. Es wird nichts erstellt. Der Grund ist intern: Die Bewerber sehen ihn nicht. Braucht eine Schlüsselprüfung.",
+        "suspend_organization": "Die Organisation wird für ihre Mitglieder schreibgeschützt und ist kein Workspace mehr. Nichts wird gelöscht. Braucht eine Schlüsselprüfung.",
+        "reinstate_organization": "Die Organisation ist wieder nutzbar. Braucht eine Schlüsselprüfung."
+      },
+      "impact": "Was passiert",
+      "transition": "{from} → {to}, Version {revision}",
+      "impacts": {
+        "review_started": "Die Prüfung beginnt",
+        "applicant_can_edit_requested_answers": "Die Bewerber können die gewählten Antworten ändern",
+        "applicant_notified": "Die Bewerber werden informiert (E-Mail nur wo aktiviert)",
+        "organization_created": "Die Organisation wird erstellt",
+        "applicant_becomes_owner": "Die Bewerber werden Inhaber",
+        "no_commercial_rights": "Kein Vertrag, keine Zahlung, Kampagne oder Platzierung",
+        "final_decision": "Die Entscheidung ist endgültig",
+        "nothing_created": "Es wird nichts erstellt",
+        "organization_read_only": "Die Organisation wird schreibgeschützt",
+        "no_entry_destination": "Mitglieder können ihren Workspace nicht öffnen",
+        "nothing_deleted": "Nichts wird gelöscht",
+        "organization_usable_again": "Die Organisation ist wieder nutzbar"
+      },
+      "states": {
+        "submitted": "Eingereicht",
+        "under_review": "In Prüfung",
+        "changes_requested": "Änderungen angefragt",
+        "approved": "Genehmigt",
+        "rejected": "Abgelehnt",
+        "active": "Aktiv",
+        "suspended": "Gesperrt"
+      },
+      "fields": "Antworten, die geändert werden dürfen",
+      "message": "Nachricht an die Bewerber",
+      "messageHelp": "Reiner Text, bis zu 2.000 Zeichen. Die Bewerber sehen ihn.",
+      "stepUp": "Bestätige mit deinem Sicherheitsschlüssel, um fortzufahren.",
+      "submitting": "Wird ausgeführt…",
+      "success": "Erledigt. Im Audit-Log protokolliert.",
+      "outcomes": {
+        "conflict": "Jemand anderes hat diese Bewerbung zuerst geändert, oder ihr Status erlaubt das nicht mehr. Nichts wurde getan.",
+        "expired": "Die Bestätigung ist abgelaufen oder wurde bereits verwendet. Erneut prüfen.",
+        "unknown": "Wir wissen nicht, ob das durchging. Prüfe das Ergebnis: Dieselbe Anfrage wird erneut gesendet und nie zweimal angewendet.",
+        "invalid": "Prüfe Grund, Antworten und Nachricht.",
+        "failed": "Nichts hat sich geändert. Versuche es erneut.",
+        "denied": "Du darfst das nicht mehr.",
+        "party": "Du bist an dieser Bewerbung beteiligt. Eine andere Operator-Person muss entscheiden."
+      },
+      "reload": "Neu laden",
+      "close": "Schließen",
+      "cancel": "Abbrechen",
+      "useKey": "Sicherheitsschlüssel verwenden",
+      "checkOutcome": "Ergebnis prüfen",
+      "previewAgain": "Erneut prüfen",
+      "working": "Wird ausgeführt…",
+      "preview": "Prüfen",
+      "confirm": {
+        "claim": "Übernehmen",
+        "request_changes": "Anfrage senden",
+        "approve": "Genehmigen",
+        "reject": "Ablehnen",
+        "suspend_organization": "Sperren",
+        "reinstate_organization": "Wiederherstellen"
+      }
+    },
+    "detail": {
+      "metaTitle": "Sponsorbewerbung · Control Plane",
+      "title": "Sponsorbewerbung",
+      "loading": "Bewerbung wird geladen",
+      "heading": "{organization} · Bewerbung",
+      "notFound": {
+        "pill": "Nicht gefunden",
+        "title": "Diese Bewerbung gibt es nicht",
+        "body": "Prüfe den Link. Entwürfe sind für Operatoren nicht sichtbar."
+      },
+      "answers": {
+        "title": "Eingereichte Antworten",
+        "meta": "Nur lesen · Version {revision}",
+        "none": "Es wurde nichts eingereicht.",
+        "website": "Website",
+        "email": "Geschäftliche E-Mail",
+        "verified": "(per Code bestätigt)",
+        "notVerified": "(nicht bestätigt)",
+        "phone": "Telefon",
+        "submitted": "Einreichung",
+        "submission": "Nr. {sequence}, {date}",
+        "declaration": "Erklärung",
+        "declarationValue": "{version} ({language})",
+        "note": "Das sind die eigenen Antworten der Bewerber. Nur die geschäftliche E-Mail wird per Code geprüft; nichts anderes ist verifiziert."
+      },
+      "review": {
+        "title": "Prüfung",
+        "party": "Du kannst diese Bewerbung nicht prüfen: Du bist daran beteiligt. Eine andere Operator-Person muss entscheiden.",
+        "state": {
+          "submitted": "Noch niemand hat sie übernommen.",
+          "under_review": "In Prüfung. Jede Person mit den Entscheidungsberechtigungen kann entscheiden.",
+          "changes_requested": "Wartet auf eine erneute Einreichung.",
+          "approved": "Genehmigt. Entscheidungen werden nicht wieder geöffnet.",
+          "rejected": "Abgelehnt. Entscheidungen werden nicht wieder geöffnet.",
+          "withdrawn": "Von den Bewerbern zurückgezogen."
+        },
+        "changeRequest": "Offene Änderungsanfrage",
+        "smallScreen": "Aktionen mit hohem Risiko brauchen einen größeren Bildschirm und einen Sicherheitsschlüssel. Lesen funktioniert auch hier.",
+        "actions": {
+          "claim": "Übernehmen",
+          "request_changes": "Änderungen anfragen",
+          "approve": "Genehmigen",
+          "reject": "Ablehnen…",
+          "suspend_organization": "Organisation sperren",
+          "reinstate_organization": "Organisation wiederherstellen"
+        },
+        "notPermitted": "Einige Aktionen werden nicht gezeigt: Deine Berechtigungen umfassen sie nicht.",
+        "approvalNote": "Die Genehmigung erstellt die Organisation und macht die Bewerber zu Inhabern. Sie ist kein Vertrag, keine Verifizierung und keine Partnerschaft."
+      },
+      "organization": {
+        "title": "Organisation",
+        "status": "Status",
+        "approved": "Genehmigt",
+        "notes": {
+          "active": "Mitglieder können den Workspace nutzen.",
+          "suspended": "Für Mitglieder schreibgeschützt und kein Workspace. Nichts wurde gelöscht.",
+          "closed": "Geschlossen."
+        }
+      },
+      "history": {
+        "title": "Verlauf",
+        "actor": {
+          "applicant": "Bewerber",
+          "operator": "Operator"
+        },
+        "events": {
+          "created": "Begonnen",
+          "submitted": "Eingereicht",
+          "resubmitted": "Erneut eingereicht",
+          "claimed": "Übernommen",
+          "changes_requested": "Änderungen angefragt",
+          "approved": "Genehmigt",
+          "rejected": "Abgelehnt"
+        },
+        "note": "Statuswechsel, wie der Server sie protokolliert hat. Wer gehandelt hat, wird nur als Bewerber oder Operator gezeigt."
+      },
+      "documents": {
+        "title": "Dokumente",
+        "none": "Es wurden keine Dokumente eingereicht.",
+        "kinds": {
+          "logo": "Logo",
+          "brand_deck": "Markenpräsentation",
+          "campaign_brief": "Kampagnenbriefing",
+          "other": "Sonstiges"
+        },
+        "meta": "{type} · {size} KB",
+        "download": "Herunterladen",
+        "noAccess": "Dokumentzugriff nötig",
+        "errors": {
+          "step_up": "Bestätige mit deinem Sicherheitsschlüssel und versuche es erneut.",
+          "failed": "Das Dokument konnte nicht abgerufen werden. Versuche es erneut.",
+          "denied": "Du kannst dieses Dokument nicht herunterladen."
+        },
+        "note": "Jeder Download ist ein 5-Minuten-Link, der vor der Ausgabe protokolliert wird. Die Dokumente haben die Bewerber hochgeladen: Echtheit und Schadsoftware werden nicht geprüft."
+      }
+    }
   }
 }

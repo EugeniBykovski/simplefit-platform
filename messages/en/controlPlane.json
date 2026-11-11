@@ -667,5 +667,274 @@
         "publication": "Public page: not available. Gym publication is a proposal (SF-139); nothing is public."
       }
     }
+  },
+  "sponsorReview": {
+    "metaTitle": "Sponsor applications · Control plane",
+    "breadcrumb": "Control plane / Reviews",
+    "title": "Sponsor applications",
+    "noName": "Company name not given",
+    "status": {
+      "submitted": "Submitted",
+      "under_review": "Under review",
+      "changes_requested": "Changes requested",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "withdrawn": "Withdrawn"
+    },
+    "organization": {
+      "none": "None",
+      "active": "Active",
+      "suspended": "Suspended",
+      "closed": "Closed"
+    },
+    "chips": {
+      "application": "Application",
+      "organization": "Organization",
+      "verification": "Verification",
+      "commercial": "Commercial",
+      "notOffered": "Not offered",
+      "none": "None"
+    },
+    "fields": {
+      "company_name": "Company name",
+      "website": "Website",
+      "country_code": "Country",
+      "industry": "Industry",
+      "contact_full_name": "Contact name",
+      "contact_position": "Contact position",
+      "contact_email": "Work email",
+      "contact_phone": "Phone",
+      "interests": "Interests",
+      "market_scope": "Where",
+      "market_countries": "Countries",
+      "market_cities": "Cities",
+      "budget_band": "Budget",
+      "goals": "Goals"
+    },
+    "reasons": {
+      "review_started": "Review started",
+      "missing_information": "Missing information",
+      "unclear_answers": "Unclear answers",
+      "contact_details": "Contact details",
+      "company_details": "Company details",
+      "review_complete": "Review complete",
+      "not_a_business": "Not a business",
+      "outside_supported_categories": "Outside supported categories",
+      "insufficient_information": "Insufficient information",
+      "duplicate_application": "Duplicate application",
+      "approval_mistaken": "Approval was a mistake",
+      "policy_concern": "Policy concern",
+      "under_investigation": "Under investigation",
+      "concern_resolved": "Concern resolved",
+      "approval_confirmed": "Approval confirmed",
+      "other": "Other"
+    },
+    "queue": {
+      "loading": "Loading applications",
+      "caption": "Sponsor applications, oldest submission first",
+      "columns": {
+        "organization": "Organization",
+        "country": "Country",
+        "submitted": "Submitted",
+        "status": "Status",
+        "documents": "Documents"
+      },
+      "submissions": "{count, plural, one {# submission} other {# submissions}}",
+      "changeRequestOpen": "Changes requested, open",
+      "empty": {
+        "pill": "Nothing waiting",
+        "title": "No applications match",
+        "body": "New submissions appear here. Try other filters."
+      },
+      "pages": {
+        "label": "Pages",
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page {page}"
+      },
+      "refresh": "Refresh",
+      "filters": {
+        "label": "Filter applications",
+        "status": "Status",
+        "any": "Any",
+        "from": "Submitted from",
+        "to": "Submitted until"
+      },
+      "note": "Drafts aren’t listed: nobody at SimpleFit sees them. Each query is recorded."
+    },
+    "action": {
+      "reason": "Reason code",
+      "reasonPlaceholder": "Choose a reason code",
+      "risk": "High risk",
+      "needs": "Needs {permission}",
+      "titles": {
+        "claim": "Claim {organization}’s application?",
+        "request_changes": "Request changes from {organization}",
+        "approve": "Approve {organization}’s application?",
+        "reject": "Reject {organization}’s application?",
+        "suspend_organization": "Suspend {organization}?",
+        "reinstate_organization": "Reinstate {organization}?"
+      },
+      "bodies": {
+        "claim": "Starts the review. Anyone with the review permissions can then decide.",
+        "request_changes": "The applicant sees your message, can edit the answers you choose and resubmits.",
+        "approve": "Creates the organization and makes the applicant its owner. No contract, verification, payment, campaign or listing. Needs a key check.",
+        "reject": "Final. Nothing is created. The reason is internal: the applicant isn’t shown it. Needs a key check.",
+        "suspend_organization": "The organization becomes read only for its members and stops being a workspace. Nothing is deleted. Needs a key check.",
+        "reinstate_organization": "The organization becomes usable again. Needs a key check."
+      },
+      "impact": "What happens",
+      "transition": "{from} → {to}, at revision {revision}",
+      "impacts": {
+        "review_started": "The review starts",
+        "applicant_can_edit_requested_answers": "The applicant can edit the answers you chose",
+        "applicant_notified": "The applicant is told (email only where enabled)",
+        "organization_created": "The organization is created",
+        "applicant_becomes_owner": "The applicant becomes its owner",
+        "no_commercial_rights": "No contract, payment, campaign or placement",
+        "final_decision": "The decision is final",
+        "nothing_created": "Nothing is created",
+        "organization_read_only": "The organization becomes read only",
+        "no_entry_destination": "Members can’t open its workspace",
+        "nothing_deleted": "Nothing is deleted",
+        "organization_usable_again": "The organization is usable again"
+      },
+      "states": {
+        "submitted": "Submitted",
+        "under_review": "Under review",
+        "changes_requested": "Changes requested",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "active": "Active",
+        "suspended": "Suspended"
+      },
+      "fields": "Answers the applicant may change",
+      "message": "Message to the applicant",
+      "messageHelp": "Plain text, up to 2,000 characters. The applicant sees it.",
+      "stepUp": "Check your security key to continue.",
+      "submitting": "Working…",
+      "success": "Done. Recorded in the audit log.",
+      "outcomes": {
+        "conflict": "Someone else changed this application first, or its state no longer allows this. Nothing was done.",
+        "expired": "The confirmation expired or was already used. Preview again.",
+        "unknown": "We don’t know whether this went through. Check the outcome: the same request is sent again and never applies twice.",
+        "invalid": "Check the reason, the answers and the message.",
+        "failed": "Nothing changed. Try again.",
+        "denied": "You’re no longer allowed to do this.",
+        "party": "You’re a party to this application. Another operator must decide."
+      },
+      "reload": "Reload",
+      "close": "Close",
+      "cancel": "Cancel",
+      "useKey": "Use security key",
+      "checkOutcome": "Check the outcome",
+      "previewAgain": "Preview again",
+      "working": "Working…",
+      "preview": "Review",
+      "confirm": {
+        "claim": "Claim",
+        "request_changes": "Send request",
+        "approve": "Approve",
+        "reject": "Reject",
+        "suspend_organization": "Suspend",
+        "reinstate_organization": "Reinstate"
+      }
+    },
+    "detail": {
+      "metaTitle": "Sponsor application · Control plane",
+      "title": "Sponsor application",
+      "loading": "Loading the application",
+      "heading": "{organization} · application",
+      "notFound": {
+        "pill": "Not found",
+        "title": "No such application",
+        "body": "Check the link. Drafts aren’t visible to operators."
+      },
+      "answers": {
+        "title": "Submitted answers",
+        "meta": "Read only · revision {revision}",
+        "none": "Nothing was submitted.",
+        "website": "Website",
+        "email": "Work email",
+        "verified": "(verified by code)",
+        "notVerified": "(not verified)",
+        "phone": "Phone",
+        "submitted": "Submission",
+        "submission": "No. {sequence}, {date}",
+        "declaration": "Declaration",
+        "declarationValue": "{version} ({language})",
+        "note": "These are the applicant’s own answers. Only the work email is checked, by a code; nothing else is verified."
+      },
+      "review": {
+        "title": "Review",
+        "party": "You can’t review this application: you’re a party to it. Another operator must decide.",
+        "state": {
+          "submitted": "Nobody has claimed this yet.",
+          "under_review": "Under review. Anyone with the decision permissions can decide.",
+          "changes_requested": "Waiting for the applicant to resubmit.",
+          "approved": "Approved. Decisions don’t reopen.",
+          "rejected": "Rejected. Decisions don’t reopen.",
+          "withdrawn": "Withdrawn by the applicant."
+        },
+        "changeRequest": "Open change request",
+        "smallScreen": "High-risk actions need a larger screen and a security key. Reading works here.",
+        "actions": {
+          "claim": "Claim",
+          "request_changes": "Request changes",
+          "approve": "Approve",
+          "reject": "Reject…",
+          "suspend_organization": "Suspend organization",
+          "reinstate_organization": "Reinstate organization"
+        },
+        "notPermitted": "Some actions aren’t shown: your permissions don’t include them.",
+        "approvalNote": "Approving creates the organization and makes the applicant its owner. It isn’t a contract, a verification or a partnership."
+      },
+      "organization": {
+        "title": "Organization",
+        "status": "Status",
+        "approved": "Approved",
+        "notes": {
+          "active": "Members can use the workspace.",
+          "suspended": "Read only for its members, and not a workspace. Nothing was deleted.",
+          "closed": "Closed."
+        }
+      },
+      "history": {
+        "title": "History",
+        "actor": {
+          "applicant": "Applicant",
+          "operator": "Operator"
+        },
+        "events": {
+          "created": "Started",
+          "submitted": "Submitted",
+          "resubmitted": "Resubmitted",
+          "claimed": "Claimed",
+          "changes_requested": "Changes requested",
+          "approved": "Approved",
+          "rejected": "Rejected"
+        },
+        "note": "Status changes as the backend recorded them. Who acted is shown as applicant or operator only."
+      },
+      "documents": {
+        "title": "Documents",
+        "none": "No documents were submitted.",
+        "kinds": {
+          "logo": "Logo",
+          "brand_deck": "Brand deck",
+          "campaign_brief": "Campaign brief",
+          "other": "Other"
+        },
+        "meta": "{type} · {size} KB",
+        "download": "Download",
+        "noAccess": "Needs document access",
+        "errors": {
+          "step_up": "Check your security key, then try again.",
+          "failed": "Couldn’t get the document. Try again.",
+          "denied": "You can’t download this document."
+        },
+        "note": "Each download is a 5-minute link, recorded before it’s issued. Documents are what the applicant uploaded: not checked for authenticity or malware."
+      }
+    }
   }
 }

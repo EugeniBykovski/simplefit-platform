@@ -7728,7 +7728,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(admin)/admin/sponsors/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-124: AS1 (MVP), the sponsor application queue from GET /api/v1/admin/sponsor-applications (sponsors.applications.read, each query recorded): status and submission-date filters on the server, oldest submission first in signed keyset pages; never drafts, contacts, budgets or goals. Design deviations: docs/admin-design/sf-124-design-register.md."
       },
       "screens": ["AS1"]
     },
@@ -7754,7 +7754,7 @@
       "discrepancies": ["D-ADMIN-SPONSOR-CAMPAIGN-PATHS"],
       "production": {
         "file": "src/app/[locale]/(admin)/admin/sponsors/[sponsorId]/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-124: AS2 (MVP) with AS4's organization state, keyed by the sponsor application id (every review endpoint is): exactly what was last submitted, submitted documents through a 5-minute attachment link (read_files), the history, and the SF-116 actions through SF-111 (claim, request changes, approve, reject; suspend and reinstate the approved organization), each with its own permission, reason, revision, fresh key check and, for decisions, a one-time confirmation. No revoked state, closure, release or reassignment exists."
       },
       "screens": ["AS2", "AS4"]
     },

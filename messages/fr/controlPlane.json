@@ -667,5 +667,274 @@
         "publication": "Page publique : indisponible. La publication des salles est une proposition (SF-139) ; rien n’est public."
       }
     }
+  },
+  "sponsorReview": {
+    "metaTitle": "Candidatures de sponsors · Plan de contrôle",
+    "breadcrumb": "Plan de contrôle / Examens",
+    "title": "Candidatures de sponsors",
+    "noName": "Nom de l’entreprise non renseigné",
+    "status": {
+      "submitted": "Soumise",
+      "under_review": "En examen",
+      "changes_requested": "Modifications demandées",
+      "approved": "Approuvée",
+      "rejected": "Refusée",
+      "withdrawn": "Retirée"
+    },
+    "organization": {
+      "none": "Aucune",
+      "active": "Active",
+      "suspended": "Suspendue",
+      "closed": "Fermée"
+    },
+    "chips": {
+      "application": "Candidature",
+      "organization": "Organisation",
+      "verification": "Vérification",
+      "commercial": "Commercial",
+      "notOffered": "Non proposée",
+      "none": "Aucun"
+    },
+    "fields": {
+      "company_name": "Nom de l’entreprise",
+      "website": "Site web",
+      "country_code": "Pays",
+      "industry": "Secteur",
+      "contact_full_name": "Nom du contact",
+      "contact_position": "Fonction",
+      "contact_email": "E-mail professionnel",
+      "contact_phone": "Téléphone",
+      "interests": "Centres d’intérêt",
+      "market_scope": "Où",
+      "market_countries": "Pays",
+      "market_cities": "Villes",
+      "budget_band": "Budget",
+      "goals": "Objectifs"
+    },
+    "reasons": {
+      "review_started": "Examen commencé",
+      "missing_information": "Informations manquantes",
+      "unclear_answers": "Réponses peu claires",
+      "contact_details": "Coordonnées",
+      "company_details": "Informations sur l’entreprise",
+      "review_complete": "Examen terminé",
+      "not_a_business": "Pas une entreprise",
+      "outside_supported_categories": "Hors des catégories prises en charge",
+      "insufficient_information": "Informations insuffisantes",
+      "duplicate_application": "Candidature en double",
+      "approval_mistaken": "L’approbation était une erreur",
+      "policy_concern": "Question de règles",
+      "under_investigation": "En cours de vérification",
+      "concern_resolved": "Question résolue",
+      "approval_confirmed": "Approbation confirmée",
+      "other": "Autre"
+    },
+    "queue": {
+      "loading": "Chargement des candidatures",
+      "caption": "Candidatures de sponsors, les plus anciennes d’abord",
+      "columns": {
+        "organization": "Organisation",
+        "country": "Pays",
+        "submitted": "Soumise",
+        "status": "Statut",
+        "documents": "Documents"
+      },
+      "submissions": "{count, plural, one {# soumission} other {# soumissions}}",
+      "changeRequestOpen": "Modifications demandées",
+      "empty": {
+        "pill": "Rien en attente",
+        "title": "Aucune candidature ne correspond",
+        "body": "Les nouvelles soumissions apparaissent ici. Essayez d’autres filtres."
+      },
+      "pages": {
+        "label": "Pages",
+        "previous": "Précédente",
+        "next": "Suivante",
+        "page": "Page {page}"
+      },
+      "refresh": "Actualiser",
+      "filters": {
+        "label": "Filtrer les candidatures",
+        "status": "Statut",
+        "any": "Tous",
+        "from": "Soumises depuis le",
+        "to": "Soumises jusqu’au"
+      },
+      "note": "Les brouillons ne sont pas listés : personne chez SimpleFit ne les voit. Chaque requête est enregistrée."
+    },
+    "action": {
+      "reason": "Code de motif",
+      "reasonPlaceholder": "Choisissez un code de motif",
+      "risk": "Risque élevé",
+      "needs": "Nécessite {permission}",
+      "titles": {
+        "claim": "Prendre en charge la candidature de {organization} ?",
+        "request_changes": "Demander des modifications à {organization}",
+        "approve": "Approuver la candidature de {organization} ?",
+        "reject": "Refuser la candidature de {organization} ?",
+        "suspend_organization": "Suspendre {organization} ?",
+        "reinstate_organization": "Rétablir {organization} ?"
+      },
+      "bodies": {
+        "claim": "Commence l’examen. Ensuite, toute personne ayant les permissions d’examen peut décider.",
+        "request_changes": "La personne candidate verra votre message, pourra modifier les réponses choisies et soumettre à nouveau.",
+        "approve": "Crée l’organisation et fait de la personne candidate sa propriétaire. Aucun contrat, vérification, paiement, campagne ni référencement. Nécessite une vérification de clé.",
+        "reject": "Définitif. Rien n’est créé. Le motif est interne : la personne candidate ne le voit pas. Nécessite une vérification de clé.",
+        "suspend_organization": "L’organisation passe en lecture seule pour ses membres et n’est plus un espace de travail. Rien n’est supprimé. Nécessite une vérification de clé.",
+        "reinstate_organization": "L’organisation redevient utilisable. Nécessite une vérification de clé."
+      },
+      "impact": "Ce qui se passe",
+      "transition": "{from} → {to}, version {revision}",
+      "impacts": {
+        "review_started": "L’examen commence",
+        "applicant_can_edit_requested_answers": "La personne candidate peut modifier les réponses choisies",
+        "applicant_notified": "La personne candidate est informée (e-mail seulement là où il est activé)",
+        "organization_created": "L’organisation est créée",
+        "applicant_becomes_owner": "La personne candidate en devient propriétaire",
+        "no_commercial_rights": "Aucun contrat, paiement, campagne ni emplacement",
+        "final_decision": "La décision est définitive",
+        "nothing_created": "Rien n’est créé",
+        "organization_read_only": "L’organisation passe en lecture seule",
+        "no_entry_destination": "Les membres ne peuvent plus ouvrir son espace",
+        "nothing_deleted": "Rien n’est supprimé",
+        "organization_usable_again": "L’organisation redevient utilisable"
+      },
+      "states": {
+        "submitted": "Soumise",
+        "under_review": "En examen",
+        "changes_requested": "Modifications demandées",
+        "approved": "Approuvée",
+        "rejected": "Refusée",
+        "active": "Active",
+        "suspended": "Suspendue"
+      },
+      "fields": "Réponses modifiables",
+      "message": "Message à la personne candidate",
+      "messageHelp": "Texte brut, jusqu’à 2 000 caractères. La personne candidate le verra.",
+      "stepUp": "Confirmez avec votre clé de sécurité pour continuer.",
+      "submitting": "En cours…",
+      "success": "C’est fait. Enregistré dans le journal d’audit.",
+      "outcomes": {
+        "conflict": "Quelqu’un d’autre a modifié cette candidature avant vous, ou son état ne le permet plus. Rien n’a été fait.",
+        "expired": "La confirmation a expiré ou a déjà été utilisée. Prévisualisez à nouveau.",
+        "unknown": "Nous ne savons pas si l’action a abouti. Vérifiez le résultat : la même requête est renvoyée et ne s’applique jamais deux fois.",
+        "invalid": "Vérifiez le motif, les réponses et le message.",
+        "failed": "Rien n’a changé. Réessayez.",
+        "denied": "Vous n’avez plus le droit de le faire.",
+        "party": "Vous êtes partie à cette candidature. Un autre opérateur doit décider."
+      },
+      "reload": "Recharger",
+      "close": "Fermer",
+      "cancel": "Annuler",
+      "useKey": "Utiliser la clé de sécurité",
+      "checkOutcome": "Vérifier le résultat",
+      "previewAgain": "Prévisualiser à nouveau",
+      "working": "En cours…",
+      "preview": "Prévisualiser",
+      "confirm": {
+        "claim": "Prendre en charge",
+        "request_changes": "Envoyer la demande",
+        "approve": "Approuver",
+        "reject": "Refuser",
+        "suspend_organization": "Suspendre",
+        "reinstate_organization": "Rétablir"
+      }
+    },
+    "detail": {
+      "metaTitle": "Candidature de sponsor · Plan de contrôle",
+      "title": "Candidature de sponsor",
+      "loading": "Chargement de la candidature",
+      "heading": "{organization} · candidature",
+      "notFound": {
+        "pill": "Introuvable",
+        "title": "Cette candidature n’existe pas",
+        "body": "Vérifiez le lien. Les brouillons ne sont pas visibles par les opérateurs."
+      },
+      "answers": {
+        "title": "Réponses soumises",
+        "meta": "Lecture seule · version {revision}",
+        "none": "Rien n’a été soumis.",
+        "website": "Site web",
+        "email": "E-mail professionnel",
+        "verified": "(vérifié par code)",
+        "notVerified": "(non vérifié)",
+        "phone": "Téléphone",
+        "submitted": "Soumission",
+        "submission": "N° {sequence}, {date}",
+        "declaration": "Déclaration",
+        "declarationValue": "{version} ({language})",
+        "note": "Ce sont les réponses de la personne candidate elle-même. Seul l’e-mail professionnel est vérifié, par un code ; rien d’autre ne l’est."
+      },
+      "review": {
+        "title": "Examen",
+        "party": "Vous ne pouvez pas examiner cette candidature : vous y êtes partie. Un autre opérateur doit décider.",
+        "state": {
+          "submitted": "Personne ne l’a encore prise en charge.",
+          "under_review": "En examen. Toute personne ayant les permissions de décision peut décider.",
+          "changes_requested": "En attente d’une nouvelle soumission.",
+          "approved": "Approuvée. Les décisions ne sont pas rouvertes.",
+          "rejected": "Refusée. Les décisions ne sont pas rouvertes.",
+          "withdrawn": "Retirée par la personne candidate."
+        },
+        "changeRequest": "Demande de modifications en cours",
+        "smallScreen": "Les actions à haut risque nécessitent un écran plus grand et une clé de sécurité. La consultation fonctionne ici.",
+        "actions": {
+          "claim": "Prendre en charge",
+          "request_changes": "Demander des modifications",
+          "approve": "Approuver",
+          "reject": "Refuser…",
+          "suspend_organization": "Suspendre l’organisation",
+          "reinstate_organization": "Rétablir l’organisation"
+        },
+        "notPermitted": "Certaines actions ne sont pas affichées : vos permissions ne les incluent pas.",
+        "approvalNote": "Approuver crée l’organisation et fait de la personne candidate sa propriétaire. Ce n’est ni un contrat, ni une vérification, ni un partenariat."
+      },
+      "organization": {
+        "title": "Organisation",
+        "status": "Statut",
+        "approved": "Approuvée",
+        "notes": {
+          "active": "Les membres peuvent utiliser l’espace de travail.",
+          "suspended": "En lecture seule pour ses membres, et ce n’est pas un espace de travail. Rien n’a été supprimé.",
+          "closed": "Fermée."
+        }
+      },
+      "history": {
+        "title": "Historique",
+        "actor": {
+          "applicant": "Candidat·e",
+          "operator": "Opérateur"
+        },
+        "events": {
+          "created": "Commencée",
+          "submitted": "Soumise",
+          "resubmitted": "Soumise à nouveau",
+          "claimed": "Prise en charge",
+          "changes_requested": "Modifications demandées",
+          "approved": "Approuvée",
+          "rejected": "Refusée"
+        },
+        "note": "Les changements de statut tels que le serveur les a enregistrés. Qui a agi est indiqué seulement comme candidat·e ou opérateur."
+      },
+      "documents": {
+        "title": "Documents",
+        "none": "Aucun document n’a été soumis.",
+        "kinds": {
+          "logo": "Logo",
+          "brand_deck": "Présentation de marque",
+          "campaign_brief": "Brief de campagne",
+          "other": "Autre"
+        },
+        "meta": "{type} · {size} Ko",
+        "download": "Télécharger",
+        "noAccess": "Accès aux documents requis",
+        "errors": {
+          "step_up": "Confirmez avec votre clé de sécurité, puis réessayez.",
+          "failed": "Impossible d’obtenir le document. Réessayez.",
+          "denied": "Vous ne pouvez pas télécharger ce document."
+        },
+        "note": "Chaque téléchargement est un lien de 5 minutes, enregistré avant d’être émis. Les documents ont été envoyés par la personne candidate : ni leur authenticité ni l’absence de logiciel malveillant ne sont vérifiées."
+      }
+    }
   }
 }

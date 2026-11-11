@@ -32,4 +32,6 @@ export type SponsorApplicationReviewResponseApplication = {
   status: SponsorApplicationReviewResponseApplicationStatus;
   /** @nullable */
   submitted_at: string | null;
+  /** SF-124, on a read only (absent from action results): whether the reading operator is a party (the applicant, or a member of the organization its approval created). A party's actions are refused with `conflict` and `details.target: "self"`. */
+  viewer_is_party?: boolean;
 };

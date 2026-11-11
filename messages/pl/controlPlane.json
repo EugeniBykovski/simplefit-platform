@@ -667,5 +667,274 @@
         "publication": "Strona publiczna: niedostępna. Publikacja klubów to propozycja (SF-139); nic nie jest publiczne."
       }
     }
+  },
+  "sponsorReview": {
+    "metaTitle": "Zgłoszenia sponsorów · Panel sterowania",
+    "breadcrumb": "Panel sterowania / Weryfikacje",
+    "title": "Zgłoszenia sponsorów",
+    "noName": "Nie podano nazwy firmy",
+    "status": {
+      "submitted": "Wysłano",
+      "under_review": "W weryfikacji",
+      "changes_requested": "Prośba o zmiany",
+      "approved": "Zatwierdzono",
+      "rejected": "Odrzucono",
+      "withdrawn": "Wycofano"
+    },
+    "organization": {
+      "none": "Brak",
+      "active": "Aktywna",
+      "suspended": "Zawieszona",
+      "closed": "Zamknięta"
+    },
+    "chips": {
+      "application": "Zgłoszenie",
+      "organization": "Organizacja",
+      "verification": "Weryfikacja",
+      "commercial": "Komercyjne",
+      "notOffered": "Nieoferowane",
+      "none": "Brak"
+    },
+    "fields": {
+      "company_name": "Nazwa firmy",
+      "website": "Strona",
+      "country_code": "Kraj",
+      "industry": "Branża",
+      "contact_full_name": "Osoba kontaktowa",
+      "contact_position": "Stanowisko",
+      "contact_email": "E-mail służbowy",
+      "contact_phone": "Telefon",
+      "interests": "Zainteresowania",
+      "market_scope": "Gdzie",
+      "market_countries": "Kraje",
+      "market_cities": "Miasta",
+      "budget_band": "Budżet",
+      "goals": "Cele"
+    },
+    "reasons": {
+      "review_started": "Rozpoczęto weryfikację",
+      "missing_information": "Brak informacji",
+      "unclear_answers": "Niejasne odpowiedzi",
+      "contact_details": "Dane kontaktowe",
+      "company_details": "Dane firmy",
+      "review_complete": "Weryfikacja zakończona",
+      "not_a_business": "To nie firma",
+      "outside_supported_categories": "Poza obsługiwanymi kategoriami",
+      "insufficient_information": "Za mało informacji",
+      "duplicate_application": "Zduplikowane zgłoszenie",
+      "approval_mistaken": "Zatwierdzenie było błędem",
+      "policy_concern": "Kwestia zasad",
+      "under_investigation": "W trakcie wyjaśniania",
+      "concern_resolved": "Sprawa wyjaśniona",
+      "approval_confirmed": "Zatwierdzenie potwierdzone",
+      "other": "Inne"
+    },
+    "queue": {
+      "loading": "Wczytujemy zgłoszenia",
+      "caption": "Zgłoszenia sponsorów, od najstarszych",
+      "columns": {
+        "organization": "Organizacja",
+        "country": "Kraj",
+        "submitted": "Wysłano",
+        "status": "Status",
+        "documents": "Dokumenty"
+      },
+      "submissions": "{count, plural, one {# wysłanie} few {# wysłania} many {# wysłań} other {# wysłania}}",
+      "changeRequestOpen": "Poproszono o zmiany",
+      "empty": {
+        "pill": "Nic nie czeka",
+        "title": "Żadne zgłoszenie nie pasuje",
+        "body": "Nowe zgłoszenia pojawią się tutaj. Spróbuj innych filtrów."
+      },
+      "pages": {
+        "label": "Strony",
+        "previous": "Wstecz",
+        "next": "Dalej",
+        "page": "Strona {page}"
+      },
+      "refresh": "Odśwież",
+      "filters": {
+        "label": "Filtruj zgłoszenia",
+        "status": "Status",
+        "any": "Dowolny",
+        "from": "Wysłane od",
+        "to": "Wysłane do"
+      },
+      "note": "Szkiców tu nie ma: nikt w SimpleFit ich nie widzi. Każde zapytanie jest zapisywane."
+    },
+    "action": {
+      "reason": "Kod powodu",
+      "reasonPlaceholder": "Wybierz kod powodu",
+      "risk": "Wysokie ryzyko",
+      "needs": "Wymaga {permission}",
+      "titles": {
+        "claim": "Przejąć zgłoszenie {organization}?",
+        "request_changes": "Poproś {organization} o zmiany",
+        "approve": "Zatwierdzić zgłoszenie {organization}?",
+        "reject": "Odrzucić zgłoszenie {organization}?",
+        "suspend_organization": "Zawiesić {organization}?",
+        "reinstate_organization": "Przywrócić {organization}?"
+      },
+      "bodies": {
+        "claim": "Rozpoczyna weryfikację. Potem decyzję może podjąć każdy z uprawnieniami do weryfikacji.",
+        "request_changes": "Zgłaszający zobaczy Twoją wiadomość, będzie mógł zmienić wybrane odpowiedzi i wysłać ponownie.",
+        "approve": "Tworzy organizację i czyni zgłaszającego jej właścicielem. Bez umowy, weryfikacji, płatności, kampanii i publikacji. Wymaga sprawdzenia klucza.",
+        "reject": "Ostateczne. Nic nie powstaje. Powód jest wewnętrzny: zgłaszający go nie widzi. Wymaga sprawdzenia klucza.",
+        "suspend_organization": "Organizacja staje się dla członków tylko do odczytu i przestaje być przestrzenią roboczą. Nic nie jest usuwane. Wymaga sprawdzenia klucza.",
+        "reinstate_organization": "Z organizacji znów można korzystać. Wymaga sprawdzenia klucza."
+      },
+      "impact": "Co się stanie",
+      "transition": "{from} → {to}, wersja {revision}",
+      "impacts": {
+        "review_started": "Rozpoczyna się weryfikacja",
+        "applicant_can_edit_requested_answers": "Zgłaszający może zmienić wybrane odpowiedzi",
+        "applicant_notified": "Zgłaszający zostanie powiadomiony (e-mail tylko tam, gdzie włączony)",
+        "organization_created": "Powstaje organizacja",
+        "applicant_becomes_owner": "Zgłaszający zostaje jej właścicielem",
+        "no_commercial_rights": "Bez umowy, płatności, kampanii i miejsc reklamowych",
+        "final_decision": "Decyzja jest ostateczna",
+        "nothing_created": "Nic nie powstaje",
+        "organization_read_only": "Organizacja staje się tylko do odczytu",
+        "no_entry_destination": "Członkowie nie otworzą jej przestrzeni",
+        "nothing_deleted": "Nic nie jest usuwane",
+        "organization_usable_again": "Z organizacji znów można korzystać"
+      },
+      "states": {
+        "submitted": "Wysłano",
+        "under_review": "W weryfikacji",
+        "changes_requested": "Prośba o zmiany",
+        "approved": "Zatwierdzono",
+        "rejected": "Odrzucono",
+        "active": "Aktywna",
+        "suspended": "Zawieszona"
+      },
+      "fields": "Odpowiedzi, które zgłaszający może zmienić",
+      "message": "Wiadomość do zgłaszającego",
+      "messageHelp": "Zwykły tekst, do 2000 znaków. Zgłaszający ją zobaczy.",
+      "stepUp": "Potwierdź kluczem bezpieczeństwa, aby kontynuować.",
+      "submitting": "Trwa…",
+      "success": "Gotowe. Zapisano w dzienniku audytu.",
+      "outcomes": {
+        "conflict": "Ktoś inny już zmienił to zgłoszenie albo jego stan na to nie pozwala. Nic nie zrobiono.",
+        "expired": "Potwierdzenie wygasło lub zostało już użyte. Wyświetl podgląd ponownie.",
+        "unknown": "Nie wiemy, czy to się udało. Sprawdź wynik: to samo żądanie zostanie wysłane ponownie i nigdy nie zadziała dwa razy.",
+        "invalid": "Sprawdź powód, odpowiedzi i wiadomość.",
+        "failed": "Nic się nie zmieniło. Spróbuj ponownie.",
+        "denied": "Nie masz już do tego uprawnień.",
+        "party": "Jesteś stroną tego zgłoszenia. Decyzję musi podjąć inny operator."
+      },
+      "reload": "Odśwież",
+      "close": "Zamknij",
+      "cancel": "Anuluj",
+      "useKey": "Użyj klucza bezpieczeństwa",
+      "checkOutcome": "Sprawdź wynik",
+      "previewAgain": "Podgląd ponownie",
+      "working": "Trwa…",
+      "preview": "Podgląd",
+      "confirm": {
+        "claim": "Przejmij",
+        "request_changes": "Wyślij prośbę",
+        "approve": "Zatwierdź",
+        "reject": "Odrzuć",
+        "suspend_organization": "Zawieś",
+        "reinstate_organization": "Przywróć"
+      }
+    },
+    "detail": {
+      "metaTitle": "Zgłoszenie sponsora · Panel sterowania",
+      "title": "Zgłoszenie sponsora",
+      "loading": "Wczytujemy zgłoszenie",
+      "heading": "{organization} · zgłoszenie",
+      "notFound": {
+        "pill": "Nie znaleziono",
+        "title": "Nie ma takiego zgłoszenia",
+        "body": "Sprawdź link. Szkice nie są widoczne dla operatorów."
+      },
+      "answers": {
+        "title": "Wysłane odpowiedzi",
+        "meta": "Tylko do odczytu · wersja {revision}",
+        "none": "Nic nie wysłano.",
+        "website": "Strona",
+        "email": "E-mail służbowy",
+        "verified": "(potwierdzony kodem)",
+        "notVerified": "(niepotwierdzony)",
+        "phone": "Telefon",
+        "submitted": "Wysłanie",
+        "submission": "Nr {sequence}, {date}",
+        "declaration": "Oświadczenie",
+        "declarationValue": "{version} ({language})",
+        "note": "To odpowiedzi samego zgłaszającego. Kodem sprawdzany jest tylko e-mail służbowy; nic innego nie jest weryfikowane."
+      },
+      "review": {
+        "title": "Weryfikacja",
+        "party": "Nie możesz weryfikować tego zgłoszenia: jesteś jego stroną. Decyzję musi podjąć inny operator.",
+        "state": {
+          "submitted": "Nikt go jeszcze nie przejął.",
+          "under_review": "W weryfikacji. Decyzję może podjąć każdy z uprawnieniami do decyzji.",
+          "changes_requested": "Czekamy, aż zgłaszający wyśle ponownie.",
+          "approved": "Zatwierdzono. Decyzje nie są wznawiane.",
+          "rejected": "Odrzucono. Decyzje nie są wznawiane.",
+          "withdrawn": "Wycofane przez zgłaszającego."
+        },
+        "changeRequest": "Otwarta prośba o zmiany",
+        "smallScreen": "Działania wysokiego ryzyka wymagają większego ekranu i klucza bezpieczeństwa. Przeglądanie działa także tutaj.",
+        "actions": {
+          "claim": "Przejmij",
+          "request_changes": "Poproś o zmiany",
+          "approve": "Zatwierdź",
+          "reject": "Odrzuć…",
+          "suspend_organization": "Zawieś organizację",
+          "reinstate_organization": "Przywróć organizację"
+        },
+        "notPermitted": "Część działań nie jest pokazana: Twoje uprawnienia ich nie obejmują.",
+        "approvalNote": "Zatwierdzenie tworzy organizację i czyni zgłaszającego jej właścicielem. To nie umowa, weryfikacja ani partnerstwo."
+      },
+      "organization": {
+        "title": "Organizacja",
+        "status": "Status",
+        "approved": "Zatwierdzono",
+        "notes": {
+          "active": "Członkowie mogą korzystać z przestrzeni.",
+          "suspended": "Tylko do odczytu dla członków i nie jest przestrzenią roboczą. Nic nie usunięto.",
+          "closed": "Zamknięta."
+        }
+      },
+      "history": {
+        "title": "Historia",
+        "actor": {
+          "applicant": "Zgłaszający",
+          "operator": "Operator"
+        },
+        "events": {
+          "created": "Rozpoczęto",
+          "submitted": "Wysłano",
+          "resubmitted": "Wysłano ponownie",
+          "claimed": "Przejęto",
+          "changes_requested": "Poproszono o zmiany",
+          "approved": "Zatwierdzono",
+          "rejected": "Odrzucono"
+        },
+        "note": "Zmiany statusu tak, jak zapisał je serwer. Kto działał, pokazano tylko jako zgłaszający lub operator."
+      },
+      "documents": {
+        "title": "Dokumenty",
+        "none": "Nie wysłano dokumentów.",
+        "kinds": {
+          "logo": "Logo",
+          "brand_deck": "Prezentacja marki",
+          "campaign_brief": "Brief kampanii",
+          "other": "Inne"
+        },
+        "meta": "{type} · {size} KB",
+        "download": "Pobierz",
+        "noAccess": "Wymaga dostępu do dokumentów",
+        "errors": {
+          "step_up": "Potwierdź kluczem bezpieczeństwa i spróbuj ponownie.",
+          "failed": "Nie udało się pobrać dokumentu. Spróbuj ponownie.",
+          "denied": "Nie możesz pobrać tego dokumentu."
+        },
+        "note": "Każde pobranie to link ważny 5 minut, zapisany przed wydaniem. Dokumenty przesłał zgłaszający: nie są sprawdzane pod kątem autentyczności ani złośliwego oprogramowania."
+      }
+    }
   }
 }
