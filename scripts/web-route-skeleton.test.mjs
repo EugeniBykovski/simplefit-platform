@@ -101,6 +101,9 @@ const REAL_SCREENS = [
   // SF-123: AD2 and AD12, the gym list and one gym (`gyms.read`).
   "web.admin.tenants",
   "web.admin.tenants._tenant-id",
+  // SF-124: AS1 and AS2, the sponsor application queue and one application's review.
+  "web.admin.sponsors",
+  "web.admin.sponsors._sponsor-id",
   "web.admin.login",
   "web.admin.welcome",
   // SF-118: SPX9 settings, the organization's application, and SPE1's
