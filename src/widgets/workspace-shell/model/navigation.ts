@@ -232,7 +232,6 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
     },
     soon: [
       "tenants",
-      "users",
       "revenue",
       "subscriptions",
       "transactions",

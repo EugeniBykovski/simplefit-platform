@@ -285,5 +285,187 @@
       "retry": "Erneut versuchen"
     },
     "updating": "Wird aktualisiert…"
+  },
+  "users": {
+    "metaTitle": "Nutzer · Steuerzentrale",
+    "breadcrumb": "Steuerzentrale",
+    "title": "Nutzer",
+    "search": {
+      "label": "Exakte E-Mail oder Nutzer-ID",
+      "placeholder": "Exakte E-Mail oder Nutzer-ID",
+      "reason": "Begründung",
+      "reasonPlaceholder": "Begründung wählen",
+      "submit": "Suchen",
+      "note": "Die Suche ist bewusst exakt: Es gibt keine Liste aller Nutzer. Jede Suche wird mit ihrer Begründung protokolliert.",
+      "idle": "Gib eine exakte E-Mail oder Nutzer-ID und eine Begründung ein.",
+      "noMatch": {
+        "pill": "Kein Treffer",
+        "title": "Kein passendes Konto",
+        "body": "Prüfe die Adresse oder ID. Die Suche findet keine Teiltreffer."
+      },
+      "result": "Suchergebnis",
+      "columns": {
+        "account": "Konto",
+        "email": "E-Mail",
+        "contexts": "Kontexte",
+        "state": "Status",
+        "joined": "Beigetreten"
+      },
+      "rateLimited": "Zu viele Suchen. Warte eine Weile und versuch es dann noch einmal."
+    },
+    "reasons": {
+      "support_request": "Support-Anfrage",
+      "account_security": "Kontosicherheit",
+      "abuse_report": "Missbrauchsmeldung",
+      "legal_request": "Rechtliche Anfrage",
+      "account_compromise": "Konto kompromittiert",
+      "fraud": "Betrug",
+      "terms_violation": "AGB-Verstoß",
+      "appeal_upheld": "Einspruch stattgegeben",
+      "issue_resolved": "Problem gelöst",
+      "suspended_in_error": "Irrtümlich gesperrt",
+      "user_request": "Wunsch der Person",
+      "security_review": "Sicherheitsprüfung"
+    },
+    "status": {
+      "active": "Aktiv",
+      "suspended": "Gesperrt"
+    },
+    "contexts": {
+      "fighter": "Kämpfer",
+      "coach": "Coach",
+      "gymStaff": "Studio-Team",
+      "gymMember": "Studio-Mitglied",
+      "sponsor": "Sponsor",
+      "operator": "Plattform-Operator",
+      "none": "Keine"
+    },
+    "restricted": {
+      "pill": "Kein Zugriff",
+      "title": "Du hast keinen Zugriff auf diesen Bereich",
+      "body": "Deine Operator-Berechtigungen umfassen ihn nicht. Ein Operator-Manager kann ihn dir erteilen, mit einer Begründung, die protokolliert wird.",
+      "back": "Zurück zur Übersicht"
+    },
+    "error": {
+      "pill": "Nicht geladen",
+      "title": "Wir konnten das nicht laden",
+      "body": "Nichts hat sich geändert. Versuch es noch einmal.",
+      "retry": "Erneut versuchen"
+    },
+    "searching": "Suche läuft",
+    "detail": {
+      "metaTitle": "Konto · Steuerzentrale",
+      "breadcrumb": "Nutzer",
+      "title": "Konto",
+      "reasonTitle": "Warum öffnest du dieses Konto?",
+      "reasonBody": "Jeder Aufruf wird mit seiner Begründung protokolliert.",
+      "open": "Konto öffnen",
+      "loading": "Konto wird geladen",
+      "noName": "Noch kein Name",
+      "joined": "{id} · beigetreten am {date}",
+      "notFound": {
+        "pill": "Nicht gefunden",
+        "title": "Dieses Konto gibt es nicht",
+        "body": "Prüfe die ID oder such noch einmal."
+      },
+      "suspendedBanner": "Gesperrt seit {date}: {reason}.",
+      "contexts": {
+        "title": "Kontexte",
+        "fighter": "Kämpferprofil",
+        "coach": "Coach-Profil",
+        "gymStaff": "Studio-Team",
+        "gymMember": "Studio-Mitglied",
+        "sponsor": "Sponsor-Mitgliedschaften",
+        "operator": "Plattform-Operator",
+        "count": "{count, plural, one {# aktiv} other {# aktiv}}",
+        "profile": {
+          "not_started": "Nicht begonnen",
+          "in_progress": "In Arbeit",
+          "completed": "Abgeschlossen"
+        },
+        "operatorYes": "Ja: wird in der Operator-Verwaltung verwaltet",
+        "operatorNo": "Nein",
+        "never": "Hier nie angezeigt: Passwörter, Codes, Tokens, Anbieterdaten, Trainingseinheiten, Coach-Notizen, Gewicht, Gesundheit und Nachrichten."
+      },
+      "security": {
+        "title": "Konto und Sicherheit",
+        "email": "E-Mail",
+        "noEmail": "Keine Anmeldung per E-Mail",
+        "methods": "Anmeldemethoden",
+        "providers": {
+          "email": "E-Mail-Code",
+          "google": "Google",
+          "apple": "Apple"
+        },
+        "verification": "Eine Anmeldemethode bedeutet, dass die Person nachgewiesen hat, dass sie sie kontrolliert. Eine Identitäts- oder Dokumentenprüfung gibt es nicht.",
+        "registration": "Kontoregistrierung",
+        "registrationStates": {
+          "not_started": "Nicht begonnen",
+          "in_progress": "In Arbeit",
+          "complete": "Abgeschlossen"
+        },
+        "sessions": "Aktive Sitzungen",
+        "sessionLine": "Gestartet {start} · endet {end}",
+        "noSessions": "Keine aktive Sitzung",
+        "lastSignIn": "Letzte Anmeldung",
+        "never": "Nie"
+      },
+      "recovery": "Hier gibt es keine Kontowiederherstellung: Die Anmeldung ist passwortlos. Operatoren können keine Anmeldemethoden ändern, nichts verifizieren und nicht als die Person handeln.",
+      "actions": {
+        "reveal": "E-Mail anzeigen",
+        "suspend": "Konto sperren",
+        "lift": "Sperre aufheben",
+        "signOut": "Überall abmelden",
+        "smallScreen": "Aktionen mit hohem Risiko brauchen einen größeren Bildschirm und einen Sicherheitsschlüssel. Lesen funktioniert auch hier.",
+        "operatorTarget": "Dieses Konto ist ein Plattform-Operator: Es wird in der Operator-Verwaltung verwaltet.",
+        "self": "Das ist dein eigenes Konto."
+      },
+      "reveal": {
+        "title": "Diese E-Mail-Adresse anzeigen?",
+        "body": "Erfordert users.reveal_email und eine frische Schlüsselprüfung. Wird mit deiner Begründung protokolliert.",
+        "reveal": "Anzeigen",
+        "cancel": "Abbrechen",
+        "failed": "Wir konnten sie nicht anzeigen. Es wurde nichts angezeigt."
+      }
+    },
+    "action": {
+      "risk": "Hohes Risiko",
+      "needs": "Erfordert {permission}",
+      "target": "Ziel",
+      "impact": "Was passiert",
+      "reason": "Begründung",
+      "reasonPlaceholder": "Begründungscode wählen",
+      "titles": {
+        "suspend": "{account} sperren?",
+        "lift_suspension": "Sperre von {account} aufheben?",
+        "sign_out_everywhere": "{account} überall abmelden?"
+      },
+      "impacts": {
+        "signed_out_everywhere": "Die Person wird sofort auf allen Geräten abgemeldet.",
+        "sign_in_refused": "Sie kann sich mit keiner Methode anmelden, bis die Sperre aufgehoben ist.",
+        "data_kept": "Ihre Daten bleiben erhalten.",
+        "memberships_unchanged": "Studio- und Sponsor-Mitgliedschaften werden nicht geändert.",
+        "sign_in_allowed": "Sie kann sich wieder anmelden.",
+        "sessions_stay_revoked": "Durch die Sperre beendete Sitzungen bleiben beendet."
+      },
+      "preview": "Prüfen",
+      "confirm": "Bestätigen",
+      "cancel": "Abbrechen",
+      "close": "Schließen",
+      "reload": "Neu laden",
+      "stepUp": "Bestätige mit deinem Sicherheitsschlüssel. Aktionen mit hohem Risiko brauchen eine Schlüsselprüfung in den letzten paar Minuten.",
+      "useKey": "Sicherheitsschlüssel verwenden",
+      "submitting": "Wird ausgeführt… Schließ dieses Fenster nicht.",
+      "working": "Wird ausgeführt…",
+      "success": "Erledigt. Im Audit-Log protokolliert.",
+      "conflict": "Jemand anderes hat das zuerst geändert. Nichts wurde geändert. Lade neu, um den aktuellen Stand zu sehen.",
+      "unknown": "Wir wissen nicht, ob das durchgegangen ist. Versuch es noch nicht erneut. Lade das Konto neu, um es zu prüfen.",
+      "failed": "Das hat nicht funktioniert. Nichts hat sich geändert. Versuch es noch einmal.",
+      "denied": "Du hast dafür keine Berechtigung mehr. Nichts hat sich geändert.",
+      "protected": {
+        "self": "Das kannst du nicht mit deinem eigenen Konto machen.",
+        "operator": "Dieses Konto ist ein Plattform-Operator: Nutze die Operator-Verwaltung."
+      }
+    }
   }
 }

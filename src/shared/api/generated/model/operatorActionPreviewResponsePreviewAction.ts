@@ -20,4 +20,7 @@ export const OperatorActionPreviewResponsePreviewAction = {
   sponsor_applicationreject: 'sponsor_application.reject',
   sponsor_applicationsuspend_organization: 'sponsor_application.suspend_organization',
   sponsor_applicationreinstate_organization: 'sponsor_application.reinstate_organization',
+  usersuspend: 'user.suspend',
+  userlift_suspension: 'user.lift_suspension',
+  usersign_out_everywhere: 'user.sign_out_everywhere',
 } as const;

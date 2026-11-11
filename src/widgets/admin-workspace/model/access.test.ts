@@ -33,6 +33,7 @@ describe("Control Plane access (SF-120, presentation only)", () => {
       "sponsors.restrict",
     ]);
     expect(visibleNavItems(founder)).toEqual(["overview", "sponsors", "audit", "staff"]);
+    expect(visibleNavItems(operator(["users.read"]))).toEqual(["overview", "users"]);
     expect(hasAccess(founder, "sponsorOrganizations")).toBe(true);
     expect(hasAccess(founder, "sponsorApplications")).toBe(false);
   });
