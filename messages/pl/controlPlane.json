@@ -936,5 +936,45 @@
         "note": "Każde pobranie to link ważny 5 minut, zapisany przed wydaniem. Dokumenty przesłał zgłaszający: nie są sprawdzane pod kątem autentyczności ani złośliwego oprogramowania."
       }
     }
+  },
+  "trustSafety": {
+    "breadcrumb": "Panel sterowania / Zaufanie i bezpieczeństwo",
+    "pill": "Niedostępne",
+    "notState": "To nie jest pusta kolejka, brak uprawnień ani błąd: tej funkcji jeszcze nie ma.",
+    "moderation": {
+      "metaTitle": "Moderacja · Panel sterowania",
+      "title": "Moderacja",
+      "heading": "Moderacji nie ma jeszcze w panelu sterowania",
+      "body": "Nie ma czego weryfikować. SimpleFit nie ma zgłoszeń, postów, komentarzy, wiadomości ani publicznych mediów, więc żadnej treści nie da się zgłosić, sprawdzić ani ukryć. Nie widać tu żadnego zgłoszenia, bo żadne nie istnieje."
+    },
+    "enforcement": {
+      "metaTitle": "Egzekwowanie · Panel sterowania",
+      "title": "Egzekwowanie",
+      "heading": "Egzekwowania i odwołań nie ma jeszcze w panelu sterowania",
+      "body": "Nie istnieją żadne sprawy, ostrzeżenia ani odwołania. Zawieszenia konta nie można tu zaskarżyć: sposób powiadamiania i odwołań wymaga jeszcze decyzji prawników."
+    },
+    "exists": {
+      "title": "Co istnieje dziś",
+      "accounts": {
+        "link": "Użytkownicy",
+        "body": "Zawieszenie konta lub wylogowanie go wszędzie (wymaga uprawnień do kont)."
+      },
+      "sponsors": {
+        "link": "Zgłoszenia sponsorów",
+        "body": "Zawieszenie organizacji sponsora. To weryfikacja biznesowa, nie moderacja."
+      },
+      "gyms": {
+        "title": "Weryfikacja klubów",
+        "body": "Osobna weryfikacja biznesowa, nie moderacja. Nie ma jej jeszcze w panelu sterowania."
+      }
+    },
+    "needs": {
+      "title": "Potrzebne przed zbudowaniem moderacji",
+      "intake": "Co i kto może zgłaszać",
+      "reasons": "Powody zgłoszeń i jakie dowody są przechowywane",
+      "hiding": "Co oznacza ukrycie każdego rodzaju treści i gdzie jest egzekwowane",
+      "notice": "Jak powiadamiać ludzi i jak mogą się odwołać (wymaga prawników)",
+      "permissions": "Osobne uprawnienia do przeglądania i działań moderacji"
+    }
   }
 }

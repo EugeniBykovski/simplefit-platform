@@ -936,5 +936,45 @@
         "note": "Cada descarga es un enlace de 5 minutos, registrado antes de emitirse. Los documentos los subió la persona solicitante: no se comprueba su autenticidad ni si contienen malware."
       }
     }
+  },
+  "trustSafety": {
+    "breadcrumb": "Panel de control / Confianza y seguridad",
+    "pill": "No disponible",
+    "notState": "No es una cola vacía, un permiso que falta ni un error: la función aún no existe.",
+    "moderation": {
+      "metaTitle": "Moderación · Panel de control",
+      "title": "Moderación",
+      "heading": "La moderación aún no forma parte del panel de control",
+      "body": "No hay nada que revisar. SimpleFit no tiene denuncias, publicaciones, comentarios, mensajes ni medios públicos, así que ningún contenido se puede denunciar, revisar ni ocultar. Aquí no aparece ninguna denuncia porque no existe ninguna."
+    },
+    "enforcement": {
+      "metaTitle": "Sanciones · Panel de control",
+      "title": "Sanciones",
+      "heading": "Las sanciones y apelaciones aún no forman parte del panel de control",
+      "body": "No existen casos, avisos ni apelaciones. Una suspensión de cuenta no se puede apelar aquí: cómo se informa a las personas y cómo apelan aún necesita asesoría legal."
+    },
+    "exists": {
+      "title": "Lo que existe hoy",
+      "accounts": {
+        "link": "Usuarios",
+        "body": "Suspender una cuenta o cerrar todas sus sesiones (requiere permisos de cuentas)."
+      },
+      "sponsors": {
+        "link": "Solicitudes de patrocinio",
+        "body": "Suspender una organización patrocinadora. Es una revisión de negocio, no moderación."
+      },
+      "gyms": {
+        "title": "Verificación de gimnasios",
+        "body": "Una revisión de negocio aparte, no moderación. Aún no forma parte del panel de control."
+      }
+    },
+    "needs": {
+      "title": "Necesario antes de construir la moderación",
+      "intake": "Qué se puede denunciar y quién",
+      "reasons": "Motivos de denuncia y qué pruebas se guardan",
+      "hiding": "Qué significa ocultar cada tipo de contenido y dónde se aplica",
+      "notice": "Cómo se informa a las personas y cómo apelan (requiere asesoría legal)",
+      "permissions": "Permisos de moderación separados para leer y actuar"
+    }
   }
 }

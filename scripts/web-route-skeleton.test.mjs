@@ -104,6 +104,9 @@ const REAL_SCREENS = [
   // SF-124: AS1 and AS2, the sponsor application queue and one application's review.
   "web.admin.sponsors",
   "web.admin.sponsors._sponsor-id",
+  // SF-125: AD4 and AD11, truthful "not available" screens (no reports or enforcement domain).
+  "web.admin.moderation",
+  "web.admin.enforcement",
   "web.admin.login",
   "web.admin.welcome",
   // SF-118: SPX9 settings, the organization's application, and SPE1's

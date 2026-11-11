@@ -7252,7 +7252,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(admin)/admin/moderation/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-125: AD4 is FUTURE. A truthful 'not available' screen (no API call, no data): SimpleFit has no reports, user-generated or public content, enforcement cases or appeals to review (simplefit-api D-SA32). It points to the real, separate controls: account suspension (Users) and sponsor organization suspension. Design deviations: docs/admin-design/sf-125-design-register.md."
       },
       "screens": ["AD4"]
     },
@@ -7277,7 +7277,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/[locale]/(admin)/admin/enforcement/page.tsx",
-        "note": "SF-32: canonical feature placeholder (FeaturePlaceholder) in its shell; the screen is built by its feature ticket."
+        "note": "SF-125: AD11 is FUTURE. A truthful 'not available' screen (no API call, no data): SimpleFit has no reports, user-generated or public content, enforcement cases or appeals to review (simplefit-api D-SA32). It points to the real, separate controls: account suspension (Users) and sponsor organization suspension. Design deviations: docs/admin-design/sf-125-design-register.md."
       },
       "screens": ["AD11"]
     },
