@@ -210,6 +210,12 @@ suspends and restores a real switch through the SF-111 dialog; `fixtures/configu
 consumer (`Gyms.create_member_invitation/4`) from a separate BEAM sharing the database, a second application
 instance. SQL reads results, raises a revision under an open dialog (another writer) and revokes grants.
 
+`control-plane-operators.spec.ts` (SF-129) runs on the same setup (a fresh database each run). The founder
+adds a second operator by exact email through the UI; that operator registers their own keys in a separate browser
+context with its own virtual authenticator. A grant, a removed `operators.manage` (refused on the second
+operator's next request, in the UI and by the API), suspension, reinstatement and revocation run through the
+SF-111 dialogs; SQL only reads results. The API refuses the founder acting on themselves.
+
 `control-plane-overview.spec.ts` (SF-121) runs on the same setup (a fresh database each run) and
 checks every number the overview shows against SQL written from the metric catalog
 (simplefit-api `docs/architecture/admin-overview-metrics.md`).
