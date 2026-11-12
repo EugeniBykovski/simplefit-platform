@@ -71,7 +71,9 @@
   "permissions": {
     "view_organization": "Lire les informations de l’organisation",
     "view_members": "Voir ses membres",
-    "view_contacts": "Voir ses contacts professionnels"
+    "view_contacts": "Voir ses contacts professionnels",
+    "view_partnerships": "Voir ses centres d'intérêt et demandes de partenariat",
+    "manage_partnerships": "Modifier ses centres d'intérêt de partenariat et envoyer des demandes de partenariat"
   },
   "settings": {
     "metaTitle": "Paramètres du portail partenaire",

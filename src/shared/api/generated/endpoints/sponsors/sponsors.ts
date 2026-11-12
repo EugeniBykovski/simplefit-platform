@@ -21,17 +21,28 @@ import type {
 
 import type {
   ConflictResponse,
+  CreateSponsorPartnershipProposalRequest,
   ForbiddenResponse,
   InternalErrorResponse,
   ListSponsorMembersParams,
+  ListSponsorPartnershipProposalsParams,
   NotFoundResponse,
+  RateLimitedResponse,
   SponsorContactListResponse,
   SponsorFirstRunResponse,
   SponsorFirstRunTransitionRequest,
   SponsorMemberListResponse,
   SponsorOrganizationListResponse,
   SponsorOrganizationResponse,
+  SponsorPartnershipOpportunitiesResponse,
+  SponsorPartnershipPolicyResponse,
+  SponsorPartnershipPreferencesResponse,
+  SponsorPartnershipProposalCommandRequest,
+  SponsorPartnershipProposalListResponse,
+  SponsorPartnershipProposalResponse,
   UnauthorizedResponse,
+  UpdateSponsorPartnershipPreferencesRequest,
+  UpdateSponsorPartnershipProposalRequest,
   ValidationErrorResponse
 } from '../../model';
 
@@ -975,6 +986,1237 @@ export function useListSponsorMembers<TData = Awaited<ReturnType<typeof listSpon
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getListSponsorMembersQueryOptions(sponsorId,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getListSponsorPartnershipOpportunitiesUrl = (sponsorId: string,) => {
+
+
+
+
+  return `/api/v1/sponsor-organizations/${sponsorId}/partnership-opportunities`
+}
+
+/**
+ * No opportunity inventory exists and none is invented (D-SA21): the answer is always `unavailable` with reason
+ * `no_inventory`. Any member may read it.
+ *
+ * * `not_found` - the viewer isn't an active member of this organization, or it doesn't exist or is closed, or
+ *   the proposal isn't this organization's (indistinguishable).
+ * @summary Partnership opportunities of a sponsor organization
+ */
+export const listSponsorPartnershipOpportunities = async (sponsorId: string, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorPartnershipOpportunitiesResponse> => {
+
+  return apiFetch<SponsorPartnershipOpportunitiesResponse>(getListSponsorPartnershipOpportunitiesUrl(sponsorId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListSponsorPartnershipOpportunitiesQueryKey = (sponsorId: string,) => {
+    return [
+    `/api/v1/sponsor-organizations/${sponsorId}/partnership-opportunities`
+    ] as const;
+    }
+
+
+export const getListSponsorPartnershipOpportunitiesQueryOptions = <TData = Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(sponsorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListSponsorPartnershipOpportunitiesQueryKey(sponsorId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>> = ({ signal }) => listSponsorPartnershipOpportunities(sponsorId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sponsorId !== null && sponsorId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListSponsorPartnershipOpportunitiesQueryResult = NonNullable<Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>>
+export type ListSponsorPartnershipOpportunitiesQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useListSponsorPartnershipOpportunities<TData = Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>,
+          TError,
+          Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListSponsorPartnershipOpportunities<TData = Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>,
+          TError,
+          Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListSponsorPartnershipOpportunities<TData = Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Partnership opportunities of a sponsor organization
+ */
+
+export function useListSponsorPartnershipOpportunities<TData = Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorPartnershipOpportunities>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getListSponsorPartnershipOpportunitiesQueryOptions(sponsorId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetSponsorPartnershipPreferencesUrl = (sponsorId: string,) => {
+
+
+
+
+  return `/api/v1/sponsor-organizations/${sponsorId}/partnership-preferences`
+}
+
+/**
+ * The organization's current interests, markets and goals (`null` until first saved), beside what its
+ * application last submitted (read-only, never changed). Any member may read them.
+ *
+ * * `not_found` - the viewer isn't an active member of this organization, or it doesn't exist or is closed, or
+ *   the proposal isn't this organization's (indistinguishable).
+ * @summary Partnership preferences of a sponsor organization
+ */
+export const getSponsorPartnershipPreferences = async (sponsorId: string, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorPartnershipPreferencesResponse> => {
+
+  return apiFetch<SponsorPartnershipPreferencesResponse>(getGetSponsorPartnershipPreferencesUrl(sponsorId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSponsorPartnershipPreferencesQueryKey = (sponsorId: string,) => {
+    return [
+    `/api/v1/sponsor-organizations/${sponsorId}/partnership-preferences`
+    ] as const;
+    }
+
+
+export const getGetSponsorPartnershipPreferencesQueryOptions = <TData = Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(sponsorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSponsorPartnershipPreferencesQueryKey(sponsorId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>> = ({ signal }) => getSponsorPartnershipPreferences(sponsorId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sponsorId !== null && sponsorId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSponsorPartnershipPreferencesQueryResult = NonNullable<Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>>
+export type GetSponsorPartnershipPreferencesQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetSponsorPartnershipPreferences<TData = Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>,
+          TError,
+          Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSponsorPartnershipPreferences<TData = Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>,
+          TError,
+          Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSponsorPartnershipPreferences<TData = Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Partnership preferences of a sponsor organization
+ */
+
+export function useGetSponsorPartnershipPreferences<TData = Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipPreferences>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSponsorPartnershipPreferencesQueryOptions(sponsorId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getUpdateSponsorPartnershipPreferencesUrl = (sponsorId: string,) => {
+
+
+
+
+  return `/api/v1/sponsor-organizations/${sponsorId}/partnership-preferences`
+}
+
+/**
+ * Only the sent fields change, each validated now; an invalid save changes nothing. `expected_revision: 0`
+ * creates the preferences; afterwards name the current revision. The application's submitted answers are
+ * never changed.
+ *
+ * Needs the owner or a manager (`manage_partnerships`) of an active organization.
+ * * `forbidden` - a member without that permission.
+ * * `conflict` - `details.organization: "suspended"` (read-only), or as described.
+ * * `revision_conflict` - stale `expected_revision` (`details.current_revision`).
+ * * `rate_limited` - too many writes.
+ * * `not_found` - the viewer isn't an active member of this organization, or it doesn't exist or is closed, or
+ *   the proposal isn't this organization's (indistinguishable).
+ * @summary Save partnership preferences
+ */
+export const updateSponsorPartnershipPreferences = async (sponsorId: string,
+    updateSponsorPartnershipPreferencesRequest: UpdateSponsorPartnershipPreferencesRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorPartnershipPreferencesResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorPartnershipPreferencesResponse>(getUpdateSponsorPartnershipPreferencesUrl(sponsorId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(updateSponsorPartnershipPreferencesRequest)
+  }
+);}
+
+
+
+
+
+export const getUpdateSponsorPartnershipPreferencesQueryKey = (sponsorId: string,
+    updateSponsorPartnershipPreferencesRequest?: BodyType<UpdateSponsorPartnershipPreferencesRequest>,) => {
+    return [
+    'PATCH', `/api/v1/sponsor-organizations/${sponsorId}/partnership-preferences`, updateSponsorPartnershipPreferencesRequest
+    ] as const;
+    }
+
+
+export const getUpdateSponsorPartnershipPreferencesQueryOptions = <TData = Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(sponsorId: string,
+    updateSponsorPartnershipPreferencesRequest: BodyType<UpdateSponsorPartnershipPreferencesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getUpdateSponsorPartnershipPreferencesQueryKey(sponsorId,updateSponsorPartnershipPreferencesRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>> = ({ signal }) => updateSponsorPartnershipPreferences(sponsorId,updateSponsorPartnershipPreferencesRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sponsorId !== null && sponsorId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UpdateSponsorPartnershipPreferencesQueryResult = NonNullable<Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>>
+export type UpdateSponsorPartnershipPreferencesQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useUpdateSponsorPartnershipPreferences<TData = Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    updateSponsorPartnershipPreferencesRequest: BodyType<UpdateSponsorPartnershipPreferencesRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>,
+          TError,
+          Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUpdateSponsorPartnershipPreferences<TData = Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    updateSponsorPartnershipPreferencesRequest: BodyType<UpdateSponsorPartnershipPreferencesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>,
+          TError,
+          Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUpdateSponsorPartnershipPreferences<TData = Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    updateSponsorPartnershipPreferencesRequest: BodyType<UpdateSponsorPartnershipPreferencesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Save partnership preferences
+ */
+
+export function useUpdateSponsorPartnershipPreferences<TData = Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    updateSponsorPartnershipPreferencesRequest: BodyType<UpdateSponsorPartnershipPreferencesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateSponsorPartnershipPreferences>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getUpdateSponsorPartnershipPreferencesQueryOptions(sponsorId,updateSponsorPartnershipPreferencesRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getListSponsorPartnershipProposalsUrl = (sponsorId: string,
+    params?: ListSponsorPartnershipProposalsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/sponsor-organizations/${sponsorId}/partnership-proposals?${stringifiedParams}` : `/api/v1/sponsor-organizations/${sponsorId}/partnership-proposals`
+}
+
+/**
+ * Newest first. `status` filters by one status; `limit` 1..100 (default 50); `cursor` from the previous page.
+ * Any member may read them.
+ *
+ * * `not_found` - the viewer isn't an active member of this organization, or it doesn't exist or is closed, or
+ *   the proposal isn't this organization's (indistinguishable).
+ * * `validation_error` - a bad `status`, `limit` or `cursor`.
+ * @summary Partnership proposals of a sponsor organization
+ */
+export const listSponsorPartnershipProposals = async (sponsorId: string,
+    params?: ListSponsorPartnershipProposalsParams, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorPartnershipProposalListResponse> => {
+
+  return apiFetch<SponsorPartnershipProposalListResponse>(getListSponsorPartnershipProposalsUrl(sponsorId,params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListSponsorPartnershipProposalsQueryKey = (sponsorId: string,
+    params?: ListSponsorPartnershipProposalsParams,) => {
+    return [
+    `/api/v1/sponsor-organizations/${sponsorId}/partnership-proposals`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListSponsorPartnershipProposalsQueryOptions = <TData = Awaited<ReturnType<typeof listSponsorPartnershipProposals>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(sponsorId: string,
+    params?: ListSponsorPartnershipProposalsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorPartnershipProposals>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListSponsorPartnershipProposalsQueryKey(sponsorId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listSponsorPartnershipProposals>>> = ({ signal }) => listSponsorPartnershipProposals(sponsorId,params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sponsorId !== null && sponsorId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listSponsorPartnershipProposals>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListSponsorPartnershipProposalsQueryResult = NonNullable<Awaited<ReturnType<typeof listSponsorPartnershipProposals>>>
+export type ListSponsorPartnershipProposalsQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useListSponsorPartnershipProposals<TData = Awaited<ReturnType<typeof listSponsorPartnershipProposals>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    params: undefined |  ListSponsorPartnershipProposalsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorPartnershipProposals>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listSponsorPartnershipProposals>>,
+          TError,
+          Awaited<ReturnType<typeof listSponsorPartnershipProposals>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListSponsorPartnershipProposals<TData = Awaited<ReturnType<typeof listSponsorPartnershipProposals>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    params?: ListSponsorPartnershipProposalsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorPartnershipProposals>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listSponsorPartnershipProposals>>,
+          TError,
+          Awaited<ReturnType<typeof listSponsorPartnershipProposals>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListSponsorPartnershipProposals<TData = Awaited<ReturnType<typeof listSponsorPartnershipProposals>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    params?: ListSponsorPartnershipProposalsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorPartnershipProposals>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Partnership proposals of a sponsor organization
+ */
+
+export function useListSponsorPartnershipProposals<TData = Awaited<ReturnType<typeof listSponsorPartnershipProposals>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    params?: ListSponsorPartnershipProposalsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorPartnershipProposals>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getListSponsorPartnershipProposalsQueryOptions(sponsorId,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getCreateSponsorPartnershipProposalUrl = (sponsorId: string,) => {
+
+
+
+
+  return `/api/v1/sponsor-organizations/${sponsorId}/partnership-proposals`
+}
+
+/**
+ * A new draft general inquiry (no opportunity: none exists). A repeat with the same `client_request_id` and
+ * answers returns the same draft; the key with other answers is `conflict` (`details.client_request_id:
+ * "reused"`). `conflict` with `details.proposals: "open_limit"` at the open proposal limit. Nonbinding:
+ * creates nothing commercial.
+ *
+ * Needs the owner or a manager (`manage_partnerships`) of an active organization.
+ * * `forbidden` - a member without that permission.
+ * * `conflict` - `details.organization: "suspended"` (read-only), or as described.
+ * * `revision_conflict` - stale `expected_revision` (`details.current_revision`).
+ * * `rate_limited` - too many writes.
+ * * `not_found` - the viewer isn't an active member of this organization, or it doesn't exist or is closed, or
+ *   the proposal isn't this organization's (indistinguishable).
+ * @summary Start a partnership proposal
+ */
+export const createSponsorPartnershipProposal = async (sponsorId: string,
+    createSponsorPartnershipProposalRequest: CreateSponsorPartnershipProposalRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorPartnershipProposalResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorPartnershipProposalResponse>(getCreateSponsorPartnershipProposalUrl(sponsorId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(createSponsorPartnershipProposalRequest)
+  }
+);}
+
+
+
+
+
+export const getCreateSponsorPartnershipProposalQueryKey = (sponsorId: string,
+    createSponsorPartnershipProposalRequest?: BodyType<CreateSponsorPartnershipProposalRequest>,) => {
+    return [
+    'POST', `/api/v1/sponsor-organizations/${sponsorId}/partnership-proposals`, createSponsorPartnershipProposalRequest
+    ] as const;
+    }
+
+
+export const getCreateSponsorPartnershipProposalQueryOptions = <TData = Awaited<ReturnType<typeof createSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(sponsorId: string,
+    createSponsorPartnershipProposalRequest: BodyType<CreateSponsorPartnershipProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getCreateSponsorPartnershipProposalQueryKey(sponsorId,createSponsorPartnershipProposalRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof createSponsorPartnershipProposal>>> = ({ signal }) => createSponsorPartnershipProposal(sponsorId,createSponsorPartnershipProposalRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sponsorId !== null && sponsorId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof createSponsorPartnershipProposal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type CreateSponsorPartnershipProposalQueryResult = NonNullable<Awaited<ReturnType<typeof createSponsorPartnershipProposal>>>
+export type CreateSponsorPartnershipProposalQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useCreateSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof createSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    createSponsorPartnershipProposalRequest: BodyType<CreateSponsorPartnershipProposalRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof createSponsorPartnershipProposal>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof createSponsorPartnershipProposal>>,
+          TError,
+          Awaited<ReturnType<typeof createSponsorPartnershipProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCreateSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof createSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    createSponsorPartnershipProposalRequest: BodyType<CreateSponsorPartnershipProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createSponsorPartnershipProposal>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof createSponsorPartnershipProposal>>,
+          TError,
+          Awaited<ReturnType<typeof createSponsorPartnershipProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useCreateSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof createSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    createSponsorPartnershipProposalRequest: BodyType<CreateSponsorPartnershipProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Start a partnership proposal
+ */
+
+export function useCreateSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof createSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    createSponsorPartnershipProposalRequest: BodyType<CreateSponsorPartnershipProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof createSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getCreateSponsorPartnershipProposalQueryOptions(sponsorId,createSponsorPartnershipProposalRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetSponsorPartnershipProposalUrl = (sponsorId: string,
+    proposalId: string,) => {
+
+
+
+
+  return `/api/v1/sponsor-organizations/${sponsorId}/partnership-proposals/${proposalId}`
+}
+
+/**
+ * The proposal's answers, status, what a submission still needs, the actions open to the viewer (display
+ * only), the open change request, its submissions and status history. Any member may read it.
+ *
+ * * `not_found` - the viewer isn't an active member of this organization, or it doesn't exist or is closed, or
+ *   the proposal isn't this organization's (indistinguishable).
+ * @summary A partnership proposal
+ */
+export const getSponsorPartnershipProposal = async (sponsorId: string,
+    proposalId: string, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorPartnershipProposalResponse> => {
+
+  return apiFetch<SponsorPartnershipProposalResponse>(getGetSponsorPartnershipProposalUrl(sponsorId,proposalId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSponsorPartnershipProposalQueryKey = (sponsorId: string,
+    proposalId: string,) => {
+    return [
+    `/api/v1/sponsor-organizations/${sponsorId}/partnership-proposals/${proposalId}`
+    ] as const;
+    }
+
+
+export const getGetSponsorPartnershipProposalQueryOptions = <TData = Awaited<ReturnType<typeof getSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(sponsorId: string,
+    proposalId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSponsorPartnershipProposalQueryKey(sponsorId,proposalId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSponsorPartnershipProposal>>> = ({ signal }) => getSponsorPartnershipProposal(sponsorId,proposalId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sponsorId !== null && sponsorId !== undefined && proposalId !== null && proposalId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipProposal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSponsorPartnershipProposalQueryResult = NonNullable<Awaited<ReturnType<typeof getSponsorPartnershipProposal>>>
+export type GetSponsorPartnershipProposalQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof getSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipProposal>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSponsorPartnershipProposal>>,
+          TError,
+          Awaited<ReturnType<typeof getSponsorPartnershipProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof getSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipProposal>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSponsorPartnershipProposal>>,
+          TError,
+          Awaited<ReturnType<typeof getSponsorPartnershipProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof getSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary A partnership proposal
+ */
+
+export function useGetSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof getSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSponsorPartnershipProposalQueryOptions(sponsorId,proposalId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getUpdateSponsorPartnershipProposalUrl = (sponsorId: string,
+    proposalId: string,) => {
+
+
+
+
+  return `/api/v1/sponsor-organizations/${sponsorId}/partnership-proposals/${proposalId}`
+}
+
+/**
+ * A draft or a proposal with changes requested. Only the sent answers change; after a change request only
+ * the answers it names (`validation_error` with `not_requested`). `conflict` with `details.proposal:
+ * "not_editable"` in another status.
+ *
+ * Needs the owner or a manager (`manage_partnerships`) of an active organization.
+ * * `forbidden` - a member without that permission.
+ * * `conflict` - `details.organization: "suspended"` (read-only), or as described.
+ * * `revision_conflict` - stale `expected_revision` (`details.current_revision`).
+ * * `rate_limited` - too many writes.
+ * * `not_found` - the viewer isn't an active member of this organization, or it doesn't exist or is closed, or
+ *   the proposal isn't this organization's (indistinguishable).
+ * @summary Save a partnership proposal
+ */
+export const updateSponsorPartnershipProposal = async (sponsorId: string,
+    proposalId: string,
+    updateSponsorPartnershipProposalRequest: UpdateSponsorPartnershipProposalRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorPartnershipProposalResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorPartnershipProposalResponse>(getUpdateSponsorPartnershipProposalUrl(sponsorId,proposalId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(updateSponsorPartnershipProposalRequest)
+  }
+);}
+
+
+
+
+
+export const getUpdateSponsorPartnershipProposalQueryKey = (sponsorId: string,
+    proposalId: string,
+    updateSponsorPartnershipProposalRequest?: BodyType<UpdateSponsorPartnershipProposalRequest>,) => {
+    return [
+    'PATCH', `/api/v1/sponsor-organizations/${sponsorId}/partnership-proposals/${proposalId}`, updateSponsorPartnershipProposalRequest
+    ] as const;
+    }
+
+
+export const getUpdateSponsorPartnershipProposalQueryOptions = <TData = Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(sponsorId: string,
+    proposalId: string,
+    updateSponsorPartnershipProposalRequest: BodyType<UpdateSponsorPartnershipProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getUpdateSponsorPartnershipProposalQueryKey(sponsorId,proposalId,updateSponsorPartnershipProposalRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>> = ({ signal }) => updateSponsorPartnershipProposal(sponsorId,proposalId,updateSponsorPartnershipProposalRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sponsorId !== null && sponsorId !== undefined && proposalId !== null && proposalId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UpdateSponsorPartnershipProposalQueryResult = NonNullable<Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>>
+export type UpdateSponsorPartnershipProposalQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useUpdateSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string,
+    updateSponsorPartnershipProposalRequest: BodyType<UpdateSponsorPartnershipProposalRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>,
+          TError,
+          Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUpdateSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string,
+    updateSponsorPartnershipProposalRequest: BodyType<UpdateSponsorPartnershipProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>,
+          TError,
+          Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUpdateSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string,
+    updateSponsorPartnershipProposalRequest: BodyType<UpdateSponsorPartnershipProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Save a partnership proposal
+ */
+
+export function useUpdateSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string,
+    updateSponsorPartnershipProposalRequest: BodyType<UpdateSponsorPartnershipProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof updateSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getUpdateSponsorPartnershipProposalQueryOptions(sponsorId,proposalId,updateSponsorPartnershipProposalRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getSubmitSponsorPartnershipProposalUrl = (sponsorId: string,
+    proposalId: string,) => {
+
+
+
+
+  return `/api/v1/sponsor-organizations/${sponsorId}/partnership-proposals/${proposalId}/submit`
+}
+
+/**
+ * `draft` or `changes_requested` -> `submitted`, with an immutable snapshot of the answers. A repeat of the
+ * same request answers the same and changes nothing; the key for another request is `conflict`
+ * (`details.client_request_id: "reused"`). `validation_error` naming each missing answer (`required`).
+ * `conflict` with `details.proposal: "not_submittable"` in another status. Nonbinding; no email is sent.
+ *
+ * Needs the owner or a manager (`manage_partnerships`) of an active organization.
+ * * `forbidden` - a member without that permission.
+ * * `conflict` - `details.organization: "suspended"` (read-only), or as described.
+ * * `revision_conflict` - stale `expected_revision` (`details.current_revision`).
+ * * `rate_limited` - too many writes.
+ * * `not_found` - the viewer isn't an active member of this organization, or it doesn't exist or is closed, or
+ *   the proposal isn't this organization's (indistinguishable).
+ * @summary Submit a partnership proposal
+ */
+export const submitSponsorPartnershipProposal = async (sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest: SponsorPartnershipProposalCommandRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorPartnershipProposalResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorPartnershipProposalResponse>(getSubmitSponsorPartnershipProposalUrl(sponsorId,proposalId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sponsorPartnershipProposalCommandRequest)
+  }
+);}
+
+
+
+
+
+export const getSubmitSponsorPartnershipProposalQueryKey = (sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest?: BodyType<SponsorPartnershipProposalCommandRequest>,) => {
+    return [
+    'POST', `/api/v1/sponsor-organizations/${sponsorId}/partnership-proposals/${proposalId}/submit`, sponsorPartnershipProposalCommandRequest
+    ] as const;
+    }
+
+
+export const getSubmitSponsorPartnershipProposalQueryOptions = <TData = Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest: BodyType<SponsorPartnershipProposalCommandRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSubmitSponsorPartnershipProposalQueryKey(sponsorId,proposalId,sponsorPartnershipProposalCommandRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>> = ({ signal }) => submitSponsorPartnershipProposal(sponsorId,proposalId,sponsorPartnershipProposalCommandRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sponsorId !== null && sponsorId !== undefined && proposalId !== null && proposalId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type SubmitSponsorPartnershipProposalQueryResult = NonNullable<Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>>
+export type SubmitSponsorPartnershipProposalQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useSubmitSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest: BodyType<SponsorPartnershipProposalCommandRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>,
+          TError,
+          Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSubmitSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest: BodyType<SponsorPartnershipProposalCommandRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>,
+          TError,
+          Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSubmitSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest: BodyType<SponsorPartnershipProposalCommandRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Submit a partnership proposal
+ */
+
+export function useSubmitSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest: BodyType<SponsorPartnershipProposalCommandRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof submitSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getSubmitSponsorPartnershipProposalQueryOptions(sponsorId,proposalId,sponsorPartnershipProposalCommandRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getWithdrawSponsorPartnershipProposalUrl = (sponsorId: string,
+    proposalId: string,) => {
+
+
+
+
+  return `/api/v1/sponsor-organizations/${sponsorId}/partnership-proposals/${proposalId}/withdraw`
+}
+
+/**
+ * Any open proposal (`draft`, `submitted`, `under_review`, `changes_requested`) -> `withdrawn`, final. A
+ * repeat of the same withdrawal answers the same. `conflict` with `details.proposal: "not_withdrawable"` once
+ * decided or withdrawn.
+ *
+ * Needs the owner or a manager (`manage_partnerships`) of an active organization.
+ * * `forbidden` - a member without that permission.
+ * * `conflict` - `details.organization: "suspended"` (read-only), or as described.
+ * * `revision_conflict` - stale `expected_revision` (`details.current_revision`).
+ * * `rate_limited` - too many writes.
+ * * `not_found` - the viewer isn't an active member of this organization, or it doesn't exist or is closed, or
+ *   the proposal isn't this organization's (indistinguishable).
+ * @summary Withdraw a partnership proposal
+ */
+export const withdrawSponsorPartnershipProposal = async (sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest: SponsorPartnershipProposalCommandRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorPartnershipProposalResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorPartnershipProposalResponse>(getWithdrawSponsorPartnershipProposalUrl(sponsorId,proposalId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(sponsorPartnershipProposalCommandRequest)
+  }
+);}
+
+
+
+
+
+export const getWithdrawSponsorPartnershipProposalQueryKey = (sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest?: BodyType<SponsorPartnershipProposalCommandRequest>,) => {
+    return [
+    'POST', `/api/v1/sponsor-organizations/${sponsorId}/partnership-proposals/${proposalId}/withdraw`, sponsorPartnershipProposalCommandRequest
+    ] as const;
+    }
+
+
+export const getWithdrawSponsorPartnershipProposalQueryOptions = <TData = Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest: BodyType<SponsorPartnershipProposalCommandRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getWithdrawSponsorPartnershipProposalQueryKey(sponsorId,proposalId,sponsorPartnershipProposalCommandRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>> = ({ signal }) => withdrawSponsorPartnershipProposal(sponsorId,proposalId,sponsorPartnershipProposalCommandRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: sponsorId !== null && sponsorId !== undefined && proposalId !== null && proposalId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type WithdrawSponsorPartnershipProposalQueryResult = NonNullable<Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>>
+export type WithdrawSponsorPartnershipProposalQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useWithdrawSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest: BodyType<SponsorPartnershipProposalCommandRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>,
+          TError,
+          Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useWithdrawSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest: BodyType<SponsorPartnershipProposalCommandRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>,
+          TError,
+          Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useWithdrawSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest: BodyType<SponsorPartnershipProposalCommandRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Withdraw a partnership proposal
+ */
+
+export function useWithdrawSponsorPartnershipProposal<TData = Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ sponsorId: string,
+    proposalId: string,
+    sponsorPartnershipProposalCommandRequest: BodyType<SponsorPartnershipProposalCommandRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof withdrawSponsorPartnershipProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getWithdrawSponsorPartnershipProposalQueryOptions(sponsorId,proposalId,sponsorPartnershipProposalCommandRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetSponsorPartnershipPolicyUrl = () => {
+
+
+
+
+  return `/api/v1/sponsor-partnership-policy`
+}
+
+/**
+ * Vocabularies, requiredness, the open proposal limit and the statuses (D-SA37). No budget is collected.
+ * @summary The partnership preferences and proposal policy
+ */
+export const getSponsorPartnershipPolicy = async ( options?: Parameters<typeof apiFetch>[1]): Promise<SponsorPartnershipPolicyResponse> => {
+
+  return apiFetch<SponsorPartnershipPolicyResponse>(getGetSponsorPartnershipPolicyUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSponsorPartnershipPolicyQueryKey = () => {
+    return [
+    `/api/v1/sponsor-partnership-policy`
+    ] as const;
+    }
+
+
+export const getGetSponsorPartnershipPolicyQueryOptions = <TData = Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSponsorPartnershipPolicyQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>> = ({ signal }) => getSponsorPartnershipPolicy({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSponsorPartnershipPolicyQueryResult = NonNullable<Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>>
+export type GetSponsorPartnershipPolicyQueryError = ErrorType<UnauthorizedResponse | InternalErrorResponse>
+
+
+export function useGetSponsorPartnershipPolicy<TData = Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>,
+          TError,
+          Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSponsorPartnershipPolicy<TData = Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>,
+          TError,
+          Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSponsorPartnershipPolicy<TData = Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary The partnership preferences and proposal policy
+ */
+
+export function useGetSponsorPartnershipPolicy<TData = Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorPartnershipPolicy>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSponsorPartnershipPolicyQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

@@ -12,4 +12,6 @@ export const SponsorViewerMembershipPermissionsItem = {
   view_organization: 'view_organization',
   view_members: 'view_members',
   view_contacts: 'view_contacts',
+  view_partnerships: 'view_partnerships',
+  manage_partnerships: 'manage_partnerships',
 } as const;
