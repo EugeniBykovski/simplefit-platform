@@ -1604,5 +1604,236 @@
       "close": "Cerrar",
       "reload": "Leer el estado actual"
     }
+  },
+  "operators": {
+    "metaTitle": "Operadores · Control Plane",
+    "breadcrumb": "Control Plane",
+    "title": "Operadores",
+    "loading": "Cargando operadores…",
+    "refresh": "Actualizar",
+    "intro": "Todas las personas que pueden abrir el Control Plane, cada permiso que tienen y quién lo concedió, cuándo y por qué. Cada cambio requiere un motivo y una verificación reciente con la llave de seguridad, y queda registrado.",
+    "notSupported": "No hay aprobación de dos personas, acceso de emergencia, inicio de sesión único ni solicitudes de acceso. Un gestor de operadores actúa solo, nunca sobre sí mismo, y siempre queda al menos un gestor.",
+    "noManage": "Puedes ver los operadores. Para cambiarlos necesitas operators.manage.",
+    "you": "Tú",
+    "unnamed": "Sin nombre",
+    "unreachable": {
+      "title": "No pudimos cargar los operadores",
+      "body": "No cambió nada. Inténtalo de nuevo en un momento."
+    },
+    "restricted": {
+      "title": "No tienes acceso a la lista de operadores",
+      "body": "Requiere operators.read. Un gestor de operadores puede concedértelo, con un motivo que queda registrado. Tu propia seguridad está más abajo.",
+      "back": "Volver a la vista general"
+    },
+    "status": {
+      "active": "Activo",
+      "pending_enrollment": "Configurando llaves",
+      "suspended": "Suspendido",
+      "revoked": "Revocado"
+    },
+    "inventory": {
+      "title": "Operadores",
+      "count": "{count, plural, one {# operador} other {# operadores}}",
+      "caption": "Operadores, su estado, permisos, llaves de seguridad y última verificación de llave",
+      "columns": {
+        "operator": "Operador",
+        "status": "Estado",
+        "permissions": "Permisos",
+        "keys": "Llaves",
+        "lastActive": "Última verificación",
+        "open": "Detalles"
+      },
+      "keys": "{registered} de {required}",
+      "never": "Nunca",
+      "view": "Detalles de {name}",
+      "viewShort": "Detalles"
+    },
+    "add": {
+      "open": "Añadir un operador",
+      "title": "Añadir un operador",
+      "body": "Una cuenta de SimpleFit existente pasa a ser operador con los permisos que elijas.",
+      "account": "Su cuenta",
+      "accountHint": "Su correo verificado o su ID de usuario exactos. No se busca ni se sugiere nada.",
+      "permissions": "Permisos",
+      "freshKey": "verificación de llave reciente",
+      "note": "Debe registrar sus propias dos llaves de seguridad antes de que funcione nada. No puedes añadirte a ti mismo.",
+      "submit": "Añadir operador",
+      "success": "Añadido. No tendrá nada utilizable hasta que registre sus dos llaves.",
+      "problems": {
+        "not_eligible": "Ninguna cuenta que podamos añadir coincide. Revisa la dirección o el ID exactos. No cambió nada.",
+        "exists": "Esa cuenta ya es operador. No cambió nada.",
+        "self": "No puedes añadirte a ti mismo. No cambió nada.",
+        "invalid": "Revisa la cuenta, los permisos y el motivo. No cambió nada.",
+        "denied": "Ya no tienes permiso para esto. No cambió nada.",
+        "unknown": "No obtuvimos respuesta, así que no sabemos si se añadió. Puedes reintentarlo sin riesgo: no se puede añadir dos veces.",
+        "failed": "No funcionó. No cambió nada. Inténtalo de nuevo."
+      }
+    },
+    "detail": {
+      "ids": "Operador {id} · usuario {user} · desde el {date}",
+      "self": "Eres tú. No puedes cambiar tus propios permisos ni tu estado.",
+      "pending": "Esperando sus llaves de seguridad: {registered} de {required} registradas.",
+      "permissions": "Permisos",
+      "noPermissions": "Ningún permiso activo.",
+      "bootstrap": "De la ceremonia fundacional · {date}",
+      "grantedBy": "Por {name} · {date} · {reason}"
+    },
+    "actions": {
+      "grant": "Conceder un permiso",
+      "suspend": "Suspender",
+      "reinstate": "Restablecer",
+      "revoke": "Revocar operador",
+      "revokePermission": "Revocar",
+      "revokePermissionLabel": "Revocar {permission} a {name}",
+      "smallScreen": "Las acciones de alto riesgo necesitan una pantalla más grande y una llave de seguridad. Aquí puedes consultar."
+    },
+    "history": {
+      "governance": "Cambios en este operador",
+      "recent": "Sus acciones recientes",
+      "noAudit": "Su historial requiere audit.read.",
+      "unavailable": "No pudimos cargar el historial.",
+      "empty": "Aún no hay nada registrado.",
+      "by": "por {name}",
+      "outcome": {
+        "allowed": "Permitido",
+        "refused": "Rechazado",
+        "conflict": "Conflicto",
+        "invalid": "No válido",
+        "failed": "Fallido"
+      },
+      "actions": {
+        "operator_provisioned": "Añadido como operador",
+        "operator_activated": "Llaves registradas, activo",
+        "operator_permission_granted": "Permiso concedido",
+        "operator_permission_revoked": "Permiso revocado",
+        "operator_suspended": "Suspendido",
+        "operator_reinstated": "Restablecido",
+        "operator_revoked": "Revocado",
+        "operator_credential_enrolled": "Llave de seguridad registrada",
+        "operator_credential_revoked": "Llave de seguridad eliminada",
+        "operator_step_up_verified": "Verificación de llave",
+        "operator_step_up_ended": "Verificación de llave terminada",
+        "operator_viewed": "Consultó un operador",
+        "operator_access_refused": "Acceso rechazado",
+        "operator_security_key_rejected": "Llave de seguridad rechazada",
+        "operator_provision": "Añadir operador",
+        "operator_permission_grant": "Conceder permiso",
+        "operator_permission_revoke": "Revocar permiso",
+        "operator_suspend": "Suspender",
+        "operator_reinstate": "Restablecer",
+        "operator_revoke": "Revocar operador",
+        "operator_revoke_credential": "Eliminar llave de seguridad"
+      }
+    },
+    "dialog": {
+      "risk": "Acceso de operador",
+      "needs": "Requiere {permission} y una verificación reciente con la llave de seguridad",
+      "titles": {
+        "grant": "Conceder un permiso a {name}",
+        "revoke_permission": "Revocar {permission} a {name}",
+        "suspend": "Suspender a {name}",
+        "reinstate": "Restablecer a {name}",
+        "revoke": "Revocar el acceso de operador de {name}"
+      },
+      "target": "Operador {id} · revisión {revision}",
+      "current": "Ahora",
+      "proposed": "Después",
+      "permission": "Permiso",
+      "permissionPlaceholder": "Elige un permiso",
+      "impact": "Qué pasa",
+      "reason": "Motivo",
+      "reasonPlaceholder": "Elige un motivo",
+      "preview": "Revisar",
+      "stepUp": "Esto requiere una verificación reciente con la llave de seguridad. Usa tu llave y vuelve a revisar.",
+      "useKey": "Usar llave de seguridad",
+      "working": "Procesando…",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "reload": "Cerrar y recargar",
+      "confirm": {
+        "grant": "Conceder permiso",
+        "revoke_permission": "Revocar permiso",
+        "suspend": "Suspender operador",
+        "reinstate": "Restablecer operador",
+        "revoke": "Revocar operador"
+      },
+      "success": {
+        "grant": "Concedido. Queda registrado con tu motivo.",
+        "revoke_permission": "Revocado. Dejó de funcionar al instante.",
+        "suspend": "Suspendido. Su acceso y sus verificaciones de llave terminaron.",
+        "reinstate": "Restablecido.",
+        "revoke": "Revocado. No se puede deshacer."
+      },
+      "problems": {
+        "conflict": "Otra persona cambió este operador antes. No cambió nada. Recarga y vuelve a revisarlo.",
+        "self": "No puedes hacerte esto a ti mismo. No cambió nada.",
+        "invalid": "Esta confirmación ya no es válida. No cambió nada. Recarga y vuelve a revisar.",
+        "unknown": "No obtuvimos respuesta, así que no sabemos si funcionó. Recarga para ver el estado actual.",
+        "failed": "No funcionó. No cambió nada. Inténtalo de nuevo.",
+        "denied": "Ya no tienes permiso para esto. No cambió nada."
+      },
+      "states": {
+        "active": "Activo",
+        "pending_enrollment": "Configurando llaves",
+        "suspended": "Suspendido",
+        "revoked": "Revocado",
+        "granted": "Concedido",
+        "absent": "No concedido"
+      },
+      "impacts": {
+        "permission_granted": "Se añade el permiso, registrado con tu motivo.",
+        "effective_now": "Funciona desde su próxima petición.",
+        "permission_revoked": "El permiso deja de funcionar al instante.",
+        "access_blocked": "No puede abrir el Control Plane.",
+        "key_checks_ended": "Sus verificaciones de llave actuales terminan ahora.",
+        "access_restored": "Su acceso y sus permisos vuelven a funcionar.",
+        "security_keys_required": "Debe volver a registrar llaves de seguridad antes de que funcione nada.",
+        "permissions_revoked": "Se eliminan todos sus permisos.",
+        "security_keys_revoked": "Se eliminan todas las llaves de seguridad que registró.",
+        "irreversible": "No se puede deshacer. Si se vuelve a añadir, empieza desde cero."
+      },
+      "reasons": {
+        "access_request_approved": "Solicitud de acceso aprobada",
+        "administrative_correction": "Corrección administrativa",
+        "role_change": "Cambio de rol",
+        "least_privilege_review": "Revisión de mínimo privilegio",
+        "security_concern": "Problema de seguridad",
+        "leave_of_absence": "Ausencia temporal",
+        "policy_violation": "Incumplimiento de la política",
+        "suspected_compromise": "Sospecha de compromiso",
+        "returned_from_leave": "Regreso de una ausencia",
+        "security_review_cleared": "Revisión de seguridad superada",
+        "left_organization": "Dejó la organización"
+      }
+    },
+    "security": {
+      "title": "Tu seguridad",
+      "keyCheck": "Llave verificada · {minutes, plural, one {# min restante} other {# min restantes}}",
+      "noKeyCheck": "Sin verificación de llave",
+      "keys": "Tus llaves de seguridad",
+      "keysUnavailable": "No pudimos cargar tus llaves.",
+      "first": "Primera llave",
+      "backup": "Llave de respaldo",
+      "added": "añadida el {date}",
+      "lastUsed": "último uso {time}",
+      "neverUsed": "nunca usada",
+      "remove": "Eliminar",
+      "removeLabel": "Eliminar la llave {label}",
+      "confirmRemove": "Eliminar {label} ahora",
+      "rules": "Necesitas al menos {required} llaves. No puedes eliminar las últimas: añade antes una de reemplazo.",
+      "newKeyLabel": "Nombre de la nueva llave",
+      "addKey": "Añadir una llave",
+      "permissions": "Tus permisos",
+      "selfRules": "No puedes concederte nada ni cambiar tu propio estado. Otro gestor de operadores sí puede.",
+      "endKeyCheck": "Terminar la verificación de llave ahora",
+      "notes": {
+        "added": "Llave añadida.",
+        "removed": "Llave eliminada.",
+        "ended": "Verificación de llave terminada.",
+        "minimum": "Quedarían menos llaves de las necesarias. Añade antes una de reemplazo. No cambió nada.",
+        "keyFailed": "No se añadió la llave. No cambió nada.",
+        "failed": "No funcionó. No cambió nada. Inténtalo de nuevo."
+      }
+    }
   }
 }

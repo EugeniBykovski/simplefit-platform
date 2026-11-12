@@ -1604,5 +1604,236 @@
       "close": "Schließen",
       "reload": "Aktuellen Stand lesen"
     }
+  },
+  "operators": {
+    "metaTitle": "Operatoren · Control Plane",
+    "breadcrumb": "Control Plane",
+    "title": "Operatoren",
+    "loading": "Operatoren werden geladen…",
+    "refresh": "Aktualisieren",
+    "intro": "Alle, die die Control Plane öffnen können, jede ihrer Berechtigungen und wer sie wann und warum erteilt hat. Jede Änderung braucht eine Begründung und eine frische Prüfung mit dem Sicherheitsschlüssel und wird protokolliert.",
+    "notSupported": "Vier-Augen-Freigabe, Notfallzugang, Single Sign-on und Zugriffsanfragen gibt es nicht. Ein Operator-Manager handelt allein, nie an sich selbst, und der letzte Manager bleibt immer bestehen.",
+    "noManage": "Du kannst Operatoren sehen. Für Änderungen brauchst du operators.manage.",
+    "you": "Du",
+    "unnamed": "Kein Name",
+    "unreachable": {
+      "title": "Wir konnten die Operatoren nicht laden",
+      "body": "Nichts hat sich geändert. Versuch es gleich noch einmal."
+    },
+    "restricted": {
+      "title": "Du hast keinen Zugriff auf die Operatorliste",
+      "body": "Dafür brauchst du operators.read. Ein Operator-Manager kann sie dir erteilen, mit einer Begründung, die protokolliert wird. Deine eigene Sicherheit siehst du unten.",
+      "back": "Zurück zur Übersicht"
+    },
+    "status": {
+      "active": "Aktiv",
+      "pending_enrollment": "Schlüssel werden eingerichtet",
+      "suspended": "Gesperrt",
+      "revoked": "Zugang entzogen"
+    },
+    "inventory": {
+      "title": "Operatoren",
+      "count": "{count, plural, one {# Operator} other {# Operatoren}}",
+      "caption": "Operatoren mit Status, Berechtigungen, Sicherheitsschlüsseln und letzter Schlüsselprüfung",
+      "columns": {
+        "operator": "Operator",
+        "status": "Status",
+        "permissions": "Berechtigungen",
+        "keys": "Schlüssel",
+        "lastActive": "Letzte Schlüsselprüfung",
+        "open": "Details"
+      },
+      "keys": "{registered} von {required}",
+      "never": "Nie",
+      "view": "Details zu {name}",
+      "viewShort": "Details"
+    },
+    "add": {
+      "open": "Operator hinzufügen",
+      "title": "Operator hinzufügen",
+      "body": "Ein bestehendes SimpleFit-Konto wird Operator mit den Berechtigungen, die du wählst.",
+      "account": "Ihr Konto",
+      "accountHint": "Die exakte bestätigte E-Mail-Adresse oder Nutzer-ID. Es wird nichts gesucht oder vorgeschlagen.",
+      "permissions": "Berechtigungen",
+      "freshKey": "frische Schlüsselprüfung",
+      "note": "Die Person muss erst ihre eigenen zwei Sicherheitsschlüssel registrieren, bevor etwas funktioniert. Du kannst dich nicht selbst hinzufügen.",
+      "submit": "Operator hinzufügen",
+      "success": "Hinzugefügt. Nutzbar ist erst etwas, wenn die Person ihre zwei Schlüssel registriert hat.",
+      "problems": {
+        "not_eligible": "Dazu passt kein Konto, das wir hinzufügen können. Prüfe die exakte Adresse oder ID. Nichts hat sich geändert.",
+        "exists": "Dieses Konto ist bereits Operator. Nichts hat sich geändert.",
+        "self": "Du kannst dich nicht selbst hinzufügen. Nichts hat sich geändert.",
+        "invalid": "Prüfe Konto, Berechtigungen und Begründung. Nichts hat sich geändert.",
+        "denied": "Du hast dafür keine Berechtigung mehr. Nichts hat sich geändert.",
+        "unknown": "Wir haben keine Antwort erhalten und wissen daher nicht, ob die Person hinzugefügt wurde. Erneut versuchen ist sicher: Sie kann nicht doppelt hinzugefügt werden.",
+        "failed": "Das hat nicht funktioniert. Nichts hat sich geändert. Versuch es noch einmal."
+      }
+    },
+    "detail": {
+      "ids": "Operator {id} · Nutzer {user} · seit {date}",
+      "self": "Das bist du. Deine eigenen Berechtigungen und deinen Status kannst du nicht ändern.",
+      "pending": "Warten auf die Sicherheitsschlüssel: {registered} von {required} registriert.",
+      "permissions": "Berechtigungen",
+      "noPermissions": "Keine aktiven Berechtigungen.",
+      "bootstrap": "Aus der Gründungszeremonie · {date}",
+      "grantedBy": "Von {name} · {date} · {reason}"
+    },
+    "actions": {
+      "grant": "Berechtigung erteilen",
+      "suspend": "Sperren",
+      "reinstate": "Reaktivieren",
+      "revoke": "Operator-Zugang entziehen",
+      "revokePermission": "Entziehen",
+      "revokePermissionLabel": "{permission} für {name} entziehen",
+      "smallScreen": "Aktionen mit hohem Risiko brauchen einen größeren Bildschirm und einen Sicherheitsschlüssel. Lesen funktioniert auch hier."
+    },
+    "history": {
+      "governance": "Änderungen an diesem Operator",
+      "recent": "Letzte Aktionen dieser Person",
+      "noAudit": "Für den Verlauf brauchst du audit.read.",
+      "unavailable": "Wir konnten den Verlauf nicht laden.",
+      "empty": "Noch nichts protokolliert.",
+      "by": "von {name}",
+      "outcome": {
+        "allowed": "Erlaubt",
+        "refused": "Abgelehnt",
+        "conflict": "Konflikt",
+        "invalid": "Ungültig",
+        "failed": "Fehlgeschlagen"
+      },
+      "actions": {
+        "operator_provisioned": "Als Operator hinzugefügt",
+        "operator_activated": "Schlüssel registriert, aktiv",
+        "operator_permission_granted": "Berechtigung erteilt",
+        "operator_permission_revoked": "Berechtigung entzogen",
+        "operator_suspended": "Gesperrt",
+        "operator_reinstated": "Reaktiviert",
+        "operator_revoked": "Zugang entzogen",
+        "operator_credential_enrolled": "Sicherheitsschlüssel registriert",
+        "operator_credential_revoked": "Sicherheitsschlüssel entfernt",
+        "operator_step_up_verified": "Schlüsselprüfung",
+        "operator_step_up_ended": "Schlüsselprüfung beendet",
+        "operator_viewed": "Operator angesehen",
+        "operator_access_refused": "Zugriff verweigert",
+        "operator_security_key_rejected": "Sicherheitsschlüssel abgelehnt",
+        "operator_provision": "Operator hinzufügen",
+        "operator_permission_grant": "Berechtigung erteilen",
+        "operator_permission_revoke": "Berechtigung entziehen",
+        "operator_suspend": "Sperren",
+        "operator_reinstate": "Reaktivieren",
+        "operator_revoke": "Operator-Zugang entziehen",
+        "operator_revoke_credential": "Sicherheitsschlüssel entfernen"
+      }
+    },
+    "dialog": {
+      "risk": "Operator-Zugang",
+      "needs": "Erfordert {permission} und eine frische Prüfung mit dem Sicherheitsschlüssel",
+      "titles": {
+        "grant": "{name} eine Berechtigung erteilen",
+        "revoke_permission": "{permission} für {name} entziehen",
+        "suspend": "{name} sperren",
+        "reinstate": "{name} reaktivieren",
+        "revoke": "{name} den Operator-Zugang entziehen"
+      },
+      "target": "Operator {id} · Revision {revision}",
+      "current": "Jetzt",
+      "proposed": "Danach",
+      "permission": "Berechtigung",
+      "permissionPlaceholder": "Berechtigung wählen",
+      "impact": "Was passiert",
+      "reason": "Begründung",
+      "reasonPlaceholder": "Begründung wählen",
+      "preview": "Prüfen",
+      "stepUp": "Dafür brauchst du eine frische Prüfung mit dem Sicherheitsschlüssel. Nutze deinen Schlüssel und prüfe dann erneut.",
+      "useKey": "Sicherheitsschlüssel verwenden",
+      "working": "Wird ausgeführt…",
+      "cancel": "Abbrechen",
+      "close": "Schließen",
+      "reload": "Schließen und neu laden",
+      "confirm": {
+        "grant": "Berechtigung erteilen",
+        "revoke_permission": "Berechtigung entziehen",
+        "suspend": "Operator sperren",
+        "reinstate": "Operator reaktivieren",
+        "revoke": "Operator-Zugang entziehen"
+      },
+      "success": {
+        "grant": "Erteilt. Mit deiner Begründung protokolliert.",
+        "revoke_permission": "Entzogen. Die Berechtigung wirkt ab sofort nicht mehr.",
+        "suspend": "Gesperrt. Zugang und Schlüsselprüfungen der Person wurden beendet.",
+        "reinstate": "Reaktiviert.",
+        "revoke": "Zugang entzogen. Das lässt sich nicht rückgängig machen."
+      },
+      "problems": {
+        "conflict": "Jemand anderes hat diesen Operator zuerst geändert. Nichts hat sich geändert. Lade neu und sieh es dir noch einmal an.",
+        "self": "Das kannst du nicht bei dir selbst tun. Nichts hat sich geändert.",
+        "invalid": "Diese Bestätigung ist nicht mehr gültig. Nichts hat sich geändert. Lade neu und prüfe erneut.",
+        "unknown": "Wir haben keine Antwort erhalten und wissen daher nicht, ob es funktioniert hat. Lade neu, um den aktuellen Stand zu sehen.",
+        "failed": "Das hat nicht funktioniert. Nichts hat sich geändert. Versuch es noch einmal.",
+        "denied": "Du hast dafür keine Berechtigung mehr. Nichts hat sich geändert."
+      },
+      "states": {
+        "active": "Aktiv",
+        "pending_enrollment": "Schlüssel werden eingerichtet",
+        "suspended": "Gesperrt",
+        "revoked": "Zugang entzogen",
+        "granted": "Erteilt",
+        "absent": "Nicht erteilt"
+      },
+      "impacts": {
+        "permission_granted": "Die Berechtigung wird hinzugefügt und mit deiner Begründung protokolliert.",
+        "effective_now": "Sie gilt ab der nächsten Anfrage der Person.",
+        "permission_revoked": "Die Berechtigung wirkt ab sofort nicht mehr.",
+        "access_blocked": "Die Person kann die Control Plane nicht öffnen.",
+        "key_checks_ended": "Ihre laufenden Schlüsselprüfungen enden jetzt.",
+        "access_restored": "Ihr Zugang und ihre Berechtigungen funktionieren wieder.",
+        "security_keys_required": "Sie muss erneut Sicherheitsschlüssel registrieren, bevor etwas funktioniert.",
+        "permissions_revoked": "Alle ihre Berechtigungen werden entzogen.",
+        "security_keys_revoked": "Alle von ihr registrierten Sicherheitsschlüssel werden entfernt.",
+        "irreversible": "Das lässt sich nicht rückgängig machen. Ein erneutes Hinzufügen beginnt bei null."
+      },
+      "reasons": {
+        "access_request_approved": "Zugriffsanfrage genehmigt",
+        "administrative_correction": "Administrative Korrektur",
+        "role_change": "Rollenwechsel",
+        "least_privilege_review": "Prüfung nach Least-Privilege-Prinzip",
+        "security_concern": "Sicherheitsbedenken",
+        "leave_of_absence": "Abwesenheit",
+        "policy_violation": "Richtlinienverstoß",
+        "suspected_compromise": "Verdacht auf Kompromittierung",
+        "returned_from_leave": "Aus Abwesenheit zurück",
+        "security_review_cleared": "Sicherheitsprüfung ohne Befund",
+        "left_organization": "Organisation verlassen"
+      }
+    },
+    "security": {
+      "title": "Deine Sicherheit",
+      "keyCheck": "Schlüssel geprüft · noch {minutes, plural, one {# Min.} other {# Min.}}",
+      "noKeyCheck": "Keine Schlüsselprüfung",
+      "keys": "Deine Sicherheitsschlüssel",
+      "keysUnavailable": "Wir konnten deine Schlüssel nicht laden.",
+      "first": "Erster Schlüssel",
+      "backup": "Reserveschlüssel",
+      "added": "hinzugefügt am {date}",
+      "lastUsed": "zuletzt verwendet {time}",
+      "neverUsed": "nie verwendet",
+      "remove": "Entfernen",
+      "removeLabel": "Schlüssel {label} entfernen",
+      "confirmRemove": "{label} jetzt entfernen",
+      "rules": "Du brauchst mindestens {required} Schlüssel. Deine letzten kannst du nicht entfernen: Füge zuerst einen Ersatz hinzu.",
+      "newKeyLabel": "Name für einen neuen Schlüssel",
+      "addKey": "Schlüssel hinzufügen",
+      "permissions": "Deine Berechtigungen",
+      "selfRules": "Du kannst dir selbst nichts erteilen und deinen eigenen Status nicht ändern. Das kann ein anderer Operator-Manager.",
+      "endKeyCheck": "Schlüsselprüfung jetzt beenden",
+      "notes": {
+        "added": "Schlüssel hinzugefügt.",
+        "removed": "Schlüssel entfernt.",
+        "ended": "Schlüsselprüfung beendet.",
+        "minimum": "Dann blieben weniger Schlüssel als erforderlich. Füge zuerst einen Ersatz hinzu. Nichts hat sich geändert.",
+        "keyFailed": "Der Schlüssel wurde nicht hinzugefügt. Nichts hat sich geändert.",
+        "failed": "Das hat nicht funktioniert. Nichts hat sich geändert. Versuch es noch einmal."
+      }
+    }
   }
 }

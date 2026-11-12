@@ -1604,5 +1604,236 @@
       "close": "Fermer",
       "reload": "Lire l’état actuel"
     }
+  },
+  "operators": {
+    "metaTitle": "Opérateurs · Control Plane",
+    "breadcrumb": "Control Plane",
+    "title": "Opérateurs",
+    "loading": "Chargement des opérateurs…",
+    "refresh": "Actualiser",
+    "intro": "Toutes les personnes qui peuvent ouvrir la Control Plane, chaque autorisation qu’elles détiennent, et qui l’a accordée, quand et pourquoi. Chaque modification exige un motif et une nouvelle vérification par clé de sécurité, et elle est enregistrée.",
+    "notSupported": "L’approbation à deux personnes, l’accès d’urgence, l’authentification unique et les demandes d’accès ne sont pas disponibles. Un responsable des opérateurs agit seul, jamais sur lui-même, et le dernier responsable reste toujours en place.",
+    "noManage": "Vous pouvez voir les opérateurs. Pour les modifier, il faut operators.manage.",
+    "you": "Vous",
+    "unnamed": "Sans nom",
+    "unreachable": {
+      "title": "Impossible de charger les opérateurs",
+      "body": "Rien n’a changé. Réessayez dans un instant."
+    },
+    "restricted": {
+      "title": "Vous n’avez pas accès à la liste des opérateurs",
+      "body": "Elle nécessite operators.read. Un responsable des opérateurs peut vous l’accorder, avec un motif qui est enregistré. Votre propre sécurité figure ci-dessous.",
+      "back": "Retour à la vue d’ensemble"
+    },
+    "status": {
+      "active": "Actif",
+      "pending_enrollment": "Configuration des clés",
+      "suspended": "Suspendu",
+      "revoked": "Révoqué"
+    },
+    "inventory": {
+      "title": "Opérateurs",
+      "count": "{count, plural, one {# opérateur} other {# opérateurs}}",
+      "caption": "Opérateurs, avec leur statut, leurs autorisations, leurs clés de sécurité et leur dernière vérification de clé",
+      "columns": {
+        "operator": "Opérateur",
+        "status": "Statut",
+        "permissions": "Autorisations",
+        "keys": "Clés",
+        "lastActive": "Dernière vérification",
+        "open": "Détails"
+      },
+      "keys": "{registered} sur {required}",
+      "never": "Jamais",
+      "view": "Détails de {name}",
+      "viewShort": "Détails"
+    },
+    "add": {
+      "open": "Ajouter un opérateur",
+      "title": "Ajouter un opérateur",
+      "body": "Un compte SimpleFit existant devient opérateur avec les autorisations que vous choisissez.",
+      "account": "Son compte",
+      "accountHint": "Son adresse e-mail vérifiée ou son ID utilisateur exact. Rien n’est recherché ni suggéré.",
+      "permissions": "Autorisations",
+      "freshKey": "nouvelle vérification de clé",
+      "note": "La personne doit enregistrer ses deux propres clés de sécurité avant que quoi que ce soit fonctionne. Vous ne pouvez pas vous ajouter vous-même.",
+      "submit": "Ajouter l’opérateur",
+      "success": "Ajouté. Aucune autorisation n’est utilisable avant l’enregistrement de ses deux clés.",
+      "problems": {
+        "not_eligible": "Aucun compte pouvant être ajouté ne correspond. Vérifiez l’adresse ou l’ID exact. Rien n’a changé.",
+        "exists": "Ce compte est déjà opérateur. Rien n’a changé.",
+        "self": "Vous ne pouvez pas vous ajouter vous-même. Rien n’a changé.",
+        "invalid": "Vérifiez le compte, les autorisations et le motif. Rien n’a changé.",
+        "denied": "Vous n’avez plus l’autorisation pour cela. Rien n’a changé.",
+        "unknown": "Nous n’avons pas reçu de réponse : nous ne savons pas si l’ajout a abouti. Vous pouvez réessayer sans risque : il ne peut pas être ajouté deux fois.",
+        "failed": "Cela n’a pas fonctionné. Rien n’a changé. Réessayez."
+      }
+    },
+    "detail": {
+      "ids": "Opérateur {id} · utilisateur {user} · depuis le {date}",
+      "self": "C’est vous. Vous ne pouvez pas modifier vos propres autorisations ni votre statut.",
+      "pending": "En attente de ses clés de sécurité : {registered} sur {required} enregistrées.",
+      "permissions": "Autorisations",
+      "noPermissions": "Aucune autorisation active.",
+      "bootstrap": "Issue de la cérémonie fondatrice · {date}",
+      "grantedBy": "Par {name} · {date} · {reason}"
+    },
+    "actions": {
+      "grant": "Accorder une autorisation",
+      "suspend": "Suspendre",
+      "reinstate": "Rétablir",
+      "revoke": "Révoquer l’opérateur",
+      "revokePermission": "Révoquer",
+      "revokePermissionLabel": "Révoquer {permission} pour {name}",
+      "smallScreen": "Les actions à haut risque nécessitent un écran plus grand et une clé de sécurité. La consultation fonctionne ici."
+    },
+    "history": {
+      "governance": "Modifications de cet opérateur",
+      "recent": "Ses actions récentes",
+      "noAudit": "Son historique nécessite audit.read.",
+      "unavailable": "Impossible de charger l’historique.",
+      "empty": "Rien n’a encore été enregistré.",
+      "by": "par {name}",
+      "outcome": {
+        "allowed": "Autorisé",
+        "refused": "Refusé",
+        "conflict": "Conflit",
+        "invalid": "Invalide",
+        "failed": "Échec"
+      },
+      "actions": {
+        "operator_provisioned": "Ajouté comme opérateur",
+        "operator_activated": "Clés enregistrées, actif",
+        "operator_permission_granted": "Autorisation accordée",
+        "operator_permission_revoked": "Autorisation révoquée",
+        "operator_suspended": "Suspendu",
+        "operator_reinstated": "Rétabli",
+        "operator_revoked": "Révoqué",
+        "operator_credential_enrolled": "Clé de sécurité enregistrée",
+        "operator_credential_revoked": "Clé de sécurité supprimée",
+        "operator_step_up_verified": "Vérification de clé",
+        "operator_step_up_ended": "Vérification de clé terminée",
+        "operator_viewed": "A consulté un opérateur",
+        "operator_access_refused": "Accès refusé",
+        "operator_security_key_rejected": "Clé de sécurité rejetée",
+        "operator_provision": "Ajouter un opérateur",
+        "operator_permission_grant": "Accorder une autorisation",
+        "operator_permission_revoke": "Révoquer une autorisation",
+        "operator_suspend": "Suspendre",
+        "operator_reinstate": "Rétablir",
+        "operator_revoke": "Révoquer l’opérateur",
+        "operator_revoke_credential": "Supprimer une clé de sécurité"
+      }
+    },
+    "dialog": {
+      "risk": "Accès opérateur",
+      "needs": "Nécessite {permission} et une nouvelle vérification par clé de sécurité",
+      "titles": {
+        "grant": "Accorder une autorisation à {name}",
+        "revoke_permission": "Révoquer {permission} pour {name}",
+        "suspend": "Suspendre {name}",
+        "reinstate": "Rétablir {name}",
+        "revoke": "Révoquer l’accès opérateur de {name}"
+      },
+      "target": "Opérateur {id} · révision {revision}",
+      "current": "Maintenant",
+      "proposed": "Après",
+      "permission": "Autorisation",
+      "permissionPlaceholder": "Choisissez une autorisation",
+      "impact": "Ce qui se passe",
+      "reason": "Motif",
+      "reasonPlaceholder": "Choisissez un motif",
+      "preview": "Vérifier",
+      "stepUp": "Une nouvelle vérification par clé de sécurité est nécessaire. Utilisez votre clé, puis vérifiez à nouveau.",
+      "useKey": "Utiliser la clé de sécurité",
+      "working": "Traitement…",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "reload": "Fermer et recharger",
+      "confirm": {
+        "grant": "Accorder l’autorisation",
+        "revoke_permission": "Révoquer l’autorisation",
+        "suspend": "Suspendre l’opérateur",
+        "reinstate": "Rétablir l’opérateur",
+        "revoke": "Révoquer l’opérateur"
+      },
+      "success": {
+        "grant": "Accordée. C’est enregistré avec votre motif.",
+        "revoke_permission": "Révoquée. Elle a cessé de fonctionner immédiatement.",
+        "suspend": "Suspendu. Son accès et ses vérifications de clé ont pris fin.",
+        "reinstate": "Rétabli.",
+        "revoke": "Révoqué. C’est irréversible."
+      },
+      "problems": {
+        "conflict": "Quelqu’un d’autre a modifié cet opérateur avant vous. Rien n’a changé. Rechargez et vérifiez à nouveau.",
+        "self": "Vous ne pouvez pas faire cela sur vous-même. Rien n’a changé.",
+        "invalid": "Cette confirmation n’est plus valide. Rien n’a changé. Rechargez et vérifiez à nouveau.",
+        "unknown": "Nous n’avons pas reçu de réponse : nous ne savons pas si l’action a abouti. Rechargez pour voir l’état actuel.",
+        "failed": "Cela n’a pas fonctionné. Rien n’a changé. Réessayez.",
+        "denied": "Vous n’avez plus l’autorisation pour cela. Rien n’a changé."
+      },
+      "states": {
+        "active": "Actif",
+        "pending_enrollment": "Configuration des clés",
+        "suspended": "Suspendu",
+        "revoked": "Révoqué",
+        "granted": "Accordée",
+        "absent": "Non accordée"
+      },
+      "impacts": {
+        "permission_granted": "L’autorisation est ajoutée et enregistrée avec votre motif.",
+        "effective_now": "Elle s’applique dès sa prochaine requête.",
+        "permission_revoked": "L’autorisation cesse de fonctionner immédiatement.",
+        "access_blocked": "La personne ne peut plus ouvrir la Control Plane.",
+        "key_checks_ended": "Ses vérifications de clé en cours prennent fin maintenant.",
+        "access_restored": "Son accès et ses autorisations fonctionnent à nouveau.",
+        "security_keys_required": "La personne doit enregistrer à nouveau des clés de sécurité avant que quoi que ce soit fonctionne.",
+        "permissions_revoked": "Toutes ses autorisations sont supprimées.",
+        "security_keys_revoked": "Toutes les clés de sécurité qu’elle a enregistrées sont supprimées.",
+        "irreversible": "C’est irréversible. Si elle est ajoutée à nouveau, tout repart de zéro."
+      },
+      "reasons": {
+        "access_request_approved": "Demande d’accès approuvée",
+        "administrative_correction": "Correction administrative",
+        "role_change": "Changement de rôle",
+        "least_privilege_review": "Revue du moindre privilège",
+        "security_concern": "Problème de sécurité",
+        "leave_of_absence": "Absence temporaire",
+        "policy_violation": "Violation des règles",
+        "suspected_compromise": "Compromission suspectée",
+        "returned_from_leave": "Retour d’absence",
+        "security_review_cleared": "Contrôle de sécurité validé",
+        "left_organization": "A quitté l’organisation"
+      }
+    },
+    "security": {
+      "title": "Votre sécurité",
+      "keyCheck": "Clé vérifiée · {minutes, plural, one {# min restante} other {# min restantes}}",
+      "noKeyCheck": "Aucune vérification de clé",
+      "keys": "Vos clés de sécurité",
+      "keysUnavailable": "Impossible de charger vos clés.",
+      "first": "Première clé",
+      "backup": "Clé de secours",
+      "added": "ajoutée le {date}",
+      "lastUsed": "dernière utilisation {time}",
+      "neverUsed": "jamais utilisée",
+      "remove": "Supprimer",
+      "removeLabel": "Supprimer la clé {label}",
+      "confirmRemove": "Supprimer {label} maintenant",
+      "rules": "Il vous faut au moins {required} clés. Vous ne pouvez pas supprimer les dernières : ajoutez d’abord une clé de remplacement.",
+      "newKeyLabel": "Nom de la nouvelle clé",
+      "addKey": "Ajouter une clé",
+      "permissions": "Vos autorisations",
+      "selfRules": "Vous ne pouvez rien vous accorder ni modifier votre propre statut. Un autre responsable des opérateurs le peut.",
+      "endKeyCheck": "Mettre fin à la vérification de clé",
+      "notes": {
+        "added": "Clé ajoutée.",
+        "removed": "Clé supprimée.",
+        "ended": "Vérification de clé terminée.",
+        "minimum": "Il resterait moins de clés que nécessaire. Ajoutez d’abord une clé de remplacement. Rien n’a changé.",
+        "keyFailed": "La clé n’a pas été ajoutée. Rien n’a changé.",
+        "failed": "Cela n’a pas fonctionné. Rien n’a changé. Réessayez."
+      }
+    }
   }
 }
