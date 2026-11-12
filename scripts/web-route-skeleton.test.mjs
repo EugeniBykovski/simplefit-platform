@@ -116,6 +116,8 @@ const REAL_SCREENS = [
   "web.admin.pricing._plan-id",
   // SF-128: AD6 reduced, the registered feature switches.
   "web.admin.flags",
+  // SF-129: AD20, operators, their permissions and your security.
+  "web.admin.staff",
   "web.admin.login",
   "web.admin.welcome",
   // SF-118: SPX9 settings, the organization's application, and SPE1's

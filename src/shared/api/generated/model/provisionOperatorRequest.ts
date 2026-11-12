@@ -6,13 +6,18 @@
  */
 
 /**
- * An existing account (by user id, never by email) with completed registration, and the exact permissions.
+ * An existing account with completed registration, named by exactly one of `user_id` or an exact `email` (SF-129; never part of either), and the exact permissions.
  */
 export interface ProvisionOperatorRequest {
+  /**
+     * The account's exact email address.
+     * @maxLength 320
+     */
+  email?: string;
   operation_id: string;
   /** @minItems 1 */
   permissions: string[];
   /** @pattern ^[a-z][a-z0-9_]{1,59}$ */
   reason_code: string;
-  user_id: string;
+  user_id?: string;
 }

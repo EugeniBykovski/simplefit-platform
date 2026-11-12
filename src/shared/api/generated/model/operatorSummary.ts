@@ -5,10 +5,13 @@
  * SimpleFit API 0.1.0
  */
 import type { OperatorSecurityKeys } from './operatorSecurityKeys';
+import type { OperatorSummaryGrantsItem } from './operatorSummaryGrantsItem';
 import type { OperatorSummaryStatus } from './operatorSummaryStatus';
 
 /**
- * An operator as other operators see it. Ids only: no names or email addresses.
+ * An operator as other operators see it: ids, the account's short name (first name and an initial, SF-129)
+ * and never an email address. `grants` lists each active permission with where it came from;
+ * `last_key_check_at` is when the operator last completed a security-key check (null: never).
  */
 export interface OperatorSummary {
   /** @nullable */
@@ -19,7 +22,14 @@ export interface OperatorSummary {
   created_by_operator_id: string | null;
   /** @nullable */
   enrollment_expires_at: string | null;
+  /** Active permissions with their provenance (empty for a revoked operator). */
+  grants?: OperatorSummaryGrantsItem[];
   id: string;
+  /**
+     * The operator's last completed security-key check.
+     * @nullable
+     */
+  last_key_check_at?: string | null;
   permissions: string[];
   /**
      * The operator's authority state (status and permissions) as a number. Admin actions send it as `expected_revision`; a stale one is `409 revision_conflict` (SF-111).
@@ -29,6 +39,11 @@ export interface OperatorSummary {
   /** @nullable */
   revoked_at: string | null;
   security_keys: OperatorSecurityKeys;
+  /**
+     * First name and an initial.
+     * @nullable
+     */
+  short_name?: string | null;
   status: OperatorSummaryStatus;
   /** @nullable */
   suspended_at: string | null;

@@ -76,6 +76,7 @@ import type {
   OperatorCredentialRegistered,
   OperatorCredentialResponse,
   OperatorListResponse,
+  OperatorPermissionCatalogResponse,
   OperatorSelfResponse,
   OperatorStepUpResponse,
   OperatorSummaryResponse,
@@ -3404,6 +3405,113 @@ export function useGetAdminJob<TData = Awaited<ReturnType<typeof getAdminJob>>, 
 
 
 
+export const getListOperatorPermissionsUrl = () => {
+
+
+
+
+  return `/api/v1/admin/operator-permissions`
+}
+
+/**
+ * Needs `operators.read`. Every permission with the key check it needs; no role or bundle exists.
+ *
+ * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
+ *   operator.
+ * * `enrollment_required` - the viewer's security keys aren't registered yet.
+ * * `forbidden` - the permission isn't granted.
+ * * `step_up_required` - no key check in this session, or not fresh enough for this action.
+ * @summary The operator permission catalog
+ */
+export const listOperatorPermissions = async ( options?: Parameters<typeof apiFetch>[1]): Promise<OperatorPermissionCatalogResponse> => {
+
+  return apiFetch<OperatorPermissionCatalogResponse>(getListOperatorPermissionsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListOperatorPermissionsQueryKey = () => {
+    return [
+    `/api/v1/admin/operator-permissions`
+    ] as const;
+    }
+
+
+export const getListOperatorPermissionsQueryOptions = <TData = Awaited<ReturnType<typeof listOperatorPermissions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listOperatorPermissions>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListOperatorPermissionsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listOperatorPermissions>>> = ({ signal }) => listOperatorPermissions({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listOperatorPermissions>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListOperatorPermissionsQueryResult = NonNullable<Awaited<ReturnType<typeof listOperatorPermissions>>>
+export type ListOperatorPermissionsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useListOperatorPermissions<TData = Awaited<ReturnType<typeof listOperatorPermissions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listOperatorPermissions>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listOperatorPermissions>>,
+          TError,
+          Awaited<ReturnType<typeof listOperatorPermissions>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListOperatorPermissions<TData = Awaited<ReturnType<typeof listOperatorPermissions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listOperatorPermissions>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listOperatorPermissions>>,
+          TError,
+          Awaited<ReturnType<typeof listOperatorPermissions>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListOperatorPermissions<TData = Awaited<ReturnType<typeof listOperatorPermissions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listOperatorPermissions>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary The operator permission catalog
+ */
+
+export function useListOperatorPermissions<TData = Awaited<ReturnType<typeof listOperatorPermissions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listOperatorPermissions>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getListOperatorPermissionsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
 export const getListOperatorsUrl = () => {
 
 
@@ -3520,7 +3628,7 @@ export const getProvisionOperatorUrl = () => {
 }
 
 /**
- * Needs `operators.manage` and a fresh key check. For an existing account with completed registration, named by user id. The new operator is `pending_enrollment` and holds exactly the listed permissions.
+ * Needs `operators.manage` and a fresh key check. For an existing account with completed registration, named by its user id or exact email address. The new operator is `pending_enrollment` and holds exactly the listed permissions.
  *
  * * `not_found` - the viewer isn't a usable operator (indistinguishable from an unknown route), or no such
  *   operator.

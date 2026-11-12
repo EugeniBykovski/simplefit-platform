@@ -1604,5 +1604,236 @@
       "close": "Zamknij",
       "reload": "Odczytaj aktualny stan"
     }
+  },
+  "operators": {
+    "metaTitle": "Operatorzy · Control Plane",
+    "breadcrumb": "Control Plane",
+    "title": "Operatorzy",
+    "loading": "Wczytywanie operatorów…",
+    "refresh": "Odśwież",
+    "intro": "Wszyscy, którzy mogą otworzyć Control Plane, każde ich uprawnienie oraz kto je nadał, kiedy i dlaczego. Każda zmiana wymaga przyczyny i świeżej weryfikacji klucza bezpieczeństwa oraz jest rejestrowana.",
+    "notSupported": "Zatwierdzanie przez dwie osoby, dostęp awaryjny, logowanie jednokrotne i wnioski o dostęp nie są dostępne. Jeden menedżer operatorów działa sam, nigdy wobec siebie, a ostatni menedżer zawsze pozostaje.",
+    "noManage": "Możesz przeglądać operatorów. Zmiany wymagają uprawnienia operators.manage.",
+    "you": "Ty",
+    "unnamed": "Brak nazwy",
+    "unreachable": {
+      "title": "Nie udało się wczytać operatorów",
+      "body": "Nic się nie zmieniło. Spróbuj ponownie za chwilę."
+    },
+    "restricted": {
+      "title": "Nie masz dostępu do listy operatorów",
+      "body": "Wymaga uprawnienia operators.read. Może je nadać menedżer operatorów, podając przyczynę, która jest rejestrowana. Twoje zabezpieczenia są poniżej.",
+      "back": "Wróć do przeglądu"
+    },
+    "status": {
+      "active": "Aktywny",
+      "pending_enrollment": "Konfiguracja kluczy",
+      "suspended": "Zawieszony",
+      "revoked": "Dostęp odebrany"
+    },
+    "inventory": {
+      "title": "Operatorzy",
+      "count": "{count, plural, one {# operator} few {# operatorów} many {# operatorów} other {# operatora}}",
+      "caption": "Operatorzy, ich status, uprawnienia, klucze bezpieczeństwa i ostatnia weryfikacja klucza",
+      "columns": {
+        "operator": "Operator",
+        "status": "Status",
+        "permissions": "Uprawnienia",
+        "keys": "Klucze",
+        "lastActive": "Ostatnia weryfikacja klucza",
+        "open": "Szczegóły"
+      },
+      "keys": "{registered} z {required}",
+      "never": "Nigdy",
+      "view": "Szczegóły: {name}",
+      "viewShort": "Szczegóły"
+    },
+    "add": {
+      "open": "Dodaj operatora",
+      "title": "Dodaj operatora",
+      "body": "Istniejące konto SimpleFit staje się operatorem z wybranymi przez Ciebie uprawnieniami.",
+      "account": "Konto tej osoby",
+      "accountHint": "Dokładny zweryfikowany adres e-mail lub ID użytkownika. Nic nie jest wyszukiwane ani podpowiadane.",
+      "permissions": "Uprawnienia",
+      "freshKey": "świeża weryfikacja klucza",
+      "note": "Ta osoba musi zarejestrować własne dwa klucze bezpieczeństwa, zanim cokolwiek zadziała. Nie możesz dodać siebie.",
+      "submit": "Dodaj operatora",
+      "success": "Dodano. Nic nie zadziała, dopóki ta osoba nie zarejestruje dwóch kluczy.",
+      "problems": {
+        "not_eligible": "Nie pasuje żadne konto, które można dodać. Sprawdź dokładny adres lub ID. Nic się nie zmieniło.",
+        "exists": "To konto jest już operatorem. Nic się nie zmieniło.",
+        "self": "Nie możesz dodać siebie. Nic się nie zmieniło.",
+        "invalid": "Sprawdź konto, uprawnienia i przyczynę. Nic się nie zmieniło.",
+        "denied": "Nie masz już uprawnienia do tej czynności. Nic się nie zmieniło.",
+        "unknown": "Nie otrzymaliśmy odpowiedzi, więc nie wiemy, czy ta osoba została dodana. Ponowienie jest bezpieczne: nie doda jej dwa razy.",
+        "failed": "To się nie udało. Nic się nie zmieniło. Spróbuj ponownie."
+      }
+    },
+    "detail": {
+      "ids": "Operator {id} · użytkownik {user} · od {date}",
+      "self": "To Ty. Nie możesz zmieniać własnych uprawnień ani statusu.",
+      "pending": "Czekamy na klucze bezpieczeństwa: zarejestrowano {registered} z {required}.",
+      "permissions": "Uprawnienia",
+      "noPermissions": "Brak aktywnych uprawnień.",
+      "bootstrap": "Z ceremonii założycielskiej · {date}",
+      "grantedBy": "Nadane przez {name} · {date} · {reason}"
+    },
+    "actions": {
+      "grant": "Nadaj uprawnienie",
+      "suspend": "Zawieś",
+      "reinstate": "Przywróć",
+      "revoke": "Odbierz dostęp operatora",
+      "revokePermission": "Odbierz",
+      "revokePermissionLabel": "Odbierz {permission}: {name}",
+      "smallScreen": "Czynności wysokiego ryzyka wymagają większego ekranu i klucza bezpieczeństwa. Przeglądanie działa także tutaj."
+    },
+    "history": {
+      "governance": "Zmiany dotyczące tego operatora",
+      "recent": "Ostatnie czynności tej osoby",
+      "noAudit": "Historia wymaga uprawnienia audit.read.",
+      "unavailable": "Nie udało się wczytać historii.",
+      "empty": "Nic jeszcze nie zarejestrowano.",
+      "by": "przez {name}",
+      "outcome": {
+        "allowed": "Dozwolono",
+        "refused": "Odmówiono",
+        "conflict": "Konflikt",
+        "invalid": "Nieprawidłowe",
+        "failed": "Niepowodzenie"
+      },
+      "actions": {
+        "operator_provisioned": "Dodano jako operatora",
+        "operator_activated": "Klucze zarejestrowane, aktywny",
+        "operator_permission_granted": "Nadano uprawnienie",
+        "operator_permission_revoked": "Odebrano uprawnienie",
+        "operator_suspended": "Zawieszono",
+        "operator_reinstated": "Przywrócono",
+        "operator_revoked": "Odebrano dostęp operatora",
+        "operator_credential_enrolled": "Zarejestrowano klucz bezpieczeństwa",
+        "operator_credential_revoked": "Usunięto klucz bezpieczeństwa",
+        "operator_step_up_verified": "Weryfikacja klucza",
+        "operator_step_up_ended": "Zakończono weryfikację klucza",
+        "operator_viewed": "Wyświetlono operatora",
+        "operator_access_refused": "Odmowa dostępu",
+        "operator_security_key_rejected": "Odrzucono klucz bezpieczeństwa",
+        "operator_provision": "Dodanie operatora",
+        "operator_permission_grant": "Nadanie uprawnienia",
+        "operator_permission_revoke": "Odebranie uprawnienia",
+        "operator_suspend": "Zawieszenie",
+        "operator_reinstate": "Przywrócenie",
+        "operator_revoke": "Odebranie dostępu operatora",
+        "operator_revoke_credential": "Usunięcie klucza bezpieczeństwa"
+      }
+    },
+    "dialog": {
+      "risk": "Dostęp operatora",
+      "needs": "Wymaga {permission} i świeżej weryfikacji klucza bezpieczeństwa",
+      "titles": {
+        "grant": "Nadaj uprawnienie: {name}",
+        "revoke_permission": "Odbierz {permission}: {name}",
+        "suspend": "Zawieś: {name}",
+        "reinstate": "Przywróć: {name}",
+        "revoke": "Odbierz dostęp operatora: {name}"
+      },
+      "target": "Operator {id} · wersja {revision}",
+      "current": "Teraz",
+      "proposed": "Potem",
+      "permission": "Uprawnienie",
+      "permissionPlaceholder": "Wybierz uprawnienie",
+      "impact": "Co się stanie",
+      "reason": "Przyczyna",
+      "reasonPlaceholder": "Wybierz przyczynę",
+      "preview": "Sprawdź",
+      "stepUp": "To wymaga świeżej weryfikacji klucza bezpieczeństwa. Użyj klucza, a potem sprawdź ponownie.",
+      "useKey": "Użyj klucza bezpieczeństwa",
+      "working": "Trwa wykonywanie…",
+      "cancel": "Anuluj",
+      "close": "Zamknij",
+      "reload": "Zamknij i odśwież",
+      "confirm": {
+        "grant": "Nadaj uprawnienie",
+        "revoke_permission": "Odbierz uprawnienie",
+        "suspend": "Zawieś operatora",
+        "reinstate": "Przywróć operatora",
+        "revoke": "Odbierz dostęp operatora"
+      },
+      "success": {
+        "grant": "Nadano. Zapisano wraz z Twoją przyczyną.",
+        "revoke_permission": "Odebrano. Przestało działać natychmiast.",
+        "suspend": "Zawieszono. Dostęp tej osoby i jej weryfikacje klucza zostały zakończone.",
+        "reinstate": "Przywrócono.",
+        "revoke": "Dostęp odebrany. Tego nie można cofnąć."
+      },
+      "problems": {
+        "conflict": "Ktoś inny zmienił wcześniej tego operatora. Nic się nie zmieniło. Odśwież i sprawdź ponownie.",
+        "self": "Nie możesz zrobić tego sobie. Nic się nie zmieniło.",
+        "invalid": "To potwierdzenie jest już nieważne. Nic się nie zmieniło. Odśwież i sprawdź ponownie.",
+        "unknown": "Nie otrzymaliśmy odpowiedzi, więc nie wiemy, czy to się udało. Odśwież, aby zobaczyć aktualny stan.",
+        "failed": "To się nie udało. Nic się nie zmieniło. Spróbuj ponownie.",
+        "denied": "Nie masz już uprawnienia do tej czynności. Nic się nie zmieniło."
+      },
+      "states": {
+        "active": "Aktywny",
+        "pending_enrollment": "Konfiguracja kluczy",
+        "suspended": "Zawieszony",
+        "revoked": "Dostęp odebrany",
+        "granted": "Nadane",
+        "absent": "Nienadane"
+      },
+      "impacts": {
+        "permission_granted": "Uprawnienie zostaje dodane i zapisane wraz z Twoją przyczyną.",
+        "effective_now": "Działa od następnego żądania tej osoby.",
+        "permission_revoked": "Uprawnienie przestaje działać natychmiast.",
+        "access_blocked": "Ta osoba nie może otworzyć Control Plane.",
+        "key_checks_ended": "Jej bieżące weryfikacje klucza kończą się teraz.",
+        "access_restored": "Jej dostęp i uprawnienia znów działają.",
+        "security_keys_required": "Musi ponownie zarejestrować klucze bezpieczeństwa, zanim cokolwiek zadziała.",
+        "permissions_revoked": "Wszystkie jej uprawnienia zostają odebrane.",
+        "security_keys_revoked": "Wszystkie zarejestrowane przez nią klucze bezpieczeństwa zostają usunięte.",
+        "irreversible": "Tego nie można cofnąć. Ponowne dodanie tej osoby zaczyna się od zera."
+      },
+      "reasons": {
+        "access_request_approved": "Wniosek o dostęp zatwierdzony",
+        "administrative_correction": "Korekta administracyjna",
+        "role_change": "Zmiana roli",
+        "least_privilege_review": "Przegląd minimalnych uprawnień",
+        "security_concern": "Obawy dotyczące bezpieczeństwa",
+        "leave_of_absence": "Nieobecność",
+        "policy_violation": "Naruszenie zasad",
+        "suspected_compromise": "Podejrzenie przejęcia",
+        "returned_from_leave": "Powrót z nieobecności",
+        "security_review_cleared": "Kontrola bezpieczeństwa bez zastrzeżeń",
+        "left_organization": "Odejście z organizacji"
+      }
+    },
+    "security": {
+      "title": "Twoje zabezpieczenia",
+      "keyCheck": "Klucz zweryfikowany · zostało {minutes, plural, one {# min} few {# min} many {# min} other {# min}}",
+      "noKeyCheck": "Brak weryfikacji klucza",
+      "keys": "Twoje klucze bezpieczeństwa",
+      "keysUnavailable": "Nie udało się wczytać Twoich kluczy.",
+      "first": "Pierwszy klucz",
+      "backup": "Klucz zapasowy",
+      "added": "dodano {date}",
+      "lastUsed": "ostatnio użyty {time}",
+      "neverUsed": "nigdy nieużyty",
+      "remove": "Usuń",
+      "removeLabel": "Usuń klucz {label}",
+      "confirmRemove": "Usuń {label} teraz",
+      "rules": "Minimalna liczba kluczy: {required}. Nie możesz usunąć ostatnich: najpierw dodaj zastępczy.",
+      "newKeyLabel": "Nazwa nowego klucza",
+      "addKey": "Dodaj klucz",
+      "permissions": "Twoje uprawnienia",
+      "selfRules": "Nie możesz niczego nadać sobie ani zmienić własnego statusu. Może to zrobić inny menedżer operatorów.",
+      "endKeyCheck": "Zakończ weryfikację klucza teraz",
+      "notes": {
+        "added": "Dodano klucz.",
+        "removed": "Usunięto klucz.",
+        "ended": "Zakończono weryfikację klucza.",
+        "minimum": "Zostałoby mniej kluczy, niż wymagane. Najpierw dodaj zastępczy. Nic się nie zmieniło.",
+        "keyFailed": "Klucz nie został dodany. Nic się nie zmieniło.",
+        "failed": "To się nie udało. Nic się nie zmieniło. Spróbuj ponownie."
+      }
+    }
   }
 }

@@ -1604,5 +1604,236 @@
       "close": "Close",
       "reload": "Read the current state"
     }
+  },
+  "operators": {
+    "metaTitle": "Operators · Control plane",
+    "breadcrumb": "Control plane",
+    "title": "Operators",
+    "loading": "Loading operators…",
+    "refresh": "Refresh",
+    "intro": "Everyone who can open the Control Plane, each permission they hold, and who granted it, when and why. Every change needs a reason and a fresh security-key check, and is recorded.",
+    "notSupported": "Two-person approval, break-glass access, single sign-on and access requests aren’t available. One operator manager acts alone, never on themselves, and the last manager always stays.",
+    "noManage": "You can see operators. Changing them needs operators.manage.",
+    "you": "You",
+    "unnamed": "No name",
+    "unreachable": {
+      "title": "Couldn’t load operators",
+      "body": "Nothing changed. Try again in a moment."
+    },
+    "restricted": {
+      "title": "You don’t have access to the operator list",
+      "body": "It needs operators.read. An operator manager can grant it, with a reason that’s recorded. Your own security is below.",
+      "back": "Back to overview"
+    },
+    "status": {
+      "active": "Active",
+      "pending_enrollment": "Setting up keys",
+      "suspended": "Suspended",
+      "revoked": "Revoked"
+    },
+    "inventory": {
+      "title": "Operators",
+      "count": "{count, plural, one {# operator} other {# operators}}",
+      "caption": "Operators, their status, permissions, security keys and last key check",
+      "columns": {
+        "operator": "Operator",
+        "status": "Status",
+        "permissions": "Permissions",
+        "keys": "Keys",
+        "lastActive": "Last key check",
+        "open": "Details"
+      },
+      "keys": "{registered} of {required}",
+      "never": "Never",
+      "view": "Details for {name}",
+      "viewShort": "Details"
+    },
+    "add": {
+      "open": "Add an operator",
+      "title": "Add an operator",
+      "body": "An existing SimpleFit account becomes an operator with the permissions you choose.",
+      "account": "Their account",
+      "accountHint": "Their exact verified email address or user ID. Nothing is searched or suggested.",
+      "permissions": "Permissions",
+      "freshKey": "fresh key check",
+      "note": "They must register their own two security keys before anything works. You can’t add yourself.",
+      "submit": "Add operator",
+      "success": "Added. They hold nothing usable until they register their two keys.",
+      "problems": {
+        "not_eligible": "No account we can add matches that. Check the exact address or ID. Nothing changed.",
+        "exists": "That account is already an operator. Nothing changed.",
+        "self": "You can’t add yourself. Nothing changed.",
+        "invalid": "Check the account, permissions and reason. Nothing changed.",
+        "denied": "You no longer have permission for this. Nothing changed.",
+        "unknown": "We didn’t get an answer, so we don’t know whether they were added. Trying again is safe: it can’t add them twice.",
+        "failed": "That didn’t work. Nothing changed. Try again."
+      }
+    },
+    "detail": {
+      "ids": "Operator {id} · user {user} · since {date}",
+      "self": "This is you. You can’t change your own permissions or status.",
+      "pending": "Waiting for their security keys: {registered} of {required} registered.",
+      "permissions": "Permissions",
+      "noPermissions": "No active permissions.",
+      "bootstrap": "From the founding ceremony · {date}",
+      "grantedBy": "By {name} · {date} · {reason}"
+    },
+    "actions": {
+      "grant": "Grant a permission",
+      "suspend": "Suspend",
+      "reinstate": "Reinstate",
+      "revoke": "Revoke operator",
+      "revokePermission": "Revoke",
+      "revokePermissionLabel": "Revoke {permission} from {name}",
+      "smallScreen": "High-risk actions need a larger screen and a security key. Reading works here."
+    },
+    "history": {
+      "governance": "Changes to this operator",
+      "recent": "Their recent actions",
+      "noAudit": "Their history needs audit.read.",
+      "unavailable": "Couldn’t load the history.",
+      "empty": "Nothing recorded yet.",
+      "by": "by {name}",
+      "outcome": {
+        "allowed": "Allowed",
+        "refused": "Refused",
+        "conflict": "Conflict",
+        "invalid": "Invalid",
+        "failed": "Failed"
+      },
+      "actions": {
+        "operator_provisioned": "Added as operator",
+        "operator_activated": "Keys registered, active",
+        "operator_permission_granted": "Permission granted",
+        "operator_permission_revoked": "Permission revoked",
+        "operator_suspended": "Suspended",
+        "operator_reinstated": "Reinstated",
+        "operator_revoked": "Revoked",
+        "operator_credential_enrolled": "Security key registered",
+        "operator_credential_revoked": "Security key removed",
+        "operator_step_up_verified": "Key check",
+        "operator_step_up_ended": "Key check ended",
+        "operator_viewed": "Viewed an operator",
+        "operator_access_refused": "Access refused",
+        "operator_security_key_rejected": "Security key rejected",
+        "operator_provision": "Add operator",
+        "operator_permission_grant": "Grant permission",
+        "operator_permission_revoke": "Revoke permission",
+        "operator_suspend": "Suspend",
+        "operator_reinstate": "Reinstate",
+        "operator_revoke": "Revoke operator",
+        "operator_revoke_credential": "Remove security key"
+      }
+    },
+    "dialog": {
+      "risk": "Operator access",
+      "needs": "Needs {permission} and a fresh security-key check",
+      "titles": {
+        "grant": "Grant a permission to {name}",
+        "revoke_permission": "Revoke {permission} from {name}",
+        "suspend": "Suspend {name}",
+        "reinstate": "Reinstate {name}",
+        "revoke": "Revoke {name}"
+      },
+      "target": "Operator {id} · revision {revision}",
+      "current": "Now",
+      "proposed": "After",
+      "permission": "Permission",
+      "permissionPlaceholder": "Choose a permission",
+      "impact": "What happens",
+      "reason": "Reason",
+      "reasonPlaceholder": "Choose a reason",
+      "preview": "Review",
+      "stepUp": "This needs a fresh security-key check. Use your key, then review again.",
+      "useKey": "Use security key",
+      "working": "Working…",
+      "cancel": "Cancel",
+      "close": "Close",
+      "reload": "Close and reload",
+      "confirm": {
+        "grant": "Grant permission",
+        "revoke_permission": "Revoke permission",
+        "suspend": "Suspend operator",
+        "reinstate": "Reinstate operator",
+        "revoke": "Revoke operator"
+      },
+      "success": {
+        "grant": "Granted. It’s recorded with your reason.",
+        "revoke_permission": "Revoked. It stopped working immediately.",
+        "suspend": "Suspended. Their access and key checks ended.",
+        "reinstate": "Reinstated.",
+        "revoke": "Revoked. This can’t be undone."
+      },
+      "problems": {
+        "conflict": "Someone changed this operator first. Nothing changed. Reload and look again.",
+        "self": "You can’t do this to yourself. Nothing changed.",
+        "invalid": "This confirmation is no longer valid. Nothing changed. Reload and review again.",
+        "unknown": "We didn’t get an answer, so we don’t know whether it worked. Reload to see the current state.",
+        "failed": "That didn’t work. Nothing changed. Try again.",
+        "denied": "You no longer have permission for this. Nothing changed."
+      },
+      "states": {
+        "active": "Active",
+        "pending_enrollment": "Setting up keys",
+        "suspended": "Suspended",
+        "revoked": "Revoked",
+        "granted": "Granted",
+        "absent": "Not granted"
+      },
+      "impacts": {
+        "permission_granted": "The permission is added, recorded with your reason.",
+        "effective_now": "It works from their next request.",
+        "permission_revoked": "The permission stops working immediately.",
+        "access_blocked": "They can’t open the Control Plane.",
+        "key_checks_ended": "Their current key checks end now.",
+        "access_restored": "Their access and permissions work again.",
+        "security_keys_required": "They must register security keys again before anything works.",
+        "permissions_revoked": "Every permission they hold is removed.",
+        "security_keys_revoked": "Every security key they registered is removed.",
+        "irreversible": "This can’t be undone. Adding them again starts from nothing."
+      },
+      "reasons": {
+        "access_request_approved": "Access request approved",
+        "administrative_correction": "Administrative correction",
+        "role_change": "Role change",
+        "least_privilege_review": "Least-privilege review",
+        "security_concern": "Security concern",
+        "leave_of_absence": "Leave of absence",
+        "policy_violation": "Policy violation",
+        "suspected_compromise": "Suspected compromise",
+        "returned_from_leave": "Returned from leave",
+        "security_review_cleared": "Security review cleared",
+        "left_organization": "Left the organization"
+      }
+    },
+    "security": {
+      "title": "Your security",
+      "keyCheck": "Key checked · {minutes, plural, one {# min} other {# min}} left",
+      "noKeyCheck": "No key check",
+      "keys": "Your security keys",
+      "keysUnavailable": "Couldn’t load your keys.",
+      "first": "First key",
+      "backup": "Backup key",
+      "added": "added {date}",
+      "lastUsed": "last used {time}",
+      "neverUsed": "never used",
+      "remove": "Remove",
+      "removeLabel": "Remove key {label}",
+      "confirmRemove": "Remove {label} now",
+      "rules": "You need at least {required} keys. You can’t remove your last ones: add a replacement first.",
+      "newKeyLabel": "Name for a new key",
+      "addKey": "Add a key",
+      "permissions": "Your permissions",
+      "selfRules": "You can’t grant yourself anything or change your own status. Another operator manager can.",
+      "endKeyCheck": "End key check now",
+      "notes": {
+        "added": "Key added.",
+        "removed": "Key removed.",
+        "ended": "Key check ended.",
+        "minimum": "That would leave fewer keys than required. Add a replacement first. Nothing changed.",
+        "keyFailed": "The key wasn’t added. Nothing changed.",
+        "failed": "That didn’t work. Nothing changed. Try again."
+      }
+    }
   }
 }
