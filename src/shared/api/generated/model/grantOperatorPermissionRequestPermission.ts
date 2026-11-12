@@ -31,4 +31,6 @@ export const GrantOperatorPermissionRequestPermission = {
   systemjobsread: 'system.jobs.read',
   billingread: 'billing.read',
   billingreconciliationread: 'billing.reconciliation.read',
+  configread: 'config.read',
+  configflagswrite: 'config.flags.write',
 } as const;

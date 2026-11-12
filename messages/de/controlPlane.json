@@ -1463,5 +1463,146 @@
       "provisional": "Vorläufig (nie live verkauft)"
     },
     "noAccess": "Für die Abrechnung braucht es Abrechnungszugriff."
+  },
+  "configuration": {
+    "metaTitle": "Feature-Schalter · Control Plane",
+    "breadcrumb": "Control Plane / System",
+    "title": "Feature-Schalter",
+    "loading": "Feature-Schalter werden geladen",
+    "observedAt": "Gelesen {time}",
+    "environment": "Umgebung: {environment}",
+    "refresh": "Erneut lesen",
+    "unreachable": {
+      "title": "Die Konfiguration ist nicht erreichbar.",
+      "body": "Kein Schalter wird angezeigt, bis sie antwortet. Nichts hier bedeutet, dass eine Funktion aus ist."
+    },
+    "intro": "Jeder Schalter wird über die Umgebung dieses Deployments gesetzt. Die einzige mögliche Änderung ist das Aussetzen einer der freigegebenen Funktionen: Sie ist dann aus, bis sie wiederhergestellt wird. Nichts hier kann einschalten, was das Deployment ausgeschaltet hat.",
+    "notShown": "Secrets, Zugangsdaten, Datenbank- und Anbieter-Einstellungen, URLs und Operator-Einstellungen werden hier nie angezeigt oder geändert.",
+    "notSupported": "Es gibt keinen prozentualen Rollout, kein Targeting, keine Schutzgrenzen und keine Rollout-Metriken: nichts davon wird gemessen oder ist freigegeben.",
+    "caption": "Registrierte Feature-Schalter mit Quelle, Verbraucher, Steuerung, Risiko und wirksamem Wert",
+    "columns": {
+      "switch": "Schalter",
+      "source": "Gesetzt durch",
+      "control": "Steuerung",
+      "risk": "Risiko",
+      "deployment": "Deployment",
+      "effective": "Jetzt wirksam",
+      "action": "Aktion"
+    },
+    "consumer": "Gelesen von {consumer}",
+    "decision": "Geregelt durch {decision}",
+    "revision": "Revision {revision}",
+    "suspendedBadge": "Ausgesetzt",
+    "value": {
+      "on": "An",
+      "off": "Aus",
+      "test": "Test",
+      "live": "Live"
+    },
+    "control": {
+      "suspendable": "Aussetzbar",
+      "read_only": "Nur lesend",
+      "build": "Beim Build festgelegt"
+    },
+    "risk": {
+      "low": "Geringes Risiko",
+      "medium": "Mittleres Risiko",
+      "high": "Hohes Risiko"
+    },
+    "actions": {
+      "suspend": "Aussetzen",
+      "restore": "Wiederherstellen",
+      "label": "{switch}: {action}",
+      "noWrite": "Aussetzen oder Wiederherstellen erfordert Schreibzugriff auf die Konfiguration."
+    },
+    "flags": {
+      "gym_member_invitations": "Einladungs-E-Mails für Gym-Mitglieder (E07)",
+      "gym_staff_invitations": "Einladungs-E-Mails für Gym-Personal (E06)",
+      "sponsor_application_emails": "E-Mails zu Sponsorenbewerbungen",
+      "sponsor_evidence_uploads": "Nachweis-Uploads für Sponsorenbewerbungen",
+      "coaching_access": "Datenfreigabe zwischen Fighter und Coach (rechtliche Einwilligung)",
+      "stripe_billing": "Stripe-Abrechnung",
+      "stripe_mode": "Stripe-Modus",
+      "stripe_connect": "Stripe Connect",
+      "api_docs": "Öffentliche API-Dokumentation"
+    },
+    "history": {
+      "title": "Änderungsverlauf",
+      "caption": "Jedes Aussetzen und Wiederherstellen, neueste zuerst",
+      "empty": "Es wurde noch nichts geändert.",
+      "columns": {
+        "when": "Wann",
+        "switch": "Schalter",
+        "change": "Änderung",
+        "reason": "Grund",
+        "revision": "Revision"
+      },
+      "change": {
+        "suspend": "Ausgesetzt",
+        "restore": "Wiederhergestellt"
+      }
+    },
+    "dialog": {
+      "titles": {
+        "suspend": "{switch} aussetzen?",
+        "restore": "{switch} wiederherstellen?"
+      },
+      "needs": "Erfordert {permission} und eine frische Prüfung mit dem Sicherheitsschlüssel",
+      "target": "Schalter",
+      "where": "Umgebung {environment} · Revision {revision}",
+      "current": "Jetzt",
+      "proposed": "Danach",
+      "state": {
+        "active": "Aktiv",
+        "suspended": "Ausgesetzt"
+      },
+      "impact": "Was passiert",
+      "impacts": {
+        "new_member_invitation_emails_stop": "Es werden keine neuen Mitgliedereinladungen erstellt oder erneut gesendet.",
+        "sent_invitations_unchanged": "Bereits gesendete Einladungen bleiben gültig.",
+        "new_staff_invitation_emails_stop": "Es werden keine neuen Personaleinladungen erstellt oder erneut gesendet.",
+        "sponsor_application_emails_not_sent": "E-Mails zu Sponsorenbewerbungen werden nicht gesendet.",
+        "applications_unchanged": "Die Bewerbungen selbst ändern sich nicht.",
+        "new_evidence_uploads_refused": "Neue Nachweis-Uploads werden abgelehnt.",
+        "stored_files_unchanged": "Bereits hochgeladene Dateien bleiben.",
+        "deployment_decides": "Das Deployment entscheidet wieder, ob die Funktion an ist.",
+        "deployment_enabled": "Im Deployment ist sie an.",
+        "deployment_disabled_no_effect": "Im Deployment ist sie aus, daher ändert das nichts, bis sie dort eingeschaltet wird.",
+        "effective_next_check_every_instance": "Jede Serverinstanz sieht es bei ihrer nächsten Prüfung.",
+        "not_retroactive": "Bereits Geschehenes wird nicht rückgängig gemacht."
+      },
+      "reason": "Grund",
+      "reasonPlaceholder": "Grund wählen",
+      "reasons": {
+        "incident_response": "Reaktion auf einen Vorfall",
+        "provider_outage": "Ausfall eines Anbieters",
+        "abuse_or_spam": "Missbrauch oder Spam",
+        "release_issue": "Problem mit einem Release",
+        "planned_maintenance": "Geplante Wartung",
+        "incident_resolved": "Vorfall behoben",
+        "provider_recovered": "Anbieter wieder verfügbar",
+        "abuse_contained": "Missbrauch eingedämmt",
+        "release_fixed": "Release korrigiert",
+        "maintenance_complete": "Wartung abgeschlossen",
+        "suspended_in_error": "Irrtümlich ausgesetzt"
+      },
+      "preview": "Änderung prüfen",
+      "confirm": {
+        "suspend": "Jetzt aussetzen",
+        "restore": "Jetzt wiederherstellen"
+      },
+      "working": "Wird angewendet…",
+      "stepUp": "Bestätige mit deinem Sicherheitsschlüssel, um fortzufahren.",
+      "useKey": "Sicherheitsschlüssel verwenden",
+      "success": "Erledigt. Die Änderung ist gespeichert; jede Instanz sieht sie bei ihrer nächsten Prüfung.",
+      "conflict": "Dieser Schalter hat sich geändert, seit du ihn gelesen hast. Schließe, um den aktuellen Stand zu lesen, und prüfe die Änderung erneut.",
+      "unknown": "Wir haben keine Antwort erhalten, die Änderung wurde also vielleicht gemacht, vielleicht nicht. Schließe und lies den aktuellen Stand, bevor du es erneut versuchst.",
+      "invalid": "Diese Bestätigung ist abgelaufen oder passt nicht mehr. Prüfe die Änderung erneut.",
+      "failed": "Die Änderung konnte nicht geprüft werden. Versuche es erneut.",
+      "denied": "Du hast keine Berechtigung für diese Änderung.",
+      "cancel": "Abbrechen",
+      "close": "Schließen",
+      "reload": "Aktuellen Stand lesen"
+    }
   }
 }

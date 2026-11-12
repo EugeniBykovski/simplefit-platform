@@ -23,4 +23,6 @@ export const OperatorActionPreviewResponsePreviewAction = {
   usersuspend: 'user.suspend',
   userlift_suspension: 'user.lift_suspension',
   usersign_out_everywhere: 'user.sign_out_everywhere',
+  configflagsuspend: 'config.flag.suspend',
+  configflagrestore: 'config.flag.restore',
 } as const;

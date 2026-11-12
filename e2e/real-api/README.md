@@ -205,6 +205,11 @@ a failed webhook event) recorded as rows. No Stripe API, real or mocked, runs in
 covered by the API's Stripe-fake tests. Every expected figure is read back with SQL; SQL also revokes the billing
 grants (the client's answer is under test).
 
+`control-plane-configuration.spec.ts` (SF-128) runs on the same setup (a fresh database each run). The operator
+suspends and restores a real switch through the SF-111 dialog; `fixtures/configuration-seed.exs` asks the real
+consumer (`Gyms.create_member_invitation/4`) from a separate BEAM sharing the database, a second application
+instance. SQL reads results, raises a revision under an open dialog (another writer) and revokes grants.
+
 `control-plane-overview.spec.ts` (SF-121) runs on the same setup (a fresh database each run) and
 checks every number the overview shows against SQL written from the metric catalog
 (simplefit-api `docs/architecture/admin-overview-metrics.md`).

@@ -1463,5 +1463,146 @@
       "provisional": "Tymczasowa (nigdy nie sprzedawana na live)"
     },
     "noAccess": "Rozliczenia wymagają dostępu do rozliczeń."
+  },
+  "configuration": {
+    "metaTitle": "Przełączniki funkcji · Control Plane",
+    "breadcrumb": "Control Plane / System",
+    "title": "Przełączniki funkcji",
+    "loading": "Wczytywanie przełączników",
+    "observedAt": "Odczytano {time}",
+    "environment": "Środowisko: {environment}",
+    "refresh": "Odczytaj ponownie",
+    "unreachable": {
+      "title": "Nie możemy połączyć się z konfiguracją.",
+      "body": "Żaden przełącznik nie jest pokazywany, dopóki nie odpowie. Nic tutaj nie oznacza, że funkcja jest wyłączona."
+    },
+    "intro": "Każdy przełącznik ustawia środowisko tego wdrożenia. Jedyna możliwa zmiana to wstrzymanie jednej z dozwolonych funkcji: jest wyłączona do czasu przywrócenia. Nic tutaj nie może włączyć tego, co wdrożenie pozostawiło wyłączone.",
+    "notShown": "Sekrety, dane uwierzytelniające, ustawienia bazy danych i dostawców, adresy URL i ustawienia operatorów nigdy nie są tu pokazywane ani zmieniane.",
+    "notSupported": "Nie istnieje stopniowe wdrażanie procentowe, targetowanie, zabezpieczenia ani metryki wdrożenia: nic z tego nie jest mierzone ani zatwierdzone.",
+    "caption": "Zarejestrowane przełączniki z ich źródłem, odbiorcą, kontrolą, ryzykiem i wartością obowiązującą",
+    "columns": {
+      "switch": "Przełącznik",
+      "source": "Ustawiany przez",
+      "control": "Kontrola",
+      "risk": "Ryzyko",
+      "deployment": "Wdrożenie",
+      "effective": "Obowiązuje teraz",
+      "action": "Działanie"
+    },
+    "consumer": "Odczytuje {consumer}",
+    "decision": "Reguluje {decision}",
+    "revision": "Wersja {revision}",
+    "suspendedBadge": "Wstrzymany",
+    "value": {
+      "on": "Włączony",
+      "off": "Wyłączony",
+      "test": "Test",
+      "live": "Live"
+    },
+    "control": {
+      "suspendable": "Można wstrzymać",
+      "read_only": "Tylko odczyt",
+      "build": "Ustalony przy budowaniu"
+    },
+    "risk": {
+      "low": "Niskie ryzyko",
+      "medium": "Średnie ryzyko",
+      "high": "Wysokie ryzyko"
+    },
+    "actions": {
+      "suspend": "Wstrzymaj",
+      "restore": "Przywróć",
+      "label": "{action}: {switch}",
+      "noWrite": "Wstrzymanie lub przywrócenie wymaga uprawnień do zapisu konfiguracji."
+    },
+    "flags": {
+      "gym_member_invitations": "E-maile z zaproszeniami dla członków klubu (E07)",
+      "gym_staff_invitations": "E-maile z zaproszeniami dla personelu klubu (E06)",
+      "sponsor_application_emails": "E-maile dotyczące zgłoszeń sponsorów",
+      "sponsor_evidence_uploads": "Przesyłanie dowodów do zgłoszeń sponsorów",
+      "coaching_access": "Udostępnianie danych zawodnik–trener (zgoda prawna)",
+      "stripe_billing": "Rozliczenia Stripe",
+      "stripe_mode": "Tryb Stripe",
+      "stripe_connect": "Stripe Connect",
+      "api_docs": "Publiczna dokumentacja API"
+    },
+    "history": {
+      "title": "Historia zmian",
+      "caption": "Każde wstrzymanie i przywrócenie, od najnowszych",
+      "empty": "Nie dokonano żadnej zmiany.",
+      "columns": {
+        "when": "Kiedy",
+        "switch": "Przełącznik",
+        "change": "Zmiana",
+        "reason": "Powód",
+        "revision": "Wersja"
+      },
+      "change": {
+        "suspend": "Wstrzymano",
+        "restore": "Przywrócono"
+      }
+    },
+    "dialog": {
+      "titles": {
+        "suspend": "Wstrzymać: {switch}?",
+        "restore": "Przywrócić: {switch}?"
+      },
+      "needs": "Wymaga {permission} i świeżego potwierdzenia kluczem bezpieczeństwa",
+      "target": "Przełącznik",
+      "where": "Środowisko {environment} · wersja {revision}",
+      "current": "Teraz",
+      "proposed": "Potem",
+      "state": {
+        "active": "Aktywny",
+        "suspended": "Wstrzymany"
+      },
+      "impact": "Co się stanie",
+      "impacts": {
+        "new_member_invitation_emails_stop": "Żadne nowe zaproszenie dla członka nie zostanie utworzone ani wysłane ponownie.",
+        "sent_invitations_unchanged": "Wysłane już zaproszenia pozostają ważne.",
+        "new_staff_invitation_emails_stop": "Żadne nowe zaproszenie dla personelu nie zostanie utworzone ani wysłane ponownie.",
+        "sponsor_application_emails_not_sent": "E-maile dotyczące zgłoszeń sponsorów nie są wysyłane.",
+        "applications_unchanged": "Same zgłoszenia się nie zmieniają.",
+        "new_evidence_uploads_refused": "Nowe przesłania dowodów są odrzucane.",
+        "stored_files_unchanged": "Przesłane już pliki pozostają.",
+        "deployment_decides": "Wdrożenie znów decyduje, czy funkcja jest włączona.",
+        "deployment_enabled": "Wdrożenie ma ją włączoną.",
+        "deployment_disabled_no_effect": "Wdrożenie ma ją wyłączoną, więc nic się nie zmieni, dopóki nie zostanie tam włączona.",
+        "effective_next_check_every_instance": "Każda instancja serwera zobaczy to przy następnym sprawdzeniu.",
+        "not_retroactive": "Nic, co już się wydarzyło, nie zostanie cofnięte."
+      },
+      "reason": "Powód",
+      "reasonPlaceholder": "Wybierz powód",
+      "reasons": {
+        "incident_response": "Reakcja na incydent",
+        "provider_outage": "Awaria dostawcy",
+        "abuse_or_spam": "Nadużycie lub spam",
+        "release_issue": "Problem z wydaniem",
+        "planned_maintenance": "Planowana konserwacja",
+        "incident_resolved": "Incydent rozwiązany",
+        "provider_recovered": "Dostawca działa ponownie",
+        "abuse_contained": "Nadużycie opanowane",
+        "release_fixed": "Wydanie poprawione",
+        "maintenance_complete": "Konserwacja zakończona",
+        "suspended_in_error": "Wstrzymano przez pomyłkę"
+      },
+      "preview": "Sprawdź zmianę",
+      "confirm": {
+        "suspend": "Wstrzymaj teraz",
+        "restore": "Przywróć teraz"
+      },
+      "working": "Stosowanie…",
+      "stepUp": "Potwierdź kluczem bezpieczeństwa, aby kontynuować.",
+      "useKey": "Użyj klucza bezpieczeństwa",
+      "success": "Gotowe. Zmiana jest zapisana; każda instancja zobaczy ją przy następnym sprawdzeniu.",
+      "conflict": "Ten przełącznik zmienił się od czasu odczytu. Zamknij, aby odczytać jego aktualny stan, i ponownie sprawdź zmianę.",
+      "unknown": "Nie otrzymaliśmy odpowiedzi, więc zmiana mogła zostać wprowadzona albo nie. Zamknij i odczytaj aktualny stan, zanim spróbujesz ponownie.",
+      "invalid": "To potwierdzenie wygasło lub już nie pasuje. Sprawdź zmianę ponownie.",
+      "failed": "Nie udało się sprawdzić zmiany. Spróbuj ponownie.",
+      "denied": "Nie masz uprawnień do tej zmiany.",
+      "cancel": "Anuluj",
+      "close": "Zamknij",
+      "reload": "Odczytaj aktualny stan"
+    }
   }
 }
