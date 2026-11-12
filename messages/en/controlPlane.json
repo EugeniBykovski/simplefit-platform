@@ -1463,5 +1463,146 @@
       "provisional": "Provisional (never sold live)"
     },
     "noAccess": "Billing needs billing access."
+  },
+  "configuration": {
+    "metaTitle": "Feature switches · Control plane",
+    "breadcrumb": "Control plane / System",
+    "title": "Feature switches",
+    "loading": "Loading feature switches",
+    "observedAt": "Read {time}",
+    "environment": "Environment: {environment}",
+    "refresh": "Read again",
+    "unreachable": {
+      "title": "We can’t reach the configuration.",
+      "body": "No switch is shown until it answers. Nothing here means a feature is off."
+    },
+    "intro": "Every switch is set by this deployment’s environment. The only change available is suspending one of the allowlisted features: it turns the feature off until restored. Nothing here can turn on what the deployment left off.",
+    "notShown": "Secrets, credentials, database and provider settings, URLs and operator settings are never shown or changed here.",
+    "notSupported": "No percentage rollout, targeting, guardrail or rollout metric exists: none is measured or approved.",
+    "caption": "Registered feature switches with their source, consumer, control, risk and effective value",
+    "columns": {
+      "switch": "Switch",
+      "source": "Set by",
+      "control": "Control",
+      "risk": "Risk",
+      "deployment": "Deployment",
+      "effective": "Effective now",
+      "action": "Action"
+    },
+    "consumer": "Read by {consumer}",
+    "decision": "Governed by {decision}",
+    "revision": "Revision {revision}",
+    "suspendedBadge": "Suspended",
+    "value": {
+      "on": "On",
+      "off": "Off",
+      "test": "Test",
+      "live": "Live"
+    },
+    "control": {
+      "suspendable": "Can be suspended",
+      "read_only": "Read-only",
+      "build": "Fixed at build"
+    },
+    "risk": {
+      "low": "Low risk",
+      "medium": "Medium risk",
+      "high": "High risk"
+    },
+    "actions": {
+      "suspend": "Suspend",
+      "restore": "Restore",
+      "label": "{action} {switch}",
+      "noWrite": "Suspending or restoring needs configuration write access."
+    },
+    "flags": {
+      "gym_member_invitations": "Gym member invitation emails (E07)",
+      "gym_staff_invitations": "Gym staff invitation emails (E06)",
+      "sponsor_application_emails": "Sponsor application emails",
+      "sponsor_evidence_uploads": "Sponsor application evidence uploads",
+      "coaching_access": "Fighter–coach data sharing (legal consent)",
+      "stripe_billing": "Stripe billing",
+      "stripe_mode": "Stripe mode",
+      "stripe_connect": "Stripe Connect",
+      "api_docs": "Public API documentation"
+    },
+    "history": {
+      "title": "Change history",
+      "caption": "Every suspension and restore, newest first",
+      "empty": "No change has been made.",
+      "columns": {
+        "when": "When",
+        "switch": "Switch",
+        "change": "Change",
+        "reason": "Reason",
+        "revision": "Revision"
+      },
+      "change": {
+        "suspend": "Suspended",
+        "restore": "Restored"
+      }
+    },
+    "dialog": {
+      "titles": {
+        "suspend": "Suspend {switch}?",
+        "restore": "Restore {switch}?"
+      },
+      "needs": "Needs {permission} and a fresh security-key check",
+      "target": "Switch",
+      "where": "Environment {environment} · revision {revision}",
+      "current": "Now",
+      "proposed": "After",
+      "state": {
+        "active": "Active",
+        "suspended": "Suspended"
+      },
+      "impact": "What happens",
+      "impacts": {
+        "new_member_invitation_emails_stop": "No new member invitation is created or resent.",
+        "sent_invitations_unchanged": "Invitations already sent stay valid.",
+        "new_staff_invitation_emails_stop": "No new staff invitation is created or resent.",
+        "sponsor_application_emails_not_sent": "Sponsor application emails aren’t sent.",
+        "applications_unchanged": "Applications themselves don’t change.",
+        "new_evidence_uploads_refused": "New evidence uploads are refused.",
+        "stored_files_unchanged": "Files already uploaded stay.",
+        "deployment_decides": "The deployment decides again whether the feature is on.",
+        "deployment_enabled": "The deployment has it on.",
+        "deployment_disabled_no_effect": "The deployment has it off, so this changes nothing until it’s turned on there.",
+        "effective_next_check_every_instance": "Every server instance sees it on its next check.",
+        "not_retroactive": "Nothing that already happened is undone."
+      },
+      "reason": "Reason",
+      "reasonPlaceholder": "Choose a reason",
+      "reasons": {
+        "incident_response": "Incident response",
+        "provider_outage": "Provider outage",
+        "abuse_or_spam": "Abuse or spam",
+        "release_issue": "Release issue",
+        "planned_maintenance": "Planned maintenance",
+        "incident_resolved": "Incident resolved",
+        "provider_recovered": "Provider recovered",
+        "abuse_contained": "Abuse contained",
+        "release_fixed": "Release fixed",
+        "maintenance_complete": "Maintenance complete",
+        "suspended_in_error": "Suspended in error"
+      },
+      "preview": "Review the change",
+      "confirm": {
+        "suspend": "Suspend now",
+        "restore": "Restore now"
+      },
+      "working": "Applying…",
+      "stepUp": "Confirm with your security key to continue.",
+      "useKey": "Use security key",
+      "success": "Done. The change is committed; every instance sees it on its next check.",
+      "conflict": "This switch changed since you read it. Close to read its current state, then review the change again.",
+      "unknown": "We didn’t get an answer, so the change may or may not have been made. Close to read the current state before trying again.",
+      "invalid": "This confirmation expired or no longer matches. Review the change again.",
+      "failed": "Couldn’t review the change. Try again.",
+      "denied": "You don’t have permission for this change.",
+      "cancel": "Cancel",
+      "close": "Close",
+      "reload": "Read the current state"
+    }
   }
 }

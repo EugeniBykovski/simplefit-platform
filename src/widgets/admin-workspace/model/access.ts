@@ -44,6 +44,7 @@ export function visibleNavItems(operator: Operator): string[] {
       ? ["subscriptions"]
       : []),
     ...(hasAccess(operator, "audit") ? ["audit"] : []),
+    ...(grants(operator, "config.read") ? ["flags"] : []),
     ...(["system.health.read", "system.jobs.read"].some((permission) =>
       grants(operator, permission),
     )

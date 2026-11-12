@@ -29,6 +29,8 @@ import type {
   AdminBillingSubscriptionResponse,
   AdminCoachResponse,
   AdminCoachSearchResponse,
+  AdminConfigurationFlagResponse,
+  AdminConfigurationResponse,
   AdminFighterResponse,
   AdminFighterSearchResponse,
   AdminGymListResponse,
@@ -85,6 +87,7 @@ import type {
   ReinstateSponsorOrganizationRequest,
   RejectSponsorApplicationRequest,
   RequestSponsorApplicationChangesRequest,
+  RestoreRuntimeFlagRequest,
   RevokeOperatorPermissionPreviewRequest,
   RevokeOperatorPermissionRequest,
   RevokeOperatorPreviewRequest,
@@ -101,6 +104,7 @@ import type {
   StepUpRequiredResponse,
   SuspendOperatorPreviewRequest,
   SuspendOperatorRequest,
+  SuspendRuntimeFlagRequest,
   SuspendSponsorOrganizationRequest,
   SuspendUserRequest,
   UnauthorizedResponse,
@@ -1338,6 +1342,728 @@ export function useGetAdminCoach<TData = Awaited<ReturnType<typeof getAdminCoach
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAdminCoachQueryOptions(coachId,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetAdminConfigurationUrl = () => {
+
+
+
+
+  return `/api/v1/admin/configuration`
+}
+
+/**
+ * Needs `config.read` and a key check. Every registered switch with its environment variable, consumer, control, risk, deployment value, suspension and effective value; the newest changes.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such flag.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * @summary The configuration inventory
+ */
+export const getAdminConfiguration = async ( options?: Parameters<typeof apiFetch>[1]): Promise<AdminConfigurationResponse> => {
+
+  return apiFetch<AdminConfigurationResponse>(getGetAdminConfigurationUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminConfigurationQueryKey = () => {
+    return [
+    `/api/v1/admin/configuration`
+    ] as const;
+    }
+
+
+export const getGetAdminConfigurationQueryOptions = <TData = Awaited<ReturnType<typeof getAdminConfiguration>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminConfiguration>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminConfigurationQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminConfiguration>>> = ({ signal }) => getAdminConfiguration({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminConfiguration>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminConfigurationQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminConfiguration>>>
+export type GetAdminConfigurationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetAdminConfiguration<TData = Awaited<ReturnType<typeof getAdminConfiguration>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminConfiguration>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminConfiguration>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminConfiguration>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminConfiguration<TData = Awaited<ReturnType<typeof getAdminConfiguration>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminConfiguration>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminConfiguration>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminConfiguration>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminConfiguration<TData = Awaited<ReturnType<typeof getAdminConfiguration>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminConfiguration>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary The configuration inventory
+ */
+
+export function useGetAdminConfiguration<TData = Awaited<ReturnType<typeof getAdminConfiguration>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminConfiguration>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminConfigurationQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetAdminRuntimeFlagUrl = (flagId: string,) => {
+
+
+
+
+  return `/api/v1/admin/configuration/flags/${flagId}`
+}
+
+/**
+ * Needs `config.read` and a key check.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such flag.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * @summary One runtime flag and its history
+ */
+export const getAdminRuntimeFlag = async (flagId: string, options?: Parameters<typeof apiFetch>[1]): Promise<AdminConfigurationFlagResponse> => {
+
+  return apiFetch<AdminConfigurationFlagResponse>(getGetAdminRuntimeFlagUrl(flagId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminRuntimeFlagQueryKey = (flagId: string,) => {
+    return [
+    `/api/v1/admin/configuration/flags/${flagId}`
+    ] as const;
+    }
+
+
+export const getGetAdminRuntimeFlagQueryOptions = <TData = Awaited<ReturnType<typeof getAdminRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(flagId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminRuntimeFlagQueryKey(flagId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminRuntimeFlag>>> = ({ signal }) => getAdminRuntimeFlag(flagId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: flagId !== null && flagId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminRuntimeFlag>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminRuntimeFlagQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminRuntimeFlag>>>
+export type GetAdminRuntimeFlagQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetAdminRuntimeFlag<TData = Awaited<ReturnType<typeof getAdminRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ flagId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminRuntimeFlag>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminRuntimeFlag>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminRuntimeFlag>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminRuntimeFlag<TData = Awaited<ReturnType<typeof getAdminRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ flagId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminRuntimeFlag>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminRuntimeFlag>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminRuntimeFlag>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminRuntimeFlag<TData = Awaited<ReturnType<typeof getAdminRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ flagId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One runtime flag and its history
+ */
+
+export function useGetAdminRuntimeFlag<TData = Awaited<ReturnType<typeof getAdminRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ flagId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminRuntimeFlagQueryOptions(flagId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getRestoreRuntimeFlagUrl = (flagId: string,) => {
+
+
+
+
+  return `/api/v1/admin/configuration/flags/${flagId}/restore`
+}
+
+/**
+ * `suspended` -> `active`: the deployment decides again (a feature it left off stays off).
+ *
+ * Needs `config.flags.write` and a fresh key check, and a one-time `confirmation_token` from a preview of
+ * exactly this request (same operator, session, flag, revision and reason), with `reason_code`,
+ * `expected_revision` and `operation_id` (a repeat of the same request returns the current state and changes
+ * nothing).
+ * * `conflict` - `details.status`: the flag is already in that state.
+ * * `revision_conflict` - the flag changed since `expected_revision`: preview again.
+ * * `confirmation_required`, `confirmation_invalid` - missing, expired, used or for another request.
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such flag.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * @summary Restore a suspended feature
+ */
+export const restoreRuntimeFlag = async (flagId: string,
+    restoreRuntimeFlagRequest: RestoreRuntimeFlagRequest, options?: Parameters<typeof apiFetch>[1]): Promise<AdminConfigurationFlagResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<AdminConfigurationFlagResponse>(getRestoreRuntimeFlagUrl(flagId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(restoreRuntimeFlagRequest)
+  }
+);}
+
+
+
+
+
+export const getRestoreRuntimeFlagQueryKey = (flagId: string,
+    restoreRuntimeFlagRequest?: BodyType<RestoreRuntimeFlagRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/configuration/flags/${flagId}/restore`, restoreRuntimeFlagRequest
+    ] as const;
+    }
+
+
+export const getRestoreRuntimeFlagQueryOptions = <TData = Awaited<ReturnType<typeof restoreRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(flagId: string,
+    restoreRuntimeFlagRequest: BodyType<RestoreRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof restoreRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getRestoreRuntimeFlagQueryKey(flagId,restoreRuntimeFlagRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof restoreRuntimeFlag>>> = ({ signal }) => restoreRuntimeFlag(flagId,restoreRuntimeFlagRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: flagId !== null && flagId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof restoreRuntimeFlag>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type RestoreRuntimeFlagQueryResult = NonNullable<Awaited<ReturnType<typeof restoreRuntimeFlag>>>
+export type RestoreRuntimeFlagQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useRestoreRuntimeFlag<TData = Awaited<ReturnType<typeof restoreRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    restoreRuntimeFlagRequest: BodyType<RestoreRuntimeFlagRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof restoreRuntimeFlag>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof restoreRuntimeFlag>>,
+          TError,
+          Awaited<ReturnType<typeof restoreRuntimeFlag>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRestoreRuntimeFlag<TData = Awaited<ReturnType<typeof restoreRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    restoreRuntimeFlagRequest: BodyType<RestoreRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof restoreRuntimeFlag>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof restoreRuntimeFlag>>,
+          TError,
+          Awaited<ReturnType<typeof restoreRuntimeFlag>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRestoreRuntimeFlag<TData = Awaited<ReturnType<typeof restoreRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    restoreRuntimeFlagRequest: BodyType<RestoreRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof restoreRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Restore a suspended feature
+ */
+
+export function useRestoreRuntimeFlag<TData = Awaited<ReturnType<typeof restoreRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    restoreRuntimeFlagRequest: BodyType<RestoreRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof restoreRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getRestoreRuntimeFlagQueryOptions(flagId,restoreRuntimeFlagRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewRestoreRuntimeFlagUrl = (flagId: string,) => {
+
+
+
+
+  return `/api/v1/admin/configuration/flags/${flagId}/restore/preview`
+}
+
+/**
+ * Needs `config.flags.write` and a fresh key check. Changes nothing; returns the impact and a one-time confirmation.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such flag.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * @summary Preview: restore a suspended feature
+ */
+export const previewRestoreRuntimeFlag = async (flagId: string,
+    restoreRuntimeFlagRequest: RestoreRuntimeFlagRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewRestoreRuntimeFlagUrl(flagId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(restoreRuntimeFlagRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewRestoreRuntimeFlagQueryKey = (flagId: string,
+    restoreRuntimeFlagRequest?: BodyType<RestoreRuntimeFlagRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/configuration/flags/${flagId}/restore/preview`, restoreRuntimeFlagRequest
+    ] as const;
+    }
+
+
+export const getPreviewRestoreRuntimeFlagQueryOptions = <TData = Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(flagId: string,
+    restoreRuntimeFlagRequest: BodyType<RestoreRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewRestoreRuntimeFlagQueryKey(flagId,restoreRuntimeFlagRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>> = ({ signal }) => previewRestoreRuntimeFlag(flagId,restoreRuntimeFlagRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: flagId !== null && flagId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewRestoreRuntimeFlagQueryResult = NonNullable<Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>>
+export type PreviewRestoreRuntimeFlagQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewRestoreRuntimeFlag<TData = Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    restoreRuntimeFlagRequest: BodyType<RestoreRuntimeFlagRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>,
+          TError,
+          Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewRestoreRuntimeFlag<TData = Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    restoreRuntimeFlagRequest: BodyType<RestoreRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>,
+          TError,
+          Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewRestoreRuntimeFlag<TData = Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    restoreRuntimeFlagRequest: BodyType<RestoreRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview: restore a suspended feature
+ */
+
+export function usePreviewRestoreRuntimeFlag<TData = Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    restoreRuntimeFlagRequest: BodyType<RestoreRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRestoreRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewRestoreRuntimeFlagQueryOptions(flagId,restoreRuntimeFlagRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getSuspendRuntimeFlagUrl = (flagId: string,) => {
+
+
+
+
+  return `/api/v1/admin/configuration/flags/${flagId}/suspend`
+}
+
+/**
+ * `active` -> `suspended`: the consumer sees the feature off on its next check, in every instance, whatever the deployment says. Not retroactive.
+ *
+ * Needs `config.flags.write` and a fresh key check, and a one-time `confirmation_token` from a preview of
+ * exactly this request (same operator, session, flag, revision and reason), with `reason_code`,
+ * `expected_revision` and `operation_id` (a repeat of the same request returns the current state and changes
+ * nothing).
+ * * `conflict` - `details.status`: the flag is already in that state.
+ * * `revision_conflict` - the flag changed since `expected_revision`: preview again.
+ * * `confirmation_required`, `confirmation_invalid` - missing, expired, used or for another request.
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such flag.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * @summary Suspend a feature
+ */
+export const suspendRuntimeFlag = async (flagId: string,
+    suspendRuntimeFlagRequest: SuspendRuntimeFlagRequest, options?: Parameters<typeof apiFetch>[1]): Promise<AdminConfigurationFlagResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<AdminConfigurationFlagResponse>(getSuspendRuntimeFlagUrl(flagId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(suspendRuntimeFlagRequest)
+  }
+);}
+
+
+
+
+
+export const getSuspendRuntimeFlagQueryKey = (flagId: string,
+    suspendRuntimeFlagRequest?: BodyType<SuspendRuntimeFlagRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/configuration/flags/${flagId}/suspend`, suspendRuntimeFlagRequest
+    ] as const;
+    }
+
+
+export const getSuspendRuntimeFlagQueryOptions = <TData = Awaited<ReturnType<typeof suspendRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(flagId: string,
+    suspendRuntimeFlagRequest: BodyType<SuspendRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSuspendRuntimeFlagQueryKey(flagId,suspendRuntimeFlagRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof suspendRuntimeFlag>>> = ({ signal }) => suspendRuntimeFlag(flagId,suspendRuntimeFlagRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: flagId !== null && flagId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof suspendRuntimeFlag>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type SuspendRuntimeFlagQueryResult = NonNullable<Awaited<ReturnType<typeof suspendRuntimeFlag>>>
+export type SuspendRuntimeFlagQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useSuspendRuntimeFlag<TData = Awaited<ReturnType<typeof suspendRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    suspendRuntimeFlagRequest: BodyType<SuspendRuntimeFlagRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendRuntimeFlag>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof suspendRuntimeFlag>>,
+          TError,
+          Awaited<ReturnType<typeof suspendRuntimeFlag>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSuspendRuntimeFlag<TData = Awaited<ReturnType<typeof suspendRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    suspendRuntimeFlagRequest: BodyType<SuspendRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendRuntimeFlag>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof suspendRuntimeFlag>>,
+          TError,
+          Awaited<ReturnType<typeof suspendRuntimeFlag>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSuspendRuntimeFlag<TData = Awaited<ReturnType<typeof suspendRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    suspendRuntimeFlagRequest: BodyType<SuspendRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Suspend a feature
+ */
+
+export function useSuspendRuntimeFlag<TData = Awaited<ReturnType<typeof suspendRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    suspendRuntimeFlagRequest: BodyType<SuspendRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suspendRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getSuspendRuntimeFlagQueryOptions(flagId,suspendRuntimeFlagRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewSuspendRuntimeFlagUrl = (flagId: string,) => {
+
+
+
+
+  return `/api/v1/admin/configuration/flags/${flagId}/suspend/preview`
+}
+
+/**
+ * Needs `config.flags.write` and a fresh key check. Changes nothing (no value, cache or consumer); returns the current and proposed state, the impact and a one-time confirmation.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such flag.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * @summary Preview: suspend a feature
+ */
+export const previewSuspendRuntimeFlag = async (flagId: string,
+    suspendRuntimeFlagRequest: SuspendRuntimeFlagRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewSuspendRuntimeFlagUrl(flagId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(suspendRuntimeFlagRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewSuspendRuntimeFlagQueryKey = (flagId: string,
+    suspendRuntimeFlagRequest?: BodyType<SuspendRuntimeFlagRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/configuration/flags/${flagId}/suspend/preview`, suspendRuntimeFlagRequest
+    ] as const;
+    }
+
+
+export const getPreviewSuspendRuntimeFlagQueryOptions = <TData = Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(flagId: string,
+    suspendRuntimeFlagRequest: BodyType<SuspendRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewSuspendRuntimeFlagQueryKey(flagId,suspendRuntimeFlagRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>> = ({ signal }) => previewSuspendRuntimeFlag(flagId,suspendRuntimeFlagRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: flagId !== null && flagId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewSuspendRuntimeFlagQueryResult = NonNullable<Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>>
+export type PreviewSuspendRuntimeFlagQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewSuspendRuntimeFlag<TData = Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    suspendRuntimeFlagRequest: BodyType<SuspendRuntimeFlagRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>,
+          TError,
+          Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewSuspendRuntimeFlag<TData = Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    suspendRuntimeFlagRequest: BodyType<SuspendRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>,
+          TError,
+          Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewSuspendRuntimeFlag<TData = Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    suspendRuntimeFlagRequest: BodyType<SuspendRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview: suspend a feature
+ */
+
+export function usePreviewSuspendRuntimeFlag<TData = Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ flagId: string,
+    suspendRuntimeFlagRequest: BodyType<SuspendRuntimeFlagRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewSuspendRuntimeFlag>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewSuspendRuntimeFlagQueryOptions(flagId,suspendRuntimeFlagRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

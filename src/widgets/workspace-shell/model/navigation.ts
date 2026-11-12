@@ -196,7 +196,8 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
   // granted plus the overview. Users (SF-122, SF-123: accounts, fighters, coaches) and
   // Gyms (`tenants`, SF-123), Sponsors (application review, SF-124), System health
   // (`integrations`, SF-126) and billing visibility (`subscriptions`, `transactions`,
-  // `pricing`, SF-127, read only) are built; every other item is an unlinked "Soon" row.
+  // `pricing`, SF-127, read only) and feature switches (`flags`, SF-128) are built; every
+  // other item is an unlinked "Soon" row.
   "web.admin": {
     messages: "admin",
     sections: [
@@ -242,7 +243,6 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
       "support",
       "privacy",
       "audit",
-      "flags",
       "notifications",
       "markets",
       "staff",

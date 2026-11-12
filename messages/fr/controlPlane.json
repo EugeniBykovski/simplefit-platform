@@ -1463,5 +1463,146 @@
       "provisional": "Provisoire (jamais vendu en live)"
     },
     "noAccess": "La facturation nécessite l’accès à la facturation."
+  },
+  "configuration": {
+    "metaTitle": "Interrupteurs de fonctionnalités · Control Plane",
+    "breadcrumb": "Control Plane / Système",
+    "title": "Interrupteurs de fonctionnalités",
+    "loading": "Chargement des interrupteurs",
+    "observedAt": "Lu {time}",
+    "environment": "Environnement : {environment}",
+    "refresh": "Relire",
+    "unreachable": {
+      "title": "La configuration est injoignable.",
+      "body": "Aucun interrupteur n’est affiché tant qu’elle ne répond pas. Rien ici ne signifie qu’une fonctionnalité est désactivée."
+    },
+    "intro": "Chaque interrupteur est défini par l’environnement de ce déploiement. La seule modification possible est la suspension d’une des fonctionnalités autorisées : elle est désactivée jusqu’à sa restauration. Rien ici ne peut activer ce que le déploiement a laissé désactivé.",
+    "notShown": "Les secrets, identifiants, paramètres de base de données et de fournisseurs, URL et paramètres d’opérateurs ne sont jamais affichés ni modifiés ici.",
+    "notSupported": "Aucun déploiement progressif en pourcentage, ciblage, garde-fou ou indicateur de déploiement n’existe : rien de tout cela n’est mesuré ni approuvé.",
+    "caption": "Interrupteurs enregistrés avec leur source, leur consommateur, leur contrôle, leur risque et leur valeur effective",
+    "columns": {
+      "switch": "Interrupteur",
+      "source": "Défini par",
+      "control": "Contrôle",
+      "risk": "Risque",
+      "deployment": "Déploiement",
+      "effective": "Effectif maintenant",
+      "action": "Action"
+    },
+    "consumer": "Lu par {consumer}",
+    "decision": "Encadré par {decision}",
+    "revision": "Révision {revision}",
+    "suspendedBadge": "Suspendu",
+    "value": {
+      "on": "Activé",
+      "off": "Désactivé",
+      "test": "Test",
+      "live": "Live"
+    },
+    "control": {
+      "suspendable": "Peut être suspendu",
+      "read_only": "Lecture seule",
+      "build": "Fixé à la compilation"
+    },
+    "risk": {
+      "low": "Risque faible",
+      "medium": "Risque moyen",
+      "high": "Risque élevé"
+    },
+    "actions": {
+      "suspend": "Suspendre",
+      "restore": "Restaurer",
+      "label": "{action} : {switch}",
+      "noWrite": "Suspendre ou restaurer nécessite l’accès en écriture à la configuration."
+    },
+    "flags": {
+      "gym_member_invitations": "E-mails d’invitation des membres de salle (E07)",
+      "gym_staff_invitations": "E-mails d’invitation du personnel de salle (E06)",
+      "sponsor_application_emails": "E-mails des candidatures de sponsors",
+      "sponsor_evidence_uploads": "Téléversement des justificatifs de sponsors",
+      "coaching_access": "Partage de données combattant–coach (consentement légal)",
+      "stripe_billing": "Facturation Stripe",
+      "stripe_mode": "Mode Stripe",
+      "stripe_connect": "Stripe Connect",
+      "api_docs": "Documentation publique de l’API"
+    },
+    "history": {
+      "title": "Historique des changements",
+      "caption": "Chaque suspension et restauration, les plus récentes d’abord",
+      "empty": "Aucun changement n’a été fait.",
+      "columns": {
+        "when": "Quand",
+        "switch": "Interrupteur",
+        "change": "Changement",
+        "reason": "Motif",
+        "revision": "Révision"
+      },
+      "change": {
+        "suspend": "Suspendu",
+        "restore": "Restauré"
+      }
+    },
+    "dialog": {
+      "titles": {
+        "suspend": "Suspendre {switch} ?",
+        "restore": "Restaurer {switch} ?"
+      },
+      "needs": "Nécessite {permission} et une nouvelle vérification par clé de sécurité",
+      "target": "Interrupteur",
+      "where": "Environnement {environment} · révision {revision}",
+      "current": "Maintenant",
+      "proposed": "Après",
+      "state": {
+        "active": "Actif",
+        "suspended": "Suspendu"
+      },
+      "impact": "Ce qui se passe",
+      "impacts": {
+        "new_member_invitation_emails_stop": "Aucune nouvelle invitation de membre n’est créée ni renvoyée.",
+        "sent_invitations_unchanged": "Les invitations déjà envoyées restent valides.",
+        "new_staff_invitation_emails_stop": "Aucune nouvelle invitation du personnel n’est créée ni renvoyée.",
+        "sponsor_application_emails_not_sent": "Les e-mails des candidatures de sponsors ne sont pas envoyés.",
+        "applications_unchanged": "Les candidatures elles-mêmes ne changent pas.",
+        "new_evidence_uploads_refused": "Les nouveaux téléversements de justificatifs sont refusés.",
+        "stored_files_unchanged": "Les fichiers déjà téléversés restent.",
+        "deployment_decides": "Le déploiement décide à nouveau si la fonctionnalité est activée.",
+        "deployment_enabled": "Le déploiement l’a activée.",
+        "deployment_disabled_no_effect": "Le déploiement l’a désactivée : cela ne change rien tant qu’elle n’y est pas activée.",
+        "effective_next_check_every_instance": "Chaque instance de serveur le voit à sa prochaine vérification.",
+        "not_retroactive": "Rien de ce qui s’est déjà produit n’est annulé."
+      },
+      "reason": "Motif",
+      "reasonPlaceholder": "Choisir un motif",
+      "reasons": {
+        "incident_response": "Réponse à un incident",
+        "provider_outage": "Panne d’un fournisseur",
+        "abuse_or_spam": "Abus ou spam",
+        "release_issue": "Problème de version",
+        "planned_maintenance": "Maintenance planifiée",
+        "incident_resolved": "Incident résolu",
+        "provider_recovered": "Fournisseur rétabli",
+        "abuse_contained": "Abus maîtrisé",
+        "release_fixed": "Version corrigée",
+        "maintenance_complete": "Maintenance terminée",
+        "suspended_in_error": "Suspendu par erreur"
+      },
+      "preview": "Vérifier le changement",
+      "confirm": {
+        "suspend": "Suspendre maintenant",
+        "restore": "Restaurer maintenant"
+      },
+      "working": "Application…",
+      "stepUp": "Confirmez avec votre clé de sécurité pour continuer.",
+      "useKey": "Utiliser la clé de sécurité",
+      "success": "C’est fait. Le changement est enregistré ; chaque instance le voit à sa prochaine vérification.",
+      "conflict": "Cet interrupteur a changé depuis votre lecture. Fermez pour lire son état actuel, puis vérifiez à nouveau le changement.",
+      "unknown": "Aucune réponse : le changement a peut-être été fait, peut-être pas. Fermez pour lire l’état actuel avant de réessayer.",
+      "invalid": "Cette confirmation a expiré ou ne correspond plus. Vérifiez à nouveau le changement.",
+      "failed": "Impossible de vérifier le changement. Réessayez.",
+      "denied": "Vous n’avez pas l’autorisation pour ce changement.",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "reload": "Lire l’état actuel"
+    }
   }
 }
