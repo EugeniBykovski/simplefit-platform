@@ -37,6 +37,17 @@ describe("Control Plane access (SF-120, presentation only)", () => {
     // SF-123: Gyms with gyms.read; Users with any of the three people permissions.
     expect(visibleNavItems(operator(["gyms.read"]))).toEqual(["overview", "tenants"]);
     expect(visibleNavItems(operator(["fighters.read"]))).toEqual(["overview", "users"]);
+    // SF-127: billing pages with billing.read; reconciliation alone opens billing only.
+    expect(visibleNavItems(operator(["billing.read"]))).toEqual([
+      "overview",
+      "subscriptions",
+      "transactions",
+      "pricing",
+    ]);
+    expect(visibleNavItems(operator(["billing.reconciliation.read"]))).toEqual([
+      "overview",
+      "subscriptions",
+    ]);
     // SF-126: System health with either operations permission.
     expect(visibleNavItems(operator(["system.jobs.read"]))).toEqual(["overview", "integrations"]);
     expect(visibleNavItems(operator(["coaches.read", "gyms.read"]))).toEqual([

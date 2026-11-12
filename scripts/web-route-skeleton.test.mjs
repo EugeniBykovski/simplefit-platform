@@ -109,6 +109,11 @@ const REAL_SCREENS = [
   "web.admin.enforcement",
   // SF-126: AD17, system health from measurements and the background job list.
   "web.admin.integrations",
+  // SF-127: billing visibility (AD13) and the read-only invoices, plans and plan history.
+  "web.admin.subscriptions",
+  "web.admin.transactions",
+  "web.admin.pricing",
+  "web.admin.pricing._plan-id",
   "web.admin.login",
   "web.admin.welcome",
   // SF-118: SPX9 settings, the organization's application, and SPE1's
