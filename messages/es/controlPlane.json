@@ -1100,5 +1100,368 @@
         "retry": "No se puede reintentar: ningún worker tiene una política de reintento aprobada."
       }
     }
+  },
+  "billing": {
+    "metaTitle": "Visibilidad de la facturación · Control Plane",
+    "breadcrumb": "Dinero / Facturación",
+    "title": "Visibilidad de la facturación",
+    "loading": "Cargando las cifras de facturación",
+    "observedAt": "Leído {time}",
+    "refresh": "Volver a leer",
+    "stale": "No se pudo volver a leer. Estas cifras son de {time}, no son actuales.",
+    "unreachable": {
+      "title": "No podemos acceder a los registros de facturación.",
+      "body": "No se muestra ninguna cifra hasta que respondan. Nada aquí significa que un pago haya fallado."
+    },
+    "mode": {
+      "label": "Modo de Stripe",
+      "test": "Test",
+      "live": "Live",
+      "badge": {
+        "test": "Modo test",
+        "live": "Modo live"
+      },
+      "configured": "Este despliegue usa el modo {mode}.",
+      "note": "Cada cifra de esta página es solo del modo {mode}. Los registros de test y live nunca se suman."
+    },
+    "integration": {
+      "ready": "Integración de Stripe activa",
+      "disabled": "Integración de Stripe desactivada: no se sincroniza nada, así que estas cifras no pueden cambiar.",
+      "misconfigured": "Integración de Stripe mal configurada: no se sincroniza nada."
+    },
+    "flows": {
+      "title": "Flujos de dinero",
+      "note": "Son cuatro flujos de dinero separados. Nunca se suman. Stripe Live no está aprobado (SF-138).",
+      "connected": "Conectado",
+      "notConnected": "No conectado",
+      "notReported": "No informado",
+      "saas": {
+        "title": "Suscripciones de los gimnasios a SimpleFit",
+        "body": "Gimnasios que pagan a SimpleFit, mediante Stripe (SF-102). Solo lectura: estado, problemas de pago y conciliación."
+      },
+      "member": {
+        "title": "Suscripciones de los miembros de los gimnasios",
+        "body": "Los miembros pagan a su gimnasio. Es dinero del gimnasio; nada se cobra a través de SimpleFit."
+      },
+      "sponsor": {
+        "title": "Acuerdos de patrocinio",
+        "body": "No existe ninguno. Las condiciones comerciales no están aprobadas (D-SA23)."
+      },
+      "revenue": {
+        "title": "Ingresos de la plataforma",
+        "body": "No informados. No se muestra ninguna cifra hasta que exista una definición y una fuente aprobadas."
+      }
+    },
+    "overview": {
+      "title": "Suscripciones de gimnasios",
+      "caption": "Suscripciones por estado de SimpleFit, en modo {mode}",
+      "unrecorded": "{count, plural, one {# suscripción no tiene registro del proveedor (ni pago de Stripe ni vínculo). No cuenta en ningún modo.} other {# suscripciones no tienen registro del proveedor (ni pago de Stripe ni vínculo). No cuentan en ningún modo.}}",
+      "providerTitle": "En Stripe",
+      "providerCaption": "Suscripciones de Stripe por su estado en Stripe, según la última lectura. «Activa» en Stripe no es un pago cobrado.",
+      "issuesTitle": "Problemas de pago",
+      "issuesNote": "Un intento fallido no es definitivo: Stripe puede volver a intentarlo. Nada aquí requiere una acción desde el Control Plane.",
+      "invoicesTitle": "Facturas",
+      "invoicesCaption": "Facturas de Stripe registradas, por estado",
+      "collectedTitle": "Cobrado mediante facturas de Stripe",
+      "collectedNote": "Importe bruto pagado de las facturas cobradas del {from} al {to}, por moneda. No son ingresos: antes de reembolsos, disputas, comisiones e impuestos. Las monedas nunca se suman.",
+      "collectedEmpty": "No se pagó ninguna factura en este periodo.",
+      "invoiceCount": "{count, plural, one {# factura} other {# facturas}}",
+      "refunded": "Reembolsado hasta ahora: {amount}",
+      "refundsTitle": "Reembolsos",
+      "disputesTitle": "Disputas",
+      "disputesEmpty": "Sin disputas.",
+      "freshness": "Última lectura de Stripe {synced} · último webhook {webhook}",
+      "never": "nunca",
+      "unavailableTitle": "No informado",
+      "unavailableNote": "No existe una definición aprobada, así que no se muestra ninguna cifra.",
+      "metrics": {
+        "mrr": "MRR",
+        "arr": "ARR",
+        "recognized_revenue": "Ingresos reconocidos",
+        "net_revenue": "Ingresos netos",
+        "churn": "Abandono",
+        "ltv": "Valor de vida del cliente",
+        "forecast": "Previsiones",
+        "fx_total": "Totales entre monedas"
+      }
+    },
+    "subscriptions": {
+      "title": "Suscripciones",
+      "caption": "Suscripciones de gimnasios, primero la solicitud más reciente",
+      "loading": "Cargando suscripciones",
+      "empty": "Ninguna suscripción coincide.",
+      "filters": {
+        "label": "Filtrar suscripciones",
+        "environment": "Registros",
+        "status": "Estado",
+        "plan": "Clave del plan",
+        "any": "Cualquiera",
+        "apply": "Aplicar"
+      },
+      "columns": {
+        "gym": "Gimnasio",
+        "plan": "Plan",
+        "price": "Precio acordado",
+        "status": "Estado",
+        "stripe": "En Stripe",
+        "reconciliation": "Conciliación",
+        "requested": "Solicitada"
+      },
+      "open": "Abrir {gym}",
+      "planVersion": "{name} · v{version}",
+      "noStripe": "—",
+      "pages": {
+        "label": "Páginas de suscripciones",
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "page": "Página {page}"
+      }
+    },
+    "detail": {
+      "title": "Suscripción",
+      "loading": "Cargando la suscripción",
+      "notFound": "Esta suscripción no existe.",
+      "close": "Cerrar",
+      "lifecycle": "Ciclo de vida",
+      "requested": "Solicitada",
+      "activated": "Activada",
+      "period": "Periodo pagado",
+      "cancellationEffective": "Termina",
+      "ended": "Terminada",
+      "cancelReason": "Motivo",
+      "atStripe": "En Stripe",
+      "stripePeriod": "Periodo actual en Stripe",
+      "cancelAtPeriodEnd": "Se cancela al final del periodo en Stripe",
+      "agreed": "Plan y precio acordados",
+      "agreedNote": "La versión y el precio que aceptó el gimnasio. Una versión más reciente del plan nunca los cambia.",
+      "periods": "Periodos pagados",
+      "periodsEmpty": "Ningún periodo pagado: no se verificó nada.",
+      "periodsNote": "Solo a partir de una factura pagada verificada.",
+      "invoices": "Facturas",
+      "invoicesEmpty": "Ninguna factura registrada.",
+      "invoiceNumber": "Factura {number}",
+      "invoiceDraft": "Borrador de factura",
+      "paidAt": "Pagada {time}",
+      "issuedAt": "Emitida {time}",
+      "attempts": "{count, plural, one {# intento} other {# intentos}}",
+      "nextAttempt": "Stripe reintenta {time}",
+      "refunds": "Reembolsos",
+      "disputes": "Disputas",
+      "disputed": "En disputa (no es un reembolso)",
+      "checkouts": "Pagos alojados",
+      "checkoutsEmpty": "Ningún pago.",
+      "checkoutLine": "{mode} · {status} · creado {time}",
+      "noActions": "Aquí no hay reembolsos, cancelaciones, reintentos ni cambios de precio. Los reembolsos siguen siendo una operación revisada fuera del Control Plane."
+    },
+    "reconciliation": {
+      "title": "Conciliación",
+      "caption": "Cómo se comparan los registros de SimpleFit con Stripe, en modo {mode}",
+      "loading": "Cargando la conciliación",
+      "noAccess": "La conciliación requiere acceso a la conciliación.",
+      "note": "No hay ejecuciones de conciliación. Cada vínculo de suscripción de Stripe registra cuándo se leyó Stripe por última vez y cualquier discrepancia encontrada. Nada aquí fuerza una sincronización.",
+      "lastRead": "Lectura más reciente {time} · más antigua {oldest}",
+      "webhooks": "Bandeja de webhooks",
+      "webhooksCaption": "Eventos de Stripe recibidos desde {time}, por estado de procesamiento",
+      "backlog": "{count, plural, one {# evento pendiente de procesar.} other {# eventos pendientes de procesar.}}",
+      "lastWebhook": "Último evento {time}",
+      "failedTitle": "Eventos fallidos",
+      "failedEmpty": "Ningún evento fallido.",
+      "failedNote": "Solo tipo y resultado. Los contenidos nunca se guardan; desde aquí no se reproduce nada.",
+      "discrepancies": "Discrepancias",
+      "discrepanciesCaption": "Suscripciones cuya última lectura de Stripe no se pudo aplicar",
+      "discrepanciesEmpty": "No se registró ninguna discrepancia en las últimas lecturas. Eso no dice nada de las suscripciones que nunca se leyeron.",
+      "columns": {
+        "gym": "Gimnasio",
+        "discrepancy": "Discrepancia",
+        "status": "SimpleFit",
+        "stripe": "En Stripe",
+        "read": "Leída"
+      },
+      "eventColumns": {
+        "type": "Evento",
+        "outcome": "Resultado",
+        "attempts": "Intentos",
+        "received": "Recibido"
+      }
+    },
+    "invoices": {
+      "metaTitle": "Facturas de Stripe · Control Plane",
+      "breadcrumb": "Dinero / Transacciones",
+      "title": "Facturas de Stripe",
+      "caption": "Facturas de Stripe registradas de las suscripciones de gimnasios, primero las más recientes",
+      "loading": "Cargando facturas",
+      "empty": "Ninguna factura coincide.",
+      "intro": "Facturas de los gimnasios que pagan a SimpleFit, según la última lectura de Stripe. Los importes son los de Stripe, cada uno en su moneda.",
+      "filters": {
+        "label": "Filtrar facturas",
+        "status": "Estado",
+        "issue": "Problema de pago",
+        "currency": "Moneda (código ISO)",
+        "any": "Cualquiera"
+      },
+      "columns": {
+        "invoice": "Factura",
+        "gym": "Gimnasio",
+        "status": "Estado",
+        "total": "Total",
+        "paid": "Pagado",
+        "refunded": "Reembolsado",
+        "issued": "Emitida",
+        "issue": "Problema"
+      },
+      "noNumber": "Sin finalizar",
+      "noRefunds": "Los reembolsos no están disponibles aquí. Siguen siendo una operación revisada fuera del Control Plane."
+    },
+    "plans": {
+      "metaTitle": "Planes · Control Plane",
+      "breadcrumb": "Dinero / Planes",
+      "title": "Planes",
+      "caption": "Planes de SimpleFit y cada versión tal como se registró",
+      "loading": "Cargando planes",
+      "empty": "Todavía no existe ningún plan.",
+      "intro": "Solo lectura. Los planes se publican con una aprobación fuera del Control Plane; nada aquí edita un precio, una versión o un derecho.",
+      "current": "Actual: v{version}",
+      "noCurrent": "Ninguna versión publicada",
+      "versions": "{count, plural, one {# versión} other {# versiones}}",
+      "history": "Historial de versiones",
+      "columns": {
+        "version": "Versión",
+        "status": "Estado",
+        "prices": "Precios",
+        "source": "Origen del precio",
+        "published": "Publicada"
+      },
+      "mapped": "Precio de Stripe en: {modes}",
+      "notMapped": "Sin precio de Stripe",
+      "trial": "Prueba propuesta: {days} días (no aplicada)",
+      "approval": "Aprobación {reference}",
+      "entitlements": "Derechos",
+      "entitlementsEmpty": "Sin derechos.",
+      "limit": "límite {limit}",
+      "notFound": "Este plan no existe.",
+      "back": "Todos los planes"
+    },
+    "minorUnits": "{minor} unidades menores de {currency}",
+    "interval": {
+      "month": "al mes",
+      "year": "al año"
+    },
+    "quote": "Requiere presupuesto",
+    "environment": {
+      "test": "Modo test",
+      "live": "Modo live",
+      "none": "Sin registro del proveedor"
+    },
+    "subscriptionStatus": {
+      "pending_activation": "Activación pendiente",
+      "active": "Activa",
+      "cancellation_scheduled": "Termina al final del periodo",
+      "cancelled": "Cancelada",
+      "expired": "Vencida"
+    },
+    "providerStatus": {
+      "incomplete": "Incompleta",
+      "incomplete_expired": "Incompleta, vencida",
+      "trialing": "En prueba",
+      "active": "Activa",
+      "past_due": "Atrasada",
+      "canceled": "Cancelada",
+      "unpaid": "Impagada",
+      "paused": "En pausa"
+    },
+    "invoiceStatus": {
+      "draft": "Borrador",
+      "open": "Abierta",
+      "paid": "Pagada",
+      "uncollectible": "Incobrable",
+      "void": "Anulada"
+    },
+    "paymentStatus": {
+      "requires_action": "Requiere acción del cliente",
+      "requires_payment_method": "Último intento fallido",
+      "processing": "Procesando",
+      "succeeded": "Correcto",
+      "canceled": "Cancelado"
+    },
+    "issue": {
+      "any": "Cualquier problema",
+      "payment_failed": "Último intento fallido",
+      "action_required": "Requiere acción del cliente",
+      "uncollectible": "Incobrable"
+    },
+    "reconciliationState": {
+      "in_sync": "Sin discrepancias en la última lectura",
+      "stale": "Sin leer desde hace más de 6 horas",
+      "mismatch": "Discrepancia",
+      "not_linked": "Esperando vínculo de Stripe",
+      "not_evaluated": "Sin conciliar"
+    },
+    "reconciliationCount": {
+      "linked": "Vinculadas",
+      "in_sync": "Sin discrepancia",
+      "stale": "Desactualizadas",
+      "mismatch": "Discrepancia",
+      "not_linked": "Esperando vínculo"
+    },
+    "discrepancy": {
+      "customer_mismatch": "Otro cliente en Stripe",
+      "price_mismatch": "Otro precio en Stripe",
+      "ended_locally_live_at_provider": "Terminada aquí, aún activa en Stripe",
+      "invoice_subscription_mismatch": "Factura de otra suscripción",
+      "invoice_currency_mismatch": "Factura en otra moneda",
+      "invoice_amount_mismatch": "Factura por otro importe",
+      "invoice_period_over": "Periodo de la factura ya terminado",
+      "invoice_period_missing": "Factura sin periodo",
+      "invoice_not_paid": "Factura sin pagar",
+      "invalid_evidence": "Prueba no aceptada",
+      "other": "Otra ({code})"
+    },
+    "refundStatus": {
+      "requested": "Solicitado",
+      "pending": "Pendiente",
+      "requires_action": "Requiere acción",
+      "succeeded": "Correcto",
+      "failed": "Fallido",
+      "canceled": "Cancelado"
+    },
+    "refundOrigin": {
+      "operator": "Solicitado por un operador",
+      "provider": "Hecho en Stripe"
+    },
+    "webhookStatus": {
+      "received": "En espera",
+      "processed": "Procesado",
+      "ignored": "Ignorado",
+      "failed": "Fallido"
+    },
+    "checkoutStatus": {
+      "creating": "Creando",
+      "open": "Abierto",
+      "completed": "Completado",
+      "expired": "Vencido",
+      "failed": "Fallido"
+    },
+    "periodSource": {
+      "activation": "Activación",
+      "renewal": "Renovación"
+    },
+    "cancelReason": {
+      "requested_by_gym": "Solicitada por el gimnasio",
+      "gym_closed": "Gimnasio cerrado",
+      "provider_initiated": "Terminada en Stripe"
+    },
+    "versionStatus": {
+      "draft": "Borrador",
+      "archived": "Archivada",
+      "published": "Publicada",
+      "superseded": "Sustituida",
+      "retired": "Retirada"
+    },
+    "priceSource": {
+      "approved_design": "Diseño aprobado",
+      "product_decision": "Decisión de producto",
+      "provisional": "Provisional (nunca se vende en live)"
+    },
+    "noAccess": "La facturación requiere acceso a la facturación."
   }
 }

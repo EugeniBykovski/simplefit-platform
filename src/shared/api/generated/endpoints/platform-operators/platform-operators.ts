@@ -20,6 +20,13 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AdminBillingInvoiceListResponse,
+  AdminBillingOverviewResponse,
+  AdminBillingPlanListResponse,
+  AdminBillingPlanResponse,
+  AdminBillingReconciliationResponse,
+  AdminBillingSubscriptionListResponse,
+  AdminBillingSubscriptionResponse,
   AdminCoachResponse,
   AdminCoachSearchResponse,
   AdminFighterResponse,
@@ -41,6 +48,8 @@ import type {
   ConflictResponse,
   EnrollmentRequiredResponse,
   ForbiddenResponse,
+  GetAdminBillingOverviewParams,
+  GetAdminBillingReconciliationParams,
   GetAdminCoachParams,
   GetAdminFighterParams,
   GetAdminGymParams,
@@ -50,6 +59,8 @@ import type {
   GrantOperatorPermissionRequest,
   InternalErrorResponse,
   LiftUserSuspensionRequest,
+  ListAdminBillingInvoicesParams,
+  ListAdminBillingSubscriptionsParams,
   ListAdminGymsParams,
   ListAdminJobsParams,
   ListOperatorAuditEventsParams,
@@ -331,6 +342,766 @@ export function useGetOperatorAuditEvent<TData = Awaited<ReturnType<typeof getOp
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetOperatorAuditEventQueryOptions(eventId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getListAdminBillingInvoicesUrl = (params?: ListAdminBillingInvoicesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/billing/invoices?${stringifiedParams}` : `/api/v1/admin/billing/invoices`
+}
+
+/**
+ * Needs `billing.read` and a key check. One mode, newest first; `issue` filters payment problems. Every query is recorded (`billing.invoices_listed`).
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such record.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - an unknown filter value or an invalid cursor.
+ * @summary One page of recorded Stripe invoices
+ */
+export const listAdminBillingInvoices = async (params?: ListAdminBillingInvoicesParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminBillingInvoiceListResponse> => {
+
+  return apiFetch<AdminBillingInvoiceListResponse>(getListAdminBillingInvoicesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListAdminBillingInvoicesQueryKey = (params?: ListAdminBillingInvoicesParams,) => {
+    return [
+    `/api/v1/admin/billing/invoices`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListAdminBillingInvoicesQueryOptions = <TData = Awaited<ReturnType<typeof listAdminBillingInvoices>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(params?: ListAdminBillingInvoicesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingInvoices>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListAdminBillingInvoicesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listAdminBillingInvoices>>> = ({ signal }) => listAdminBillingInvoices(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingInvoices>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListAdminBillingInvoicesQueryResult = NonNullable<Awaited<ReturnType<typeof listAdminBillingInvoices>>>
+export type ListAdminBillingInvoicesQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useListAdminBillingInvoices<TData = Awaited<ReturnType<typeof listAdminBillingInvoices>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params: undefined |  ListAdminBillingInvoicesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingInvoices>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listAdminBillingInvoices>>,
+          TError,
+          Awaited<ReturnType<typeof listAdminBillingInvoices>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListAdminBillingInvoices<TData = Awaited<ReturnType<typeof listAdminBillingInvoices>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListAdminBillingInvoicesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingInvoices>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listAdminBillingInvoices>>,
+          TError,
+          Awaited<ReturnType<typeof listAdminBillingInvoices>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListAdminBillingInvoices<TData = Awaited<ReturnType<typeof listAdminBillingInvoices>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListAdminBillingInvoicesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingInvoices>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One page of recorded Stripe invoices
+ */
+
+export function useListAdminBillingInvoices<TData = Awaited<ReturnType<typeof listAdminBillingInvoices>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListAdminBillingInvoicesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingInvoices>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getListAdminBillingInvoicesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetAdminBillingOverviewUrl = (params?: GetAdminBillingOverviewParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/billing/overview?${stringifiedParams}` : `/api/v1/admin/billing/overview`
+}
+
+/**
+ * Needs `billing.read` and a key check. Counts by status and the gross amount paid of invoices paid in the last 30 days per currency, all of one mode; no MRR, ARR or revenue figure exists. Not recorded per load (counts only).
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such record.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - an unknown mode.
+ * @summary The billing overview of one Stripe mode
+ */
+export const getAdminBillingOverview = async (params?: GetAdminBillingOverviewParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminBillingOverviewResponse> => {
+
+  return apiFetch<AdminBillingOverviewResponse>(getGetAdminBillingOverviewUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminBillingOverviewQueryKey = (params?: GetAdminBillingOverviewParams,) => {
+    return [
+    `/api/v1/admin/billing/overview`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetAdminBillingOverviewQueryOptions = <TData = Awaited<ReturnType<typeof getAdminBillingOverview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(params?: GetAdminBillingOverviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingOverview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminBillingOverviewQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminBillingOverview>>> = ({ signal }) => getAdminBillingOverview(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingOverview>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminBillingOverviewQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminBillingOverview>>>
+export type GetAdminBillingOverviewQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useGetAdminBillingOverview<TData = Awaited<ReturnType<typeof getAdminBillingOverview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params: undefined |  GetAdminBillingOverviewParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingOverview>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminBillingOverview>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminBillingOverview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminBillingOverview<TData = Awaited<ReturnType<typeof getAdminBillingOverview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: GetAdminBillingOverviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingOverview>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminBillingOverview>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminBillingOverview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminBillingOverview<TData = Awaited<ReturnType<typeof getAdminBillingOverview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: GetAdminBillingOverviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingOverview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary The billing overview of one Stripe mode
+ */
+
+export function useGetAdminBillingOverview<TData = Awaited<ReturnType<typeof getAdminBillingOverview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: GetAdminBillingOverviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingOverview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminBillingOverviewQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getListAdminBillingPlansUrl = () => {
+
+
+
+
+  return `/api/v1/admin/billing/plans`
+}
+
+/**
+ * Needs `billing.read` and a key check. Every plan with every version as recorded, its prices and the modes each price is mapped to Stripe in. Read only.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such record.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * @summary The SaaS plan catalog
+ */
+export const listAdminBillingPlans = async ( options?: Parameters<typeof apiFetch>[1]): Promise<AdminBillingPlanListResponse> => {
+
+  return apiFetch<AdminBillingPlanListResponse>(getListAdminBillingPlansUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListAdminBillingPlansQueryKey = () => {
+    return [
+    `/api/v1/admin/billing/plans`
+    ] as const;
+    }
+
+
+export const getListAdminBillingPlansQueryOptions = <TData = Awaited<ReturnType<typeof listAdminBillingPlans>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingPlans>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListAdminBillingPlansQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listAdminBillingPlans>>> = ({ signal }) => listAdminBillingPlans({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingPlans>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListAdminBillingPlansQueryResult = NonNullable<Awaited<ReturnType<typeof listAdminBillingPlans>>>
+export type ListAdminBillingPlansQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useListAdminBillingPlans<TData = Awaited<ReturnType<typeof listAdminBillingPlans>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingPlans>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listAdminBillingPlans>>,
+          TError,
+          Awaited<ReturnType<typeof listAdminBillingPlans>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListAdminBillingPlans<TData = Awaited<ReturnType<typeof listAdminBillingPlans>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingPlans>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listAdminBillingPlans>>,
+          TError,
+          Awaited<ReturnType<typeof listAdminBillingPlans>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListAdminBillingPlans<TData = Awaited<ReturnType<typeof listAdminBillingPlans>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingPlans>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary The SaaS plan catalog
+ */
+
+export function useListAdminBillingPlans<TData = Awaited<ReturnType<typeof listAdminBillingPlans>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingPlans>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getListAdminBillingPlansQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetAdminBillingPlanUrl = (planKey: string,) => {
+
+
+
+
+  return `/api/v1/admin/billing/plans/${planKey}`
+}
+
+/**
+ * Needs `billing.read` and a key check. Every version with its prices and entitlements; nothing is recomputed from a newer version.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such record.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * @summary One plan's version history
+ */
+export const getAdminBillingPlan = async (planKey: string, options?: Parameters<typeof apiFetch>[1]): Promise<AdminBillingPlanResponse> => {
+
+  return apiFetch<AdminBillingPlanResponse>(getGetAdminBillingPlanUrl(planKey),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminBillingPlanQueryKey = (planKey: string,) => {
+    return [
+    `/api/v1/admin/billing/plans/${planKey}`
+    ] as const;
+    }
+
+
+export const getGetAdminBillingPlanQueryOptions = <TData = Awaited<ReturnType<typeof getAdminBillingPlan>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(planKey: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingPlan>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminBillingPlanQueryKey(planKey);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminBillingPlan>>> = ({ signal }) => getAdminBillingPlan(planKey, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: planKey !== null && planKey !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingPlan>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminBillingPlanQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminBillingPlan>>>
+export type GetAdminBillingPlanQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetAdminBillingPlan<TData = Awaited<ReturnType<typeof getAdminBillingPlan>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ planKey: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingPlan>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminBillingPlan>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminBillingPlan>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminBillingPlan<TData = Awaited<ReturnType<typeof getAdminBillingPlan>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ planKey: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingPlan>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminBillingPlan>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminBillingPlan>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminBillingPlan<TData = Awaited<ReturnType<typeof getAdminBillingPlan>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ planKey: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingPlan>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One plan's version history
+ */
+
+export function useGetAdminBillingPlan<TData = Awaited<ReturnType<typeof getAdminBillingPlan>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ planKey: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingPlan>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminBillingPlanQueryOptions(planKey,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetAdminBillingReconciliationUrl = (params?: GetAdminBillingReconciliationParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/billing/reconciliation?${stringifiedParams}` : `/api/v1/admin/billing/reconciliation`
+}
+
+/**
+ * Needs `billing.reconciliation.read` and a key check. Links by state, the webhook inbox and one page of discrepancies; recorded (`billing.reconciliation_read`). No reconcile, sync or replay action exists.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such record.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - an unknown mode or an invalid cursor.
+ * @summary Reconciliation of one Stripe mode
+ */
+export const getAdminBillingReconciliation = async (params?: GetAdminBillingReconciliationParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminBillingReconciliationResponse> => {
+
+  return apiFetch<AdminBillingReconciliationResponse>(getGetAdminBillingReconciliationUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminBillingReconciliationQueryKey = (params?: GetAdminBillingReconciliationParams,) => {
+    return [
+    `/api/v1/admin/billing/reconciliation`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetAdminBillingReconciliationQueryOptions = <TData = Awaited<ReturnType<typeof getAdminBillingReconciliation>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(params?: GetAdminBillingReconciliationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingReconciliation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminBillingReconciliationQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminBillingReconciliation>>> = ({ signal }) => getAdminBillingReconciliation(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingReconciliation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminBillingReconciliationQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminBillingReconciliation>>>
+export type GetAdminBillingReconciliationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useGetAdminBillingReconciliation<TData = Awaited<ReturnType<typeof getAdminBillingReconciliation>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params: undefined |  GetAdminBillingReconciliationParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingReconciliation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminBillingReconciliation>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminBillingReconciliation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminBillingReconciliation<TData = Awaited<ReturnType<typeof getAdminBillingReconciliation>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: GetAdminBillingReconciliationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingReconciliation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminBillingReconciliation>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminBillingReconciliation>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminBillingReconciliation<TData = Awaited<ReturnType<typeof getAdminBillingReconciliation>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: GetAdminBillingReconciliationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingReconciliation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Reconciliation of one Stripe mode
+ */
+
+export function useGetAdminBillingReconciliation<TData = Awaited<ReturnType<typeof getAdminBillingReconciliation>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: GetAdminBillingReconciliationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingReconciliation>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminBillingReconciliationQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getListAdminBillingSubscriptionsUrl = (params?: ListAdminBillingSubscriptionsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/billing/subscriptions?${stringifiedParams}` : `/api/v1/admin/billing/subscriptions`
+}
+
+/**
+ * Needs `billing.read` and a key check. One environment (`test`, `live`, or `none`: no provider record), newest request first. Every query is recorded (`billing.subscriptions_listed`).
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such record.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `validation_error` - an unknown filter value or an invalid cursor.
+ * @summary One page of gym SaaS subscriptions
+ */
+export const listAdminBillingSubscriptions = async (params?: ListAdminBillingSubscriptionsParams, options?: Parameters<typeof apiFetch>[1]): Promise<AdminBillingSubscriptionListResponse> => {
+
+  return apiFetch<AdminBillingSubscriptionListResponse>(getListAdminBillingSubscriptionsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListAdminBillingSubscriptionsQueryKey = (params?: ListAdminBillingSubscriptionsParams,) => {
+    return [
+    `/api/v1/admin/billing/subscriptions`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListAdminBillingSubscriptionsQueryOptions = <TData = Awaited<ReturnType<typeof listAdminBillingSubscriptions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(params?: ListAdminBillingSubscriptionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingSubscriptions>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListAdminBillingSubscriptionsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listAdminBillingSubscriptions>>> = ({ signal }) => listAdminBillingSubscriptions(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingSubscriptions>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListAdminBillingSubscriptionsQueryResult = NonNullable<Awaited<ReturnType<typeof listAdminBillingSubscriptions>>>
+export type ListAdminBillingSubscriptionsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>
+
+
+export function useListAdminBillingSubscriptions<TData = Awaited<ReturnType<typeof listAdminBillingSubscriptions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params: undefined |  ListAdminBillingSubscriptionsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingSubscriptions>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listAdminBillingSubscriptions>>,
+          TError,
+          Awaited<ReturnType<typeof listAdminBillingSubscriptions>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListAdminBillingSubscriptions<TData = Awaited<ReturnType<typeof listAdminBillingSubscriptions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListAdminBillingSubscriptionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingSubscriptions>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listAdminBillingSubscriptions>>,
+          TError,
+          Awaited<ReturnType<typeof listAdminBillingSubscriptions>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListAdminBillingSubscriptions<TData = Awaited<ReturnType<typeof listAdminBillingSubscriptions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListAdminBillingSubscriptionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingSubscriptions>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One page of gym SaaS subscriptions
+ */
+
+export function useListAdminBillingSubscriptions<TData = Awaited<ReturnType<typeof listAdminBillingSubscriptions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ValidationErrorResponse | InternalErrorResponse>>(
+ params?: ListAdminBillingSubscriptionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAdminBillingSubscriptions>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getListAdminBillingSubscriptionsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetAdminBillingSubscriptionUrl = (subscriptionId: string,) => {
+
+
+
+
+  return `/api/v1/admin/billing/subscriptions/${subscriptionId}`
+}
+
+/**
+ * Needs `billing.read` and a key check. Its periods, newest recorded invoices with refunds and disputes, and checkout states; recorded (`billing.subscription_viewed`). No action is offered.
+ *
+ * * `not_found` - not a usable operator (indistinguishable from an unknown route), or no such record.
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * @summary One gym SaaS subscription
+ */
+export const getAdminBillingSubscription = async (subscriptionId: string, options?: Parameters<typeof apiFetch>[1]): Promise<AdminBillingSubscriptionResponse> => {
+
+  return apiFetch<AdminBillingSubscriptionResponse>(getGetAdminBillingSubscriptionUrl(subscriptionId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminBillingSubscriptionQueryKey = (subscriptionId: string,) => {
+    return [
+    `/api/v1/admin/billing/subscriptions/${subscriptionId}`
+    ] as const;
+    }
+
+
+export const getGetAdminBillingSubscriptionQueryOptions = <TData = Awaited<ReturnType<typeof getAdminBillingSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(subscriptionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingSubscription>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminBillingSubscriptionQueryKey(subscriptionId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminBillingSubscription>>> = ({ signal }) => getAdminBillingSubscription(subscriptionId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: subscriptionId !== null && subscriptionId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingSubscription>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAdminBillingSubscriptionQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminBillingSubscription>>>
+export type GetAdminBillingSubscriptionQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>
+
+
+export function useGetAdminBillingSubscription<TData = Awaited<ReturnType<typeof getAdminBillingSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ subscriptionId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingSubscription>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminBillingSubscription>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminBillingSubscription>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminBillingSubscription<TData = Awaited<ReturnType<typeof getAdminBillingSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ subscriptionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingSubscription>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAdminBillingSubscription>>,
+          TError,
+          Awaited<ReturnType<typeof getAdminBillingSubscription>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAdminBillingSubscription<TData = Awaited<ReturnType<typeof getAdminBillingSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ subscriptionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingSubscription>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary One gym SaaS subscription
+ */
+
+export function useGetAdminBillingSubscription<TData = Awaited<ReturnType<typeof getAdminBillingSubscription>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | InternalErrorResponse>>(
+ subscriptionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdminBillingSubscription>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAdminBillingSubscriptionQueryOptions(subscriptionId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

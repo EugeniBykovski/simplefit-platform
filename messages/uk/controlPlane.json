@@ -1100,5 +1100,368 @@
         "retry": "Повтор недоступний: для жодного обробника немає схваленої політики повтору."
       }
     }
+  },
+  "billing": {
+    "metaTitle": "Огляд білінгу · Control Plane",
+    "breadcrumb": "Гроші / Білінг",
+    "title": "Огляд білінгу",
+    "loading": "Завантажуємо показники білінгу",
+    "observedAt": "Прочитано {time}",
+    "refresh": "Прочитати знову",
+    "stale": "Не вдалося прочитати знову. Ці показники на {time}, вони не актуальні.",
+    "unreachable": {
+      "title": "Не вдається отримати дані білінгу.",
+      "body": "Жоден показник не показується, доки вони не відповідять. Ніщо тут не означає, що платіж не пройшов."
+    },
+    "mode": {
+      "label": "Режим Stripe",
+      "test": "Тест",
+      "live": "Live",
+      "badge": {
+        "test": "Тестовий режим",
+        "live": "Режим live"
+      },
+      "configured": "Це середовище використовує режим «{mode}».",
+      "note": "Усі показники на цій сторінці лише з режиму «{mode}». Тестові та live-дані ніколи не додаються."
+    },
+    "integration": {
+      "ready": "Інтеграцію зі Stripe увімкнено",
+      "disabled": "Інтеграцію зі Stripe вимкнено: нічого не синхронізується, тому ці показники не можуть змінитися.",
+      "misconfigured": "Інтеграцію зі Stripe налаштовано неправильно: нічого не синхронізується."
+    },
+    "flows": {
+      "title": "Грошові потоки",
+      "note": "Це чотири окремі грошові потоки. Вони ніколи не додаються. Stripe Live не затверджено (SF-138).",
+      "connected": "Підключено",
+      "notConnected": "Не підключено",
+      "notReported": "Не відображається",
+      "saas": {
+        "title": "Підписки залів на SimpleFit",
+        "body": "Зали платять SimpleFit через Stripe (SF-102). Лише читання: статус, проблеми з оплатою та звірка."
+      },
+      "member": {
+        "title": "Підписки учасників залів",
+        "body": "Учасники платять своєму залу. Це гроші залу; через SimpleFit нічого не стягується."
+      },
+      "sponsor": {
+        "title": "Спонсорські угоди",
+        "body": "Їх немає. Комерційні умови не затверджено (D-SA23)."
+      },
+      "revenue": {
+        "title": "Виручка платформи",
+        "body": "Не відображається. Показник не з’явиться, доки немає затвердженого визначення та джерела."
+      }
+    },
+    "overview": {
+      "title": "Підписки залів",
+      "caption": "Підписки за статусом SimpleFit, режим «{mode}»",
+      "unrecorded": "{count, plural, one {# підписка без запису в провайдера (немає оплати й зв’язку в Stripe). Вона не входить у жоден режим.} few {# підписки без запису в провайдера (немає оплати й зв’язку в Stripe). Вони не входять у жоден режим.} many {# підписок без запису в провайдера (немає оплати й зв’язку в Stripe). Вони не входять у жоден режим.} other {# підписки без запису в провайдера (немає оплати й зв’язку в Stripe). Вони не входять у жоден режим.}}",
+      "providerTitle": "У Stripe",
+      "providerCaption": "Підписки Stripe за статусом у Stripe, за останнім читанням. «Активна» в Stripe — це не отриманий платіж.",
+      "issuesTitle": "Проблеми з оплатою",
+      "issuesNote": "Невдала спроба не остаточна: Stripe може повторити. Ніщо тут не потребує дій у Control Plane.",
+      "invoicesTitle": "Рахунки",
+      "invoicesCaption": "Записані рахунки Stripe за статусом",
+      "collectedTitle": "Отримано за рахунками Stripe",
+      "collectedNote": "Валова сплачена сума рахунків, оплачених з {from} по {to}, за валютами. Це не виручка: до повернень, спорів, комісій і податків. Валюти ніколи не додаються.",
+      "collectedEmpty": "За цей період не оплачено жодного рахунку.",
+      "invoiceCount": "{count, plural, one {# рахунок} few {# рахунки} many {# рахунків} other {# рахунку}}",
+      "refunded": "Повернуто наразі: {amount}",
+      "refundsTitle": "Повернення",
+      "disputesTitle": "Спори",
+      "disputesEmpty": "Спорів немає.",
+      "freshness": "Останнє читання Stripe {synced} · останній вебхук {webhook}",
+      "never": "ніколи",
+      "unavailableTitle": "Не відображається",
+      "unavailableNote": "Затвердженого визначення немає, тому показник не показується.",
+      "metrics": {
+        "mrr": "MRR",
+        "arr": "ARR",
+        "recognized_revenue": "Визнана виручка",
+        "net_revenue": "Чиста виручка",
+        "churn": "Відтік",
+        "ltv": "Довічна цінність клієнта",
+        "forecast": "Прогнози",
+        "fx_total": "Підсумки за всіма валютами"
+      }
+    },
+    "subscriptions": {
+      "title": "Підписки",
+      "caption": "Підписки залів, спочатку нові запити",
+      "loading": "Завантажуємо підписки",
+      "empty": "Відповідних підписок немає.",
+      "filters": {
+        "label": "Фільтр підписок",
+        "environment": "Записи",
+        "status": "Статус",
+        "plan": "Ключ тарифу",
+        "any": "Будь-який",
+        "apply": "Застосувати"
+      },
+      "columns": {
+        "gym": "Зал",
+        "plan": "Тариф",
+        "price": "Узгоджена ціна",
+        "status": "Статус",
+        "stripe": "У Stripe",
+        "reconciliation": "Звірка",
+        "requested": "Запитано"
+      },
+      "open": "Відкрити {gym}",
+      "planVersion": "{name} · v{version}",
+      "noStripe": "—",
+      "pages": {
+        "label": "Сторінки підписок",
+        "previous": "Назад",
+        "next": "Далі",
+        "page": "Сторінка {page}"
+      }
+    },
+    "detail": {
+      "title": "Підписка",
+      "loading": "Завантажуємо підписку",
+      "notFound": "Такої підписки немає.",
+      "close": "Закрити",
+      "lifecycle": "Життєвий цикл",
+      "requested": "Запитано",
+      "activated": "Активовано",
+      "period": "Оплачений період",
+      "cancellationEffective": "Закінчується",
+      "ended": "Завершено",
+      "cancelReason": "Причина",
+      "atStripe": "У Stripe",
+      "stripePeriod": "Поточний період у Stripe",
+      "cancelAtPeriodEnd": "Скасування наприкінці періоду в Stripe",
+      "agreed": "Узгоджений тариф і ціна",
+      "agreedNote": "Версія та ціна, на які погодився зал. Нова версія тарифу їх ніколи не змінює.",
+      "periods": "Оплачені періоди",
+      "periodsEmpty": "Оплачених періодів немає: нічого не підтверджено.",
+      "periodsNote": "Лише за підтвердженим оплаченим рахунком.",
+      "invoices": "Рахунки",
+      "invoicesEmpty": "Рахунків не записано.",
+      "invoiceNumber": "Рахунок {number}",
+      "invoiceDraft": "Чернетка рахунку",
+      "paidAt": "Оплачено {time}",
+      "issuedAt": "Виставлено {time}",
+      "attempts": "{count, plural, one {# спроба} few {# спроби} many {# спроб} other {# спроби}}",
+      "nextAttempt": "Stripe повторить {time}",
+      "refunds": "Повернення",
+      "disputes": "Спори",
+      "disputed": "Оскаржено (це не повернення)",
+      "checkouts": "Сторінки оплати",
+      "checkoutsEmpty": "Оплат немає.",
+      "checkoutLine": "{mode} · {status} · створено {time}",
+      "noActions": "Тут немає повернень, скасувань, повторів і зміни ціни. Повернення залишаються перевірюваною операцією поза Control Plane."
+    },
+    "reconciliation": {
+      "title": "Звірка",
+      "caption": "Як дані SimpleFit співвідносяться зі Stripe, режим «{mode}»",
+      "loading": "Завантажуємо звірку",
+      "noAccess": "Для звірки потрібен доступ до звірки.",
+      "note": "Запусків звірки немає. Кожен зв’язок підписки зі Stripe зберігає час останнього читання Stripe і знайдене розходження. Ніщо тут не запускає синхронізацію.",
+      "lastRead": "Останнє читання {time} · найдавніше {oldest}",
+      "webhooks": "Вхідні вебхуки",
+      "webhooksCaption": "Події Stripe з {time} за статусом обробки",
+      "backlog": "{count, plural, one {# подія чекає на обробку.} few {# події чекають на обробку.} many {# подій чекають на обробку.} other {# події чекають на обробку.}}",
+      "lastWebhook": "Остання подія {time}",
+      "failedTitle": "Невдалі події",
+      "failedEmpty": "Невдалих подій немає.",
+      "failedNote": "Лише тип і результат. Вміст ніколи не зберігається; звідси нічого не відтворюється повторно.",
+      "discrepancies": "Розходження",
+      "discrepanciesCaption": "Підписки, останнє читання Stripe для яких не вдалося застосувати",
+      "discrepanciesEmpty": "Під час останніх читань розходжень не записано. Про підписки, які ніколи не читалися, це нічого не каже.",
+      "columns": {
+        "gym": "Зал",
+        "discrepancy": "Розходження",
+        "status": "SimpleFit",
+        "stripe": "У Stripe",
+        "read": "Прочитано"
+      },
+      "eventColumns": {
+        "type": "Подія",
+        "outcome": "Результат",
+        "attempts": "Спроби",
+        "received": "Отримано"
+      }
+    },
+    "invoices": {
+      "metaTitle": "Рахунки Stripe · Control Plane",
+      "breadcrumb": "Гроші / Транзакції",
+      "title": "Рахунки Stripe",
+      "caption": "Записані рахунки Stripe за підписками залів, спочатку нові",
+      "loading": "Завантажуємо рахунки",
+      "empty": "Відповідних рахунків немає.",
+      "intro": "Рахунки залів, які платять SimpleFit, за останнім читанням зі Stripe. Суми — дані Stripe, кожна у своїй валюті.",
+      "filters": {
+        "label": "Фільтр рахунків",
+        "status": "Статус",
+        "issue": "Проблема з оплатою",
+        "currency": "Валюта (код ISO)",
+        "any": "Будь-який"
+      },
+      "columns": {
+        "invoice": "Рахунок",
+        "gym": "Зал",
+        "status": "Статус",
+        "total": "Разом",
+        "paid": "Оплачено",
+        "refunded": "Повернуто",
+        "issued": "Виставлено",
+        "issue": "Проблема"
+      },
+      "noNumber": "Не завершено",
+      "noRefunds": "Повернення тут недоступні. Вони залишаються перевірюваною операцією поза Control Plane."
+    },
+    "plans": {
+      "metaTitle": "Тарифи · Control Plane",
+      "breadcrumb": "Гроші / Тарифи",
+      "title": "Тарифи",
+      "caption": "Тарифи SimpleFit і кожна версія у записаному вигляді",
+      "loading": "Завантажуємо тарифи",
+      "empty": "Тарифів поки немає.",
+      "intro": "Лише читання. Тарифи публікуються із затвердженням поза Control Plane; тут не можна змінити ціну, версію чи право доступу.",
+      "current": "Поточна: v{version}",
+      "noCurrent": "Немає опублікованої версії",
+      "versions": "{count, plural, one {# версія} few {# версії} many {# версій} other {# версії}}",
+      "history": "Історія версій",
+      "columns": {
+        "version": "Версія",
+        "status": "Статус",
+        "prices": "Ціни",
+        "source": "Джерело ціни",
+        "published": "Опубліковано"
+      },
+      "mapped": "Ціна Stripe у режимах: {modes}",
+      "notMapped": "Немає ціни Stripe",
+      "trial": "Запропонований пробний період: {days} дн. (не застосовується)",
+      "approval": "Затвердження {reference}",
+      "entitlements": "Права доступу",
+      "entitlementsEmpty": "Прав доступу немає.",
+      "limit": "ліміт {limit}",
+      "notFound": "Такого тарифу немає.",
+      "back": "Усі тарифи"
+    },
+    "minorUnits": "{minor} мін. одиниць {currency}",
+    "interval": {
+      "month": "на місяць",
+      "year": "на рік"
+    },
+    "quote": "За запитом",
+    "environment": {
+      "test": "Тестовий режим",
+      "live": "Режим live",
+      "none": "Немає запису в провайдера"
+    },
+    "subscriptionStatus": {
+      "pending_activation": "Очікує активації",
+      "active": "Активна",
+      "cancellation_scheduled": "Завершиться наприкінці періоду",
+      "cancelled": "Скасована",
+      "expired": "Закінчилася"
+    },
+    "providerStatus": {
+      "incomplete": "Не завершена",
+      "incomplete_expired": "Не завершена, закінчилася",
+      "trialing": "Пробний період",
+      "active": "Активна",
+      "past_due": "Прострочена",
+      "canceled": "Скасована",
+      "unpaid": "Не оплачена",
+      "paused": "Призупинена"
+    },
+    "invoiceStatus": {
+      "draft": "Чернетка",
+      "open": "Відкритий",
+      "paid": "Оплачений",
+      "uncollectible": "Безнадійний",
+      "void": "Анульований"
+    },
+    "paymentStatus": {
+      "requires_action": "Потрібна дія клієнта",
+      "requires_payment_method": "Остання спроба не вдалася",
+      "processing": "Обробляється",
+      "succeeded": "Успішно",
+      "canceled": "Скасовано"
+    },
+    "issue": {
+      "any": "Будь-яка проблема",
+      "payment_failed": "Остання спроба не вдалася",
+      "action_required": "Потрібна дія клієнта",
+      "uncollectible": "Безнадійний"
+    },
+    "reconciliationState": {
+      "in_sync": "Без розходжень під час останнього читання",
+      "stale": "Не читалася понад 6 годин",
+      "mismatch": "Розходження",
+      "not_linked": "Чекає зв’язку зі Stripe",
+      "not_evaluated": "Не звірялася"
+    },
+    "reconciliationCount": {
+      "linked": "Пов’язані",
+      "in_sync": "Без розходжень",
+      "stale": "Застарілі",
+      "mismatch": "Розходження",
+      "not_linked": "Чекають зв’язку"
+    },
+    "discrepancy": {
+      "customer_mismatch": "Інший клієнт у Stripe",
+      "price_mismatch": "Інша ціна в Stripe",
+      "ended_locally_live_at_provider": "Завершена тут, активна в Stripe",
+      "invoice_subscription_mismatch": "Рахунок іншої підписки",
+      "invoice_currency_mismatch": "Рахунок в іншій валюті",
+      "invoice_amount_mismatch": "Рахунок на іншу суму",
+      "invoice_period_over": "Період рахунку вже минув",
+      "invoice_period_missing": "Рахунок без періоду",
+      "invoice_not_paid": "Рахунок не оплачено",
+      "invalid_evidence": "Підтвердження не прийнято",
+      "other": "Інше ({code})"
+    },
+    "refundStatus": {
+      "requested": "Запитано",
+      "pending": "Очікує",
+      "requires_action": "Потрібна дія",
+      "succeeded": "Успішно",
+      "failed": "Не вдалося",
+      "canceled": "Скасовано"
+    },
+    "refundOrigin": {
+      "operator": "Запитано оператором",
+      "provider": "Зроблено в Stripe"
+    },
+    "webhookStatus": {
+      "received": "Очікують",
+      "processed": "Оброблені",
+      "ignored": "Пропущені",
+      "failed": "Невдалі"
+    },
+    "checkoutStatus": {
+      "creating": "Створюється",
+      "open": "Відкрита",
+      "completed": "Завершена",
+      "expired": "Закінчилася",
+      "failed": "Не вдалася"
+    },
+    "periodSource": {
+      "activation": "Активація",
+      "renewal": "Продовження"
+    },
+    "cancelReason": {
+      "requested_by_gym": "На запит залу",
+      "gym_closed": "Зал закрито",
+      "provider_initiated": "Завершено в Stripe"
+    },
+    "versionStatus": {
+      "draft": "Чернетка",
+      "archived": "В архіві",
+      "published": "Опублікована",
+      "superseded": "Замінена",
+      "retired": "Знята"
+    },
+    "priceSource": {
+      "approved_design": "Затверджений дизайн",
+      "product_decision": "Продуктове рішення",
+      "provisional": "Попередня (не продається в live)"
+    },
+    "noAccess": "Для білінгу потрібен доступ до білінгу."
   }
 }
