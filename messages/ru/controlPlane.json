@@ -1100,5 +1100,368 @@
         "retry": "Повтор недоступен: ни для одного обработчика нет одобренной политики повтора."
       }
     }
+  },
+  "billing": {
+    "metaTitle": "Обзор биллинга · Control Plane",
+    "breadcrumb": "Деньги / Биллинг",
+    "title": "Обзор биллинга",
+    "loading": "Загружаем показатели биллинга",
+    "observedAt": "Прочитано {time}",
+    "refresh": "Прочитать снова",
+    "stale": "Не удалось прочитать снова. Эти показатели на {time}, они не актуальны.",
+    "unreachable": {
+      "title": "Не удаётся получить данные биллинга.",
+      "body": "Ни один показатель не показывается, пока они не ответят. Ничто здесь не означает, что платёж не прошёл."
+    },
+    "mode": {
+      "label": "Режим Stripe",
+      "test": "Тест",
+      "live": "Live",
+      "badge": {
+        "test": "Тестовый режим",
+        "live": "Режим live"
+      },
+      "configured": "Эта среда использует режим «{mode}».",
+      "note": "Все показатели на этой странице только из режима «{mode}». Тестовые и live-данные никогда не складываются."
+    },
+    "integration": {
+      "ready": "Интеграция со Stripe включена",
+      "disabled": "Интеграция со Stripe выключена: ничего не синхронизируется, поэтому эти показатели не могут измениться.",
+      "misconfigured": "Интеграция со Stripe настроена неверно: ничего не синхронизируется."
+    },
+    "flows": {
+      "title": "Денежные потоки",
+      "note": "Это четыре отдельных денежных потока. Они никогда не складываются. Stripe Live не утверждён (SF-138).",
+      "connected": "Подключено",
+      "notConnected": "Не подключено",
+      "notReported": "Не отражается",
+      "saas": {
+        "title": "Подписки залов на SimpleFit",
+        "body": "Залы платят SimpleFit через Stripe (SF-102). Только чтение: статус, проблемы с оплатой и сверка."
+      },
+      "member": {
+        "title": "Подписки участников залов",
+        "body": "Участники платят своему залу. Это деньги зала; через SimpleFit ничего не взимается."
+      },
+      "sponsor": {
+        "title": "Спонсорские соглашения",
+        "body": "Их нет. Коммерческие условия не утверждены (D-SA23)."
+      },
+      "revenue": {
+        "title": "Выручка платформы",
+        "body": "Не отражается. Показатель не появится, пока нет утверждённого определения и источника."
+      }
+    },
+    "overview": {
+      "title": "Подписки залов",
+      "caption": "Подписки по статусу SimpleFit, режим «{mode}»",
+      "unrecorded": "{count, plural, one {# подписка без записи у провайдера (нет оплаты и связи в Stripe). Она не входит ни в один режим.} few {# подписки без записи у провайдера (нет оплаты и связи в Stripe). Они не входят ни в один режим.} many {# подписок без записи у провайдера (нет оплаты и связи в Stripe). Они не входят ни в один режим.} other {# подписки без записи у провайдера (нет оплаты и связи в Stripe). Они не входят ни в один режим.}}",
+      "providerTitle": "В Stripe",
+      "providerCaption": "Подписки Stripe по статусу в Stripe, по последнему чтению. «Активна» в Stripe — это не полученный платёж.",
+      "issuesTitle": "Проблемы с оплатой",
+      "issuesNote": "Неудачная попытка не окончательна: Stripe может повторить. Ничто здесь не требует действий в Control Plane.",
+      "invoicesTitle": "Счета",
+      "invoicesCaption": "Записанные счета Stripe по статусу",
+      "collectedTitle": "Получено по счетам Stripe",
+      "collectedNote": "Валовая оплаченная сумма счетов, оплаченных с {from} по {to}, по валютам. Это не выручка: до возвратов, споров, комиссий и налогов. Валюты никогда не складываются.",
+      "collectedEmpty": "За этот период не оплачен ни один счёт.",
+      "invoiceCount": "{count, plural, one {# счёт} few {# счёта} many {# счетов} other {# счёта}}",
+      "refunded": "Возвращено на сейчас: {amount}",
+      "refundsTitle": "Возвраты",
+      "disputesTitle": "Споры",
+      "disputesEmpty": "Споров нет.",
+      "freshness": "Последнее чтение Stripe {synced} · последний вебхук {webhook}",
+      "never": "никогда",
+      "unavailableTitle": "Не отражается",
+      "unavailableNote": "Утверждённого определения нет, поэтому показатель не показывается.",
+      "metrics": {
+        "mrr": "MRR",
+        "arr": "ARR",
+        "recognized_revenue": "Признанная выручка",
+        "net_revenue": "Чистая выручка",
+        "churn": "Отток",
+        "ltv": "Пожизненная ценность клиента",
+        "forecast": "Прогнозы",
+        "fx_total": "Итоги по всем валютам"
+      }
+    },
+    "subscriptions": {
+      "title": "Подписки",
+      "caption": "Подписки залов, сначала новые запросы",
+      "loading": "Загружаем подписки",
+      "empty": "Подходящих подписок нет.",
+      "filters": {
+        "label": "Фильтр подписок",
+        "environment": "Записи",
+        "status": "Статус",
+        "plan": "Ключ тарифа",
+        "any": "Любой",
+        "apply": "Применить"
+      },
+      "columns": {
+        "gym": "Зал",
+        "plan": "Тариф",
+        "price": "Согласованная цена",
+        "status": "Статус",
+        "stripe": "В Stripe",
+        "reconciliation": "Сверка",
+        "requested": "Запрошено"
+      },
+      "open": "Открыть {gym}",
+      "planVersion": "{name} · v{version}",
+      "noStripe": "—",
+      "pages": {
+        "label": "Страницы подписок",
+        "previous": "Назад",
+        "next": "Далее",
+        "page": "Страница {page}"
+      }
+    },
+    "detail": {
+      "title": "Подписка",
+      "loading": "Загружаем подписку",
+      "notFound": "Такой подписки нет.",
+      "close": "Закрыть",
+      "lifecycle": "Жизненный цикл",
+      "requested": "Запрошена",
+      "activated": "Активирована",
+      "period": "Оплаченный период",
+      "cancellationEffective": "Заканчивается",
+      "ended": "Завершена",
+      "cancelReason": "Причина",
+      "atStripe": "В Stripe",
+      "stripePeriod": "Текущий период в Stripe",
+      "cancelAtPeriodEnd": "Отмена в конце периода в Stripe",
+      "agreed": "Согласованный тариф и цена",
+      "agreedNote": "Версия и цена, на которые согласился зал. Новая версия тарифа их никогда не меняет.",
+      "periods": "Оплаченные периоды",
+      "periodsEmpty": "Оплаченных периодов нет: ничего не подтверждено.",
+      "periodsNote": "Только по подтверждённому оплаченному счёту.",
+      "invoices": "Счета",
+      "invoicesEmpty": "Счетов не записано.",
+      "invoiceNumber": "Счёт {number}",
+      "invoiceDraft": "Черновик счёта",
+      "paidAt": "Оплачен {time}",
+      "issuedAt": "Выставлен {time}",
+      "attempts": "{count, plural, one {# попытка} few {# попытки} many {# попыток} other {# попытки}}",
+      "nextAttempt": "Stripe повторит {time}",
+      "refunds": "Возвраты",
+      "disputes": "Споры",
+      "disputed": "Оспорен (это не возврат)",
+      "checkouts": "Страницы оплаты",
+      "checkoutsEmpty": "Оплат нет.",
+      "checkoutLine": "{mode} · {status} · создана {time}",
+      "noActions": "Здесь нет возвратов, отмен, повторов и изменения цены. Возвраты остаются проверяемой операцией вне Control Plane."
+    },
+    "reconciliation": {
+      "title": "Сверка",
+      "caption": "Как данные SimpleFit соотносятся со Stripe, режим «{mode}»",
+      "loading": "Загружаем сверку",
+      "noAccess": "Для сверки нужен доступ к сверке.",
+      "note": "Запусков сверки нет. Каждая связь подписки со Stripe хранит время последнего чтения Stripe и найденное расхождение. Ничто здесь не запускает синхронизацию.",
+      "lastRead": "Последнее чтение {time} · самое давнее {oldest}",
+      "webhooks": "Входящие вебхуки",
+      "webhooksCaption": "События Stripe с {time} по статусу обработки",
+      "backlog": "{count, plural, one {# событие ждёт обработки.} few {# события ждут обработки.} many {# событий ждут обработки.} other {# события ждут обработки.}}",
+      "lastWebhook": "Последнее событие {time}",
+      "failedTitle": "Неудачные события",
+      "failedEmpty": "Неудачных событий нет.",
+      "failedNote": "Только тип и результат. Содержимое никогда не хранится; отсюда ничего не воспроизводится повторно.",
+      "discrepancies": "Расхождения",
+      "discrepanciesCaption": "Подписки, последнее чтение Stripe по которым не удалось применить",
+      "discrepanciesEmpty": "При последних чтениях расхождений не записано. О подписках, которые ни разу не читались, это ничего не говорит.",
+      "columns": {
+        "gym": "Зал",
+        "discrepancy": "Расхождение",
+        "status": "SimpleFit",
+        "stripe": "В Stripe",
+        "read": "Прочитано"
+      },
+      "eventColumns": {
+        "type": "Событие",
+        "outcome": "Результат",
+        "attempts": "Попытки",
+        "received": "Получено"
+      }
+    },
+    "invoices": {
+      "metaTitle": "Счета Stripe · Control Plane",
+      "breadcrumb": "Деньги / Транзакции",
+      "title": "Счета Stripe",
+      "caption": "Записанные счета Stripe по подпискам залов, сначала новые",
+      "loading": "Загружаем счета",
+      "empty": "Подходящих счетов нет.",
+      "intro": "Счета залов, которые платят SimpleFit, по последнему чтению из Stripe. Суммы — данные Stripe, каждая в своей валюте.",
+      "filters": {
+        "label": "Фильтр счетов",
+        "status": "Статус",
+        "issue": "Проблема с оплатой",
+        "currency": "Валюта (код ISO)",
+        "any": "Любой"
+      },
+      "columns": {
+        "invoice": "Счёт",
+        "gym": "Зал",
+        "status": "Статус",
+        "total": "Итого",
+        "paid": "Оплачено",
+        "refunded": "Возвращено",
+        "issued": "Выставлен",
+        "issue": "Проблема"
+      },
+      "noNumber": "Не завершён",
+      "noRefunds": "Возвраты здесь недоступны. Они остаются проверяемой операцией вне Control Plane."
+    },
+    "plans": {
+      "metaTitle": "Тарифы · Control Plane",
+      "breadcrumb": "Деньги / Тарифы",
+      "title": "Тарифы",
+      "caption": "Тарифы SimpleFit и каждая версия в записанном виде",
+      "loading": "Загружаем тарифы",
+      "empty": "Тарифов пока нет.",
+      "intro": "Только чтение. Тарифы публикуются с утверждением вне Control Plane; здесь нельзя изменить цену, версию или право доступа.",
+      "current": "Текущая: v{version}",
+      "noCurrent": "Нет опубликованной версии",
+      "versions": "{count, plural, one {# версия} few {# версии} many {# версий} other {# версии}}",
+      "history": "История версий",
+      "columns": {
+        "version": "Версия",
+        "status": "Статус",
+        "prices": "Цены",
+        "source": "Источник цены",
+        "published": "Опубликована"
+      },
+      "mapped": "Цена Stripe в режимах: {modes}",
+      "notMapped": "Нет цены Stripe",
+      "trial": "Предложенный пробный период: {days} дн. (не применяется)",
+      "approval": "Утверждение {reference}",
+      "entitlements": "Права доступа",
+      "entitlementsEmpty": "Прав доступа нет.",
+      "limit": "лимит {limit}",
+      "notFound": "Такого тарифа нет.",
+      "back": "Все тарифы"
+    },
+    "minorUnits": "{minor} мин. единиц {currency}",
+    "interval": {
+      "month": "в месяц",
+      "year": "в год"
+    },
+    "quote": "По запросу",
+    "environment": {
+      "test": "Тестовый режим",
+      "live": "Режим live",
+      "none": "Нет записи у провайдера"
+    },
+    "subscriptionStatus": {
+      "pending_activation": "Ожидает активации",
+      "active": "Активна",
+      "cancellation_scheduled": "Завершится в конце периода",
+      "cancelled": "Отменена",
+      "expired": "Истекла"
+    },
+    "providerStatus": {
+      "incomplete": "Не завершена",
+      "incomplete_expired": "Не завершена, истекла",
+      "trialing": "Пробный период",
+      "active": "Активна",
+      "past_due": "Просрочена",
+      "canceled": "Отменена",
+      "unpaid": "Не оплачена",
+      "paused": "Приостановлена"
+    },
+    "invoiceStatus": {
+      "draft": "Черновик",
+      "open": "Открыт",
+      "paid": "Оплачен",
+      "uncollectible": "Безнадёжный",
+      "void": "Аннулирован"
+    },
+    "paymentStatus": {
+      "requires_action": "Нужно действие клиента",
+      "requires_payment_method": "Последняя попытка не удалась",
+      "processing": "Обрабатывается",
+      "succeeded": "Успешно",
+      "canceled": "Отменён"
+    },
+    "issue": {
+      "any": "Любая проблема",
+      "payment_failed": "Последняя попытка не удалась",
+      "action_required": "Нужно действие клиента",
+      "uncollectible": "Безнадёжный"
+    },
+    "reconciliationState": {
+      "in_sync": "Без расхождений при последнем чтении",
+      "stale": "Не читалась более 6 часов",
+      "mismatch": "Расхождение",
+      "not_linked": "Ждёт связи со Stripe",
+      "not_evaluated": "Не сверялась"
+    },
+    "reconciliationCount": {
+      "linked": "Связаны",
+      "in_sync": "Без расхождений",
+      "stale": "Устарели",
+      "mismatch": "Расхождение",
+      "not_linked": "Ждут связи"
+    },
+    "discrepancy": {
+      "customer_mismatch": "Другой клиент в Stripe",
+      "price_mismatch": "Другая цена в Stripe",
+      "ended_locally_live_at_provider": "Завершена здесь, активна в Stripe",
+      "invoice_subscription_mismatch": "Счёт другой подписки",
+      "invoice_currency_mismatch": "Счёт в другой валюте",
+      "invoice_amount_mismatch": "Счёт на другую сумму",
+      "invoice_period_over": "Период счёта уже прошёл",
+      "invoice_period_missing": "Счёт без периода",
+      "invoice_not_paid": "Счёт не оплачен",
+      "invalid_evidence": "Подтверждение не принято",
+      "other": "Другое ({code})"
+    },
+    "refundStatus": {
+      "requested": "Запрошен",
+      "pending": "Ожидает",
+      "requires_action": "Нужно действие",
+      "succeeded": "Успешно",
+      "failed": "Не удался",
+      "canceled": "Отменён"
+    },
+    "refundOrigin": {
+      "operator": "Запрошен оператором",
+      "provider": "Сделан в Stripe"
+    },
+    "webhookStatus": {
+      "received": "Ожидают",
+      "processed": "Обработаны",
+      "ignored": "Пропущены",
+      "failed": "Не удались"
+    },
+    "checkoutStatus": {
+      "creating": "Создаётся",
+      "open": "Открыта",
+      "completed": "Завершена",
+      "expired": "Истекла",
+      "failed": "Не удалась"
+    },
+    "periodSource": {
+      "activation": "Активация",
+      "renewal": "Продление"
+    },
+    "cancelReason": {
+      "requested_by_gym": "По запросу зала",
+      "gym_closed": "Зал закрыт",
+      "provider_initiated": "Завершена в Stripe"
+    },
+    "versionStatus": {
+      "draft": "Черновик",
+      "archived": "В архиве",
+      "published": "Опубликована",
+      "superseded": "Заменена",
+      "retired": "Снята"
+    },
+    "priceSource": {
+      "approved_design": "Утверждённый дизайн",
+      "product_decision": "Продуктовое решение",
+      "provisional": "Предварительная (не продаётся в live)"
+    },
+    "noAccess": "Для биллинга нужен доступ к биллингу."
   }
 }

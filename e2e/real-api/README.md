@@ -198,6 +198,13 @@ on the local S3 stand-in (`fixtures/s3-stub.mjs`, signatures unchecked) for both
 `fixtures/sponsor-review-seed.exs`; claim, approve, reject, request changes, suspend and reinstate run through the UI
 and are checked in the database, as are a stale second tab and an approval whose answer is lost.
 
+`control-plane-billing.spec.ts` (SF-127) runs on the same setup (a fresh database each run). Its world comes
+from `fixtures/billing-seed.exs`: gyms, a published plan and subscription requests through the real contexts, one
+activation through the Stripe provider path (trusted in that process only), and the Stripe side (links, invoices,
+a failed webhook event) recorded as rows. No Stripe API, real or mocked, runs in this suite; Stripe-backed flows are
+covered by the API's Stripe-fake tests. Every expected figure is read back with SQL; SQL also revokes the billing
+grants (the client's answer is under test).
+
 `control-plane-overview.spec.ts` (SF-121) runs on the same setup (a fresh database each run) and
 checks every number the overview shows against SQL written from the metric catalog
 (simplefit-api `docs/architecture/admin-overview-metrics.md`).

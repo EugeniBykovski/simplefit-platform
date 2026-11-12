@@ -1100,5 +1100,368 @@
         "retry": "Ponowienie jest niedostępne: żadna obsługa nie ma zatwierdzonych zasad ponawiania."
       }
     }
+  },
+  "billing": {
+    "metaTitle": "Wgląd w rozliczenia · Control Plane",
+    "breadcrumb": "Pieniądze / Rozliczenia",
+    "title": "Wgląd w rozliczenia",
+    "loading": "Wczytywanie danych rozliczeniowych",
+    "observedAt": "Odczytano {time}",
+    "refresh": "Odczytaj ponownie",
+    "stale": "Nie udało się odczytać ponownie. Te dane pochodzą z {time} i nie są aktualne.",
+    "unreachable": {
+      "title": "Nie możemy połączyć się z danymi rozliczeń.",
+      "body": "Żadna liczba nie jest pokazywana, dopóki nie odpowiedzą. Nic tutaj nie oznacza, że płatność się nie powiodła."
+    },
+    "mode": {
+      "label": "Tryb Stripe",
+      "test": "Test",
+      "live": "Live",
+      "badge": {
+        "test": "Tryb testowy",
+        "live": "Tryb live"
+      },
+      "configured": "To wdrożenie używa trybu {mode}.",
+      "note": "Każda liczba na tej stronie pochodzi wyłącznie z trybu {mode}. Dane testowe i live nigdy nie są sumowane."
+    },
+    "integration": {
+      "ready": "Integracja ze Stripe włączona",
+      "disabled": "Integracja ze Stripe wyłączona: nic nie jest synchronizowane, więc te liczby nie mogą się zmienić.",
+      "misconfigured": "Integracja ze Stripe źle skonfigurowana: nic nie jest synchronizowane."
+    },
+    "flows": {
+      "title": "Przepływy pieniędzy",
+      "note": "To cztery oddzielne przepływy pieniędzy. Nigdy nie są sumowane. Stripe Live nie jest zatwierdzony (SF-138).",
+      "connected": "Połączony",
+      "notConnected": "Niepołączony",
+      "notReported": "Nieraportowany",
+      "saas": {
+        "title": "Subskrypcje SimpleFit klubów",
+        "body": "Kluby płacą SimpleFit przez Stripe (SF-102). Tylko odczyt: status, problemy z płatnościami i uzgadnianie."
+      },
+      "member": {
+        "title": "Subskrypcje członków klubów",
+        "body": "Członkowie płacą swojemu klubowi. To pieniądze klubu; nic nie jest pobierane przez SimpleFit."
+      },
+      "sponsor": {
+        "title": "Umowy sponsorskie",
+        "body": "Nie ma żadnych. Warunki handlowe nie są zatwierdzone (D-SA23)."
+      },
+      "revenue": {
+        "title": "Przychody platformy",
+        "body": "Nieraportowane. Żadna liczba nie jest pokazywana, dopóki nie istnieje zatwierdzona definicja i źródło."
+      }
+    },
+    "overview": {
+      "title": "Subskrypcje klubów",
+      "caption": "Subskrypcje według statusu SimpleFit, w trybie {mode}",
+      "unrecorded": "{count, plural, one {# subskrypcja nie ma zapisu u dostawcy (brak płatności i powiązania w Stripe). Nie jest liczona w żadnym trybie.} few {# subskrypcje nie mają zapisu u dostawcy (brak płatności i powiązania w Stripe). Nie są liczone w żadnym trybie.} many {# subskrypcji nie ma zapisu u dostawcy (brak płatności i powiązania w Stripe). Nie są liczone w żadnym trybie.} other {# subskrypcji nie ma zapisu u dostawcy (brak płatności i powiązania w Stripe). Nie są liczone w żadnym trybie.}}",
+      "providerTitle": "W Stripe",
+      "providerCaption": "Subskrypcje Stripe według statusu w Stripe, wg ostatniego odczytu. „Aktywna” w Stripe to nie pobrana płatność.",
+      "issuesTitle": "Problemy z płatnościami",
+      "issuesNote": "Nieudana próba nie jest ostateczna: Stripe może spróbować ponownie. Nic tutaj nie wymaga działania w Control Plane.",
+      "invoicesTitle": "Faktury",
+      "invoicesCaption": "Zapisane faktury Stripe według statusu",
+      "collectedTitle": "Pobrane przez faktury Stripe",
+      "collectedNote": "Kwota brutto zapłacona za faktury opłacone od {from} do {to}, według waluty. To nie przychód: przed zwrotami, sporami, opłatami i podatkami. Waluty nigdy nie są sumowane.",
+      "collectedEmpty": "W tym okresie nie opłacono żadnej faktury.",
+      "invoiceCount": "{count, plural, one {# faktura} few {# faktury} many {# faktur} other {# faktury}}",
+      "refunded": "Dotychczas zwrócono: {amount}",
+      "refundsTitle": "Zwroty",
+      "disputesTitle": "Spory",
+      "disputesEmpty": "Brak sporów.",
+      "freshness": "Ostatni odczyt ze Stripe {synced} · ostatni webhook {webhook}",
+      "never": "nigdy",
+      "unavailableTitle": "Nieraportowane",
+      "unavailableNote": "Nie ma zatwierdzonej definicji, więc żadna liczba nie jest pokazywana.",
+      "metrics": {
+        "mrr": "MRR",
+        "arr": "ARR",
+        "recognized_revenue": "Przychód rozpoznany",
+        "net_revenue": "Przychód netto",
+        "churn": "Odpływ klientów",
+        "ltv": "Wartość klienta w czasie",
+        "forecast": "Prognozy",
+        "fx_total": "Sumy w różnych walutach"
+      }
+    },
+    "subscriptions": {
+      "title": "Subskrypcje",
+      "caption": "Subskrypcje klubów, od najnowszego zgłoszenia",
+      "loading": "Wczytywanie subskrypcji",
+      "empty": "Brak pasujących subskrypcji.",
+      "filters": {
+        "label": "Filtruj subskrypcje",
+        "environment": "Zapisy",
+        "status": "Status",
+        "plan": "Klucz planu",
+        "any": "Dowolny",
+        "apply": "Zastosuj"
+      },
+      "columns": {
+        "gym": "Klub",
+        "plan": "Plan",
+        "price": "Uzgodniona cena",
+        "status": "Status",
+        "stripe": "W Stripe",
+        "reconciliation": "Uzgadnianie",
+        "requested": "Zgłoszono"
+      },
+      "open": "Otwórz {gym}",
+      "planVersion": "{name} · v{version}",
+      "noStripe": "—",
+      "pages": {
+        "label": "Strony subskrypcji",
+        "previous": "Poprzednia",
+        "next": "Następna",
+        "page": "Strona {page}"
+      }
+    },
+    "detail": {
+      "title": "Subskrypcja",
+      "loading": "Wczytywanie subskrypcji",
+      "notFound": "Ta subskrypcja nie istnieje.",
+      "close": "Zamknij",
+      "lifecycle": "Cykl życia",
+      "requested": "Zgłoszono",
+      "activated": "Aktywowano",
+      "period": "Opłacony okres",
+      "cancellationEffective": "Kończy się",
+      "ended": "Zakończono",
+      "cancelReason": "Powód",
+      "atStripe": "W Stripe",
+      "stripePeriod": "Bieżący okres w Stripe",
+      "cancelAtPeriodEnd": "Anulowanie z końcem okresu w Stripe",
+      "agreed": "Uzgodniony plan i cena",
+      "agreedNote": "Wersja i cena zaakceptowane przez klub. Nowsza wersja planu nigdy ich nie zmienia.",
+      "periods": "Opłacone okresy",
+      "periodsEmpty": "Brak opłaconego okresu: nic nie zostało zweryfikowane.",
+      "periodsNote": "Tylko na podstawie zweryfikowanej opłaconej faktury.",
+      "invoices": "Faktury",
+      "invoicesEmpty": "Brak zapisanych faktur.",
+      "invoiceNumber": "Faktura {number}",
+      "invoiceDraft": "Szkic faktury",
+      "paidAt": "Opłacono {time}",
+      "issuedAt": "Wystawiono {time}",
+      "attempts": "{count, plural, one {# próba} few {# próby} many {# prób} other {# próby}}",
+      "nextAttempt": "Stripe ponowi próbę {time}",
+      "refunds": "Zwroty",
+      "disputes": "Spory",
+      "disputed": "Sporna (to nie zwrot)",
+      "checkouts": "Płatności hostowane",
+      "checkoutsEmpty": "Brak płatności.",
+      "checkoutLine": "{mode} · {status} · utworzono {time}",
+      "noActions": "Nie ma tu zwrotów, anulowania, ponawiania ani zmiany ceny. Zwroty pozostają weryfikowaną operacją poza Control Plane."
+    },
+    "reconciliation": {
+      "title": "Uzgadnianie",
+      "caption": "Jak dane SimpleFit mają się do Stripe, w trybie {mode}",
+      "loading": "Wczytywanie uzgadniania",
+      "noAccess": "Uzgadnianie wymaga dostępu do uzgadniania.",
+      "note": "Nie ma przebiegów uzgadniania. Każde powiązanie subskrypcji Stripe zapisuje, kiedy ostatnio odczytano Stripe, i każdą znalezioną rozbieżność. Nic tutaj nie wymusza synchronizacji.",
+      "lastRead": "Najnowszy odczyt {time} · najstarszy {oldest}",
+      "webhooks": "Skrzynka webhooków",
+      "webhooksCaption": "Zdarzenia Stripe odebrane od {time}, według statusu przetwarzania",
+      "backlog": "{count, plural, one {# zdarzenie czeka na przetworzenie.} few {# zdarzenia czekają na przetworzenie.} many {# zdarzeń czeka na przetworzenie.} other {# zdarzenia czekają na przetworzenie.}}",
+      "lastWebhook": "Ostatnie zdarzenie {time}",
+      "failedTitle": "Nieudane zdarzenia",
+      "failedEmpty": "Brak nieudanych zdarzeń.",
+      "failedNote": "Tylko typ i wynik. Treści nigdy nie są zapisywane; nic nie jest stąd odtwarzane.",
+      "discrepancies": "Rozbieżności",
+      "discrepanciesCaption": "Subskrypcje, których ostatniego odczytu ze Stripe nie dało się zastosować",
+      "discrepanciesEmpty": "Przy ostatnich odczytach nie zapisano rozbieżności. Nie mówi to nic o subskrypcjach, których nigdy nie odczytano.",
+      "columns": {
+        "gym": "Klub",
+        "discrepancy": "Rozbieżność",
+        "status": "SimpleFit",
+        "stripe": "W Stripe",
+        "read": "Odczytano"
+      },
+      "eventColumns": {
+        "type": "Zdarzenie",
+        "outcome": "Wynik",
+        "attempts": "Próby",
+        "received": "Odebrano"
+      }
+    },
+    "invoices": {
+      "metaTitle": "Faktury Stripe · Control Plane",
+      "breadcrumb": "Pieniądze / Transakcje",
+      "title": "Faktury Stripe",
+      "caption": "Zapisane faktury Stripe subskrypcji klubów, od najnowszych",
+      "loading": "Wczytywanie faktur",
+      "empty": "Brak pasujących faktur.",
+      "intro": "Faktury klubów płacących SimpleFit, wg ostatniego odczytu ze Stripe. Kwoty pochodzą ze Stripe, każda we własnej walucie.",
+      "filters": {
+        "label": "Filtruj faktury",
+        "status": "Status",
+        "issue": "Problem z płatnością",
+        "currency": "Waluta (kod ISO)",
+        "any": "Dowolny"
+      },
+      "columns": {
+        "invoice": "Faktura",
+        "gym": "Klub",
+        "status": "Status",
+        "total": "Razem",
+        "paid": "Zapłacono",
+        "refunded": "Zwrócono",
+        "issued": "Wystawiono",
+        "issue": "Problem"
+      },
+      "noNumber": "Niesfinalizowana",
+      "noRefunds": "Zwroty nie są tu dostępne. Pozostają weryfikowaną operacją poza Control Plane."
+    },
+    "plans": {
+      "metaTitle": "Plany · Control Plane",
+      "breadcrumb": "Pieniądze / Plany",
+      "title": "Plany",
+      "caption": "Plany SimpleFit i każda wersja w zapisanej postaci",
+      "loading": "Wczytywanie planów",
+      "empty": "Nie ma jeszcze żadnego planu.",
+      "intro": "Tylko odczyt. Plany są publikowane za zgodą poza Control Plane; nic tutaj nie zmienia ceny, wersji ani uprawnienia.",
+      "current": "Bieżąca: v{version}",
+      "noCurrent": "Brak opublikowanej wersji",
+      "versions": "{count, plural, one {# wersja} few {# wersje} many {# wersji} other {# wersji}}",
+      "history": "Historia wersji",
+      "columns": {
+        "version": "Wersja",
+        "status": "Status",
+        "prices": "Ceny",
+        "source": "Źródło ceny",
+        "published": "Opublikowano"
+      },
+      "mapped": "Cena Stripe w: {modes}",
+      "notMapped": "Brak ceny Stripe",
+      "trial": "Proponowany okres próbny: {days} dni (niestosowany)",
+      "approval": "Zgoda {reference}",
+      "entitlements": "Uprawnienia",
+      "entitlementsEmpty": "Brak uprawnień.",
+      "limit": "limit {limit}",
+      "notFound": "Ten plan nie istnieje.",
+      "back": "Wszystkie plany"
+    },
+    "minorUnits": "{minor} jednostek drobnych {currency}",
+    "interval": {
+      "month": "miesięcznie",
+      "year": "rocznie"
+    },
+    "quote": "Wycena indywidualna",
+    "environment": {
+      "test": "Tryb testowy",
+      "live": "Tryb live",
+      "none": "Brak zapisu u dostawcy"
+    },
+    "subscriptionStatus": {
+      "pending_activation": "Oczekuje na aktywację",
+      "active": "Aktywna",
+      "cancellation_scheduled": "Kończy się z końcem okresu",
+      "cancelled": "Anulowana",
+      "expired": "Wygasła"
+    },
+    "providerStatus": {
+      "incomplete": "Niekompletna",
+      "incomplete_expired": "Niekompletna, wygasła",
+      "trialing": "Okres próbny",
+      "active": "Aktywna",
+      "past_due": "Zaległa",
+      "canceled": "Anulowana",
+      "unpaid": "Nieopłacona",
+      "paused": "Wstrzymana"
+    },
+    "invoiceStatus": {
+      "draft": "Szkic",
+      "open": "Otwarta",
+      "paid": "Opłacona",
+      "uncollectible": "Nieściągalna",
+      "void": "Unieważniona"
+    },
+    "paymentStatus": {
+      "requires_action": "Wymaga działania klienta",
+      "requires_payment_method": "Ostatnia próba nieudana",
+      "processing": "W toku",
+      "succeeded": "Udana",
+      "canceled": "Anulowana"
+    },
+    "issue": {
+      "any": "Dowolny problem",
+      "payment_failed": "Ostatnia próba nieudana",
+      "action_required": "Wymaga działania klienta",
+      "uncollectible": "Nieściągalna"
+    },
+    "reconciliationState": {
+      "in_sync": "Brak rozbieżności przy ostatnim odczycie",
+      "stale": "Nieodczytywana od ponad 6 godzin",
+      "mismatch": "Rozbieżność",
+      "not_linked": "Czeka na powiązanie ze Stripe",
+      "not_evaluated": "Nieuzgodniona"
+    },
+    "reconciliationCount": {
+      "linked": "Powiązane",
+      "in_sync": "Bez rozbieżności",
+      "stale": "Nieaktualne",
+      "mismatch": "Rozbieżność",
+      "not_linked": "Czekają na powiązanie"
+    },
+    "discrepancy": {
+      "customer_mismatch": "Inny klient w Stripe",
+      "price_mismatch": "Inna cena w Stripe",
+      "ended_locally_live_at_provider": "Zakończona tutaj, nadal aktywna w Stripe",
+      "invoice_subscription_mismatch": "Faktura innej subskrypcji",
+      "invoice_currency_mismatch": "Faktura w innej walucie",
+      "invoice_amount_mismatch": "Faktura na inną kwotę",
+      "invoice_period_over": "Okres faktury już minął",
+      "invoice_period_missing": "Faktura bez okresu",
+      "invoice_not_paid": "Faktura nieopłacona",
+      "invalid_evidence": "Dowód nieprzyjęty",
+      "other": "Inna ({code})"
+    },
+    "refundStatus": {
+      "requested": "Zgłoszony",
+      "pending": "Oczekuje",
+      "requires_action": "Wymaga działania",
+      "succeeded": "Udany",
+      "failed": "Nieudany",
+      "canceled": "Anulowany"
+    },
+    "refundOrigin": {
+      "operator": "Zlecony przez operatora",
+      "provider": "Wykonany w Stripe"
+    },
+    "webhookStatus": {
+      "received": "Oczekuje",
+      "processed": "Przetworzone",
+      "ignored": "Pominięte",
+      "failed": "Nieudane"
+    },
+    "checkoutStatus": {
+      "creating": "Tworzenie",
+      "open": "Otwarta",
+      "completed": "Zakończona",
+      "expired": "Wygasła",
+      "failed": "Nieudana"
+    },
+    "periodSource": {
+      "activation": "Aktywacja",
+      "renewal": "Odnowienie"
+    },
+    "cancelReason": {
+      "requested_by_gym": "Na prośbę klubu",
+      "gym_closed": "Klub zamknięty",
+      "provider_initiated": "Zakończona w Stripe"
+    },
+    "versionStatus": {
+      "draft": "Szkic",
+      "archived": "Zarchiwizowana",
+      "published": "Opublikowana",
+      "superseded": "Zastąpiona",
+      "retired": "Wycofana"
+    },
+    "priceSource": {
+      "approved_design": "Zatwierdzony projekt",
+      "product_decision": "Decyzja produktowa",
+      "provisional": "Tymczasowa (nigdy nie sprzedawana na live)"
+    },
+    "noAccess": "Rozliczenia wymagają dostępu do rozliczeń."
   }
 }
