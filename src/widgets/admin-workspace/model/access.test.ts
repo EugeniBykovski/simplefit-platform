@@ -48,6 +48,9 @@ describe("Control Plane access (SF-120, presentation only)", () => {
       "overview",
       "subscriptions",
     ]);
+    // SF-128: feature switches with config.read (writing alone opens nothing).
+    expect(visibleNavItems(operator(["config.read"]))).toEqual(["overview", "flags"]);
+    expect(visibleNavItems(operator(["config.flags.write"]))).toEqual(["overview"]);
     // SF-126: System health with either operations permission.
     expect(visibleNavItems(operator(["system.jobs.read"]))).toEqual(["overview", "integrations"]);
     expect(visibleNavItems(operator(["coaches.read", "gyms.read"]))).toEqual([
