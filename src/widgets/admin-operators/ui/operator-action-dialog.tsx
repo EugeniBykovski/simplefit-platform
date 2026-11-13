@@ -148,7 +148,7 @@ export function OperatorActionDialog({
     >
       <DialogContent
         {...(busy ? { showCloseButton: false as const } : { closeLabel: t("close") })}
-        className="sm:max-w-140"
+        className="max-h-[92dvh] overflow-y-auto sm:max-w-140"
         data-operator-action={action}
         data-phase={phase.kind}
       >

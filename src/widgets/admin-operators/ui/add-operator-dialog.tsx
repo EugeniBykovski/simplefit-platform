@@ -134,7 +134,7 @@ export function AddOperatorDialog({
     >
       <DialogContent
         {...(busy ? { showCloseButton: false as const } : { closeLabel: d("close") })}
-        className="sm:max-w-140"
+        className="max-h-[92dvh] overflow-y-auto sm:max-w-140"
         data-add-operator={phase}
       >
         <div className="flex flex-wrap items-center gap-2">
