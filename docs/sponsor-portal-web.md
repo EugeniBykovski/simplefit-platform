@@ -126,3 +126,47 @@ organization's own state.
 | 21  | SRW2 docked    | No Back button                                                                            | Back kept                                                                  | Keyboard and touch users can go back                                                                     | Accessibility correction  | Accepted |
 | 22  | SRW2 placement | Card positions per step drawn at 1440                                                     | Computed beside the real target (shared geometry), docked below 1024       | Real targets move with content                                                                           | Responsive adaptation     | Accepted |
 | 23  | SRW1/SRW2      | No restricted, suspended, error states drawn                                              | Suspended: no welcome; read failure: a notice with retry, overview usable  | Not drawn                                                                                                | Missing design asset      | Accepted |
+
+## SF-131: partnership interests, opportunities and requests
+
+**API:** simplefit-api SF-130 (ADR 0034), through the generated client only (`entities/sponsor-partnership`).
+The backend owns every rule: who may write (`manage_partnerships`: owner and manager of an active organization,
+D-SA38), the request lifecycle (D-SA37), which actions a viewer has now (`allowed_actions`, `can_edit`,
+`can_create`) and what a submission still needs (`missing_fields`). Nothing is derived in React.
+
+**Routes** (registry, `D-SF131-PARTNERSHIP-BOARDS`): `web.sponsor.interests` (SPP1), `web.sponsor.opportunities`
+(SPP2), `web.sponsor.requests` (SPP3, `?status=`), `web.sponsor.requests.new` (SPP4),
+`web.sponsor.requests._request-id` (SPP5). The sidebar gains a Partnerships section: Interests, Opportunities,
+Requests.
+
+| Page          | Reads                                                                                                   | Writes                                                                                                                                                                                                                         |
+| ------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Interests     | `getSponsorPartnershipPreferences` (current preferences, the application's submitted answers read-only) | `updateSponsorPartnershipPreferences` at the revision read (`0` creates); only changed fields                                                                                                                                  |
+| Opportunities | `listSponsorPartnershipOpportunities`: `unavailable` / `no_inventory` (D-SA21)                          | none; no inventory, example or Apply action                                                                                                                                                                                    |
+| Requests      | `listSponsorPartnershipProposals` (newest first, by status, paged)                                      | none                                                                                                                                                                                                                           |
+| New request   | `getSponsorPartnershipPolicy`                                                                           | `createSponsorPartnershipProposal` with one `client_request_id` per attempt, reused after an unconfirmed answer                                                                                                                |
+| One request   | `getSponsorPartnershipProposal`                                                                         | `updateSponsorPartnershipProposal` (revision; after a change request only the named answers), `submitSponsorPartnershipProposal` and `withdrawSponsorPartnershipProposal` (revision and key; withdrawal confirmed in a dialog) |
+
+**States:** loading skeletons; read failure with retry; 404 re-reads the organization (a revoked membership
+turns the portal into SPE1, or the gate leaves the portal when no workspace is left), otherwise "Request not
+found"; suspended organizations read-only with SPE1's notice; 409 stale (nothing saved, "Load the latest"),
+moved status, open limit, read-only organization; 403; 429; unconfirmed answers (a retry is safe). An unknown
+status is shown as unknown. Accepted means SimpleFit will follow up: nothing is agreed, booked or paid.
+Every key and every answer is checked against the organization in the path, so another organization's data
+can't be shown.
+
+**Shared UI:** `ChoicePills` and `RemovableChips` moved from the application form to `shared/ui` (stories added).
+
+### Design discrepancy register, SF-131 (canvas `1794299393-d9d6`)
+
+| #   | Artboard                       | Expected                                  | Implemented                                                                                                    | Reason                                        | Class                     | Status                |
+| --- | ------------------------------ | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ------------------------- | --------------------- |
+| 24  | none (SPP1)                    | —                                         | Interests: SPX9 card composition with SP3, SP4 and SP6 fields; the application's answers read-only beside them | No board exists                               | Missing design asset      | Needs design approval |
+| 25  | SPE1 "No opportunities" (SPP2) | Prose card, D-SA21 note                   | The state from the API's `no_inventory`, with links to interests and requests                                  | The design-only annotation isn't product copy | Adaptation                | Matches in substance  |
+| 26  | none (SPP3–SPP5)               | —                                         | Requests list, new request and detail: SPX9 section links and cards, SPE1 notices, a status badge and history  | No board exists                               | Missing design asset      | Needs design approval |
+| 27  | SponsorNav mvp                 | No partnership items                      | A Partnerships section with Interests, Opportunities, Requests                                                 | The domain exists (SF-130)                    | Missing design asset      | Needs design approval |
+| 28  | SP5                            | Budget step                               | No budget anywhere                                                                                             | D-SA39                                        | Approved product decision | Accepted              |
+| 29  | Overview "Not available yet"   | Lists sponsorship opportunities as future | Unchanged                                                                                                      | Still true: no inventory exists               | —                         | Matches               |
+
+Geometry, axe and 375–1920 px checks: `e2e/sponsor-partnerships-storybook.spec.ts`. Real backend:
+`e2e/real-api/sponsor-partnerships.spec.ts`.

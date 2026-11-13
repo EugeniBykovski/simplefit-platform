@@ -160,7 +160,8 @@ test("the settings 1440 composition: the 240 px sidebar and one readable column"
   const card = await page.getByRole("region", { name: "Company profile" }).boundingBox();
   expect(card && card.width <= 800).toBe(true);
   const nav = page.getByRole("navigation").first();
-  await expect(nav.getByRole("link")).toHaveCount(5);
+  // SF-118's five items and SF-131's Interests, Opportunities and Requests.
+  await expect(nav.getByRole("link")).toHaveCount(8);
 });
 
 test("the overview's 1440 composition: a 240 px sidebar, two columns, no figures", async ({
@@ -174,9 +175,10 @@ test("the overview's 1440 composition: a 240 px sidebar, two columns, no figures
   const notYet = await page.getByRole("region", { name: "Not available yet" }).boundingBox();
   expect(organization && notYet && notYet.x > organization.x + organization.width).toBe(true);
   await expect(page.getByText(/\d+(\.\d+)?%|€|reach/i)).toHaveCount(0);
-  // SF-118: Overview, Application, Organization, Members, Settings; no campaigns.
+  // SF-118: Overview, Application, Organization, Members, Settings; SF-131:
+  // Interests, Opportunities, Requests; no campaigns.
   const nav = page.getByRole("navigation").first();
-  await expect(nav.getByRole("link")).toHaveCount(5);
+  await expect(nav.getByRole("link")).toHaveCount(8);
   // FUTURE modules are listed, never linked or pressable.
   const future = page.locator("[data-sponsor-future]");
   await expect(future.getByRole("listitem")).toHaveCount(4);

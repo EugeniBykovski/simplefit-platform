@@ -311,3 +311,23 @@ env -u RESEND_API_KEY MIX_ENV=dev PORT=4115 DATABASE_URL=$E2E_DB PHX_SERVER=true
 ```
 
 Operator review (claim, request changes) needs a WebAuthn step-up ceremony, so the changes-requested journey is covered by the component tests and stories, not here.
+
+## Sponsor partnerships (SF-131)
+
+`sponsor-partnerships.spec.ts` drives the partner portal's partnership pages against a real simplefit-api with
+SF-130 and a freshly migrated disposable database (the operator bootstrap ceremony is single-use per database).
+Organization A comes from a real SF-116 approval of a submitted application (`fixtures/sponsor-review-seed.exs`);
+organization B, a second organization of A's owner, the member and the revocation come from
+`mix sponsors.fixture` (development builds only). The operator registers virtual security keys and passes the key
+check on the web, then sends the SF-111 commands (claim, request changes, accept, suspend) with the page's own
+session, since no operator console exists for proposals yet. Chrome only, one desktop pass:
+
+```bash
+env -u RESEND_API_KEY MIX_ENV=dev PORT=4131 DATABASE_URL=$E2E_DB PHX_SERVER=true \
+  CORS_ALLOWED_ORIGINS=http://localhost:3100 WEB_APP_URL=http://localhost:3100 \
+  SIMPLEFIT_DEV_WEBAUTHN_ORIGIN=http://localhost:3100 \
+  mix run --no-halt -e 'Application.put_env(:simple_fit, SimpleFit.Legal, registry_path: "test/support/legal", allow_test_fixtures: true); SimpleFit.Legal.Registry.load()'
+NEXT_PUBLIC_API_URL=http://localhost:4131 pnpm build
+E2E_REAL_API_URL=http://localhost:4131 E2E_API_DIR=../simplefit-api E2E_API_DATABASE_URL=$E2E_DB \
+  pnpm test:e2e:real-api e2e/real-api/sponsor-partnerships.spec.ts --project=chromium-1440
+```

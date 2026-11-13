@@ -25,7 +25,8 @@
         "id": "gallery-3",
         "artboard": "GalleryIndex4.dc.html",
         "title": "route gallery 3 / 3 · partners, admin, site & backend",
-        "rows": 118
+        "rows": 123,
+        "rowsNote": "118 Route Gallery rows + SPP1–SPP5 (SF-131: partnership interests, no opportunities, partnership requests, a new request and one request; no artboard; SPX9 cards, SP3–SP6 fields and SPE1 states; D-SF131-PARTNERSHIP-BOARDS)"
       }
     ]
   },
@@ -576,6 +577,24 @@
           "query": {
             "section": "members"
           }
+        },
+        {
+          "key": "interests",
+          "label": "Interests",
+          "route": "web.sponsor.interests",
+          "note": "SF-131: SponsorNav has no partnership item; added for the SF-130 domain (D-SF131-PARTNERSHIP-BOARDS)."
+        },
+        {
+          "key": "opportunities",
+          "label": "Opportunities",
+          "route": "web.sponsor.opportunities",
+          "note": "SF-131: SponsorNav has no partnership item; added for the SF-130 domain (D-SF131-PARTNERSHIP-BOARDS)."
+        },
+        {
+          "key": "requests",
+          "label": "Requests",
+          "route": "web.sponsor.requests",
+          "note": "SF-131: SponsorNav has no partnership item; added for the SF-130 domain (D-SF131-PARTNERSHIP-BOARDS)."
         },
         {
           "key": "campaigns",
@@ -7053,6 +7072,131 @@
         "note": "SF-118: SPX9 (MVP) for the organization in the path, sections as query state (?section=organization|contact|members|application|account; the sidebar's Organization and Members open theirs). Everything is read-only: the API has no organization, contact or membership write (D-SA08, D-SA12 undecided), so no edit, invite, role change, transfer or leave control is rendered. Organization from GET /api/v1/sponsor-organizations/{sponsor_id}; contacts from …/contacts for owner and manager only (view_contacts; 403 otherwise, never requested without the permission); members from …/members, paged. Your account explains that the account isn't the organization's; account settings show as Soon (WS1 isn't built). Notifications and Privacy are not built (they would state unapproved claims). A suspended organization shows the SPX9 suspended notice."
       },
       "screens": ["SPX9"]
+    },
+    {
+      "id": "web.sponsor.interests",
+      "platform": "web",
+      "path": "/sponsor/:sponsorId/interests",
+      "params": ["sponsorId"],
+      "name": "Partnership interests",
+      "surface": "SPONSOR",
+      "shell": "web.sponsor",
+      "parent": null,
+      "nav": {
+        "type": "NAV_ITEM",
+        "from": ["web.sponsor#interests"]
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "SPONSOR_WORKSPACE",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/interests/page.tsx",
+        "note": "SF-131: the organization's partnership interests, markets and goals (SF-130 preferences), editable by owners and managers of an active organization, beside what its application submitted (read-only). No budget (D-SA39). No artboard: composed from SP3/SP4/SP6 and SPX9 (D-SF131-PARTNERSHIP-BOARDS)."
+      },
+      "screens": ["SPP1"]
+    },
+    {
+      "id": "web.sponsor.opportunities",
+      "platform": "web",
+      "path": "/sponsor/:sponsorId/opportunities",
+      "params": ["sponsorId"],
+      "name": "Sponsorship opportunities",
+      "surface": "SPONSOR",
+      "shell": "web.sponsor",
+      "parent": null,
+      "nav": {
+        "type": "NAV_ITEM",
+        "from": ["web.sponsor#opportunities"]
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "SPONSOR_WORKSPACE",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/opportunities/page.tsx",
+        "note": "SF-131: SPE1 'No opportunities' from the backend's availability answer (SF-130: unavailable, no_inventory; D-SA21). Never an inventory, example or 'Apply' action."
+      },
+      "screens": ["SPP2"]
+    },
+    {
+      "id": "web.sponsor.requests",
+      "platform": "web",
+      "path": "/sponsor/:sponsorId/requests",
+      "params": ["sponsorId"],
+      "name": "Partnership requests",
+      "surface": "SPONSOR",
+      "shell": "web.sponsor",
+      "parent": null,
+      "nav": {
+        "type": "NAV_ITEM",
+        "from": ["web.sponsor#requests"]
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "SPONSOR_WORKSPACE",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/requests/page.tsx",
+        "note": "SF-131: the organization's nonbinding partnership requests (SF-130 proposals), newest first, filtered by `?status=`, paged. No artboard (D-SF131-PARTNERSHIP-BOARDS)."
+      },
+      "screens": ["SPP3"]
+    },
+    {
+      "id": "web.sponsor.requests.new",
+      "platform": "web",
+      "path": "/sponsor/:sponsorId/requests/new",
+      "params": ["sponsorId"],
+      "name": "New partnership request",
+      "surface": "SPONSOR",
+      "shell": "web.sponsor",
+      "parent": "web.sponsor.requests",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "SPONSOR_WORKSPACE",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/requests/new/page.tsx",
+        "note": "SF-131: starts a draft general inquiry (owner, manager, active organization). No artboard (D-SF131-PARTNERSHIP-BOARDS)."
+      },
+      "screens": ["SPP4"]
+    },
+    {
+      "id": "web.sponsor.requests._request-id",
+      "platform": "web",
+      "path": "/sponsor/:sponsorId/requests/:requestId",
+      "params": ["sponsorId", "requestId"],
+      "name": "Partnership request",
+      "surface": "SPONSOR",
+      "shell": "web.sponsor",
+      "parent": "web.sponsor.requests",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "AUTHENTICATED",
+        "capability": "SPONSOR_WORKSPACE",
+        "phase": "ACTIVE"
+      },
+      "status": "IMPLEMENTED",
+      "production": {
+        "file": "src/app/[locale]/(sponsor)/sponsor/[sponsorId]/requests/[requestId]/page.tsx",
+        "note": "SF-131: one request: answers, backend status and history, change request, and the actions the backend allows (edit, submit, withdraw). No artboard (D-SF131-PARTNERSHIP-BOARDS)."
+      },
+      "screens": ["SPP5"]
     },
     {
       "id": "web.admin.login",
@@ -16864,6 +17008,97 @@
         "artboard": "FighterCoaches.dc.html",
         "note": "SF-135: FCI3 reused as designed, reached from the gym invitations (D-MOBILE-GYM-MEMBER-JOIN)."
       }
+    },
+    {
+      "id": "SPP1",
+      "code": "SPP1",
+      "name": "Sponsor · Partnership interests",
+      "route": "web.sponsor.interests",
+      "states": ["read-only", "editing", "empty", "stale", "suspended"],
+      "design": {
+        "gallery": "gallery-3",
+        "page": "sponsor-portal",
+        "section": "29 · Sponsor portal · dashboard, campaigns, analytics",
+        "step": "29.14a",
+        "tag": "WEB_PARTNERS",
+        "artboard": "SponsorSettings.dc.html",
+        "note": "SF-131: No artboard: SPX9's card composition with SP3, SP4 and SP6 fields (SponsorReg3–6), interim. Needs design approval (D-SF131-PARTNERSHIP-BOARDS)."
+      }
+    },
+    {
+      "id": "SPP2",
+      "code": "SPP2",
+      "name": "Sponsor · No opportunities",
+      "route": "web.sponsor.opportunities",
+      "states": ["no inventory", "failed"],
+      "design": {
+        "gallery": "gallery-3",
+        "page": "sponsor-portal",
+        "section": "29 · Sponsor portal · dashboard, campaigns, analytics",
+        "step": "29.14b",
+        "tag": "WEB_PARTNERS",
+        "artboard": "SponsorSystemStates.dc.html",
+        "note": "SF-131: SPE1 'No opportunities' state, from the backend's no_inventory answer (D-SA21). Needs design approval (D-SF131-PARTNERSHIP-BOARDS)."
+      }
+    },
+    {
+      "id": "SPP3",
+      "code": "SPP3",
+      "name": "Sponsor · Partnership requests",
+      "route": "web.sponsor.requests",
+      "states": ["filtered", "empty", "read-only", "suspended", "failed"],
+      "design": {
+        "gallery": "gallery-3",
+        "page": "sponsor-portal",
+        "section": "29 · Sponsor portal · dashboard, campaigns, analytics",
+        "step": "29.14c",
+        "tag": "WEB_PARTNERS",
+        "artboard": "SponsorSettings.dc.html",
+        "note": "SF-131: No artboard: SPX9's section links and cards, interim. Needs design approval (D-SF131-PARTNERSHIP-BOARDS)."
+      }
+    },
+    {
+      "id": "SPP4",
+      "code": "SPP4",
+      "name": "Sponsor · New partnership request",
+      "route": "web.sponsor.requests.new",
+      "states": ["form", "read-only", "open limit", "unconfirmed"],
+      "design": {
+        "gallery": "gallery-3",
+        "page": "sponsor-portal",
+        "section": "29 · Sponsor portal · dashboard, campaigns, analytics",
+        "step": "29.14d",
+        "tag": "WEB_PARTNERS",
+        "artboard": "SponsorSettings.dc.html",
+        "note": "SF-131: No artboard: SPX9's card with SP3/SP4 fields, interim. Needs design approval (D-SF131-PARTNERSHIP-BOARDS)."
+      }
+    },
+    {
+      "id": "SPP5",
+      "code": "SPP5",
+      "name": "Sponsor · Partnership request",
+      "route": "web.sponsor.requests._request-id",
+      "states": [
+        "draft",
+        "incomplete",
+        "submitted",
+        "under review",
+        "changes requested",
+        "accepted",
+        "declined",
+        "withdrawn",
+        "unknown",
+        "not found"
+      ],
+      "design": {
+        "gallery": "gallery-3",
+        "page": "sponsor-portal",
+        "section": "29 · Sponsor portal · dashboard, campaigns, analytics",
+        "step": "29.14e",
+        "tag": "WEB_PARTNERS",
+        "artboard": "SponsorSettings.dc.html",
+        "note": "SF-131: No artboard: SPX9's cards and SPE1 notices, interim. Needs design approval (D-SF131-PARTNERSHIP-BOARDS)."
+      }
     }
   ],
   "excludedRows": [
@@ -18815,6 +19050,24 @@
         "mobile.me.gyms.invitations.verify-email"
       ],
       "screens": ["MMG2", "MMG3", "MMG4"]
+    },
+    {
+      "id": "D-SF131-PARTNERSHIP-BOARDS",
+      "title": "Sponsor partnership pages built without boards",
+      "sourceA": "Claude Design 1794299393-d9d6: SponsorNav (mode=mvp) has no partnership items; no board for partnership interests, requests or their lifecycle. SPE1 draws only 'No opportunities' (D-SA21); SP3–SP6 exist only as application steps",
+      "sourceB": "SF-130 API: organization partnership preferences (interests, markets, goals; no budget), an opportunities answer of unavailable/no_inventory, and nonbinding requests (draft, submitted, under_review, changes_requested, accepted, declined, withdrawn) with allowed_actions",
+      "mismatch": "The domain has five screens and three nav items the canvas doesn't draw",
+      "impact": "The pages are interim compositions of approved boards and primitives, not an approved design",
+      "resolution": "Interim: SPX9's header, section links and cards; SP3/SP4/SP6 fields; SPE1's 'No opportunities' and notices; a Partnerships nav section. No inventory, figures or commercial claims. Design approval needed; Claude Design is unchanged",
+      "status": "NEEDS_PRODUCT_DECISION",
+      "routes": [
+        "web.sponsor.interests",
+        "web.sponsor.opportunities",
+        "web.sponsor.requests",
+        "web.sponsor.requests.new",
+        "web.sponsor.requests._request-id"
+      ],
+      "screens": ["SPP1", "SPP2", "SPP3", "SPP4", "SPP5"]
     }
   ]
 }

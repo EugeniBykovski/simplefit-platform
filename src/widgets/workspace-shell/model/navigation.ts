@@ -11,6 +11,7 @@ import {
   FlagIcon,
   FunnelIcon,
   GlobeIcon,
+  HandshakeIcon,
   HeadphonesIcon,
   HouseIcon,
   IdCardIcon,
@@ -29,6 +30,7 @@ import {
   StoreIcon,
   SwordsIcon,
   TagIcon,
+  TargetIcon,
   TicketIcon,
   ToggleRightIcon,
   TrendingUpIcon,
@@ -177,11 +179,15 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
   // Campaigns, challenges, events and invoices have no domain (D-SA21, D-SA23),
   // so they are hidden, never linked; a direct visit shows SPE1's "isn't part
   // of SimpleFit yet". Creative and Analytics (GAP-SPONSOR-ANALYTICS-INDEX) have
-  // no route at all (route-architecture §14).
+  // no route at all (route-architecture §14). SF-131 adds Partnerships on the
+  // SF-130 domain: interests, opportunities (the backend's "no inventory"
+  // answer, D-SA21) and nonbinding requests; SponsorNav has no such items
+  // (D-SF131-PARTNERSHIP-BOARDS).
   "web.sponsor": {
     messages: "sponsor",
     sections: [
       { key: "partner", items: ["overview", "applications", "organization", "members"] },
+      { key: "partnerships", items: ["interests", "opportunities", "requests"] },
       { key: "account", items: ["settings"] },
     ],
     icons: {
@@ -189,6 +195,9 @@ export const shellNavigation: Record<SidebarShellId, ShellNavigation> = {
       applications: FileTextIcon,
       organization: Building2Icon,
       members: UsersIcon,
+      interests: TargetIcon,
+      opportunities: SearchIcon,
+      requests: HandshakeIcon,
       settings: SlidersHorizontalIcon,
     },
   },

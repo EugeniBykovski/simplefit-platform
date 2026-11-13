@@ -83,6 +83,7 @@
     "name": "Партнерський портал",
     "sections": {
       "partner": "Партнер",
+      "partnerships": "Партнерство",
       "campaigns": "Кампанії",
       "results": "Результати",
       "account": "Акаунт"
@@ -92,6 +93,9 @@
       "applications": "Заявка",
       "organization": "Організація",
       "members": "Учасники",
+      "interests": "Інтереси",
+      "opportunities": "Можливості",
+      "requests": "Запити",
       "campaigns": "Кампанії",
       "challenges": "Челенджі",
       "events": "Події",
