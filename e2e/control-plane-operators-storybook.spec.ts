@@ -138,3 +138,19 @@ test("AD20 add-operator dialog passes axe; phone hides high-risk actions", async
   await expect(page.getByText(/High-risk actions need a larger screen/)).toBeVisible();
   expect(await overflow(page)).toBeLessThanOrEqual(0);
 });
+
+test("SF-132: the add-operator dialog scrolls on a short screen; its submit button is reachable", async ({
+  page,
+}) => {
+  // The permission list grows with the catalog (SF-130 added five); a dialog taller
+  // than the viewport must scroll, never hide its submit button.
+  await page.setViewportSize({ width: 1280, height: 560 });
+  await story(page, "add-operator");
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible({ timeout: 10_000 });
+  const box = await dialog.boundingBox();
+  expect(box && box.height <= 560).toBe(true);
+  const submit = dialog.getByRole("button", { name: "Add operator" });
+  await submit.scrollIntoViewIfNeeded();
+  await expect(submit).toBeInViewport();
+});

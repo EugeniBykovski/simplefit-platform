@@ -277,9 +277,13 @@ test("SF-131 partnership interests, opportunities and requests against the real 
   await page.getByRole("button", { name: "Continue" }).click();
   await page.getByRole("button", { name: "Use security key" }).click();
   await page.waitForURL((url) => url.pathname === "/en/admin/sponsors");
+  // SF-132: the URL matches before the key check completes; wait until the backend
+  // accepts the operator's reads (the key check is bound to this session).
+  await expect(page.getByRole("button", { name: "Use security key" })).toHaveCount(0);
 
   // Organization A from a real approval (SF-116): claim, then confirmed approval.
   const app = `/api/v1/admin/sponsor-applications/${a.id}`;
+  await expect.poll(async () => (await operatorCall(page, "GET", app)).status).toBe(200);
   const shown = await operatorCall(page, "GET", app);
   await act(page, app, "claim", revisionOf(shown, "application"), {
     reason_code: "review_started",
