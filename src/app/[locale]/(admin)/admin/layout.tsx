@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { RequireSession } from "@/features/session-gate";
@@ -6,6 +7,8 @@ import { signInRouteFor } from "@/shared/routes/routes";
 import { AdminWorkspace } from "@/widgets/admin-workspace";
 import { LaunchScreen, SessionFailure } from "@/widgets/system-states";
 
+/** SF-132: no Control Plane page is indexed or followed; pages that don't set robots inherit this. */
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 /**
  * `web.admin`: the Control Plane. Admin is a backend-granted operator capability
  * on the same User (D-ADMIN-IDENTITY, simplefit-api ADR 0028). After sign-in,
