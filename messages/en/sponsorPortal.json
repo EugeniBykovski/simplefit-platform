@@ -71,7 +71,9 @@
   "permissions": {
     "view_organization": "Read the organization’s details",
     "view_members": "See its members",
-    "view_contacts": "See its business contacts"
+    "view_contacts": "See its business contacts",
+    "view_partnerships": "See its partnership interests and requests",
+    "manage_partnerships": "Edit its partnership interests and send partnership requests"
   },
   "settings": {
     "metaTitle": "Partner portal settings",

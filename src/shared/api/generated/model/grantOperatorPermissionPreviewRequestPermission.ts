@@ -33,4 +33,9 @@ export const GrantOperatorPermissionPreviewRequestPermission = {
   billingreconciliationread: 'billing.reconciliation.read',
   configread: 'config.read',
   configflagswrite: 'config.flags.write',
+  sponsorsproposalsread: 'sponsors.proposals.read',
+  sponsorsproposalsclaim: 'sponsors.proposals.claim',
+  sponsorsproposalsrequest_changes: 'sponsors.proposals.request_changes',
+  sponsorsproposalsaccept: 'sponsors.proposals.accept',
+  sponsorsproposalsdecline: 'sponsors.proposals.decline',
 } as const;

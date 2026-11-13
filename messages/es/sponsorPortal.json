@@ -71,7 +71,9 @@
   "permissions": {
     "view_organization": "Leer los datos de la organización",
     "view_members": "Ver sus miembros",
-    "view_contacts": "Ver sus contactos comerciales"
+    "view_contacts": "Ver sus contactos comerciales",
+    "view_partnerships": "Ver sus intereses y solicitudes de colaboración",
+    "manage_partnerships": "Editar sus intereses de colaboración y enviar solicitudes de colaboración"
   },
   "settings": {
     "metaTitle": "Ajustes del portal de socios",

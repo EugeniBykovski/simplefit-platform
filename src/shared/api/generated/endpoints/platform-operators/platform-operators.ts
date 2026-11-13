@@ -20,6 +20,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AcceptSponsorProposalRequest,
   AdminBillingInvoiceListResponse,
   AdminBillingOverviewResponse,
   AdminBillingPlanListResponse,
@@ -46,8 +47,10 @@ import type {
   AdminUserStateResponse,
   ApproveSponsorApplicationRequest,
   ClaimSponsorApplicationRequest,
+  ClaimSponsorProposalRequest,
   ConfirmationRequiredResponse,
   ConflictResponse,
+  DeclineSponsorProposalRequest,
   EnrollmentRequiredResponse,
   ForbiddenResponse,
   GetAdminBillingOverviewParams,
@@ -67,6 +70,7 @@ import type {
   ListAdminJobsParams,
   ListOperatorAuditEventsParams,
   ListSponsorApplicationsForReviewParams,
+  ListSponsorProposalsForReviewParams,
   NotFoundResponse,
   OperatorActionPreviewResponse,
   OperatorActionRequest,
@@ -88,6 +92,7 @@ import type {
   ReinstateSponsorOrganizationRequest,
   RejectSponsorApplicationRequest,
   RequestSponsorApplicationChangesRequest,
+  RequestSponsorProposalChangesRequest,
   RestoreRuntimeFlagRequest,
   RevokeOperatorPermissionPreviewRequest,
   RevokeOperatorPermissionRequest,
@@ -102,6 +107,8 @@ import type {
   SponsorApplicationDocumentDownloadResponse,
   SponsorApplicationQueueResponse,
   SponsorApplicationReviewResponse,
+  SponsorProposalQueueResponse,
+  SponsorProposalReviewResponse,
   StepUpRequiredResponse,
   SuspendOperatorPreviewRequest,
   SuspendOperatorRequest,
@@ -7352,6 +7359,1264 @@ export function usePreviewSuspendSponsorApplicationOrganization<TData = Awaited<
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getPreviewSuspendSponsorApplicationOrganizationQueryOptions(applicationId,suspendSponsorOrganizationRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getListSponsorProposalsForReviewUrl = (params?: ListSponsorProposalsForReviewParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/sponsor-proposals?${stringifiedParams}` : `/api/v1/admin/sponsor-proposals`
+}
+
+/**
+ * Needs `sponsors.proposals.read` and a key check. Submitted proposals (never drafts), oldest submission
+ * first, with the organization's name and status and nothing about its people. `limit` 1..100 (default 50);
+ * `cursor` from the previous page, valid only for the same filter and reader. Each query is audited.
+ *
+ * * `not_found` - not a usable operator, or no such submitted proposal (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator belongs to the proposing organization), the proposal's
+ *   status, or `details.organization` when the organization isn't active.
+ * * `revision_conflict` - the proposal changed since `expected_revision`.
+ * @summary The partnership proposal review queue
+ */
+export const listSponsorProposalsForReview = async (params?: ListSponsorProposalsForReviewParams, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorProposalQueueResponse> => {
+
+  return apiFetch<SponsorProposalQueueResponse>(getListSponsorProposalsForReviewUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListSponsorProposalsForReviewQueryKey = (params?: ListSponsorProposalsForReviewParams,) => {
+    return [
+    `/api/v1/admin/sponsor-proposals`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListSponsorProposalsForReviewQueryOptions = <TData = Awaited<ReturnType<typeof listSponsorProposalsForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(params?: ListSponsorProposalsForReviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorProposalsForReview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListSponsorProposalsForReviewQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listSponsorProposalsForReview>>> = ({ signal }) => listSponsorProposalsForReview(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listSponsorProposalsForReview>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ListSponsorProposalsForReviewQueryResult = NonNullable<Awaited<ReturnType<typeof listSponsorProposalsForReview>>>
+export type ListSponsorProposalsForReviewQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useListSponsorProposalsForReview<TData = Awaited<ReturnType<typeof listSponsorProposalsForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params: undefined |  ListSponsorProposalsForReviewParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorProposalsForReview>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listSponsorProposalsForReview>>,
+          TError,
+          Awaited<ReturnType<typeof listSponsorProposalsForReview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListSponsorProposalsForReview<TData = Awaited<ReturnType<typeof listSponsorProposalsForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params?: ListSponsorProposalsForReviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorProposalsForReview>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof listSponsorProposalsForReview>>,
+          TError,
+          Awaited<ReturnType<typeof listSponsorProposalsForReview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useListSponsorProposalsForReview<TData = Awaited<ReturnType<typeof listSponsorProposalsForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params?: ListSponsorProposalsForReviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorProposalsForReview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary The partnership proposal review queue
+ */
+
+export function useListSponsorProposalsForReview<TData = Awaited<ReturnType<typeof listSponsorProposalsForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ params?: ListSponsorProposalsForReviewParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listSponsorProposalsForReview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getListSponsorProposalsForReviewQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetSponsorProposalForReviewUrl = (proposalId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-proposals/${proposalId}`
+}
+
+/**
+ * Needs `sponsors.proposals.read` and a key check. Exactly what was last submitted. Each view is audited.
+ *
+ * * `not_found` - not a usable operator, or no such submitted proposal (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator belongs to the proposing organization), the proposal's
+ *   status, or `details.organization` when the organization isn't active.
+ * * `revision_conflict` - the proposal changed since `expected_revision`.
+ * @summary A partnership proposal for review
+ */
+export const getSponsorProposalForReview = async (proposalId: string, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorProposalReviewResponse> => {
+
+  return apiFetch<SponsorProposalReviewResponse>(getGetSponsorProposalForReviewUrl(proposalId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSponsorProposalForReviewQueryKey = (proposalId: string,) => {
+    return [
+    `/api/v1/admin/sponsor-proposals/${proposalId}`
+    ] as const;
+    }
+
+
+export const getGetSponsorProposalForReviewQueryOptions = <TData = Awaited<ReturnType<typeof getSponsorProposalForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(proposalId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorProposalForReview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSponsorProposalForReviewQueryKey(proposalId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSponsorProposalForReview>>> = ({ signal }) => getSponsorProposalForReview(proposalId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: proposalId !== null && proposalId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSponsorProposalForReview>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSponsorProposalForReviewQueryResult = NonNullable<Awaited<ReturnType<typeof getSponsorProposalForReview>>>
+export type GetSponsorProposalForReviewQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useGetSponsorProposalForReview<TData = Awaited<ReturnType<typeof getSponsorProposalForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorProposalForReview>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSponsorProposalForReview>>,
+          TError,
+          Awaited<ReturnType<typeof getSponsorProposalForReview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSponsorProposalForReview<TData = Awaited<ReturnType<typeof getSponsorProposalForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorProposalForReview>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSponsorProposalForReview>>,
+          TError,
+          Awaited<ReturnType<typeof getSponsorProposalForReview>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSponsorProposalForReview<TData = Awaited<ReturnType<typeof getSponsorProposalForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorProposalForReview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary A partnership proposal for review
+ */
+
+export function useGetSponsorProposalForReview<TData = Awaited<ReturnType<typeof getSponsorProposalForReview>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSponsorProposalForReview>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSponsorProposalForReviewQueryOptions(proposalId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getAcceptSponsorProposalUrl = (proposalId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-proposals/${proposalId}/accept`
+}
+
+/**
+ * Needs `sponsors.proposals.accept` and a fresh key check. `under_review` -> `accepted`, final, for an active organization: SimpleFit will follow up outside the product. Creates nothing: no payment, campaign, placement, advertising entitlement, exposure guarantee, contract or access to athlete or gym data.
+ *
+ * Needs a one-time `confirmation_token` from a preview of exactly this request (same operator, session,
+ * proposal, revision and reason), with `reason_code`, `expected_revision` and `operation_id` (a repeat of the
+ * same request returns the current state and changes nothing).
+ * * `confirmation_required`, `confirmation_invalid` - missing, expired, used or for another request.
+ * * `not_found` - not a usable operator, or no such submitted proposal (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator belongs to the proposing organization), the proposal's
+ *   status, or `details.organization` when the organization isn't active.
+ * * `revision_conflict` - the proposal changed since `expected_revision`.
+ * @summary Accept a partnership proposal
+ */
+export const acceptSponsorProposal = async (proposalId: string,
+    acceptSponsorProposalRequest: AcceptSponsorProposalRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorProposalReviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorProposalReviewResponse>(getAcceptSponsorProposalUrl(proposalId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(acceptSponsorProposalRequest)
+  }
+);}
+
+
+
+
+
+export const getAcceptSponsorProposalQueryKey = (proposalId: string,
+    acceptSponsorProposalRequest?: BodyType<AcceptSponsorProposalRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-proposals/${proposalId}/accept`, acceptSponsorProposalRequest
+    ] as const;
+    }
+
+
+export const getAcceptSponsorProposalQueryOptions = <TData = Awaited<ReturnType<typeof acceptSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(proposalId: string,
+    acceptSponsorProposalRequest: BodyType<AcceptSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAcceptSponsorProposalQueryKey(proposalId,acceptSponsorProposalRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof acceptSponsorProposal>>> = ({ signal }) => acceptSponsorProposal(proposalId,acceptSponsorProposalRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: proposalId !== null && proposalId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof acceptSponsorProposal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type AcceptSponsorProposalQueryResult = NonNullable<Awaited<ReturnType<typeof acceptSponsorProposal>>>
+export type AcceptSponsorProposalQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useAcceptSponsorProposal<TData = Awaited<ReturnType<typeof acceptSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    acceptSponsorProposalRequest: BodyType<AcceptSponsorProposalRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptSponsorProposal>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof acceptSponsorProposal>>,
+          TError,
+          Awaited<ReturnType<typeof acceptSponsorProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAcceptSponsorProposal<TData = Awaited<ReturnType<typeof acceptSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    acceptSponsorProposalRequest: BodyType<AcceptSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptSponsorProposal>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof acceptSponsorProposal>>,
+          TError,
+          Awaited<ReturnType<typeof acceptSponsorProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAcceptSponsorProposal<TData = Awaited<ReturnType<typeof acceptSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    acceptSponsorProposalRequest: BodyType<AcceptSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Accept a partnership proposal
+ */
+
+export function useAcceptSponsorProposal<TData = Awaited<ReturnType<typeof acceptSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    acceptSponsorProposalRequest: BodyType<AcceptSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof acceptSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getAcceptSponsorProposalQueryOptions(proposalId,acceptSponsorProposalRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewAcceptSponsorProposalUrl = (proposalId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-proposals/${proposalId}/accept/preview`
+}
+
+/**
+ * Needs `sponsors.proposals.accept` and a fresh key check. Changes nothing; returns the impact and a one-time confirmation.
+ *
+ * * `not_found` - not a usable operator, or no such submitted proposal (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator belongs to the proposing organization), the proposal's
+ *   status, or `details.organization` when the organization isn't active.
+ * * `revision_conflict` - the proposal changed since `expected_revision`.
+ * @summary Preview: accept a partnership proposal
+ */
+export const previewAcceptSponsorProposal = async (proposalId: string,
+    acceptSponsorProposalRequest: AcceptSponsorProposalRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewAcceptSponsorProposalUrl(proposalId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(acceptSponsorProposalRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewAcceptSponsorProposalQueryKey = (proposalId: string,
+    acceptSponsorProposalRequest?: BodyType<AcceptSponsorProposalRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-proposals/${proposalId}/accept/preview`, acceptSponsorProposalRequest
+    ] as const;
+    }
+
+
+export const getPreviewAcceptSponsorProposalQueryOptions = <TData = Awaited<ReturnType<typeof previewAcceptSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(proposalId: string,
+    acceptSponsorProposalRequest: BodyType<AcceptSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewAcceptSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewAcceptSponsorProposalQueryKey(proposalId,acceptSponsorProposalRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewAcceptSponsorProposal>>> = ({ signal }) => previewAcceptSponsorProposal(proposalId,acceptSponsorProposalRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: proposalId !== null && proposalId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewAcceptSponsorProposal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewAcceptSponsorProposalQueryResult = NonNullable<Awaited<ReturnType<typeof previewAcceptSponsorProposal>>>
+export type PreviewAcceptSponsorProposalQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewAcceptSponsorProposal<TData = Awaited<ReturnType<typeof previewAcceptSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    acceptSponsorProposalRequest: BodyType<AcceptSponsorProposalRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewAcceptSponsorProposal>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewAcceptSponsorProposal>>,
+          TError,
+          Awaited<ReturnType<typeof previewAcceptSponsorProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewAcceptSponsorProposal<TData = Awaited<ReturnType<typeof previewAcceptSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    acceptSponsorProposalRequest: BodyType<AcceptSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewAcceptSponsorProposal>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewAcceptSponsorProposal>>,
+          TError,
+          Awaited<ReturnType<typeof previewAcceptSponsorProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewAcceptSponsorProposal<TData = Awaited<ReturnType<typeof previewAcceptSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    acceptSponsorProposalRequest: BodyType<AcceptSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewAcceptSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview: accept a partnership proposal
+ */
+
+export function usePreviewAcceptSponsorProposal<TData = Awaited<ReturnType<typeof previewAcceptSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    acceptSponsorProposalRequest: BodyType<AcceptSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewAcceptSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewAcceptSponsorProposalQueryOptions(proposalId,acceptSponsorProposalRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getClaimSponsorProposalUrl = (proposalId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-proposals/${proposalId}/claim`
+}
+
+/**
+ * Needs `sponsors.proposals.claim` and a fresh key check: `submitted` -> `under_review`, for an active organization. Takes `reason_code`, `expected_revision` and `operation_id` (a repeat changes nothing).
+ *
+ * * `not_found` - not a usable operator, or no such submitted proposal (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator belongs to the proposing organization), the proposal's
+ *   status, or `details.organization` when the organization isn't active.
+ * * `revision_conflict` - the proposal changed since `expected_revision`.
+ * @summary Claim a partnership proposal for review
+ */
+export const claimSponsorProposal = async (proposalId: string,
+    claimSponsorProposalRequest: ClaimSponsorProposalRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorProposalReviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorProposalReviewResponse>(getClaimSponsorProposalUrl(proposalId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(claimSponsorProposalRequest)
+  }
+);}
+
+
+
+
+
+export const getClaimSponsorProposalQueryKey = (proposalId: string,
+    claimSponsorProposalRequest?: BodyType<ClaimSponsorProposalRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-proposals/${proposalId}/claim`, claimSponsorProposalRequest
+    ] as const;
+    }
+
+
+export const getClaimSponsorProposalQueryOptions = <TData = Awaited<ReturnType<typeof claimSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(proposalId: string,
+    claimSponsorProposalRequest: BodyType<ClaimSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof claimSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getClaimSponsorProposalQueryKey(proposalId,claimSponsorProposalRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof claimSponsorProposal>>> = ({ signal }) => claimSponsorProposal(proposalId,claimSponsorProposalRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: proposalId !== null && proposalId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof claimSponsorProposal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ClaimSponsorProposalQueryResult = NonNullable<Awaited<ReturnType<typeof claimSponsorProposal>>>
+export type ClaimSponsorProposalQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useClaimSponsorProposal<TData = Awaited<ReturnType<typeof claimSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    claimSponsorProposalRequest: BodyType<ClaimSponsorProposalRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof claimSponsorProposal>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof claimSponsorProposal>>,
+          TError,
+          Awaited<ReturnType<typeof claimSponsorProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useClaimSponsorProposal<TData = Awaited<ReturnType<typeof claimSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    claimSponsorProposalRequest: BodyType<ClaimSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof claimSponsorProposal>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof claimSponsorProposal>>,
+          TError,
+          Awaited<ReturnType<typeof claimSponsorProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useClaimSponsorProposal<TData = Awaited<ReturnType<typeof claimSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    claimSponsorProposalRequest: BodyType<ClaimSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof claimSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Claim a partnership proposal for review
+ */
+
+export function useClaimSponsorProposal<TData = Awaited<ReturnType<typeof claimSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    claimSponsorProposalRequest: BodyType<ClaimSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof claimSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getClaimSponsorProposalQueryOptions(proposalId,claimSponsorProposalRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewClaimSponsorProposalUrl = (proposalId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-proposals/${proposalId}/claim/preview`
+}
+
+/**
+ * Needs `sponsors.proposals.claim` and a fresh key check. Changes nothing.
+ *
+ * * `not_found` - not a usable operator, or no such submitted proposal (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator belongs to the proposing organization), the proposal's
+ *   status, or `details.organization` when the organization isn't active.
+ * * `revision_conflict` - the proposal changed since `expected_revision`.
+ * @summary Preview claiming a partnership proposal
+ */
+export const previewClaimSponsorProposal = async (proposalId: string,
+    claimSponsorProposalRequest: ClaimSponsorProposalRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewClaimSponsorProposalUrl(proposalId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(claimSponsorProposalRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewClaimSponsorProposalQueryKey = (proposalId: string,
+    claimSponsorProposalRequest?: BodyType<ClaimSponsorProposalRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-proposals/${proposalId}/claim/preview`, claimSponsorProposalRequest
+    ] as const;
+    }
+
+
+export const getPreviewClaimSponsorProposalQueryOptions = <TData = Awaited<ReturnType<typeof previewClaimSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(proposalId: string,
+    claimSponsorProposalRequest: BodyType<ClaimSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewClaimSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewClaimSponsorProposalQueryKey(proposalId,claimSponsorProposalRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewClaimSponsorProposal>>> = ({ signal }) => previewClaimSponsorProposal(proposalId,claimSponsorProposalRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: proposalId !== null && proposalId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewClaimSponsorProposal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewClaimSponsorProposalQueryResult = NonNullable<Awaited<ReturnType<typeof previewClaimSponsorProposal>>>
+export type PreviewClaimSponsorProposalQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewClaimSponsorProposal<TData = Awaited<ReturnType<typeof previewClaimSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    claimSponsorProposalRequest: BodyType<ClaimSponsorProposalRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewClaimSponsorProposal>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewClaimSponsorProposal>>,
+          TError,
+          Awaited<ReturnType<typeof previewClaimSponsorProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewClaimSponsorProposal<TData = Awaited<ReturnType<typeof previewClaimSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    claimSponsorProposalRequest: BodyType<ClaimSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewClaimSponsorProposal>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewClaimSponsorProposal>>,
+          TError,
+          Awaited<ReturnType<typeof previewClaimSponsorProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewClaimSponsorProposal<TData = Awaited<ReturnType<typeof previewClaimSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    claimSponsorProposalRequest: BodyType<ClaimSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewClaimSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview claiming a partnership proposal
+ */
+
+export function usePreviewClaimSponsorProposal<TData = Awaited<ReturnType<typeof previewClaimSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    claimSponsorProposalRequest: BodyType<ClaimSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewClaimSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewClaimSponsorProposalQueryOptions(proposalId,claimSponsorProposalRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getDeclineSponsorProposalUrl = (proposalId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-proposals/${proposalId}/decline`
+}
+
+/**
+ * Needs `sponsors.proposals.decline` and a fresh key check. `under_review` -> `declined`, final. Nothing is created; the reason is internal and never shown to the organization.
+ *
+ * Needs a one-time `confirmation_token` from a preview of exactly this request (same operator, session,
+ * proposal, revision and reason), with `reason_code`, `expected_revision` and `operation_id` (a repeat of the
+ * same request returns the current state and changes nothing).
+ * * `confirmation_required`, `confirmation_invalid` - missing, expired, used or for another request.
+ * * `not_found` - not a usable operator, or no such submitted proposal (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator belongs to the proposing organization), the proposal's
+ *   status, or `details.organization` when the organization isn't active.
+ * * `revision_conflict` - the proposal changed since `expected_revision`.
+ * @summary Decline a partnership proposal
+ */
+export const declineSponsorProposal = async (proposalId: string,
+    declineSponsorProposalRequest: DeclineSponsorProposalRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorProposalReviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorProposalReviewResponse>(getDeclineSponsorProposalUrl(proposalId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(declineSponsorProposalRequest)
+  }
+);}
+
+
+
+
+
+export const getDeclineSponsorProposalQueryKey = (proposalId: string,
+    declineSponsorProposalRequest?: BodyType<DeclineSponsorProposalRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-proposals/${proposalId}/decline`, declineSponsorProposalRequest
+    ] as const;
+    }
+
+
+export const getDeclineSponsorProposalQueryOptions = <TData = Awaited<ReturnType<typeof declineSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(proposalId: string,
+    declineSponsorProposalRequest: BodyType<DeclineSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getDeclineSponsorProposalQueryKey(proposalId,declineSponsorProposalRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof declineSponsorProposal>>> = ({ signal }) => declineSponsorProposal(proposalId,declineSponsorProposalRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: proposalId !== null && proposalId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof declineSponsorProposal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type DeclineSponsorProposalQueryResult = NonNullable<Awaited<ReturnType<typeof declineSponsorProposal>>>
+export type DeclineSponsorProposalQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useDeclineSponsorProposal<TData = Awaited<ReturnType<typeof declineSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    declineSponsorProposalRequest: BodyType<DeclineSponsorProposalRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineSponsorProposal>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof declineSponsorProposal>>,
+          TError,
+          Awaited<ReturnType<typeof declineSponsorProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDeclineSponsorProposal<TData = Awaited<ReturnType<typeof declineSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    declineSponsorProposalRequest: BodyType<DeclineSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineSponsorProposal>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof declineSponsorProposal>>,
+          TError,
+          Awaited<ReturnType<typeof declineSponsorProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDeclineSponsorProposal<TData = Awaited<ReturnType<typeof declineSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    declineSponsorProposalRequest: BodyType<DeclineSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Decline a partnership proposal
+ */
+
+export function useDeclineSponsorProposal<TData = Awaited<ReturnType<typeof declineSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | ConfirmationRequiredResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    declineSponsorProposalRequest: BodyType<DeclineSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof declineSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getDeclineSponsorProposalQueryOptions(proposalId,declineSponsorProposalRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewDeclineSponsorProposalUrl = (proposalId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-proposals/${proposalId}/decline/preview`
+}
+
+/**
+ * Needs `sponsors.proposals.decline` and a fresh key check. Changes nothing; returns the impact and a one-time confirmation.
+ *
+ * * `not_found` - not a usable operator, or no such submitted proposal (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator belongs to the proposing organization), the proposal's
+ *   status, or `details.organization` when the organization isn't active.
+ * * `revision_conflict` - the proposal changed since `expected_revision`.
+ * @summary Preview: decline a partnership proposal
+ */
+export const previewDeclineSponsorProposal = async (proposalId: string,
+    declineSponsorProposalRequest: DeclineSponsorProposalRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewDeclineSponsorProposalUrl(proposalId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(declineSponsorProposalRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewDeclineSponsorProposalQueryKey = (proposalId: string,
+    declineSponsorProposalRequest?: BodyType<DeclineSponsorProposalRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-proposals/${proposalId}/decline/preview`, declineSponsorProposalRequest
+    ] as const;
+    }
+
+
+export const getPreviewDeclineSponsorProposalQueryOptions = <TData = Awaited<ReturnType<typeof previewDeclineSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(proposalId: string,
+    declineSponsorProposalRequest: BodyType<DeclineSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewDeclineSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewDeclineSponsorProposalQueryKey(proposalId,declineSponsorProposalRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewDeclineSponsorProposal>>> = ({ signal }) => previewDeclineSponsorProposal(proposalId,declineSponsorProposalRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: proposalId !== null && proposalId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewDeclineSponsorProposal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewDeclineSponsorProposalQueryResult = NonNullable<Awaited<ReturnType<typeof previewDeclineSponsorProposal>>>
+export type PreviewDeclineSponsorProposalQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewDeclineSponsorProposal<TData = Awaited<ReturnType<typeof previewDeclineSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    declineSponsorProposalRequest: BodyType<DeclineSponsorProposalRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewDeclineSponsorProposal>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewDeclineSponsorProposal>>,
+          TError,
+          Awaited<ReturnType<typeof previewDeclineSponsorProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewDeclineSponsorProposal<TData = Awaited<ReturnType<typeof previewDeclineSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    declineSponsorProposalRequest: BodyType<DeclineSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewDeclineSponsorProposal>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewDeclineSponsorProposal>>,
+          TError,
+          Awaited<ReturnType<typeof previewDeclineSponsorProposal>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewDeclineSponsorProposal<TData = Awaited<ReturnType<typeof previewDeclineSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    declineSponsorProposalRequest: BodyType<DeclineSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewDeclineSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview: decline a partnership proposal
+ */
+
+export function usePreviewDeclineSponsorProposal<TData = Awaited<ReturnType<typeof previewDeclineSponsorProposal>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    declineSponsorProposalRequest: BodyType<DeclineSponsorProposalRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewDeclineSponsorProposal>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewDeclineSponsorProposalQueryOptions(proposalId,declineSponsorProposalRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getRequestSponsorProposalChangesUrl = (proposalId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-proposals/${proposalId}/request-changes`
+}
+
+/**
+ * Needs `sponsors.proposals.request_changes` and a fresh key check: `under_review` -> `changes_requested`, for
+ * an active organization, with the answers its members may change and a plain-text message they see (no email
+ * is sent). The organization's next submission resolves it. Takes `reason_code`, `expected_revision` and
+ * `operation_id`.
+ *
+ * * `not_found` - not a usable operator, or no such submitted proposal (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator belongs to the proposing organization), the proposal's
+ *   status, or `details.organization` when the organization isn't active.
+ * * `revision_conflict` - the proposal changed since `expected_revision`.
+ * @summary Request changes to a partnership proposal
+ */
+export const requestSponsorProposalChanges = async (proposalId: string,
+    requestSponsorProposalChangesRequest: RequestSponsorProposalChangesRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SponsorProposalReviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SponsorProposalReviewResponse>(getRequestSponsorProposalChangesUrl(proposalId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(requestSponsorProposalChangesRequest)
+  }
+);}
+
+
+
+
+
+export const getRequestSponsorProposalChangesQueryKey = (proposalId: string,
+    requestSponsorProposalChangesRequest?: BodyType<RequestSponsorProposalChangesRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-proposals/${proposalId}/request-changes`, requestSponsorProposalChangesRequest
+    ] as const;
+    }
+
+
+export const getRequestSponsorProposalChangesQueryOptions = <TData = Awaited<ReturnType<typeof requestSponsorProposalChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(proposalId: string,
+    requestSponsorProposalChangesRequest: BodyType<RequestSponsorProposalChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestSponsorProposalChanges>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getRequestSponsorProposalChangesQueryKey(proposalId,requestSponsorProposalChangesRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof requestSponsorProposalChanges>>> = ({ signal }) => requestSponsorProposalChanges(proposalId,requestSponsorProposalChangesRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: proposalId !== null && proposalId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof requestSponsorProposalChanges>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type RequestSponsorProposalChangesQueryResult = NonNullable<Awaited<ReturnType<typeof requestSponsorProposalChanges>>>
+export type RequestSponsorProposalChangesQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function useRequestSponsorProposalChanges<TData = Awaited<ReturnType<typeof requestSponsorProposalChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    requestSponsorProposalChangesRequest: BodyType<RequestSponsorProposalChangesRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestSponsorProposalChanges>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof requestSponsorProposalChanges>>,
+          TError,
+          Awaited<ReturnType<typeof requestSponsorProposalChanges>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRequestSponsorProposalChanges<TData = Awaited<ReturnType<typeof requestSponsorProposalChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    requestSponsorProposalChangesRequest: BodyType<RequestSponsorProposalChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestSponsorProposalChanges>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof requestSponsorProposalChanges>>,
+          TError,
+          Awaited<ReturnType<typeof requestSponsorProposalChanges>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRequestSponsorProposalChanges<TData = Awaited<ReturnType<typeof requestSponsorProposalChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    requestSponsorProposalChangesRequest: BodyType<RequestSponsorProposalChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestSponsorProposalChanges>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Request changes to a partnership proposal
+ */
+
+export function useRequestSponsorProposalChanges<TData = Awaited<ReturnType<typeof requestSponsorProposalChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    requestSponsorProposalChangesRequest: BodyType<RequestSponsorProposalChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestSponsorProposalChanges>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getRequestSponsorProposalChangesQueryOptions(proposalId,requestSponsorProposalChangesRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getPreviewRequestSponsorProposalChangesUrl = (proposalId: string,) => {
+
+
+
+
+  return `/api/v1/admin/sponsor-proposals/${proposalId}/request-changes/preview`
+}
+
+/**
+ * Needs `sponsors.proposals.request_changes` and a fresh key check. Changes nothing.
+ *
+ * * `not_found` - not a usable operator, or no such submitted proposal (drafts are never visible).
+ * * `enrollment_required`, `forbidden` (permission), `step_up_required` (key check).
+ * * `conflict` - `details.target: "self"` (the operator belongs to the proposing organization), the proposal's
+ *   status, or `details.organization` when the organization isn't active.
+ * * `revision_conflict` - the proposal changed since `expected_revision`.
+ * @summary Preview requesting changes to a partnership proposal
+ */
+export const previewRequestSponsorProposalChanges = async (proposalId: string,
+    requestSponsorProposalChangesRequest: RequestSponsorProposalChangesRequest, options?: Parameters<typeof apiFetch>[1]): Promise<OperatorActionPreviewResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<OperatorActionPreviewResponse>(getPreviewRequestSponsorProposalChangesUrl(proposalId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(requestSponsorProposalChangesRequest)
+  }
+);}
+
+
+
+
+
+export const getPreviewRequestSponsorProposalChangesQueryKey = (proposalId: string,
+    requestSponsorProposalChangesRequest?: BodyType<RequestSponsorProposalChangesRequest>,) => {
+    return [
+    'POST', `/api/v1/admin/sponsor-proposals/${proposalId}/request-changes/preview`, requestSponsorProposalChangesRequest
+    ] as const;
+    }
+
+
+export const getPreviewRequestSponsorProposalChangesQueryOptions = <TData = Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(proposalId: string,
+    requestSponsorProposalChangesRequest: BodyType<RequestSponsorProposalChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPreviewRequestSponsorProposalChangesQueryKey(proposalId,requestSponsorProposalChangesRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>> = ({ signal }) => previewRequestSponsorProposalChanges(proposalId,requestSponsorProposalChangesRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: proposalId !== null && proposalId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PreviewRequestSponsorProposalChangesQueryResult = NonNullable<Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>>
+export type PreviewRequestSponsorProposalChangesQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+export function usePreviewRequestSponsorProposalChanges<TData = Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    requestSponsorProposalChangesRequest: BodyType<RequestSponsorProposalChangesRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>,
+          TError,
+          Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewRequestSponsorProposalChanges<TData = Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    requestSponsorProposalChangesRequest: BodyType<RequestSponsorProposalChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>,
+          TError,
+          Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePreviewRequestSponsorProposalChanges<TData = Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    requestSponsorProposalChangesRequest: BodyType<RequestSponsorProposalChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Preview requesting changes to a partnership proposal
+ */
+
+export function usePreviewRequestSponsorProposalChanges<TData = Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ValidationErrorResponse | RateLimitedResponse | InternalErrorResponse>>(
+ proposalId: string,
+    requestSponsorProposalChangesRequest: BodyType<RequestSponsorProposalChangesRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof previewRequestSponsorProposalChanges>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPreviewRequestSponsorProposalChangesQueryOptions(proposalId,requestSponsorProposalChangesRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

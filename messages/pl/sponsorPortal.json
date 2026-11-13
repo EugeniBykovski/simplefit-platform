@@ -71,7 +71,9 @@
   "permissions": {
     "view_organization": "Czytać dane organizacji",
     "view_members": "Widzieć jej członków",
-    "view_contacts": "Widzieć jej kontakty biznesowe"
+    "view_contacts": "Widzieć jej kontakty biznesowe",
+    "view_partnerships": "Widzieć jej zainteresowania i prośby partnerskie",
+    "manage_partnerships": "Edytować jej zainteresowania partnerskie i wysyłać prośby o partnerstwo"
   },
   "settings": {
     "metaTitle": "Ustawienia portalu partnera",
