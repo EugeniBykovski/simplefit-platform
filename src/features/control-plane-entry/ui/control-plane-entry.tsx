@@ -51,6 +51,8 @@ export type EntryActions = {
   onBack: () => void;
   onContinue: () => void;
   onRetry: () => void;
+  /** SF-157: back to the Control Plane from key registration (it opens without keys). */
+  onLeave?: () => void;
 };
 
 type Tone = "neutral" | "warning" | "destructive" | "success";
@@ -131,6 +133,7 @@ function Card({ view, on }: { view: EntryView; on: EntryActions }) {
               {t("key.recovery")}
             </Button>
           )}
+          <Leave on={on} />
         </Frame>
       );
     case "recovery":
@@ -216,6 +219,7 @@ function Card({ view, on }: { view: EntryView; on: EntryActions }) {
           <Button variant="link" className="h-11 w-fit px-0" onClick={on.onRecovery}>
             {t("key.recovery")}
           </Button>
+          <Leave on={on} />
         </Frame>
       );
     }
@@ -231,6 +235,17 @@ function Card({ view, on }: { view: EntryView; on: EntryActions }) {
         </Frame>
       );
   }
+}
+
+/** SF-157: "Back to the Control Plane", when the gate offers it. */
+function Leave({ on }: { on: EntryActions }) {
+  const t = useTranslations("controlPlane.entry");
+  if (on.onLeave === undefined) return null;
+  return (
+    <Button variant="quiet" className="h-12" onClick={on.onLeave} data-control-plane-leave>
+      {t("leave")}
+    </Button>
+  );
 }
 
 function Frame({

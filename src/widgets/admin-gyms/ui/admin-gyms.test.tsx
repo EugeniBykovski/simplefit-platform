@@ -19,6 +19,7 @@ vi.mock("@/entities/session", () => ({
 }));
 const permissions = vi.hoisted(() => ({ current: ["gyms.read"] as string[] }));
 vi.mock("@/entities/operator", () => ({
+  needsEnrollment: () => false,
   useOperator: () => ({ data: { permissions: permissions.current } }),
   grants: (operator: { permissions: string[] }, permission: string) =>
     operator.permissions.includes(permission),

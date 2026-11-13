@@ -3,11 +3,13 @@ import { isApiError } from "@/shared/api/http/api-error";
 import { WebAuthnError } from "@/shared/lib/webauthn";
 
 /**
- * AD0, the Control Plane entry (SF-120; Claude Design `AdminSignIn`, MVP). What
- * the gate shows is derived from the backend's operator answer only; the
- * browser adds nothing but where the person is in a ceremony. Every operator
- * call still checks permission and key on its own: opening the gate authorizes
- * nothing.
+ * AD0, the Control Plane entry (SF-120; Claude Design `AdminSignIn`, MVP),
+ * revised by SF-157 (ADR 0028 amendment, founder-approved): the Control Plane
+ * opens at session assurance, for a pending operator (no keys yet) and an active
+ * one alike, whatever the sign-in method. What the gate shows is derived from the
+ * backend's operator answer only. Every operator call still checks permission and
+ * assurance on its own: opening the gate authorizes nothing, and every action
+ * still needs registered keys and a fresh key check, which the backend asks for.
  */
 export type Gate =
   /** First read in flight. */
@@ -16,35 +18,36 @@ export type Gate =
   | { kind: "loadFailed" }
   /** 404: not an operator, suspended or revoked; and a missing page looks the same. */
   | { kind: "unavailable" }
-  /** Pending, past its enrolment window. */
+  /** Pending or active: the Control Plane renders. */
+  | { kind: "open"; operator: Operator };
+
+export function decideGate(read: {
+  status: "pending" | "error" | "success";
+  data: Operator | null | undefined;
+}): Gate {
+  if (read.data === undefined) return { kind: read.status === "error" ? "loadFailed" : "checking" };
+  if (read.data === null) return { kind: "unavailable" };
+  return { kind: "open", operator: read.data };
+}
+
+/** What key registration shows when an action asked for it (SF-157). */
+export type Enrollment =
+  /** Pending, past its enrolment window: a recovery ceremony or a new provisioning reopens it. */
   | { kind: "enrollmentExpired" }
   /** Pending: register keys until the backend's required number. */
   | { kind: "enroll"; registered: number; required: number }
-  /** Active without a key check for this session; `lapsed` once one ran out. */
-  | { kind: "key"; lapsed: boolean }
-  /** Active with a key check: the Control Plane renders. */
-  | { kind: "open"; operator: Operator };
+  /** Active: nothing left to register. */
+  | { kind: "registered" };
 
-export function decideGate(
-  read: { status: "pending" | "error" | "success"; data: Operator | null | undefined },
-  now: number,
-  hadKeyCheck: boolean,
-): Gate {
-  if (read.data === undefined) return { kind: read.status === "error" ? "loadFailed" : "checking" };
-  const operator = read.data;
-  if (operator === null) return { kind: "unavailable" };
-  if (operator.status === "pending_enrollment") {
-    const deadline = operator.enrollment_expires_at;
-    if (deadline !== null && Date.parse(deadline) <= now) return { kind: "enrollmentExpired" };
-    return {
-      kind: "enroll",
-      registered: operator.security_keys.registered,
-      required: operator.security_keys.required,
-    };
-  }
-  const expiresAt = operator.step_up === null ? undefined : Date.parse(operator.step_up.expires_at);
-  if (expiresAt !== undefined && expiresAt > now) return { kind: "open", operator };
-  return { kind: "key", lapsed: hadKeyCheck || expiresAt !== undefined };
+export function decideEnrollment(operator: Operator, now: number): Enrollment {
+  if (operator.status !== "pending_enrollment") return { kind: "registered" };
+  const deadline = operator.enrollment_expires_at;
+  if (deadline !== null && Date.parse(deadline) <= now) return { kind: "enrollmentExpired" };
+  return {
+    kind: "enroll",
+    registered: operator.security_keys.registered,
+    required: operator.security_keys.required,
+  };
 }
 
 /** How a ceremony ended badly, for the card to say so. */

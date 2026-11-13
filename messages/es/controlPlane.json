@@ -31,7 +31,7 @@
     "rateLimited": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
     "enroll": {
       "title": "Registra dos llaves de seguridad",
-      "body": "Necesitas dos llaves: una para usar y otra de respaldo. No podrás abrir el Panel de control hasta registrar ambas.",
+      "body": "Necesitas dos llaves: una para usar y otra de respaldo. Para ver el Panel de control no hacen falta; para cualquier acción, sí.",
       "first": "Primera llave",
       "backup": "Llave de respaldo",
       "notYet": "Todavía no",
@@ -47,7 +47,7 @@
     "rejected": "Esa llave no se puede usar aquí. Usa una llave de seguridad de hardware, no un teléfono ni una llave de acceso sincronizada.",
     "enrollDone": {
       "title": "Tus llaves están registradas",
-      "body": "Ya puedes abrir el Panel de control. Lo que ves depende de los permisos que te dio un gestor de operadores.",
+      "body": "Ahora cada acción para la que tienes permiso te pedirá una de estas llaves. Lo que ves y puedes hacer depende de los permisos que te dio un gestor de operadores.",
       "action": "Continuar"
     },
     "reverify": {
@@ -80,11 +80,17 @@
       "title": "No encontramos esa página",
       "body": "Esta página no existe o no está disponible para tu cuenta.",
       "action": "Ir a SimpleFit"
+    },
+    "leave": "Volver al Panel de control",
+    "keysNeeded": {
+      "body": "Tus llaves de seguridad aún no están registradas. Puedes echar un vistazo; para cualquier acción, registra las llaves ({required}).",
+      "action": "Registrar llaves"
     }
   },
   "workspace": {
     "operator": "Operador",
     "keyChecked": "Llave verificada · {minutes, plural, one {# min restante} other {# min restantes}}",
+    "noKeyCheck": "Sesión iniciada · las acciones piden tu llave",
     "permissions": "{count, plural, one {# permiso} other {# permisos}} · cada uno concedido por separado",
     "exit": "Salir del panel de control",
     "exitFailed": "No pudimos terminar la verificación de la llave. Inténtalo de nuevo."

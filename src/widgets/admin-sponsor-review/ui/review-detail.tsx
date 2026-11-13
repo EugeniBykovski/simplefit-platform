@@ -13,7 +13,7 @@ import {
   type ReviewAction,
   type ReviewApplication,
 } from "@/entities/admin-sponsor-review";
-import { grants, useOperator, useOperatorKeys } from "@/entities/operator";
+import { grants, needsEnrollment, useOperator, useOperatorKeys } from "@/entities/operator";
 import { AnswerSummary, useSponsorApplicationPolicy } from "@/entities/sponsor-application";
 import { isApiError } from "@/shared/api/http/api-error";
 import { Link } from "@/shared/i18n/navigation";
@@ -386,6 +386,11 @@ function Documents({
       window.location.assign(url);
       setState(({ [evidenceId]: _done, ...rest }) => rest);
     } catch (error) {
+      // SF-157: without keys the gate shows key registration instead.
+      if (needsEnrollment(error)) {
+        setState(({ [evidenceId]: _done, ...rest }) => rest);
+        return;
+      }
       if (isApiError(error) && error.code === "step_up_required" && !retried) {
         try {
           await keys.verifyKey();

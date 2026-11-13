@@ -188,6 +188,62 @@ async function operatorCall(page: Page, method: string, path: string, body?: obj
   );
 }
 
+/**
+ * SF-157: the Control Plane opens without a key check, so this session runs the real
+ * step-up ceremony once (the same endpoints and browser WebAuthn the app uses, on the
+ * page's virtual authenticator) before the API-driven actions below.
+ */
+async function keyCheck(page: Page) {
+  const status = await page.evaluate(async (api): Promise<number> => {
+    const b64 = (buffer: ArrayBuffer) =>
+      btoa(String.fromCharCode(...new Uint8Array(buffer)))
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=+$/, "");
+    const bytes = (value: string) =>
+      Uint8Array.from(atob(value.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0));
+    const refreshed = await fetch(`${api}/api/auth/session/refresh`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "content-type": "application/json", "x-simplefit-csrf": "1" },
+      body: "{}",
+    });
+    const { access_token } = (await refreshed.json()) as { access_token: string };
+    const headers = { "content-type": "application/json", authorization: `Bearer ${access_token}` };
+    const options = (await (
+      await fetch(`${api}/api/v1/admin/step-up/options`, { method: "POST", headers, body: "{}" })
+    ).json()) as {
+      challenge_id: string;
+      public_key: { challenge: string; rpId?: string; allowCredentials?: { id: string }[] };
+    };
+    const credential = (await navigator.credentials.get({
+      publicKey: {
+        challenge: bytes(options.public_key.challenge),
+        rpId: options.public_key.rpId,
+        userVerification: "required",
+        allowCredentials: (options.public_key.allowCredentials ?? []).map((item) => ({
+          type: "public-key" as const,
+          id: bytes(item.id),
+        })),
+      },
+    })) as PublicKeyCredential;
+    const response = credential.response as AuthenticatorAssertionResponse;
+    const verified = await fetch(`${api}/api/v1/admin/step-up`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        challenge_id: options.challenge_id,
+        credential_id: b64(credential.rawId),
+        authenticator_data: b64(response.authenticatorData),
+        client_data_json: b64(response.clientDataJSON),
+        signature: b64(response.signature),
+      }),
+    });
+    return verified.status;
+  }, API_URL);
+  expect(status).toBe(200);
+}
+
 const revisionOf = (reply: Reply, key: "proposal" | "application") =>
   ((reply.body?.[key] as { revision: number } | undefined)?.revision ?? 0) as number;
 
@@ -263,11 +319,8 @@ test("SF-131 partnership interests, opportunities and requests against the real 
   // The operator: real sign-in, two registered virtual keys, the key check.
   const cdp = await page.context().newCDPSession(page);
   await cdp.send("WebAuthn.enable");
-  await emailSignIn(
-    page,
-    OPERATOR,
-    `/en/admin/login?returnTo=${encodeURIComponent("/admin/sponsors")}`,
-  );
+  await emailSignIn(page, OPERATOR, `/en/login?returnTo=${encodeURIComponent("/admin/sponsors")}`);
+  await page.getByRole("button", { name: "Register keys" }).click();
   const first = await securityKey(cdp);
   await page.getByRole("button", { name: "Register first key" }).click();
   await expect(page.getByRole("heading", { name: "Now your backup key" })).toBeVisible();
@@ -275,11 +328,9 @@ test("SF-131 partnership interests, opportunities and requests against the real 
   await securityKey(cdp);
   await page.getByRole("button", { name: "Register backup key" }).click();
   await page.getByRole("button", { name: "Continue" }).click();
-  await page.getByRole("button", { name: "Use security key" }).click();
   await page.waitForURL((url) => url.pathname === "/en/admin/sponsors");
-  // SF-132: the URL matches before the key check completes; wait until the backend
-  // accepts the operator's reads (the key check is bound to this session).
-  await expect(page.getByRole("button", { name: "Use security key" })).toHaveCount(0);
+  // SF-157: reads need only the session; the actions below need a fresh key check.
+  await keyCheck(page);
 
   // Organization A from a real approval (SF-116): claim, then confirmed approval.
   const app = `/api/v1/admin/sponsor-applications/${a.id}`;

@@ -17,14 +17,14 @@ vi.mock("@/entities/session", () => ({
   callWithSession: <T,>(call: (init: RequestInit) => Promise<T>) =>
     call({ headers: { Authorization: "Bearer test" } }),
 }));
-const navigation = vi.hoisted(() => ({ pathname: "/admin", replace: vi.fn() }));
+const navigation = vi.hoisted(() => ({ pathname: "/admin", replace: vi.fn(), push: vi.fn() }));
 vi.mock("@/shared/i18n/navigation", () => ({
   Link: ({ href, children, ...props }: React.ComponentProps<"a">) => (
     <a href={`/en${href}`} {...props}>
       {children}
     </a>
   ),
-  useRouter: () => ({ push: vi.fn(), replace: navigation.replace }),
+  useRouter: () => ({ push: navigation.push, replace: navigation.replace }),
   usePathname: () => navigation.pathname,
 }));
 // The shell (sidebar, session control, switchers) has its own tests.
@@ -128,19 +128,20 @@ describe("AdminWorkspace (SF-120)", () => {
     await waitFor(() => expect(navigation.replace).toHaveBeenCalledWith("/admin/welcome"));
   });
 
-  it("nothing renders behind the gate without a key check", async () => {
-    api({ [ME]: [operator(["audit.read"], false)] });
+  it("SF-157: opens without a key check (session assurance) and says actions ask for the key", async () => {
+    api({ [ME]: [operator(["audit.read"], false)], [RUN]: [firstRun("completed")] });
     renderWithProviders(
       <AdminWorkspace>
         <p>overview</p>
       </AdminWorkspace>,
     );
-    expect(await screen.findByRole("heading", { name: "Use your security key" })).toBeVisible();
-    expect(screen.queryByTestId("shell")).toBeNull();
-    expect(screen.queryByText("overview")).toBeNull();
+    expect(await screen.findByText("overview")).toBeVisible();
+    expect(screen.getByText("Signed in · actions ask for your key")).toBeVisible();
+    expect(screen.queryByRole("heading", { name: "Use your security key" })).toBeNull();
   });
 
-  it("Exit control plane ends the key check on the backend and closes the Control Plane", async () => {
+  it("Exit control plane ends the key check on the backend and leaves the Control Plane", async () => {
+    navigation.push.mockReset();
     const calls = api({
       [ME]: [operator(["audit.read"]), operator(["audit.read"], false)],
       [RUN]: [firstRun("completed")],
@@ -152,9 +153,8 @@ describe("AdminWorkspace (SF-120)", () => {
       </AdminWorkspace>,
     );
     await user.click(await screen.findByRole("button", { name: "Exit control plane" }));
-    expect(await screen.findByRole("heading", { name: "Use your security key" })).toBeVisible();
+    await waitFor(() => expect(navigation.push).toHaveBeenCalledWith("/"));
     expect(calls).toContain("DELETE /api/v1/admin/step-up");
-    expect(screen.queryByText("overview")).toBeNull();
   });
 
   it("a revoked operator (404 on the next read) loses the Control Plane", async () => {

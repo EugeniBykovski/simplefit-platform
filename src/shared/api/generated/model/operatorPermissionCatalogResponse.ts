@@ -7,9 +7,9 @@
 import type { OperatorPermissionCatalogResponsePermissionsItem } from './operatorPermissionCatalogResponsePermissionsItem';
 
 /**
- * Every operator permission (SF-129): the catalog the database also enforces, each with the key-check
- * assurance it needs (`key`: a current check; `fresh_key`: one in the last minutes). No role, bundle or
- * superuser exists: permissions are granted one by one.
+ * Every operator permission (SF-129): the catalog the database also enforces, each with the assurance it
+ * needs (`session`: the signed-in session, whatever the sign-in method, SF-157; `fresh_key`: a security-key
+ * check in the last minutes). No role, bundle or superuser exists: permissions are granted one by one.
  */
 export interface OperatorPermissionCatalogResponse {
   permissions: OperatorPermissionCatalogResponsePermissionsItem[];

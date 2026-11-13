@@ -111,7 +111,7 @@ async function securityKey(cdp: CDPSession, backupEligible = false): Promise<str
 
 async function signIn(page: Page, email: string, path: string) {
   resetRateLimits();
-  await page.goto(`/en/admin/login?returnTo=${encodeURIComponent(path)}`);
+  await page.goto(`/en/login?returnTo=${encodeURIComponent(path)}`);
   await page.locator('input[type="email"]').fill(email);
   await page.locator('form button[type="submit"]').first().click();
   await page.waitForURL((url) => url.pathname.endsWith("/login/code"));
@@ -159,9 +159,12 @@ test("SF-120 Control Plane entry, first visit, exit, expiry, revocation and acco
   const cdp = await page.context().newCDPSession(page);
   await cdp.send("WebAuthn.enable");
 
-  await test.step("B: a pending operator enrols two hardware keys; a synced passkey is refused", async () => {
+  await test.step("B: a pending operator opens the Control Plane, then enrols two hardware keys; a synced passkey is refused", async () => {
     await signIn(page, OPERATOR, "/admin");
-    await page.waitForURL((url) => url.pathname === "/en/admin");
+    // SF-157: the Control Plane opens at session assurance; keys come from the notice.
+    await page.waitForURL((url) => url.pathname === "/en/admin/welcome");
+    await expect(page.getByText(/security keys aren’t registered yet/)).toBeVisible();
+    await page.getByRole("button", { name: "Register keys" }).click();
     await expect(page.getByRole("heading", { name: "Register two security keys" })).toBeVisible();
 
     const synced = await securityKey(cdp, true);
@@ -192,18 +195,17 @@ test("SF-120 Control Plane entry, first visit, exit, expiry, revocation and acco
     ).toBe("2");
   });
 
-  await test.step("C: the key check opens the Control Plane, and the overview forwards to ARW1", async () => {
+  await test.step("C: back in the Control Plane without a key check; the overview forwards to ARW1", async () => {
     await page.getByRole("button", { name: "Continue" }).click();
-    await expect(page.getByRole("heading", { name: "Use your security key" })).toBeVisible();
-    await page.getByRole("button", { name: "Use security key" }).click();
     await page.waitForURL((url) => url.pathname === "/en/admin/welcome");
     await expect(page.getByRole("heading", { name: "Welcome to the Control Plane" })).toBeVisible();
-    await expect(page.getByText(/Key checked · \d+ min left/).first()).toBeVisible();
+    await expect(page.getByText("Signed in · actions ask for your key").first()).toBeVisible();
+    // SF-157: no key check at entry; actions ask for it.
     expect(
       sql(
         `SELECT count(*) FROM operator_step_ups s JOIN platform_operators o ON o.id = s.operator_id WHERE o.user_id = '${operatorId}' AND s.revoked_at IS NULL AND s.expires_at > now()`,
       ),
-    ).toBe("1");
+    ).toBe("0");
     const granted = async (row: string) =>
       page.locator(`[data-access-row=${row}]`).getAttribute("data-granted");
     expect(await granted("audit")).toBe("true");
@@ -239,7 +241,7 @@ test("SF-120 Control Plane entry, first visit, exit, expiry, revocation and acco
     await tour.getByRole("button", { name: "Go to overview" }).click();
     await page.waitForURL((url) => url.pathname === "/en/admin");
     await page.reload();
-    await expect(page.getByText(/Key checked/).first()).toBeVisible();
+    await expect(page.getByText("Signed in · actions ask for your key").first()).toBeVisible();
     expect(new URL(page.url()).pathname).toBe("/en/admin");
     // Granted, unchanged by the tour.
     expect(
@@ -249,26 +251,17 @@ test("SF-120 Control Plane entry, first visit, exit, expiry, revocation and acco
     ).toBe("2");
   });
 
-  await test.step("E: Exit control plane ends the key check on the backend", async () => {
+  await test.step("E: Exit control plane ends any key check on the backend and leaves", async () => {
     await page.getByRole("button", { name: "Exit control plane" }).click();
-    await expect(page.getByRole("heading", { name: "Use your security key" })).toBeVisible();
+    await page.waitForURL((url) => !url.pathname.startsWith("/en/admin"));
     expect(
       sql(
         `SELECT count(*) FROM operator_step_ups s JOIN platform_operators o ON o.id = s.operator_id WHERE o.user_id = '${operatorId}' AND s.revoked_at IS NULL AND s.expires_at > now()`,
       ),
     ).toBe("0");
-  });
-
-  await test.step("F: a key check that lapses asks to confirm again", async () => {
-    await page.getByRole("button", { name: "Use security key" }).click();
-    await expect(page.getByText(/Key checked/).first()).toBeVisible();
-    sql(
-      `UPDATE operator_step_ups SET verified_at = now() - interval '31 minutes', expires_at = now() - interval '1 second' WHERE operator_id = (SELECT id FROM platform_operators WHERE user_id = '${operatorId}') AND revoked_at IS NULL`,
-    );
-    await refocus(page);
-    await expect(page.getByRole("heading", { name: "Confirm it’s you again" })).toBeVisible();
-    await page.getByRole("button", { name: "Use security key" }).click();
-    await expect(page.getByText(/Key checked/).first()).toBeVisible();
+    // The session stays: the Control Plane opens again (SF-157 session assurance).
+    await page.goto("/en/admin");
+    await expect(page.getByText("Exit control plane")).toBeVisible();
   });
 
   await test.step("G: revoked meanwhile, the next read closes the Control Plane", async () => {

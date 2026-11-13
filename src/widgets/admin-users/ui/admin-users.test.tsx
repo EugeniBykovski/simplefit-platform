@@ -20,7 +20,10 @@ vi.mock("@/entities/session", () => ({
   useSession: () => ({ status: "authenticated", viewer: { id: "viewer-id" } }),
 }));
 const verifyKey = vi.fn();
-vi.mock("@/entities/operator", () => ({ useOperatorKeys: () => ({ verifyKey }) }));
+vi.mock("@/entities/operator", () => ({
+  needsEnrollment: () => false,
+  useOperatorKeys: () => ({ verifyKey }),
+}));
 const replace = vi.fn();
 vi.mock("@/shared/i18n/navigation", () => ({
   Link: ({ href, children, ...props }: React.ComponentProps<"a">) => (

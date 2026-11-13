@@ -183,6 +183,20 @@ development ceremony, which only bootstraps the first operator of a database
 SQL only ages a key check, revokes the operator (the client's answer to the 404 is
 under test) and reads results.
 
+**SF-157:** the Control Plane opens at session assurance (simplefit-api ADR 0028 amendment). The specs sign in
+through `/en/login` (email code) or `/en/admin/login` (email and password), register keys from the Control Plane's
+notice when an action needs them, and answer the action dialog's key check ("Use security key") on the first action
+of a session. There is no key check at entry, so the old "check lapsed" step is gone.
+`sponsor-partnerships.spec.ts` drives its actions through the API, so it runs the real step-up ceremony in the page
+(`keyCheck`) first.
+
+`admin-password-sign-in.spec.ts` (SF-157) runs on the same setup (a fresh database each run): the password is set
+through the real emailed code, then email and password sign-in, one answer for a wrong password or an unknown
+address, throttling, an ordinary account refused, key registration and a fresh key check before a privileged
+action, sign-out and another account in the same browser, a reset that signs out everywhere, revocation, the
+email-code sign-in one link away, and no password in the API log (`E2E_API_LOG`). Its keyboard check runs in all
+five browser projects.
+
 `control-plane-users.spec.ts` (SF-122) runs on the same setup: account search, suspension, lift and sign-out
 checked in the target's own sessions (separate browser contexts) and in the database.
 

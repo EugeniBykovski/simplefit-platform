@@ -20,6 +20,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AccountSuspendedResponse,
   AppleAuthRequest,
   AppleAuthResponse,
   BadRequestResponse,
@@ -41,6 +42,13 @@ import type {
   GoogleAuthRequest,
   GoogleAuthResponse,
   InternalErrorResponse,
+  InvalidCredentialsResponse,
+  PasswordChangeRequest,
+  PasswordNotSetResponse,
+  PasswordResetAccepted,
+  PasswordResetConfirmRequest,
+  PasswordSignInRequest,
+  PasswordStatus,
   RefreshSessionRequest,
   ServiceUnavailableResponse,
   SessionTokens,
@@ -1151,6 +1159,366 @@ export function useLogout<TData = Awaited<ReturnType<typeof logout>>, TError = E
 
 
 
+export const getRequestPasswordResetUrl = () => {
+
+
+
+
+  return `/api/auth/password/reset`
+}
+
+/**
+ * If the address is an account's email address, sends a 6-digit code that sets a new password for that account
+ * (also the first one). The response is the same for every well-formed address and never reveals whether an
+ * account exists. Requesting again replaces the previous code.
+ * @summary Send a code to set or reset a password
+ */
+export const requestPasswordReset = async (emailCodeRequest: EmailCodeRequest, options?: Parameters<typeof apiFetch>[1]): Promise<PasswordResetAccepted> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<PasswordResetAccepted>(getRequestPasswordResetUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(emailCodeRequest)
+  }
+);}
+
+
+
+
+
+export const getRequestPasswordResetQueryKey = (emailCodeRequest?: BodyType<EmailCodeRequest>,) => {
+    return [
+    'POST', `/api/auth/password/reset`, emailCodeRequest
+    ] as const;
+    }
+
+
+export const getRequestPasswordResetQueryOptions = <TData = Awaited<ReturnType<typeof requestPasswordReset>>, TError = ErrorType<ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(emailCodeRequest: BodyType<EmailCodeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestPasswordReset>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getRequestPasswordResetQueryKey(emailCodeRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof requestPasswordReset>>> = ({ signal }) => requestPasswordReset(emailCodeRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof requestPasswordReset>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type RequestPasswordResetQueryResult = NonNullable<Awaited<ReturnType<typeof requestPasswordReset>>>
+export type RequestPasswordResetQueryError = ErrorType<ValidationErrorResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function useRequestPasswordReset<TData = Awaited<ReturnType<typeof requestPasswordReset>>, TError = ErrorType<ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ emailCodeRequest: BodyType<EmailCodeRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestPasswordReset>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof requestPasswordReset>>,
+          TError,
+          Awaited<ReturnType<typeof requestPasswordReset>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRequestPasswordReset<TData = Awaited<ReturnType<typeof requestPasswordReset>>, TError = ErrorType<ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ emailCodeRequest: BodyType<EmailCodeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestPasswordReset>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof requestPasswordReset>>,
+          TError,
+          Awaited<ReturnType<typeof requestPasswordReset>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useRequestPasswordReset<TData = Awaited<ReturnType<typeof requestPasswordReset>>, TError = ErrorType<ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ emailCodeRequest: BodyType<EmailCodeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestPasswordReset>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Send a code to set or reset a password
+ */
+
+export function useRequestPasswordReset<TData = Awaited<ReturnType<typeof requestPasswordReset>>, TError = ErrorType<ValidationErrorResponse | ErrorResponse | InternalErrorResponse>>(
+ emailCodeRequest: BodyType<EmailCodeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof requestPasswordReset>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getRequestPasswordResetQueryOptions(emailCodeRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getConfirmPasswordResetUrl = () => {
+
+
+
+
+  return `/api/auth/password/reset/confirm`
+}
+
+/**
+ * Sets the password of the account whose email address received the code, replacing any previous password, and
+ * signs that account out everywhere. Signs nobody in: sign in with the new password afterwards.
+ *
+ * * `code_invalid` - wrong code. After 5 wrong codes the code stops working.
+ * * `code_expired` - the code expired, was replaced, was already used or stopped working: request a new one.
+ * * `validation_error` - the new password is shorter than 12 or longer than 128 characters, or is the email
+ *   address. Checked before the code, so a bad password doesn't use up the code.
+ * @summary Set or reset a password with its code
+ */
+export const confirmPasswordReset = async (passwordResetConfirmRequest: PasswordResetConfirmRequest, options?: Parameters<typeof apiFetch>[1]): Promise<void> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<void>(getConfirmPasswordResetUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(passwordResetConfirmRequest)
+  }
+);}
+
+
+
+
+
+export const getConfirmPasswordResetQueryKey = (passwordResetConfirmRequest?: BodyType<PasswordResetConfirmRequest>,) => {
+    return [
+    'POST', `/api/auth/password/reset/confirm`, passwordResetConfirmRequest
+    ] as const;
+    }
+
+
+export const getConfirmPasswordResetQueryOptions = <TData = Awaited<ReturnType<typeof confirmPasswordReset>>, TError = ErrorType<CodeInvalidResponse | ErrorResponse | InternalErrorResponse>>(passwordResetConfirmRequest: BodyType<PasswordResetConfirmRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmPasswordReset>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getConfirmPasswordResetQueryKey(passwordResetConfirmRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof confirmPasswordReset>>> = ({ signal }) => confirmPasswordReset(passwordResetConfirmRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof confirmPasswordReset>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ConfirmPasswordResetQueryResult = NonNullable<Awaited<ReturnType<typeof confirmPasswordReset>>>
+export type ConfirmPasswordResetQueryError = ErrorType<CodeInvalidResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function useConfirmPasswordReset<TData = Awaited<ReturnType<typeof confirmPasswordReset>>, TError = ErrorType<CodeInvalidResponse | ErrorResponse | InternalErrorResponse>>(
+ passwordResetConfirmRequest: BodyType<PasswordResetConfirmRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmPasswordReset>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof confirmPasswordReset>>,
+          TError,
+          Awaited<ReturnType<typeof confirmPasswordReset>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useConfirmPasswordReset<TData = Awaited<ReturnType<typeof confirmPasswordReset>>, TError = ErrorType<CodeInvalidResponse | ErrorResponse | InternalErrorResponse>>(
+ passwordResetConfirmRequest: BodyType<PasswordResetConfirmRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmPasswordReset>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof confirmPasswordReset>>,
+          TError,
+          Awaited<ReturnType<typeof confirmPasswordReset>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useConfirmPasswordReset<TData = Awaited<ReturnType<typeof confirmPasswordReset>>, TError = ErrorType<CodeInvalidResponse | ErrorResponse | InternalErrorResponse>>(
+ passwordResetConfirmRequest: BodyType<PasswordResetConfirmRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmPasswordReset>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Set or reset a password with its code
+ */
+
+export function useConfirmPasswordReset<TData = Awaited<ReturnType<typeof confirmPasswordReset>>, TError = ErrorType<CodeInvalidResponse | ErrorResponse | InternalErrorResponse>>(
+ passwordResetConfirmRequest: BodyType<PasswordResetConfirmRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof confirmPasswordReset>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getConfirmPasswordResetQueryOptions(passwordResetConfirmRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getSignInWithPasswordUrl = () => {
+
+
+
+
+  return `/api/auth/password/sign-in`
+}
+
+/**
+ * Starts an SF-20 session for the user whose email identity has this address, when the password is that
+ * user's. Authentication only: it creates no account, operator or permission, and Control Plane access is still
+ * decided by every operator endpoint.
+ *
+ * * `invalid_credentials` - the same answer, after the same work, for a wrong password, an unknown address and
+ *   an account without a password.
+ * * `account_suspended` - the password is right but the account is suspended.
+ * * `rate_limited` - too many attempts from this client or for this address.
+ * @summary Sign in with an email address and password
+ */
+export const signInWithPassword = async (passwordSignInRequest: PasswordSignInRequest, options?: Parameters<typeof apiFetch>[1]): Promise<SessionTokens> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<SessionTokens>(getSignInWithPasswordUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(passwordSignInRequest)
+  }
+);}
+
+
+
+
+
+export const getSignInWithPasswordQueryKey = (passwordSignInRequest?: BodyType<PasswordSignInRequest>,) => {
+    return [
+    'POST', `/api/auth/password/sign-in`, passwordSignInRequest
+    ] as const;
+    }
+
+
+export const getSignInWithPasswordQueryOptions = <TData = Awaited<ReturnType<typeof signInWithPassword>>, TError = ErrorType<AccountSuspendedResponse | InvalidCredentialsResponse | ErrorResponse | InternalErrorResponse>>(passwordSignInRequest: BodyType<PasswordSignInRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof signInWithPassword>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSignInWithPasswordQueryKey(passwordSignInRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof signInWithPassword>>> = ({ signal }) => signInWithPassword(passwordSignInRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof signInWithPassword>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type SignInWithPasswordQueryResult = NonNullable<Awaited<ReturnType<typeof signInWithPassword>>>
+export type SignInWithPasswordQueryError = ErrorType<AccountSuspendedResponse | InvalidCredentialsResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function useSignInWithPassword<TData = Awaited<ReturnType<typeof signInWithPassword>>, TError = ErrorType<AccountSuspendedResponse | InvalidCredentialsResponse | ErrorResponse | InternalErrorResponse>>(
+ passwordSignInRequest: BodyType<PasswordSignInRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof signInWithPassword>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof signInWithPassword>>,
+          TError,
+          Awaited<ReturnType<typeof signInWithPassword>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSignInWithPassword<TData = Awaited<ReturnType<typeof signInWithPassword>>, TError = ErrorType<AccountSuspendedResponse | InvalidCredentialsResponse | ErrorResponse | InternalErrorResponse>>(
+ passwordSignInRequest: BodyType<PasswordSignInRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof signInWithPassword>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof signInWithPassword>>,
+          TError,
+          Awaited<ReturnType<typeof signInWithPassword>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSignInWithPassword<TData = Awaited<ReturnType<typeof signInWithPassword>>, TError = ErrorType<AccountSuspendedResponse | InvalidCredentialsResponse | ErrorResponse | InternalErrorResponse>>(
+ passwordSignInRequest: BodyType<PasswordSignInRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof signInWithPassword>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Sign in with an email address and password
+ */
+
+export function useSignInWithPassword<TData = Awaited<ReturnType<typeof signInWithPassword>>, TError = ErrorType<AccountSuspendedResponse | InvalidCredentialsResponse | ErrorResponse | InternalErrorResponse>>(
+ passwordSignInRequest: BodyType<PasswordSignInRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof signInWithPassword>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getSignInWithPasswordQueryOptions(passwordSignInRequest,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
 export const getRefreshSessionUrl = () => {
 
 
@@ -1368,6 +1736,226 @@ export function useGetCurrentUser<TData = Awaited<ReturnType<typeof getCurrentUs
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetCurrentUserQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getGetMyPasswordStatusUrl = () => {
+
+
+
+
+  return `/api/me/password`
+}
+
+/**
+ * @summary Whether the viewer has a password
+ */
+export const getMyPasswordStatus = async ( options?: Parameters<typeof apiFetch>[1]): Promise<PasswordStatus> => {
+
+  return apiFetch<PasswordStatus>(getGetMyPasswordStatusUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMyPasswordStatusQueryKey = () => {
+    return [
+    `/api/me/password`
+    ] as const;
+    }
+
+
+export const getGetMyPasswordStatusQueryOptions = <TData = Awaited<ReturnType<typeof getMyPasswordStatus>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyPasswordStatus>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMyPasswordStatusQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyPasswordStatus>>> = ({ signal }) => getMyPasswordStatus({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMyPasswordStatus>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetMyPasswordStatusQueryResult = NonNullable<Awaited<ReturnType<typeof getMyPasswordStatus>>>
+export type GetMyPasswordStatusQueryError = ErrorType<UnauthorizedResponse | InternalErrorResponse>
+
+
+export function useGetMyPasswordStatus<TData = Awaited<ReturnType<typeof getMyPasswordStatus>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyPasswordStatus>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMyPasswordStatus>>,
+          TError,
+          Awaited<ReturnType<typeof getMyPasswordStatus>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMyPasswordStatus<TData = Awaited<ReturnType<typeof getMyPasswordStatus>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyPasswordStatus>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMyPasswordStatus>>,
+          TError,
+          Awaited<ReturnType<typeof getMyPasswordStatus>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMyPasswordStatus<TData = Awaited<ReturnType<typeof getMyPasswordStatus>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyPasswordStatus>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Whether the viewer has a password
+ */
+
+export function useGetMyPasswordStatus<TData = Awaited<ReturnType<typeof getMyPasswordStatus>>, TError = ErrorType<UnauthorizedResponse | InternalErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyPasswordStatus>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetMyPasswordStatusQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export const getChangeMyPasswordUrl = () => {
+
+
+
+
+  return `/api/me/password`
+}
+
+/**
+ * Replaces the viewer's password, given the current one, and signs out every other session of the account; this
+ * session stays signed in.
+ *
+ * * `invalid_credentials` - the current password is not correct.
+ * * `password_not_set` - the account has no password yet: set one with a code (`requestPasswordReset`).
+ * * `conflict` - the password changed meanwhile (another change or a reset): try again.
+ * @summary Change the viewer's password
+ */
+export const changeMyPassword = async (passwordChangeRequest: PasswordChangeRequest, options?: Parameters<typeof apiFetch>[1]): Promise<void> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<void>(getChangeMyPasswordUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(passwordChangeRequest)
+  }
+);}
+
+
+
+
+
+export const getChangeMyPasswordQueryKey = (passwordChangeRequest?: BodyType<PasswordChangeRequest>,) => {
+    return [
+    'PUT', `/api/me/password`, passwordChangeRequest
+    ] as const;
+    }
+
+
+export const getChangeMyPasswordQueryOptions = <TData = Awaited<ReturnType<typeof changeMyPassword>>, TError = ErrorType<UnauthorizedResponse | PasswordNotSetResponse | InvalidCredentialsResponse | ErrorResponse | InternalErrorResponse>>(passwordChangeRequest: BodyType<PasswordChangeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof changeMyPassword>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getChangeMyPasswordQueryKey(passwordChangeRequest);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof changeMyPassword>>> = ({ signal }) => changeMyPassword(passwordChangeRequest, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof changeMyPassword>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ChangeMyPasswordQueryResult = NonNullable<Awaited<ReturnType<typeof changeMyPassword>>>
+export type ChangeMyPasswordQueryError = ErrorType<UnauthorizedResponse | PasswordNotSetResponse | InvalidCredentialsResponse | ErrorResponse | InternalErrorResponse>
+
+
+export function useChangeMyPassword<TData = Awaited<ReturnType<typeof changeMyPassword>>, TError = ErrorType<UnauthorizedResponse | PasswordNotSetResponse | InvalidCredentialsResponse | ErrorResponse | InternalErrorResponse>>(
+ passwordChangeRequest: BodyType<PasswordChangeRequest>, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof changeMyPassword>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof changeMyPassword>>,
+          TError,
+          Awaited<ReturnType<typeof changeMyPassword>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useChangeMyPassword<TData = Awaited<ReturnType<typeof changeMyPassword>>, TError = ErrorType<UnauthorizedResponse | PasswordNotSetResponse | InvalidCredentialsResponse | ErrorResponse | InternalErrorResponse>>(
+ passwordChangeRequest: BodyType<PasswordChangeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof changeMyPassword>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof changeMyPassword>>,
+          TError,
+          Awaited<ReturnType<typeof changeMyPassword>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useChangeMyPassword<TData = Awaited<ReturnType<typeof changeMyPassword>>, TError = ErrorType<UnauthorizedResponse | PasswordNotSetResponse | InvalidCredentialsResponse | ErrorResponse | InternalErrorResponse>>(
+ passwordChangeRequest: BodyType<PasswordChangeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof changeMyPassword>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Change the viewer's password
+ */
+
+export function useChangeMyPassword<TData = Awaited<ReturnType<typeof changeMyPassword>>, TError = ErrorType<UnauthorizedResponse | PasswordNotSetResponse | InvalidCredentialsResponse | ErrorResponse | InternalErrorResponse>>(
+ passwordChangeRequest: BodyType<PasswordChangeRequest>, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof changeMyPassword>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getChangeMyPasswordQueryOptions(passwordChangeRequest,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

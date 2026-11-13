@@ -33,6 +33,7 @@ const keys = vi.hoisted(() => ({
   reread: vi.fn(),
 }));
 vi.mock("@/entities/operator", () => ({
+  needsEnrollment: () => false,
   useOperator: () => ({
     data: {
       id: "11111111-1111-4111-8111-111111111111",

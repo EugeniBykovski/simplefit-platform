@@ -103,7 +103,7 @@ async function securityKey(cdp: CDPSession): Promise<string> {
 
 async function signIn(page: Page, email: string, path: string) {
   resetRateLimits();
-  await page.goto(`/en/admin/login?returnTo=${encodeURIComponent(path)}`);
+  await page.goto(`/en/login?returnTo=${encodeURIComponent(path)}`);
   await page.locator('input[type="email"]').fill(email);
   await page.locator('form button[type="submit"]').first().click();
   await page.waitForURL((url) => url.pathname.endsWith("/login/code"));
@@ -143,7 +143,12 @@ async function act(page: Page, button: string, reason: string) {
   const box = page.getByRole("dialog");
   await pick(page, /Reason/, reason);
   await box.getByRole("button", { name: "Review" }).click();
-  await box.getByRole("button", { name: "Confirm" }).click();
+  // SF-157: the first action of the session asks for the key in its dialog.
+  const key = box.getByRole("button", { name: "Use security key" });
+  const confirm = box.getByRole("button", { name: "Confirm" });
+  await expect(key.or(confirm)).toBeVisible();
+  if (await key.isVisible()) await key.click();
+  await confirm.click();
   await expect(box.getByText("Done. Recorded in the audit log.")).toBeVisible();
   await box.getByRole("button", { name: "Close" }).first().click();
 }
@@ -178,6 +183,7 @@ test("SF-122 account administration against the real backend", async ({
 
   await test.step("A: search by exact email with a reason, open the account; both reads recorded", async () => {
     await signIn(page, OPERATOR, "/admin/users");
+    await page.getByRole("button", { name: "Register keys" }).click();
     const first = await securityKey(cdp);
     await page.getByRole("button", { name: "Register first key" }).click();
     await expect(page.getByRole("heading", { name: "Now your backup key" })).toBeVisible();
@@ -185,7 +191,6 @@ test("SF-122 account administration against the real backend", async ({
     await securityKey(cdp);
     await page.getByRole("button", { name: "Register backup key" }).click();
     await page.getByRole("button", { name: "Continue" }).click();
-    await page.getByRole("button", { name: "Use security key" }).click();
     // The sign-in continuation brings the operator back to the search (the SF-120 first
     // visit is offered on the overview only).
     await page.waitForURL((url) => url.pathname === "/en/admin/users");
