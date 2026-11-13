@@ -9,6 +9,5 @@ export type OperatorActionPreviewResponsePreviewRequiredAssurance = typeof Opera
 
 
 export const OperatorActionPreviewResponsePreviewRequiredAssurance = {
-  key: 'key',
   fresh_key: 'fresh_key',
 } as const;

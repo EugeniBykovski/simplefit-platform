@@ -153,8 +153,9 @@ test("SF-125 moderation and enforcement are truthfully unavailable", async ({
     await emailSignIn(
       page,
       OPERATOR,
-      `/en/admin/login?returnTo=${encodeURIComponent("/admin/moderation")}`,
+      `/en/login?returnTo=${encodeURIComponent("/admin/moderation")}`,
     );
+    await page.getByRole("button", { name: "Register keys" }).click();
     const first = await securityKey(cdp);
     await page.getByRole("button", { name: "Register first key" }).click();
     await expect(page.getByRole("heading", { name: "Now your backup key" })).toBeVisible();
@@ -162,7 +163,6 @@ test("SF-125 moderation and enforcement are truthfully unavailable", async ({
     await securityKey(cdp);
     await page.getByRole("button", { name: "Register backup key" }).click();
     await page.getByRole("button", { name: "Continue" }).click();
-    await page.getByRole("button", { name: "Use security key" }).click();
     await page.waitForURL((url) => url.pathname === "/en/admin/moderation");
 
     await expect(

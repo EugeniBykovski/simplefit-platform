@@ -1,12 +1,23 @@
 "use client";
 
+import { KeyRoundIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-import { useKeyCheckClock, useOperator, useOperatorKeys, type Operator } from "@/entities/operator";
+import {
+  onKeyEnrollmentRequest,
+  useKeyCheckClock,
+  useOperator,
+  useOperatorKeys,
+  type Operator,
+} from "@/entities/operator";
+import { useRouter } from "@/shared/i18n/navigation";
 import { webAuthnSupported } from "@/shared/lib/webauthn";
+import { routeHref } from "@/shared/routes/routes";
+import { Button } from "@/shared/ui/button";
+import { Notice } from "@/shared/ui/notice";
 
-import { ceremonyProblem, decideGate, type CeremonyProblem } from "../model/gate";
+import { ceremonyProblem, decideEnrollment, decideGate, type CeremonyProblem } from "../model/gate";
 import { ControlPlaneEntry, type EntryView } from "./control-plane-entry";
 
 type Flow =
@@ -16,39 +27,59 @@ type Flow =
   | { kind: "problem"; problem: CeremonyProblem };
 
 /**
- * The Control Plane gate (SF-120, AD0). It renders `children` only while the
- * backend reports an active operator with a key check for this session, and
- * otherwise the matching entry state: checking, unavailable (the same 404 for
- * a non-operator, a suspended or revoked operator), enrolment of the required
- * keys, the key check, its expiry (reverify) and recovery guidance. It decides
- * nothing itself; every operator call is authorized again by the backend.
+ * The Control Plane gate (SF-120, AD0; SF-157). It renders `children` while the
+ * backend reports a pending or active operator: the Control Plane opens at session
+ * assurance, whatever the sign-in method. Otherwise it shows checking, the load
+ * failure or the one unavailable answer (the same 404 for a non-operator, a
+ * suspended or a revoked operator). It decides nothing itself; every operator call
+ * is authorized again by the backend.
  *
- * Revocation, suspension or a check ended in another tab show on the next read
- * (focus, the expiry timer, or any ceremony answer), and the children unmount.
+ * Key registration comes when it is needed: a pending operator sees a notice above
+ * the Control Plane, and an action answered `enrollment_required` asks for it
+ * (`requestKeyEnrollment`). Then the AD0 registration card replaces the page until
+ * the keys are registered or the person goes back. Key checks for actions run in
+ * the action dialogs, as before.
+ *
+ * Revocation or suspension in another tab shows on the next read (focus, or any
+ * ceremony answer), and the children unmount.
  */
 export function ControlPlaneGate({
   children,
 }: {
-  /** The Control Plane, given the operator and "Exit control plane" (ends the key check). */
+  /** The Control Plane, given the operator and "Exit control plane" (ends the key check, leaves). */
   children: (operator: Operator, exit: () => Promise<void>) => ReactNode;
 }) {
-  const t = useTranslations("controlPlane.entry.enroll");
+  const t = useTranslations("controlPlane.entry");
   const read = useOperator();
-  const { registerKey, verifyKey, endKeyCheck, reread } = useOperatorKeys();
+  const { registerKey, endKeyCheck, reread } = useOperatorKeys();
   const now = useKeyCheckClock(read.data);
   const [flow, setFlow] = useState<Flow>({ kind: "idle" });
+  const [enrolling, setEnrolling] = useState(false);
   const [enrolledHere, setEnrolledHere] = useState(false);
-  const [hadKeyCheck, setHadKeyCheck] = useState(false);
-  const [exiting, setExiting] = useState(false);
   const abort = useRef<AbortController | null>(null);
+  const router = useRouter();
 
-  const gate = decideGate(read, now, hadKeyCheck && !exiting);
-  const open = gate.kind === "open";
-  // Derived during render: once open in this page, a missing check reads as "expired".
-  if (open && !hadKeyCheck) setHadKeyCheck(true);
+  const gate = decideGate(read);
 
+  // "Exit control plane": ends this session's key check, then leaves. The session
+  // stays (signing out is the account's), so the Control Plane would open again.
+  const exit = async () => {
+    await endKeyCheck();
+    router.push(routeHref("web.root"));
+  };
+
+  // An action answered `enrollment_required`: show key registration.
+  useEffect(() => onKeyEnrollmentRequest(() => setEnrolling(true)), []);
   // A ceremony in flight belongs to this page: leaving it cancels the browser prompt.
   useEffect(() => () => abort.current?.abort(), []);
+
+  const leave = () => {
+    abort.current?.abort();
+    abort.current = null;
+    setFlow({ kind: "idle" });
+    setEnrolling(false);
+    setEnrolledHere(false);
+  };
 
   const run = async (ceremony: (signal: AbortSignal) => Promise<unknown>) => {
     if (!webAuthnSupported()) {
@@ -77,22 +108,51 @@ export function ControlPlaneGate({
 
   const register = (registered: number) =>
     run(async (signal) => {
-      const result = await registerKey(registered === 0 ? t("first") : t("backup"), signal);
+      const result = await registerKey(
+        registered === 0 ? t("enroll.first") : t("enroll.backup"),
+        signal,
+      );
       if (result.status === "active") setEnrolledHere(true);
     });
 
-  // Leaving on purpose: the next card asks for the key, not "check expired".
-  const exit = async () => {
-    setExiting(true);
-    try {
-      await endKeyCheck();
-      setHadKeyCheck(false);
-    } finally {
-      setExiting(false);
-    }
-  };
+  if (gate.kind !== "open") {
+    return (
+      <ControlPlaneEntry
+        view={gate}
+        {...noActions}
+        onRetry={() => {
+          setFlow({ kind: "idle" });
+          void read.refetch();
+        }}
+      />
+    );
+  }
 
-  if (open && !enrolledHere) return <>{children(gate.operator, exit)}</>;
+  const operator = gate.operator;
+  const enrollment = decideEnrollment(operator, now);
+
+  if (!enrolling || (enrollment.kind === "registered" && !enrolledHere)) {
+    return (
+      <>
+        {operator.status === "pending_enrollment" && (
+          <div data-keys-needed className="border-b bg-background px-4 py-2.5 sm:px-12">
+            <Notice
+              tone="amber"
+              icon={KeyRoundIcon}
+              action={
+                <Button size="sm" variant="quiet" onClick={() => setEnrolling(true)}>
+                  {t("keysNeeded.action")}
+                </Button>
+              }
+            >
+              {t("keysNeeded.body", { required: operator.security_keys.required })}
+            </Notice>
+          </div>
+        )}
+        {children(operator, exit)}
+      </>
+    );
+  }
 
   const problem = flow.kind === "problem" ? flow.problem : undefined;
   const view = ((): EntryView => {
@@ -101,45 +161,29 @@ export function ControlPlaneGate({
     if (problem === "unsupported") return { kind: "unsupported" };
     if (problem === "serviceUnavailable") return { kind: "serviceUnavailable" };
     if (problem === "enrollmentExpired") return { kind: "enrollmentExpired" };
-    if (enrolledHere && gate.kind !== "unavailable" && gate.kind !== "checking") {
-      return { kind: "enrollDone", required: read.data?.security_keys.required ?? 2 };
+    if (enrolledHere) return { kind: "enrollDone", required: operator.security_keys.required };
+    if (enrollment.kind === "enrollmentExpired") return enrollment;
+    if (enrollment.kind === "registered") {
+      return { kind: "enrollDone", required: operator.security_keys.required };
     }
-    switch (gate.kind) {
-      case "enroll":
-        return {
-          kind: "enroll",
-          registered: gate.registered,
-          required: gate.required,
-          problem:
-            problem === "duplicate" || problem === "rejected" || problem === "rateLimited"
-              ? problem
-              : problem === undefined
-                ? undefined
-                : "failed",
-        };
-      case "key":
-        return {
-          kind: "key",
-          lapsed: gate.lapsed,
-          problem:
-            problem === "rateLimited"
-              ? "rateLimited"
-              : problem === undefined
-                ? undefined
-                : "failed",
-        };
-      case "open":
-        return { kind: "checking" };
-      default:
-        return gate;
-    }
+    return {
+      kind: "enroll",
+      registered: enrollment.registered,
+      required: enrollment.required,
+      problem:
+        problem === "duplicate" || problem === "rejected" || problem === "rateLimited"
+          ? problem
+          : problem === undefined
+            ? undefined
+            : "failed",
+    };
   })();
 
   return (
     <ControlPlaneEntry
       view={view}
-      onUseKey={() => void run((signal) => verifyKey(signal))}
-      onRegister={() => void register(gate.kind === "enroll" ? gate.registered : 0)}
+      {...noActions}
+      onRegister={() => void register(enrollment.kind === "enroll" ? enrollment.registered : 0)}
       onCancel={() => {
         abort.current?.abort();
         abort.current = null;
@@ -147,10 +191,8 @@ export function ControlPlaneGate({
       }}
       onRecovery={() => setFlow({ kind: "recovery" })}
       onBack={() => setFlow({ kind: "idle" })}
-      onContinue={() => {
-        setEnrolledHere(false);
-        setFlow({ kind: "idle" });
-      }}
+      onContinue={leave}
+      onLeave={leave}
       onRetry={() => {
         setFlow({ kind: "idle" });
         void read.refetch();
@@ -158,3 +200,14 @@ export function ControlPlaneGate({
     />
   );
 }
+
+const ignore = () => {};
+const noActions = {
+  onUseKey: ignore,
+  onRegister: ignore,
+  onCancel: ignore,
+  onRecovery: ignore,
+  onBack: ignore,
+  onContinue: ignore,
+  onRetry: ignore,
+};

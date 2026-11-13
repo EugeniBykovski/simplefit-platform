@@ -238,8 +238,9 @@ test("SF-124 sponsor application review against the real backend", async ({
     await emailSignIn(
       page,
       OPERATOR,
-      `/en/admin/login?returnTo=${encodeURIComponent("/admin/sponsors")}`,
+      `/en/login?returnTo=${encodeURIComponent("/admin/sponsors")}`,
     );
+    await page.getByRole("button", { name: "Register keys" }).click();
     const first = await securityKey(cdp);
     await page.getByRole("button", { name: "Register first key" }).click();
     await expect(page.getByRole("heading", { name: "Now your backup key" })).toBeVisible();
@@ -247,7 +248,6 @@ test("SF-124 sponsor application review against the real backend", async ({
     await securityKey(cdp);
     await page.getByRole("button", { name: "Register backup key" }).click();
     await page.getByRole("button", { name: "Continue" }).click();
-    await page.getByRole("button", { name: "Use security key" }).click();
     await page.waitForURL((url) => url.pathname === "/en/admin/sponsors");
 
     for (const application of [approve, reject, changes, race, unknown]) {

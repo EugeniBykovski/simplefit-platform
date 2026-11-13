@@ -4,7 +4,7 @@ import type { Operator } from "@/entities/operator";
 import { ApiError } from "@/shared/api/http/api-error";
 import { WebAuthnError } from "@/shared/lib/webauthn";
 
-import { ceremonyProblem, decideGate } from "./gate";
+import { ceremonyProblem, decideEnrollment, decideGate } from "./gate";
 
 const NOW = Date.parse("2026-11-10T12:00:00Z");
 const at = (offsetMs: number) => new Date(NOW + offsetMs).toISOString();
@@ -34,42 +34,45 @@ const read = (
 const apiError = (status: number, code: string, details: Record<string, unknown> = {}) =>
   new ApiError(status, code, "x", details, null);
 
-describe("decideGate (AD0, SF-120)", () => {
+describe("decideGate (AD0, SF-120; SF-157 session assurance)", () => {
   it("assumes nothing before or without an answer", () => {
-    expect(decideGate(read(undefined, "pending"), NOW, false)).toEqual({ kind: "checking" });
-    expect(decideGate(read(undefined, "error"), NOW, false)).toEqual({ kind: "loadFailed" });
+    expect(decideGate(read(undefined, "pending"))).toEqual({ kind: "checking" });
+    expect(decideGate(read(undefined, "error"))).toEqual({ kind: "loadFailed" });
   });
 
   it("one answer for anyone who isn't an active or pending operator", () => {
-    expect(decideGate(read(null), NOW, false)).toEqual({ kind: "unavailable" });
+    expect(decideGate(read(null))).toEqual({ kind: "unavailable" });
   });
 
-  it("pending: enrol until the backend's required number, unless the window ended", () => {
+  it("opens for a pending operator without keys and an active one without a key check", () => {
+    const pending = operator({
+      status: "pending_enrollment",
+      security_keys: { registered: 0, required: 2 },
+      enrollment_expires_at: at(60_000),
+    });
+    expect(decideGate(read(pending))).toEqual({ kind: "open", operator: pending });
+    const unchecked = operator();
+    expect(decideGate(read(unchecked))).toEqual({ kind: "open", operator: unchecked });
+    const checked = operator({ step_up: step(60_000) });
+    expect(decideGate(read(checked))).toEqual({ kind: "open", operator: checked });
+  });
+});
+
+describe("decideEnrollment (SF-157: registration when an action needs it)", () => {
+  it("pending: register until the backend's required number, unless the window ended", () => {
     const pending = operator({
       status: "pending_enrollment",
       security_keys: { registered: 1, required: 2 },
       enrollment_expires_at: at(60_000),
     });
-    expect(decideGate(read(pending), NOW, false)).toEqual({
-      kind: "enroll",
-      registered: 1,
-      required: 2,
-    });
-    expect(decideGate(read({ ...pending, enrollment_expires_at: at(0) }), NOW, false)).toEqual({
+    expect(decideEnrollment(pending, NOW)).toEqual({ kind: "enroll", registered: 1, required: 2 });
+    expect(decideEnrollment({ ...pending, enrollment_expires_at: at(0) }, NOW)).toEqual({
       kind: "enrollmentExpired",
     });
   });
 
-  it("opens only with a key check that hasn't lapsed", () => {
-    const open = operator({ step_up: step(60_000) });
-    expect(decideGate(read(open), NOW, false)).toEqual({ kind: "open", operator: open });
-    expect(decideGate(read(operator()), NOW, false)).toEqual({ kind: "key", lapsed: false });
-    expect(decideGate(read(operator({ step_up: step(0) })), NOW, false)).toEqual({
-      kind: "key",
-      lapsed: true,
-    });
-    // Ended while the page was open (another tab, expiry read back as null).
-    expect(decideGate(read(operator()), NOW, true)).toEqual({ kind: "key", lapsed: true });
+  it("active: nothing left to register", () => {
+    expect(decideEnrollment(operator(), NOW)).toEqual({ kind: "registered" });
   });
 });
 

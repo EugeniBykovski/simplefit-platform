@@ -130,6 +130,11 @@ async function chooseReason(page: Page, reason: string) {
   await dialog.getByRole("combobox", { name: /Reason/ }).click();
   await page.getByRole("option", { name: reason }).click();
   await dialog.getByRole("button", { name: "Review the change" }).click();
+  // SF-157: the first action of the session asks for the key in its dialog.
+  const key = dialog.getByRole("button", { name: "Use security key" });
+  const reviewed = dialog.getByRole("button", { name: /^(Suspend|Restore) now$/ });
+  await expect(key.or(reviewed)).toBeVisible();
+  if (await key.isVisible()) await key.click();
 }
 
 test("SF-128 feature switches against the real backend", async ({
@@ -181,11 +186,8 @@ test("SF-128 feature switches against the real backend", async ({
   await cdp.send("WebAuthn.enable");
 
   await test.step("1/A: the registry as the backend has it; high-risk switches have no control", async () => {
-    await emailSignIn(
-      page,
-      OPERATOR,
-      `/en/admin/login?returnTo=${encodeURIComponent("/admin/flags")}`,
-    );
+    await emailSignIn(page, OPERATOR, `/en/login?returnTo=${encodeURIComponent("/admin/flags")}`);
+    await page.getByRole("button", { name: "Register keys" }).click();
     const first = await securityKey(cdp);
     await page.getByRole("button", { name: "Register first key" }).click();
     await expect(page.getByRole("heading", { name: "Now your backup key" })).toBeVisible();
@@ -193,7 +195,6 @@ test("SF-128 feature switches against the real backend", async ({
     await securityKey(cdp);
     await page.getByRole("button", { name: "Register backup key" }).click();
     await page.getByRole("button", { name: "Continue" }).click();
-    await page.getByRole("button", { name: "Use security key" }).click();
     await page.waitForURL((url) => url.pathname === "/en/admin/flags");
 
     await expect(page.locator("[data-flag]")).toHaveCount(9);

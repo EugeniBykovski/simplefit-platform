@@ -12,7 +12,7 @@ import {
   type AdminAccount,
   type ReadReason,
 } from "@/entities/admin-user";
-import { useOperatorKeys } from "@/entities/operator";
+import { needsEnrollment, useOperatorKeys } from "@/entities/operator";
 import { useSession } from "@/entities/session";
 import { isApiError } from "@/shared/api/http/api-error";
 import { useRouter } from "@/shared/i18n/navigation";
@@ -377,7 +377,9 @@ function RevealDialog({
       setAddresses(await revealEmail(accountId, reason));
       setState("idle");
     } catch (error) {
-      setState(isApiError(error) && error.code === "step_up_required" ? "step_up" : "failed");
+      // SF-157: without keys the gate shows key registration instead.
+      if (needsEnrollment(error)) setState("failed");
+      else setState(isApiError(error) && error.code === "step_up_required" ? "step_up" : "failed");
     }
   };
 

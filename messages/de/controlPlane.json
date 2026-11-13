@@ -31,7 +31,7 @@
     "rateLimited": "Zu viele Versuche. Warte ein paar Minuten und versuch es dann noch einmal.",
     "enroll": {
       "title": "Registriere zwei Sicherheitsschlüssel",
-      "body": "Du brauchst zwei Schlüssel: einen zum Verwenden und einen als Reserve. Die Steuerzentrale öffnet sich erst, wenn beide registriert sind.",
+      "body": "Du brauchst zwei Schlüssel: einen zum Verwenden und einen als Reserve. Zum Ansehen der Steuerzentrale brauchst du sie nicht, für jede Aktion schon.",
       "first": "Erster Schlüssel",
       "backup": "Reserveschlüssel",
       "notYet": "Noch nicht",
@@ -47,7 +47,7 @@
     "rejected": "Dieser Schlüssel kann hier nicht verwendet werden. Nutze einen Hardware-Sicherheitsschlüssel, kein Handy und keinen synchronisierten Passkey.",
     "enrollDone": {
       "title": "Deine Schlüssel sind registriert",
-      "body": "Du kannst jetzt die Steuerzentrale öffnen. Was du siehst, hängt von den Berechtigungen ab, die dir ein Operator-Manager erteilt hat.",
+      "body": "Jede Aktion, für die du berechtigt bist, fragt jetzt nach einem dieser Schlüssel. Was du siehst und tun kannst, hängt von den Berechtigungen ab, die dir ein Operator-Manager erteilt hat.",
       "action": "Weiter"
     },
     "reverify": {
@@ -80,11 +80,17 @@
       "title": "Diese Seite gibt es nicht",
       "body": "Diese Seite existiert nicht oder ist für dein Konto nicht verfügbar.",
       "action": "Zu SimpleFit"
+    },
+    "leave": "Zurück zur Steuerzentrale",
+    "keysNeeded": {
+      "body": "Deine Sicherheitsschlüssel sind noch nicht registriert. Du kannst dich umsehen; für jede Aktion registriere Schlüssel ({required}).",
+      "action": "Schlüssel registrieren"
     }
   },
   "workspace": {
     "operator": "Operator",
     "keyChecked": "Schlüssel geprüft · noch {minutes, plural, one {# Min.} other {# Min.}}",
+    "noKeyCheck": "Angemeldet · Aktionen fragen nach deinem Schlüssel",
     "permissions": "{count, plural, one {# Berechtigung} other {# Berechtigungen}} · jede einzeln erteilt",
     "exit": "Steuerzentrale verlassen",
     "exitFailed": "Wir konnten die Schlüsselprüfung nicht beenden. Versuch es noch einmal."

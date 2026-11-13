@@ -9,6 +9,6 @@ export type OperatorPermissionCatalogResponsePermissionsItemAssurance = typeof O
 
 
 export const OperatorPermissionCatalogResponsePermissionsItemAssurance = {
-  key: 'key',
+  session: 'session',
   fresh_key: 'fresh_key',
 } as const;

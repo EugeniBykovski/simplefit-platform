@@ -12,7 +12,7 @@ import {
   type FlagAction,
   type FlagPreview,
 } from "@/entities/admin-configuration";
-import { useOperatorKeys } from "@/entities/operator";
+import { needsEnrollment, useOperatorKeys } from "@/entities/operator";
 import { isApiError } from "@/shared/api/http/api-error";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
@@ -74,6 +74,8 @@ export function FlagActionDialog({
 
   const problem = (error: unknown): Phase => {
     if (!isApiError(error)) return { kind: "failed" };
+    // SF-157: no keys yet; the gate shows key registration instead.
+    if (needsEnrollment(error)) return { kind: "failed" };
     if (error.code === "step_up_required") return { kind: "step_up" };
     if (error.code === "forbidden" || error.status === 404) return { kind: "denied" };
     if (error.code === "conflict" || error.code === "revision_conflict")

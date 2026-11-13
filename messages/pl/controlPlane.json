@@ -31,7 +31,7 @@
     "rateLimited": "Zbyt wiele prób. Odczekaj kilka minut i spróbuj ponownie.",
     "enroll": {
       "title": "Zarejestruj dwa klucze bezpieczeństwa",
-      "body": "Potrzebujesz dwóch kluczy: jednego do używania i jednego zapasowego. Panel sterowania otworzysz dopiero po zarejestrowaniu obu.",
+      "body": "Potrzebujesz dwóch kluczy: jednego do używania i jednego zapasowego. Do przeglądania Panelu sterowania nie są potrzebne, do każdej akcji — tak.",
       "first": "Pierwszy klucz",
       "backup": "Klucz zapasowy",
       "notYet": "Jeszcze nie",
@@ -47,7 +47,7 @@
     "rejected": "Tego klucza nie można tu użyć. Użyj sprzętowego klucza bezpieczeństwa, a nie telefonu ani synchronizowanego klucza dostępu.",
     "enrollDone": {
       "title": "Twoje klucze są zarejestrowane",
-      "body": "Możesz teraz otworzyć Panel sterowania. To, co zobaczysz, zależy od uprawnień nadanych Ci przez menedżera operatorów.",
+      "body": "Każda akcja, do której masz uprawnienia, poprosi teraz o jeden z tych kluczy. To, co zobaczysz i zrobisz, zależy od uprawnień nadanych Ci przez menedżera operatorów.",
       "action": "Kontynuuj"
     },
     "reverify": {
@@ -80,11 +80,17 @@
       "title": "Nie znaleziono strony",
       "body": "Ta strona nie istnieje lub nie jest dostępna dla Twojego konta.",
       "action": "Przejdź do SimpleFit"
+    },
+    "leave": "Wróć do Panelu sterowania",
+    "keysNeeded": {
+      "body": "Twoje klucze bezpieczeństwa nie są jeszcze zarejestrowane. Możesz się rozejrzeć; aby wykonać jakąkolwiek akcję, zarejestruj klucze ({required}).",
+      "action": "Zarejestruj klucze"
     }
   },
   "workspace": {
     "operator": "Operator",
     "keyChecked": "Klucz zweryfikowany · zostało {minutes, plural, one {# min} few {# min} many {# min} other {# min}}",
+    "noKeyCheck": "Zalogowano · akcje poproszą o klucz",
     "permissions": "{count, plural, one {# uprawnienie} few {# uprawnienia} many {# uprawnień} other {# uprawnienia}} · każde nadawane osobno",
     "exit": "Wyjdź z panelu sterowania",
     "exitFailed": "Nie udało się zakończyć weryfikacji klucza. Spróbuj ponownie."

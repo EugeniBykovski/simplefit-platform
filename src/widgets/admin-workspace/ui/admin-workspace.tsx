@@ -86,7 +86,7 @@ export function OperatorBlock({
       </span>
       <span className="flex items-center gap-1.5 type-caption text-muted-foreground">
         <KeyRoundIcon aria-hidden className="size-3.5 text-highlight" />
-        {t("keyChecked", { minutes })}
+        {remaining > 0 ? t("keyChecked", { minutes }) : t("noKeyCheck")}
       </span>
       <span className="type-caption text-faint-foreground">
         {t("permissions", { count: operator.permissions.length })}

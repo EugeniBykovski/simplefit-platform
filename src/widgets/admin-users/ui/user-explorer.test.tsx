@@ -20,6 +20,7 @@ vi.mock("@/entities/session", () => ({
 }));
 const permissions = vi.hoisted(() => ({ current: [] as string[] }));
 vi.mock("@/entities/operator", () => ({
+  needsEnrollment: () => false,
   useOperator: () => ({ data: { permissions: permissions.current } }),
   useOperatorKeys: () => ({ verifyKey: vi.fn() }),
   grants: (operator: { permissions: string[] }, permission: string) =>

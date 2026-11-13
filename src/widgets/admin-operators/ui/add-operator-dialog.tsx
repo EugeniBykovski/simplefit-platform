@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useId, useRef, useState } from "react";
 
 import { PROVISION_REASONS, provision, type GovernedOperator } from "@/entities/admin-operators";
-import { useOperatorKeys } from "@/entities/operator";
+import { needsEnrollment, useOperatorKeys } from "@/entities/operator";
 import type { OperatorPermissionCatalogResponsePermissionsItem } from "@/shared/api/generated/model";
 import { isApiError } from "@/shared/api/http/api-error";
 import { Badge } from "@/shared/ui/badge";
@@ -75,6 +75,8 @@ export function AddOperatorDialog({
 
   const problem = (error: unknown): Phase => {
     if (!isApiError(error)) return "unknown";
+    // SF-157: no keys yet; the gate shows key registration instead.
+    if (needsEnrollment(error)) return "unknown";
     if (error.code === "step_up_required") return "step_up";
     if (error.code === "forbidden" || error.status === 404) return "denied";
     if (error.code === "validation_error") return "invalid";

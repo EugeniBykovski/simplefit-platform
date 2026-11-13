@@ -255,6 +255,18 @@ export const webRoutes = [
     phase: "ACTIVE",
   },
   {
+    id: "web.admin.password",
+    path: "/admin/login/password",
+    params: [],
+    shell: "web.auth",
+    surface: "AUTH",
+    parent: "web.admin.login",
+    nav: "STACK",
+    session: "GUEST_ONLY",
+    capability: null,
+    phase: null,
+  },
+  {
     id: "web.admin.payouts",
     path: "/admin/payouts",
     params: [],

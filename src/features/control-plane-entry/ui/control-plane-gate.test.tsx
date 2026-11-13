@@ -1,28 +1,32 @@
-import { screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { requestKeyEnrollment } from "@/entities/operator";
 import type { OperatorSelf } from "@/shared/api/generated/model";
 import { jsonResponse, renderWithProviders } from "@/test/render";
 
 import { ControlPlaneGate } from "./control-plane-gate";
 
 /*
- * AD0 (SF-120) with the network mocked at `fetch` and the browser's WebAuthn
- * stubbed: the gate opens only on the backend's answer, and every ceremony sends
- * the backend's challenge back with the authenticator's answer.
+ * AD0 (SF-120, SF-157) with the network mocked at `fetch` and the browser's
+ * WebAuthn stubbed: the gate opens on the backend's operator answer at session
+ * assurance, key registration comes when an action needs it, and every ceremony
+ * sends the backend's challenge back with the authenticator's answer.
  */
 
 vi.mock("@/entities/session", () => ({
   callWithSession: <T,>(call: (init: RequestInit) => Promise<T>) =>
     call({ headers: { Authorization: "Bearer test" } }),
 }));
+const push = vi.fn();
 vi.mock("@/shared/i18n/navigation", () => ({
   Link: ({ href, children, ...props }: React.ComponentProps<"a">) => (
     <a href={`/en${href}`} {...props}>
       {children}
     </a>
   ),
+  useRouter: () => ({ push }),
 }));
 
 const NOW = Date.now();
@@ -106,7 +110,16 @@ function renderGate() {
   );
 }
 
-describe("ControlPlaneGate (AD0, SF-120)", () => {
+const pending = (registered = 0, expiresIn = 86_400_000) =>
+  operator({
+    status: "pending_enrollment",
+    permissions: ["audit.read"],
+    activated_at: null,
+    enrollment_expires_at: iso(expiresIn),
+    security_keys: { registered, required: 2 },
+  });
+
+describe("ControlPlaneGate (AD0, SF-120; SF-157 session assurance)", () => {
   it("answers a non-operator, suspended or revoked operator (404) with the same unavailable page", async () => {
     api({ [ME]: [error(404, "not_found")] });
     renderGate();
@@ -115,89 +128,19 @@ describe("ControlPlaneGate (AD0, SF-120)", () => {
     expect(screen.queryByTestId("control-plane")).toBeNull();
   });
 
-  it("asks an active operator for the key, then opens on the backend's key check", async () => {
-    credentials.get.mockResolvedValue(
-      new FakeCredential({
-        authenticatorData: bytes(4),
-        clientDataJSON: bytes(5),
-        signature: bytes(6),
-      }),
-    );
-    const calls = api({
-      [ME]: [operator(), operator({ step_up: checked })],
-      "POST /api/v1/admin/step-up/options": [options],
-      "POST /api/v1/admin/step-up": [{ status: 200, body: { step_up: checked } }],
-    });
+  it("opens for an active operator without a key check, and asks for no key on entry", async () => {
+    const calls = api({ [ME]: [operator()] });
     renderGate();
-    expect(await screen.findByRole("heading", { name: "Use your security key" })).toBeVisible();
-    expect(screen.queryByTestId("control-plane")).toBeNull();
-
-    await user.click(screen.getByRole("button", { name: "Use security key" }));
     expect(await screen.findByTestId("control-plane")).toHaveTextContent("open:audit.read");
-
-    const verify = calls.find((call) => call.key === "POST /api/v1/admin/step-up");
-    expect(verify?.body).toEqual({
-      challenge_id: "c-1",
-      credential_id: "AQID",
-      authenticator_data: "BA",
-      client_data_json: "BQ",
-      signature: "Bg",
-    });
-    expect(credentials.get.mock.calls[0]?.[0].publicKey.userVerification).toBe("required");
+    expect(screen.queryByText(/security keys aren’t registered yet/)).toBeNull();
+    expect(calls.map((call) => call.key)).toEqual([ME]);
+    expect(credentials.get).not.toHaveBeenCalled();
   });
 
-  it("a cancelled or failed key keeps the gate shut and says nothing changed", async () => {
-    credentials.get.mockRejectedValue(new DOMException("no", "NotAllowedError"));
-    api({ [ME]: [operator()], "POST /api/v1/admin/step-up/options": [options] });
-    renderGate();
-    await user.click(await screen.findByRole("button", { name: "Use security key" }));
-    expect(await screen.findByRole("heading", { name: "That key didn’t work" })).toBeVisible();
-    expect(screen.getByRole("button", { name: "Try again" })).toBeVisible();
-    expect(screen.queryByTestId("control-plane")).toBeNull();
-  });
-
-  it("a key the backend rejects is not verified, and the gate stays shut", async () => {
-    credentials.get.mockResolvedValue(
-      new FakeCredential({
-        authenticatorData: bytes(1),
-        clientDataJSON: bytes(1),
-        signature: bytes(1),
-      }),
-    );
-    api({
-      [ME]: [operator()],
-      "POST /api/v1/admin/step-up/options": [options],
-      "POST /api/v1/admin/step-up": [error(422, "security_key_rejected")],
-    });
-    renderGate();
-    await user.click(await screen.findByRole("button", { name: "Use security key" }));
-    expect(await screen.findByText("Not verified")).toBeVisible();
-    expect(screen.queryByTestId("control-plane")).toBeNull();
-  });
-
-  it("an expired key check asks to confirm again", async () => {
-    api({
-      [ME]: [
-        operator({ step_up: { ...checked, expires_at: iso(-1_000), fresh_seconds_remaining: 0 } }),
-      ],
-    });
-    renderGate();
-    expect(await screen.findByRole("heading", { name: "Confirm it’s you again" })).toBeVisible();
-    expect(screen.queryByTestId("control-plane")).toBeNull();
-  });
-
-  it("enrols the two required keys, then asks for the key check", async () => {
+  it("opens for a pending operator with a notice; registering both keys comes back to it", async () => {
     credentials.create.mockResolvedValue(
       new FakeCredential({ attestationObject: bytes(7), clientDataJSON: bytes(8) }),
     );
-    const pending = (registered: number) =>
-      operator({
-        status: "pending_enrollment",
-        permissions: [],
-        activated_at: null,
-        enrollment_expires_at: iso(86_400_000),
-        security_keys: { registered, required: 2 },
-      });
     const registered = (count: number, status: string) => ({
       status: 201,
       body: {
@@ -215,10 +158,15 @@ describe("ControlPlaneGate (AD0, SF-120)", () => {
       ],
     });
     renderGate();
+    expect(await screen.findByTestId("control-plane")).toBeVisible();
+    expect(screen.getByText(/security keys aren’t registered yet/)).toBeVisible();
+
+    await user.click(screen.getByRole("button", { name: "Register keys" }));
     expect(
       await screen.findByRole("heading", { name: "Register two security keys" }),
     ).toBeVisible();
     expect(screen.getByText("Set up · step 1 of 2")).toBeVisible();
+    expect(screen.queryByTestId("control-plane")).toBeNull();
 
     await user.click(screen.getByRole("button", { name: "Register first key" }));
     expect(await screen.findByRole("heading", { name: "Now your backup key" })).toBeVisible();
@@ -238,20 +186,27 @@ describe("ControlPlaneGate (AD0, SF-120)", () => {
     ]);
 
     await user.click(screen.getByRole("button", { name: "Continue" }));
-    expect(await screen.findByRole("heading", { name: "Use your security key" })).toBeVisible();
+    expect(await screen.findByTestId("control-plane")).toBeVisible();
+    expect(screen.queryByText(/security keys aren’t registered yet/)).toBeNull();
   });
 
-  it("an expired enrolment window is its own state", async () => {
-    api({
-      [ME]: [
-        operator({
-          status: "pending_enrollment",
-          enrollment_expires_at: iso(-1_000),
-          security_keys: { registered: 0, required: 2 },
-        }),
-      ],
-    });
+  it("an action answered enrollment_required shows key registration; Back returns", async () => {
+    api({ [ME]: [pending(0)] });
     renderGate();
+    expect(await screen.findByTestId("control-plane")).toBeVisible();
+    act(() => requestKeyEnrollment());
+    expect(
+      await screen.findByRole("heading", { name: "Register two security keys" }),
+    ).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Back to the Control Plane" }));
+    expect(await screen.findByTestId("control-plane")).toBeVisible();
+  });
+
+  it("an expired enrolment window is its own state, and the Control Plane still opens", async () => {
+    api({ [ME]: [pending(0, -1_000)] });
+    renderGate();
+    expect(await screen.findByTestId("control-plane")).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Register keys" }));
     expect(
       await screen.findByRole("heading", { name: "Your setup window has ended" }),
     ).toBeVisible();
@@ -259,28 +214,42 @@ describe("ControlPlaneGate (AD0, SF-120)", () => {
 
   it("an unconfigured backend (503) is its own state", async () => {
     api({
-      [ME]: [operator()],
-      "POST /api/v1/admin/step-up/options": [error(503, "service_unavailable")],
+      [ME]: [pending(0)],
+      "POST /api/v1/admin/credentials/options": [error(503, "service_unavailable")],
     });
     renderGate();
-    await user.click(await screen.findByRole("button", { name: "Use security key" }));
+    await user.click(await screen.findByRole("button", { name: "Register keys" }));
+    await user.click(await screen.findByRole("button", { name: "Register first key" }));
     expect(
       await screen.findByRole("heading", { name: "Security keys aren’t available right now" }),
     ).toBeVisible();
   });
 
-  it("shows recovery guidance and comes back", async () => {
-    api({ [ME]: [operator()] });
+  it("a cancelled key changes nothing and says so", async () => {
+    credentials.create.mockRejectedValue(new DOMException("no", "NotAllowedError"));
+    api({ [ME]: [pending(0)], "POST /api/v1/admin/credentials/options": [options] });
     renderGate();
+    await user.click(await screen.findByRole("button", { name: "Register keys" }));
+    await user.click(await screen.findByRole("button", { name: "Register first key" }));
+    expect(await screen.findByText(/Nothing changed/)).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Register two security keys" })).toBeVisible();
+  });
+
+  it("shows recovery guidance and comes back", async () => {
+    api({ [ME]: [pending(0)] });
+    renderGate();
+    await user.click(await screen.findByRole("button", { name: "Register keys" }));
     await user.click(await screen.findByRole("button", { name: "Recovery options" }));
     expect(await screen.findByRole("heading", { name: "Lost your keys?" })).toBeVisible();
     expect(screen.getByText(/There’s no self-service recovery/)).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Back" }));
-    expect(await screen.findByRole("heading", { name: "Use your security key" })).toBeVisible();
+    expect(
+      await screen.findByRole("heading", { name: "Register two security keys" }),
+    ).toBeVisible();
   });
 
   it("a failed read assumes nothing and can be retried", async () => {
-    api({ [ME]: [error(500, "internal_error"), operator({ step_up: checked })] });
+    api({ [ME]: [error(500, "internal_error"), operator()] });
     renderGate();
     expect(
       await screen.findByRole("heading", { name: "We couldn’t check your access" }),
@@ -289,8 +258,9 @@ describe("ControlPlaneGate (AD0, SF-120)", () => {
     expect(await screen.findByTestId("control-plane")).toBeVisible();
   });
 
-  it("Exit control plane ends the key check and asks for the key, not 'expired'", async () => {
-    api({
+  it("Exit control plane ends the key check on the backend, then leaves", async () => {
+    push.mockReset();
+    const calls = api({
       [ME]: [operator({ step_up: checked }), operator()],
       "DELETE /api/v1/admin/step-up": [{ status: 204 }],
     });
@@ -304,8 +274,7 @@ describe("ControlPlaneGate (AD0, SF-120)", () => {
       </ControlPlaneGate>,
     );
     await user.click(await screen.findByRole("button", { name: "exit" }));
-    await waitFor(() =>
-      expect(screen.getByRole("heading", { name: "Use your security key" })).toBeVisible(),
-    );
+    await waitFor(() => expect(push).toHaveBeenCalledWith("/"));
+    expect(calls.some((call) => call.key === "DELETE /api/v1/admin/step-up")).toBe(true);
   });
 });

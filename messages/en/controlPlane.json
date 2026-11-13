@@ -31,7 +31,7 @@
     "rateLimited": "Too many attempts. Wait a few minutes, then try again.",
     "enroll": {
       "title": "Register two security keys",
-      "body": "You need two keys: one to use, one as a backup. You can’t open the Control Plane until both are registered.",
+      "body": "You need two keys: one to use, one as a backup. Reading the Control Plane doesn’t need them; every action does.",
       "first": "First key",
       "backup": "Backup key",
       "notYet": "Not yet",
@@ -47,7 +47,7 @@
     "rejected": "That key can’t be used here. Use a hardware security key, not a phone or a synced passkey.",
     "enrollDone": {
       "title": "Your keys are registered",
-      "body": "You can now open the Control Plane. What you can see depends on the permissions an operator manager gave you.",
+      "body": "Every action you have permission for now asks for one of these keys. What you can see and do depends on the permissions an operator manager gave you.",
       "action": "Continue"
     },
     "reverify": {
@@ -80,11 +80,17 @@
       "title": "We can’t find that page",
       "body": "This page doesn’t exist, or it isn’t available to your account.",
       "action": "Go to SimpleFit"
+    },
+    "leave": "Back to the Control Plane",
+    "keysNeeded": {
+      "body": "Your security keys aren’t registered yet. You can look around; to take any action, register {required} keys.",
+      "action": "Register keys"
     }
   },
   "workspace": {
     "operator": "Operator",
     "keyChecked": "Key checked · {minutes, plural, one {# min} other {# min}} left",
+    "noKeyCheck": "Signed in · actions ask for your key",
     "permissions": "{count, plural, one {# permission} other {# permissions}} · each granted separately",
     "exit": "Exit control plane",
     "exitFailed": "We couldn’t end the key check. Try again."

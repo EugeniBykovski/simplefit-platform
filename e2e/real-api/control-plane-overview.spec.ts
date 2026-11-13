@@ -104,7 +104,7 @@ async function securityKey(cdp: CDPSession): Promise<string> {
 
 async function signIn(page: Page, email: string, path: string) {
   resetRateLimits();
-  await page.goto(`/en/admin/login?returnTo=${encodeURIComponent(path)}`);
+  await page.goto(`/en/login?returnTo=${encodeURIComponent(path)}`);
   await page.locator('input[type="email"]').fill(email);
   await page.locator('form button[type="submit"]').first().click();
   await page.waitForURL((url) => url.pathname.endsWith("/login/code"));
@@ -194,6 +194,7 @@ test("SF-121 Control Plane overview against the real backend", async ({
   await test.step("A: an operator enrols, checks the key and sees the backend's counts", async () => {
     await signIn(page, OPERATOR, "/admin");
     await page.waitForURL((url) => url.pathname === "/en/admin");
+    await page.getByRole("button", { name: "Register keys" }).click();
     const first = await securityKey(cdp);
     await page.getByRole("button", { name: "Register first key" }).click();
     await expect(page.getByRole("heading", { name: "Now your backup key" })).toBeVisible();
@@ -202,7 +203,6 @@ test("SF-121 Control Plane overview against the real backend", async ({
     await securityKey(cdp);
     await page.getByRole("button", { name: "Register backup key" }).click();
     await page.getByRole("button", { name: "Continue" }).click();
-    await page.getByRole("button", { name: "Use security key" }).click();
     // SF-120: the first visit comes first; skipping it lands on the overview.
     await page.waitForURL((url) => url.pathname === "/en/admin/welcome");
     await page.getByRole("button", { name: "Skip" }).click();

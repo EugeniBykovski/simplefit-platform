@@ -9,3 +9,8 @@ export {
   useOperatorKeys,
   type Operator,
 } from "./model/operator";
+export {
+  needsEnrollment,
+  onKeyEnrollmentRequest,
+  requestKeyEnrollment,
+} from "./model/enrollment-request";

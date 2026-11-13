@@ -207,11 +207,8 @@ test("SF-123 gym, coach and fighter oversight against the real backend", async (
   await cdp.send("WebAuthn.enable");
 
   await test.step("A: the gym list is real, filtered on the server, and recorded", async () => {
-    await emailSignIn(
-      page,
-      OPERATOR,
-      `/en/admin/login?returnTo=${encodeURIComponent("/admin/tenants")}`,
-    );
+    await emailSignIn(page, OPERATOR, `/en/login?returnTo=${encodeURIComponent("/admin/tenants")}`);
+    await page.getByRole("button", { name: "Register keys" }).click();
     const first = await securityKey(cdp);
     await page.getByRole("button", { name: "Register first key" }).click();
     await expect(page.getByRole("heading", { name: "Now your backup key" })).toBeVisible();
@@ -219,7 +216,6 @@ test("SF-123 gym, coach and fighter oversight against the real backend", async (
     await securityKey(cdp);
     await page.getByRole("button", { name: "Register backup key" }).click();
     await page.getByRole("button", { name: "Continue" }).click();
-    await page.getByRole("button", { name: "Use security key" }).click();
     await page.waitForURL((url) => url.pathname === "/en/admin/tenants");
 
     await page.getByRole("textbox", { name: "Name starts with" }).fill(gymName.toLowerCase());

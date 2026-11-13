@@ -25,8 +25,8 @@
         "id": "gallery-3",
         "artboard": "GalleryIndex4.dc.html",
         "title": "route gallery 3 / 3 · partners, admin, site & backend",
-        "rows": 123,
-        "rowsNote": "118 Route Gallery rows + SPP1–SPP5 (SF-131: partnership interests, no opportunities, partnership requests, a new request and one request; no artboard; SPX9 cards, SP3–SP6 fields and SPE1 states; D-SF131-PARTNERSHIP-BOARDS)"
+        "rows": 124,
+        "rowsNote": "118 Route Gallery rows + SPP1–SPP5 (SF-131: partnership interests, no opportunities, partnership requests, a new request and one request; no artboard; SPX9 cards, SP3–SP6 fields and SPE1 states; D-SF131-PARTNERSHIP-BOARDS) + AD0P (SF-157: setting or resetting a password with an emailed code; no artboard; AD0's header and card; D-SF157-05)"
       }
     ]
   },
@@ -7217,12 +7217,38 @@
         "phase": null
       },
       "status": "IMPLEMENTED",
-      "discrepancies": ["D-ADMIN-IDENTITY"],
+      "discrepancies": ["D-ADMIN-IDENTITY", "D-SF157-05"],
       "production": {
         "file": "src/app/[locale]/(auth)/admin/login/page.tsx",
-        "note": "SF-120: AD0 handoff renders the one SimpleFit sign-in (WA1: Google, Apple, email code) with the validated continuation, so an operator returns to the Control Plane, whose gate then checks operator access and the security key. AD0's own handoff layout and copy are not built (docs/admin-design/sf-120-design-register.md)."
+        "note": "SF-157: AD0 handoff as an email and password sign-in (ADR 0012 and 0028 amendments, founder-approved), with links to set or reset a password and to the one SimpleFit sign-in (Google, Apple, email code) with the same validated continuation. Signing in grants nothing: the Control Plane gate and every operator endpoint authorize. Interim composition in AD0's card language: no artboard for a password (docs/admin-design/sf-157-design-register.md, D-SF157-05)."
       },
       "screens": ["AD0"]
+    },
+    {
+      "id": "web.admin.password",
+      "platform": "web",
+      "path": "/admin/login/password",
+      "params": [],
+      "name": "Admin password set or reset",
+      "surface": "AUTH",
+      "shell": "web.auth",
+      "parent": "web.admin.login",
+      "nav": {
+        "type": "STACK",
+        "from": []
+      },
+      "access": {
+        "session": "GUEST_ONLY",
+        "capability": null,
+        "phase": null
+      },
+      "status": "IMPLEMENTED",
+      "discrepancies": ["D-SF157-05"],
+      "production": {
+        "file": "src/app/[locale]/(auth)/admin/login/password/page.tsx",
+        "note": "SF-157: set or reset a password with a code emailed to the account's address (ADR 0012 amendment); signs out everywhere and signs nobody in. No artboard: interim composition in AD0's card language (D-SF157-05)."
+      },
+      "screens": ["AD0P"]
     },
     {
       "id": "web.admin.access",
@@ -15669,14 +15695,39 @@
       "code": "AD0",
       "name": "Admin sign-in",
       "route": "web.admin.login",
-      "states": ["key"],
+      "states": ["key", "password", "invalid", "throttled", "suspended", "network"],
       "design": {
         "gallery": "gallery-3",
         "page": "admin",
         "section": "19a · Admin · access & platform",
         "step": "19.1",
         "tag": "WEB_ADMIN",
-        "artboard": "AdminSignIn.dc.html"
+        "artboard": "AdminSignIn.dc.html",
+        "note": "SF-157: the handoff is an email and password sign-in, interim in AD0's card language: no artboard draws a password (D-SF157-05)."
+      }
+    },
+    {
+      "id": "AD0P",
+      "code": "AD0P",
+      "name": "Admin password set or reset",
+      "route": "web.admin.password",
+      "states": [
+        "email",
+        "code",
+        "invalid-code",
+        "expired-code",
+        "weak-password",
+        "throttled",
+        "done"
+      ],
+      "design": {
+        "gallery": "gallery-3",
+        "page": "admin",
+        "section": "19a · Admin · access & platform",
+        "step": "19.1",
+        "tag": "WEB_ADMIN",
+        "artboard": "AdminSignIn.dc.html",
+        "note": "SF-157: No artboard: AD0's header and card with the design system's fields and notices, interim. Needs design approval (D-SF157-05)."
       }
     },
     {
@@ -19068,6 +19119,18 @@
         "web.sponsor.requests._request-id"
       ],
       "screens": ["SPP1", "SPP2", "SPP3", "SPP4", "SPP5"]
+    },
+    {
+      "id": "D-SF157-05",
+      "title": "Control Plane email and password sign-in without a board",
+      "sourceA": "Claude Design 1794573984-270f: AdminSignIn (AD0) handoff draws 'Sign in to continue' with Google, Apple and Email (code); no password field, no password set or reset, no password code email",
+      "sourceB": "SF-157 (founder-approved ADR 0012 and ADR 0028 amendments): email and password sign-in for the Control Plane, a password set or reset with an emailed code, reads at session assurance and keys for every write",
+      "mismatch": "Two screens and their states (invalid, throttled, suspended, network; code sent, wrong or expired code, weak password, done) have no artboard",
+      "impact": "The sign-in and password pages are interim compositions in AD0's card language, not an approved design",
+      "resolution": "Interim: AD0's header (brand, CONTROL PLANE) and centred card, the design system's fields, buttons and alerts, and links to the one SimpleFit sign-in. Design approval needed; Claude Design is unchanged",
+      "status": "NEEDS_PRODUCT_DECISION",
+      "routes": ["web.admin.login", "web.admin.password"],
+      "screens": ["AD0", "AD0P"]
     }
   ]
 }

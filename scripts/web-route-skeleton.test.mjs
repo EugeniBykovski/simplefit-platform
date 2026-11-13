@@ -119,6 +119,8 @@ const REAL_SCREENS = [
   // SF-129: AD20, operators, their permissions and your security.
   "web.admin.staff",
   "web.admin.login",
+  // SF-157: setting or resetting a password with an emailed code.
+  "web.admin.password",
   "web.admin.welcome",
   // SF-118: SPX9 settings, the organization's application, and SPE1's
   // "isn't part of SimpleFit yet" for the pages without a domain.

@@ -31,7 +31,7 @@
     "rateLimited": "Trop de tentatives. Patientez quelques minutes, puis réessayez.",
     "enroll": {
       "title": "Enregistrez deux clés de sécurité",
-      "body": "Il vous faut deux clés : une à utiliser et une de secours. Vous ne pourrez ouvrir le Plan de contrôle qu’une fois les deux enregistrées.",
+      "body": "Il vous faut deux clés : une à utiliser et une de secours. Consulter le Plan de contrôle n’en demande pas ; chaque action, si.",
       "first": "Première clé",
       "backup": "Clé de secours",
       "notYet": "Pas encore",
@@ -47,7 +47,7 @@
     "rejected": "Cette clé ne peut pas être utilisée ici. Utilisez une clé de sécurité matérielle, pas un téléphone ni une clé d’accès synchronisée.",
     "enrollDone": {
       "title": "Vos clés sont enregistrées",
-      "body": "Vous pouvez maintenant ouvrir le Plan de contrôle. Ce que vous voyez dépend des autorisations qu’un responsable des opérateurs vous a accordées.",
+      "body": "Chaque action que vous êtes autorisé à faire demandera désormais l’une de ces clés. Ce que vous voyez et pouvez faire dépend des autorisations qu’un responsable des opérateurs vous a accordées.",
       "action": "Continuer"
     },
     "reverify": {
@@ -80,11 +80,17 @@
       "title": "Page introuvable",
       "body": "Cette page n’existe pas ou n’est pas disponible pour votre compte.",
       "action": "Aller sur SimpleFit"
+    },
+    "leave": "Retour au Plan de contrôle",
+    "keysNeeded": {
+      "body": "Vos clés de sécurité ne sont pas encore enregistrées. Vous pouvez consulter ; pour toute action, enregistrez les clés ({required}).",
+      "action": "Enregistrer les clés"
     }
   },
   "workspace": {
     "operator": "Opérateur",
     "keyChecked": "Clé vérifiée · {minutes, plural, one {# min restante} other {# min restantes}}",
+    "noKeyCheck": "Connecté · les actions demandent votre clé",
     "permissions": "{count, plural, one {# autorisation} other {# autorisations}} · chacune accordée séparément",
     "exit": "Quitter le plan de contrôle",
     "exitFailed": "Nous n’avons pas pu mettre fin à la vérification de la clé. Réessayez."

@@ -155,8 +155,9 @@ test("SF-126 system health and jobs against the real backend", async ({
     await emailSignIn(
       page,
       OPERATOR,
-      `/en/admin/login?returnTo=${encodeURIComponent("/admin/integrations")}`,
+      `/en/login?returnTo=${encodeURIComponent("/admin/integrations")}`,
     );
+    await page.getByRole("button", { name: "Register keys" }).click();
     const first = await securityKey(cdp);
     await page.getByRole("button", { name: "Register first key" }).click();
     await expect(page.getByRole("heading", { name: "Now your backup key" })).toBeVisible();
@@ -164,7 +165,6 @@ test("SF-126 system health and jobs against the real backend", async ({
     await securityKey(cdp);
     await page.getByRole("button", { name: "Register backup key" }).click();
     await page.getByRole("button", { name: "Continue" }).click();
-    await page.getByRole("button", { name: "Use security key" }).click();
     await page.waitForURL((url) => url.pathname === "/en/admin/integrations");
 
     await expect(page.locator('[data-check="database"]')).toHaveAttribute("data-status", "healthy");
