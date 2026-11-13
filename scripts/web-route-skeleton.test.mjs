@@ -129,6 +129,11 @@ const REAL_SCREENS = [
   "web.sponsor.campaigns._campaign-id",
   "web.sponsor.analytics._campaign-id",
   "web.sponsor.invoices",
+  "web.sponsor.interests",
+  "web.sponsor.opportunities",
+  "web.sponsor.requests",
+  "web.sponsor.requests.new",
+  "web.sponsor.requests._request-id",
 ];
 
 const placeholderSource = (id) => `import { placeholderRoute } from "@/widgets/feature-placeholder";

@@ -30,6 +30,7 @@ import type routes from "../../../messages/en/routes.json";
 import type shells from "../../../messages/en/shells.json";
 import type site from "../../../messages/en/site.json";
 import type sponsorApplication from "../../../messages/en/sponsorApplication.json";
+import type sponsorPartnerships from "../../../messages/en/sponsorPartnerships.json";
 import type sponsorPortal from "../../../messages/en/sponsorPortal.json";
 import type controlPlane from "../../../messages/en/controlPlane.json";
 import type gymInvitation from "../../../messages/en/gymInvitation.json";
@@ -83,6 +84,7 @@ export const namespaces = [
   "contextSelection",
   "site",
   "sponsorApplication",
+  "sponsorPartnerships",
   "sponsorPortal",
   "controlPlane",
 ] as const;
@@ -128,6 +130,7 @@ export type Messages = {
   contextSelection: typeof contextSelection;
   site: typeof site;
   sponsorApplication: typeof sponsorApplication;
+  sponsorPartnerships: typeof sponsorPartnerships;
   sponsorPortal: typeof sponsorPortal;
   controlPlane: typeof controlPlane;
 };

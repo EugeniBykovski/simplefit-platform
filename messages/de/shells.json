@@ -83,6 +83,7 @@
     "name": "Partnerportal",
     "sections": {
       "partner": "Partner",
+      "partnerships": "Partnerschaften",
       "campaigns": "Kampagnen",
       "results": "Ergebnisse",
       "account": "Konto"
@@ -92,6 +93,9 @@
       "applications": "Bewerbung",
       "organization": "Organisation",
       "members": "Mitglieder",
+      "interests": "Interessen",
+      "opportunities": "Möglichkeiten",
+      "requests": "Anfragen",
       "campaigns": "Kampagnen",
       "challenges": "Challenges",
       "events": "Events",

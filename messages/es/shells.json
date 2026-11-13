@@ -83,6 +83,7 @@
     "name": "Portal de socios",
     "sections": {
       "partner": "Socio",
+      "partnerships": "Colaboraciones",
       "campaigns": "Campañas",
       "results": "Resultados",
       "account": "Cuenta"
@@ -92,6 +93,9 @@
       "applications": "Solicitud",
       "organization": "Organización",
       "members": "Miembros",
+      "interests": "Intereses",
+      "opportunities": "Oportunidades",
+      "requests": "Solicitudes",
       "campaigns": "Campañas",
       "challenges": "Retos",
       "events": "Eventos",

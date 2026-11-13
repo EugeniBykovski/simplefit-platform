@@ -18,7 +18,7 @@ import { Button } from "@/shared/ui/button";
 import { Notice } from "@/shared/ui/notice";
 
 import { outcomeOf } from "../model/outcome";
-import { ChoicePills } from "./choice-pills";
+import { ChoicePills } from "@/shared/ui/choice-pills";
 
 /**
  * Private evidence (SP7, and SP1's logo; SF-114, ADR 0032 rule 1): the

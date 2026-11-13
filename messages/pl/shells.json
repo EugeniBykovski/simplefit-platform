@@ -83,6 +83,7 @@
     "name": "Portal partnera",
     "sections": {
       "partner": "Partner",
+      "partnerships": "Partnerstwa",
       "campaigns": "Kampanie",
       "results": "Wyniki",
       "account": "Konto"
@@ -92,6 +93,9 @@
       "applications": "Zgłoszenie",
       "organization": "Organizacja",
       "members": "Członkowie",
+      "interests": "Zainteresowania",
+      "opportunities": "Możliwości",
+      "requests": "Prośby",
       "campaigns": "Kampanie",
       "challenges": "Wyzwania",
       "events": "Wydarzenia",

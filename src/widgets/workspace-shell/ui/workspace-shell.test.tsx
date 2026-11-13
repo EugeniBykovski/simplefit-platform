@@ -73,13 +73,22 @@ describe("WorkspaceShell navigation config", () => {
     for (const key of configured) expect(shellNavigation[shell].icons[key]).toBeDefined();
   });
 
-  it("web.sponsor shows the partner portal MVP: Overview, Application, Organization, Members and Settings; no campaign domain (SF-118)", () => {
+  it("web.sponsor shows the partner portal: Overview, Application, Organization, Members, the SF-131 partnership pages and Settings; no campaign domain (SF-118, SF-131)", () => {
     const shell = "web.sponsor";
     const configured = shellNavigation[shell].sections.flatMap((section) => section.items);
     const routed = webShell(shell)
       .navItems.filter((item) => item.route)
       .map((item) => item.key);
-    expect(configured).toEqual(["overview", "applications", "organization", "members", "settings"]);
+    expect(configured).toEqual([
+      "overview",
+      "applications",
+      "organization",
+      "members",
+      "interests",
+      "opportunities",
+      "requests",
+      "settings",
+    ]);
     for (const key of configured) expect(routed).toContain(key);
     expect(shellNavigation[shell].soon).toBeUndefined();
     for (const key of configured) expect(shellNavigation[shell].icons[key]).toBeDefined();
@@ -201,15 +210,18 @@ describe("WorkspaceShell", () => {
     expect(screen.getAllByText("switcher:fighter").length).toBeGreaterThan(0);
   });
 
-  it("links the partner portal of the organization in the path; nothing of campaigns (SF-118)", async () => {
+  it("links the partner portal of the organization in the path; nothing of campaigns (SF-118, SF-131)", async () => {
     const nav = await renderShell(
       "web.sponsor",
       `/sponsor/${SPONSOR_ID}/settings`,
       "section=members",
     );
     const href = (name: string) => within(nav).getByRole("link", { name }).getAttribute("href");
-    expect(within(nav).getAllByRole("link")).toHaveLength(5);
+    expect(within(nav).getAllByRole("link")).toHaveLength(8);
     expect(href("Overview")).toBe(`/en/sponsor/${SPONSOR_ID}/dashboard`);
+    expect(href("Interests")).toBe(`/en/sponsor/${SPONSOR_ID}/interests`);
+    expect(href("Opportunities")).toBe(`/en/sponsor/${SPONSOR_ID}/opportunities`);
+    expect(href("Requests")).toBe(`/en/sponsor/${SPONSOR_ID}/requests`);
     expect(href("Application")).toBe(`/en/sponsor/${SPONSOR_ID}/application`);
     expect(href("Organization")).toBe(`/en/sponsor/${SPONSOR_ID}/settings?section=organization`);
     expect(href("Members")).toBe(`/en/sponsor/${SPONSOR_ID}/settings?section=members`);

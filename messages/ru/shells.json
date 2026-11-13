@@ -83,6 +83,7 @@
     "name": "Партнёрский портал",
     "sections": {
       "partner": "Партнёр",
+      "partnerships": "Партнёрство",
       "campaigns": "Кампании",
       "results": "Результаты",
       "account": "Аккаунт"
@@ -92,6 +93,9 @@
       "applications": "Заявка",
       "organization": "Организация",
       "members": "Участники",
+      "interests": "Интересы",
+      "opportunities": "Возможности",
+      "requests": "Запросы",
       "campaigns": "Кампании",
       "challenges": "Челленджи",
       "events": "События",

@@ -1,6 +1,6 @@
 "use client";
 
-import { InfoIcon, LockIcon, XIcon } from "lucide-react";
+import { InfoIcon, LockIcon } from "lucide-react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
@@ -8,15 +8,16 @@ import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { useAnswerLabels, type SponsorApplicationPolicy } from "@/entities/sponsor-application";
 import { countryOptions } from "@/shared/lib/countries";
 import { Button } from "@/shared/ui/button";
+import { ChoicePills } from "@/shared/ui/choice-pills";
 import { Combobox } from "@/shared/ui/combobox";
 import { ChoiceField, describedBy, FormField } from "@/shared/ui/form-field";
 import { Input } from "@/shared/ui/input";
 import { Notice } from "@/shared/ui/notice";
+import { RemovableChips } from "@/shared/ui/removable-chips";
 import { Textarea } from "@/shared/ui/textarea";
 
 import type { AnswerField } from "../model/steps";
 import { CITY_MAX, GOALS_MAX, type ApplicationValues } from "../model/values";
-import { ChoicePills } from "./choice-pills";
 
 /*
  * The answer steps of SPA1 (SP1–SP6): each renders its fields from the one
@@ -331,7 +332,7 @@ export function MarketsFields({ props }: { props: FieldsProps }) {
             legend={t("countries")}
             error={props.error("market_countries")}
           >
-            <Chips
+            <RemovableChips
               items={countries.map((code) => ({ value: code, label: codes.country(code) }))}
               removeLabel={(label) => t("removeItem", { label })}
               disabled={lockedLists}
@@ -362,7 +363,7 @@ export function MarketsFields({ props }: { props: FieldsProps }) {
             legend={scope === "cities" ? t("cities") : `${t("cities")} · ${t("optional")}`}
             error={props.error("market_cities")}
           >
-            <Chips
+            <RemovableChips
               items={cities.map((name) => ({ value: name, label: name }))}
               removeLabel={(label) => t("removeItem", { label })}
               disabled={lockedLists}
@@ -404,41 +405,6 @@ export function MarketsFields({ props }: { props: FieldsProps }) {
         </>
       ) : null}
     </>
-  );
-}
-
-function Chips({
-  items,
-  removeLabel,
-  onRemove,
-  disabled,
-}: {
-  items: { value: string; label: string }[];
-  removeLabel: (label: string) => string;
-  onRemove: (value: string) => void;
-  disabled: boolean;
-}) {
-  if (items.length === 0) return null;
-  return (
-    <ul className="flex flex-wrap gap-2">
-      {items.map((item) => (
-        <li
-          key={item.value}
-          className="inline-flex min-h-11 items-center gap-1 rounded-full border-[1.5px] border-primary-muted bg-accent ps-3.5 pe-1 type-body-sm font-bold text-accent-foreground"
-        >
-          {item.label}
-          <button
-            type="button"
-            disabled={disabled}
-            onClick={() => onRemove(item.value)}
-            aria-label={removeLabel(item.label)}
-            className="flex size-9 items-center justify-center rounded-full outline-none hover:bg-background/30 focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
-          >
-            <XIcon aria-hidden className="size-3.5" />
-          </button>
-        </li>
-      ))}
-    </ul>
   );
 }
 

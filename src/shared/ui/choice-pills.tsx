@@ -5,7 +5,8 @@ import { CheckIcon } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 
 /**
- * SPA1's choice chips (industry, interests, market scope, budget): 44 px
+ * SPA1's choice chips (industry, interests, market scope, budget; reused by
+ * the SF-131 partnership forms): 44 px
  * pills around native radio or checkbox inputs, so the group is a real
  * radio group or checkbox list for the keyboard and screen readers. A
  * chosen pill is olive with a check (state never shown by colour alone).
