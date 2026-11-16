@@ -2512,7 +2512,7 @@
       "status": "IMPLEMENTED",
       "production": {
         "file": "src/app/(fighter)/(tabs)/(profile)/profile.tsx",
-        "note": "SF-28: the Profile tab's way into Settings (Claude Design F18 → ST1): the route title, a Planned badge, one line that the profile arrives with its feature, and Settings · account · privacy. The profile itself (stats, camps, sparring, workspaces) is built by its feature ticket."
+        "note": "SF-28: the Profile tab's way into Settings (Claude Design F18 → ST1). SF-59: F18's Coaches row (FC1). SF-160 (Claude Design 1794841517-868f): F18 from the fighter's own FighterProfile only (display name, @username, stance and weight class, which only the owner sees) and the F18 rows whose destination exists: Coaches (FC1), Gyms (mobile.me.gyms, MMG1), Switch workspace (the A04 sheet) and Settings · account · privacy (ST1). The record, friends, Go Pro, progress, fight camps, sparring, payments, emergency contact and privacy rows belong to domains that do not exist yet and are not shown."
       },
       "screens": ["F18"]
     },
